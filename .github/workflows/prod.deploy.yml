@@ -28,3 +28,6 @@ jobs:
       
       - name: Push to Docker Hub
         run: docker push mahirlabibdihan/bitsunplugged-app:latest
+			
+			- name: Deploy to Render
+				run: curl -X POST "https://api.render.com/deploy/srv-cl69io2uuipc73c9oq7g?key=iuS9vv2z5d0"

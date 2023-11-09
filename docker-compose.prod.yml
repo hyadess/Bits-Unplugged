@@ -11,22 +11,3 @@ services:
     container_name: bitsunplugged-fullstack
     env_file:
       - backend/.env.production
-    # depends_on: 
-    #   - postgres
-
-#   postgres:
-#     image: postgres
-#     restart: always
-#     container_name: bitsunplugged-database
-#     environment:
-#       POSTGRES_USER: postgres
-#       POSTGRES_PASSWORD: root
-#       POSTGRES_DB: bitsunplugged
-#     ports: 
-#       - "5434:5432"
-#     volumes:
-#       - pg-db:/var/lib/postgresql/data
-#       - ./database/dump.sql:/docker-entrypoint-initdb.d/init.sql
-
-# volumes:
-#   pg-db:

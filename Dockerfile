@@ -18,7 +18,7 @@ COPY --from=client /app/frontend/build/ ./frontend/build/
 
 WORKDIR /app/backend/
 COPY backend/package*.json .
-RUN npm install --only=production 
+RUN npm install
 COPY backend/ .
 
 EXPOSE $PORT 

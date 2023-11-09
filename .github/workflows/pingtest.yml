@@ -22,7 +22,7 @@ jobs:
         run: sudo apt install docker-compose
         
       - name: Build image
-        run: docker-compose -f docker-compose.dev.yml build
+        run: docker-compose -f docker-compose.dev.yml up -d postgres
 
       - name: Run tests
-        run: docker run -e CI=true --env-file backend/.env.development mahirlabibdihan/bitsunplugged-backend npm run test
+        run: cd backend && npm run test

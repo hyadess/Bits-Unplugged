@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../config/config");
 const AuthRepository = require("../repository/authRepository");
 
 const authRepository = new AuthRepository();
@@ -11,7 +12,7 @@ async function tokenValidationMiddleware(req, res, next) {
   const token = authHeader && authHeader.split(" ")[1];
   if (token == null) return res.status(403).send({ error: "access denied" });
   // console.log(process.env.JWT_SECRET);
-  jwt.verify(token, process.env.JWT_SECRET, async (err, data) => {
+  jwt.verify(token, JWT_SECRET, async (err, data) => {
     if (err) {
       return res.status(403).send({ error: "access denied" });
     } else if ("type" in data && data.type == "2") {

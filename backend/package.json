@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "npx jest --detectOpenHandles"
+    "test": "npx jest --forceExit"
   },
   "author": "Mahir Labib Dihan",
   "license": "ISC",

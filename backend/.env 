@@ -1,0 +1,6 @@
+DB_USER=postgres
+DB_HOST=localhost
+DB_DB=bitsunplugged
+DB_PASS=root
+DB_PORT=5434
+JWT_SECRET=kuddusmia

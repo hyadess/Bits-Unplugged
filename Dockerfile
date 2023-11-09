@@ -12,12 +12,13 @@ RUN npm run build
 
 FROM node:20
 
+RUN apt-get update && apt-get install -y redis-server
 WORKDIR /app/
 COPY --from=client /app/frontend/build/ ./frontend/build/
 
 WORKDIR /app/backend/
 COPY backend/package*.json .
-RUN npm install --only=production
+RUN npm install
 COPY backend/ .
 
 EXPOSE $PORT 

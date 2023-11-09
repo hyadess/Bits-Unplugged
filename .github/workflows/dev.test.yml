@@ -1,0 +1,34 @@
+name: DevTest
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      JWT_SECRET: kuddusmia
+      DB_USER: postgres
+      DB_PASS: '#include<D1h@n.h>'
+      DB_HOST: db.mnqhazjbbmyvpwbzjfoi.supabase.co
+      DB_PORT: 5432
+      DB_DB: bitsunplugged
+      PORT: 5000
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      - name: Install dependencies
+        run: cd backend && npm ci
+
+      - name: Run tests
+        run: cd backend && npm run test

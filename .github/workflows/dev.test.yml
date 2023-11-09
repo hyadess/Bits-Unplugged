@@ -1,9 +1,9 @@
-name: PingTest
+name: DevTest
 
 on:
-  pull_request:
+  push:
     branches:
-      - main
+      - dev
 
 jobs:
   test:

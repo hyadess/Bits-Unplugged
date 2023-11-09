@@ -1,0 +1,23 @@
+name: ProdDeploy
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Install dependencies
+        run: sudo apt install docker-compose
+          
+      - name: Build the Docker image
+        run: docker-compose -f docker-compose.prod.yml build
+      
+      - name: Run tests
+        run: docker run -e CI=true --env-file backend/.env.production mahirlabibdihan/bitsunplugged-app npm run test

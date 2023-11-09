@@ -9,6 +9,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      JWT_SECRET: kuddusmia
+      DB_USER: postgres
+      DB_PASS: '#include<D1h@n.h>'
+      DB_HOST: db.mnqhazjbbmyvpwbzjfoi.supabase.co
+      DB_PORT: 5432
+      DB_DB: postgres
+      PORT: 5000
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -19,10 +28,7 @@ jobs:
           node-version: "16"
 
       - name: Install dependencies
-        run: sudo apt install docker-compose
-        
-      - name: Build image
-        run: docker-compose -f docker-compose.dev.yml up -d postgres
+        run: cd backend && npm ci
 
       - name: Run tests
-        run: cd backend && npm ci && npm run test
+        run: npm run test

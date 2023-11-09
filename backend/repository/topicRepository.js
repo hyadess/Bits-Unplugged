@@ -9,7 +9,8 @@ class TopicRepository extends Repository {
     SELECT * FROM Topic;
     `;
     const params = [];
-    const result = await this.query(query, params);
+    const key = "rediskey_" + "all_topics";
+    const result = await this.query_redis(key, query, params);
     return result;
   };
   getTopicById = async (topic_id) => {

@@ -22,7 +22,7 @@ jobs:
         run: sudo apt install docker-compose
         
       - name: Build image
-        run: docker-compose -f docker-compose.prod.yml build
+        run: docker-compose -f docker-compose.dev.yml build
 
       - name: Run tests
-        run: docker run -e CI=true --env-file backend/.env.production mahirlabibdihan/bitsunplugged-app npm run test
+        run: docker run -e CI=true --env-file backend/.env.production mahirlabibdihan/bitsunplugged-backend npm run test

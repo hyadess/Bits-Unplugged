@@ -1,0 +1,43 @@
+// Define variables for button colors
+$button-bg-color: #3498db;
+$button-text-color: #fff;
+$button-hover-color: #2980b9;
+$button-padding: 0.5em 1em;
+$button-border-radius: 0.3em;
+$container-width: 10%; // Adjust this width as needed
+$container-height: 20%; // Adjust this height as needed
+$container-background-color: #ed49a0; // Background color for the container
+
+// Define container styles
+.container {
+  width: $container-width;
+  height: $container-height;
+  background-color: $container-background-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // Button styles
+  .submit-button {
+    background-color: $button-bg-color;
+    color: $button-text-color;
+    border: none;
+    padding: $button-padding;
+    border-radius: $button-border-radius;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: $button-hover-color;
+    }
+
+    &:focus {
+      outline: none;
+      // Add any additional focus styles here
+    }
+
+    // Add more styling for different states (active, disabled) if needed
+  }
+}
+
+// You can also add media queries for responsive design

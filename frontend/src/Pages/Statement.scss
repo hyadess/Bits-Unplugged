@@ -1,0 +1,47 @@
+.text-area {
+  width: 100%;
+  padding: 20px;
+  font-size: 25px;
+  color: azure;
+  //border: 1px solid #ccc;
+  border: none;
+  border-radius: 20px;
+  background-color: rgba(59, 64, 70, 0.334);
+  resize: vertical; /* Allow vertical resizing of the textarea */
+  margin-top: 20px;
+}
+
+.textarea:focus {
+  border-color: #2a4a6c; /* Change border color on focus */
+  outline: none; /* Remove the default outline on focus */
+}
+.export-button-container-statement {
+  position: absolute;
+  bottom: 10px; /* Adjust the value to control the button's distance from the bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  // background-image: url('../../resources/submit.png'); /* Replace with your image path */
+  // background-size: contain;
+  padding: 10px;
+}
+
+.export-button-statement {
+  background-color: transparent;
+  border: none;
+  width: 80px; /* Set the desired width of the round button */
+  height: 80px; /* Set the desired height of the round button */
+  border-radius: 50%; /* Makes the button round */
+  cursor: pointer;
+  outline: none;
+  background-image: url("../../resources/submit.png"); /* Replace with your image path */
+  background-size: contain; /* Resize the background image to fit inside the button */
+  background-repeat: no-repeat;
+  background-position: center center;
+  transition: transform 0.2s ease; /* Add a smooth transition effect */
+}
+
+/* Add hover effect */
+.export-button-statement:hover {
+  transform: scale(1.1); /* Scale up the button when hovered */
+  background-color: rgba(165, 186, 207, 0.753);
+}

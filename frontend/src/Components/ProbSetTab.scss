@@ -1,0 +1,58 @@
+/* Tabs.css */
+.tabs-container {
+  display: flex;
+  width: 80vw;
+  /* Set the width to 70% of the viewport width */
+  margin: 0 auto;
+  border-bottom: 0px solid #ddd;
+  justify-content: space-between;
+}
+
+.tabs-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.tab-item {
+  cursor: pointer;
+  padding: 10px 20px;
+  border: none;
+  flex-grow: 1;
+  text-align: center;
+  color: #d4ced2;
+  font-weight: 1000;
+  font-size: 20px;
+}
+
+.tab-item.active {
+  border-bottom: 3px solid rgb(236, 72, 153);
+  color: rgb(236, 72, 153);
+}
+
+.tab-content {
+  border: 1px solid #ddd;
+  border-top: none;
+  padding: 20px;
+  border-radius: 0 0 4px 4px;
+}
+
+.image-Style  {
+  position: 'absolute';
+  bottom: 0;
+  left: 0;
+  width: 10%; // Adjust the image's width as needed
+  height: 10%; // Adjust the image's height as needed
+};
+
+.no-image-Style  {
+  position: 'absolute';
+  bottom: 0;
+  left: 0;
+  width: 10%; // Adjust the image's width as needed
+  height: 10%; // Adjust the image's height as needed
+  opacity: 0;
+};

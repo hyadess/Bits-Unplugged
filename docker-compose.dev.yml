@@ -1,0 +1,58 @@
+version: "3"
+services:
+  backend:
+    build:
+      context: backend/
+      args:
+        NODE_ENV: development
+    image: mahirlabibdihan/bitsunplugged-backend
+    container_name: bitsunplugged-server
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+    env_file:
+      - backend/.env.development
+    command: npm run dev
+    ports: 
+      - "5000:5000"
+    depends_on: 
+      - postgres
+
+  frontend:
+    build:
+      context: frontend/
+      args:
+        NODE_ENV: development
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+    command: npm run start
+    image: mahirlabibdihan/bitsunplugged-frontend
+    container_name: bitsunplugged-client
+    ports: 
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  postgres:
+    image: postgres
+    restart: always
+    container_name: bitsunplugged-database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: bitsunplugged
+    ports: 
+      - "5434:5432"
+    volumes:
+      - pg-db:/var/lib/postgresql/data
+      - ./database/dump.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  pg-db:

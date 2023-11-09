@@ -1,0 +1,19 @@
+.inputContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.inputField {
+    padding: 10px;
+    background-color: #eff5ff;
+    border-style: none;
+}
+
+.inputButton {
+    padding: 10px;
+    border: 0px;
+    background-color: #f30192;
+}

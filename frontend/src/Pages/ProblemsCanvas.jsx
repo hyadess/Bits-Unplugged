@@ -1,0 +1,108 @@
+import React, { useState, useEffect } from "react";
+import Navbar from "../Components/Navbar";
+import { useNavigate, useParams } from "react-router-dom";
+import CanvasRedirection from "../Components/Canvas/CanvasRedirection";
+import ProblemController from "../controller/problemController";
+import axios from "axios";
+import PlaygroundCard from "../Components/PlaygroundCard";
+import "./ProblemSetEnv.scss";
+import "./Submitbtn.scss";
+import Latex from "react-latex";
+//<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
+const problemController = new ProblemController();
+
+export default function ProblemsCanvas() {
+  /**
+     * https://i.postimg.cc/T1GDtZtZ/image-1.png
+        https://i.postimg.cc/15mFw1nF/image-2.png
+        https://i.postimg.cc/1Rc683tP/image-4.png
+        https://i.postimg.cc/KjNgwJV4/image-5.png
+     */
+  const navigator = useNavigate();
+  const switchPath = (pathname) => {
+    navigator(pathname);
+  };
+
+  const { id } = useParams();
+  const [problem, setProblem] = useState(null);
+  const [input, setInput] = useState(null);
+  const [canvas_id, setCanvas_Id] = useState(null);
+  const [title, setTitle] = useState("");
+  const [statement, setStatement] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState();
+  const [canvas, setCanvas] = useState(null);
+  const baseURL = "https";
+
+  useEffect(() => {
+    renderProblem();
+  }, []);
+
+  const renderProblem = async () => {
+    const result = await problemController.getProblemById(id);
+    setProblem(result.data[0]);
+    setInput(result.data[0].canvas_data);
+    setCanvas_Id(result.data[0].canvas_id);
+    setStatement(result.data[0].statement);
+    setTitle(result.data[0].title);
+    console.log(result.data[0].canvas_data);
+  };
+
+  const renderComponent = () => {
+    console.log(canvas_id);
+    return canvas_id ? (
+      <CanvasRedirection id={canvas_id} input={input} setInput={setInput} />
+    ) : (
+      <></>
+    );
+  };
+
+  const handleSubmit = () => {
+    problemController.checkSolution(problem.solution_checker, input);
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen dark:bg-gray-900">
+      {/* <Navbar /> */}
+      <div class="bg-white mt-20 dark:bg-gray-900">
+        <div class="gap-8 items-center py-4 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 sm:pb-0 lg:px-10">
+          <div class="mt-4 md:mt-0">
+            <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+              <span class="text-pink-600 dark:text-pink-500">{title}</span>
+            </h2>
+          </div>
+        </div>
+        <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
+          <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg dark:text-gray-400">
+            <div
+              style={{
+                width: "100%",
+                padding: "30px",
+                fontSize: "25px",
+                color: "azure",
+                border: "none",
+                borderRadius: "20px",
+              }}
+            >
+              <h3>
+                <Latex>{statement}</Latex>
+              </h3>
+            </div>
+          </p>
+        </div>
+      </div>
+
+      <div className="component-container">
+        {renderComponent()}
+        <button
+          style={{ float: "right" }}
+          type="submit"
+          class="text-white bg-pink-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-lg px-7 py-3.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800"
+          onClick={() => handleSubmit()}
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  );
+}

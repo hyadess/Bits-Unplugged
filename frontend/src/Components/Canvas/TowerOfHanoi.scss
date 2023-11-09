@@ -1,0 +1,28 @@
+/* TowerOfHanoi.css */
+@import "../components.scss";
+
+.tower-of-hanoi {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  // background-color: rgba(59, 64, 70, 0.334);
+  border-radius: 0.25rem;
+  // box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  margin: 1rem;
+  color: antiquewhite;
+
+  .toh-header {
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem;
+    margin-bottom: 0;
+    color: antiquewhite;
+  }
+  .toh-canvas {
+    // border-radius: 0.25rem;
+    // box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    padding: 10px 100px;
+    // background-color: rgba(59, 64, 70, 0.334);
+    color: antiquewhite;
+  }
+}

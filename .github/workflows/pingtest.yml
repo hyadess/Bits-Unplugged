@@ -25,4 +25,4 @@ jobs:
         run: docker-compose -f docker-compose.dev.yml build
 
       - name: Run tests
-        run: docker run -e CI=true --env-file backend/.env.production mahirlabibdihan/bitsunplugged-backend npm run test
+        run: docker run -e CI=true --env-file backend/.env.development mahirlabibdihan/bitsunplugged-backend npm run test

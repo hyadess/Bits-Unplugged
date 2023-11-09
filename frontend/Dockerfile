@@ -7,6 +7,5 @@ RUN if [ "$NODE_ENV" = "development" ]; \
     else npm install --force --only=production; \
     fi
 COPY . .
-RUN npm run build
 EXPOSE $PORT 
-CMD [ "npx", "serve", "build" ]
+CMD npm run build && npx serve build

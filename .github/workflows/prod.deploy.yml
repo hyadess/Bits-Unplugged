@@ -24,10 +24,9 @@ jobs:
           
       - name: Build the Docker image
         run: docker-compose -f docker-compose.prod.yml build
-        # run: docker build -t mahirlabibdihan/bitsunplugged-app .
       
       - name: Push to Docker Hub
         run: docker push mahirlabibdihan/bitsunplugged-app:latest
-			
-			- name: Deploy to Render
-				run: curl -X POST "https://api.render.com/deploy/srv-cl69io2uuipc73c9oq7g?key=iuS9vv2z5d0"
+      
+      - name: Deploy to Render
+        run: curl -X POST "https://api.render.com/deploy/srv-cl69io2uuipc73c9oq7g?key=iuS9vv2z5d0"

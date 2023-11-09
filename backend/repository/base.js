@@ -1,10 +1,60 @@
 require("dotenv").config();
 const Pool = require("pg").Pool;
+const cache = require("node-cache");
+const DEFAULT_EXPIRATION = 3600;
+const mycache = new cache({
+  deleteOnExpire: true,
+  stdTTL: 5 * 60,
+});
 
 class Repository {
   constructor() {
     this.pool = undefined;
   }
+  query_redis = async (key, query, params) => {
+    let data = await this.get_redis(key);
+    if (data != null) {
+      return {
+        success: true,
+        data: JSON.parse(data),
+      };
+    }
+    let result = await this.query(query, params);
+    if (!result.success) return result;
+    data = result.data;
+    await this.set_redis(key, JSON.stringify(data));
+    return result;
+  };
+
+  set_redis = async function (key, data) {
+    try {
+      if (key != null && data != null) mycache.set(key, data);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
+  get_redis = async function (key) {
+    try {
+      if (key != null) {
+        const data = mycache.get(key);
+        if (data != null) return data;
+      }
+    } catch (error) {
+      return null;
+    }
+  };
+
+  delete_redis = async function (keys) {
+    try {
+      mycache.del(keys);
+      return;
+    } catch (error) {
+      return;
+    }
+  };
+
   // code to execute sql
   query = async (query, params) => {
     let result;

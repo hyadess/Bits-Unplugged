@@ -1,5 +1,6 @@
 const Controller = require("./base");
 const AuthRepository = require("../repository/authRepository");
+const { JWT_SECRET } = require("../config/config");
 const authRepository = new AuthRepository();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -17,7 +18,7 @@ class AuthController extends Controller {
         pass: pass,
         type: type,
       },
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: `${tokenExpiryDuration}s` }
     );
     return token;
@@ -28,7 +29,7 @@ class AuthController extends Controller {
       {
         type: 2,
       },
-      process.env.JWT_SECRET
+      JWT_SECRET
     );
     return res.status(200).json({
       success: true,

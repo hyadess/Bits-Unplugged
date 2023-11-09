@@ -1,6 +1,13 @@
 require("dotenv").config();
 const Pool = require("pg").Pool;
 const cache = require("node-cache");
+const {
+  DB_USER,
+  DB_HOST,
+  DB_DB,
+  DB_PASS,
+  DB_PORT,
+} = require("../config/config");
 const DEFAULT_EXPIRATION = 3600;
 const mycache = new cache({
   deleteOnExpire: true,
@@ -11,6 +18,39 @@ class Repository {
   constructor() {
     this.pool = undefined;
   }
+
+  // code to execute sql
+  query = async (query, params) => {
+    let result;
+    try {
+      if (this.pool === undefined) {
+        this.pool = new Pool({
+          user: DB_USER,
+          host: DB_HOST,
+          database: DB_DB,
+          password: DB_PASS,
+          port: DB_PORT,
+          // ssl: {
+          //   rejectUnauthorized: false,
+          // },
+        });
+      }
+      result = await this.pool.query(query, params);
+      return {
+        success: true,
+        data: result.rows,
+      };
+    } catch (error) {
+      console.log("COULD NOT CONNECT TO PG");
+      console.log(error);
+      console.log(query, params);
+      return {
+        success: false,
+        error: error,
+      };
+    }
+  };
+
   query_redis = async (key, query, params) => {
     let data = await this.get_redis(key);
     if (data != null) {
@@ -52,38 +92,6 @@ class Repository {
       return;
     } catch (error) {
       return;
-    }
-  };
-
-  // code to execute sql
-  query = async (query, params) => {
-    let result;
-    try {
-      if (this.pool === undefined) {
-        this.pool = new Pool({
-          user: process.env.DB_USER,
-          host: process.env.DB_HOST,
-          database: process.env.DB_DB,
-          password: process.env.DB_PASS,
-          port: process.env.DB_PORT,
-          // ssl: {
-          //   rejectUnauthorized: false,
-          // },
-        });
-      }
-      result = await this.pool.query(query, params);
-      return {
-        success: true,
-        data: result.rows,
-      };
-    } catch (error) {
-      console.log("COULD NOT CONNECT TO PG");
-      console.log(error);
-      console.log(query, params);
-      return {
-        success: false,
-        error: error,
-      };
     }
   };
 }

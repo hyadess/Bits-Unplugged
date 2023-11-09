@@ -7,7 +7,7 @@ const canvasRoutes = require("./canvasRoutes");
 const profileRoutes = require("./profileRoutes");
 
 router.get("/", (req, res) => {
-  res.send("Hi, welcome to Bits");
+  res.send("Hi, welcome to Bits Unplugged");
 });
 
 router.use("/auth", authRoutes);

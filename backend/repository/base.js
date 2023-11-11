@@ -19,6 +19,10 @@ class Repository {
     this.pool = undefined;
   }
 
+  check = async () => {
+    const result = await this.query("SELECT * FROM profile LIMIT 1;", []);
+    return result;
+  };
   // code to execute sql
   query = async (query, params) => {
     let result;

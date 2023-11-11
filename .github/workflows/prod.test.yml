@@ -1,4 +1,4 @@
-name: ProdDeploy
+name: ProdTest
 
 on:
   pull_request:

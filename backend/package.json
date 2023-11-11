@@ -17,7 +17,9 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.1",
     "node-cache": "^5.1.2",
+    "node-cron": "^3.0.3",
     "pg": "^8.11.3",
+    "ping": "^0.4.4",
     "redis": "^4.6.10"
   },
   "devDependencies": {

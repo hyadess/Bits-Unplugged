@@ -3,26 +3,19 @@ const app = express();
 const path = require("path");
 const cors = require("cors");
 const cron = require("node-cron");
-var ping = require("ping");
-cron.schedule("*/12 * * * *", function () {
-  let host = "bitsunplugged.onrender.com";
-  var cfg = {
-    timeout: 100,
-    // WARNING: -i 2 may not work in other platform like windows
-    extra: ["-i", "2"],
-  };
-
-  ping.sys.probe(
-    host,
-    (isAlive) => {
-      var msg = isAlive
-        ? "host " + host + " is alive"
-        : "host " + host + " is dead";
-      console.log(msg);
-    },
-    cfg
-  );
+const https = require("https");
+cron.schedule("*/12 * * * *", () => {
+  let host = "https://bitsunplugged.onrender.com/api";
+  https
+    .get(host, (resp) => {
+      if (resp.statusCode == 200) console.log("Bit Unplugged is alive");
+      else console.log("Bit Unplugged is dead");
+    })
+    .on("error", (err) => {
+      console.log("Error: " + err.message);
+    });
 });
+
 // const fileUpload = require("express-fileupload");
 const appRoutes = require("./routes/appRoutes");
 const CLIENT_BUILD_PATH = path.join(__dirname, "../frontend/build");

@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { Stage, Layer, Rect, Label } from "react-konva";
 
 import FormControl from "@mui/material/FormControl";
@@ -15,7 +20,7 @@ import Cookies from "universal-cookie";
 import "./TowerOfHanoi.scss";
 // import "bootstrap/dist/css/bootstrap.min.css";
 const cookie = new Cookies();
-const TowerOfHanoi = (props) => {
+const TowerOfHanoi = (props, ref) => {
   const [numberOfDisks, setNumberOfDisks] = useState(3);
   const [numberOfPegs, setNumberOfPegs] = useState(3);
   const [pegs, setPegs] = useState([]);
@@ -31,6 +36,12 @@ const TowerOfHanoi = (props) => {
   const baseY = 220;
   const sep = 10;
   // const [history, setHistory] = useState([]);
+  useImperativeHandle(ref, () => {
+    return {
+      handleReset: () => handleReset(),
+      handleSave: () => exportData(),
+    };
+  });
 
   const exportData = () => {
     const data = {
@@ -45,6 +56,7 @@ const TowerOfHanoi = (props) => {
     console.log(jsonData);
     // storing object in input..........
     props.setInput(data);
+    return data;
   };
 
   const importData = () => {
@@ -52,7 +64,7 @@ const TowerOfHanoi = (props) => {
       // setNumberOfMoves(0);
       const data = props.input;
       console.log("importing");
-      setPegs(data.pegs);
+      setPegs(data.pegs.map((subArray) => [...subArray]));
       setNumberOfDisks(data.numberOfDisks);
       setNumberOfPegs(data.numberOfPegs);
       const list = data.pegs.map((peg) => peg[peg.length - 1]);
@@ -89,18 +101,21 @@ const TowerOfHanoi = (props) => {
 
   // Bug
   const handleReset = (e) => {
+    console.log("Reset");
     if (props.input != null && props.input.pegs != null) {
       setNumberOfMoves(0);
-      const data = props.input;
-      console.log("importing");
-      console.log(data.pegs);
-      setPegs(data.pegs);
-      setNumberOfDisks(data.numberOfDisks);
-      setNumberOfPegs(data.numberOfPegs);
-      const list = data.pegs.map((peg) => peg[peg.length - 1]);
-      setDraggableDisks(list);
+      // const data = props.input;
+      // console.log("importing");
+      // console.log(props.input);
+      // setPegs(data.pegs);
+      // setNumberOfDisks(data.numberOfDisks);
+      // setNumberOfPegs(data.numberOfPegs);
+      // const list = data.pegs.map((peg) => peg[peg.length - 1]);
+      // setDraggableDisks(list);
+      importData();
     } else {
-      initializePegs(numberOfPegs);
+      setNumberOfDisks(3);
+      initializePegs(3);
     }
   };
   const handleDiskDrag = (e) => {
@@ -151,6 +166,7 @@ const TowerOfHanoi = (props) => {
   useEffect(() => {
     importData();
   }, [props]);
+
   const initializePegs = (nDisks) => {
     setNumberOfMoves(0);
     const initialPegs = [Array.from({ length: nDisks }, (_, i) => i)];
@@ -161,7 +177,7 @@ const TowerOfHanoi = (props) => {
     setDraggableDisks([
       initialPegs[0][initialPegs[0][initialPegs[0].length - 1]],
     ]);
-
+    // setNumberOfDisks(3);
     // const new_pegs = initialPegs;
     // setHistory(Array(new_pegs));
     // console.log([new_pegs], numberOfPegs);
@@ -212,7 +228,7 @@ const TowerOfHanoi = (props) => {
         updatedPegs[sourcePegIndex].splice(index, 1);
       }
 
-      console.log(updatedPegs);
+      console.log("Pegs: " + updatedPegs);
       console.log(updatedPegs[nearestPegIndex].length, nearestPegIndex);
       if (pegs[nearestPegIndex].length > 1) {
         var index2 = updatedDraggable.indexOf(
@@ -400,17 +416,20 @@ const TowerOfHanoi = (props) => {
             alignItems: "center",
           }}
         >
-          <Button variant="" onClick={exportData}>
+          {/* <Button variant="" onClick={exportData}>
             <SaveIcon sx={{ fontSize: "2rem", color: "white" }} />
           </Button>
 
           <Button variant="" onClick={handleReset}>
             <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-          </Button>
-
-          <Typography variant="h5" className="p-0 m-0" color={"white"}>
-            <b>Moves: {numberOfMoves}</b>
-          </Typography>
+          </Button> */}
+          {isProblemSetting ? (
+            <></>
+          ) : (
+            <Typography variant="h5" className="p-0 m-0" color={"white"}>
+              <b>Moves: {numberOfMoves}</b>
+            </Typography>
+          )}
         </div>
       </div>
       <Divider sx={{ bgcolor: "rgb(236, 72, 153)" }} />
@@ -426,4 +445,4 @@ const TowerOfHanoi = (props) => {
   );
 };
 
-export default TowerOfHanoi;
+export default forwardRef(TowerOfHanoi);

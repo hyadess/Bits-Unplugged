@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Navbar from "../Components/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import CanvasRedirection from "../Components/Canvas/CanvasRedirection";
 import ProblemController from "../controller/problemController";
+import { Button } from "@mui/material";
 import axios from "axios";
 import PlaygroundCard from "../Components/PlaygroundCard";
+import RotateLeftIcon from "@mui/icons-material/RotateLeft";
+import SaveIcon from "@mui/icons-material/Save";
+import SendIcon from "@mui/icons-material/Send";
 import "./ProblemSetEnv.scss";
 import "./Submitbtn.scss";
 import Latex from "react-latex";
@@ -33,6 +37,7 @@ export default function ProblemsCanvas() {
   const [data, setData] = useState();
   const [canvas, setCanvas] = useState(null);
   const baseURL = "https";
+  const canvasRef = useRef();
 
   useEffect(() => {
     renderProblem();
@@ -49,7 +54,6 @@ export default function ProblemsCanvas() {
   };
 
   const renderComponent = () => {
-    console.log(canvas_id);
     return canvas_id ? (
       <CanvasRedirection id={canvas_id} input={input} setInput={setInput} />
     ) : (
@@ -93,15 +97,57 @@ export default function ProblemsCanvas() {
       </div>
 
       <div className="component-container">
-        {renderComponent()}
-        <button
-          style={{ float: "right" }}
-          type="submit"
-          class="text-white bg-pink-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-lg px-7 py-3.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800"
-          onClick={() => handleSubmit()}
+        {canvas_id && canvasRef ? (
+          <CanvasRedirection
+            id={canvas_id}
+            input={input}
+            setInput={setInput}
+            ref={canvasRef}
+          />
+        ) : (
+          <></>
+        )}
+        <div
+          className="flex py-3"
+          style={{ justifyContent: "right", marginLeft: "auto" }}
         >
-          Submit
-        </button>
+          {/* <button
+            style={{ float: "right" }}
+            type="submit"
+            class="text-white bg-pink-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-lg px-7 py-3.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800"
+            onClick={() => {
+              problemController.checkSolution(
+                problem.solution_checker,
+                canvasRef.current.getData()
+              );
+            }}
+          >
+            Submit
+          </button> */}
+
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => canvasRef.current.handleReset()}
+            startIcon={
+              <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+            }
+          >
+            Reset
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              problemController.checkSolution(
+                problem.solution_checker,
+                canvasRef.current.getData()
+              );
+            }}
+            endIcon={<SendIcon sx={{ fontSize: "2rem", color: "white" }} />}
+          >
+            Submit
+          </Button>
+        </div>
       </div>
     </div>
   );

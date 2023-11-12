@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, forwardRef } from "react";
 import { Route, useParams } from "react-router-dom";
 import GraphComponent from "./GraphComponent";
 import TowerOfHanoi from "./TowerOfHanoi";
 import CanvasController from "../../controller/canvasController";
-import "./CanvasRedirection.scss"
+import "./CanvasRedirection.scss";
+
 const canvasController = new CanvasController();
-const CanvasRedirection = (props) => {
-  const id=props.id;
+const CanvasRedirection = (props, ref) => {
+  const id = props.id;
   // const componentName = "GraphComponent";
   const [DynamicComponent, setDynamicComponent] = useState(null);
   const [canvasList, setCanvasList] = useState([]);
@@ -49,7 +50,17 @@ const CanvasRedirection = (props) => {
     getCanvasList();
   }, []);
 
-  return <div className="canvas-container">{DynamicComponent && <DynamicComponent input={props.input} setInput={props.setInput}/>}</div>;
+  return (
+    <div className="canvas-container">
+      {DynamicComponent && (
+        <DynamicComponent
+          input={props.input}
+          setInput={props.setInput}
+          ref={ref}
+        />
+      )}
+    </div>
+  );
 };
 
-export default CanvasRedirection;
+export default forwardRef(CanvasRedirection);

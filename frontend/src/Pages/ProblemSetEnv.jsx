@@ -76,12 +76,42 @@ export default function ProblemSetEnv() {
         );
       case "canvas":
         return (
-          <CanvasRedirection
-            id={canvasId}
-            input={input}
-            setInput={setInput}
-            ref={canvasRef}
-          />
+          <>
+            <CanvasRedirection
+              id={canvasId}
+              input={input}
+              setInput={setInput}
+              ref={canvasRef}
+            />
+            <div
+              className="flex py-3"
+              style={{ justifyContent: "right", marginLeft: "auto" }}
+            >
+              <Button
+                variant="contained"
+                color="success"
+                size="large"
+                onClick={() => canvasRef.current.handleReset()}
+                startIcon={
+                  <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+                }
+              >
+                Reset
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setInput(canvasRef.current.getData());
+                }}
+                size="large"
+                startIcon={
+                  <SaveIcon sx={{ fontSize: "2rem", color: "white" }} />
+                }
+              >
+                Save
+              </Button>
+            </div>
+          </>
         );
       case "solution":
         return (
@@ -210,35 +240,7 @@ export default function ProblemSetEnv() {
         </div>
         <ProbSetTab activeTab={activeComponent} click={setActiveComponent} />
 
-        <div className="component-container">
-          {renderComponent()}
-          <div
-            className="flex py-3"
-            style={{ justifyContent: "right", marginLeft: "auto" }}
-          >
-            <Button
-              variant="contained"
-              color="success"
-              size="large"
-              onClick={() => canvasRef.current.handleReset()}
-              startIcon={
-                <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-              }
-            >
-              Reset
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => {
-                setInput(canvasRef.current.getData());
-              }}
-              size="large"
-              startIcon={<SaveIcon sx={{ fontSize: "2rem", color: "white" }} />}
-            >
-              Save
-            </Button>
-          </div>
-        </div>
+        <div className="component-container">{renderComponent()}</div>
       </div>
     </div>
   );

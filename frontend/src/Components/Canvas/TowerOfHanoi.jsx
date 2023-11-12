@@ -19,6 +19,7 @@ import Cookies from "universal-cookie";
 // import { NumberField } from "../InputFields/inputField";
 import "./TowerOfHanoi.scss";
 // import "bootstrap/dist/css/bootstrap.min.css";
+
 const cookie = new Cookies();
 const TowerOfHanoi = (props, ref) => {
   const [numberOfDisks, setNumberOfDisks] = useState(3);
@@ -39,7 +40,7 @@ const TowerOfHanoi = (props, ref) => {
   useImperativeHandle(ref, () => {
     return {
       handleReset: () => handleReset(),
-      handleSave: () => exportData(),
+      getData: () => exportData(),
     };
   });
 
@@ -55,7 +56,7 @@ const TowerOfHanoi = (props, ref) => {
     console.log("exporting");
     console.log(jsonData);
     // storing object in input..........
-    props.setInput(data);
+    // props.setInput(data);
     return data;
   };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Navbar from "../Components/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -10,6 +10,8 @@ import { Button } from "@mui/material";
 import ProblemController from "../controller/problemController";
 import ProbSetTab from "../Components/ProbSetTab";
 import ProblemStatement from "./Statement";
+import RotateLeftIcon from "@mui/icons-material/RotateLeft";
+import SaveIcon from "@mui/icons-material/Save";
 import "./ProblemSetEnv.scss";
 const problemController = new ProblemController();
 
@@ -61,7 +63,7 @@ export default function ProblemSetEnv() {
 
   const [code, setCode] = useState("");
   const [input, setInput] = useState("");
-
+  const canvasRef = useRef();
   const [activeComponent, setActiveComponent] = useState("statement");
   const renderComponent = () => {
     switch (activeComponent) {
@@ -74,7 +76,12 @@ export default function ProblemSetEnv() {
         );
       case "canvas":
         return (
-          <CanvasRedirection id={canvasId} input={input} setInput={setInput} />
+          <CanvasRedirection
+            id={canvasId}
+            input={input}
+            setInput={setInput}
+            ref={canvasRef}
+          />
         );
       case "solution":
         return (
@@ -142,7 +149,7 @@ export default function ProblemSetEnv() {
     await updateCanvas();
     await updateCode();
     await problemController.publishProblem(prob_id);
-    };
+  };
 
   useEffect(() => {
     updateCanvas();
@@ -191,24 +198,47 @@ export default function ProblemSetEnv() {
               </h2>
             </div>
             <div className="souvik-button-container">
-             <button
-              className="submit-button"
-              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800"
-              onClick={updateAll}
-            >
-              PUBLISH
-            </button> 
-          </div>
+              <button
+                className="submit-button"
+                class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800"
+                onClick={updateAll}
+              >
+                PUBLISH
+              </button>
+            </div>
           </div>
         </div>
         <ProbSetTab activeTab={activeComponent} click={setActiveComponent} />
 
-        <div className="component-container">{renderComponent()}</div>
-        {/* <div className="submit-button-container">
-          <button className="submit-button" onClick={updateAll}>
-            SUBMIT
-          </button>
-        </div> */}
+        <div className="component-container">
+          {renderComponent()}
+          <div
+            className="flex py-3"
+            style={{ justifyContent: "right", marginLeft: "auto" }}
+          >
+            <Button
+              variant="contained"
+              color="success"
+              size="large"
+              onClick={() => canvasRef.current.handleReset()}
+              startIcon={
+                <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+              }
+            >
+              Reset
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                setInput(canvasRef.current.getData());
+              }}
+              size="large"
+              startIcon={<SaveIcon sx={{ fontSize: "2rem", color: "white" }} />}
+            >
+              Save
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import {
   Stage,
   Layer,
@@ -15,7 +21,7 @@ const EDGECLICKRANGE = 20;
 const canvasWidth = 1440;
 const canvasHeight = 1080;
 
-const GraphComponent = (props) => {
+const GraphComponent = (props, ref) => {
   const [edgeIndex, setEdgeIndex] = useState(0);
   const [nodeIndex, setNodeIndex] = useState(0);
   const [nodes, setNodes] = useState([]);
@@ -27,6 +33,12 @@ const GraphComponent = (props) => {
   const [zoom, setZoom] = useState(1);
   const stageRef = useRef(null);
 
+  useImperativeHandle(ref, () => {
+    return {
+      handleReset: () => {},
+      getData: () => exportGraphData(),
+    };
+  });
   // Function to calculate the distance from a point to a line segment...used to select an edge!!!!
   const pointToLineDistance = (px, py, x1, y1, x2, y2) => {
     const dx = x2 - x1;
@@ -292,7 +304,8 @@ const GraphComponent = (props) => {
 
     // storing object in input..........
 
-    props.setInput(graphData);
+    // props.setInput(graphData);
+    return graphData;
   };
 
   const importGraphData = () => {
@@ -431,11 +444,11 @@ const GraphComponent = (props) => {
           ))}
         </Layer>
       </Stage>
-      <div className="export-button-container">
+      {/* <div className="export-button-container">
         <button onClick={exportGraphData} className="export-button"></button>
-      </div>
+      </div> */}
     </div>
   );
 };
 
-export default GraphComponent;
+export default forwardRef(GraphComponent);

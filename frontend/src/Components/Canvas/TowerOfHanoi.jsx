@@ -406,27 +406,6 @@ const TowerOfHanoi = (props, ref) => {
               />
             </FormControl>
           ) : (
-            <></>
-          )}
-        </div>
-
-        <div
-          className="hbox"
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {/* <Button variant="" onClick={exportData}>
-            <SaveIcon sx={{ fontSize: "2rem", color: "white" }} />
-          </Button>
-
-          <Button variant="" onClick={handleReset}>
-            <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-          </Button> */}
-          {isProblemSetting ? (
-            <></>
-          ) : (
             <Typography variant="h5" className="p-0 m-0" color={"white"}>
               <b>Moves: {numberOfMoves}</b>
             </Typography>

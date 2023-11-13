@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../Components/Navbar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import PlaygroundCard from "../Components/PlaygroundCard";
-import ProblemCard from "../Components/ProblemCard";
 export default function Profile() {
   const navigator = useNavigate();
   const switchPath = (pathname) => {

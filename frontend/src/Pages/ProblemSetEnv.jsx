@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import Navbar from "../Components/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-import PlaygroundCard from "../Components/PlaygroundCard";
-import GraphComponent from "../Components/Canvas/GraphComponent";
 import CanvasRedirection from "../Components/Canvas/CanvasRedirection";
 import SolutionChecker from "./SolutionChecker";
 import { Button } from "@mui/material";
@@ -15,7 +11,6 @@ import SaveIcon from "@mui/icons-material/Save";
 import "./ProblemSetEnv.scss";
 const problemController = new ProblemController();
 
-//<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 export default function ProblemSetEnv() {
   const { prob_id } = useParams();
 
@@ -131,6 +126,14 @@ export default function ProblemSetEnv() {
     }
   };
 
+  const deleteProblem = async () => {
+    const res = await problemController.deleteProblem(prob_id);
+    if (res.success) {
+      switchPath("/problemSet");
+      setLoading(false);
+    }
+  };
+
   const handleCheckSolution = async () => {
     try {
       const result = await problemController.checkSolution(code, input);
@@ -203,8 +206,7 @@ export default function ProblemSetEnv() {
 
   return (
     <div>
-      <div className="flex flex-col min-h-screen dark:bg-gray-900">
-        {/* <Navbar /> */}
+      <div className="flex flex-col min-h-screen dark:bg-gray-900 pb-4">
         <div class="bg-white mt-20 dark:bg-gray-900">
           <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
             <div class="mt-4 md:mt-0">
@@ -227,7 +229,14 @@ export default function ProblemSetEnv() {
                 </span>
               </h2>
             </div>
-            <div className="souvik-button-container">
+            <div className="souvik-button-container gap-2">
+              <button
+                className="submit-button"
+                class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                onClick={deleteProblem}
+              >
+                DELETE
+              </button>
               <button
                 className="submit-button"
                 class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800"

@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import Navbar from "../Components/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import CanvasRedirection from "../Components/Canvas/CanvasRedirection";
 import ProblemController from "../controller/problemController";
 import { Button } from "@mui/material";
-import axios from "axios";
-import PlaygroundCard from "../Components/PlaygroundCard";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import SendIcon from "@mui/icons-material/Send";
@@ -67,7 +64,6 @@ export default function ProblemsCanvas() {
 
   return (
     <div className="flex flex-col min-h-screen dark:bg-gray-900">
-      {/* <Navbar /> */}
       <div class="bg-white mt-20 dark:bg-gray-900">
         <div class="gap-8 items-center py-4 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 sm:pb-0 lg:px-10">
           <div class="mt-4 md:mt-0">

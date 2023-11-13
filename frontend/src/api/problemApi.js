@@ -41,5 +41,8 @@ class ProblemApi extends Api {
   publishProblem = async (problem_id) => {
     return await this.post("/problem/" + problem_id + "/publish", {});
   };
+  unpublishProblem = async (problem_id) => {
+    return await this.post("/problem/" + problem_id + "/unpublish", {});
+  };
 }
 export default ProblemApi;

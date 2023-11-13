@@ -27,5 +27,5 @@ router.put(
 ); // pending
 
 router.post("/:problem_id/publish", problemController.publishProblem); // pending
-
+router.post("/:problem_id/unpublish", problemController.unpublishProblem);
 module.exports = router;

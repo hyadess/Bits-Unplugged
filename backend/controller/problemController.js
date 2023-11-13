@@ -78,6 +78,12 @@ class ProblemController extends Controller {
     let result = await problemRepository.publishProblem(req.params.problem_id);
     this.handleResponse(result, res);
   };
+  unpublishProblem = async (req, res) => {
+    let result = await problemRepository.unpublishProblem(
+      req.params.problem_id
+    );
+    this.handleResponse(result, res);
+  };
 
   // takeNthHint = async (req, res) => {};
   // rateProblem = async (req, res) => {};

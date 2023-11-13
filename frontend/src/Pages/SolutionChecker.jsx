@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import Navbar from "../Components/Navbar";
 import { useAsyncError, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-import PlaygroundCard from "../Components/PlaygroundCard";
 import { Button, TextareaAutosize } from "@mui/material";
 import "./SolutionChecker.scss";
 // import ProblemController from "../controller/problemController";

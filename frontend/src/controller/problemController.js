@@ -46,7 +46,10 @@ class ProblemController extends Controller {
     const res = await this.problemApi.publishProblem(problem_id);
     return res;
   };
-
+  unpublishProblem = async (problem_id) => {
+    const res = await this.problemApi.unpublishProblem(problem_id);
+    return res;
+  };
   checkSolution = async (code, input) => {
     console.log(code);
     const stdout = [];

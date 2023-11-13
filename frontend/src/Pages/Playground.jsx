@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../Components/Navbar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import PlaygroundCard from "../Components/PlaygroundCard";
+import PlaygroundCard from "../Components/Cards/PlaygroundCard";
 //<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 export default function Playground() {
   /**
@@ -53,7 +52,7 @@ export default function Playground() {
       </div>
 
       {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-16 lg:px-6">
+        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-6 lg:px-6">
           {/* {
                 data.map(a=>{
                 

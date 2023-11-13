@@ -3,10 +3,7 @@ import Navbar from "../Components/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import AlgoController from "../controller/algoController";
-import PlaygroundCard from "../Components/PlaygroundCard";
-import ProblemCard from "../Components/ProblemCard";
-import AlgorithmCard from "../Components/AlgorithmCard";
-import ProblemSetAlgoCard from "../Components/ProblemSetAlgoCard";
+import ProblemSetAlgoCard from "../Components/Cards/ProblemSetAlgoCard";
 const algoController = new AlgoController();
 
 export default function ProblemSetAlgo() {
@@ -50,7 +47,7 @@ export default function ProblemSetAlgo() {
           <div class="mt-4 md:mt-0">
             <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">
               <span class="text-pink-600 dark:text-pink-500">
-                Problem Setting 
+                Problem Setting
               </span>
             </h2>
 
@@ -62,7 +59,7 @@ export default function ProblemSetAlgo() {
       </div>
 
       {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-16 lg:px-6">
+        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-6 lg:px-6">
           {algoList.map((algo, index) => (
             <ProblemSetAlgoCard
               idx={index + 1}

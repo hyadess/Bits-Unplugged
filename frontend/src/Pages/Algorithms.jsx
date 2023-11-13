@@ -3,9 +3,8 @@ import Navbar from "../Components/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import AlgoController from "../controller/algoController";
-import PlaygroundCard from "../Components/PlaygroundCard";
-import ProblemCard from "../Components/ProblemCard";
-import AlgorithmCard from "../Components/AlgorithmCard";
+
+import CustomCard from "../Components/Cards/CustomCard";
 
 const algoController = new AlgoController();
 
@@ -62,14 +61,14 @@ export default function Problems() {
       </div>
 
       {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-16 lg:px-6">
+        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-6 lg:px-6">
           {algoList.map((algo, index) => (
-            <AlgorithmCard
-              idx={index + 1}
-              id={algo.algo_id}
+            <CustomCard
+              id={`Topic ${index + 1}`}
               name={algo.name}
               image={algo.logo}
-              path={algo.algo_id.toString()}
+              path={`/algorithms/${algo.algo_id}`}
+              action="View Problems"
             />
           ))}
         </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
-import TeamCard from "../Components/TeamCard";
+import TeamCard from "../Components/Cards/TeamCard";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 

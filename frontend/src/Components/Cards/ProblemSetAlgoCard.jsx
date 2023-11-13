@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
-import "./components.scss";
-import ProblemController from "../controller/problemController";
+import "../components.scss";
+import ProblemController from "../../controller/problemController";
 
 const problemController = new ProblemController();
 export default function ProblemSetAlgoCard({ idx, id, name, image, path }) {
@@ -17,12 +17,12 @@ export default function ProblemSetAlgoCard({ idx, id, name, image, path }) {
   const [submittedValue, setSubmittedValue] = useState("");
   //const [problemId, setProblemId] = useState(null);
   let problemId = -1;
-  const getProblemId = async () => {
+  const getProblemId = async (title) => {
     const res = await problemController.addProblem(path);
     if (res.success) {
       problemId = res.data[0].problem_id;
+      await problemController.updateTitle(res.data[0].problem_id, title);
       setLoading(false);
-      console.log(res);
     }
   };
   const openModal = () => {
@@ -41,7 +41,7 @@ export default function ProblemSetAlgoCard({ idx, id, name, image, path }) {
     e.preventDefault();
     setSubmittedValue(inputValue);
     closeModal();
-    await getProblemId();
+    await getProblemId(inputValue);
     switchPath(`/problemSet/${problemId}`);
   };
 
@@ -55,14 +55,14 @@ export default function ProblemSetAlgoCard({ idx, id, name, image, path }) {
           {name}
         </h5>
         <img
-          style={{ width: 500, height: 300, objectFit: "cover" }}
+          style={{ width: 500, height: 200, objectFit: "cover" }}
           class="w-full"
           src={image}
           alt=""
         />
         <div className="w-full flex items-center justify-center">
           <a
-            onClick={handleSubmit}
+            onClick={openModal}
             class="inline-flex my-8  text-center items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900"
           >
             <h5 class="text-lg text-center font-bold tracking-tight text-gray-900 text-white">

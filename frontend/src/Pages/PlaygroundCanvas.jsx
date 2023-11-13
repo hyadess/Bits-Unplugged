@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../Components/Navbar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import PlaygroundCard from "../Components/PlaygroundCard";
 //<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 export default function PlaygroundCanvas() {
   /**

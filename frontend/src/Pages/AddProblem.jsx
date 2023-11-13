@@ -3,10 +3,6 @@ import Navbar from "../Components/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import AlgoController from "../controller/algoController";
-import PlaygroundCard from "../Components/PlaygroundCard";
-import ProblemCard from "../Components/ProblemCard";
-import AlgorithmCard from "../Components/AlgorithmCard";
-import ProblemSetAlgoCard from "../Components/ProblemSetAlgoCard";
 const algoController = new AlgoController();
 
 export default function AddProblem() {

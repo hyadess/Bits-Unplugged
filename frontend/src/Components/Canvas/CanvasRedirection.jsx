@@ -4,6 +4,8 @@ import GraphComponent from "./GraphComponent";
 import TowerOfHanoi from "./TowerOfHanoi";
 import CanvasController from "../../controller/canvasController";
 import "./CanvasRedirection.scss";
+import InfoIcon from "@mui/icons-material/Info";
+import { Button } from "@mui/material";
 
 const canvasController = new CanvasController();
 const CanvasRedirection = (props, ref) => {
@@ -51,14 +53,34 @@ const CanvasRedirection = (props, ref) => {
   }, []);
 
   return (
-    <div className="canvas-container">
-      {DynamicComponent && (
-        <DynamicComponent
-          input={props.input}
-          setInput={props.setInput}
-          ref={ref}
-        />
-      )}
+    <div style={{ position: "relative" }}>
+      <div className="canvas-container">
+        {DynamicComponent && (
+          <DynamicComponent
+            input={props.input}
+            setInput={props.setInput}
+            ref={ref}
+          />
+        )}
+      </div>
+      <Button
+        variant="raised"
+        sx={{
+          position: "absolute",
+          top: "0",
+          right: "0",
+          // backgroundColor: "transparent",
+          borderRadius: "50%",
+          width: "60px",
+          height: "60px",
+          transition: "background-color 0.5s ease", // Add a smooth transition for the hover effect
+          "&:hover": {
+            backgroundColor: "rgba(15,15,15,0.2)", // Change the background color on hover
+          },
+        }}
+      >
+        <InfoIcon sx={{ fontSize: "2rem", color: "white" }}></InfoIcon>
+      </Button>
     </div>
   );
 };

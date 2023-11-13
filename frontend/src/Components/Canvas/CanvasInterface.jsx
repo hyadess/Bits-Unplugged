@@ -1,20 +1,19 @@
-import React, { useState, useEffect, useRef, forwardRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Route, useParams } from "react-router-dom";
 import GraphComponent from "./GraphComponent";
 import TowerOfHanoi from "./TowerOfHanoi";
 import CanvasController from "../../controller/canvasController";
 import "./CanvasRedirection.scss";
-import InfoIcon from "@mui/icons-material/Info";
-import { Button, IconButton } from "@mui/material";
-
+import RotateLeftIcon from "@mui/icons-material/RotateLeft";
+import Button from "@mui/material/Button";
+import SaveIcon from "@mui/icons-material/Save";
 const canvasController = new CanvasController();
-const CanvasRedirection = (props, ref) => {
+const CanvasRedirection = (props) => {
   const id = props.id;
   // const componentName = "GraphComponent";
   const [DynamicComponent, setDynamicComponent] = useState(null);
   const [canvasList, setCanvasList] = useState([]);
   const [selectedComponent, setSelectedComponent] = useState(null);
-  const [canvasInfo, seCanvasInfo] = useState(null);
   const loadComponent = async (name) => {
     try {
       const module = await import(`./${name}`);
@@ -34,7 +33,6 @@ const CanvasRedirection = (props, ref) => {
       console.log(match);
       if (match.length == 1) {
         setSelectedComponent(match[0].classname);
-        seCanvasInfo(match[0].info);
       }
     }
   };
@@ -54,51 +52,29 @@ const CanvasRedirection = (props, ref) => {
     getCanvasList();
   }, []);
 
+  let canvasRef = useRef();
   return (
-    <div style={{ position: "relative" }}>
-      <div className="canvas-container">
+    <div className="canvas-container">
+      <div>
         {DynamicComponent && (
           <DynamicComponent
             input={props.input}
             setInput={props.setInput}
-            ref={ref}
+            ref={canvasRef}
           />
         )}
       </div>
-      {/* <Button
-        variant="raised"
-        sx={{
-          position: "absolute",
-          top: "0",
-          right: "0",
-          // backgroundColor: "transparent",
-          borderRadius: "50%",
-          width: "60px",
-          height: "60px",
-          transition: "background-color 0.5s ease", // Add a smooth transition for the hover effect
-          "&:hover": {
-            backgroundColor: "rgba(15,15,15,0.2)", // Change the background color on hover
-          },
-        }}
-        onClick={() => alert(canvasInfo)}
-      >
-        <InfoIcon sx={{ fontSize: "2rem", color: "white" }}></InfoIcon>
-      </Button> */}
-      <IconButton
-        sx={{
-          fontSize: "2rem",
-          position: "absolute",
-          top: "0",
-          right: "0",
-          width: "60px",
-          height: "60px", 
-        }}
-        onClick={() => alert(canvasInfo)}
-      >
-        <InfoIcon sx={{ fontSize: "2rem", color: "white" }}></InfoIcon>
-      </IconButton>
+      <div>
+        <Button onClick={canvasRef.current.handleSave}>
+          <SaveIcon sx={{ fontSize: "2rem", color: "white" }} />
+        </Button>
+
+        <Button onClick={canvasRef.current.handleReset}>
+          <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+        </Button>
+      </div>
     </div>
   );
 };
 
-export default forwardRef(CanvasRedirection);
+export default CanvasRedirection;

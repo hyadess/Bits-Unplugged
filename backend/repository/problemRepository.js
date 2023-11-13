@@ -75,6 +75,16 @@ class ProblemsRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+  unpublishProblem = async (problem_id) => {
+    const query = `
+    Update Problem
+    SET is_live = FALSE
+    WHERE problem_id = $1;
+    `;
+    const params = [problem_id];
+    const result = await this.query(query, params);
+    return result;
+  };
   updateTitle = async (problem_id, title) => {
     const query = `
     Update Problem

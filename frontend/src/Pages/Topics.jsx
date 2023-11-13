@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../Components/Navbar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import TopicController from "../controller/topicController";
-import PlaygroundCard from "../Components/PlaygroundCard";
-import ProblemCard from "../Components/ProblemCard";
-import TopicCard from "../Components/TopicCard";
+import CustomCard from "../Components/Cards/CustomCard";
 
 const topicController = new TopicController();
 
@@ -43,7 +40,6 @@ export default function Problems() {
   }, []);
   return (
     <div className="flex flex-col min-h-screen dark:bg-gray-900">
-      {/* <Navbar /> */}
       <div class="bg-white mt-20 dark:bg-gray-900">
         <div class="gap-8 items-center py-4 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 sm:pb-0 lg:px-10">
           <div class="mt-4 md:mt-0">
@@ -61,14 +57,14 @@ export default function Problems() {
       </div>
 
       {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-16 lg:px-6">
+        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-6 lg:px-6">
           {topicList.map((topic, index) => (
-            <TopicCard
-              idx={index + 1}
-              id={topic.topic_id}
+            <CustomCard
+              id={`Topic ${index + 1}`}
               name={topic.name}
               image={topic.logo}
-              path={topic.topic_id.toString()}
+              path={`/topics/${topic.topic_id}`}
+              action="View Algorithms"
             />
           ))}
         </div>

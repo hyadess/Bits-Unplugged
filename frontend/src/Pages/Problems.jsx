@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../Components/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import PlaygroundCard from "../Components/PlaygroundCard";
-import ProblemCard from "../Components/ProblemCard";
 import ProblemController from "../controller/problemController";
+import CustomCard from "../Components/Cards/CustomCard";
 
 const problemController = new ProblemController();
 
@@ -61,14 +59,14 @@ export default function Problems() {
       </div>
 
       {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-16 lg:px-6">
+        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-6 lg:px-6">
           {problemList.map((problem, index) => (
-            <ProblemCard
-              idx={index + 1}
-              id={problem.problem_id}
+            <CustomCard
+              id={`Problem ${index + 1}`}
               name={problem.title}
               image={problem.logo}
-              path={problem.problem_id.toString()}
+              path={`/problem/${problem.problem_id}`}
+              action="Get Started"
             />
           ))}
         </div>

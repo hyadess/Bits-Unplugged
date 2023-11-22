@@ -64,7 +64,7 @@ export default function Problems() {
         <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-6 lg:px-6">
           {algoList.map((algo, index) => (
             <CustomCard
-              id={`Topic ${index + 1}`}
+              id={`Series ${index + 1}`}
               name={algo.name}
               image={algo.logo}
               path={`/algorithms/${algo.algo_id}`}

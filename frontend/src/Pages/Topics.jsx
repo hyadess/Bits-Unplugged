@@ -64,7 +64,7 @@ export default function Problems() {
               name={topic.name}
               image={topic.logo}
               path={`/topics/${topic.topic_id}`}
-              action="View Algorithms"
+              action="View Series"
             />
           ))}
         </div>

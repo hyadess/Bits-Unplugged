@@ -12,16 +12,16 @@ class ProblemController extends Controller {
     const res = await this.problemApi.getMyProblems();
     return res;
   };
-  getProblemsByAlgo = async (algo_id) => {
-    const res = await this.problemApi.getProblemsByAlgo(algo_id);
+  getProblemsBySeries = async (series_id) => {
+    const res = await this.problemApi.getProblemsBySeries(series_id);
     return res;
   };
   getProblemById = async (problem_id) => {
     const res = await this.problemApi.getProblemById(problem_id);
     return res;
   };
-  addProblem = async (algo_id) => {
-    const res = await this.problemApi.addProblem(algo_id);
+  addProblem = async (series_id) => {
+    const res = await this.problemApi.addProblem(series_id);
     return res;
   };
   updateTitle = async (problem_id, title) => {
@@ -92,5 +92,5 @@ export default ProblemController;
  * Usage:
  * import ProblemController from "./controller/problemController";
  * const problemController = new ProblemController();
- * await problemController.getProblemsByAlgo(algo_id);
+ * await problemController.getProblemsBySeries(series_id);
  */

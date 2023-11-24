@@ -28,7 +28,7 @@ export const List = (props) => {
   );
 };
 
-const AlgorithmContainer = (props) => {
+const SeriesContainer = (props) => {
   const [searchQuery, setSearchQuery] = useState("");
   return (
     <div className="card-container">

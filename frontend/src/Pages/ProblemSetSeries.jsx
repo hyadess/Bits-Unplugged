@@ -52,7 +52,7 @@ export default function ProblemSetAlgo() {
             </h2>
 
             <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg dark:text-gray-400">
-              Solve problems for particular algorithms right on our site
+              Solve problems for particular series right on our site
             </p>
           </div>
         </div>

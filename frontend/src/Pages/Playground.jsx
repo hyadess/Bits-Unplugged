@@ -44,8 +44,8 @@ export default function Playground() {
             </h2>
 
             <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg dark:text-gray-400">
-              We currently offer 2 playgrounds for our users. Many more
-              algorithms are coming soon
+              We currently offer 2 playgrounds for our users. Many more series
+              are coming soon
             </p>
           </div>
         </div>

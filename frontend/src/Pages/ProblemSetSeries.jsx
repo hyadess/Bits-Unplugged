@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../Components/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import AlgoController from "../controller/algoController";
-import ProblemSetAlgoCard from "../Components/Cards/ProblemSetAlgoCard";
-const algoController = new AlgoController();
+import SeriesController from "../controller/seriesController";
+import ProblemSetSeriesCard from "../Components/Cards/ProblemSetSeriesCard";
+const seriesController = new SeriesController();
 
-export default function ProblemSetAlgo() {
+export default function ProblemSetSeries() {
   const navigator = useNavigate();
   const switchPath = (pathname) => {
     navigator(pathname);
@@ -14,7 +14,7 @@ export default function ProblemSetAlgo() {
 
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
-  const [algoList, setAlgoList] = useState([]);
+  const [seriesList, setSeriesList] = useState([]);
   const [data, setData] = useState();
   const baseURL = "https";
   const getData = async () => {
@@ -27,17 +27,17 @@ export default function ProblemSetAlgo() {
     }
   };
 
-  const getAlgorithmList = async () => {
-    const res = await algoController.getAlgosByTopic(id);
+  const getSeriesList = async () => {
+    const res = await seriesController.getSeriessByTopic(id);
     if (res.success) {
-      setAlgoList(res.data);
+      setSeriesList(res.data);
       setLoading(false);
       console.log(res);
     }
   };
 
   useEffect(() => {
-    getAlgorithmList();
+    getSeriesList();
   }, []);
   return (
     <div className="flex flex-col min-h-screen dark:bg-gray-900">
@@ -60,13 +60,13 @@ export default function ProblemSetAlgo() {
 
       {!loading && (
         <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-6 lg:px-6">
-          {algoList.map((algo, index) => (
-            <ProblemSetAlgoCard
+          {seriesList.map((series, index) => (
+            <ProblemSetSeriesCard
               idx={index + 1}
-              id={algo.algo_id}
-              name={algo.name}
-              image={algo.logo}
-              path={algo.algo_id}
+              id={series.series_id}
+              name={series.name}
+              image={series.logo}
+              path={series.series_id}
             />
           ))}
         </div>

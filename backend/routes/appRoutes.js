@@ -2,7 +2,7 @@ const router = require("express").Router();
 const authRoutes = require("./authRoutes");
 const problemRoutes = require("./problemRoutes");
 const topicRoutes = require("./topicRoutes");
-const algoRoutes = require("./algoRoutes");
+const seriesRoutes = require("./seriesRoutes");
 const canvasRoutes = require("./canvasRoutes");
 const profileRoutes = require("./profileRoutes");
 const base = require("../repository/base");
@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
 
 router.use("/auth", authRoutes);
 router.use("/topic", topicRoutes);
-router.use("/algorithm", algoRoutes);
+router.use("/series", seriesRoutes);
 router.use("/problem", problemRoutes);
 router.use("/canvas", canvasRoutes);
 router.use("/profile", profileRoutes);

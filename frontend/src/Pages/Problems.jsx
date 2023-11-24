@@ -28,7 +28,7 @@ export default function Problems() {
   };
 
   const getProblemList = async () => {
-    const res = await problemController.getProblemsByAlgo(id);
+    const res = await problemController.getProblemsBySeries(id);
     if (res.success) {
       setProblemList(res.data);
       setLoading(false);

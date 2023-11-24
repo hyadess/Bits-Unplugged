@@ -39,7 +39,7 @@ export default function Playground() {
           <div class="mt-4 md:mt-0">
             <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">
               <span class="text-pink-600 dark:text-pink-500">
-                Algorithms Playground
+                Series Playground
               </span>
             </h2>
 

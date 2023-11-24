@@ -16,14 +16,14 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import ProblemsCanvas from "./Pages/ProblemsCanvas";
 import Topics from "./Pages/Topics";
-import Algorithms from "./Pages/Algorithms";
+import Algorithms from "./Pages/Series";
 import ProblemSet from "./Pages/ProblemSet";
 import GraphComponent from "./Components/Canvas/GraphComponent";
 import CanvasRedirection from "./Components/Canvas/CanvasRedirection";
 import { ToastContainer, toast } from "react-toastify";
 import ProblemSetEnv from "./Pages/ProblemSetEnv";
 import SolutionChecker from "./Pages/SolutionChecker";
-import ProblemSetAlgo from "./Pages/ProblemSetAlgo";
+import ProblemSetAlgo from "./Pages/ProblemSetSeries";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "universal-cookie";
 import AddProblem from "./Pages/AddProblem";
@@ -79,12 +79,12 @@ const App = () => {
             <Route path="/problems" element={<Problems />} />
             <Route path="/topics" element={<Topics />} />
             <Route path="/topics/:id" element={<Algorithms />} />
-            <Route path="/algorithms/:id" element={<Problems />} />
+            <Route path="/series/:id" element={<Problems />} />
 
             <Route path="/problemSet" element={<ProblemSet />} />
             <Route path="/problemSet/topics/:id" element={<ProblemSetAlgo />} />
             <Route path="/problemSet/:prob_id" element={<ProblemSetEnv />} />
-            <Route path="/problemSet/algorithms/:id" element={<AddProblem />} />
+            <Route path="/problemSet/series/:id" element={<AddProblem />} />
 
             <Route path="/profile" element={<Profile />} />
             <Route path="/" element={<Home />} />

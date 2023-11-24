@@ -78,7 +78,7 @@ const ProblemSet = () => {
             </h2>
 
             <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg dark:text-gray-400">
-              Set problems for particular algorithms right on our site
+              Set problems for particular series right on our site
             </p>
           </div>
         </div>

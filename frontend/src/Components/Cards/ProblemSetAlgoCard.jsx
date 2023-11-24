@@ -49,7 +49,7 @@ export default function ProblemSetAlgoCard({ idx, id, name, image, path }) {
     <div class="items-center py-8 px-4 ">
       <div class="max-w-sm bg-white border border-gray-500 rounded-lg shadow-lg dark:bg-gray-700 dark:border-gray-700">
         <h5 class="mt-4 text-2xl text-center font-bold tracking-tight text-gray-900 dark:text-white">
-          Algorithm {idx}
+          Series {idx}
         </h5>
         <h5 class="mb-4 text-3xl text-center font-bold tracking-tight text-gray-900 text-primary-500">
           {name}

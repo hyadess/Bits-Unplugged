@@ -7,7 +7,7 @@ router.use(authMiddleware);
 
 // All
 router.get("/", problemController.getAllProblems); // pending
-router.get("/by_algo/:algo_id", problemController.getProblemsByAlgo);
+router.get("/by_series/:series_id", problemController.getProblemsBySeries);
 router.get("/by_topic/:topic_id", problemController.getProblemsByTopic);
 // router.post("/:problem_id/rate", problemController.rateProblem); // later
 

@@ -5,7 +5,7 @@ import "../components.scss";
 import ProblemController from "../../controller/problemController";
 
 const problemController = new ProblemController();
-export default function ProblemSetAlgoCard({ idx, id, name, image, path }) {
+export default function ProblemSetSeriesCard({ idx, id, name, image, path }) {
   const navigator = useNavigate();
 
   const switchPath = (pathname) => {

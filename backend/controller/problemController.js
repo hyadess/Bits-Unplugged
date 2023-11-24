@@ -16,8 +16,10 @@ class ProblemController extends Controller {
     this.handleResponse(result, res);
   };
 
-  getProblemsByAlgo = async (req, res) => {
-    let result = await problemRepository.getProblemsByAlgo(req.params.algo_id);
+  getProblemsBySeries = async (req, res) => {
+    let result = await problemRepository.getProblemsBySeries(
+      req.params.series_id
+    );
     this.handleResponse(result, res);
   };
 

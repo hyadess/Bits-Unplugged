@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../Components/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import AlgoController from "../controller/algoController";
-const algoController = new AlgoController();
+import SeriesController from "../controller/seriesController";
+const seriesController = new SeriesController();
 
 export default function AddProblem() {
   const navigator = useNavigate();
@@ -14,20 +14,19 @@ export default function AddProblem() {
   const { id } = useParams();
 
   const [loading, setLoading] = useState(false);
-  const [algoList, setAlgoList] = useState([]);
-  
+  const [seriesList, setSeriesList] = useState([]);
 
-  const getAlgorithmList = async () => {
-    const res = await algoController.getAlgosByTopic(id);
+  const getSeriesList = async () => {
+    const res = await seriesController.getSeriessByTopic(id);
     if (res.success) {
-      setAlgoList(res.data);
+      setSeriesList(res.data);
       setLoading(false);
       console.log(res);
     }
   };
 
   useEffect(() => {
-    getAlgorithmList();
+    getSeriesList();
   }, []);
 
   const [text1, setText1] = useState("");

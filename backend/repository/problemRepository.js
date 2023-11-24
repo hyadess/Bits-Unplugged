@@ -1,6 +1,6 @@
 const Repository = require("./base");
-const AlgoRepository = require("../repository/algoRepository");
-const algoRepository = new AlgoRepository();
+const SeriesRepository = require("./seriesRepository");
+const seriesRepository = new SeriesRepository();
 class ProblemsRepository extends Repository {
   constructor() {
     super();
@@ -22,13 +22,13 @@ class ProblemsRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
-  getProblemsByAlgo = async (algo_id) => {
+  getProblemsBySeries = async (series_id) => {
     const query = `
     SELECT * FROM Problem
-    WHERE algo_id = $1
+    WHERE series_id = $1
     AND is_live = TRUE;
     `;
-    const params = [algo_id];
+    const params = [series_id];
     const result = await this.query(query, params);
     return result;
   };
@@ -36,8 +36,8 @@ class ProblemsRepository extends Repository {
     const query = `
     SELECT * 
     FROM Problem P
-    JOIN Algorithm A
-    ON P.algo_id = A.algo_id
+    JOIN Series A
+    ON P.series_id = A.series_id
     WHERE A.topic_id = $1;
     `;
     const params = [topic_id];
@@ -48,8 +48,8 @@ class ProblemsRepository extends Repository {
     const query = `
     SELECT P.*, A.canvas_id 
     FROM Problem P
-    JOIN Algorithm A
-    ON P.algo_id = A.algo_id
+    JOIN Series A
+    ON P.series_id = A.series_id
     WHERE problem_id = $1;
     `;
     const params = [problem_id];
@@ -126,18 +126,18 @@ class ProblemsRepository extends Repository {
     return result;
   };
   addProblem = async (author_id, data) => {
-    // Assign algo template to this problem
+    // Assign series template to this problem
     // console.log(data);
-    const res = await algoRepository.getAlgoById(data.algo_id);
+    const res = await seriesRepository.getSeriesById(data.series_id);
     if (res.success) {
       const query = `
-      INSERT INTO Problem (author_id, algo_id, title, creation_time, solution_checker)
+      INSERT INTO Problem (author_id, series_id, title, creation_time, solution_checker)
       VALUES ($1, $2, $3, $4, $5)
       RETURNING problem_id;
       `;
       const params = [
         author_id,
-        data.algo_id,
+        data.series_id,
         "Untitled",
         Date.now(),
         res.data[0].template,

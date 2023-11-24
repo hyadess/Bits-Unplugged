@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../Components/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import AlgoController from "../controller/algoController";
+import SeriesController from "../controller/seriesController";
 
 import CustomCard from "../Components/Cards/CustomCard";
 
-const algoController = new AlgoController();
+const seriesController = new SeriesController();
 
 export default function Problems() {
   const navigator = useNavigate();
@@ -16,7 +16,7 @@ export default function Problems() {
 
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
-  const [algoList, setAlgoList] = useState([]);
+  const [seriesList, setSeriesList] = useState([]);
   const [data, setData] = useState();
   const baseURL = "https";
   const getData = async () => {
@@ -29,17 +29,17 @@ export default function Problems() {
     }
   };
 
-  const getAlgorithmList = async () => {
-    const res = await algoController.getAlgosByTopic(id);
+  const getSeriesList = async () => {
+    const res = await seriesController.getSeriessByTopic(id);
     if (res.success) {
-      setAlgoList(res.data);
+      setSeriesList(res.data);
       setLoading(false);
       console.log(res);
     }
   };
 
   useEffect(() => {
-    getAlgorithmList();
+    getSeriesList();
   }, []);
   return (
     <div className="flex flex-col min-h-screen dark:bg-gray-900">
@@ -62,12 +62,12 @@ export default function Problems() {
 
       {!loading && (
         <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-6 lg:px-6">
-          {algoList.map((algo, index) => (
+          {seriesList.map((series, index) => (
             <CustomCard
               id={`Series ${index + 1}`}
-              name={algo.name}
-              image={algo.logo}
-              path={`/series/${algo.algo_id}`}
+              name={series.name}
+              image={series.logo}
+              path={`/series/${series.series_id}`}
               action="View Problems"
             />
           ))}

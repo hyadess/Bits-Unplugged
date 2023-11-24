@@ -106,7 +106,7 @@ const ProblemSet = () => {
               name={topic.name}
               image={topic.logo}
               path={`/problemSet/topics/${topic.topic_id}`}
-              action="View Algorithms"
+              action="View Series"
             />
           ))}
         </div>

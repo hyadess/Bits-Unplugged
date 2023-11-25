@@ -4,6 +4,6 @@ module.exports = {
   DB_HOST: process.env.DB_HOST || "localhost",
   DB_DB: process.env.DB_DB || "bitsunplugged",
   DB_PASS: process.env.DB_PASS || "root",
-  DB_PORT: process.env.DB_PORT || "5434",
+  DB_PORT: process.env.DB_PORT || "5432",
   PORT: process.env.PORT || "5000",
 };

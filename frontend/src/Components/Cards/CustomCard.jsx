@@ -8,7 +8,7 @@ const CustomCard = ({ id, name, image, path, action }) => {
   };
 
   return (
-    <div class="items-center py-8 px-4 ">
+    <div class="items-center py-4 px-4 ">
       <div class="max-w-sm bg-white border border-gray-500 rounded-lg shadow-lg dark:bg-gray-700 dark:border-gray-700">
         <h5 class="mt-4 text-2xl text-center font-bold tracking-tight text-gray-900 dark:text-white">
           {id}

@@ -80,7 +80,7 @@ export default function ProblemSetEnv() {
             />
             <div
               className="flex py-3"
-              style={{ justifyContent: "right", marginLeft: "auto" }}
+              style={{ justifyContent: "space-between", marginLeft: "auto" }}
             >
               <Button
                 variant="contained"
@@ -206,51 +206,49 @@ export default function ProblemSetEnv() {
 
   return (
     <div>
-      <div className="flex flex-col min-h-screen dark:bg-gray-900 pb-4">
-        <div class="bg-white mt-20 dark:bg-gray-900">
-          <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
-            <div class="mt-4 md:mt-0">
-              <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-                <span class="text-pink-600 dark:text-pink-500">
-                  <div onClick={handleTextClick} style={{ cursor: "pointer" }}>
-                    {isTextEditable ? (
-                      <input
-                        className="title"
-                        type="text"
-                        on
-                        value={title}
-                        onChange={handleTextChange}
-                        onClick={(e) => e.stopPropagation()} // Prevent the click event from propagating to the div
-                      />
-                    ) : (
-                      title
-                    )}
-                  </div>
-                </span>
-              </h2>
-            </div>
-            <div className="souvik-button-container gap-2">
-              <button
-                className="submit-button"
-                class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                onClick={deleteProblem}
-              >
-                DELETE
-              </button>
-              <button
-                className="submit-button"
-                class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800"
-                onClick={updateAll}
-              >
-                PUBLISH
-              </button>
-            </div>
+      <div class="bg-white mt-20 dark:bg-gray-900">
+        <div class="items-center py-4 mx-auto max-w-screen-2xl md:grid md:grid-cols-2 sm:pt-16">
+          <div class="mt-4 md:mt-0">
+            <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+              <span class="text-pink-600 dark:text-pink-500">
+                <div onClick={handleTextClick} style={{ cursor: "pointer" }}>
+                  {isTextEditable ? (
+                    <input
+                      className="title"
+                      type="text"
+                      on
+                      value={title}
+                      onChange={handleTextChange}
+                      onClick={(e) => e.stopPropagation()} // Prevent the click event from propagating to the div
+                    />
+                  ) : (
+                    title
+                  )}
+                </div>
+              </span>
+            </h2>
+          </div>
+          <div className="souvik-button-container gap-2">
+            <button
+              className="submit-button"
+              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              onClick={deleteProblem}
+            >
+              DELETE
+            </button>
+            <button
+              className="submit-button"
+              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800"
+              onClick={updateAll}
+            >
+              PUBLISH
+            </button>
           </div>
         </div>
-        <ProbSetTab activeTab={activeComponent} click={setActiveComponent} />
-
-        <div className="component-container">{renderComponent()}</div>
       </div>
+      <ProbSetTab activeTab={activeComponent} click={setActiveComponent} />
+
+      <div className="component-container">{renderComponent()}</div>
     </div>
   );
 }

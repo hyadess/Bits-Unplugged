@@ -28,6 +28,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Cookies from "universal-cookie";
 import AddProblem from "./Pages/AddProblem";
 import Layout from "./Pages/Layout";
+import Navbar from "./Components/Navbar";
 const showToast = (message, type) => {
   console.log(message, type);
   if (type === "success") toast.success(message, {});
@@ -90,12 +91,24 @@ const App = () => {
             <Route path="/problemSet/series/:id" element={<AddProblem />} />
 
             <Route path="/profile" element={<Profile />} />
-            <Route path="/" element={<Home />} />
           </Route>
           <Route element={<Public />}>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
           </Route>
+          <Route
+            path="/"
+            element={
+              <div className="layout-container">
+                <div className="body">
+                  <Navbar />
+                  <div className="content">
+                    <Home />
+                  </div>
+                </div>
+              </div>
+            }
+          />
         </Routes>
       </Router>
     </div>

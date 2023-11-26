@@ -60,9 +60,9 @@ export default function SolutionChecker(props) {
   return (
     <div
       className="hbox"
-      style={{ height: "800px", width: "100%", gap: "0", marginTop: "1rem" }}
+      style={{ height: "100%", width: "100%", gap: "0", marginTop: "1rem" }}
     >
-      <div className="vbox" style={{ height: "800px", width: "75%" }}>
+      <div className="vbox" style={{ height: "600px", width: "75%" }}>
         <Editor
           height="800px"
           className="white-border"
@@ -73,7 +73,7 @@ export default function SolutionChecker(props) {
           onChange={codeChanged}
           options={{
             inlineSuggest: true,
-            fontSize: "20px",
+            fontSize: "13px",
             formatOnType: true,
             autoClosingBrackets: true,
             minimap: { enabled: false },
@@ -81,7 +81,7 @@ export default function SolutionChecker(props) {
           }}
         />
       </div>
-      <div className="vbox" style={{ height: "800px", width: "25%", gap: "0" }}>
+      <div className="vbox" style={{ height: "600px", width: "25%", gap: "0" }}>
         <div style={{ height: "50%" }}>
           <Editor
             className="white-border"
@@ -92,7 +92,7 @@ export default function SolutionChecker(props) {
             onMount={inputMount}
             options={{
               inlineSuggest: true,
-              fontSize: "15px",
+              fontSize: "10px",
               formatOnType: true,
               autoClosingBrackets: true,
               minimap: { enabled: false },

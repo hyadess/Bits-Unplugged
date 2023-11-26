@@ -572,7 +572,7 @@ const TowerOfHanoi = (props, ref) => {
             {isProblemSetting ? (
               <>
                 <Line
-                  points={[0, 260, 60 + pegWidth * numberOfPegs, 260]}
+                  points={[0, 260, 20 + pegWidth * numberOfPegs, 260]}
                   stroke={"rgb(236, 72, 153)"}
                   strokeWidth={1}
                 />

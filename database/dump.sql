@@ -64,11 +64,11 @@ ALTER SEQUENCE public."Author_author_id_seq" OWNED BY public.author.author_id;
 
 
 --
--- Name: algorithm; Type: TABLE; Schema: public; Owner: postgres
+-- Name: series; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.algorithm (
-    algo_id integer NOT NULL,
+CREATE TABLE public.series (
+    series_id integer NOT NULL,
     topic_id integer NOT NULL,
     canvas_id integer NOT NULL,
     name character varying(30),
@@ -78,13 +78,13 @@ CREATE TABLE public.algorithm (
 );
 
 
-ALTER TABLE public.algorithm OWNER TO postgres;
+ALTER TABLE public.series OWNER TO postgres;
 
 --
--- Name: algorithm_algorithm_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: series_series_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.algorithm_algorithm_id_seq
+CREATE SEQUENCE public.series_series_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -93,20 +93,20 @@ CREATE SEQUENCE public.algorithm_algorithm_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.algorithm_algorithm_id_seq OWNER TO postgres;
+ALTER TABLE public.series_series_id_seq OWNER TO postgres;
 
 --
--- Name: algorithm_algorithm_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: series_series_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.algorithm_algorithm_id_seq OWNED BY public.algorithm.algo_id;
+ALTER SEQUENCE public.series_series_id_seq OWNED BY public.series.series_id;
 
 
 --
--- Name: algorithm_canvas_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: series_canvas_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.algorithm_canvas_id_seq
+CREATE SEQUENCE public.series_canvas_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -115,20 +115,20 @@ CREATE SEQUENCE public.algorithm_canvas_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.algorithm_canvas_id_seq OWNER TO postgres;
+ALTER TABLE public.series_canvas_id_seq OWNER TO postgres;
 
 --
--- Name: algorithm_canvas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: series_canvas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.algorithm_canvas_id_seq OWNED BY public.algorithm.canvas_id;
+ALTER SEQUENCE public.series_canvas_id_seq OWNED BY public.series.canvas_id;
 
 
 --
--- Name: algorithm_topic_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: series_topic_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.algorithm_topic_id_seq
+CREATE SEQUENCE public.series_topic_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -137,13 +137,13 @@ CREATE SEQUENCE public.algorithm_topic_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.algorithm_topic_id_seq OWNER TO postgres;
+ALTER TABLE public.series_topic_id_seq OWNER TO postgres;
 
 --
--- Name: algorithm_topic_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: series_topic_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.algorithm_topic_id_seq OWNED BY public.algorithm.topic_id;
+ALTER SEQUENCE public.series_topic_id_seq OWNED BY public.series.topic_id;
 
 
 --
@@ -225,7 +225,7 @@ ALTER SEQUENCE public.canvas_canvas_id_seq OWNED BY public.canvas.canvas_id;
 
 CREATE TABLE public.problem (
     problem_id integer NOT NULL,
-    algo_id integer NOT NULL,
+    series_id integer NOT NULL,
     author_id integer NOT NULL,
     title character varying(50) NOT NULL,
     statement character varying(1000) DEFAULT ''::character varying,
@@ -239,10 +239,10 @@ CREATE TABLE public.problem (
 ALTER TABLE public.problem OWNER TO postgres;
 
 --
--- Name: problem_algorithm_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: problem_series_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.problem_algorithm_id_seq
+CREATE SEQUENCE public.problem_series_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -251,13 +251,13 @@ CREATE SEQUENCE public.problem_algorithm_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.problem_algorithm_id_seq OWNER TO postgres;
+ALTER TABLE public.problem_series_id_seq OWNER TO postgres;
 
 --
--- Name: problem_algorithm_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: problem_series_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.problem_algorithm_id_seq OWNED BY public.problem.algo_id;
+ALTER SEQUENCE public.problem_series_id_seq OWNED BY public.problem.series_id;
 
 
 --
@@ -379,24 +379,24 @@ ALTER SEQUENCE public.user_user_id_seq OWNED BY public.profile.user_id;
 
 
 --
--- Name: algorithm algo_id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: series series_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.algorithm ALTER COLUMN algo_id SET DEFAULT nextval('public.algorithm_algorithm_id_seq'::regclass);
-
-
---
--- Name: algorithm topic_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.algorithm ALTER COLUMN topic_id SET DEFAULT nextval('public.algorithm_topic_id_seq'::regclass);
+ALTER TABLE ONLY public.series ALTER COLUMN series_id SET DEFAULT nextval('public.series_series_id_seq'::regclass);
 
 
 --
--- Name: algorithm canvas_id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: series topic_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.algorithm ALTER COLUMN canvas_id SET DEFAULT nextval('public.algorithm_canvas_id_seq'::regclass);
+ALTER TABLE ONLY public.series ALTER COLUMN topic_id SET DEFAULT nextval('public.series_topic_id_seq'::regclass);
+
+
+--
+-- Name: series canvas_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.series ALTER COLUMN canvas_id SET DEFAULT nextval('public.series_canvas_id_seq'::regclass);
 
 
 --
@@ -428,10 +428,10 @@ ALTER TABLE ONLY public.problem ALTER COLUMN problem_id SET DEFAULT nextval('pub
 
 
 --
--- Name: problem algo_id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: problem series_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.problem ALTER COLUMN algo_id SET DEFAULT nextval('public.problem_algorithm_id_seq'::regclass);
+ALTER TABLE ONLY public.problem ALTER COLUMN series_id SET DEFAULT nextval('public.problem_series_id_seq'::regclass);
 
 
 --
@@ -456,10 +456,10 @@ ALTER TABLE ONLY public.topic ALTER COLUMN topic_id SET DEFAULT nextval('public.
 
 
 --
--- Data for Name: algorithm; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: series; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.algorithm (algo_id, topic_id, canvas_id, name, description, logo, template) FROM stdin;
+COPY public.series (series_id, topic_id, canvas_id, name, description, logo, template) FROM stdin;
 1	6	1	Minimum Spanning Tree		https://blog-c7ff.kxcdn.com/blog/wp-content/uploads/2017/01/blog-10.jpg	/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  const edges =  data.edges.map(edge => ({\n\t\tstart: edge.start.nodeIndex,\n\t\tend: edge.end.nodeIndex,\n\t\tweight: edge.weight\n\t}));\n\t\n  return false;\n}
 2	2	2	Tower Of Hanoi	\N	https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbAENY_duGomNEm95iTrLS6t6phHPiZ0pSAbgIwhXTOYCcIvfcj1z6QiSeM_PQblTkfoU&usqp=CAU	/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return false;\n}\n
 3	8	3	Red Black	\N	https://ds055uzetaobb.cloudfront.net/brioche/uploads/DtAKvHZ65j-rb-1.png?width=1200	function solutionChecker(data) {\n  return false;\n}\n
@@ -513,7 +513,7 @@ COPY public.canvas (canvas_id, name, classname, info, logo) FROM stdin;
 -- Data for Name: problem; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.problem (problem_id, algo_id, author_id, title, statement, canvas_data, is_live, creation_time, solution_checker) FROM stdin;
+COPY public.problem (problem_id, series_id, author_id, title, statement, canvas_data, is_live, creation_time, solution_checker) FROM stdin;
 19	2	3	Untitled	 	\N	f	1694029168559	\N
 2	1	3	this is the title	 	{"nodes":[{"x":663.6000061035156,"y":233,"nodeIndex":0},{"x":782.6000061035156,"y":386,"nodeIndex":1},{"x":921.9713979122508,"y":315.989737423197,"nodeIndex":2},{"x":923.9711551352016,"y":212.96591543243034,"nodeIndex":3},{"x":1101.949547977814,"y":337.9948256153996,"nodeIndex":4},{"x":846.9805020515995,"y":588.0526459813381,"nodeIndex":5},{"x":912.9724904089727,"y":475.0265111759339,"nodeIndex":6},{"x":1035.9575596204409,"y":467.02466092422384,"nodeIndex":7},{"x":775.9891206368496,"y":152.80199469499465,"nodeIndex":8},{"x":756.991427018818,"y":262.8274356560076,"nodeIndex":9}],"edges":[{"start":{"x":756.991427018818,"y":262.8274356560076,"nodeIndex":9},"end":{"x":775.9891206368496,"y":152.80199469499465,"nodeIndex":8},"weight":"78"}]}	f	\N	
 36	2	1	Reverse the disks	Reverse the disks in the 3 pegs	{"numberOfMoves":3,"numberOfDisks":3,"numberOfPegs":3,"pegs":[[0],[1],[2]]}	t	1694041203606	function solutionChecker(data) {\r\n// Check if the pegs are ordered as 2, 1, 0\r\nconst isPegsOrdered = data.pegs.map(peg => peg[0]).toString() === "2,1,0";\r\n\r\n// Check if the number of moves is equal to 3\r\nconst isNumberOfMovesEqual3 = data.numberOfMoves === 3;\r\n\r\n// Check both conditions\r\nif (isPegsOrdered && isNumberOfMovesEqual3) {\r\n  console.log("Pegs are ordered as 2, 1, 0, and the number of moves is 3.");\r\n  return true;\r\n} else {\r\n  console.log("Pegs are not ordered as 2, 1, 0, or the number of moves is not 3.");\r\n  return false;\r\n}\r\n\r\n}
@@ -564,24 +564,24 @@ SELECT pg_catalog.setval('public."Author_author_id_seq"', 6, true);
 
 
 --
--- Name: algorithm_algorithm_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: series_series_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.algorithm_algorithm_id_seq', 3, true);
-
-
---
--- Name: algorithm_canvas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.algorithm_canvas_id_seq', 1, false);
+SELECT pg_catalog.setval('public.series_series_id_seq', 3, true);
 
 
 --
--- Name: algorithm_topic_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: series_canvas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.algorithm_topic_id_seq', 1, false);
+SELECT pg_catalog.setval('public.series_canvas_id_seq', 1, false);
+
+
+--
+-- Name: series_topic_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.series_topic_id_seq', 1, false);
 
 
 --
@@ -599,10 +599,10 @@ SELECT pg_catalog.setval('public.canvas_canvas_id_seq', 4, true);
 
 
 --
--- Name: problem_algorithm_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: problem_series_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.problem_algorithm_id_seq', 1, false);
+SELECT pg_catalog.setval('public.problem_series_id_seq', 1, false);
 
 
 --
@@ -642,11 +642,11 @@ ALTER TABLE ONLY public.author
 
 
 --
--- Name: algorithm algorithm_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: series series_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.algorithm
-    ADD CONSTRAINT algorithm_pkey PRIMARY KEY (algo_id);
+ALTER TABLE ONLY public.series
+    ADD CONSTRAINT series_pkey PRIMARY KEY (series_id);
 
 
 --
@@ -706,19 +706,19 @@ ALTER TABLE ONLY public.profile
 
 
 --
--- Name: algorithm algorithm_canvas_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: series series_canvas_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.algorithm
-    ADD CONSTRAINT algorithm_canvas_id_fkey FOREIGN KEY (canvas_id) REFERENCES public.canvas(canvas_id) ON UPDATE CASCADE ON DELETE SET NULL NOT VALID;
+ALTER TABLE ONLY public.series
+    ADD CONSTRAINT series_canvas_id_fkey FOREIGN KEY (canvas_id) REFERENCES public.canvas(canvas_id) ON UPDATE CASCADE ON DELETE SET NULL NOT VALID;
 
 
 --
--- Name: algorithm algorithm_topic_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: series series_topic_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.algorithm
-    ADD CONSTRAINT algorithm_topic_id_fkey FOREIGN KEY (topic_id) REFERENCES public.topic(topic_id) ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE ONLY public.series
+    ADD CONSTRAINT series_topic_id_fkey FOREIGN KEY (topic_id) REFERENCES public.topic(topic_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -730,11 +730,11 @@ ALTER TABLE ONLY public.auth
 
 
 --
--- Name: problem problem_algorithm_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: problem problem_series_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.problem
-    ADD CONSTRAINT problem_algorithm_id_fkey FOREIGN KEY (algo_id) REFERENCES public.algorithm(algo_id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT problem_series_id_fkey FOREIGN KEY (series_id) REFERENCES public.series(series_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --

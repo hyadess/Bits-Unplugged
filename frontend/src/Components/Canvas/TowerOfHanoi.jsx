@@ -4,7 +4,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { Stage, Layer, Rect, Label } from "react-konva";
+import { Stage, Layer, Rect, Label, Text, Tag, Line } from "react-konva";
 
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -36,6 +36,7 @@ const TowerOfHanoi = (props, ref) => {
   const diskWidthFactor = 18;
   const baseY = 220;
   const sep = 10;
+  const [extraDisk, setExtraDisk] = useState(0);
   // const [history, setHistory] = useState([]);
   useImperativeHandle(ref, () => {
     return {
@@ -102,17 +103,8 @@ const TowerOfHanoi = (props, ref) => {
 
   // Bug
   const handleReset = (e) => {
-    console.log("Reset");
     if (props.input != null && props.input.pegs != null) {
       setNumberOfMoves(0);
-      // const data = props.input;
-      // console.log("importing");
-      // console.log(props.input);
-      // setPegs(data.pegs);
-      // setNumberOfDisks(data.numberOfDisks);
-      // setNumberOfPegs(data.numberOfPegs);
-      // const list = data.pegs.map((peg) => peg[peg.length - 1]);
-      // setDraggableDisks(list);
       importData();
     } else {
       setNumberOfDisks(3);
@@ -122,21 +114,27 @@ const TowerOfHanoi = (props, ref) => {
   const handleDiskDrag = (e) => {
     const diskValue = e.target.attrs.disk;
     const sourceX = e.target.x();
+    const sourceY = e.target.y();
 
     let nearestPegIndex = -1;
     let minDistance = Infinity;
 
-    pegs.forEach((peg, index) => {
-      const pegX =
-        index * pegWidth + pegWidth / 2 - calculateDiskWidth(diskValue) / 2;
-      const distance = Math.abs(sourceX - pegX);
+    if (isProblemSetting && sourceY > 250) setHoveredPeg(null);
+    else {
+      pegs.forEach((peg, index) => {
+        const pegX =
+          index * pegWidth +
+          pegWidth / 2 -
+          calculateDiskWidth(diskValue % 10) / 2;
+        const distance = Math.abs(sourceX - pegX);
 
-      if (distance < minDistance) {
-        nearestPegIndex = index;
-        minDistance = distance;
-      }
-    });
-    setHoveredPeg(nearestPegIndex);
+        if (distance < minDistance) {
+          nearestPegIndex = index;
+          minDistance = distance;
+        }
+      });
+      setHoveredPeg(nearestPegIndex);
+    }
   };
 
   const handleDiskUnhover = (e) => {
@@ -195,95 +193,209 @@ const TowerOfHanoi = (props, ref) => {
     });
   };
 
+  const findSmallestNumberNotInArray = (array, n) => {
+    for (let x = n; ; x += 10) {
+      // Check if x is present in the array
+      let isPresent = false;
+      for (let i = 0; i < array.length; i++) {
+        for (let j = 0; j < array[i].length; j++) {
+          if (array[i][j] === x) {
+            isPresent = true;
+            break;
+          }
+        }
+        if (isPresent) {
+          break;
+        }
+      }
+
+      // If x is not present, return it
+      if (!isPresent) {
+        return x;
+      }
+    }
+  };
+
   const handleDiskDragEnd = (e, pegIndex) => {
-    const diskValue = e.target.attrs.disk;
+    let diskValue = e.target.attrs.disk;
+    const isExtra = e.target.attrs.disk;
     const sourceX = e.target.x();
+    const sourceY = e.target.y();
     const sourcePegIndex = pegIndex;
 
     let nearestPegIndex = sourcePegIndex;
     let minDistance = Infinity;
 
-    pegs.forEach((peg, index) => {
-      const pegX =
-        index * pegWidth + pegWidth / 2 - calculateDiskWidth(diskValue) / 2;
-      const distance = Math.abs(sourceX - pegX);
-
-      if (distance < minDistance) {
-        nearestPegIndex = index;
-        minDistance = distance;
-      }
-    });
-
-    // console.log(pegs[nearestPegIndex][0], diskValue);
-    if (
-      sourcePegIndex !== nearestPegIndex &&
-      (pegs[nearestPegIndex].length === 0 ||
-        pegs[nearestPegIndex][pegs[nearestPegIndex].length - 1] <= diskValue)
-    ) {
+    if (isProblemSetting && sourceY > 250) {
       const updatedDraggable = [...draggableDisks];
       const updatedPegs = [...pegs];
 
-      updatedPegs[nearestPegIndex].push(diskValue);
-      var index = updatedPegs[sourcePegIndex].indexOf(diskValue);
-      if (index !== -1) {
-        updatedPegs[sourcePegIndex].splice(index, 1);
-      }
-
-      console.log("Pegs: " + updatedPegs);
-      console.log(updatedPegs[nearestPegIndex].length, nearestPegIndex);
-      if (pegs[nearestPegIndex].length > 1) {
-        var index2 = updatedDraggable.indexOf(
-          updatedPegs[nearestPegIndex][updatedPegs[nearestPegIndex].length - 2]
-        );
-        if (index2 !== -1) {
-          updatedDraggable.splice(index2, 1);
-        } else {
-          console.log("Not found");
+      if (sourcePegIndex !== -1) {
+        var index = updatedPegs[sourcePegIndex].indexOf(diskValue);
+        if (index !== -1) {
+          updatedPegs[sourcePegIndex].splice(index, 1);
         }
       }
 
-      updatedDraggable.push(
-        updatedPegs[sourcePegIndex][updatedPegs[sourcePegIndex].length - 1]
-      );
-      const diskIndexInPeg = updatedPegs[nearestPegIndex].indexOf(diskValue);
-
-      e.target.to({
-        x:
-          (pegWidth + sep) * nearestPegIndex +
-          pegWidth / 2 -
-          calculateDiskWidth(e.target.attrs.disk) / 2,
-        y: baseY - diskIndexInPeg * diskHeight,
-        duration: 0.2,
-      });
+      if (sourcePegIndex !== -1) {
+        updatedDraggable.push(
+          updatedPegs[sourcePegIndex][updatedPegs[sourcePegIndex].length - 1]
+        );
+      }
 
       setPegs(updatedPegs);
       setDraggableDisks(updatedDraggable);
-      // console.log(updatedPegs);
-      // const arr = history;
-      // const new_pegs = updatedPegs;
-      // arr.push(new_pegs);
-      // setHistory(arr);
-      // console.log(arr);
-
-      setNumberOfMoves(numberOfMoves + 1);
-    } else {
-      const diskIndexInPeg = pegs[sourcePegIndex].indexOf(diskValue);
-      setPegs([...pegs]);
+      setExtraDisk(diskValue % 10);
+      if (sourcePegIndex !== -1) {
+        setNumberOfDisks(numberOfDisks - 1);
+      }
       e.target.to({
         x:
-          (pegWidth + sep) * sourcePegIndex +
+          pegWidth * 1 +
           pegWidth / 2 -
-          calculateDiskWidth(e.target.attrs.disk) / 2,
-        y: baseY - diskIndexInPeg * diskHeight,
+          calculateDiskWidth(diskValue % 10) / 2 +
+          1 * sep,
+        y: 275,
         duration: 0.2,
+        sourcePegIndex: -1,
+      });
+    } else {
+      pegs.forEach((peg, index) => {
+        const pegX =
+          index * pegWidth +
+          pegWidth / 2 -
+          calculateDiskWidth(diskValue % 10) / 2;
+        const distance = Math.abs(sourceX - pegX);
+
+        if (distance < minDistance) {
+          nearestPegIndex = index;
+          minDistance = distance;
+        }
+      });
+
+      if (sourcePegIndex == -1) {
+        if (
+          pegs[nearestPegIndex].length < 10 &&
+          (pegs[nearestPegIndex].length === 0 ||
+            pegs[nearestPegIndex][pegs[nearestPegIndex].length - 1] % 10 <=
+              diskValue % 10)
+        ) {
+          const updatedDraggable = [...draggableDisks];
+          const updatedPegs = [...pegs];
+          // Find a free value % 10 = diskValue
+          diskValue = findSmallestNumberNotInArray(pegs, diskValue % 10);
+          updatedPegs[nearestPegIndex].push(diskValue);
+
+          if (pegs[nearestPegIndex].length > 1) {
+            var index2 = updatedDraggable.indexOf(
+              updatedPegs[nearestPegIndex][
+                updatedPegs[nearestPegIndex].length - 2
+              ]
+            );
+            if (index2 !== -1) {
+              updatedDraggable.splice(index2, 1);
+            } else {
+              console.log("Not found");
+            }
+          }
+
+          updatedDraggable.push(diskValue);
+
+          const diskIndexInPeg =
+            updatedPegs[nearestPegIndex].indexOf(diskValue);
+          setPegs(updatedPegs);
+          setDraggableDisks(updatedDraggable);
+          setNumberOfMoves(numberOfMoves + 1);
+          setExtraDisk(-1);
+          console.log("Increase Disks");
+          setNumberOfDisks(numberOfDisks + 1);
+          e.target.to({
+            x:
+              (pegWidth + sep) * nearestPegIndex +
+              pegWidth / 2 -
+              calculateDiskWidth(e.target.attrs.disk % 10) / 2,
+            y: baseY - diskIndexInPeg * diskHeight,
+            duration: 0.2,
+          });
+        } else {
+          e.target.to({
+            x:
+              pegWidth * 1 +
+              pegWidth / 2 -
+              calculateDiskWidth(diskValue % 10) / 2 +
+              1 * sep,
+            y: 275,
+            duration: 0.2,
+            sourcePegIndex: -1,
+          });
+        }
+      } else if (
+        sourcePegIndex !== nearestPegIndex &&
+        (pegs[nearestPegIndex].length === 0 ||
+          pegs[nearestPegIndex][pegs[nearestPegIndex].length - 1] % 10 <=
+            diskValue % 10) &&
+        pegs[nearestPegIndex].length < 10
+      ) {
+        const updatedDraggable = [...draggableDisks];
+        const updatedPegs = [...pegs];
+        updatedPegs[nearestPegIndex].push(diskValue);
+
+        var index = updatedPegs[sourcePegIndex].indexOf(diskValue);
+        if (index !== -1) {
+          updatedPegs[sourcePegIndex].splice(index, 1);
+        }
+
+        if (pegs[nearestPegIndex].length > 1) {
+          var index2 = updatedDraggable.indexOf(
+            updatedPegs[nearestPegIndex][
+              updatedPegs[nearestPegIndex].length - 2
+            ]
+          );
+          if (index2 !== -1) {
+            updatedDraggable.splice(index2, 1);
+          } else {
+            console.log("Not found");
+          }
+        }
+
+        updatedDraggable.push(
+          updatedPegs[sourcePegIndex][updatedPegs[sourcePegIndex].length - 1]
+        );
+
+        const diskIndexInPeg = updatedPegs[nearestPegIndex].indexOf(diskValue);
+
+        e.target.to({
+          x:
+            (pegWidth + sep) * nearestPegIndex +
+            pegWidth / 2 -
+            calculateDiskWidth(e.target.attrs.disk % 10) / 2,
+          y: baseY - diskIndexInPeg * diskHeight,
+          duration: 0.2,
+        });
+
+        setPegs(updatedPegs);
+        setDraggableDisks(updatedDraggable);
+
+        setNumberOfMoves(numberOfMoves + 1);
+      } else {
+        const diskIndexInPeg = pegs[sourcePegIndex].indexOf(diskValue);
+        setPegs([...pegs]);
+        e.target.to({
+          x:
+            (pegWidth + sep) * sourcePegIndex +
+            pegWidth / 2 -
+            calculateDiskWidth(e.target.attrs.disk % 10) / 2,
+          y: baseY - diskIndexInPeg * diskHeight,
+          duration: 0.2,
+        });
+      }
+
+      e.target.to({
+        shadowOffsetX: 0,
+        shadowOffsetY: 0,
+        duration: 0.1,
       });
     }
-
-    e.target.to({
-      shadowOffsetX: 0,
-      shadowOffsetY: 0,
-      duration: 0.1,
-    });
   };
   const pegElements = pegs.map((peg, index) => (
     <>
@@ -330,7 +442,7 @@ const TowerOfHanoi = (props, ref) => {
     const x =
       pegWidth * pegIndex +
       pegWidth / 2 -
-      calculateDiskWidth(disk) / 2 +
+      calculateDiskWidth(disk % 10) / 2 +
       pegIndex * sep;
     const y = baseY - diskIndexInPeg * diskHeight;
 
@@ -342,9 +454,9 @@ const TowerOfHanoi = (props, ref) => {
         key={disk}
         x={x}
         y={y}
-        width={calculateDiskWidth(disk)}
+        width={calculateDiskWidth(disk % 10)}
         height={diskHeight}
-        fill={colors[disk]}
+        fill={colors[disk % 10]}
         draggable={draggableDisks.includes(disk)}
         onDragStart={(e) => handleDiskDragStart(e, index)}
         onDragEnd={(e) => handleDiskDragEnd(e, pegIndex)}
@@ -377,34 +489,69 @@ const TowerOfHanoi = (props, ref) => {
     }
   };
 
+  const KonvaButton = (props) => {
+    return (
+      <Label
+        // width={pegWidth}
+        // height={5}
+        onClick={props.onClick}
+        x={props.x}
+        y={props.y}
+      >
+        <Tag
+          fill="black"
+          lineJoin="round"
+          shadowColor="black"
+          shadowBlur={10}
+          shadowOffset={10}
+          shadowOpacity={0.5}
+          cornerRadius={10}
+          // width={pegWidth}
+          // height={5}
+        ></Tag>
+        <Text
+          text={props.text}
+          fontSize={18}
+          fill="white"
+          padding={5}
+          fontFamily="Calibri"
+        />
+      </Label>
+    );
+  };
   return (
     <div className="tower-of-hanoi vbox">
       <div className="toh-header hbox">
         <div className="flex-center">
           {isProblemSetting ? (
-            <FormControl fullWidth variant="outlined">
-              <InputLabel htmlFor="outlined-adornment" sx={{ color: "white" }}>
-                Number of Disks
-              </InputLabel>
-              <OutlinedInput
-                required
-                placeholder="# of disks"
-                inputProps={{
-                  step: 1,
-                  min: 1,
-                  max: 10,
-                }}
-                id="outlined-adornment"
-                className="outlined-input"
-                type="number"
-                value={numberOfDisks}
-                onChange={handleNumberOfDisksChange}
-                label={"Number of Disks"}
-                // endAdornment={props.endAdornment}
-                size="small"
-                sx={{ input: { color: "white" } }}
-              />
-            </FormControl>
+            <div className="hbox w-full">
+              <FormControl fullWidth variant="outlined">
+                <InputLabel
+                  htmlFor="outlined-adornment"
+                  sx={{ color: "white" }}
+                >
+                  Number of Disks
+                </InputLabel>
+                <OutlinedInput
+                  required
+                  placeholder="# of disks"
+                  inputProps={{
+                    step: 1,
+                    min: 1,
+                    max: 10,
+                  }}
+                  id="outlined-adornment"
+                  className="outlined-input"
+                  type="number"
+                  value={numberOfDisks}
+                  onChange={handleNumberOfDisksChange}
+                  label={"Number of Disks"}
+                  // endAdornment={props.endAdornment}
+                  size="small"
+                  sx={{ input: { color: "white" } }}
+                />
+              </FormControl>
+            </div>
           ) : (
             <Typography variant="h5" className="p-0 m-0" color={"white"}>
               <b>Moves: {numberOfMoves}</b>
@@ -414,10 +561,79 @@ const TowerOfHanoi = (props, ref) => {
       </div>
       <Divider sx={{ bgcolor: "rgb(236, 72, 153)" }} />
       <div className={`toh-canvas vbox flex-center`}>
-        <Stage x={20} width={60 + pegWidth * numberOfPegs} height={280}>
+        <Stage
+          x={20}
+          width={60 + pegWidth * numberOfPegs}
+          height={280 + (isProblemSetting ? diskHeight : 0)}
+        >
           <Layer onDragMove={(e) => handleDiskDrag(e)}>
             {pegElements}
             {diskElements}
+            {isProblemSetting ? (
+              <>
+                <Line
+                  points={[0, 260, 60 + pegWidth * numberOfPegs, 260]}
+                  stroke={"rgb(236, 72, 153)"}
+                  strokeWidth={1}
+                />
+                <KonvaButton
+                  text="<"
+                  x={pegWidth - 15}
+                  y={270}
+                  onClick={() =>
+                    extraDisk > -1
+                      ? setExtraDisk(extraDisk - 1)
+                      : setExtraDisk(9)
+                  }
+                />
+                {extraDisk != -1 ? (
+                  <Rect
+                    onMouseEnter={(e) => handleDiskHover(e)}
+                    onMouseLeave={(e) => handleDiskUnhover(e)}
+                    key={-1}
+                    x={
+                      pegWidth * 1 +
+                      pegWidth / 2 -
+                      calculateDiskWidth(extraDisk) / 2 +
+                      1 * sep
+                    }
+                    y={275}
+                    width={calculateDiskWidth(extraDisk)}
+                    height={diskHeight}
+                    fill={colors[extraDisk]}
+                    draggable={true}
+                    onDragStart={(e) => handleDiskDragStart(e, -1)}
+                    onDragEnd={(e) => handleDiskDragEnd(e, -1)}
+                    shadowColor="black"
+                    shadowBlur={10}
+                    shadowOpacity={0.6}
+                    shadowOffsetX={0}
+                    shadowOffsetY={0}
+                    disk={extraDisk}
+                    pegIndex={-1}
+                    isExtra={true}
+                    strokeEnabled={true}
+                    opacity={0.9}
+                    cornerRadius={[10, 10, 10, 10]}
+                  />
+                ) : (
+                  <></>
+                )}
+
+                <KonvaButton
+                  text=">"
+                  x={2 * pegWidth + 15}
+                  y={270}
+                  onClick={() =>
+                    extraDisk < 9
+                      ? setExtraDisk(extraDisk + 1)
+                      : setExtraDisk(-1)
+                  }
+                />
+              </>
+            ) : (
+              <></>
+            )}
           </Layer>
         </Stage>
       </div>
@@ -426,3 +642,5 @@ const TowerOfHanoi = (props, ref) => {
 };
 
 export default forwardRef(TowerOfHanoi);
+
+

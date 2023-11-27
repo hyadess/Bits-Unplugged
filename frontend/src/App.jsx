@@ -29,6 +29,7 @@ import Cookies from "universal-cookie";
 import AddProblem from "./Pages/AddProblem";
 import Layout from "./Pages/Layout";
 import Navbar from "./Components/Navbar";
+import Main from "./Pages/Main";
 const showToast = (message, type) => {
   console.log(message, type);
   if (type === "success") toast.success(message, {});
@@ -74,13 +75,55 @@ const App = () => {
       <Router>
         <Routes>
           <Route element={<Private />}>
-            <Route path="/playground" element={<Playground />} />
+            <Route
+              path="/playground"
+              element={
+                <Main>
+                  <Playground />
+                </Main>
+              }
+            />
             <Route path="/playground/:id" element={<PlaygroundCanvas />} />
-            <Route path="/problem/:id" element={<ProblemsCanvas />} />
-            <Route path="/problems" element={<Problems />} />
-            <Route path="/topics" element={<Topics />} />
-            <Route path="/topics/:id" element={<Series />} />
-            <Route path="/series/:id" element={<Problems />} />
+            <Route
+              path="/problem/:id"
+              element={
+                <Main>
+                  <ProblemsCanvas />
+                </Main>
+              }
+            />
+            <Route
+              path="/problems"
+              element={
+                <Main>
+                  <Problems />
+                </Main>
+              }
+            />
+            <Route
+              path="/topics"
+              element={
+                <Main>
+                  <Topics />
+                </Main>
+              }
+            />
+            <Route
+              path="/topics/:id"
+              element={
+                <Main>
+                  <Series />
+                </Main>
+              }
+            />
+            <Route
+              path="/series/:id"
+              element={
+                <Main>
+                  <Problems />
+                </Main>
+              }
+            />
 
             <Route path="/problemSet" element={<ProblemSet />} />
             <Route
@@ -90,25 +133,20 @@ const App = () => {
             <Route path="/problemSet/:prob_id" element={<ProblemSetEnv />} />
             <Route path="/problemSet/series/:id" element={<AddProblem />} />
 
-            <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/profile/:username"
+              element={
+                <Main>
+                  <Profile />
+                </Main>
+              }
+            />
+            <Route path="/" element={<Home />} />
           </Route>
           <Route element={<Public />}>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
           </Route>
-          <Route
-            path="/"
-            element={
-              <div className="layout-container">
-                <div className="body">
-                  <Navbar />
-                  <div className="content">
-                    <Home />
-                  </div>
-                </div>
-              </div>
-            }
-          />
         </Routes>
       </Router>
     </div>

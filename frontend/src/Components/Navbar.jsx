@@ -152,7 +152,7 @@ const Navbar = (props) => {
                 }}
                 data-tip="Marketplace"
                 onClick={() => {
-                  switchPath("/profile");
+                  switchPath("/profile/" + user.username);
                 }}
               >
                 <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
@@ -171,7 +171,7 @@ const Navbar = (props) => {
                   maxWidth: "10rem",
                 }}
                 onClick={() => {
-                  switchPath("/profile");
+                  switchPath("/profile/" + user.username);
                 }}
               />
             </div>

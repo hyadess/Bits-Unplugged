@@ -1,16 +1,16 @@
 import React from "react";
 import Navbar from "../Components/Navbar";
+import Main from "./Main";
+import { Card } from "@mui/material";
 const Layout = (props) => {
   return (
     <div className="layout-container">
-      <div className="body">
+      <div className="body dark:bg-gray-900">
         <Navbar />
-        <div className="content">
-          <div className="flex flex-col min-h-screen dark:bg-gray-900">
-            <div className="left"></div>
-            <div className="w-1/2 mx-auto pb-5">{props.children}</div>
-            <div className="right"></div>
-          </div>
+        <div className="content mt-20 w-1/2 mx-auto min-h-screen">
+          {/* <div className="flex min-h-screen dark:bg-gray-900"> */}
+          {props.children}
+          {/* </div> */}
         </div>
       </div>
     </div>

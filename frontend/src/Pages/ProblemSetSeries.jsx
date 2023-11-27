@@ -41,7 +41,7 @@ export default function ProblemSetSeries() {
   }, []);
   return (
     <div>
-      <div class="bg-white mt-20 dark:bg-gray-900">
+      <div class="bg-white  dark:bg-gray-900">
         <div class="gap-8 items-center py-4 mx-auto max-w-screen-xl xl:gap-16 sm:pt-16">
           <div class="mt-4 md:mt-0">
             <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">
@@ -58,7 +58,7 @@ export default function ProblemSetSeries() {
       </div>
 
       {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 sm:py-6 lg:px-6">
+        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 mx-auto max-w-screen-2xl xl:gap-20 x:gap:16 gap-10 md:grid md:grid-cols-2">
           {seriesList.map((series, index) => (
             <ProblemSetSeriesCard
               idx={index + 1}

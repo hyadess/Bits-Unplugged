@@ -206,7 +206,7 @@ export default function ProblemSetEnv() {
 
   return (
     <div>
-      <div class="bg-white mt-20 dark:bg-gray-900">
+      <div class="bg-white  dark:bg-gray-900">
         <div class="items-center py-4 mx-auto max-w-screen-2xl md:grid md:grid-cols-2 sm:pt-16">
           <div class="mt-4 md:mt-0">
             <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">

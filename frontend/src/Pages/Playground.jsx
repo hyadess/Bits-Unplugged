@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PlaygroundCard from "../Components/Cards/PlaygroundCard";
+import CustomCard from "../Components/Cards/CustomCard";
 //<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 export default function Playground() {
   /**
@@ -34,7 +35,7 @@ export default function Playground() {
   return (
     // <div className="flex flex-col min-h-screen dark:bg-gray-900">
     <div>
-      <div class="bg-white mt-20 dark:bg-gray-900">
+      <div class="bg-white dark:bg-gray-900">
         <div class="gap-8 items-center py-4 mx-auto max-w-screen-xl xl:gap-16 sm:pt-16">
           <div class="mt-4 md:mt-0">
             <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">
@@ -52,7 +53,7 @@ export default function Playground() {
       </div>
 
       {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center mx-auto max-w-screen-2xl xl:gap-20 md:grid md:grid-cols-2 sm:py-6 gap-10">
+        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 mx-auto max-w-screen-2xl xl:gap-20 x:gap:16 gap-10 md:grid md:grid-cols-2">
           {/* {
                 data.map(a=>{
                 
@@ -63,11 +64,18 @@ export default function Playground() {
                 <CourseCard id="4" name="MS Word" image="https://i.postimg.cc/15mFw1nF/image-2.png" path="word" />
                 <CourseCard id="4" name="MS Excel" image="https://i.postimg.cc/1Rc683tP/image-4.png" path="excel" />
                 <CourseCard id="4" name="MS Powerpoint" image="https://i.postimg.cc/KjNgwJV4/image-5.png" path="powerpoint" /> */}
-          <PlaygroundCard
+          {/* <PlaygroundCard
             id={1}
             name="Graph"
             image="https://i.postimg.cc/7YFmXcjN/image.png"
             path="graph"
+          /> */}
+          <CustomCard
+            id={1}
+            name="Graph"
+            image="https://i.postimg.cc/7YFmXcjN/image.png"
+            path="graph"
+            action="View Playgorund"
           />
         </div>
       )}

@@ -5,7 +5,7 @@ const cors = require("cors");
 const cron = require("node-cron");
 const https = require("https");
 cron.schedule("*/14 * * * *", () => {
-  let host = "https://bitsunplugged.onrender.com/api";
+  let host = process.env.BASE_URL;
   https
     .get(host, (resp) => {
       if (resp.statusCode == 200) console.log("Bits Unplugged is alive");
@@ -19,7 +19,6 @@ cron.schedule("*/14 * * * *", () => {
 // const fileUpload = require("express-fileupload");
 const appRoutes = require("./routes/appRoutes");
 const CLIENT_BUILD_PATH = path.join(__dirname, "../frontend/build");
-
 
 app.use(cors());
 app.use(express.json());

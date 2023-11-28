@@ -34,7 +34,7 @@ const Navbar = (props) => {
       className="flex flex-row w-screen z-10 h-20 md:flex-col md:w-screen bg-gray-100 fixed bottom-0 md:top-0 dark:bg-slate-800"
       style={{ alignItems: "space-between", justifyContent: "center" }}
     >
-      <div className="flex flex-row w-full sm:justify-between">
+      <div className="flex flex-row w-full justify-between md:justify-center">
         <div
           className="icon flex-2 hidden md:flex h-20 "
           style={{ width: "20%" }}

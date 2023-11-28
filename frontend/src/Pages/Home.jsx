@@ -14,7 +14,7 @@ const Home = () => {
   }, []);
   return (
     <div>
-      <div class=" bg-pink-200 bg-gray-900">
+      <div class="bg-gray-900">
         <div class="gap-8 h-screen items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
           {/* <img
             class="w-full hidden"

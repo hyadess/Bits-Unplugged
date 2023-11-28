@@ -81,19 +81,19 @@ const Home = () => {
               name="Nazmus Sakib"
               position="1905061"
               detail="Worked on the Red Black Tree Implementation"
-              image="https://scontent.fdac14-1.fna.fbcdn.net/v/t1.6435-9/157160094_302953714522127_1093822864719188446_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=174925&_nc_eui2=AeH6Q7_6awCabPTzZV-dhiY2Pqaq9Nppypg-pqr02mnKmCI7zdN2qyFqMORyuMzHjiC-JDeAhf1h6rR5Kgm3KKvH&_nc_ohc=4mNIKwxluowAX961-C6&_nc_ht=scontent.fdac14-1.fna&oh=00_AfB1FGzWU9ROR8Ghcif1zlfNNB00RkBI_AI3jGt-STx3CQ&oe=651D4A4C"
+              image="https://i.pinimg.com/564x/7c/0b/89/7c0b8922957831dc3ef513b08157de73.jpg"
             />
             <TeamCard
               name="Arnab Bhattacharje"
               position="1905065"
               detail="Worked on database"
-              image="https://scontent.fdac14-1.fna.fbcdn.net/v/t39.30808-1/290965727_557427819193735_6502346577707822970_n.jpg?stp=dst-jpg_p200x200&_nc_cat=109&ccb=1-7&_nc_sid=fe8171&_nc_eui2=AeGSW6hA2xrNS4Xv9aOP10MiDfQpMmJJIjcN9CkyYkkiNz-rSIBNIyMtcjcb29MW3oWoBYvmpEmAwrSo6oVIQgVA&_nc_ohc=SpertONv9K4AX9jRE3o&_nc_ht=scontent.fdac14-1.fna&oh=00_AfBWPQ5GKqprmTusswQQaAHt4_Aa-T8tUxsfAVzfvwjH1A&oe=64FB2815"
+              image="https://dgbijzg00pxv8.cloudfront.net/6eb7968b-189a-4950-be66-2596c01538b5/000000-0000000000/41934988350297194397358372099130021676442103478114883670507566882701035188871/ITEM_PREVIEW1.jpeg "
             />
             <TeamCard
               name="Sayem Shahad Soummo"
               position="1905064"
               detail="Worked on Problem setting"
-              image="https://scontent.fdac14-1.fna.fbcdn.net/v/t1.6435-9/81749674_686656911866573_7365527402610425856_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeE9vhQJXDcVOfPVBej2gZud74e6qfF_uSPvh7qp8X-5I7oz3GuCanH6AD6oj7Rb8EsTyhJeb3RdfVJ5wb4NHZo2&_nc_ohc=v9XiFvanZ6EAX_gNk7m&_nc_ht=scontent.fdac14-1.fna&oh=00_AfC8wldN1MbABKd3MJYMWCe1wQFItQSVwWRCQ4PtdH9irg&oe=651D5601"
+              image="https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149622021.jpg"
             />
             <TeamCard
               name="Mahir Labib Dihan"
@@ -105,13 +105,13 @@ const Home = () => {
               name="Souvik Ghosh"
               position="1905073"
               detail="Worked on Problem solving"
-              image="https://scontent.fdac14-1.fna.fbcdn.net/v/t39.30808-6/293068528_1664553273919960_3560586561912931674_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=1b51e3&_nc_eui2=AeHAdjMutlfyhKhkiPAZBynNQ5OFoKCON-VDk4WgoI435bpICZ9U_nF2sJEvNXrs5hL3o2nF2Xda0mtF69n-A_ad&_nc_ohc=PjXZyE0rGUIAX8iXEGX&_nc_ht=scontent.fdac14-1.fna&oh=00_AfCclDPgWBfnhmVtFJ0jQWK2IyyEZcrebQehzoYNaiSt8Q&oe=64FAAC07"
+              image="https://i.pinimg.com/736x/ec/9d/ac/ec9dac50ce3b1faa401a3ad7ea1711de.jpg"
             />
             <TeamCard
               name="Salman Sayeed"
               position="1905079"
               detail="Worked on the frontend"
-              image="https://scontent.fdac14-1.fna.fbcdn.net/v/t39.30808-1/357423938_1524821001621823_5548694083827731007_n.jpg?stp=dst-jpg_p160x160&_nc_cat=100&ccb=1-7&_nc_sid=fe8171&_nc_eui2=AeHc5G1b-JOHaB2xCFqMza58CzHQXTUanJALMdBdNRqckHbXEMnysHdivY9rA5pcD3j6IRukUK6eLEuANjCz9aD7&_nc_ohc=Af7TkSqLGTIAX9hnSSi&_nc_ht=scontent.fdac14-1.fna&oh=00_AfCSN6P2ZH4EHeoeF0Wy_2KAH31osKIolB8_HEdquqVJ6w&oe=64FA80A7"
+              image="https://openseauserdata.com/files/1d823e6999a056302a4415abf07f2c10.jpg"
             />
           </div>
         </div>

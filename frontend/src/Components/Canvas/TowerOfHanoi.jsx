@@ -31,6 +31,8 @@ const TowerOfHanoi = (props, ref) => {
   const [isProblemSetting, setIsProblemSetting] = useState(
     cookie.get("type") != 0
   );
+  const [scaleX, setScaleX] = useState(window.innerWidth / 900);
+  const [scaleY, setScaleY] = useState(window.innerWidth / 800);
   const pegWidth = 200;
   const diskHeight = 20;
   const diskWidthFactor = 18;
@@ -473,7 +475,9 @@ const TowerOfHanoi = (props, ref) => {
       />
     );
   });
-
+  useEffect(() => {
+    console.log(window.innerWidth);
+  });
   const handleNumberOfDisksChange = (event) => {
     const value = parseInt(event.target.value, 10);
     if (!isNaN(value) && value >= 1 && value <= 10) {
@@ -563,8 +567,16 @@ const TowerOfHanoi = (props, ref) => {
       <div className={`toh-canvas vbox flex-center`}>
         <Stage
           x={20}
-          width={60 + pegWidth * numberOfPegs}
-          height={280 + (isProblemSetting ? diskHeight : 0)}
+          width={
+            Math.min(window.innerWidth / 900, 1) *
+            (60 + pegWidth * numberOfPegs)
+          }
+          height={
+            Math.min(window.innerWidth / 800, 1) *
+            (280 + (isProblemSetting ? diskHeight : 0))
+          }
+          scaleX={Math.min(window.innerWidth / 900, 1)}
+          scaleY={Math.min(window.innerWidth / 800, 1)}
         >
           <Layer onDragMove={(e) => handleDiskDrag(e)}>
             {pegElements}
@@ -642,5 +654,3 @@ const TowerOfHanoi = (props, ref) => {
 };
 
 export default forwardRef(TowerOfHanoi);
-
-

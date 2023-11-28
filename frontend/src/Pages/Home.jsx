@@ -14,7 +14,7 @@ const Home = () => {
   }, []);
   return (
     <div>
-      <div class="bg-white bg-pink-200 dark:bg-gray-900">
+      <div class=" bg-pink-200 dark:bg-gray-900">
         <div class="gap-8 h-screen items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
           <img
             class="w-full dark:hidden"
@@ -66,7 +66,7 @@ const Home = () => {
         </div>
       </div>
 
-      <section class="bg-white dark:bg-gray-900">
+      <section class=" dark:bg-gray-900">
         <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
           <div class="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
             <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">

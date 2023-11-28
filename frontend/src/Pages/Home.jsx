@@ -14,29 +14,27 @@ const Home = () => {
   }, []);
   return (
     <div>
-      <div class=" bg-pink-200 dark:bg-gray-900">
+      <div class=" bg-pink-200 bg-gray-900">
         <div class="gap-8 h-screen items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
-          <img
-            class="w-full dark:hidden"
+          {/* <img
+            class="w-full hidden"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
             alt="dashboard image"
-          />
+          /> */}
           <img
-            class="w-full hidden dark:block"
+            class="w-full block"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup-dark.svg"
             alt="dashboard image"
           />
           <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-center md:text-left text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+            <h2 class="mb-4 text-center md:text-left text-4xl tracking-tight font-extrabold text-gray-900 text-white">
               {" "}
               A platform for learning{" "}
-              <span class="text-pink-600 dark:text-pink-500">
-                Programming Concepts{" "}
-              </span>{" "}
-              without coding{" "}
+              <span class=" text-pink-500">Programming Concepts </span> without
+              coding{" "}
             </h2>
 
-            <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg dark:text-gray-400">
+            <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg text-gray-400">
               Bits unplugged is a platform for students to learn complex
               programming concepts without needing to write a single line of
               code through an interactive medium
@@ -46,7 +44,7 @@ const Home = () => {
               onClick={() =>
                 type == 0 ? navigator("/topics") : navigator("/problemSet")
               }
-              class="inline-flex text-center items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900"
+              class="inline-flex text-center items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center focus:ring-primary-900"
             >
               Get started
               <svg
@@ -66,14 +64,14 @@ const Home = () => {
         </div>
       </div>
 
-      <section class=" dark:bg-gray-900">
+      <section class=" bg-gray-900">
         <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
           <div class="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 text-white">
               Our Team
             </h2>
 
-            <p class="font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">
+            <p class="font-light text-gray-500 lg:mb-16 sm:text-xl text-gray-400">
               Meet our dynamic team who are here to help you at each step of
               your journey
             </p>

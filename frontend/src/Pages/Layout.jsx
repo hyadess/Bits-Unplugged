@@ -5,9 +5,9 @@ import { Card } from "@mui/material";
 const Layout = (props) => {
   return (
     <div className="layout-container">
-      <div className="body dark:bg-gray-900">
+      <div className="body bg-gray-900">
         <Navbar />
-        <div className="content md:mt-20 min-h-screen dark:bg-gray-900">
+        <div className="content md:mt-20 min-h-screen bg-gray-900">
           {props.children}
         </div>
       </div>

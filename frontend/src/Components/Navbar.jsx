@@ -31,7 +31,7 @@ const Navbar = (props) => {
   }, []);
   return (
     <div
-      className="flex flex-row w-screen z-10 h-20 md:flex-col md:w-screen bg-gray-100 fixed bottom-0 md:top-0 dark:bg-slate-800"
+      className="flex flex-row w-screen z-10 h-20 md:flex-col md:w-screen bg-gray-100 fixed bottom-0 md:top-0 bg-slate-800"
       style={{ alignItems: "space-between", justifyContent: "center" }}
     >
       <div className="flex flex-row w-full justify-between md:justify-center">
@@ -59,7 +59,7 @@ const Navbar = (props) => {
                 data-tip="Home"
                 onClick={() => switchPath("/")}
               >
-                <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+                <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
                   Home
                 </div>
                 <div className="divider hidden md:flex "></div>
@@ -71,7 +71,7 @@ const Navbar = (props) => {
                   data-tip="Home"
                   onClick={() => switchPath("/playground")}
                 >
-                  <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+                  <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
                     Playground
                   </div>
                   <div className="divider hidden md:flex "></div>
@@ -87,7 +87,7 @@ const Navbar = (props) => {
                   data-tip="Home"
                   onClick={() => switchPath("/topics")}
                 >
-                  <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+                  <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
                     Topics
                   </div>
                   <div className="divider hidden md:flex "></div>
@@ -103,7 +103,7 @@ const Navbar = (props) => {
                   data-tip="Home"
                   onClick={() => switchPath("/problemSet")}
                 >
-                  <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+                  <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
                     Set Problems
                   </div>
                   <div className="divider hidden md:flex "></div>
@@ -122,7 +122,7 @@ const Navbar = (props) => {
           data-tip="Marketplace"
           onClick={() => switchPath("/profile")}
         >
-          <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+          <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
             Profile
           </div>
         </button> */}
@@ -135,7 +135,7 @@ const Navbar = (props) => {
             switchPath("/login");
           }}
         >
-          <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+          <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
             Logout
           </div>
         </button> */}
@@ -155,7 +155,7 @@ const Navbar = (props) => {
                   switchPath("/profile/" + user.username);
                 }}
               >
-                <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+                <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
                   {user != null ? user.fullname : "Loading..."}
                 </div>{" "}
               </button>
@@ -205,7 +205,7 @@ const Navbar = (props) => {
               }}
             >
               <LogoutIcon
-                className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white"
+                className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white"
                 sx={{ fontSize: "2rem", color: "white" }}
               />
             </button>

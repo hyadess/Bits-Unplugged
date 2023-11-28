@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import ProblemController from "../controller/problemController";
 import CustomCard from "../Components/Cards/CustomCard";
+import CardContainer from "../Components/Containers/CardContainer";
 
 const problemController = new ProblemController();
 
@@ -58,7 +59,7 @@ export default function Problems() {
       </div>
 
       {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 mx-auto max-w-screen-2xl xl:gap-20 x:gap:16 gap-10 md:grid md:grid-cols-2">
+        <CardContainer>
           {problemList.map((problem, index) => (
             <CustomCard
               id={`Problem ${index + 1}`}
@@ -68,7 +69,7 @@ export default function Problems() {
               action="Get Started"
             />
           ))}
-        </div>
+        </CardContainer>
       )}
     </div>
   );

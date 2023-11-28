@@ -5,6 +5,7 @@ import ProblemController from "../controller/problemController";
 import TopicController from "../controller/topicController";
 import CustomCard from "../Components/Cards/CustomCard";
 import { Label } from "react-konva";
+import CardContainer from "../Components/Containers/CardContainer";
 const problemController = new ProblemController();
 const topicController = new TopicController();
 
@@ -99,7 +100,7 @@ const ProblemSet = () => {
       </div>
 
       {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 mx-auto max-w-screen-2xl xl:gap-20 x:gap:16 gap-10 md:grid md:grid-cols-2">
+        <CardContainer>
           {topicList.map((topic, index) => (
             <CustomCard
               id={`Topic ${index + 1}`}
@@ -109,7 +110,7 @@ const ProblemSet = () => {
               action="View Series"
             />
           ))}
-        </div>
+        </CardContainer>
       )}
 
       <div class="bg-white mt-5 dark:bg-gray-800">
@@ -129,7 +130,7 @@ const ProblemSet = () => {
       </div>
 
       {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 mx-auto max-w-screen-2xl xl:gap-20 x:gap:16 gap-10 md:grid md:grid-cols-2">
+        <CardContainer>
           {problemList
             .sort((a, b) => a.problem_id - b.problem_id)
             .map((prob, index) => (
@@ -140,7 +141,7 @@ const ProblemSet = () => {
                 is_live={prob.is_live}
               />
             ))}
-        </div>
+        </CardContainer>
       )}
     </div>
   );

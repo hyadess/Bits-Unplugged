@@ -5,7 +5,7 @@ import TowerOfHanoi from "./TowerOfHanoi";
 import CanvasController from "../../controller/canvasController";
 import "./CanvasRedirection.scss";
 import InfoIcon from "@mui/icons-material/Info";
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, Zoom } from "@mui/material";
 
 const canvasController = new CanvasController();
 const CanvasRedirection = (props, ref) => {
@@ -56,15 +56,18 @@ const CanvasRedirection = (props, ref) => {
 
   return (
     <div style={{ position: "relative" }}>
-      <div className="canvas-container">
-        {DynamicComponent && (
-          <DynamicComponent
-            input={props.input}
-            setInput={props.setInput}
-            ref={ref}
-          />
-        )}
-      </div>
+      <Zoom in={true}>
+        <div className="canvas-container">
+          {DynamicComponent && (
+            <DynamicComponent
+              input={props.input}
+              setInput={props.setInput}
+              ref={ref}
+            />
+          )}
+        </div>
+      </Zoom>
+
       {/* <Button
         variant="raised"
         sx={{
@@ -91,7 +94,7 @@ const CanvasRedirection = (props, ref) => {
           top: "0",
           right: "0",
           width: "60px",
-          height: "60px", 
+          height: "60px",
         }}
         onClick={() => alert(canvasInfo)}
       >

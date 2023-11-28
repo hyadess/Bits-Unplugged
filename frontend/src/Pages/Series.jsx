@@ -5,6 +5,7 @@ import axios from "axios";
 import SeriesController from "../controller/seriesController";
 
 import CustomCard from "../Components/Cards/CustomCard";
+import CardContainer from "../Components/Containers/CardContainer";
 
 const seriesController = new SeriesController();
 
@@ -60,7 +61,7 @@ export default function Problems() {
       </div>
 
       {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 mx-auto max-w-screen-2xl xl:gap-20 x:gap:16 gap-10 md:grid md:grid-cols-2">
+        <CardContainer>
           {seriesList.map((series, index) => (
             <CustomCard
               id={`Series ${index + 1}`}
@@ -70,7 +71,7 @@ export default function Problems() {
               action="View Problems"
             />
           ))}
-        </div>
+        </CardContainer>
       )}
     </div>
   );

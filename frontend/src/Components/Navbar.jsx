@@ -54,7 +54,7 @@ const Navbar = (props) => {
           {type >= 0 ? (
             <>
               <button
-                className="flex-grow-1 basis-1/4 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
+                className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
                 style={{ alignItems: "center", justifyContent: "center" }}
                 data-tip="Home"
                 onClick={() => switchPath("/")}
@@ -66,7 +66,7 @@ const Navbar = (props) => {
               </button>
               {type == 0 ? (
                 <button
-                  className="flex-grow-1 basis-1/4 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
+                  className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
                   style={{ alignItems: "center", justifyContent: "center" }}
                   data-tip="Home"
                   onClick={() => switchPath("/playground")}
@@ -82,7 +82,7 @@ const Navbar = (props) => {
 
               {type == 0 ? (
                 <button
-                  className="flex-grow-1 basis-1/4 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
+                  className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
                   style={{ alignItems: "center", justifyContent: "center" }}
                   data-tip="Home"
                   onClick={() => switchPath("/topics")}
@@ -98,7 +98,7 @@ const Navbar = (props) => {
 
               {type == 1 ? (
                 <button
-                  className="flex-grow-1 basis-1/4 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
+                  className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
                   style={{ alignItems: "center", justifyContent: "center" }}
                   data-tip="Home"
                   onClick={() => switchPath("/problemSet")}
@@ -140,12 +140,9 @@ const Navbar = (props) => {
           </div>
         </button> */}
         </div>
-        <div className="icon  md:flex h-20 w-1/3 md:w-1/4">
-          <div
-            className="hbox"
-            style={{ justifyContent: "center", width: "100%" }}
-          >
-            <div className="hbox w-70" style={{ width: "75%" }}>
+        <div className="icon  md:flex h-20 w-1/2 md:w-1/4">
+          <div className="hbox justify-center w-full">
+            <div className="hbox w-4/5 md:w-3/4">
               <button
                 className="icon flex flex-col w-70 h-20 md:tooltip md:tooltip-right md:tooltip-info"
                 style={{
@@ -200,12 +197,7 @@ const Navbar = (props) => {
               </div>
             </div>
             <button
-              className="icon flex flex-col w-30 h-20 md:tooltip md:tooltip-right md:tooltip-info items-center"
-              style={{
-                // alignItems: "right",
-                justifyContent: "center",
-                width: "25%",
-              }}
+              className="icon flex flex-col w-30 h-20 md:tooltip md:tooltip-right md:tooltip-info items-center w-1/5 md:w-3/12 justify-center"
               data-tip="Marketplace"
               onClick={() => {
                 authController.logout();

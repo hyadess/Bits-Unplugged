@@ -575,7 +575,7 @@ const TowerOfHanoi = (props, ref) => {
             Math.min(window.innerWidth / 800, 1) *
             (280 + (isProblemSetting ? diskHeight : 0))
           }
-          scaleX={Math.min(window.innerWidth / 960, 1)}
+          scaleX={Math.min(window.innerWidth / 970, 1)}
           scaleY={Math.min(window.innerWidth / 900, 1)}
         >
           <Layer onDragMove={(e) => handleDiskDrag(e)}>

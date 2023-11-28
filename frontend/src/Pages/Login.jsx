@@ -51,23 +51,23 @@ const Login = () => {
     }
   };
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <section class="bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 bg-gray-900">
+      <section class="bg-gray-50 bg-gray-900">
         <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <a
             href="#"
-            class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+            class="flex items-center mb-6 text-2xl font-semibold text-gray-900 text-white"
           >
             Bits Unplugged
           </a>
-          <div class="w-full  rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div class="w-full  rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700">
             <div class="p-6 space-y-6 md:space-y-6 sm:p-10">
               <div className="hbox flex-center">
                 <h6
                   className={
                     checked
                       ? "unchecked-role"
-                      : "flex items-center text-xl font-semibold text-gray-900 dark:text-white"
+                      : "flex items-center text-xl font-semibold text-gray-900 text-white"
                   }
                 >
                   User
@@ -87,7 +87,7 @@ const Login = () => {
                 <h6
                   className={
                     checked
-                      ? "flex items-center text-xl font-semibold text-gray-900 dark:text-white"
+                      ? "flex items-center text-xl font-semibold text-gray-900 text-white"
                       : "unchecked-role"
                   }
                   style={{ width: "2vw", fontWeight: "" }}
@@ -95,14 +95,14 @@ const Login = () => {
                   Setter
                 </h6>
               </div>
-              <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-white">
                 Sign in to your account
               </h1>
               <div class="space-y-4 md:space-y-6">
                 <div>
                   <label
                     for="email"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 text-white"
                   >
                     Username/Email Address
                   </label>
@@ -110,7 +110,7 @@ const Login = () => {
                     type="email"
                     name="email"
                     id="email"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-pink-600 focus:border-pink-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-pink-600 focus:border-pink-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     placeholder="name@company.com"
                     required=""
                     onChange={(e) => setEmail(e.target.value)}
@@ -119,7 +119,7 @@ const Login = () => {
                 <div>
                   <label
                     for="password"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 text-white"
                   >
                     Password
                   </label>
@@ -128,7 +128,7 @@ const Login = () => {
                     name="password"
                     id="password"
                     placeholder="••••••••"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-pink-600 focus:border-pink-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-pink-600 focus:border-pink-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     required=""
                     onChange={(e) => setPassword(e.target.value)}
                   />
@@ -140,22 +140,19 @@ const Login = () => {
                         id="remember"
                         aria-describedby="remember"
                         type="checkbox"
-                        class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-pink-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-pink-600 dark:ring-offset-gray-800"
+                        class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-pink-300 bg-gray-700 border-gray-600 focus:ring-pink-600 ring-offset-gray-800"
                         required=""
                       />
                     </div>
                     <div class="ml-3 text-sm">
-                      <label
-                        for="remember"
-                        class="text-gray-500 dark:text-gray-300"
-                      >
+                      <label for="remember" class="text-gray-500 text-gray-300">
                         Remember me
                       </label>
                     </div>
                   </div>
                   <a
                     href="#"
-                    class="text-sm font-medium text-pink-600 hover:underline dark:text-pink-500"
+                    class="text-sm font-medium  hover:underline text-pink-500"
                   >
                     Forgot password?
                   </a>
@@ -163,7 +160,7 @@ const Login = () => {
                 {!loggingIn && (
                   <button
                     type="submit"
-                    class="w-full text-white bg-pink-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800"
+                    class="w-full text-white bg-pink-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800"
                     onClick={handleSubmit}
                   >
                     Sign in
@@ -172,16 +169,16 @@ const Login = () => {
 
                 {/* <button
                   type="submit"
-                  class="w-full text-white bg-pink-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800"
+                  class="w-full text-white bg-pink-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800"
                   onClick={() => navigate("/home")}
                 >
                   View As Guest
                 </button> */}
-                <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                <p class="text-sm font-light text-gray-500 text-gray-400">
                   Don’t have an account yet?{" "}
                   <a
                     onClick={handleSignup}
-                    class="font-medium text-pink-600 hover:underline dark:text-pink-500"
+                    class="font-medium  hover:underline text-pink-500"
                   >
                     Sign up
                   </a>

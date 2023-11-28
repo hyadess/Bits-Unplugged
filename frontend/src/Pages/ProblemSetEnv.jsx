@@ -206,11 +206,11 @@ export default function ProblemSetEnv() {
 
   return (
     <div>
-      <div class="  dark:bg-gray-900">
+      <div class="  bg-gray-900">
         <div class="items-center py-4 mx-auto max-w-screen-2xl md:grid md:grid-cols-2 sm:pt-16">
           <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-              <span class="text-pink-600 dark:text-pink-500">
+            <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
+              <span class=" text-pink-500">
                 <div onClick={handleTextClick} style={{ cursor: "pointer" }}>
                   {isTextEditable ? (
                     <input
@@ -231,14 +231,14 @@ export default function ProblemSetEnv() {
           <div className="souvik-button-container gap-2">
             <button
               className="submit-button"
-              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
               onClick={deleteProblem}
             >
               DELETE
             </button>
             <button
               className="submit-button"
-              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800"
+              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800"
               onClick={updateAll}
             >
               PUBLISH

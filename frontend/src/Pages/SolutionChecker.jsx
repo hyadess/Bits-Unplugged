@@ -114,7 +114,7 @@ export default function SolutionChecker(props) {
             borderRadius: "0px",
           }}
           type="submit"
-          class="text-white bg-black-600 hover:bg-black-700 focus:ring-4 focus:outline-none focus:bg-pink-300 font-medium  text-lg px-7 py-3 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:bg-pink-800"
+          class="text-white bg-black-600 hover:bg-black-700 focus:ring-4 focus:outline-none focus:bg-pink-300 font-medium  text-lg px-7 py-3 text-center bg-pink-600 hover:bg-pink-700 focus:bg-pink-800"
           onClick={submit}
         >
           RUN

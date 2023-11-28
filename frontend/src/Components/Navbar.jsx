@@ -140,15 +140,18 @@ const Navbar = (props) => {
           </div>
         </button> */}
         </div>
-        <div className="icon flex-2  md:flex h-20" style={{ width: "25%" }}>
-          <div className="hbox" style={{ justifyContent: "center" }}>
-            <div className="hbox">
+        <div className="icon flex-2 md:flex h-20" style={{ width: "25%" }}>
+          <div
+            className="hbox"
+            style={{ justifyContent: "center", width: "100%" }}
+          >
+            <div className="hbox" style={{ width: "70%" }}>
               <button
-                className="icon flex flex-col h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
+                className="icon flex flex-col h-20 md:tooltip md:tooltip-right md:tooltip-info"
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  width: "85%",
+                  width: "70%",
                 }}
                 data-tip="Marketplace"
                 onClick={() => {
@@ -159,25 +162,34 @@ const Navbar = (props) => {
                   {user != null ? user.fullname : "Loading..."}
                 </div>{" "}
               </button>
-              <img
-                src={
-                  user != null
-                    ? user.image
-                    : "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Solid_black.svg/2048px-Solid_black.svg.png"
-                }
-                style={{
-                  padding: "10px",
-                  borderRadius: "50%",
-                  maxWidth: "10rem",
-                }}
-                onClick={() => {
-                  switchPath("/profile/" + user.username);
-                }}
-              />
+              <div
+                className="flex items-center justify-center"
+                style={{ width: "30%" }}
+              >
+                <img
+                  src={
+                    user != null
+                      ? user.image
+                      : "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Solid_black.svg/2048px-Solid_black.svg.png"
+                  }
+                  style={{
+                    padding: "15%",
+                    borderRadius: "50%",
+                  }}
+                  onClick={() => {
+                    switchPath("/profile/" + user.username);
+                  }}
+                  className="max-w-full"
+                />
+              </div>
             </div>
             <button
-              className="icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info"
-              style={{ alignItems: "center", justifyContent: "center" }}
+              className="icon flex flex-col w-20 h-20  md:tooltip md:tooltip-right md:tooltip-info"
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                width: "30%",
+              }}
               data-tip="Marketplace"
               onClick={() => {
                 authController.logout();

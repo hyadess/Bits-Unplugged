@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import TopicController from "../controller/topicController";
 import CustomCard from "../Components/Cards/CustomCard";
+import CardContainer from "../Components/Containers/CardContainer";
 
 const topicController = new TopicController();
 
@@ -40,7 +41,7 @@ export default function Problems() {
   }, []);
   return (
     <div>
-      <div class="bg-white  dark:bg-gray-900">
+      <div class="bg-white dark:bg-gray-900">
         <div class="gap-8 items-center py-4 mx-auto max-w-screen-xl xl:gap-16 sm:pt-16">
           <div class="mt-4 md:mt-0">
             <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">
@@ -57,7 +58,7 @@ export default function Problems() {
       </div>
 
       {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 mx-auto max-w-screen-2xl xl:gap-20 x:gap:16 gap-10 md:grid md:grid-cols-2">
+        <CardContainer>
           {topicList.map((topic, index) => (
             <CustomCard
               id={`Topic ${index + 1}`}
@@ -67,7 +68,7 @@ export default function Problems() {
               action="View Series"
             />
           ))}
-        </div>
+        </CardContainer>
       )}
     </div>
   );

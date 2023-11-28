@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PlaygroundCard from "../Components/Cards/PlaygroundCard";
 import CustomCard from "../Components/Cards/CustomCard";
+import CardContainer from "../Components/Containers/CardContainer";
 //<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 export default function Playground() {
   /**
@@ -53,23 +54,7 @@ export default function Playground() {
       </div>
 
       {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 mx-auto max-w-screen-2xl xl:gap-20 x:gap:16 gap-10 md:grid md:grid-cols-2">
-          {/* {
-                data.map(a=>{
-                
-                    return (<CourseCard id={a.track_id} name={a.course_name} image={a.image} path={a.course_id} />)
-                })
-           } */}
-          {/* <CourseCard id="1" name="Handicrafts" image="https://i.postimg.cc/T1GDtZtZ/image-1.png" path="handicrafts" />
-                <CourseCard id="4" name="MS Word" image="https://i.postimg.cc/15mFw1nF/image-2.png" path="word" />
-                <CourseCard id="4" name="MS Excel" image="https://i.postimg.cc/1Rc683tP/image-4.png" path="excel" />
-                <CourseCard id="4" name="MS Powerpoint" image="https://i.postimg.cc/KjNgwJV4/image-5.png" path="powerpoint" /> */}
-          {/* <PlaygroundCard
-            id={1}
-            name="Graph"
-            image="https://i.postimg.cc/7YFmXcjN/image.png"
-            path="graph"
-          /> */}
+        <CardContainer>
           <CustomCard
             id={1}
             name="Graph"
@@ -77,7 +62,7 @@ export default function Playground() {
             path="graph"
             action="View Playgorund"
           />
-        </div>
+        </CardContainer>
       )}
     </div>
     // </div>

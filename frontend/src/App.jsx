@@ -29,7 +29,8 @@ import Cookies from "universal-cookie";
 import AddProblem from "./Pages/AddProblem";
 import Layout from "./Pages/Layout";
 import Navbar from "./Components/Navbar";
-import Main from "./Pages/Main";
+import SolverLayout from "./Pages/SolverLayout";
+import SetterLayout from "./Pages/SetterLayout";
 const showToast = (message, type) => {
   console.log(message, type);
   if (type === "success") toast.success(message, {});
@@ -78,67 +79,92 @@ const App = () => {
             <Route
               path="/playground"
               element={
-                <Main>
+                <SolverLayout>
                   <Playground />
-                </Main>
+                </SolverLayout>
               }
             />
-            <Route path="/playground/:id" element={<PlaygroundCanvas />} />
+            <Route
+              path="/playground/:id"
+              element={
+                <SolverLayout>
+                  <PlaygroundCanvas />
+                </SolverLayout>
+              }
+            />
             <Route
               path="/problem/:id"
               element={
-                <Main>
+                <SolverLayout>
                   <ProblemsCanvas />
-                </Main>
+                </SolverLayout>
               }
             />
             <Route
               path="/problems"
               element={
-                <Main>
+                <SolverLayout>
                   <Problems />
-                </Main>
+                </SolverLayout>
               }
             />
             <Route
               path="/topics"
               element={
-                <Main>
+                <SolverLayout>
                   <Topics />
-                </Main>
+                </SolverLayout>
               }
             />
             <Route
               path="/topics/:id"
               element={
-                <Main>
+                <SolverLayout>
                   <Series />
-                </Main>
+                </SolverLayout>
               }
             />
             <Route
               path="/series/:id"
               element={
-                <Main>
+                <SolverLayout>
                   <Problems />
-                </Main>
+                </SolverLayout>
               }
             />
 
-            <Route path="/problemSet" element={<ProblemSet />} />
+            <Route
+              path="/problemSet"
+              element={
+                <SetterLayout>
+                  <ProblemSet />
+                </SetterLayout>
+              }
+            />
             <Route
               path="/problemSet/topics/:id"
-              element={<ProblemSetSeries />}
+              element={
+                <SetterLayout>
+                  <ProblemSetSeries />
+                </SetterLayout>
+              }
             />
-            <Route path="/problemSet/:prob_id" element={<ProblemSetEnv />} />
+            <Route
+              path="/problemSet/:prob_id"
+              element={
+                <SetterLayout>
+                  <ProblemSetEnv />
+                </SetterLayout>
+              }
+            />
             <Route path="/problemSet/series/:id" element={<AddProblem />} />
 
             <Route
               path="/profile/:username"
               element={
-                <Main>
+                <SolverLayout>
                   <Profile />
-                </Main>
+                </SolverLayout>
               }
             />
             <Route path="/" element={<Home />} />

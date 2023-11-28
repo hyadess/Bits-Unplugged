@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthController from "../controller/authController";
-import { InputAdornment, Typography } from "@mui/material";
+import { Avatar, InputAdornment, Typography } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Cookies from "universal-cookie";
 import ProfileController from "../controller/profileController";
@@ -49,29 +49,29 @@ const Navbar = (props) => {
         </div>
         <div
           className="flex flex-1"
-          style={{ justifyContent: "center", width: "55%" }}
+          style={{ justifyContent: "center", width: "100%" }}
         >
           {type >= 0 ? (
             <>
               <button
-                className="icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
+                className="flex-grow-1 basis-1/2 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
                 style={{ alignItems: "center", justifyContent: "center" }}
                 data-tip="Home"
                 onClick={() => switchPath("/")}
               >
-                <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+                <div className="text-s md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
                   Home
                 </div>
                 <div className="divider hidden md:flex "></div>
               </button>
               {type == 0 ? (
                 <button
-                  className="icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
+                  className="flex-grow-1 basis-1/2 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
                   style={{ alignItems: "center", justifyContent: "center" }}
                   data-tip="Home"
                   onClick={() => switchPath("/playground")}
                 >
-                  <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+                  <div className="text-s md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
                     Playground
                   </div>
                   <div className="divider hidden md:flex "></div>
@@ -82,12 +82,12 @@ const Navbar = (props) => {
 
               {type == 0 ? (
                 <button
-                  className="icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
+                  className="flex-grow-1 basis-1/2 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
                   style={{ alignItems: "center", justifyContent: "center" }}
                   data-tip="Home"
                   onClick={() => switchPath("/topics")}
                 >
-                  <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+                  <div className="text-s md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
                     Topics
                   </div>
                   <div className="divider hidden md:flex "></div>
@@ -98,12 +98,12 @@ const Navbar = (props) => {
 
               {type == 1 ? (
                 <button
-                  className="icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
+                  className="flex-grow-1 basis-1/2 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
                   style={{ alignItems: "center", justifyContent: "center" }}
                   data-tip="Home"
                   onClick={() => switchPath("/problemSet")}
                 >
-                  <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+                  <div className="text-s md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
                     Set Problems
                   </div>
                   <div className="divider hidden md:flex "></div>
@@ -140,14 +140,14 @@ const Navbar = (props) => {
           </div>
         </button> */}
         </div>
-        <div className="icon flex-2 md:flex h-20" style={{ width: "25%" }}>
+        <div className="icon hidden md:flex h-20 w-25" style={{ width: "25%" }}>
           <div
             className="hbox"
-            style={{ justifyContent: "center", width: "100%" }}
+            style={{ justifyContent: "center w-100", width: "100%" }}
           >
-            <div className="hbox" style={{ width: "70%" }}>
+            <div className="hbox w-70" style={{ width: "70%" }}>
               <button
-                className="icon flex flex-col h-20 md:tooltip md:tooltip-right md:tooltip-info"
+                className="icon flex flex-col w-70 h-20 md:tooltip md:tooltip-right md:tooltip-info"
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
@@ -163,28 +163,44 @@ const Navbar = (props) => {
                 </div>{" "}
               </button>
               <div
-                className="flex items-center justify-center"
+                className="hidden md:flex items-center justify-center"
                 style={{ width: "30%" }}
               >
-                <img
+                {/* <img
                   src={
                     user != null
                       ? user.image
                       : "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Solid_black.svg/2048px-Solid_black.svg.png"
                   }
-                  style={{
-                    padding: "15%",
-                    borderRadius: "50%",
-                  }}
+                  style={
+                    {
+                      // padding: "15%",
+                      // borderRadius: "50%",
+                      // width: "100%",
+                      // maxHeight: "100%",
+                      // objectFit: "cover",
+                      // objectPosition: "center",
+                      // display: "inline",
+                    }
+                  }
                   onClick={() => {
                     switchPath("/profile/" + user.username);
                   }}
-                  className="max-w-full"
+                  className="object-cover w-14 h-14 rounded-full"
+                /> */}
+                <Avatar
+                  alt="blah"
+                  src={
+                    user != null
+                      ? user.image
+                      : "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Solid_black.svg/2048px-Solid_black.svg.png"
+                  }
+                  // sx={{ width: "100%", height: "100%" }}
                 />
               </div>
             </div>
             <button
-              className="icon flex flex-col w-20 h-20  md:tooltip md:tooltip-right md:tooltip-info"
+              className="icon flex flex-col w-30 h-20 md:tooltip md:tooltip-right md:tooltip-info"
               style={{
                 alignItems: "center",
                 justifyContent: "center",

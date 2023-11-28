@@ -3,7 +3,7 @@ const SolverLayout = (props) => {
   return (
     <div>
       <div
-        className="left w-1/4 p-5 mt-20"
+        className="left w-1/4 p-5 md:mt-20"
         style={{
           position: "fixed",
           left: "0",
@@ -28,7 +28,7 @@ const SolverLayout = (props) => {
         {props.children}
       </div>
       <div
-        className="right p-5 flex flex-col gap-5 mt-20"
+        className="right p-5 flex flex-col gap-5 md:mt-20"
         style={{
           position: "fixed",
           right: "0",

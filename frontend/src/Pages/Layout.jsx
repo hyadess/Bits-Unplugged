@@ -7,7 +7,7 @@ const Layout = (props) => {
     <div className="layout-container">
       <div className="body bg-gray-900">
         <Navbar />
-        <div className="content md:mt-20 min-h-screen bg-gray-900">
+        <div className="content mb-20 md:mt-20 min-h-screen bg-gray-900">
           {props.children}
         </div>
       </div>

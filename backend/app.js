@@ -8,8 +8,8 @@ cron.schedule("*/14 * * * *", () => {
   let host = process.env.BASE_URL;
   https
     .get(host, (resp) => {
-      if (resp.statusCode == 200) console.log("Bits Unplugged is alive");
-      else console.log("Bits Unplugged is dead");
+      if (resp.statusCode == 200) console.log(host + " is alive");
+      else console.log(host + " is dead");
     })
     .on("error", (err) => {
       console.log("Error: " + err.message);

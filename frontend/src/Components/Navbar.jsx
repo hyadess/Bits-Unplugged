@@ -143,15 +143,15 @@ const Navbar = (props) => {
         <div className="icon  md:flex h-20 w-1/3 md:w-1/4">
           <div
             className="hbox"
-            style={{ justifyContent: "center w-100", width: "100%" }}
+            style={{ justifyContent: "center", width: "100%" }}
           >
-            <div className="hbox w-70" style={{ width: "70%" }}>
+            <div className="hbox w-70" style={{ width: "75%" }}>
               <button
                 className="icon flex flex-col w-70 h-20 md:tooltip md:tooltip-right md:tooltip-info"
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
-                  width: "70%",
+                  width: "75%",
                 }}
                 data-tip="Marketplace"
                 onClick={() => {
@@ -164,7 +164,7 @@ const Navbar = (props) => {
               </button>
               <div
                 className="flex md:flex items-center justify-center"
-                style={{ width: "30%" }}
+                style={{ width: "25%" }}
               >
                 {/* <img
                   src={
@@ -200,11 +200,11 @@ const Navbar = (props) => {
               </div>
             </div>
             <button
-              className="icon flex flex-col w-30 h-20 md:tooltip md:tooltip-right md:tooltip-info"
+              className="icon flex flex-col w-30 h-20 md:tooltip md:tooltip-right md:tooltip-info items-center"
               style={{
-                alignItems: "center",
+                // alignItems: "right",
                 justifyContent: "center",
-                width: "30%",
+                width: "25%",
               }}
               data-tip="Marketplace"
               onClick={() => {

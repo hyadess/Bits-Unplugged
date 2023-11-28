@@ -99,7 +99,7 @@ const Home = () => {
               name="Mahir Labib Dihan"
               position="1905072"
               detail="Worked on the backend"
-              image="https://scontent.fdac14-1.fna.fbcdn.net/v/t39.30808-1/342405302_162812986420549_8137144512048864097_n.jpg?stp=dst-jpg_p200x200&_nc_cat=110&ccb=1-7&_nc_sid=fe8171&_nc_eui2=AeHw-ardLyEMPZ05SvCKzkNYxgMQYlgi39jGAxBiWCLf2OU4ZKaDV5eMDUE7MfDEJoCa3p9eoteVz1MLhqjZc7Zc&_nc_ohc=nwQTIEvz8ikAX9oHkFi&_nc_ht=scontent.fdac14-1.fna&oh=00_AfCnajVEvgUv-8QKQhWh4tsbLwxA07D4NDtCOXnC4dmT8w&oe=64FA5A9A"
+              image="https://i.guim.co.uk/img/media/ef8492feb3715ed4de705727d9f513c168a8b196/37_0_1125_675/master/1125.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=d456a2af571d980d8b2985472c262b31"
             />
             <TeamCard
               name="Souvik Ghosh"

@@ -142,9 +142,9 @@ const Navbar = (props) => {
         </div>
         <div className="icon  md:flex h-20 w-1/2 md:w-1/4">
           <div className="hbox justify-center w-full">
-            <div className="hbox w-4/5 md:w-3/4">
+            <div className="justify-end hbox w-4/5 md:w-3/4">
               <button
-                className="icon flex flex-col w-70 h-20 md:tooltip md:tooltip-right md:tooltip-info"
+                className="hidden md:flex flex-col w-70 h-20 md:tooltip md:tooltip-right md:tooltip-info"
                 style={{
                   alignItems: "center",
                   justifyContent: "center",

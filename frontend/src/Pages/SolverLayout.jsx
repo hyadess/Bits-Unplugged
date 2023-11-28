@@ -13,7 +13,7 @@ const SolverLayout = (props) => {
         }}
       >
         <div
-          className="max-w-sm bg-white border border-slate-500 rounded-lg shadow-lg dark:bg-slate-800 dark:border-slate-800"
+          className="max-w-sm  border border-slate-500 rounded-lg shadow-lg dark:bg-slate-800 dark:border-slate-800"
           style={{
             height: "100%",
             display: "flex",
@@ -38,7 +38,7 @@ const SolverLayout = (props) => {
         }}
       >
         <div
-          className="max-w-sm bg-white border border-slate-500 rounded-lg shadow-lg dark:bg-slate-800 dark:border-slate-800"
+          className="max-w-sm  border border-slate-500 rounded-lg shadow-lg dark:bg-slate-800 dark:border-slate-800"
           style={{
             height: "50%",
             display: "flex",
@@ -49,7 +49,7 @@ const SolverLayout = (props) => {
           Put Stats here
         </div>
         <div
-          className="max-w-sm bg-white border border-slate-500 rounded-lg shadow-lg dark:bg-slate-800 dark:border-slate-800"
+          className="max-w-sm  border border-slate-500 rounded-lg shadow-lg dark:bg-slate-800 dark:border-slate-800"
           style={{
             height: "50%",
             display: "flex",

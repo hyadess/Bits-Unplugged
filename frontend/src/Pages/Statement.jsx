@@ -26,23 +26,24 @@ function ProblemStatement(props) {
   };
 
   return (
-    <div className="vbox">
-      <div className="hbox">
+    <div className="flex flex-col">
+      <div className="flex flex-col md:flex-row gap-5">
         <textarea
-          className="text-area w-50"
+          className="text-area w-full md:w-1/2 m-0"
           placeholder=" "
           value={text}
-          style={{ width: "50%", height: "50vh" }}
+          style={{ height: "50vh" }}
           onChange={(e) => handleProblemStatementChange(e)}
         ></textarea>
-        {/* <h1 style={{ color: "white" }}> Latex </h1> */}
         <div
+          className="w-full md:w-1/2 border-2 border-gray-200"
           style={{
-            width: "50%",
+            height: "50vh",
             padding: "30px",
             fontSize: "25px",
             color: "azure",
-            border: "none",
+            marginTop: "20px",
+            // border: "black",
             borderRadius: "20px",
           }}
         >

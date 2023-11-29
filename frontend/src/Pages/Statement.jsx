@@ -26,8 +26,8 @@ function ProblemStatement(props) {
   };
 
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-col md:flex-row gap-5">
+    <div className="flex flex-col gap-5">
+      <div className="flex flex-col md:flex-row gap-0 md:gap-5">
         <textarea
           className="text-area w-full md:w-1/2 m-0"
           placeholder=" "
@@ -52,13 +52,19 @@ function ProblemStatement(props) {
           </h3>
         </div>
       </div>
-
-      <div className="flex-center" style={{ justifyContent: "flex-end" }}>
-        <button
-          onClick={updateStatement}
-          className="export-button-statement"
-        ></button>
-      </div>
+      <button
+        className="submit-button"
+        class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800"
+        onClick={updateStatement}
+      >
+        SAVE
+      </button>
+      {/* <div className="flex-center" style={{ justifyContent: "flex-end" }}>
+          <button
+            onClick={updateStatement}
+            className="export-button-statement"
+          ></button>
+        </div> */}
     </div>
   );
 }

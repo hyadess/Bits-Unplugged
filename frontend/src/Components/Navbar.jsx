@@ -35,10 +35,7 @@ const Navbar = (props) => {
       style={{ alignItems: "space-between", justifyContent: "center" }}
     >
       <div className="flex flex-row w-full justify-between md:justify-center">
-        <div
-          className="icon flex-2 hidden md:flex h-20 "
-          style={{ width: "20%" }}
-        >
+        <div className="icon flex-2 hidden md:flex h-20 w-1/5">
           <img
             src="https://i.postimg.cc/SsnSSJVq/image.png"
             style={{ padding: "10px" }}
@@ -47,10 +44,7 @@ const Navbar = (props) => {
             }}
           />
         </div>
-        <div
-          className="flex justify-start md:justify-center"
-          style={{ width: "55%" }}
-        >
+        <div className="flex justify-start md:justify-center w-8/12 md:w-3/5">
           {type >= 0 ? (
             <>
               <button
@@ -111,6 +105,19 @@ const Navbar = (props) => {
               ) : (
                 <></>
               )}
+              <button
+                className="icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
+                style={{ alignItems: "center", justifyContent: "center" }}
+                data-tip="Marketplace"
+                onClick={() => {
+                  authController.logout();
+                  switchPath("/login");
+                }}
+              >
+                <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
+                  Logout
+                </div>
+              </button>
             </>
           ) : (
             <></>
@@ -126,44 +133,28 @@ const Navbar = (props) => {
             Profile
           </div>
         </button> */}
-          {/* <button
-          className="icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
-          style={{ alignItems: "center", justifyContent: "center" }}
-          data-tip="Marketplace"
-          onClick={() => {
-            authController.logout();
-            switchPath("/login");
-          }}
-        >
-          <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
-            Logout
-          </div>
-        </button> */}
         </div>
-        <div className="icon  md:flex h-20 w-1/2 md:w-1/4">
-          <div className="hbox justify-center w-full">
-            <div className="justify-end hbox w-4/5 md:w-3/4">
-              <button
-                className="hidden md:flex flex-col w-70 h-20 md:tooltip md:tooltip-right md:tooltip-info"
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "75%",
-                }}
-                data-tip="Marketplace"
-                onClick={() => {
-                  switchPath("/profile/" + user.username);
-                }}
-              >
-                <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
-                  {user != null ? user.fullname : "Loading..."}
-                </div>{" "}
-              </button>
-              <div
-                className="flex md:flex items-center justify-center"
-                style={{ width: "25%" }}
-              >
-                {/* <img
+        <div className="flex md:flex h-20 w-1/3 md:w-1/5 items-center justify-end">
+          {/* <div className="hbox justify-center w-full"> */}
+          {/* <div className="justify-end hbox w-4/5 md:w-3/4"> */}
+          <button
+            className="hidden md:flex flex-col w-70 h-20 md:tooltip md:tooltip-right md:tooltip-info w-7/12 md:w-8/12"
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              // width: "75%",
+            }}
+            data-tip="Marketplace"
+            onClick={() => {
+              switchPath("/profile/" + user.username);
+            }}
+          >
+            <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
+              {user != null ? user.fullname : "Loading..."}
+            </div>{" "}
+          </button>
+          <div className="flex md:flex items-center justify-center w-3/5 md:w-1/3">
+            {/* <img
                   src={
                     user != null
                       ? user.image
@@ -185,18 +176,18 @@ const Navbar = (props) => {
                   }}
                   className="object-cover w-14 h-14 rounded-full"
                 /> */}
-                <Avatar
-                  alt="blah"
-                  src={
-                    user != null
-                      ? user.image
-                      : "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Solid_black.svg/2048px-Solid_black.svg.png"
-                  }
-                  // sx={{ width: "100%", height: "100%" }}
-                />
-              </div>
-            </div>
-            <button
+            <Avatar
+              alt="blah"
+              src={
+                user != null
+                  ? user.image
+                  : "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Solid_black.svg/2048px-Solid_black.svg.png"
+              }
+              // sx={{ width: "100%", height: "100%" }}
+            />
+          </div>
+          {/* </div> */}
+          {/* <button
               className="icon flex flex-col w-30 h-20 md:tooltip md:tooltip-right md:tooltip-info items-center w-1/5 md:w-3/12 justify-center"
               data-tip="Marketplace"
               onClick={() => {
@@ -208,9 +199,9 @@ const Navbar = (props) => {
                 className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white"
                 sx={{ fontSize: "2rem", color: "white" }}
               />
-            </button>
-          </div>
+            </button> */}
         </div>
+        {/* </div> */}
       </div>
     </div>
   );

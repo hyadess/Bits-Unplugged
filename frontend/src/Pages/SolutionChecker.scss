@@ -27,15 +27,14 @@ textarea:hover {
   border-color: #ccc; /* Lighter border color on hover */
 }
 .text-display {
-  margin: 15px 0;
+  // margin: 15px 0;
   text-align: left; /* Center-align the text */
   padding: 20px; /* Add some padding for spacing */
-  height: 200px;
+  // height: 200px;
   background-color: #222222; /* Light gray background color */
-  font-size: 20px; /* Adjust the font size */
+  font-size: 1rem; /* Adjust the font size */
   color: #ffffff; /* Text color */
   border: 3px solid #504f4fe7; /* Add a 1px black border to each item */
-
   border-radius: 5px; /* Add rounded corners */
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Add a box shadow for depth */
 }

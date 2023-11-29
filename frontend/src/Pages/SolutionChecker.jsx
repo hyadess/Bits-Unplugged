@@ -103,7 +103,7 @@ export default function SolutionChecker(props) {
       </div>
       <div className="flex flex-col w-full md:w-1/4 h-1/2 md:h-full gap-0">
         <div
-          className="flex flex-row md:flex-col gap-0 h-85% md:h-90%"
+          className="flex flex-row md:flex-col gap-0 h-80% md:h-90%"
           // style={{ height: "100%" }}
         >
           <div className="w-1/2 md:w-full h-full md:h-1/2">
@@ -141,7 +141,7 @@ export default function SolutionChecker(props) {
             borderRadius: "0px",
           }}
           type="submit"
-          class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800 w-full h-15% md:h-10%"
+          class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800 w-full h-20% md:h-10%"
           onClick={submit}
         >
           RUN

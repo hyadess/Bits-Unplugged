@@ -3,7 +3,7 @@ const SetterLayout = (props) => {
   return (
     <div
       className="mx-auto pb-5 overflow-hidden p-5 pt-0 md:p-0 w-full md:w-3/5"
-      style={{ width: "60%" }}
+      // style={{ width: "60%" }}
     >
       {props.children}
     </div>

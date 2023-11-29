@@ -232,7 +232,7 @@ export default function ProblemSetEnv() {
             <button
               className="submit-button"
               class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
-              onClick={deleteProblem}
+              // onClick={deleteProblem}
             >
               DELETE
             </button>

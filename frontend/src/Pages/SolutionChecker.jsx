@@ -137,11 +137,11 @@ export default function SolutionChecker(props) {
           style={{
             float: "right",
             // height: "10%",
-            backgroundColor: "rgb(236, 72, 153)",
+            // backgroundColor: "rgb(236, 72, 153)",
             borderRadius: "0px",
           }}
           type="submit"
-          class="text-white bg-black-600 hover:bg-black-700 focus:ring-4 focus:outline-none focus:bg-pink-300 font-medium  text-lg px-7 py-3 text-center bg-pink-600 hover:bg-pink-700 focus:bg-pink-800 w-full h-15% md:h-10%"
+          class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800 w-full h-15% md:h-10%"
           onClick={submit}
         >
           RUN

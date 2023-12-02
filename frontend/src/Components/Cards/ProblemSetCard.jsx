@@ -8,9 +8,15 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import { Button, IconButton } from "@mui/material";
 import ProblemController from "../../controller/problemController";
-
+import EditIcon from "@mui/icons-material/Edit";
 const problemController = new ProblemController();
-export default function ProblemSetCard({ id, name, deleteAction, is_live }) {
+export default function ProblemSetCard({
+  id,
+  idx,
+  name,
+  deleteAction,
+  is_live,
+}) {
   const navigator = useNavigate();
   const switchPath = (pathname) => {
     navigator(pathname);
@@ -23,28 +29,34 @@ export default function ProblemSetCard({ id, name, deleteAction, is_live }) {
     await problemController.unpublishProblem(id);
   };
   return (
-    <div class="items-center py-4 px-4 ">
+    <div class="items-center w-full">
       <div
         class={
-          "max-w-sm  border border-gray-500 rounded-lg shadow-lg bg-gray-700 border-gray-700"
+          "border border-gray-500 rounded-lg shadow-lg bg-gray-700 border-gray-700 flex flex-row p-4 items-center"
         }
       >
-        <h5 class="mt-4 text-2xl text-center font-bold tracking-tight text-gray-900 text-white">
-          Problem {id}
+        <h5 class="text-2xl text-center font-bold tracking-tight text-gray-900 text-white w-10%">
+          {idx}
         </h5>
-        <h5 class="m-4 text-3xl text-center font-bold tracking-tight text-gray-900 text-primary-500">
+        <h5
+          class="text-2xl md:text-3xl pl-5 font-bold tracking-tight text-gray-900 text-primary-500 w-75% cursor-pointer"
+          onClick={() => switchPath(`/problemSet/${id}`)}
+        >
           {name}
         </h5>
         {/* <img class="w-full" src={image} alt="" /> */}
-        <div className="w-full flex items-center justify-center">
-          <a
+        <div className="w-10% md:w-5% flex items-center justify-center">
+          <IconButton onClick={() => switchPath(`/problemSet/${id}`)}>
+            <EditIcon sx={{ fontSize: "1.5rem", color: "white" }} />
+          </IconButton>
+          {/* <a
             onClick={() => switchPath(`/problemSet/${id}`)}
             class="inline-flex my-4  text-center items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center focus:ring-primary-900"
           >
             <Label class="text-lg text-center font-bold tracking-tight text-gray-900 text-white">
               Get Started
             </Label>
-          </a>
+          </a> */}
         </div>
         {/* <div className="w-full flex items-center justify-center">
           <a
@@ -56,10 +68,15 @@ export default function ProblemSetCard({ id, name, deleteAction, is_live }) {
             </Label>
           </a>
         </div> */}
-        <div
-          className="hbox pr-1 pl-1"
-          style={{ justifyContent: "space-between", alignItems: "center" }}
-        >
+        <div className="w-10% md:w-5% flex items-center justify-center">
+          {/* <button
+            className="submit-button"
+            class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800"
+            onClick={updateAll}
+          >
+            PUBLISH
+          </button> */}
+
           {is_live == 1 ? (
             <IconButton onClick={() => unpublishProblem()}>
               <CheckCircleIcon sx={{ fontSize: "1.5rem", color: "green" }} />
@@ -69,14 +86,28 @@ export default function ProblemSetCard({ id, name, deleteAction, is_live }) {
               <AddTaskIcon sx={{ fontSize: "1.5rem" }} />
             </IconButton>
           )}
+        </div>
 
+        <div className="w-10% md:w-5% flex items-center justify-center">
           <IconButton onClick={() => deleteAction(id)}>
             <DeleteIcon
               variant="outlined"
-              sx={{ fontSize: "1.5rem", color: "white" }}
+              sx={{ fontSize: "1.5rem", color: "#cc4c3c" }}
             />
           </IconButton>
+          {/* <button
+            className="submit-button"
+            class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+            // onClick={() => deleteAction(id)}
+          >
+            DELETE
+          </button> */}
         </div>
+
+        {/* <div
+          className="hbox pr-1 pl-1 w-20%"
+          style={{ justifyContent: "space-between", alignItems: "center" }}
+        ></div> */}
       </div>
     </div>
   );

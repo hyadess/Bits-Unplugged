@@ -22,6 +22,9 @@ const Navbar = (props) => {
       const res = await profileController.getProfile();
       if (res.success) {
         setUser(res.data[0]);
+      } else {
+        authController.logout();
+        switchPath("/login");
       }
       setType(cookies.get("type"));
     }

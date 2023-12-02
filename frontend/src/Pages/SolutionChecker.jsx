@@ -141,7 +141,7 @@ export default function SolutionChecker(props) {
             borderRadius: "0px",
           }}
           type="submit"
-          class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800 w-full h-20% md:h-10%"
+          class="text-white font-bold rounded-lg text-lg md:text-sm px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800 w-full h-20% md:h-10%"
           onClick={submit}
         >
           RUN

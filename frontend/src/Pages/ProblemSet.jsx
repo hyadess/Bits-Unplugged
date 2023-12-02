@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ProblemSetCard from "../Components/Cards/ProblemSetCard";
 import ProblemController from "../controller/problemController";
 import TopicController from "../controller/topicController";
+import TableContainer from "../Components/Containers/TableContainer";
 import CustomCard from "../Components/Cards/CustomCard";
 import { Label } from "react-konva";
 import CardContainer from "../Components/Containers/CardContainer";
@@ -83,7 +84,7 @@ const ProblemSet = () => {
         </div>
       </div>
 
-      <div class=" mt-5 bg-gray-800">
+      {/* <div class=" mt-5 bg-gray-800">
         <div class="gap-8 items-center py-4 px-4 mx-auto max-w-screen-2xl xl:gap-10 md:grid md:grid-cols-2 sm:py-16 sm:pb-0 lg:px-10">
           <div class="mt-4 md:mt-0">
             <h2 class="mb-4 text-center md:text-left text-3xl tracking-tight font-extrabold text-gray-900 text-white">
@@ -95,9 +96,9 @@ const ProblemSet = () => {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      {!loading && (
+      {/* {!loading && (
         <CardContainer>
           {topicList.map((topic, index) => (
             <CustomCard
@@ -109,9 +110,9 @@ const ProblemSet = () => {
             />
           ))}
         </CardContainer>
-      )}
+      )} */}
 
-      <div class=" mt-5 bg-gray-800">
+      {/* <div class=" mt-5 bg-gray-800">
         <div class="gap-8 items-center py-4 px-4 mx-auto max-w-screen-2xl xl:gap-10 md:grid md:grid-cols-2 sm:py-16 sm:pb-0 lg:px-10">
           <div class="mt-4 md:mt-0">
             <h2 class="mb-4 text-center md:text-left text-3xl tracking-tight font-extrabold text-gray-900 text-white">
@@ -123,21 +124,33 @@ const ProblemSet = () => {
             </p>
           </div>
         </div>
+      </div> */}
+
+      <div className="w-full flex items-center justify-center">
+        <a
+          onClick={() => switchPath("/topics")}
+          class="w-full justify-center inline-flex my-8  text-center items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center focus:ring-primary-900"
+        >
+          <h5 class="text-lg text-center font-bold tracking-tight text-gray-900 text-white">
+            New Problem
+          </h5>
+        </a>
       </div>
 
       {!loading && (
-        <CardContainer>
+        <TableContainer>
           {problemList
             .sort((a, b) => a.problem_id - b.problem_id)
             .map((prob, index) => (
               <ProblemSetCard
+                idx={index + 1}
                 id={prob.problem_id}
                 name={prob.title}
                 deleteAction={deleteAProblem}
                 is_live={prob.is_live}
               />
             ))}
-        </CardContainer>
+        </TableContainer>
       )}
     </div>
   );

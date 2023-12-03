@@ -64,90 +64,98 @@ export default function ProblemsCanvas() {
 
   return (
     <div>
-      <div class="  bg-gray-900">
-        <div class="flex flex-col py-4 mx-auto max-w-screen-xl sm:pt-16 gap-3">
-          <div class="mt-4 md:mt-0">
-            <h2 class="text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
-              <span class=" text-pink-500">{title}</span>
-            </h2>
-          </div>
-          <span class="text-gray-400 text-xl">
-            {problem ? problem.topic_name + " > " + problem.series_name : ""}
-          </span>
-        </div>
-        <div class="items-center mx-auto max-w-screen-2xl">
-          <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg text-gray-400">
-            <div
-              style={{
-                width: "100%",
-                padding: "30px 0",
-                fontSize: "25px",
-                color: "azure",
-                border: "none",
-                borderRadius: "20px",
-              }}
-            >
-              <h3>
-                <Latex>{statement}</Latex>
-              </h3>
+      {problem && canvas_id && canvasRef ? (
+        <>
+          <div class="  bg-gray-900">
+            <div class="flex flex-col py-4 mx-auto max-w-screen-xl sm:pt-16 gap-3">
+              <div class="mt-4 md:mt-0">
+                <h2 class="text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
+                  <span class=" text-pink-500">{title}</span>
+                </h2>
+              </div>
+              <span class="text-gray-400 text-xl">
+                {problem
+                  ? problem.topic_name + " > " + problem.series_name
+                  : ""}
+              </span>
             </div>
-          </p>
-        </div>
-      </div>
+            <div class="items-center mx-auto max-w-screen-2xl">
+              <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg text-gray-400">
+                <div
+                  style={{
+                    width: "100%",
+                    padding: "30px 0",
+                    fontSize: "25px",
+                    color: "azure",
+                    border: "none",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <h3>
+                    <Latex>{statement}</Latex>
+                  </h3>
+                </div>
+              </p>
+            </div>
+          </div>
 
-      <div className="component-container">
-        {canvas_id && canvasRef ? (
-          <CanvasRedirection
-            id={canvas_id}
-            input={input}
-            setInput={setInput}
-            ref={canvasRef}
-          />
-        ) : (
-          <></>
-        )}
-        <div
-          className="flex py-3"
-          style={{ justifyContent: "space-between", marginLeft: "auto" }}
+          <div className="component-container">
+            {canvas_id && canvasRef ? (
+              <CanvasRedirection
+                id={canvas_id}
+                input={input}
+                setInput={setInput}
+                ref={canvasRef}
+              />
+            ) : (
+              <></>
+            )}
+            <div
+              className="flex py-3"
+              style={{ justifyContent: "space-between", marginLeft: "auto" }}
+            >
+              {/* <button
+          style={{ float: "right" }}
+          type="submit"
+          class="text-white bg-pink-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800"
+          onClick={() => {
+            problemController.checkSolution(
+              problem.solution_checker,
+              canvasRef.current.getData()
+            );
+          }}
         >
-          {/* <button
-            style={{ float: "right" }}
-            type="submit"
-            class="text-white bg-pink-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800"
-            onClick={() => {
-              problemController.checkSolution(
-                problem.solution_checker,
-                canvasRef.current.getData()
-              );
-            }}
-          >
-            Submit
-          </button> */}
+          Submit
+        </button> */}
 
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => canvasRef.current.handleReset()}
-            startIcon={
-              <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-            }
-          >
-            Reset
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => {
-              problemController.checkSolution(
-                problem.solution_checker,
-                canvasRef.current.getData()
-              );
-            }}
-            endIcon={<SendIcon sx={{ fontSize: "2rem", color: "white" }} />}
-          >
-            Submit
-          </Button>
-        </div>
-      </div>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => canvasRef.current.handleReset()}
+                startIcon={
+                  <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+                }
+              >
+                Reset
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  problemController.checkSolution(
+                    problem.solution_checker,
+                    canvasRef.current.getData()
+                  );
+                }}
+                endIcon={<SendIcon sx={{ fontSize: "2rem", color: "white" }} />}
+              >
+                Submit
+              </Button>
+            </div>
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

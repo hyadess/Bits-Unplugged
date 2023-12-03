@@ -73,7 +73,7 @@ export default function ProblemsCanvas() {
                   <span class=" text-pink-500">{title}</span>
                 </h2>
               </div>
-              <span class="text-gray-400 text-xl">
+              <span class="text-gray-500 text-xl">
                 {problem
                   ? problem.topic_name + " > " + problem.series_name
                   : ""}

@@ -134,9 +134,9 @@ const ProblemSet = () => {
       <div className="w-full flex items-center justify-center">
         <a
           onClick={() => switchPath("/topics")}
-          class="w-full justify-center inline-flex my-8  text-center items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center focus:ring-primary-900"
+          class="w-full justify-center inline-flex my-8  text-center items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm p-4 text-center focus:ring-primary-900 cursor-pointer"
         >
-          <h5 class="text-lg text-center font-bold tracking-tight text-gray-900 text-white">
+          <h5 class="text-2xl md:text-3xl text-center font-bold tracking-tight text-gray-900 text-white">
             New Problem
           </h5>
         </a>

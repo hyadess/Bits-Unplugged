@@ -39,7 +39,7 @@ function ProblemStatement(props) {
           className="w-full md:w-1/2 border-2 border-gray-200"
           style={{
             height: "50vh",
-            padding: "30px",
+            padding: "20px",
             fontSize: "25px",
             color: "azure",
             marginTop: "20px",

@@ -112,9 +112,9 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 bg-gray-900">
-      <section class="bg-gray-50 bg-gray-900">
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <div className="body bg-gray-900">
+      <section class="bg-gray-900">
+        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto">
           <a
             href="#"
             class="flex items-center mb-6 text-2xl font-semibold text-gray-900 text-white"
@@ -194,7 +194,7 @@ const Signup = () => {
                     onChange={(e) => setUserName(e.target.value)}
                   />
                 </div>
-                <div>
+                {/* <div>
                   <label
                     for="date"
                     class="block mb-2 text-sm font-medium text-gray-900 text-white"
@@ -210,7 +210,7 @@ const Signup = () => {
                     required="true"
                     onChange={(e) => setDateOfBirth(e.target.value)}
                   />
-                </div>
+                </div> */}
                 {/* <div>
                   <label
                     for="institution"

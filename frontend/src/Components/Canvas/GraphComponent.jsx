@@ -35,7 +35,9 @@ const GraphComponent = (props, ref) => {
 
   useImperativeHandle(ref, () => {
     return {
-      handleReset: () => {},
+      handleReset: () => {
+        // korchi darao
+      },
       getData: () => exportGraphData(),
     };
   });

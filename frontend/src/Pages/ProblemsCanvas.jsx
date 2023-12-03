@@ -69,7 +69,7 @@ export default function ProblemsCanvas() {
           <div class="  bg-gray-900">
             <div class="flex flex-col py-4 mx-auto max-w-screen-xl sm:pt-16 gap-3">
               <div class="mt-4 md:mt-0">
-                <h2 class="text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
+                <h2 class="text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
                   <span class=" text-pink-500">{title}</span>
                 </h2>
               </div>
@@ -80,7 +80,7 @@ export default function ProblemsCanvas() {
               </span>
             </div>
             <div class="items-center mx-auto max-w-screen-2xl">
-              <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg text-gray-400">
+              <p class="mb-6 text-left  font-light text-gray-500 md:text-lg text-gray-400">
                 <div
                   style={{
                     width: "100%",

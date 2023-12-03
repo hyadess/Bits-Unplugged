@@ -4,6 +4,8 @@ import axios from "axios";
 import ProblemController from "../controller/problemController";
 import CustomCard from "../Components/Cards/CustomCard";
 import CardContainer from "../Components/Containers/CardContainer";
+import ProblemCard from "../Components/Cards/ProblemCard";
+import TableContainer from "../Components/Containers/TableContainer";
 
 const problemController = new ProblemController();
 
@@ -57,9 +59,10 @@ export default function Problems() {
       </div>
 
       {!loading && (
-        <CardContainer>
+        <TableContainer>
           {problemList.map((problem, index) => (
-            <CustomCard
+            <ProblemCard
+              idx={index + 1}
               id={`Problem ${index + 1}`}
               name={problem.title}
               image={problem.logo}
@@ -67,7 +70,7 @@ export default function Problems() {
               action="Get Started"
             />
           ))}
-        </CardContainer>
+        </TableContainer>
       )}
     </div>
   );

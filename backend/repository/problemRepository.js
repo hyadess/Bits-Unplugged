@@ -24,9 +24,14 @@ class ProblemsRepository extends Repository {
   };
   getProblemsBySeries = async (series_id) => {
     const query = `
-    SELECT * FROM Problem
-    WHERE series_id = $1
-    AND is_live = TRUE;
+      SELECT P.*, S.canvas_id, S.name as series_name, T.name as topic_name 
+      FROM Problem P
+      JOIN Series S
+      ON P.series_id = S.series_id
+      JOIN Topic T
+      ON S.topic_id = T.topic_id
+      WHERE S.series_id = $1
+      AND P.is_live = TRUE;
     `;
     const params = [series_id];
     const result = await this.query(query, params);
@@ -46,10 +51,12 @@ class ProblemsRepository extends Repository {
   };
   getProblemById = async (problem_id) => {
     const query = `
-    SELECT P.*, A.canvas_id 
+    SELECT P.*, S.canvas_id, S.name as series_name, T.name as topic_name 
     FROM Problem P
-    JOIN Series A
-    ON P.series_id = A.series_id
+    JOIN Series S
+    ON P.series_id = S.series_id
+    JOIN Topic T
+    ON S.topic_id = T.topic_id
     WHERE problem_id = $1;
     `;
     const params = [problem_id];

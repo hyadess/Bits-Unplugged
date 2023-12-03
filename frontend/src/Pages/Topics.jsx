@@ -5,6 +5,7 @@ import TopicController from "../controller/topicController";
 import CustomCard from "../Components/Cards/CustomCard";
 import CardContainer from "../Components/Containers/CardContainer";
 import Cookies from "universal-cookie";
+import Title from "../Components/Title";
 const topicController = new TopicController();
 
 export default function Problems() {
@@ -45,7 +46,14 @@ export default function Problems() {
   }, []);
   return (
     <div>
-      <div class=" bg-gray-900">
+      <Title
+        title={`Problem ${type == 0 ? "Solving" : "Setting"}`}
+        sub_title={`${
+          type == 0 ? "Solve" : "Set"
+        } problems for particular series right
+        on our site`}
+      />
+      {/* <div class=" bg-gray-900">
         <div class="gap-8 items-center py-4 mx-auto max-w-screen-xl xl:gap-16 sm:pt-16">
           <div class="mt-4 md:mt-0">
             <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
@@ -59,8 +67,8 @@ export default function Problems() {
               on our site
             </p>
           </div>
-      </div>
-      </div>
+        </div>
+      </div> */}
 
       {!loading && (
         <CardContainer>

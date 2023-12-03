@@ -4,6 +4,7 @@ import AuthController from "../controller/authController";
 import { useSearchParams, createSearchParams } from "react-router-dom";
 import { CircularProgress, Switch } from "@mui/material";
 import "./Login.scss";
+import Banner from "../Components/Banner";
 const authController = new AuthController();
 const Login = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -53,13 +54,14 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gray-900">
       <section class="bg-gray-900">
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto">
-          <a
+        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto gap-5">
+          {/* <a
             href="#"
             class="flex items-center mb-6 text-2xl font-semibold text-gray-900 text-white"
           >
             Bits Unplugged
-          </a>
+          </a> */}
+          <Banner width={200} height={50} />
           <div class="w-full  rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700">
             <div class="p-6 space-y-6 md:space-y-6 sm:p-10">
               <div className="hbox flex-center">

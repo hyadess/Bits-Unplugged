@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import TopicController from "../controller/topicController";
 import CustomCard from "../Components/Cards/CustomCard";
-
+import CardContainer from "../Components/Containers/CardContainer";
+import Cookies from "universal-cookie";
 const topicController = new TopicController();
 
 export default function Problems() {
+  const [type, setType] = useState(-1);
   const navigator = useNavigate();
   const switchPath = (pathname) => {
     navigator(pathname);
@@ -36,38 +38,46 @@ export default function Problems() {
   };
 
   useEffect(() => {
+    const cookies = new Cookies();
+    setType(cookies.get("type"));
+
     getTopicList();
   }, []);
   return (
-    <div className="flex flex-col min-h-screen dark:bg-gray-900">
-      <div class="bg-white mt-20 dark:bg-gray-900">
-        <div class="gap-8 items-center py-4 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 sm:pb-0 lg:px-10">
+    <div>
+      <div class=" bg-gray-900">
+        <div class="gap-8 items-center py-4 mx-auto max-w-screen-xl xl:gap-16 sm:pt-16">
           <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-              <span class="text-pink-600 dark:text-pink-500">
-                Problem Solving
+            <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
+              <span class=" text-pink-500">
+                Problem {type == 0 ? "Solving" : "Setting"}
               </span>
             </h2>
 
-            <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg dark:text-gray-400">
-              Solve problems for particular series right on our site
+            <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg text-gray-400">
+              {type == 0 ? "Solve" : "Set"} problems for particular series right
+              on our site
             </p>
           </div>
         </div>
       </div>
 
       {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-6 lg:px-6">
+        <CardContainer>
           {topicList.map((topic, index) => (
             <CustomCard
               id={`Topic ${index + 1}`}
               name={topic.name}
               image={topic.logo}
-              path={`/topics/${topic.topic_id}`}
+              path={
+                type == 0
+                  ? `/topics/${topic.topic_id}`
+                  : `/problemSet/topics/${topic.topic_id}`
+              }
               action="View Series"
             />
           ))}
-        </div>
+        </CardContainer>
       )}
     </div>
   );

@@ -28,6 +28,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Cookies from "universal-cookie";
 import AddProblem from "./Pages/AddProblem";
 import Layout from "./Pages/Layout";
+import Navbar from "./Components/Navbar";
+import SolverLayout from "./Pages/SolverLayout";
+import SetterLayout from "./Pages/SetterLayout";
 const showToast = (message, type) => {
   console.log(message, type);
   if (type === "success") toast.success(message, {});
@@ -73,23 +76,97 @@ const App = () => {
       <Router>
         <Routes>
           <Route element={<Private />}>
-            <Route path="/playground" element={<Playground />} />
-            <Route path="/playground/:id" element={<PlaygroundCanvas />} />
-            <Route path="/problem/:id" element={<ProblemsCanvas />} />
-            <Route path="/problems" element={<Problems />} />
-            <Route path="/topics" element={<Topics />} />
-            <Route path="/topics/:id" element={<Series />} />
-            <Route path="/series/:id" element={<Problems />} />
+            <Route
+              path="/playground"
+              element={
+                <SolverLayout>
+                  <Playground />
+                </SolverLayout>
+              }
+            />
+            <Route
+              path="/playground/:id"
+              element={
+                <SolverLayout>
+                  <PlaygroundCanvas />
+                </SolverLayout>
+              }
+            />
+            <Route
+              path="/problem/:id"
+              element={
+                <SolverLayout>
+                  <ProblemsCanvas />
+                </SolverLayout>
+              }
+            />
+            <Route
+              path="/problems"
+              element={
+                <SolverLayout>
+                  <Problems />
+                </SolverLayout>
+              }
+            />
+            <Route
+              path="/topics"
+              element={
+                <SolverLayout>
+                  <Topics />
+                </SolverLayout>
+              }
+            />
+            <Route
+              path="/topics/:id"
+              element={
+                <SolverLayout>
+                  <Series />
+                </SolverLayout>
+              }
+            />
+            <Route
+              path="/series/:id"
+              element={
+                <SolverLayout>
+                  <Problems />
+                </SolverLayout>
+              }
+            />
 
-            <Route path="/problemSet" element={<ProblemSet />} />
+            <Route
+              path="/problemSet"
+              element={
+                <SetterLayout>
+                  <ProblemSet />
+                </SetterLayout>
+              }
+            />
             <Route
               path="/problemSet/topics/:id"
-              element={<ProblemSetSeries />}
+              element={
+                <SetterLayout>
+                  <ProblemSetSeries />
+                </SetterLayout>
+              }
             />
-            <Route path="/problemSet/:prob_id" element={<ProblemSetEnv />} />
+            <Route
+              path="/problemSet/:prob_id"
+              element={
+                <SetterLayout>
+                  <ProblemSetEnv />
+                </SetterLayout>
+              }
+            />
             <Route path="/problemSet/series/:id" element={<AddProblem />} />
 
-            <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/profile/:username"
+              element={
+                <SolverLayout>
+                  <Profile />
+                </SolverLayout>
+              }
+            />
             <Route path="/" element={<Home />} />
           </Route>
           <Route element={<Public />}>

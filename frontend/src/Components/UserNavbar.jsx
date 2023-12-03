@@ -9,7 +9,7 @@ export default function Navbar() {
   };
   return (
     <div
-      className="flex flex-row w-screen z-10 h-20 md:flex-col md:w-screen bg-gray-100 fixed bottom-0 md:top-0 dark:bg-slate-800"
+      className="flex flex-row w-screen z-10 h-20 md:flex-col md:w-screen bg-gray-100 fixed bottom-0 md:top-0 bg-slate-800"
       style={{ alignItems: "space-between", justifyContent: "center" }}
     >
       <div className="flex flex-row">
@@ -26,7 +26,7 @@ export default function Navbar() {
             data-tip="Home"
             onClick={() => switchPath("/")}
           >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+            <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
               Home
             </div>
             <div className="divider hidden md:flex "></div>
@@ -37,7 +37,7 @@ export default function Navbar() {
             data-tip="Home"
             onClick={() => switchPath("/playground")}
           >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+            <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
               Playground
             </div>
             <div className="divider hidden md:flex "></div>
@@ -48,7 +48,7 @@ export default function Navbar() {
             data-tip="Home"
             onClick={() => switchPath("/problems")}
           >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+            <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
               Topics
             </div>
             <div className="divider hidden md:flex "></div>
@@ -59,7 +59,7 @@ export default function Navbar() {
             data-tip="Home"
             onClick={() => switchPath("/problemSet")}
           >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+            <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
               Set Problems
             </div>
             <div className="divider hidden md:flex "></div>
@@ -70,7 +70,7 @@ export default function Navbar() {
             data-tip="Marketplace"
             onClick={() => switchPath("/profile")}
           >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+            <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
               Profile
             </div>
           </button>
@@ -83,7 +83,7 @@ export default function Navbar() {
               switchPath("/");
             }}
           >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 dark:hover:text-pink-500 dark:text-white">
+            <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
               Logout
             </div>
           </button>

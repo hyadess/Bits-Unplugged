@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import ProblemSetCard from "../Components/Cards/ProblemSetCard";
 import ProblemController from "../controller/problemController";
 import TopicController from "../controller/topicController";
+import TableContainer from "../Components/Containers/TableContainer";
 import CustomCard from "../Components/Cards/CustomCard";
 import { Label } from "react-konva";
+import CardContainer from "../Components/Containers/CardContainer";
 const problemController = new ProblemController();
 const topicController = new TopicController();
 
@@ -67,39 +69,37 @@ const ProblemSet = () => {
   }, [problemList]);
 
   return (
-    <div className="flex flex-col min-h-screen dark:bg-gray-900">
-      <div class="bg-white mt-20 dark:bg-gray-900">
-        <div class="gap-8 items-center py-4 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 sm:pb-0 lg:px-10">
+    <div>
+      <div class="  bg-gray-900">
+        <div class="gap-8 items-center py-4 mx-auto max-w-screen-xl xl:gap-16 sm:pt-16">
           <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-              <span class="text-pink-600 dark:text-pink-500">
-                Problem Setting Interface
-              </span>
+            <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
+              <span class=" text-pink-500">Problem Setting Interface</span>
             </h2>
 
-            <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg dark:text-gray-400">
+            <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg text-gray-400">
               Set problems for particular series right on our site
             </p>
           </div>
         </div>
       </div>
 
-      <div class="bg-white mt-5 dark:bg-gray-800">
+      {/* <div class=" mt-5 bg-gray-800">
         <div class="gap-8 items-center py-4 px-4 mx-auto max-w-screen-2xl xl:gap-10 md:grid md:grid-cols-2 sm:py-16 sm:pb-0 lg:px-10">
           <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-center md:text-left text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-              <span class="text-pink-600 dark:text-pink-500">Topics</span>
+            <h2 class="mb-4 text-center md:text-left text-3xl tracking-tight font-extrabold text-gray-900 text-white">
+              <span class=" text-pink-500">Topics</span>
             </h2>
 
-            <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg dark:text-gray-400">
+            <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg text-gray-400">
               select topic on which you want to set a problem
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-8 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-6 lg:px-6">
+      {/* {!loading && (
+        <CardContainer>
           {topicList.map((topic, index) => (
             <CustomCard
               id={`Topic ${index + 1}`}
@@ -109,38 +109,48 @@ const ProblemSet = () => {
               action="View Series"
             />
           ))}
-        </div>
-      )}
+        </CardContainer>
+      )} */}
 
-      <div class="bg-white mt-5 dark:bg-gray-800">
+      {/* <div class=" mt-5 bg-gray-800">
         <div class="gap-8 items-center py-4 px-4 mx-auto max-w-screen-2xl xl:gap-10 md:grid md:grid-cols-2 sm:py-16 sm:pb-0 lg:px-10">
           <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-center md:text-left text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-              <span class="text-pink-600 dark:text-pink-500">
-                Previous Problems
-              </span>
+            <h2 class="mb-4 text-center md:text-left text-3xl tracking-tight font-extrabold text-gray-900 text-white">
+              <span class=" text-pink-500">Previous Problems</span>
             </h2>
 
-            <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg dark:text-gray-400">
+            <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg text-gray-400">
               see problems set by you
             </p>
           </div>
         </div>
+      </div> */}
+
+      <div className="w-full flex items-center justify-center">
+        <a
+          onClick={() => switchPath("/topics")}
+          class="w-full justify-center inline-flex my-8  text-center items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center focus:ring-primary-900"
+        >
+          <h5 class="text-lg text-center font-bold tracking-tight text-gray-900 text-white">
+            New Problem
+          </h5>
+        </a>
       </div>
 
       {!loading && (
-        <div className="flex flex-row flex-wrap items-center justify-between items-center pb-4 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-4 sm:py-6 lg:px-6">
+        <TableContainer>
           {problemList
             .sort((a, b) => a.problem_id - b.problem_id)
             .map((prob, index) => (
               <ProblemSetCard
+                idx={index + 1}
                 id={prob.problem_id}
                 name={prob.title}
                 deleteAction={deleteAProblem}
                 is_live={prob.is_live}
               />
             ))}
-        </div>
+        </TableContainer>
       )}
     </div>
   );

@@ -47,8 +47,8 @@ export default function ProblemSetSeriesCard({ idx, id, name, image, path }) {
 
   return (
     <div class="items-center py-8 px-4 ">
-      <div class="max-w-sm bg-white border border-gray-500 rounded-lg shadow-lg dark:bg-gray-700 dark:border-gray-700">
-        <h5 class="mt-4 text-2xl text-center font-bold tracking-tight text-gray-900 dark:text-white">
+      <div class="max-w-sm  border border-gray-500 rounded-lg shadow-lg bg-gray-700 border-gray-700">
+        <h5 class="mt-4 text-2xl text-center font-bold tracking-tight text-gray-900 text-white">
           Series {idx}
         </h5>
         <h5 class="mb-4 text-3xl text-center font-bold tracking-tight text-gray-900 text-primary-500">
@@ -63,7 +63,7 @@ export default function ProblemSetSeriesCard({ idx, id, name, image, path }) {
         <div className="w-full flex items-center justify-center">
           <a
             onClick={openModal}
-            class="inline-flex my-8  text-center items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900"
+            class="inline-flex my-8  text-center items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center focus:ring-primary-900"
           >
             <h5 class="text-lg text-center font-bold tracking-tight text-gray-900 text-white">
               Add Problems

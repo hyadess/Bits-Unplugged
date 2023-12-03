@@ -35,7 +35,9 @@ const GraphComponent = (props, ref) => {
 
   useImperativeHandle(ref, () => {
     return {
-      handleReset: () => {},
+      handleReset: () => {
+        importGraphData();
+      },
       getData: () => exportGraphData(),
     };
   });
@@ -207,7 +209,11 @@ const GraphComponent = (props, ref) => {
       const nodeToDelete = selectedNodes[0];
       const updatedNodes = nodes.filter((node) => node !== nodeToDelete);
       let updatedEdges = edges.filter(
-        (edge) => edge.start !== nodeToDelete && edge.end !== nodeToDelete
+        (edge) =>
+          edge.start.x !== nodeToDelete.x &&
+          edge.start.y !== nodeToDelete.y &&
+          edge.end.x !== nodeToDelete.x &&
+          edge.end.y !== nodeToDelete.y
       );
 
       if (selectedEdge != null) {
@@ -320,7 +326,17 @@ const GraphComponent = (props, ref) => {
       setEdges(data.edges);
       console.log(data);
       // console.log(nodes);
-      setNodeIndex(data.nodes.length);
+
+      let maxIndex = 0;
+
+      // Assuming nodes is an array of objects with an 'index' property
+      data.nodes.forEach((node) => {
+        if (node.nodeIndex > maxIndex) {
+          maxIndex = node.nodeIndex;
+        }
+      });
+
+      setNodeIndex(maxIndex+1);
     }
   };
 
@@ -329,7 +345,7 @@ const GraphComponent = (props, ref) => {
   return (
     <div className="graph-container">
       <Stage
-        width={0.8 * window.innerWidth}
+        width={0.6 * window.innerWidth}
         height={0.65 * window.innerHeight}
         onClick={handleCanvasClick}
         ref={stageRef}
@@ -420,7 +436,7 @@ const GraphComponent = (props, ref) => {
                 }
               />
               <Text
-                text={index.toString()} // Display the node number
+                text={node.nodeIndex.toString()} // Display the node number
                 align="center" // Center-align the text
                 verticalAlign="middle" // Vertically align the text
                 fontSize={30} // Set font size

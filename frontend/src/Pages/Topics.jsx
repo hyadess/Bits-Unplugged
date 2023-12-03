@@ -59,7 +59,7 @@ export default function Problems() {
               on our site
             </p>
           </div>
-        </div>
+      </div>
       </div>
 
       {!loading && (
@@ -69,11 +69,7 @@ export default function Problems() {
               id={`Topic ${index + 1}`}
               name={topic.name}
               image={topic.logo}
-              path={
-                type == 0
-                  ? `/topics/${topic.topic_id}`
-                  : `/problemSet/topics/${topic.topic_id}`
-              }
+              path={`/topics/${topic.topic_id}`}
               action="View Series"
             />
           ))}

@@ -23,7 +23,6 @@ import CanvasRedirection from "./Components/Canvas/CanvasRedirection";
 import { ToastContainer, toast } from "react-toastify";
 import ProblemSetEnv from "./Pages/ProblemSetEnv";
 import SolutionChecker from "./Pages/SolutionChecker";
-import ProblemSetSeries from "./Pages/ProblemSetSeries";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "universal-cookie";
 import AddProblem from "./Pages/AddProblem";
@@ -138,14 +137,6 @@ const App = () => {
               element={
                 <SetterLayout>
                   <ProblemSet />
-                </SetterLayout>
-              }
-            />
-            <Route
-              path="/problemSet/topics/:id"
-              element={
-                <SetterLayout>
-                  <ProblemSetSeries />
                 </SetterLayout>
               }
             />

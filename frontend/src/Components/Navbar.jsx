@@ -61,7 +61,7 @@ const Navbar = (props) => {
                 </div>
                 <div className="divider hidden md:flex "></div>
               </button>
-              {type == 0 ? (
+              {/* {type == 0 ? (
                 <button
                   className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
                   style={{ alignItems: "center", justifyContent: "center" }}
@@ -75,7 +75,7 @@ const Navbar = (props) => {
                 </button>
               ) : (
                 <></>
-              )}
+              )} */}
 
               {type == 0 ? (
                 <button

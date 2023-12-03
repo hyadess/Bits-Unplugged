@@ -79,7 +79,7 @@ export default function ProblemSetEnv() {
               ref={canvasRef}
             />
             <div
-              className="flex py-3"
+              className="flex py-5"
               style={{ justifyContent: "space-between", marginLeft: "auto" }}
             >
               <Button

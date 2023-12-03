@@ -330,7 +330,7 @@ const GraphComponent = (props, ref) => {
       let maxIndex = 0;
 
       // Assuming nodes is an array of objects with an 'index' property
-      nodes.forEach((node) => {
+      data.nodes.forEach((node) => {
         if (node.nodeIndex > maxIndex) {
           maxIndex = node.nodeIndex;
         }

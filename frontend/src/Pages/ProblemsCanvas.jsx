@@ -111,7 +111,7 @@ export default function ProblemsCanvas() {
               <></>
             )}
             <div
-              className="flex py-3"
+              className="flex"
               style={{ justifyContent: "space-between", marginLeft: "auto" }}
             >
               {/* <button

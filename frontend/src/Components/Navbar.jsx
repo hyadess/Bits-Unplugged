@@ -5,6 +5,8 @@ import { Avatar, InputAdornment, Typography } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Cookies from "universal-cookie";
 import ProfileController from "../controller/profileController";
+import Logo from "./Logo";
+import Banner from "./Banner";
 const authController = new AuthController();
 const profileController = new ProfileController();
 const Navbar = (props) => {
@@ -40,13 +42,24 @@ const Navbar = (props) => {
       {type >= 0 ? (
         <div className="flex flex-row w-full justify-between md:justify-center">
           <div className="icon flex-2 hidden md:flex h-20 w-1/5">
-            <img
-              src="https://i.postimg.cc/SsnSSJVq/image.png"
+            <div
+              className="p-5"
+              onClick={() => {
+                switchPath("/");
+              }}
+            >
+              <Banner width={180} height={45} />
+              {/* <Logo /> */}
+            </div>
+
+            {/* <img
+              src="%PUBLIC_URL%/icon.png"
+              alt="bitsunplugged"
               style={{ padding: "10px" }}
               onClick={() => {
                 switchPath("/");
               }}
-            />
+            /> */}
           </div>
           <div className="flex justify-start md:justify-center w-8/12 md:w-3/5">
             <>

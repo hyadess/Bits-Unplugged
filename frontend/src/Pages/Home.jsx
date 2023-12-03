@@ -4,6 +4,7 @@ import Footer from "../Components/Footer";
 import TeamCard from "../Components/Cards/TeamCard";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+import Banner from "../Components/Banner";
 
 const Home = () => {
   const [type, setType] = useState(-1);
@@ -14,6 +15,10 @@ const Home = () => {
   }, []);
   return (
     <div>
+      <div className="md:hidden w-full flex items-center justify-center p-5 pb-0">
+        <Banner width={200} height={50} />
+      </div>
+
       <div class="bg-gray-900">
         <div class="gap-8 h-screen items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
           {/* <img

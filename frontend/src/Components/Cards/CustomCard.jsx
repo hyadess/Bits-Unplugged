@@ -32,7 +32,7 @@ const CustomCard = ({ id, name, image, path, action }) => {
             }
             alt=""
           />
-          <div className="w-full flex items-center justify-center">
+          <div className="w-full flex items-center justify-center cursor-pointer">
             <a
               onClick={() => switchPath(path)}
               class="inline-flex my-8  text-center items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center focus:ring-primary-900"

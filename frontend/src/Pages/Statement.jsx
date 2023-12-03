@@ -45,6 +45,7 @@ function ProblemStatement(props) {
             marginTop: "20px",
             // border: "black",
             borderRadius: "20px",
+            overflow: "scroll",
           }}
         >
           <h3>

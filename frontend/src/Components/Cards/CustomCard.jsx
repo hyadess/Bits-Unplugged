@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Zoom } from "@mui/material";
-
+import ImageLoader from "../ImageLoader";
 const CustomCard = ({ id, name, image, path, action }) => {
   const navigator = useNavigate();
   const switchPath = (pathname) => {
@@ -12,13 +12,13 @@ const CustomCard = ({ id, name, image, path, action }) => {
     <Zoom in={true}>
       <div class="items-center py-4 px-4 ">
         <div class="max-w-sm  border border-gray-500 rounded-lg shadow-lg bg-gray-700 border-gray-700">
-          <h5 class="mt-4 text-2xl text-center font-bold tracking-tight text-gray-900 text-white">
+          <h5 class="mt-4 text-2xl text-center font-bold tracking-tight text-gray-900 text-white px-3">
             {id}
           </h5>
-          <h5 class="mb-4 text-3xl text-center font-bold tracking-tight text-gray-900 text-primary-500">
+          <h5 class="mb-4 text-3xl text-center font-bold tracking-tight text-gray-900 text-primary-500 px-3">
             {name}
           </h5>
-          <img
+          {/* <img
             style={{
               width: 500,
               height: 200,
@@ -31,6 +31,21 @@ const CustomCard = ({ id, name, image, path, action }) => {
                 : "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
             }
             alt=""
+          /> */}
+
+          <ImageLoader
+            src={
+              image
+                ? image
+                : "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
+            }
+            alt=""
+            style={{
+              width: "100%",
+              height: 200,
+              objectFit: "cover",
+              // width: "100%",
+            }}
           />
           <div className="w-full flex items-center justify-center cursor-pointer">
             <a

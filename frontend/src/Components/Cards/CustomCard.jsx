@@ -41,7 +41,7 @@ const CustomCard = ({ id, name, image, path, action }) => {
             }
             alt=""
             style={{
-              width: "100%",
+              width: 500,
               height: 200,
               objectFit: "cover",
               // width: "100%",

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./ImageLoader.scss";
-function ImageLoader({ src, alt, style }) {
+function ImageLoader({ src, alt, style, className }) {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
@@ -8,7 +8,10 @@ function ImageLoader({ src, alt, style }) {
       <img
         src={src}
         alt={alt}
-        className={`smooth-image image-${imageLoaded ? "visible" : "hidden"}`}
+        className={
+          `smooth-image image-${imageLoaded ? "visible" : "hidden"} ` +
+          className
+        }
         onLoad={() => setImageLoaded(true)}
         style={style}
       />

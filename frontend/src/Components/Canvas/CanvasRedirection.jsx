@@ -55,7 +55,7 @@ const CanvasRedirection = (props, ref) => {
   }, []);
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", marginTop: "20px" }}>
       <Zoom in={true}>
         <div className="canvas-container">
           {DynamicComponent && (

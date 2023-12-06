@@ -5,6 +5,7 @@ import TeamCard from "../Components/Cards/TeamCard";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import Banner from "../Components/Banner";
+import ImageLoader from "../Components/ImageLoader";
 
 const Home = () => {
   const [type, setType] = useState(-1);
@@ -26,8 +27,9 @@ const Home = () => {
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
             alt="dashboard image"
           /> */}
-          <img
-            class="w-full block"
+
+          <ImageLoader
+            className="w-full block"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup-dark.svg"
             alt="dashboard image"
           />
@@ -81,43 +83,43 @@ const Home = () => {
               your journey
             </p>
           </div>
-          <div className="grid grid-cols-2">
-            <TeamCard
+          <div className="grid grid-cols-1 md:grid-cols-3 place-items-center mx-auto gap-8 h-full w-full md:w-75%">
+            {/* <TeamCard
               name="Nazmus Sakib"
               position="1905061"
               detail="Worked on the Red Black Tree Implementation"
-              image="https://i.pinimg.com/564x/7c/0b/89/7c0b8922957831dc3ef513b08157de73.jpg"
+              image="https://i.guim.co.uk/img/media/ef8492feb3715ed4de705727d9f513c168a8b196/37_0_1125_675/master/1125.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=d456a2af571d980d8b2985472c262b31"
             />
             <TeamCard
               name="Arnab Bhattacharje"
               position="1905065"
               detail="Worked on database"
               image="https://dgbijzg00pxv8.cloudfront.net/6eb7968b-189a-4950-be66-2596c01538b5/000000-0000000000/41934988350297194397358372099130021676442103478114883670507566882701035188871/ITEM_PREVIEW1.jpeg "
-            />
+            /> */}
             <TeamCard
               name="Sayem Shahad Soummo"
               position="1905064"
-              detail="Worked on Problem setting"
-              image="https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149622021.jpg"
+              detail="Frontend Developer"
+              image="https://i.pinimg.com/736x/ec/9d/ac/ec9dac50ce3b1faa401a3ad7ea1711de.jpg"
             />
             <TeamCard
               name="Mahir Labib Dihan"
               position="1905072"
-              detail="Worked on the backend"
-              image="https://i.guim.co.uk/img/media/ef8492feb3715ed4de705727d9f513c168a8b196/37_0_1125_675/master/1125.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=d456a2af571d980d8b2985472c262b31"
+              detail="Devops"
+              image="https://i.pinimg.com/564x/7c/0b/89/7c0b8922957831dc3ef513b08157de73.jpg"
             />
             <TeamCard
               name="Souvik Ghosh"
               position="1905073"
-              detail="Worked on Problem solving"
-              image="https://i.pinimg.com/736x/ec/9d/ac/ec9dac50ce3b1faa401a3ad7ea1711de.jpg"
+              detail="Backend Developer"
+              image="https://openseauserdata.com/files/1d823e6999a056302a4415abf07f2c10.jpg"
             />
-            <TeamCard
+            {/* <TeamCard
               name="Salman Sayeed"
               position="1905079"
               detail="Worked on the frontend"
-              image="https://openseauserdata.com/files/1d823e6999a056302a4415abf07f2c10.jpg"
-            />
+              image="https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149622021.jpg"
+            /> */}
           </div>
         </div>
       </section>

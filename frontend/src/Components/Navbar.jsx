@@ -42,12 +42,7 @@ const Navbar = (props) => {
       {type >= 0 ? (
         <div className="flex flex-row w-full justify-between md:justify-center">
           <div className="icon flex-2 hidden md:flex h-20 w-1/5">
-            <div
-              className="p-5"
-              onClick={() => {
-                switchPath("/");
-              }}
-            >
+            <div className="p-5" onClick={() => navigator("/")}>
               <Banner width={180} height={45} />
               {/* <Logo /> */}
             </div>
@@ -67,7 +62,9 @@ const Navbar = (props) => {
                 className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
                 style={{ alignItems: "center", justifyContent: "center" }}
                 data-tip="Home"
-                onClick={() => switchPath("/")}
+                onClick={() =>
+                  type == 0 ? navigator("/topics") : navigator("/problemSet")
+                }
               >
                 <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
                   Home
@@ -90,7 +87,7 @@ const Navbar = (props) => {
                 <></>
               )} */}
 
-              {type == 0 ? (
+              {/* {type == 0 ? (
                 <button
                   className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
                   style={{ alignItems: "center", justifyContent: "center" }}
@@ -104,9 +101,9 @@ const Navbar = (props) => {
                 </button>
               ) : (
                 <></>
-              )}
+              )} */}
 
-              {type == 1 ? (
+              {/* {type == 1 ? (
                 <button
                   className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
                   style={{ alignItems: "center", justifyContent: "center" }}
@@ -120,7 +117,7 @@ const Navbar = (props) => {
                 </button>
               ) : (
                 <></>
-              )}
+              )} */}
               <button
                 className="icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
                 style={{ alignItems: "center", justifyContent: "center" }}

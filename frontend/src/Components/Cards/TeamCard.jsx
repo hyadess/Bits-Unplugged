@@ -4,7 +4,7 @@ import ImageLoader from "../ImageLoader";
 export default function TeamCard({ name, image, position, detail }) {
   return (
     <div
-      class="items-center rounded shadow flex flex-col bg-gray-800 border-gray-700  w-52 h-full md:w-64"
+      class="items-center rounded shadow flex flex-col bg-gray-800 border-gray-700  w-75% h-full md:w-64"
       // style={{ width: "250px", height: "100%" }}
     >
       <a href="#">

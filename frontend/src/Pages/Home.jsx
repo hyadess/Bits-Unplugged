@@ -16,8 +16,8 @@ const Home = () => {
   }, []);
   return (
     <div>
-      <div className="md:hidden w-full flex items-center justify-center p-5 pb-0">
-        <Banner width={200} height={50} />
+      <div className="md:hidden w-full flex items-start p-5 pb-0">
+        {/* <Banner width={150} height={50} /> */}
       </div>
 
       <div class="bg-gray-900">

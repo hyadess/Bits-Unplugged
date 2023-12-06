@@ -32,7 +32,7 @@ const PublicNavbar = (props) => {
             {/* <Logo /> */}
           </div>
         </div>
-        <div className="flex justify-start md:justify-center w-8/12 md:w-3/5">
+        <div className="flex md:justify-center w-full md:w-3/5">
           <>
             <button
               className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
@@ -41,7 +41,7 @@ const PublicNavbar = (props) => {
               onClick={() => switchPath("/")}
             >
               <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
-                About Us
+                Home
               </div>
               <div className="divider hidden md:flex "></div>
             </button>
@@ -53,7 +53,7 @@ const PublicNavbar = (props) => {
               onClick={() => switchPath("/")}
             >
               <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
-                Pricing
+                About Us
               </div>
               <div className="divider hidden md:flex "></div>
             </button>
@@ -72,16 +72,16 @@ const PublicNavbar = (props) => {
               className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
               style={{ alignItems: "center", justifyContent: "center" }}
               data-tip="Home"
-              onClick={() => switchPath("/")}
+              onClick={() => switchPath("/login")}
             >
               <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
-                Support
+                Login
               </div>
               <div className="divider hidden md:flex "></div>
             </button>
           </>
         </div>
-        <div className="flex md:flex h-20 w-1/3 md:w-1/5 items-center justify-center"></div>
+        <div className="hidden md:flex h-20 w-1/3 md:w-1/5 items-center justify-center"></div>
         {/* </div> */}
       </div>
     </div>

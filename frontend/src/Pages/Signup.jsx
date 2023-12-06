@@ -123,7 +123,9 @@ const Signup = () => {
             Bits Unplugged
           </a> */}
 
-          <Banner width={200} height={50} />
+          <div onClick={() => navigate("/")} className="cursor-pointer">
+            <Banner width={200} height={50} />
+          </div>
 
           <div class="w-full  rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -295,7 +297,7 @@ const Signup = () => {
                     </button>
                   </div>
                   {showValidationMessage && (
-                    <span class="block mb-2 text-sm font-medium text-gray-900 text-white">
+                    <span class="block mb-2 text-sm font-medium text-gray-900 text-red-500">
                       {validationMessage}
                     </span>
                   )}

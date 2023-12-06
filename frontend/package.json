@@ -29,6 +29,7 @@
     "react-konva": "^18.2.10",
     "react-latex": "^2.0.0",
     "react-lineto": "^3.3.0",
+    "react-loader-spinner": "^5.4.5",
     "react-modal": "^3.16.1",
     "react-router": "^6.15.0",
     "react-router-dom": "^6.15.0",

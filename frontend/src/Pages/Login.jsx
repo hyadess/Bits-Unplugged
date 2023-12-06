@@ -47,7 +47,7 @@ const Login = () => {
       if (res.success) {
         console.log("Logged IN");
         setLoggingIn(true);
-        navigate("/");
+        type == "solver" ? navigate("/topics") : navigate("/problemSet");
       }
     }
   };

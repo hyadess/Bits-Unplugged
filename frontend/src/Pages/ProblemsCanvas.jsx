@@ -99,7 +99,7 @@ export default function ProblemsCanvas() {
             </div>
           </div>
 
-          <div className="component-container">
+          <div className="w-full flex flex-col gap-5">
             {canvas_id && canvasRef ? (
               <CanvasRedirection
                 id={canvas_id}
@@ -111,8 +111,8 @@ export default function ProblemsCanvas() {
               <></>
             )}
             <div
-              className="flex"
-              style={{ justifyContent: "space-between", marginLeft: "auto" }}
+              className="flex flex-row justify-between"
+              // style={{ justifyContent: "space-between", marginLeft: "auto" }}
             >
               {/* <button
           style={{ float: "right" }}

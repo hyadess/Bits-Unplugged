@@ -30,6 +30,12 @@ import Layout from "./Pages/Layout";
 import Navbar from "./Components/Navbar";
 import SolverLayout from "./Pages/SolverLayout";
 import SetterLayout from "./Pages/SetterLayout";
+import { Dialog, DialogContent } from "@mui/material";
+import { Circles } from "react-loader-spinner";
+import Logo from "./Components/Logo";
+import P1 from "./Components/P1";
+import PublicNavbar from "./Components/PublicNavbar";
+// import { ReactComponent as YourSvg } from "../public/manifest.json";
 const showToast = (message, type) => {
   console.log(message, type);
   if (type === "success") toast.success(message, {});
@@ -50,15 +56,36 @@ const Private = () => {
     <Navigate to="/login" />
   );
 };
+
 const Public = () => {
   const cookies = new Cookies();
   const isLoggedIn = !!cookies.get("token");
-  return isLoggedIn ? <Navigate to="/" /> : <Outlet />;
+  const type = cookies.get("type");
+  return isLoggedIn ? (
+    <Navigate to={type == 0 ? "/topics" : "/problemSet"} />
+  ) : (
+    <Outlet />
+  );
 };
-
+var setLoading;
 const App = () => {
+  const [loading, setL] = useState(false);
+  setLoading = setL;
   return (
     <div>
+      <Dialog open={loading}>
+        <DialogContent>
+          <Circles color="#00BFFF" height={100} width={100} />
+          {/* <div style={{ position: "relative" }}>
+            <div style={{ position: "absolute", top: "0" }}>
+              <P1 />
+            </div>
+            <div style={{ position: "absolute" }}>
+              <P1 />
+            </div>
+          </div> */}
+        </DialogContent>
+      </Dialog>
       <ToastContainer
         style={{ width: "270px" }}
         position="top-right"
@@ -158,12 +185,24 @@ const App = () => {
                 </SolverLayout>
               }
             />
-            <Route path="/" element={<Home />} />
           </Route>
           <Route element={<Public />}>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
           </Route>
+          <Route
+            path="/"
+            element={
+              <div className="layout-container">
+                <div className="body bg-gray-900">
+                  <PublicNavbar />
+                  <div className="content mb-20 md:mb-0 md:mt-20 min-h-screen bg-gray-900">
+                    <Home />
+                  </div>
+                </div>
+              </div>
+            }
+          />
         </Routes>
       </Router>
     </div>
@@ -171,4 +210,4 @@ const App = () => {
 };
 
 export default App;
-export { showToast };
+export { showToast, setLoading };

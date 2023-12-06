@@ -62,7 +62,9 @@ const Login = () => {
             Bits Unplugged
           </a> */}
           <>
-            <Banner width={200} height={50} />
+            <div onClick={() => navigate("/")} className="cursor-pointer">
+              <Banner width={200} height={50} />
+            </div>
             <div class="w-full  rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700">
               <div class="p-6 space-y-6 md:space-y-6 sm:p-10">
                 <div className="hbox flex-center">

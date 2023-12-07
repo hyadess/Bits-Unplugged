@@ -196,7 +196,7 @@ const App = () => {
               <div className="layout-container">
                 <div className="body bg-gray-900">
                   <PublicNavbar />
-                  <div className="content mb-20 md:mb-0 md:mt-20 min-h-screen bg-gray-900">
+                  <div className="content mb-20 md:mb-0 min-h-screen bg-gray-900">
                     <Home />
                   </div>
                 </div>

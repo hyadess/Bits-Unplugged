@@ -24,7 +24,7 @@ const SolverLayout = (props) => {
           Put unsolved and bookmarked problems here
         </div>
       </div>
-      <div className="mx-auto pb-5 p-5 pt-0 md:p-0 md:mt-20 overflow-hidden w-full md:w-3/5">
+      <div className="mx-auto pb-5 p-5 pt-0 md:p-0 md:pt-20 min-h-screen overflow-hidden w-full md:w-3/5">
         {props.children}
       </div>
       <div

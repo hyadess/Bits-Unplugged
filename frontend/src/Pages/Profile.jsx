@@ -24,7 +24,7 @@ export default function Profile() {
     //getData()
   }, []);
   return (
-    <div className="flex flex-col min-h-screen bg-gray-900">
+    <div className="flex flex-col bg-gray-900">
       <div class="  bg-gray-900">
         <div class="gap-8 items-center py-4 px-4 mx-auto max-w-screen-2xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 sm:pb-0 lg:px-10">
           <div class="mt-4 md:mt-0">

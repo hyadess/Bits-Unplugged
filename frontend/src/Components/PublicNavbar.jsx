@@ -21,15 +21,15 @@ const PublicNavbar = (props) => {
       style={{ alignItems: "space-between", justifyContent: "center" }}
     >
       <div className="flex flex-row w-full justify-between md:justify-center">
-        <div className="icon flex-2 hidden md:flex h-20 w-1/5">
+        <div className="icon flex-2 hidden md:flex h-20 w-1/5 px-5">
           <div
-            className="p-5"
+            className="p-5 pl-0"
             onClick={() => {
               switchPath("/");
             }}
           >
-            <Banner width={180} height={45} />
-            {/* <Logo /> */}
+            {/* <Banner width={180} height={45} /> */}
+            <Logo />
           </div>
         </div>
         <div className="flex md:justify-center w-full md:w-3/5">

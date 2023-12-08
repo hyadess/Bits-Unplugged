@@ -7,11 +7,13 @@ import Cookies from "universal-cookie";
 import ProfileController from "../controller/profileController";
 import Logo from "./Logo";
 import Banner from "./Banner";
+import SearchBar from "./InputFields/SearchBar";
 const authController = new AuthController();
 const profileController = new ProfileController();
 const Navbar = (props) => {
   const [user, setUser] = useState(null);
   const [type, setType] = useState(-1);
+  const [search, setSearch] = useState(false);
   const navigator = useNavigate();
   const switchPath = (pathname) => {
     navigator(pathname);
@@ -41,12 +43,17 @@ const Navbar = (props) => {
     >
       {type >= 0 ? (
         <div className="flex flex-row w-full justify-between md:justify-center">
-          <div className="icon flex-2 hidden md:flex h-20 w-1/5">
-            <div className="p-5" onClick={() => navigator("/")}>
-              <Banner width={180} height={45} />
-              {/* <Logo /> */}
-            </div>
+          <div className="hidden md:flex h-20 w-1/5 items-center px-5">
+            {!search ? (
+              <div className="p-5 pl-0" onClick={() => navigator("/")}>
+                {/* <Banner width={180} height={45} /> */}
+                <Logo width={180} height={45} />
+              </div>
+            ) : (
+              <></>
+            )}
 
+            <SearchBar label={"user name"} setSearch={setSearch} />
             {/* <img
               src="%PUBLIC_URL%/icon.png"
               alt="bitsunplugged"
@@ -63,7 +70,7 @@ const Navbar = (props) => {
                 style={{ alignItems: "center", justifyContent: "center" }}
                 data-tip="Home"
                 onClick={() =>
-                  type == 0 ? navigator("/topics") : navigator("/problemSet")
+                  type === 0 ? navigator("/topics") : navigator("/problemSet")
                 }
               >
                 <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">

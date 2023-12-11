@@ -12,7 +12,12 @@ const Home = () => {
   const navigator = useNavigate();
   useEffect(() => {
     const cookies = new Cookies();
-    setType(cookies.get("type"));
+    const isLoggedIn = !!cookies.get("token");
+    const userType = cookies.get("type");
+    // if (isLoggedIn) {
+    //   navigator(userType === 0 ? "/topics" : "/problemSet");
+    // }
+    setType(userType);
   }, []);
   return (
     <div>
@@ -49,7 +54,7 @@ const Home = () => {
 
             <a
               onClick={() =>
-                type == 0 ? navigator("/topics") : navigator("/problemSet")
+                type === 0 ? navigator("/topics") : navigator("/problemSet")
               }
               class="inline-flex text-center items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center focus:ring-primary-900 cursor-pointer"
             >

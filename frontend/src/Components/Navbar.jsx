@@ -45,7 +45,7 @@ const Navbar = (props) => {
         <div className="flex flex-row w-full justify-between md:justify-center">
           <div className="hidden md:flex h-20 w-1/5 items-center px-5">
             {!search ? (
-              <div className="p-5 pl-0" onClick={() => navigator("/")}>
+              <div className="p-5 pl-0" onClick={() => navigator("/home")}>
                 {/* <Banner width={180} height={45} /> */}
                 <Logo width={180} height={45} />
               </div>

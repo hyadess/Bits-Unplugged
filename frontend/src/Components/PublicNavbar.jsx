@@ -25,7 +25,7 @@ const PublicNavbar = (props) => {
           <div
             className="p-5 pl-0"
             onClick={() => {
-              switchPath("/");
+              switchPath("/home");
             }}
           >
             {/* <Banner width={180} height={45} /> */}
@@ -38,7 +38,7 @@ const PublicNavbar = (props) => {
               className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
               style={{ alignItems: "center", justifyContent: "center" }}
               data-tip="Home"
-              onClick={() => switchPath("/")}
+              onClick={() => switchPath("/home")}
             >
               <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
                 Home
@@ -50,7 +50,7 @@ const PublicNavbar = (props) => {
               className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
               style={{ alignItems: "center", justifyContent: "center" }}
               data-tip="Home"
-              onClick={() => switchPath("/")}
+              onClick={() => switchPath("/home")}
             >
               <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
                 About Us
@@ -61,7 +61,7 @@ const PublicNavbar = (props) => {
               className="icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
               style={{ alignItems: "center", justifyContent: "center" }}
               data-tip="Marketplace"
-              onClick={() => switchPath("/")}
+              onClick={() => switchPath("/home")}
             >
               <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
                 Features

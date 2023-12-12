@@ -7,6 +7,7 @@ import {
   Routes,
   Navigate,
   Outlet,
+  useNavigate,
 } from "react-router-dom";
 import Playground from "./Pages/Playground";
 import Problems from "./Pages/Problems";
@@ -19,7 +20,7 @@ import Topics from "./Pages/Topics";
 import Series from "./Pages/Series";
 import ProblemSet from "./Pages/ProblemSet";
 import GraphComponent from "./Components/Canvas/GraphComponent";
-import CanvasRedirection from "./Components/Canvas/CanvasRedirection";
+import CanvasContainer from "./Components/Canvas/CanvasContainer";
 import { ToastContainer, toast } from "react-toastify";
 import ProblemSetEnv from "./Pages/ProblemSetEnv";
 import SolutionChecker from "./Pages/SolutionChecker";
@@ -62,7 +63,7 @@ const Public = () => {
   const isLoggedIn = !!cookies.get("token");
   const type = cookies.get("type");
   return isLoggedIn ? (
-    <Navigate to={type == 0 ? "/topics" : "/problemSet"} />
+    <Navigate to={type === 0 ? "/topics" : "/problemSet"} />
   ) : (
     <Outlet />
   );
@@ -70,6 +71,17 @@ const Public = () => {
 var setLoading;
 const App = () => {
   const [loading, setL] = useState(false);
+  const [type, setType] = useState(-1);
+  // const navigator = useNavigate();
+  useEffect(() => {
+    const cookies = new Cookies();
+    const isLoggedIn = !!cookies.get("token");
+    const userType = cookies.get("type");
+    // if (isLoggedIn) {
+    //   navigator(userType === 0 ? "/topics" : "/problemSet");
+    // }
+    setType(isLoggedIn);
+  }, []);
   setLoading = setL;
   return (
     <div>
@@ -124,6 +136,14 @@ const App = () => {
                 <SolverLayout>
                   <ProblemsCanvas />
                 </SolverLayout>
+              }
+            />
+            <Route
+              path="/problem/:id/preview"
+              element={
+                <SetterLayout>
+                  <ProblemsCanvas />
+                </SetterLayout>
               }
             />
             <Route
@@ -192,6 +212,17 @@ const App = () => {
           </Route>
           <Route
             path="/"
+            element={
+              <Navigate
+                replace
+                to={
+                  type === 0 ? "/topics" : type === 1 ? "/problemSet" : "/home"
+                }
+              />
+            }
+          />
+          <Route
+            path="/home"
             element={
               <div className="layout-container">
                 <div className="body bg-gray-900">

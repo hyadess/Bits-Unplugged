@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import CanvasRedirection from "../Components/Canvas/CanvasRedirection";
+import CanvasContainer from "../Components/Canvas/CanvasContainer";
 import ProblemController from "../controller/problemController";
 import { Button } from "@mui/material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
@@ -52,7 +52,7 @@ export default function ProblemsCanvas() {
 
   const renderComponent = () => {
     return canvas_id ? (
-      <CanvasRedirection id={canvas_id} input={input} setInput={setInput} />
+      <CanvasContainer id={canvas_id} input={input} setInput={setInput} />
     ) : (
       <></>
     );
@@ -101,10 +101,11 @@ export default function ProblemsCanvas() {
 
           <div className="w-full flex flex-col gap-5">
             {canvas_id && canvasRef ? (
-              <CanvasRedirection
+              <CanvasContainer
                 id={canvas_id}
                 input={input}
                 setInput={setInput}
+                mode={"preview"}
                 ref={canvasRef}
               />
             ) : (

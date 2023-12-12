@@ -123,7 +123,7 @@ const Signup = () => {
             Bits Unplugged
           </a> */}
 
-          <div onClick={() => navigate("/")} className="cursor-pointer">
+          <div onClick={() => navigate("/home")} className="cursor-pointer">
             <Banner width={200} height={50} />
           </div>
 

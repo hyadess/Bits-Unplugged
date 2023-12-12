@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import CanvasRedirection from "../Components/Canvas/CanvasRedirection";
+import CanvasRedirection from "../Components/Canvas/CanvasContainer";
 import ProblemController from "../controller/problemController";
 import { Button } from "@mui/material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";

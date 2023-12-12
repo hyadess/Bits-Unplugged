@@ -3,7 +3,7 @@ import { Route, useParams } from "react-router-dom";
 import GraphComponent from "./GraphComponent";
 import TowerOfHanoi from "./TowerOfHanoi";
 import CanvasController from "../../controller/canvasController";
-import "./CanvasRedirection.scss";
+import "./CanvasContainer.scss";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Save";

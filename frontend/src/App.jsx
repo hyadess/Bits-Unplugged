@@ -20,7 +20,7 @@ import Topics from "./Pages/Topics";
 import Series from "./Pages/Series";
 import ProblemSet from "./Pages/ProblemSet";
 import GraphComponent from "./Components/Canvas/GraphComponent";
-import CanvasRedirection from "./Components/Canvas/CanvasRedirection";
+import CanvasRedirection from "./Components/Canvas/CanvasContainer";
 import { ToastContainer, toast } from "react-toastify";
 import ProblemSetEnv from "./Pages/ProblemSetEnv";
 import SolutionChecker from "./Pages/SolutionChecker";

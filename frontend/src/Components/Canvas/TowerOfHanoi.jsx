@@ -406,6 +406,7 @@ const TowerOfHanoi = (props, ref) => {
         duration: 0.1,
       });
     }
+    setHoveredPeg(null);
   };
   const pegElements = pegs.map((peg, index) => (
     <>

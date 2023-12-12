@@ -4,6 +4,7 @@ import GraphComponent from "./GraphComponent";
 import TowerOfHanoi from "./TowerOfHanoi";
 import CanvasController from "../../controller/canvasController";
 import "./CanvasContainer.scss";
+import Cookies from "universal-cookie";
 import InfoIcon from "@mui/icons-material/Info";
 import {
   Button,
@@ -17,7 +18,7 @@ import {
 import { makeStyles } from "@mui/styles";
 import SettingsIcon from "@mui/icons-material/Settings";
 const canvasController = new CanvasController();
-
+const cookies = new Cookies();
 const useStyles = makeStyles({
   select: {
     "&:before": {
@@ -38,7 +39,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CanvasRedirection = (props, ref) => {
+const CanvasContainer = (props, ref) => {
   const classes = useStyles();
   const id = props.id;
   // const componentName = "GraphComponent";
@@ -48,6 +49,8 @@ const CanvasRedirection = (props, ref) => {
   const [canvasInfo, seCanvasInfo] = useState(null);
   const [settings, setSettings] = useState(false);
   const [params, setParams] = useState({});
+  const [uiParams, setUiParams] = useState({});
+  const [type, setType] = useState(-1);
   const loadComponent = async (name) => {
     try {
       const module = await import(`./${name}`);
@@ -69,6 +72,7 @@ const CanvasRedirection = (props, ref) => {
         setSelectedComponent(match[0].classname);
         seCanvasInfo(match[0].info);
         setParams(match[0].params);
+        setUiParams(match[0].ui_params);
         console.log(match[0].params);
       }
     }
@@ -87,6 +91,7 @@ const CanvasRedirection = (props, ref) => {
 
   useEffect(() => {
     getCanvasList();
+    setType(cookies.get("type"));
   }, []);
 
   const snakeCaseToTitleCase = (input) => {
@@ -96,10 +101,185 @@ const CanvasRedirection = (props, ref) => {
       .join(" ");
   };
 
+  const SettingsMenu = () => {
+    return (
+      <>
+        {settings ? (
+          <div
+            className="flex flex-col p-5 w-30% bg-slate-900 rounded-lg shadow-lg"
+            style={{
+              position: "absolute",
+              top: "4rem",
+              right: "2rem",
+              backgroundColor: "rgba(17, 24, 39, 0.9)",
+            }}
+          >
+            {props.mode == "preview" ? (
+              <>
+                {Object.keys(uiParams).map((key, index) =>
+                  uiParams[key].type == "switch" ? (
+                    <div className="flex flex-row justify-between items-center">
+                      <h1 className="text-white">
+                        {snakeCaseToTitleCase(key)}
+                      </h1>
+                      <Switch
+                        checked={uiParams[key].value}
+                        onChange={() => {
+                          setUiParams((prevJson) => ({
+                            ...prevJson,
+                            [key]: {
+                              ...prevJson[key],
+                              value: !prevJson[key].value, // Toggle the value or set a new value as needed
+                            },
+                          }));
+                        }}
+                      />
+                    </div>
+                  ) : uiParams[key].type == "select" ? (
+                    <div className="flex flex-row justify-between items-center gap-5">
+                      <h1 className="text-white">
+                        {snakeCaseToTitleCase(key)}
+                      </h1>
+                      <Select
+                        fullWidth
+                        required
+                        id="outlined-adornment"
+                        value={uiParams[key].value}
+                        size="small"
+                        onChange={(e) =>
+                          setUiParams((prevJson) => ({
+                            ...prevJson,
+                            [key]: {
+                              ...prevJson[key],
+                              value: e.target.value, // Toggle the value or set a new value as needed
+                            },
+                          }))
+                        }
+                        // input={<OutlinedInput label={props.label} />}
+                        // MenuProps={MenuProps}
+                        sx={{
+                          color: "white",
+                          ".MuiOutlinedInput-notchedOutline": {
+                            borderColor: "rgba(228, 219, 233, 0.25)",
+                          },
+                          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "rgba(228, 219, 233, 0.25)",
+                          },
+                          "&:hover .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "rgba(228, 219, 233, 0.25)",
+                          },
+                          ".MuiSvgIcon-root ": {
+                            fill: "white !important",
+                          },
+                        }}
+                        // // MenuProps={MenuProps}
+                      >
+                        {uiParams[key].list.map((value, index) => (
+                          <MenuItem
+                            key={value}
+                            value={value}
+                            // sx={{ height: "2rem" }}
+                            // style={getStyles(name, personName, theme)}
+                          >
+                            {snakeCaseToTitleCase(value)}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </div>
+                  ) : (
+                    <></>
+                  )
+                )}
+              </>
+            ) : (
+              <>
+                {Object.keys(params).map((key, index) =>
+                  params[key].type == "switch" ? (
+                    <div className="flex flex-row justify-between items-center">
+                      <h1 className="text-white">
+                        {snakeCaseToTitleCase(key)}
+                      </h1>
+                      <Switch
+                        checked={params[key].value}
+                        onChange={() => {
+                          setParams((prevJson) => ({
+                            ...prevJson,
+                            [key]: {
+                              ...prevJson[key],
+                              value: !prevJson[key].value, // Toggle the value or set a new value as needed
+                            },
+                          }));
+                        }}
+                      />
+                    </div>
+                  ) : params[key].type == "select" ? (
+                    <div className="flex flex-row justify-between items-center gap-5">
+                      <h1 className="text-white">
+                        {snakeCaseToTitleCase(key)}
+                      </h1>
+                      <Select
+                        fullWidth
+                        required
+                        id="outlined-adornment"
+                        value={params[key].value}
+                        size="small"
+                        onChange={(e) =>
+                          setParams((prevJson) => ({
+                            ...prevJson,
+                            [key]: {
+                              ...prevJson[key],
+                              value: e.target.value, // Toggle the value or set a new value as needed
+                            },
+                          }))
+                        }
+                        // input={<OutlinedInput label={props.label} />}
+                        // MenuProps={MenuProps}
+                        sx={{
+                          color: "white",
+                          ".MuiOutlinedInput-notchedOutline": {
+                            borderColor: "rgba(228, 219, 233, 0.25)",
+                          },
+                          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "rgba(228, 219, 233, 0.25)",
+                          },
+                          "&:hover .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "rgba(228, 219, 233, 0.25)",
+                          },
+                          ".MuiSvgIcon-root ": {
+                            fill: "white !important",
+                          },
+                        }}
+                        // // MenuProps={MenuProps}
+                      >
+                        {params[key].list.map((value, index) => (
+                          <MenuItem
+                            key={value}
+                            value={value}
+                            // sx={{ height: "2rem" }}
+                            // style={getStyles(name, personName, theme)}
+                          >
+                            {snakeCaseToTitleCase(value)}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </div>
+                  ) : (
+                    <></>
+                  )
+                )}
+              </>
+            )}
+          </div>
+        ) : (
+          <></>
+        )}
+      </>
+    );
+  };
   return (
     <div style={{ position: "relative", marginTop: "20px" }}>
       <Zoom in={true}>
-        <div className="canvas-container" style={{ minHeight: "50vh" }}>
+        <div className="canvas-container" style={{ minHeight: "40vh" }}>
           {DynamicComponent && (
             <DynamicComponent
               input={props.input}
@@ -109,99 +289,28 @@ const CanvasRedirection = (props, ref) => {
           )}
         </div>
       </Zoom>
-      {settings ? (
-        <div
-          className="flex flex-col p-5 w-30% bg-slate-900 rounded-lg shadow-lg"
-          style={{
-            position: "absolute",
-            top: "4rem",
-            right: "2rem",
-            backgroundColor: "rgba(17, 24, 39, 0.9)",
-          }}
-        >
-          {Object.keys(params).map((key, index) =>
-            params[key].type == "switch" ? (
-              <div className="flex flex-row justify-between items-center">
-                <h1 className="text-white">{snakeCaseToTitleCase(key)}</h1>
-                <Switch
-                  checked={params[key].value}
-                  onChange={() => {
-                    setParams((prevJson) => ({
-                      ...prevJson,
-                      [key]: {
-                        ...prevJson[key],
-                        value: !prevJson[key].value, // Toggle the value or set a new value as needed
-                      },
-                    }));
-                  }}
-                />
-              </div>
-            ) : params[key].type == "select" ? (
-              <div className="flex flex-row justify-between items-center gap-5">
-                <h1 className="text-white">{snakeCaseToTitleCase(key)}</h1>
-                <Select
-                  fullWidth
-                  required
-                  id="outlined-adornment"
-                  value={params[key].value}
-                  size="small"
-                  // onChange={props.onChange(props.id)}
-                  // input={<OutlinedInput label={props.label} />}
-                  // MenuProps={MenuProps}
-                  sx={{
-                    color: "white",
-                    ".MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgba(228, 219, 233, 0.25)",
-                    },
-                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgba(228, 219, 233, 0.25)",
-                    },
-                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgba(228, 219, 233, 0.25)",
-                    },
-                    ".MuiSvgIcon-root ": {
-                      fill: "white !important",
-                    },
-                  }}
-                  // // MenuProps={MenuProps}
-                >
-                  {params[key].list.map((value, index) => (
-                    <MenuItem
-                      key={value}
-                      value={value}
-                      // sx={{ height: "2rem" }}
-                      // style={getStyles(name, personName, theme)}
-                    >
-                      {snakeCaseToTitleCase(value)}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </div>
-            ) : (
-              <></>
-            )
-          )}
-        </div>
-      ) : (
-        <></>
-      )}
-
+      <SettingsMenu />
       <div
         className="flex flex-row p-2"
         style={{ position: "absolute", top: "0", right: "0" }}
       >
-        <IconButton
-          sx={{
-            fontSize: "2rem",
-            // width: "60px",
-            // height: "60px",
-          }}
-          onClick={() => setSettings(!settings)}
-        >
-          <SettingsIcon
-            sx={{ fontSize: "2rem", color: "white" }}
-          ></SettingsIcon>
-        </IconButton>
+        {type == 1 ? (
+          <IconButton
+            sx={{
+              fontSize: "2rem",
+              // width: "60px",
+              // height: "60px",
+            }}
+            onClick={() => setSettings(!settings)}
+          >
+            <SettingsIcon
+              sx={{ fontSize: "2rem", color: "white" }}
+            ></SettingsIcon>
+          </IconButton>
+        ) : (
+          <></>
+        )}
+
         <IconButton
           sx={{
             fontSize: "2rem",
@@ -217,4 +326,4 @@ const CanvasRedirection = (props, ref) => {
   );
 };
 
-export default forwardRef(CanvasRedirection);
+export default forwardRef(CanvasContainer);

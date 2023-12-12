@@ -40,7 +40,7 @@ export default function ProblemSetCard({
         </h5>
         <h5
           class="text-2xl md:text-3xl pl-5 font-bold tracking-tight text-gray-900 text-primary-500 w-75% cursor-pointer"
-          onClick={() => switchPath(`/problemSet/${id}`)}
+          onClick={() => switchPath(`/problem/${id}/preview`)}
         >
           {name}
         </h5>

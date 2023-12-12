@@ -336,7 +336,7 @@ const GraphComponent = (props, ref) => {
         }
       });
 
-      setNodeIndex(maxIndex+1);
+      setNodeIndex(maxIndex + 1);
     }
   };
 
@@ -467,4 +467,4 @@ const GraphComponent = (props, ref) => {
   );
 };
 
-export default forwardRef(GraphComponent);
+export default React.memo(forwardRef(GraphComponent));

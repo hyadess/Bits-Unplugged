@@ -58,8 +58,7 @@ const TowerOfHanoi = (props, ref) => {
     const jsonData = JSON.stringify(data, null, 2);
     console.log("exporting");
     console.log(jsonData);
-    // storing object in input..........
-    // props.setInput(data);
+
     return data;
   };
 
@@ -662,4 +661,4 @@ const TowerOfHanoi = (props, ref) => {
   );
 };
 
-export default forwardRef(TowerOfHanoi);
+export default React.memo(forwardRef(TowerOfHanoi));

@@ -77,10 +77,10 @@ const App = () => {
     const cookies = new Cookies();
     const isLoggedIn = !!cookies.get("token");
     const userType = cookies.get("type");
-    // if (isLoggedIn) {
+    // if (isLoggedIn)
     //   navigator(userType === 0 ? "/topics" : "/problemSet");
     // }
-    setType(isLoggedIn);
+    setType(type);
   }, []);
   setLoading = setL;
   return (

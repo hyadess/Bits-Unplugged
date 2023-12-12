@@ -51,6 +51,7 @@ const CanvasContainer = (props, ref) => {
   const [params, setParams] = useState({});
   const [uiParams, setUiParams] = useState({});
   const [type, setType] = useState(-1);
+
   const loadComponent = async (name) => {
     try {
       const module = await import(`./${name}`);
@@ -114,7 +115,7 @@ const CanvasContainer = (props, ref) => {
               backgroundColor: "rgba(17, 24, 39, 0.9)",
             }}
           >
-            {props.mode == "preview" ? (
+            {props.mode === "preview" ? (
               <>
                 {Object.keys(uiParams).map((key, index) =>
                   uiParams[key].type == "switch" ? (
@@ -294,7 +295,7 @@ const CanvasContainer = (props, ref) => {
         className="flex flex-row p-2"
         style={{ position: "absolute", top: "0", right: "0" }}
       >
-        {type == 1 ? (
+        {type === 1 ? (
           <IconButton
             sx={{
               fontSize: "2rem",

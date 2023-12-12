@@ -93,7 +93,11 @@ const TowerOfHanoi = (props, ref) => {
     "darkkhaki",
   ];
   const handleDiskHover = (e) => {
-    if (draggableDisks.includes(e.target.attrs.disk)) {
+    console.log("Extra:", e.target.attrs);
+    if (
+      draggableDisks.includes(e.target.attrs.disk) ||
+      e.target.attrs.isExtra
+    ) {
       e.target.to({
         opacity: 0.7,
         strokeWidth: 3,
@@ -140,7 +144,10 @@ const TowerOfHanoi = (props, ref) => {
   };
 
   const handleDiskUnhover = (e) => {
-    if (draggableDisks.includes(e.target.attrs.disk)) {
+    if (
+      draggableDisks.includes(e.target.attrs.disk) ||
+      e.target.attrs.isExtra
+    ) {
       e.target.to({
         opacity: 0.9,
         duration: 0.4,
@@ -260,6 +267,8 @@ const TowerOfHanoi = (props, ref) => {
         y: 275,
         duration: 0.2,
         sourcePegIndex: -1,
+        shadowOffsetX: 0,
+        shadowOffsetY: 0,
       });
     } else {
       pegs.forEach((peg, index) => {
@@ -275,7 +284,7 @@ const TowerOfHanoi = (props, ref) => {
         }
       });
 
-      if (sourcePegIndex == -1) {
+      if (sourcePegIndex === -1) {
         if (
           pegs[nearestPegIndex].length < 10 &&
           (pegs[nearestPegIndex].length === 0 ||
@@ -598,7 +607,7 @@ const TowerOfHanoi = (props, ref) => {
                       : setExtraDisk(9)
                   }
                 />
-                {extraDisk != -1 ? (
+                {extraDisk !== -1 ? (
                   <Rect
                     onMouseEnter={(e) => handleDiskHover(e)}
                     onMouseLeave={(e) => handleDiskUnhover(e)}

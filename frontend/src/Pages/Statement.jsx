@@ -26,7 +26,7 @@ function ProblemStatement(props) {
   };
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 pb-5">
       <div className="flex flex-col md:flex-row gap-0 md:gap-5">
         <textarea
           className="text-area w-full md:w-1/2 m-0"

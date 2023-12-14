@@ -66,7 +66,7 @@ export default function ProblemsCanvas() {
     <div>
       {problem && canvas_id && canvasRef ? (
         <>
-          <div class="  bg-gray-900">
+          <div class="bg-gray-900">
             <div class="flex flex-col py-4 mx-auto max-w-screen-xl sm:pt-16 gap-3">
               <div class="mt-4 md:mt-0">
                 <h2 class="text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
@@ -99,7 +99,7 @@ export default function ProblemsCanvas() {
             </div>
           </div>
 
-          <div className="w-full flex flex-col gap-5">
+          <div className="w-full flex flex-col gap-5 pb-5">
             {canvas_id && canvasRef ? (
               <CanvasContainer
                 id={canvas_id}

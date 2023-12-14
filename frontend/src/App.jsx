@@ -58,6 +58,35 @@ const Private = () => {
   );
 };
 
+
+const ProblemSolver = () => {
+  const cookies = new Cookies();
+  const isLoggedIn = !!cookies.get("token");
+  return isLoggedIn ? (
+    <Layout>
+      <SolverLayout>
+        <Outlet />
+      </SolverLayout>
+    </Layout>
+  ) : (
+    <Navigate to="/" />
+  );
+};
+
+const ProblemSetter = () => {
+  const cookies = new Cookies();
+  const isLoggedIn = !!cookies.get("token");
+  return isLoggedIn ? (
+    <Layout>
+      <SetterLayout>
+        <Outlet />
+      </SetterLayout>
+    </Layout>
+  ) : (
+    <Navigate to="/" />
+  );
+};
+
 const Public = () => {
   const cookies = new Cookies();
   const isLoggedIn = !!cookies.get("token");
@@ -71,16 +100,16 @@ const Public = () => {
 var setLoading;
 const App = () => {
   const [loading, setL] = useState(false);
-  const [type, setType] = useState(-1);
+  const [type, setType] = useState(-1); // 0 - Solver, 1 - Setter, 2 - Guest
   // const navigator = useNavigate();
   useEffect(() => {
     const cookies = new Cookies();
     const isLoggedIn = !!cookies.get("token");
-    const userType = cookies.get("type");
-    // if (isLoggedIn)
-    //   navigator(userType === 0 ? "/topics" : "/problemSet");
-    // }
-    setType(type);
+    if (isLoggedIn) {
+      setType(cookies.get("type"));
+    } else {
+      setType(2);
+    }
   }, []);
   setLoading = setL;
   return (
@@ -210,17 +239,26 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
           </Route>
-          <Route
-            path="/"
-            element={
-              <Navigate
-                replace
-                to={
-                  type === 0 ? "/topics" : type === 1 ? "/problemSet" : "/home"
-                }
-              />
-            }
-          />
+          {type >= 0 ? (
+            <Route
+              path="/"
+              element={
+                <Navigate
+                  replace
+                  to={
+                    type === 0
+                      ? "/topics"
+                      : type === 1
+                      ? "/problemSet"
+                      : "/home"
+                  }
+                />
+              }
+            />
+          ) : (
+            <></>
+          )}
+
           <Route
             path="/home"
             element={

@@ -10,12 +10,15 @@ const CustomCard = ({ id, name, image, path, action }) => {
 
   return (
     <Zoom in={true}>
-      <div class="items-center py-4 px-4">
-        <div class="max-w-sm  border border-gray-500 rounded-lg shadow-lg bg-gray-700 border-gray-700">
+      <div class="items-center py-4 px-4 h-full">
+        <div class="flex flex-col max-w-sm  border border-gray-500 rounded-lg shadow-lg bg-gray-700 border-gray-700 h-full">
           <h5 class="mt-4 text-2xl text-center font-bold tracking-tight text-gray-900 text-white px-3">
             {id}
           </h5>
-          <h5 class="mb-4 text-3xl text-center font-bold tracking-tight text-gray-900 text-primary-500 px-3">
+          <h5
+            class="flex items-center justify-center mb-4 text-3xl text-center font-bold tracking-tight text-gray-900 text-primary-500 px-3 h-full"
+            // style={{ minHeight: "16%" }}
+          >
             {name}
           </h5>
           {/* <img

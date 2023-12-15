@@ -8,7 +8,10 @@ import SaveIcon from "@mui/icons-material/Save";
 import SendIcon from "@mui/icons-material/Send";
 import "./ProblemSetEnv.scss";
 import "./Submitbtn.scss";
+import Cookies from "universal-cookie";
 import Latex from "react-latex";
+import EditIcon from "@mui/icons-material/Edit";
+import Title from "../Components/Title";
 //<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 const problemController = new ProblemController();
 
@@ -33,11 +36,17 @@ export default function ProblemsCanvas() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState();
   const [canvas, setCanvas] = useState(null);
+  const [type, setType] = useState(-1);
   const baseURL = "https";
   const canvasRef = useRef();
 
   useEffect(() => {
     renderProblem();
+    const cookies = new Cookies();
+    const isLoggedIn = !!cookies.get("token");
+    if (isLoggedIn) {
+      setType(cookies.get("type"));
+    }
   }, []);
 
   const renderProblem = async () => {
@@ -67,18 +76,47 @@ export default function ProblemsCanvas() {
       {problem && canvas_id && canvasRef ? (
         <>
           <div class="bg-gray-900">
-            <div class="flex flex-col py-4 mx-auto max-w-screen-xl sm:pt-16 gap-3">
-              <div class="mt-4 md:mt-0">
-                <h2 class="text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
-                  <span class=" text-pink-500">{title}</span>
-                </h2>
+            <div className="flex flex-row justify-between">
+              {/* <Title
+                title={title}
+                sub_title={
+                  problem
+                    ? problem.topic_name + " > " + problem.series_name
+                    : ""
+                }
+              /> */}
+              <div class="flex flex-col py-4 max-w-screen-xl sm:pt-12 gap-3">
+                <div class="mt-4 md:mt-0">
+                  <h2 class="text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
+                    <span class=" text-pink-500">{title}</span>
+                  </h2>
+                </div>
+                <span class="text-gray-500 text-xl">
+                  {problem
+                    ? problem.topic_name + " > " + problem.series_name
+                    : ""}
+                </span>
               </div>
-              <span class="text-gray-500 text-xl">
-                {problem
-                  ? problem.topic_name + " > " + problem.series_name
-                  : ""}
-              </span>
+              {type == 1 ? (
+                <div className="flex items-center">
+                  <button
+                    className="submit-button"
+                    class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-blue-800"
+                    onClick={() =>
+                      navigator(`/problem/${problem.problem_id}/edit`)
+                    }
+                  >
+                    <div class="flex flex-row gap-4 items-center">
+                      <EditIcon sx={{ fontSize: "1.5rem", color: "white" }} />
+                      EDIT
+                    </div>
+                  </button>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
+
             <div class="items-center mx-auto max-w-screen-2xl">
               <p class="mb-6 text-left  font-light text-gray-500 md:text-lg text-gray-400">
                 <div

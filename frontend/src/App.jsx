@@ -217,7 +217,7 @@ const App = () => {
               }
             />
             <Route
-              path="/problemSet/:prob_id"
+              path="/problem/:prob_id/edit"
               element={
                 <SetterLayout>
                   <ProblemSetEnv />

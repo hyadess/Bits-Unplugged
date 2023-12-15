@@ -46,7 +46,7 @@ export default function ProblemSetCard({
         </h5>
         {/* <img class="w-full" src={image} alt="" /> */}
         <div className="w-10% md:w-5% flex items-center justify-center">
-          <IconButton onClick={() => switchPath(`/problemSet/${id}`)}>
+          <IconButton onClick={() => switchPath(`/problem/${id}/edit`)}>
             <EditIcon sx={{ fontSize: "1.5rem", color: "white" }} />
           </IconButton>
           {/* <a

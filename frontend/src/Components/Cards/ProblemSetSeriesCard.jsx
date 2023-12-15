@@ -42,7 +42,7 @@ export default function ProblemSetSeriesCard({ idx, id, name, image, path }) {
     setSubmittedValue(inputValue);
     closeModal();
     await getProblemId(inputValue);
-    switchPath(`/problemSet/${problemId}`);
+    switchPath(`/problem/${problemId}/edit`);
   };
 
   return (

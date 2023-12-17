@@ -10,7 +10,7 @@ const CustomCard = ({ id, name, image, path, action }) => {
 
   return (
     <Zoom in={true}>
-      <div class="flex flex-col items-center h-full">
+      <div class="flex flex-col items-center h-full md:px-0">
         <div class="flex flex-col max-w-sm  border border-gray-500 rounded-lg shadow-lg bg-gray-700 border-gray-700 h-full">
           <h5 class="mt-4 text-2xl text-center font-bold tracking-tight text-gray-900 text-white px-3">
             {id}

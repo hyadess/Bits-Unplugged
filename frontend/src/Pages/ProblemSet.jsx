@@ -126,13 +126,24 @@ const ProblemSet = () => {
         </div>
       </div> */}
 
-      
-      <div className="fixed bottom-10 right-10 flex items-center justify-center ">
+      <div className="fixed bottom-10 right-10 hidden md:flex items-center justify-center ">
         <a
           onClick={() => switchPath("/topics")}
           class="w-16 h-16 rounded-full justify-center inline-flex items-center text-white bg-pink-600 hover:bg-pink-700 focus:ring-pink-800 font-medium text-sm p-4 text-center ursor-pointer shadow-lg cursor-pointer"
         >
           <AddIcon sx={{ color: "rgb(17,24,39)", fontSize: "4rem" }} />
+        </a>
+      </div>
+
+      <div className="flex md:hidden items-center justify-center">
+        <a
+          onClick={() => switchPath("/topics")}
+          class="w-full justify-center inline-flex my-8  text-center items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm p-4 text-center focus:ring-primary-900 cursor-pointer gap-3 items-center"
+        >
+          <AddIcon sx={{ fontSize: "2rem" }} />
+          <h5 class="text-2xl md:text-3xl text-center font-bold tracking-tight text-gray-900 text-white">
+            New Problem
+          </h5>
         </a>
       </div>
 

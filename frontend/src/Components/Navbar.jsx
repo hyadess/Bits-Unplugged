@@ -8,6 +8,8 @@ import ProfileController from "../controller/profileController";
 import Logo from "./Logo";
 import Banner from "./Banner";
 import SearchBar from "./InputFields/SearchBar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHouse, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 const authController = new AuthController();
 const profileController = new ProfileController();
 const Navbar = (props) => {
@@ -73,7 +75,8 @@ const Navbar = (props) => {
                   type === 0 ? navigator("/topics") : navigator("/problemSet")
                 }
               >
-                <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
+                <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white flex flex-row items-center gap-3 ">
+                  <FontAwesomeIcon icon={faHouse} />
                   Home
                 </div>
                 <div className="divider hidden md:flex "></div>
@@ -134,7 +137,8 @@ const Navbar = (props) => {
                   switchPath("/login");
                 }}
               >
-                <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white">
+                <div className="text-xs md:text-lg md:font-bold md:text-white-800 hover:text-pink-500 hover:text-pink-500 text-white flex flex-row gap-3 items-center">
+                  <FontAwesomeIcon icon={faRightFromBracket} />
                   Logout
                 </div>
               </button>

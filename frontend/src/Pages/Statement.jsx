@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./Statement.scss";
 import Latex from "react-latex";
 import ProblemController from "../controller/problemController";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 const problemController = new ProblemController();
 function ProblemStatement(props) {
   const { prob_id } = useParams();
@@ -55,9 +57,10 @@ function ProblemStatement(props) {
       </div>
       <button
         className="submit-button"
-        class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800"
+        class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800 flex flex-row gap-3 items-center justify-center "
         onClick={updateStatement}
       >
+        <FontAwesomeIcon icon={faFloppyDisk} size="md" />
         SAVE
       </button>
       {/* <div className="flex-center" style={{ justifyContent: "flex-end" }}>

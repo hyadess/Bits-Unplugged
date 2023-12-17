@@ -9,6 +9,10 @@ import AddTaskIcon from "@mui/icons-material/AddTask";
 import { Button, IconButton } from "@mui/material";
 import ProblemController from "../../controller/problemController";
 import EditIcon from "@mui/icons-material/Edit";
+import Confirmation from "../Confirmation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 const problemController = new ProblemController();
 export default function ProblemSetCard({
   id,
@@ -17,6 +21,7 @@ export default function ProblemSetCard({
   deleteAction,
   is_live,
 }) {
+  const [open, setOpen] = useState(false);
   const navigator = useNavigate();
   const switchPath = (pathname) => {
     navigator(pathname);
@@ -47,7 +52,7 @@ export default function ProblemSetCard({
         {/* <img class="w-full" src={image} alt="" /> */}
         <div className="w-10% md:w-5% flex items-center justify-center">
           <IconButton onClick={() => switchPath(`/problem/${id}/edit`)}>
-            <EditIcon sx={{ fontSize: "1.5rem", color: "white" }} />
+            <FontAwesomeIcon icon={faPenToSquare} color="white" size="md" />
           </IconButton>
           {/* <a
             onClick={() => switchPath(`/problemSet/${id}`)}
@@ -79,7 +84,7 @@ export default function ProblemSetCard({
 
           {is_live == 1 ? (
             <IconButton onClick={() => unpublishProblem()}>
-              <CheckCircleIcon sx={{ fontSize: "1.5rem", color: "green" }} />
+              <CheckCircleIcon sx={{ fontSize: "1.5rem", color: "white" }} />
             </IconButton>
           ) : (
             <IconButton onClick={() => publishProblem()}>
@@ -89,12 +94,10 @@ export default function ProblemSetCard({
         </div>
 
         <div className="w-10% md:w-5% flex items-center justify-center">
-          <IconButton onClick={() => deleteAction(id)}>
-            <DeleteIcon
-              variant="outlined"
-              sx={{ fontSize: "1.5rem", color: "#cc4c3c" }}
-            />
+          <IconButton onClick={() => setOpen(true)}>
+            <FontAwesomeIcon icon={faTrashCan} color="white" size="md" />
           </IconButton>
+
           {/* <button
             className="submit-button"
             class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
@@ -109,6 +112,12 @@ export default function ProblemSetCard({
           style={{ justifyContent: "space-between", alignItems: "center" }}
         ></div> */}
       </div>
+      <Confirmation
+        open={open}
+        setOpen={setOpen}
+        onConfirm={deleteAction}
+        param={id}
+      />
     </div>
   );
 }

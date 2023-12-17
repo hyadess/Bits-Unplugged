@@ -6,6 +6,8 @@ import "./SolutionChecker.scss";
 import Editor from "@monaco-editor/react";
 import ProblemController from "../controller/problemController";
 import { showToast } from "../App";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
 const problemController = new ProblemController();
 //<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 export default function SolutionChecker(props) {
@@ -141,9 +143,10 @@ export default function SolutionChecker(props) {
             borderRadius: "0px",
           }}
           type="submit"
-          class="text-white font-bold rounded-lg text-lg md:text-sm px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800 w-full h-20% md:h-10%"
+          class="text-white font-bold rounded-lg text-lg md:text-md px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800 w-full h-20% md:h-10% flex flex-row gap-5 justify-center items-center"
           onClick={submit}
         >
+          <FontAwesomeIcon icon={faPlay} />
           RUN
         </button>
       </div>

@@ -12,6 +12,8 @@ import Cookies from "universal-cookie";
 import Latex from "react-latex";
 import EditIcon from "@mui/icons-material/Edit";
 import Title from "../Components/Title";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 //<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 const problemController = new ProblemController();
 
@@ -107,7 +109,11 @@ export default function ProblemsCanvas() {
                     }
                   >
                     <div class="flex flex-row gap-4 items-center">
-                      <EditIcon sx={{ fontSize: "1.5rem", color: "white" }} />
+                      <FontAwesomeIcon
+                        icon={faPenToSquare}
+                        color="white"
+                        size="md"
+                      />
                       EDIT
                     </div>
                   </button>
@@ -137,7 +143,7 @@ export default function ProblemsCanvas() {
             </div>
           </div>
 
-          <div className="w-full flex flex-col gap-5 pb-5">
+          <div className="w-full flex flex-col gap-5">
             {canvas_id && canvasRef ? (
               <CanvasContainer
                 id={canvas_id}

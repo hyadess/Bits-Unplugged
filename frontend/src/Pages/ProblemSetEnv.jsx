@@ -9,6 +9,9 @@ import ProblemStatement from "./Statement";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import "./ProblemSetEnv.scss";
+import Confirmation from "../Components/Confirmation";
+import { faTrashCan, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const problemController = new ProblemController();
 
 export default function ProblemSetEnv() {
@@ -55,7 +58,7 @@ export default function ProblemSetEnv() {
 
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
-
+  const [open, setOpen] = useState(false);
   const [code, setCode] = useState("");
   const [input, setInput] = useState("");
   const canvasRef = useRef();
@@ -231,16 +234,19 @@ export default function ProblemSetEnv() {
           <div className="souvik-button-container gap-2">
             <button
               className="submit-button"
-              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800 flex flex-row gap-4 items-center"
               // onClick={deleteProblem}
+              onClick={() => setOpen(true)}
             >
+              <FontAwesomeIcon icon={faTrashCan} />
               DELETE
             </button>
             <button
               className="submit-button"
-              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800"
+              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800 flex flex-row gap-4 items-center"
               onClick={updateAll}
             >
+              <FontAwesomeIcon icon={faUpload} />
               PUBLISH
             </button>
           </div>
@@ -249,6 +255,7 @@ export default function ProblemSetEnv() {
       <ProbSetTab activeTab={activeComponent} click={setActiveComponent} />
 
       <div className="component-container">{renderComponent()}</div>
+      <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} />
     </div>
   );
 }

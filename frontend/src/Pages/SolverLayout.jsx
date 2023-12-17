@@ -1,4 +1,5 @@
 import React from "react";
+import MainContainer from "../Components/Containers/MainContainer";
 const SolverLayout = (props) => {
   return (
     <div>
@@ -24,9 +25,7 @@ const SolverLayout = (props) => {
           Put unsolved and bookmarked problems here
         </div>
       </div>
-      <div className="mx-auto pb-5 p-5 pt-0 md:p-5 md:pt-20 min-h-screen overflow-hidden w-full md:w-3/5">
-        {props.children}
-      </div>
+      <MainContainer>{props.children}</MainContainer>
       <div
         className="right p-5 flex flex-col gap-5 md:mt-20 hidden md:flex"
         style={{

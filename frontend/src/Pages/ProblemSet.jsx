@@ -24,14 +24,7 @@ const ProblemSet = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState();
   const baseURL = "https";
-  // const getCanvasList = async () => {
-  //   const res = await canvasController.getAllCanvas();
-  //   if (res.success) {
-  //     setCanvasList(res.data);
-  //     setLoading(false);
-  //     console.log(res);
-  //   }
-  // };
+
   const getProblemList = async () => {
     const res = await problemController.getMyProblems();
     if (res.success) {

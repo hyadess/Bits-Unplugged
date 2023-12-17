@@ -170,7 +170,7 @@ const Navbar = (props) => {
                 {user != null ? user.fullname : "Loading..."}
               </div>{" "}
             </button>
-            <div className="flex md:flex items-center justify-center w-3/5 md:w-1/3">
+            <div className="flex md:flex items-center justify-center w-3/5 md:w-1/3 cursor-pointer hover:shadow-lg">
               {/* <img
                   src={
                     user != null
@@ -201,6 +201,9 @@ const Navbar = (props) => {
                     : "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Solid_black.svg/2048px-Solid_black.svg.png"
                 }
                 // sx={{ width: "100%", height: "100%" }}
+                onClick={() => {
+                  switchPath("/profile/" + user.username);
+                }}
               />
             </div>
             {/* </div> */}

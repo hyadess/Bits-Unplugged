@@ -9,6 +9,7 @@ import ProblemStatement from "./Statement";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import "./ProblemSetEnv.scss";
+import Confirmation from "../Components/Confirmation";
 const problemController = new ProblemController();
 
 export default function ProblemSetEnv() {
@@ -55,7 +56,7 @@ export default function ProblemSetEnv() {
 
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
-
+  const [open, setOpen] = useState(false);
   const [code, setCode] = useState("");
   const [input, setInput] = useState("");
   const canvasRef = useRef();
@@ -233,6 +234,7 @@ export default function ProblemSetEnv() {
               className="submit-button"
               class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
               // onClick={deleteProblem}
+              onClick={() => setOpen(true)}
             >
               DELETE
             </button>
@@ -249,6 +251,7 @@ export default function ProblemSetEnv() {
       <ProbSetTab activeTab={activeComponent} click={setActiveComponent} />
 
       <div className="component-container">{renderComponent()}</div>
+      <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} />
     </div>
   );
 }

@@ -136,7 +136,7 @@ const CanvasContainer = (props, ref) => {
                 value={params[key].value}
                 size="small"
                 onChange={(e) =>
-                  setUiParams((prevJson) => ({
+                  setParams((prevJson) => ({
                     ...prevJson,
                     [key]: {
                       ...prevJson[key],

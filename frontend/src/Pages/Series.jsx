@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../Components/Navbar";
+
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import SeriesController from "../controller/seriesController";
@@ -51,29 +51,13 @@ export default function Problems() {
       <Title
         title={`Problem ${type == 0 ? "Solving" : "Setting"}`}
         sub_title={`${
-          type == 0 ? "Solve" : "Set"
+          type === 0 ? "Solve" : "Set"
         } problems for particular series right
         on our site`}
       />
-      {/* <div class="  bg-gray-900">
-        <div class="gap-8 items-center py-4 mx-auto max-w-screen-xl xl:gap-16 sm:pt-16">
-          <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
-              <span class=" text-pink-500">
-                Problem {type == 0 ? "Solving" : "Setting"}
-              </span>
-            </h2>
-
-            <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg text-gray-400">
-              {type == 0 ? "Solve" : "Set"} problems for particular series right
-              on our site
-            </p>
-          </div>
-        </div>
-      </div> */}
 
       {!loading && (
-        <CardContainer>
+        <CardContainer col={3}>
           {seriesList.map((series, index) =>
             type == 0 ? (
               <CustomCard

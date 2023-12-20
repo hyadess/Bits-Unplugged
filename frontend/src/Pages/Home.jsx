@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../Components/Navbar";
+
 import Footer from "../Components/Footer";
 import TeamCard from "../Components/Cards/TeamCard";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import Banner from "../Components/Banner";
 import ImageLoader from "../Components/ImageLoader";
+import "./Home.scss";
 
 const Home = () => {
   const [type, setType] = useState(-1);
@@ -21,86 +22,75 @@ const Home = () => {
   }, []);
   return (
     <div>
-      <div className="md:hidden w-full flex items-start p-5 pb-0">
-        {/* <Banner width={150} height={50} /> */}
-      </div>
-
-      <div class="bg-gray-900">
-        <div class="gap-8 h-screen items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
-          {/* <img
-            class="w-full hidden"
+      <div class="gap-8 h-screen items-center py-8 px-4 mx-auto max-w-screen-xl flex flex-col md:flex-row sm:py-16 lg:px-6 xl:gap-16">
+        {/* <img
+            class="w-full dark:hidden"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
             alt="dashboard image"
           /> */}
-
+        <div className="flex flex-row gap-0">
           <ImageLoader
-            className="w-full block"
+            className="w-full home-cover-light"
+            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
+            alt="dashboard image"
+          />
+          <ImageLoader
+            className="w-full home-cover-dark"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup-dark.svg"
             alt="dashboard image"
           />
-          <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-center md:text-left text-4xl tracking-tight font-extrabold text-gray-900 text-white">
-              {" "}
-              A platform for learning{" "}
-              <span class=" text-pink-500">Programming Concepts </span> without
-              coding{" "}
-            </h2>
+        </div>
 
-            <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg text-gray-400">
-              Bits unplugged is a platform for students to learn complex
-              programming concepts without needing to write a single line of
-              code through an interactive medium
-            </p>
+        <div class="mt-4 md:mt-0">
+          <h2 class="mb-4 text-center md:text-left text-4xl tracking-tight font-extrabold bu-text-primary">
+            {" "}
+            A platform for learning{" "}
+            <span class="bu-text-title">Programming Concepts </span> without
+            coding{" "}
+          </h2>
 
-            <a
-              onClick={() =>
-                type === 0 ? navigator("/topics") : navigator("/problemSet")
-              }
-              class="inline-flex text-center items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center focus:ring-primary-900 cursor-pointer"
+          <p class="mb-6 text-center md:text-left  font-light bu-text-subtitle md:text-lg">
+            Bits unplugged is a platform for students to learn complex
+            programming concepts without needing to write a single line of code
+            through an interactive medium
+          </p>
+
+          <div
+            onClick={() =>
+              type === 0 ? navigator("/topics") : navigator("/problemSet")
+            }
+            class="inline-flex text-center items-center font-medium rounded-lg text-sm px-5 py-2.5 bu-button-secondary bu-text-primary cursor-pointer"
+          >
+            Get started
+            <svg
+              class="ml-2 -mr-1 w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              Get started
-              <svg
-                class="ml-2 -mr-1 w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </a>
+              <path
+                fill-rule="evenodd"
+                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
           </div>
         </div>
       </div>
 
-      <section class=" bg-gray-900">
+      <section>
         <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
           <div class="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 text-white">
+            <h2 class="mb-4 text-4xl tracking-tight font-extrabold bu-text-primary">
               Our Team
             </h2>
 
-            <p class="font-light text-gray-500 lg:mb-16 sm:text-xl text-gray-400">
+            <p class="font-light lg:mb-16 sm:text-xl bu-text-subtitle">
               Meet our dynamic team who are here to help you at each step of
               your journey
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 place-items-center mx-auto gap-8 h-full w-full md:w-75%">
-            {/* <TeamCard
-              name="Nazmus Sakib"
-              position="1905061"
-              detail="Worked on the Red Black Tree Implementation"
-              image="https://i.guim.co.uk/img/media/ef8492feb3715ed4de705727d9f513c168a8b196/37_0_1125_675/master/1125.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=d456a2af571d980d8b2985472c262b31"
-            />
-            <TeamCard
-              name="Arnab Bhattacharje"
-              position="1905065"
-              detail="Worked on database"
-              image="https://dgbijzg00pxv8.cloudfront.net/6eb7968b-189a-4950-be66-2596c01538b5/000000-0000000000/41934988350297194397358372099130021676442103478114883670507566882701035188871/ITEM_PREVIEW1.jpeg "
-            /> */}
             <TeamCard
               name="Sayem Shahad Soummo"
               position="1905064"
@@ -119,12 +109,6 @@ const Home = () => {
               detail="Backend Developer"
               image="https://openseauserdata.com/files/1d823e6999a056302a4415abf07f2c10.jpg"
             />
-            {/* <TeamCard
-              name="Salman Sayeed"
-              position="1905079"
-              detail="Worked on the frontend"
-              image="https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149622021.jpg"
-            /> */}
           </div>
         </div>
       </section>

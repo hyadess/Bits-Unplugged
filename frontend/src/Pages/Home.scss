@@ -1,0 +1,14 @@
+.home-cover-light {
+    @apply block;
+}
+.home-cover-dark {
+    @apply hidden;
+}
+.dark {
+    .home-cover-light {
+        @apply hidden;
+    }
+    .home-cover-dark {
+        @apply block;
+    }
+}

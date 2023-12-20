@@ -8,7 +8,7 @@ import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Save";
 const canvasController = new CanvasController();
-const CanvasRedirection = (props) => {
+const CanvasContainer = (props) => {
   const id = props.id;
   // const componentName = "GraphComponent";
   const [DynamicComponent, setDynamicComponent] = useState(null);
@@ -77,4 +77,4 @@ const CanvasRedirection = (props) => {
   );
 };
 
-export default CanvasRedirection;
+export default CanvasContainer;

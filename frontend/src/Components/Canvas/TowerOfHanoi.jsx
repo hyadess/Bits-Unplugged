@@ -479,7 +479,7 @@ const TowerOfHanoi = (props, ref) => {
         disk={disk}
         pegIndex={pegIndex}
         strokeEnabled={true}
-        opacity={0.9}
+        opacity={0.95}
         cornerRadius={[10, 10, 10, 10]}
       />
     );
@@ -538,10 +538,24 @@ const TowerOfHanoi = (props, ref) => {
         <div className="flex-center">
           {isProblemSetting ? (
             <div className="hbox w-full">
+              {/* <div className="w-full">
+                <input
+                  value={numberOfDisks}
+                  type="number"
+                  name={props.name}
+                  id={props.id}
+                  class="border sm:text-sm block w-full p-2.5 border-gray-900 bu-bg-color focus:outline-none bu-text-primary"
+                  placeholder="Number of Disks"
+                  // required={props.required}
+                  onChange={handleNumberOfDisksChange}
+                />
+              </div> */}
+
               <FormControl fullWidth variant="outlined">
                 <InputLabel
                   htmlFor="outlined-adornment"
-                  sx={{ color: "white" }}
+                  // sx={{ color: "white" }}
+                  className="bu-text-primary"
                 >
                   Number of Disks
                 </InputLabel>
@@ -554,14 +568,15 @@ const TowerOfHanoi = (props, ref) => {
                     max: 10,
                   }}
                   id="outlined-adornment"
-                  className="outlined-input"
+                  className="outlined-input bu-text-primary"
                   type="number"
                   value={numberOfDisks}
                   onChange={handleNumberOfDisksChange}
                   label={"Number of Disks"}
                   // endAdornment={props.endAdornment}
                   size="small"
-                  sx={{ input: { color: "white" } }}
+                  // sx={{ input: { color: "white" } }}
+                  //  className="bu-text-primary"
                 />
               </FormControl>
             </div>
@@ -582,7 +597,7 @@ const TowerOfHanoi = (props, ref) => {
           }
           height={
             Math.min(window.innerWidth / 800, 1) *
-            (280 + (isProblemSetting ? diskHeight : 0))
+            (280 + (isProblemSetting ? diskHeight * 1.2 : 0))
           }
           scaleX={Math.min(window.innerWidth / 970, 1)}
           scaleY={Math.min(window.innerWidth / 900, 1)}

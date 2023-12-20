@@ -77,7 +77,7 @@ export default function ProblemsCanvas() {
     <div>
       {problem && canvas_id && canvasRef ? (
         <>
-          <div class="bg-gray-900">
+          <div>
             <div className="flex flex-row justify-between">
               {/* <Title
                 title={title}
@@ -89,11 +89,11 @@ export default function ProblemsCanvas() {
               /> */}
               <div class="flex flex-col py-4 max-w-screen-xl sm:pt-12 gap-3">
                 <div class="mt-4 md:mt-0">
-                  <h2 class="text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
-                    <span class=" text-pink-500">{title}</span>
+                  <h2 class="text-left text-5xl tracking-tight font-extrabold ">
+                    <span class="bu-text-title">{title}</span>
                   </h2>
                 </div>
-                <span class="text-gray-500 text-xl">
+                <span class="bu-text-subtitle text-xl">
                   {problem
                     ? problem.topic_name + " > " + problem.series_name
                     : ""}
@@ -103,17 +103,13 @@ export default function ProblemsCanvas() {
                 <div className="flex items-center">
                   <button
                     className="submit-button"
-                    class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-blue-800"
+                    class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary"
                     onClick={() =>
                       navigator(`/problem/${problem.problem_id}/edit`)
                     }
                   >
                     <div class="flex flex-row gap-4 items-center">
-                      <FontAwesomeIcon
-                        icon={faPenToSquare}
-                        color="white"
-                        size="md"
-                      />
+                      <FontAwesomeIcon icon={faPenToSquare} size="md" />
                       EDIT
                     </div>
                   </button>
@@ -124,13 +120,12 @@ export default function ProblemsCanvas() {
             </div>
 
             <div class="items-center mx-auto max-w-screen-2xl">
-              <p class="mb-6 text-left  font-light text-gray-500 md:text-lg text-gray-400">
+              <p class="mb-6 text-left  font-light md:text-lg bu-text-primary">
                 <div
                   style={{
                     width: "100%",
                     padding: "30px 0",
                     fontSize: "25px",
-                    color: "azure",
                     border: "none",
                     borderRadius: "20px",
                   }}

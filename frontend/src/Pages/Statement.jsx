@@ -31,19 +31,19 @@ function ProblemStatement(props) {
     <div className="flex flex-col gap-5 pb-5">
       <div className="flex flex-col md:flex-row gap-0 md:gap-5">
         <textarea
-          className="text-area w-full md:w-1/2 m-0"
+          className="text-area w-full md:w-1/2 m-0 bu-text-primary bu-bg-color"
           placeholder=" "
           value={text}
           style={{ height: "50vh" }}
           onChange={(e) => handleProblemStatementChange(e)}
         ></textarea>
         <div
-          className="w-full md:w-1/2 border-2 border-gray-200"
+          className="w-full md:w-1/2 border-2 border-gray-500 dark:border-gray-200 bu-text-primary preview-area"
           style={{
             height: "50vh",
             padding: "20px",
             fontSize: "25px",
-            color: "azure",
+            // color: "azure",
             marginTop: "20px",
             // border: "black",
             borderRadius: "20px",
@@ -57,7 +57,7 @@ function ProblemStatement(props) {
       </div>
       <button
         className="submit-button"
-        class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800 flex flex-row gap-3 items-center justify-center "
+        class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary flex flex-row gap-3 items-center justify-center focus:outline-none"
         onClick={updateStatement}
       >
         <FontAwesomeIcon icon={faFloppyDisk} size="md" />

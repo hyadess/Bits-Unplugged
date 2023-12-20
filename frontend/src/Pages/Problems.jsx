@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import ProblemController from "../controller/problemController";
-import CustomCard from "../Components/Cards/CustomCard";
-import CardContainer from "../Components/Containers/CardContainer";
+
 import ProblemCard from "../Components/Cards/ProblemCard";
 import TableContainer from "../Components/Containers/TableContainer";
 import Title from "../Components/Title";
@@ -49,19 +48,6 @@ export default function Problems() {
         title={"Problem Solving"}
         sub_title={"Solve problems for particular series right on our site now"}
       />
-      {/* <div class="  bg-gray-900">
-        <div class="gap-8 items-center py-4 mx-auto max-w-screen-xl xl:gap-16 sm:pt-16">
-          <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
-              <span class=" text-pink-500">Problem Solving</span>
-            </h2>
-
-            <p class="mb-6 text-center md:text-left  font-light text-gray-500 md:text-lg text-gray-400">
-              Solve problems for particular series right on our site now
-            </p>
-          </div>
-        </div>
-      </div> */}
 
       {!loading && (
         <TableContainer>

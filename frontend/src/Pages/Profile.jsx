@@ -25,10 +25,8 @@ export default function Profile() {
     //getData()
   }, []);
   return (
-    <div className="flex flex-col bg-gray-900">
-      <div class="  bg-gray-900">
-        <Title title={"Profile Page"} />
-      </div>
+    <div className="flex flex-col">
+      <Title title={"Profile Page"} />
     </div>
   );
 }

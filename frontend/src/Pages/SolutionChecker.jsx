@@ -104,10 +104,7 @@ export default function SolutionChecker(props) {
         />
       </div>
       <div className="flex flex-col w-full md:w-1/4 h-1/2 md:h-full gap-0">
-        <div
-          className="flex flex-row md:flex-col gap-0 h-80% md:h-90%"
-          // style={{ height: "100%" }}
-        >
+        <div className="flex flex-row md:flex-col gap-0 h-80% md:h-90%">
           <div className="w-1/2 md:w-full h-full md:h-1/2">
             <Editor
               className="white-border"
@@ -129,7 +126,7 @@ export default function SolutionChecker(props) {
             />
           </div>
           <div
-            className="w-1/2 md:w-full h-full md:h-full text-display m-0"
+            className="w-1/2 md:w-full h-full md:h-1/2 text-display m-0"
             style={{ borderRadius: "0px" }}
           >
             {props.stdout}
@@ -143,7 +140,7 @@ export default function SolutionChecker(props) {
             borderRadius: "0px",
           }}
           type="submit"
-          class="text-white font-bold rounded-lg text-lg md:text-md px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800 w-full h-20% md:h-10% flex flex-row gap-5 justify-center items-center"
+          class="text-white font-bold rounded-lg text-lg md:text-md px-7 py-3.5 text-center bu-button-secondary w-full h-20% md:h-10% flex flex-row gap-5 justify-center items-center"
           onClick={submit}
         >
           <FontAwesomeIcon icon={faPlay} />

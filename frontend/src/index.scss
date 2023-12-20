@@ -1,7 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -20,4 +21,280 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.bu-bg-color {
+  background-color: #ebebeb;
+  color: #ebebeb;
+}
+
+.dark {
+  .bu-bg-color {
+    @apply bg-gray-900;
+    @apply text-gray-900;
+  }
+}
+
+.bu-nav-color {
+  background-color: #dedede;
+  border-color: #dedede;
+  @apply text-gray-900;
+}
+
+.dark {
+  .bu-nav-color {
+    @apply bg-slate-800;
+    @apply border-slate-800;
+    @apply text-white;
+  } 
+}
+
+.bu-text-primary {
+  @apply text-gray-900;
+}
+
+.dark {
+  .bu-text-primary {
+    @apply text-white;
+  }  
+}
+
+.bu-text-primary-hover {
+  @apply text-gray-900;
+  &:hover {
+    color: #1C5B5F;
+  fill: #1C5B5F;
+  }
+}
+
+.dark {
+  .bu-text-primary-hover {
+    @apply text-white;
+    &:hover {
+      @apply text-pink-500;
+    }
+  }
+}
+
+.bu-text-title{
+  color: #1C5B5F;
+  fill: #1C5B5F;
+  border-color: #1C5B5F;
+}
+
+
+.dark {
+  .bu-text-title {
+    @apply text-pink-500;
+    @apply fill-pink-500;
+    @apply border-pink-500;
+  }  
+}
+
+
+.bu-text-subtitle {
+  @apply text-gray-500;
+}
+
+.dark {
+  .bu-text-subtitle {
+    @apply text-gray-500;
+  }
+}
+
+.bu-text-disable {
+  @apply text-gray-400;
+}
+
+.dark {
+  .bu-text-disable {
+    @apply text-gray-500;
+  }
+}
+
+.bu-button-primary { // If on card
+  @apply text-gray-900;
+  @apply transition-colors;
+  @apply duration-300;
+  @apply ease-in-out;
+
+  background-color: #AADFCF;
+  &:hover {
+    background-color: #84cfb8;
+  }
+  &:focus {
+    background-color: #54dab2;
+    @apply ring-2;
+  }
+}
+
+.dark {
+  .bu-button-primary { // If on card
+    @apply text-white;
+    @apply bg-pink-600;
+    &:hover {
+      @apply bg-pink-700;
+    }
+    &:focus {
+      @apply ring-pink-800;
+      @apply ring-2;
+    }
+  }
+}
+
+.bu-button-secondary {  // If on bg
+  @apply text-gray-900;
+  background-color: #94cebc;
+  @apply transition-colors;
+  @apply duration-300;
+  @apply ease-in-out;
+  &:hover {
+    background-color: rgb(124, 193, 172);
+  }
+  &:focus {
+    background-color: #69c3a8;
+    @apply ring-2;
+  }
+}
+
+
+.dark {
+  .bu-button-secondary { // If on bg
+    @apply text-white;
+    @apply bg-pink-700;
+    &:hover {
+      @apply bg-pink-800;
+    }
+    &:focus {
+      @apply ring-pink-900;
+      @apply ring-4;
+    }
+  }
+}
+
+.bu-button-delete { // If on card
+  @apply text-gray-900;
+  @apply bg-red-300;
+  @apply transition-colors;
+  @apply duration-300;
+  @apply ease-in-out;
+  &:hover {
+    @apply bg-red-400;
+  }
+  &:focus {
+    @apply bg-red-400;
+    @apply ring-red-500;
+    // @apply ring-4;
+  }
+  
+}
+
+.dark {
+  .bu-button-delete { // If on card
+    @apply text-white;
+    @apply bg-blue-600;
+    &:hover {
+      @apply bg-blue-700;
+    }
+    &:focus {
+      @apply bg-blue-700;
+      @apply ring-blue-800;
+      @apply ring-2;
+    }
+  }
+}
+
+.bu-text-subtitle-hover {
+  @apply text-gray-400;
+  &:hover {
+    @apply text-gray-900;
+  }
+
+}
+
+.dark {
+  .bu-text-subtitle-hover {
+    @apply text-gray-400;
+    &:hover {
+      @apply text-white;
+    }
+  }
+}
+
+.bu-horizontal-bar{
+  @apply border-gray-600;
+}
+
+.dark {
+  .bu-horizontal-bar{
+    @apply border-gray-600;
+  }
+}
+
+.bu-card-primary {
+  background-color: #ffffff;
+  border-color: #ffffff;
+}
+
+.dark {
+  .bu-card-primary {
+    @apply bg-gray-700;
+    @apply border-gray-700;
+  }
+}
+
+.bu-card-secondary {
+  background-color: #ffffff;
+  border-color: #ffffff;
+}
+
+.dark {
+  .bu-card-secondary {
+    @apply bg-gray-800;
+    @apply border-gray-800;
+  }
+}
+
+.bu-input-primary {
+  @apply focus:ring-green-800;
+  @apply focus:border-green-800;
+  @apply placeholder-gray-400;
+  @apply focus:ring-2;
+}
+
+.dark {
+  .bu-input-primary {
+    @apply focus:ring-pink-600;
+    @apply focus:border-pink-600;
+    @apply placeholder-gray-400;
+    @apply text-white;
+    @apply bg-gray-700;
+    @apply border-gray-600;
+  }
+}
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+
+.dark-mode {
+  --icon-color: #ffffff; /* Set your dark mode icon color */
+  // --background-color: #333333; /* Set your dark mode background color */
+}
+
+.light-mode {
+  --icon-color: #000000; /* Set your light mode icon color */
+  // --background-color: #ffffff; /* Set your light mode background color */
+}
+
+.icon-container {
+  color: var(--icon-color);
+  background-color: var(--background-color);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  transition: background-color 0.3s, color 0.3s;
 }

@@ -33,8 +33,7 @@ import SolverLayout from "./Pages/SolverLayout";
 import SetterLayout from "./Pages/SetterLayout";
 import { Dialog, DialogContent } from "@mui/material";
 import { Circles } from "react-loader-spinner";
-import Logo from "./Components/Logo";
-import P1 from "./Components/P1";
+
 import PublicNavbar from "./Components/PublicNavbar";
 // import { ReactComponent as YourSvg } from "../public/manifest.json";
 const showToast = (message, type) => {
@@ -57,7 +56,6 @@ const Private = () => {
     <Navigate to="/login" />
   );
 };
-
 
 const ProblemSolver = () => {
   const cookies = new Cookies();
@@ -110,8 +108,23 @@ const App = () => {
     } else {
       setType(2);
     }
+
+    if (
+      localStorage.getItem("color-theme") === "dark" ||
+      (!("color-theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      console.log("Dark Mode");
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("color-theme", "dark");
+    } else {
+      console.log("Light Mode");
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("color-theme", "light");
+    }
   }, []);
   setLoading = setL;
+
   return (
     <div>
       <Dialog open={loading}>
@@ -143,7 +156,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route element={<Private />}>
-            <Route
+            {/* <Route
               path="/playground"
               element={
                 <SolverLayout>
@@ -158,7 +171,7 @@ const App = () => {
                   <PlaygroundCanvas />
                 </SolverLayout>
               }
-            />
+            /> */}
             <Route
               path="/problem/:id"
               element={
@@ -263,9 +276,11 @@ const App = () => {
             path="/home"
             element={
               <div className="layout-container">
-                <div className="body bg-gray-900">
-                  <PublicNavbar />
-                  <div className="content mb-20 md:mb-0 min-h-screen bg-gray-900">
+                <div className="body bu-bg-color">
+                  <Navbar>
+                    <PublicNavbar />
+                  </Navbar>
+                  <div className="content mb-20 md:mb-0 min-h-screen">
                     <Home />
                   </div>
                 </div>

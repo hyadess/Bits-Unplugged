@@ -78,7 +78,7 @@ const CanvasContainer = (props, ref) => {
         setUiParams(match[0].ui_params);
         setControlParams(match[0].control_params);
         setCanvas(match[0]);
-        console.log(match[0].control_params);
+        console.log("=>", match[0]);
       }
     }
   };
@@ -222,7 +222,7 @@ const CanvasContainer = (props, ref) => {
     );
   };
   return (
-    <div style={{ position: "relative", marginTop: "20px" }}>
+    <div className="relative mt-5">
       <Zoom in={true}>
         <div className="canvas-container" style={{ minHeight: "40vh" }}>
           {DynamicComponent && (
@@ -243,14 +243,14 @@ const CanvasContainer = (props, ref) => {
           <IconButton
             sx={{
               fontSize: "2rem",
-              // width: "60px",
-              // height: "60px",
+              // width: "50px",
+              // height: "50px",
             }}
             onClick={() => setSettings(!settings)}
           >
-            <SettingsIcon
-              sx={{ fontSize: "2rem", color: "white" }}
-            ></SettingsIcon>
+            <div className="flex items-center bu-text-primary">
+              <SettingsIcon sx={{ fontSize: "2rem" }} />
+            </div>
           </IconButton>
         ) : (
           <></>
@@ -259,12 +259,14 @@ const CanvasContainer = (props, ref) => {
         <IconButton
           sx={{
             fontSize: "2rem",
-            // width: "60px",
-            // height: "60px",
+            // width: "50px",
+            // height: "50px",
           }}
           onClick={() => alert(canvasInfo)}
         >
-          <InfoIcon sx={{ fontSize: "2rem", color: "white" }}></InfoIcon>
+          <div className="flex items-center bu-text-primary">
+            <InfoIcon sx={{ fontSize: "2rem" }} />
+          </div>
         </IconButton>
       </div>
     </div>

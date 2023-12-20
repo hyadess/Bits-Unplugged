@@ -83,10 +83,10 @@ const ProblemSet = () => {
       <div className="flex md:hidden items-center justify-center">
         <div
           onClick={() => switchPath("/topics")}
-          class="w-full justify-center inline-flex my-8  text-center items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm p-4 text-center focus:ring-primary-900 cursor-pointer gap-3 items-center"
+          class="w-full justify-center inline-flex my-8  text-center bu-button-secondary font-medium rounded-lg text-sm p-4   cursor-pointer gap-3 items-center"
         >
           <AddIcon sx={{ fontSize: "2rem" }} />
-          <h5 class="text-2xl md:text-3xl text-center font-bold tracking-tight  text-white">
+          <h5 class="text-2xl md:text-3xl text-center font-bold tracking-tight ">
             New Problem
           </h5>
         </div>

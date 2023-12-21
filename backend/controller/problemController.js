@@ -63,6 +63,14 @@ class ProblemController extends Controller {
     this.handleResponse(result, res);
   };
 
+  updateSeries = async (req, res) => {
+    let result = await problemRepository.updateSeries(
+      req.params.problem_id,
+      req.body.series_id
+    );
+    this.handleResponse(result, res);
+  };
+
   updateSolutionChecker = async (req, res) => {
     let result = await problemRepository.updataSolutionChecker(
       req.params.problem_id,

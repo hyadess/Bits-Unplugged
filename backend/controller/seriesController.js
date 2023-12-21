@@ -6,13 +6,13 @@ class SeriesController extends Controller {
     super();
   }
 
-  getAllSeriess = async (req, res) => {
-    let result = await seriesRepository.getAllSeriess();
+  getAllSeries = async (req, res) => {
+    let result = await seriesRepository.getAllSeries();
     this.handleResponse(result, res);
   };
 
-  getSeriessByTopic = async (req, res) => {
-    let result = await seriesRepository.getSeriessByTopic(req.params.topic_id);
+  getSeriesByTopic = async (req, res) => {
+    let result = await seriesRepository.getSeriesByTopic(req.params.topic_id);
     this.handleResponse(result, res);
   };
   getSeriesById = async (req, res) => {
@@ -26,7 +26,7 @@ class SeriesController extends Controller {
   updateSeries = async (req, res) => {
     let result = await seriesRepository.updateSeries(
       req.params.series_id,
-      req.body
+      req.body.series
     );
     this.handleResponse(result, res);
   };

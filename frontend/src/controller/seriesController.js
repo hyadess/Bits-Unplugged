@@ -3,16 +3,20 @@ import Controller from "./base";
 
 class SeriesController extends Controller {
   seriesApi = new SeriesApi();
-  getAllSeriess = async () => {
-    const res = await this.seriesApi.getAllSeriess();
+  getAllSeries = async () => {
+    const res = await this.seriesApi.getAllSeries();
     return res;
   };
-  getSeriessByTopic = async (topic_id) => {
-    const res = await this.seriesApi.getSeriessByTopic(topic_id);
+  getSeriesByTopic = async (topic_id) => {
+    const res = await this.seriesApi.getSeriesByTopic(topic_id);
     return res;
   };
   getSeriesById = async (series_id) => {
     const res = await this.seriesApi.getSeriesById(series_id);
+    return res;
+  };
+  updateSeries = async (id, data) => {
+    const res = await this.seriesApi.updateSeries(id, data);
     return res;
   };
 }

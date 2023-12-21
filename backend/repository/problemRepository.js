@@ -113,12 +113,23 @@ class ProblemsRepository extends Repository {
     return result;
   };
   updateCanvas = async (problem_id, canvas_data) => {
+    console.log("=>", canvas_data);
     const query = `
     Update Problem
     SET canvas_data = $2
     WHERE problem_id = $1;
     `;
     const params = [problem_id, canvas_data];
+    const result = await this.query(query, params);
+    return result;
+  };
+  updateSeries = async (problem_id, series_id) => {
+    const query = `
+    Update Problem
+    SET series_id = $2
+    WHERE problem_id = $1;
+    `;
+    const params = [problem_id, series_id];
     const result = await this.query(query, params);
     return result;
   };

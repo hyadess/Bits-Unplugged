@@ -13,8 +13,8 @@ import Playground from "./Pages/Playground";
 import Problems from "./Pages/Problems";
 import Profile from "./Pages/Profile";
 import PlaygroundCanvas from "./Pages/PlaygroundCanvas";
-import Login from "./Pages/Login";
-import Signup from "./Pages/Signup";
+import Login from "./Pages/auth/Login";
+import Signup from "./Pages/auth/Signup";
 import ProblemsCanvas from "./Pages/ProblemsCanvas";
 import Topics from "./Pages/Topics";
 import Series from "./Pages/Series";
@@ -35,6 +35,16 @@ import { Dialog, DialogContent } from "@mui/material";
 import { Circles } from "react-loader-spinner";
 
 import PublicNavbar from "./Components/PublicNavbar";
+import Layout2 from "./Components/Layouts/Layout2";
+import ProblemSetSeriesCard from "./Components/Cards/ProblemSetSeriesCard";
+import AdminLogin from "./Pages/auth/AdminLogin";
+import AdminHome from "./Pages/home/AdminHome";
+import AdminTopics from "./Pages/AdminTopics";
+import AdminSeries from "./Pages/AdminSeries";
+import AdminProblems from "./Pages/AdminProblems";
+import AdminTopicEditor from "./Pages/AdminTopicEditor";
+import AdminSeriesEditor from "./Pages/AdminSeriesEditor";
+import AdminProblemEditor from "./Pages/AdminProblemEditor";
 // import { ReactComponent as YourSvg } from "../public/manifest.json";
 const showToast = (message, type) => {
   console.log(message, type);
@@ -60,31 +70,52 @@ const Private = () => {
 const ProblemSolver = () => {
   const cookies = new Cookies();
   const isLoggedIn = !!cookies.get("token");
+  const type = cookies.get("type");
   return isLoggedIn ? (
-    <Layout>
-      <SolverLayout>
+    type == 0 ? (
+      <Layout>
         <Outlet />
-      </SolverLayout>
-    </Layout>
+      </Layout>
+    ) : (
+      <Navigate to="/" />
+    )
   ) : (
-    <Navigate to="/" />
+    <Navigate to="/login?type=solver" />
   );
 };
 
 const ProblemSetter = () => {
   const cookies = new Cookies();
   const isLoggedIn = !!cookies.get("token");
+  const type = cookies.get("type");
   return isLoggedIn ? (
-    <Layout>
-      <SetterLayout>
+    type == 1 ? (
+      <Layout>
         <Outlet />
-      </SetterLayout>
-    </Layout>
+      </Layout>
+    ) : (
+      <Navigate to="/" />
+    )
   ) : (
-    <Navigate to="/" />
+    <Navigate to="/login?type=setter" />
   );
 };
 
+const Admin = () => {
+  const cookies = new Cookies();
+  const isLoggedIn = !!cookies.get("token");
+  const type = cookies.get("type");
+  console.log(type);
+  return isLoggedIn ? (
+    type == 2 ? (
+      <Outlet />
+    ) : (
+      <Navigate to="/" />
+    )
+  ) : (
+    <Navigate to="/admin/login" />
+  );
+};
 const Public = () => {
   const cookies = new Cookies();
   const isLoggedIn = !!cookies.get("token");
@@ -155,31 +186,21 @@ const App = () => {
       />
       <Router>
         <Routes>
-          <Route element={<Private />}>
-            {/* <Route
-              path="/playground"
-              element={
-                <SolverLayout>
-                  <Playground />
-                </SolverLayout>
-              }
-            />
+          <Route element={<Admin />}>
+            <Route path="/admin" element={<AdminHome />} />
+            <Route path="/admin/topics" element={<AdminTopics />} />
+            <Route path="/admin/topics/:id" element={<AdminTopicEditor />} />
+            <Route path="/admin/series" element={<AdminSeries />} />
+            <Route path="/admin/series/:id" element={<AdminSeriesEditor />} />
+            <Route path="/admin/problems" element={<AdminProblems />} />
             <Route
-              path="/playground/:id"
-              element={
-                <SolverLayout>
-                  <PlaygroundCanvas />
-                </SolverLayout>
-              }
-            /> */}
-            <Route
-              path="/problem/:id"
-              element={
-                <SolverLayout>
-                  <ProblemsCanvas />
-                </SolverLayout>
-              }
+              path="/admin/problems/:id"
+              element={<AdminProblemEditor />}
             />
+          </Route>
+
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route element={<ProblemSetter />}>
             <Route
               path="/problem/:id/preview"
               element={
@@ -188,6 +209,33 @@ const App = () => {
                 </SetterLayout>
               }
             />
+            <Route
+              path="/problem/:prob_id/edit"
+              element={
+                <SetterLayout>
+                  <ProblemSetEnv />
+                </SetterLayout>
+              }
+            />
+            <Route
+              path="/problemSet"
+              element={
+                <SetterLayout>
+                  <ProblemSet />
+                </SetterLayout>
+              }
+            />
+          </Route>
+          <Route element={<ProblemSolver />}>
+            <Route
+              path="/problem/:id"
+              element={
+                <SolverLayout>
+                  <ProblemsCanvas />
+                </SolverLayout>
+              }
+            />
+
             <Route
               path="/problems"
               element={
@@ -221,22 +269,6 @@ const App = () => {
               }
             />
 
-            <Route
-              path="/problemSet"
-              element={
-                <SetterLayout>
-                  <ProblemSet />
-                </SetterLayout>
-              }
-            />
-            <Route
-              path="/problem/:prob_id/edit"
-              element={
-                <SetterLayout>
-                  <ProblemSetEnv />
-                </SetterLayout>
-              }
-            />
             <Route path="/problemSet/series/:id" element={<AddProblem />} />
 
             <Route
@@ -275,16 +307,9 @@ const App = () => {
           <Route
             path="/home"
             element={
-              <div className="layout-container">
-                <div className="body bu-bg-color">
-                  <Navbar>
-                    <PublicNavbar />
-                  </Navbar>
-                  <div className="content mb-20 md:mb-0 min-h-screen">
-                    <Home />
-                  </div>
-                </div>
-              </div>
+              <Layout2 nav={<PublicNavbar />}>
+                <Home />
+              </Layout2>
             }
           />
         </Routes>

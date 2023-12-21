@@ -7,5 +7,13 @@ class TopicController extends Controller {
     const res = await this.topicApi.getAllTopics();
     return res;
   };
+  getTopicById = async (id) => {
+    const res = await this.topicApi.getTopicById(id);
+    return res;
+  };
+  updateTopic = async (id, data) => {
+    const res = await this.topicApi.updateTopic(id, data);
+    return res;
+  };
 }
 export default TopicController;

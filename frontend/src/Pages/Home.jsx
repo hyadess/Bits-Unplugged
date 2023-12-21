@@ -57,7 +57,11 @@ const Home = () => {
 
           <div
             onClick={() =>
-              type === 0 ? navigator("/topics") : navigator("/problemSet")
+              type === 2
+                ? navigator("/admin")
+                : type === 1
+                ? navigator("/problemSet")
+                : navigator("/topics")
             }
             class="inline-flex text-center items-center font-medium rounded-lg text-sm px-5 py-2.5 bu-button-secondary bu-text-primary cursor-pointer"
           >

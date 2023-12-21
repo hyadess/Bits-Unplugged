@@ -5,7 +5,7 @@ class SeriesRepository extends Repository {
     super();
   }
 
-  getAllSeriess = async () => {
+  getAllSeries = async () => {
     const query = `
     SELECT * FROM Series;
     `;
@@ -14,7 +14,7 @@ class SeriesRepository extends Repository {
     return result;
   };
 
-  getSeriessByTopic = async (topic_id) => {
+  getSeriesByTopic = async (topic_id) => {
     const query = `
     SELECT * FROM Series
     WHERE topic_id = $1;

@@ -1,6 +1,9 @@
 import Api from "./base";
 
 class ProblemApi extends Api {
+  getAllProblems = async () => {
+    return await this.get("/problem");
+  };
   getMyProblems = async () => {
     return await this.get("/problem/created");
   };
@@ -18,6 +21,11 @@ class ProblemApi extends Api {
   updateTitle = async (problem_id, title) => {
     return await this.put("/problem/" + problem_id + "/title", {
       title: title,
+    });
+  };
+  updateSeries = async (problem_id, series_id) => {
+    return await this.put("/problem/" + problem_id + "/series", {
+      series_id: series_id,
     });
   };
   updateStatement = async (problem_id, statement) => {

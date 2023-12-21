@@ -20,7 +20,7 @@ class TopicController extends Controller {
   updateTopic = async (req, res) => {
     let result = await topicRepository.updateTopic(
       req.params.topic_id,
-      req.body
+      req.body.topic
     );
     this.handleResponse(result, res);
   };

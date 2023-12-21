@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthController from "../controller/authController";
+import AuthController from "../../controller/authController";
 import { toast } from "react-toastify";
 import "./Login.scss";
 import { CircularProgress, Switch } from "@mui/material";
 import { useSearchParams, createSearchParams } from "react-router-dom";
-import Banner from "../Components/Banner";
+import Banner from "../../Components/Banner";
+import Layout1 from "../../Components/Layouts/Layout1";
 const authController = new AuthController();
-
 
 const InputField = (props) => {
   return (
@@ -147,74 +147,73 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bu-bg-color">
-      <section>
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto gap-5 min-h-screen">
-          <div onClick={() => navigate("/home")} className="cursor-pointer">
-            <Banner width={200} height={50} />
-          </div>
+    <Layout1>
+      <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto gap-5 min-h-screen">
+        <div onClick={() => navigate("/home")} className="cursor-pointer">
+          <Banner width={200} height={50} />
+        </div>
 
-          <div class="w-full  rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bu-card-secondary">
-            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <div className="hbox flex-center">
-                <h6
-                  className={
-                    checked
-                      ? "flex items-center bu-text-subtitle"
-                      : "flex items-center text-xl font-semibold bu-text-primary"
+        <div class="w-full  rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bu-card-secondary">
+          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <div className="hbox flex-center">
+              <h6
+                className={
+                  checked
+                    ? "flex items-center bu-text-subtitle"
+                    : "flex items-center text-xl font-semibold bu-text-primary"
+                }
+              >
+                User
+              </h6>
+              <Switch
+                checked={checked}
+                onChange={() => {
+                  if (checked) {
+                    setChecked(false);
+                    setType("solver");
+                  } else {
+                    setChecked(true);
+                    setType("setter");
                   }
-                >
-                  User
-                </h6>
-                <Switch
-                  checked={checked}
-                  onChange={() => {
-                    if (checked) {
-                      setChecked(false);
-                      setType("solver");
-                    } else {
-                      setChecked(true);
-                      setType("setter");
-                    }
-                  }}
-                />
-                <h6
-                  className={
-                    checked
-                      ? "flex items-center text-xl font-semibold bu-text-primary"
-                      : "flex items-center bu-text-subtitle"
-                  }
-                  style={{ width: "2vw", fontWeight: "" }}
-                >
-                  Setter
-                </h6>
-              </div>
-              <h1 class="text-xl font-bold leading-tight tracking-tight  md:text-2xl bu-text-primary">
-                Sign up for an account
-              </h1>
-              <div class="space-y-4 md:space-y-6" action="#">
-                <InputField
-                  label="Full Name"
-                  type="text"
-                  name="name"
-                  id="name"
-                  placeholder="Your name"
-                  required="true"
-                  onChange={setFullName}
-                  value={fullName}
-                />
-                <InputField
-                  label="Username"
-                  type="text"
-                  name="username"
-                  id="username"
-                  placeholder="Username"
-                  required="true"
-                  onChange={setUserName}
-                  value={userName}
-                />
+                }}
+              />
+              <h6
+                className={
+                  checked
+                    ? "flex items-center text-xl font-semibold bu-text-primary"
+                    : "flex items-center bu-text-subtitle"
+                }
+                style={{ width: "2vw", fontWeight: "" }}
+              >
+                Setter
+              </h6>
+            </div>
+            <h1 class="text-xl font-bold leading-tight tracking-tight  md:text-2xl bu-text-primary">
+              Sign up for an account
+            </h1>
+            <div class="space-y-4 md:space-y-6" action="#">
+              <InputField
+                label="Full Name"
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Your name"
+                required="true"
+                onChange={setFullName}
+                value={fullName}
+              />
+              <InputField
+                label="Username"
+                type="text"
+                name="username"
+                id="username"
+                placeholder="Username"
+                required="true"
+                onChange={setUserName}
+                value={userName}
+              />
 
-                {/* <div>
+              {/* <div>
                   <label
                     for="date"
                     class="block mb-2 text-sm font-medium text-gray-900 text-white"
@@ -231,7 +230,7 @@ const Signup = () => {
                     onChange={(e) => setDateOfBirth(e.target.value)}
                   />
                 </div> */}
-                {/* <div>
+              {/* <div>
                   <label
                     for="institution"
                     class="block mb-2 text-sm font-medium text-gray-900 text-white"
@@ -268,18 +267,18 @@ const Signup = () => {
                     <option value="Developer">Developer</option>
                   </select>
                 </div> */}
-                <InputField
-                  label="Your email"
-                  type="text"
-                  name="email"
-                  id="email"
-                  placeholder="email"
-                  required="true"
-                  onChange={setEmail}
-                  value={email}
-                />
+              <InputField
+                label="Your email"
+                type="text"
+                name="email"
+                id="email"
+                placeholder="email"
+                required="true"
+                onChange={setEmail}
+                value={email}
+              />
 
-                {/* <InputField
+              {/* <InputField
                   label="Password"
                   type={showPassword ? "text" : "password"}
                   name="password"
@@ -291,79 +290,78 @@ const Signup = () => {
                   // onInput={validatePassword}
                 /> */}
 
-                <div>
-                  <label
-                    for="password"
-                    class="block mb-2 text-sm font-medium bu-text-primary"
-                  >
-                    Password
-                  </label>
-                  <div className="input-container">
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      name="password"
-                      id="password"
-                      placeholder="••••••••"
-                      class="border sm:text-sm rounded-lg  block w-full p-2.5  placeholder-gray-400 bu-input-primary"
-                      required="true"
-                      onChange={(e) => setPassword(e.target.value)}
-                      onInput={validatePassword}
-                    />
-                    <button
-                      onClick={() => setShowPassword(!showPassword)}
-                      class="block mb-2 text-sm font-medium  bu-text-primary"
-                    >
-                      {showPassword ? "Hide" : "Show"}
-                    </button>
-                  </div>
-                  {showValidationMessage && (
-                    <span class="block mb-2 text-sm font-medium  text-red-500">
-                      {validationMessage}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <label
-                    for="confirmpassword"
-                    class="block mb-2 text-sm font-medium bu-text-primary"
-                  >
-                    Confirm Password
-                  </label>
+              <div>
+                <label
+                  for="password"
+                  class="block mb-2 text-sm font-medium bu-text-primary"
+                >
+                  Password
+                </label>
+                <div className="input-container">
                   <input
-                    type="password"
-                    name="confirmpassword"
-                    id="confirmpassword"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    id="password"
                     placeholder="••••••••"
                     class="border sm:text-sm rounded-lg  block w-full p-2.5  placeholder-gray-400 bu-input-primary"
                     required="true"
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onInput={validatePassword}
                   />
-                </div>
-                {!signingUp && (
                   <button
-                    // type="submit"
-                    class="w-full text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center bu-button-secondary"
-                    onClick={handleSubmit}
+                    onClick={() => setShowPassword(!showPassword)}
+                    class="block mb-2 text-sm font-medium  bu-text-primary"
                   >
-                    Sign up
+                    {showPassword ? "Hide" : "Show"}
                   </button>
+                </div>
+                {showValidationMessage && (
+                  <span class="block mb-2 text-sm font-medium  text-red-500">
+                    {validationMessage}
+                  </span>
                 )}
-
-                <p class="text-sm font-light bu-text-subtitle">
-                  Already have an account?{" "}
-                  <a
-                    onClick={handleLogin}
-                    className="font-medium  hover:underline bu-text-title"
-                  >
-                    Sign in
-                  </a>
-                </p>
               </div>
+              <div>
+                <label
+                  for="confirmpassword"
+                  class="block mb-2 text-sm font-medium bu-text-primary"
+                >
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  name="confirmpassword"
+                  id="confirmpassword"
+                  placeholder="••••••••"
+                  class="border sm:text-sm rounded-lg  block w-full p-2.5  placeholder-gray-400 bu-input-primary"
+                  required="true"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </div>
+              {!signingUp && (
+                <button
+                  // type="submit"
+                  class="w-full text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center bu-button-secondary"
+                  onClick={handleSubmit}
+                >
+                  Sign up
+                </button>
+              )}
+
+              <p class="text-sm font-light bu-text-subtitle">
+                Already have an account?{" "}
+                <a
+                  onClick={handleLogin}
+                  className="font-medium  hover:underline bu-text-title"
+                >
+                  Sign in
+                </a>
+              </p>
             </div>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </Layout1>
   );
 };
 

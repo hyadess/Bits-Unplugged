@@ -5,9 +5,9 @@ const seriesController = new SeriesController();
 
 router.use(authMiddleware);
 
-router.get("/by_topic/:topic_id", seriesController.getSeriessByTopic);
+router.get("/by_topic/:topic_id", seriesController.getSeriesByTopic);
 
-router.get("/", seriesController.getAllSeriess);
+router.get("/", seriesController.getAllSeries);
 router.post("/", seriesController.addSeries);
 
 router.get("/:series_id", seriesController.getSeriesById);

@@ -1,0 +1,112 @@
+import { FormControl } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { InputAdornment, TextField } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import { makeStyles } from "@mui/styles";
+import { inputLabelClasses } from "@mui/material/InputLabel";
+const useStyles = makeStyles((theme) => ({
+  root: {
+    font: "white",
+    "& .MuiFormLabel-root-MuiInputLabel-root": {
+      color: "white",
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "#000000", // Change this to the desired border color
+      },
+      "&:hover fieldset": {
+        borderColor: "#ff479a", // Border color on hover
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#ff479a", // Border color on focus
+      },
+    },
+  },
+  multilineColor: {
+    color: "white",
+  },
+}));
+
+const InputField = (props) => {
+  return (
+    <div className="relative flex items-center">
+      <input
+        value={props.value}
+        type={props.type}
+        name={props.name}
+        id={props.id}
+        className="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
+        placeholder={props.placeholder}
+        required={props.required}
+        onChange={(e) => props.onChange(e.target.value)}
+      />
+      <span className="absolute right-3 top-1/2 transform -translate-y-1/2">
+        <div className="bu-text-primary">
+          <SearchIcon />
+        </div>
+      </span>
+    </div>
+  );
+};
+
+const SearchBar = ({ setSearchQuery, label, setSearch }) => {
+  const classes = useStyles();
+  return (
+    <div className="relative flex items-center w-full transition-all duration-300">
+      <input
+        // value={props.value}
+        type="name"
+        // name={props.name}
+        // id={props.id}
+        className="sm:text-sm rounded-lg block w-full p-2.5 pr-10 bu-bg-color bu-text-primary placeholder-gray-400  focus:outline-none"
+        placeholder="user name"
+        // required={props.required}
+        // onChange={(e) => props.onChange(e.target.value)}
+        onFocus={() => setSearch(true)}
+        onBlur={() => setSearch(false)}
+      />
+      <span className="absolute right-3 top-1/2 transform -translate-y-1/2">
+        <div className="bu-text-primary">
+          <SearchIcon />
+        </div>
+      </span>
+    </div>
+    // <FormControl className="search-bar" fullWidth>
+    //   <TextField
+    //     id="input-with-icon-textfield"
+    //     className={classes.root}
+    //     label={label}
+    //     InputLabelProps={{
+    //       sx: {
+    //         // set the color of the label when not shrinked
+    //         color: "black",
+    //         [`&.${inputLabelClasses.shrink}`]: {
+    //           // set the color of the label when shrinked (usually when the TextField is focused)
+    //           color: "#ff479a",
+    //         },
+    //       },
+    //     }}
+    //     InputProps={{
+    //       endAdornment: (
+    //         <InputAdornment position="end">
+    //           <div className="bu-text-primary">
+    //             <SearchIcon />
+    //           </div>
+    //         </InputAdornment>
+    //       ),
+    //       className: classes.multilineColor,
+    //     }}
+    //     // onInput={(e) => {
+    //     //   setSearchQuery(e.target.value);
+    //     // }}
+    //     size="small"
+    //     variant="outlined"
+    //     onFocus={() => setSearch(true)}
+    //     onBlur={() => setSearch(false)}
+    //     // fullWidth
+    //   />
+    // </FormControl>
+  );
+};
+
+export default SearchBar;

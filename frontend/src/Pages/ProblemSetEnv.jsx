@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import CanvasRedirection from "../Components/Canvas/CanvasRedirection";
+import CanvasContainer from "../Components/Canvas/CanvasContainer";
 import SolutionChecker from "./SolutionChecker";
 import { Button } from "@mui/material";
 import ProblemController from "../controller/problemController";
@@ -9,6 +9,9 @@ import ProblemStatement from "./Statement";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import "./ProblemSetEnv.scss";
+import Confirmation from "../Components/Confirmation";
+import { faTrashCan, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const problemController = new ProblemController();
 
 export default function ProblemSetEnv() {
@@ -55,7 +58,7 @@ export default function ProblemSetEnv() {
 
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
-
+  const [open, setOpen] = useState(false);
   const [code, setCode] = useState("");
   const [input, setInput] = useState("");
   const canvasRef = useRef();
@@ -72,14 +75,14 @@ export default function ProblemSetEnv() {
       case "canvas":
         return (
           <>
-            <CanvasRedirection
+            <CanvasContainer
               id={canvasId}
               input={input}
               setInput={setInput}
               ref={canvasRef}
             />
             <div
-              className="flex py-3"
+              className="flex py-5"
               style={{ justifyContent: "space-between", marginLeft: "auto" }}
             >
               <Button
@@ -206,11 +209,11 @@ export default function ProblemSetEnv() {
 
   return (
     <div>
-      <div class="  bg-gray-900">
+      <div>
         <div class="items-center py-4 mx-auto max-w-screen-2xl md:grid md:grid-cols-2 sm:pt-16">
           <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
-              <span class=" text-pink-500">
+            <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold ">
+              <span class="bu-text-title">
                 <div onClick={handleTextClick} style={{ cursor: "pointer" }}>
                   {isTextEditable ? (
                     <input
@@ -231,16 +234,19 @@ export default function ProblemSetEnv() {
           <div className="souvik-button-container gap-2">
             <button
               className="submit-button"
-              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-delete flex flex-row gap-4 items-center"
               // onClick={deleteProblem}
+              onClick={() => setOpen(true)}
             >
+              <FontAwesomeIcon icon={faTrashCan} />
               DELETE
             </button>
             <button
               className="submit-button"
-              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800"
+              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary flex flex-row gap-4 items-center"
               onClick={updateAll}
             >
+              <FontAwesomeIcon icon={faUpload} />
               PUBLISH
             </button>
           </div>
@@ -249,6 +255,7 @@ export default function ProblemSetEnv() {
       <ProbSetTab activeTab={activeComponent} click={setActiveComponent} />
 
       <div className="component-container">{renderComponent()}</div>
+      <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} />
     </div>
   );
 }

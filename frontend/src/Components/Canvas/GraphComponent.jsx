@@ -4,6 +4,7 @@ import React, {
   useEffect,
   forwardRef,
   useImperativeHandle,
+  useLayoutEffect,
 } from "react";
 import {
   Stage,
@@ -32,6 +33,10 @@ const GraphComponent = (props, ref) => {
   const [ctrlKeyPressed, setCtrlKeyPressed] = useState(false);
   const [zoom, setZoom] = useState(1);
   const stageRef = useRef(null);
+  const windowRef = useRef(null);
+
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
 
   useImperativeHandle(ref, () => {
     return {
@@ -41,6 +46,21 @@ const GraphComponent = (props, ref) => {
       getData: () => exportGraphData(),
     };
   });
+
+  useLayoutEffect(() => {
+    const updateParentWidth = () => {
+      if (windowRef.current) {
+        setWidth(windowRef.current.offsetWidth);
+        setHeight(windowRef.current.offsetHeight);
+      }
+    };
+    updateParentWidth();
+    window.addEventListener("resize", updateParentWidth);
+    return () => {
+      window.removeEventListener("resize", updateParentWidth);
+    };
+  }, []);
+
   // Function to calculate the distance from a point to a line segment...used to select an edge!!!!
   const pointToLineDistance = (px, py, x1, y1, x2, y2) => {
     const dx = x2 - x1;
@@ -336,19 +356,21 @@ const GraphComponent = (props, ref) => {
         }
       });
 
-      setNodeIndex(maxIndex+1);
+      setNodeIndex(maxIndex + 1);
     }
   };
 
   const changeIndex = () => {};
 
   return (
-    <div className="graph-container">
+    <div className="graph-container w-full pt-16" ref={windowRef}>
       <Stage
-        width={0.6 * window.innerWidth}
-        height={0.65 * window.innerHeight}
+        width={width}
+        height={500}
         onClick={handleCanvasClick}
         ref={stageRef}
+        // scaleX={Math.min(window.innerWidth / 970, 1)}
+        // scaleY={Math.min(window.innerWidth / 900, 1)}
       >
         <Layer>
           {edges.map((edge, index) => {
@@ -467,4 +489,4 @@ const GraphComponent = (props, ref) => {
   );
 };
 
-export default forwardRef(GraphComponent);
+export default React.memo(forwardRef(GraphComponent));

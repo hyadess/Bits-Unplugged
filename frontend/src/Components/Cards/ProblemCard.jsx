@@ -33,14 +33,14 @@ export default function ProblemCard({
     <div class="items-center w-full">
       <div
         class={
-          "border border-gray-500 rounded-lg shadow-lg bg-gray-700 border-gray-700 flex flex-row p-4 items-center"
+          "border rounded-lg shadow-lg bg-gray-700 bu-card-primary flex flex-row p-4 items-center"
         }
       >
-        <h5 class="text-2xl text-center font-bold tracking-tight text-gray-900 text-white w-10%">
+        <h5 class="text-2xl text-center font-bold tracking-tight bu-text-primary w-10%">
           {idx}
         </h5>
         <h5
-          class="text-2xl md:text-3xl pl-5 font-bold tracking-tight text-gray-900 text-primary-500 w-75% cursor-pointer"
+          class="text-2xl md:text-3xl pl-5 font-bold tracking-tight bu-text-title w-75% cursor-pointer"
           onClick={() => switchPath(path)}
         >
           {name}

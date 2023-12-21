@@ -14,8 +14,8 @@ module.exports = {
           600: "#db2777",
           700: "#be185d",
           800: "#9d174d",
-          900: "#831843",
-          950: "#500724",
+          900: "#ebebeb",
+          // 950: "#500724",
         },
       },
       height: {
@@ -24,6 +24,7 @@ module.exports = {
         "90%": "90%",
         "10%": "10%",
         "20%": "20%",
+        "70%": "70%",
         "80%": "80%",
       },
       width: {
@@ -44,7 +45,8 @@ module.exports = {
       title: ["Oswald"],
     },
   },
-  plugins: [],
+  plugins: [require("flowbite/plugin")],
+  darkMode: "class",
 };
   
   

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import CanvasRedirection from "../Components/Canvas/CanvasRedirection";
+import CanvasContainer from "../Components/Canvas/CanvasContainer";
 import ProblemController from "../controller/problemController";
 import { Button } from "@mui/material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
@@ -8,7 +8,12 @@ import SaveIcon from "@mui/icons-material/Save";
 import SendIcon from "@mui/icons-material/Send";
 import "./ProblemSetEnv.scss";
 import "./Submitbtn.scss";
+import Cookies from "universal-cookie";
 import Latex from "react-latex";
+import EditIcon from "@mui/icons-material/Edit";
+import Title from "../Components/Title";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 //<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 const problemController = new ProblemController();
 
@@ -33,11 +38,17 @@ export default function ProblemsCanvas() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState();
   const [canvas, setCanvas] = useState(null);
+  const [type, setType] = useState(-1);
   const baseURL = "https";
   const canvasRef = useRef();
 
   useEffect(() => {
     renderProblem();
+    const cookies = new Cookies();
+    const isLoggedIn = !!cookies.get("token");
+    if (isLoggedIn) {
+      setType(cookies.get("type"));
+    }
   }, []);
 
   const renderProblem = async () => {
@@ -52,7 +63,7 @@ export default function ProblemsCanvas() {
 
   const renderComponent = () => {
     return canvas_id ? (
-      <CanvasRedirection id={canvas_id} input={input} setInput={setInput} />
+      <CanvasContainer id={canvas_id} input={input} setInput={setInput} />
     ) : (
       <></>
     );
@@ -66,27 +77,55 @@ export default function ProblemsCanvas() {
     <div>
       {problem && canvas_id && canvasRef ? (
         <>
-          <div class="  bg-gray-900">
-            <div class="flex flex-col py-4 mx-auto max-w-screen-xl sm:pt-16 gap-3">
-              <div class="mt-4 md:mt-0">
-                <h2 class="text-left text-5xl tracking-tight font-extrabold text-gray-900 text-white">
-                  <span class=" text-pink-500">{title}</span>
-                </h2>
+          <div>
+            <div className="flex flex-row justify-between">
+              {/* <Title
+                title={title}
+                sub_title={
+                  problem
+                    ? problem.topic_name + " > " + problem.series_name
+                    : ""
+                }
+              /> */}
+              <div class="flex flex-col py-4 max-w-screen-xl sm:pt-12 gap-3">
+                <div class="mt-4 md:mt-0">
+                  <h2 class="text-left text-5xl tracking-tight font-extrabold ">
+                    <span class="bu-text-title">{title}</span>
+                  </h2>
+                </div>
+                <span class="bu-text-subtitle text-xl">
+                  {problem
+                    ? problem.topic_name + " > " + problem.series_name
+                    : ""}
+                </span>
               </div>
-              <span class="text-gray-500 text-xl">
-                {problem
-                  ? problem.topic_name + " > " + problem.series_name
-                  : ""}
-              </span>
+              {type == 1 ? (
+                <div className="flex items-center">
+                  <button
+                    className="submit-button"
+                    class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary"
+                    onClick={() =>
+                      navigator(`/problem/${problem.problem_id}/edit`)
+                    }
+                  >
+                    <div class="flex flex-row gap-4 items-center">
+                      <FontAwesomeIcon icon={faPenToSquare} size="md" />
+                      EDIT
+                    </div>
+                  </button>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
+
             <div class="items-center mx-auto max-w-screen-2xl">
-              <p class="mb-6 text-left  font-light text-gray-500 md:text-lg text-gray-400">
+              <p class="mb-6 text-left  font-light md:text-lg bu-text-primary">
                 <div
                   style={{
                     width: "100%",
                     padding: "30px 0",
                     fontSize: "25px",
-                    color: "azure",
                     border: "none",
                     borderRadius: "20px",
                   }}
@@ -99,20 +138,21 @@ export default function ProblemsCanvas() {
             </div>
           </div>
 
-          <div className="component-container">
+          <div className="w-full flex flex-col gap-5">
             {canvas_id && canvasRef ? (
-              <CanvasRedirection
+              <CanvasContainer
                 id={canvas_id}
                 input={input}
                 setInput={setInput}
+                mode={"preview"}
                 ref={canvasRef}
               />
             ) : (
               <></>
             )}
             <div
-              className="flex py-3"
-              style={{ justifyContent: "space-between", marginLeft: "auto" }}
+              className="flex flex-row justify-between"
+              // style={{ justifyContent: "space-between", marginLeft: "auto" }}
             >
               {/* <button
           style={{ float: "right" }}

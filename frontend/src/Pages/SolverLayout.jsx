@@ -1,9 +1,10 @@
 import React from "react";
+import MainContainer from "../Components/Containers/MainContainer";
 const SolverLayout = (props) => {
   return (
     <div>
       <div
-        className="left w-1/4 p-5 md:mt-20 hidden md:flex"
+        className="left w-1/4 p-5 md:mt-20 hidden md:flex "
         style={{
           position: "fixed",
           left: "0",
@@ -13,7 +14,7 @@ const SolverLayout = (props) => {
         }}
       >
         <div
-          className="max-w-sm  border border-slate-500 rounded-lg shadow-lg bg-slate-800 border-slate-800"
+          className="max-w-sm rounded-lg shadow-lg border bu-nav-color bu-text-primary"
           style={{
             height: "100%",
             display: "flex",
@@ -24,11 +25,9 @@ const SolverLayout = (props) => {
           Put unsolved and bookmarked problems here
         </div>
       </div>
-      <div className="mx-auto pb-5 p-5 pt-0 md:p-0 overflow-hidden w-full md:w-3/5">
-        {props.children}
-      </div>
+      <MainContainer>{props.children}</MainContainer>
       <div
-        className="right p-5 flex flex-col gap-5 md:mt-20 hidden md:flex"
+        className="right p-5 flex-col gap-5 md:mt-20 hidden md:flex"
         style={{
           position: "fixed",
           right: "0",
@@ -38,7 +37,7 @@ const SolverLayout = (props) => {
         }}
       >
         <div
-          className="max-w-sm  border border-slate-500 rounded-lg shadow-lg bg-slate-800 border-slate-800"
+          className="max-w-sm rounded-lg shadow-lg bu-nav-color bu-text-primary"
           style={{
             height: "50%",
             display: "flex",
@@ -49,7 +48,7 @@ const SolverLayout = (props) => {
           Put Stats here
         </div>
         <div
-          className="max-w-sm  border border-slate-500 rounded-lg shadow-lg bg-slate-800 border-slate-800"
+          className="max-w-sm  border rounded-lg shadow-lg bu-nav-color bu-text-primary"
           style={{
             height: "50%",
             display: "flex",

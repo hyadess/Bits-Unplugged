@@ -19,6 +19,7 @@ import {
 import Modal from "react-modal";
 import "./GraphComponent.scss";
 import { Button } from "@mui/material";
+import Cookies from "universal-cookie";
 const RADIUS = 30;
 const EDGECLICKRANGE = 20;
 const canvasWidth = 1440;
@@ -27,6 +28,7 @@ const canvasHeight = 1080;
 Modal.setAppElement("#root");
 
 const GraphComponent = (props, ref) => {
+  const [userType, setUserType] = useState(0);
   const [edgeIndex, setEdgeIndex] = useState(0);
   const [nodeIndex, setNodeIndex] = useState(0);
   const [nodes, setNodes] = useState([]);
@@ -154,10 +156,15 @@ const GraphComponent = (props, ref) => {
       //exportGraphData();
     };
   }, [ctrlKeyPressed]);
-
+  //import data.........
   useEffect(() => {
     importGraphData();
   }, [props.input]);
+  // define user type..............
+  useEffect(() => {
+    const cookies = new Cookies();
+    setUserType(cookies.get("type"));
+  }, []);
 
   // node hovering........................
   const handleNodeHover = (node) => {
@@ -213,6 +220,9 @@ const GraphComponent = (props, ref) => {
           if (selectedEdge == nearestEdge) setSelectedEdge(null);
           else setSelectedEdge(nearestEdge);
         } else {
+          //check if i have control params permission to add nodes
+          if (userType === 0 && props.controlParams["add_node"].value === false)
+            return;
           const newNode = { x, y, nodeIndex };
           setNodeIndex(nodeIndex + 1);
 
@@ -252,7 +262,10 @@ const GraphComponent = (props, ref) => {
   // deleting node or edge is done by ctrl+x
 
   const deleteSelectedNodeOrEdge = () => {
+    //node deletion
     if (selectedNodes.length === 1) {
+      if (userType === 0 && props.controlParams["delete_node"].value === false)
+        return;
       const nodeToDelete = selectedNodes[0];
       const updatedNodes = nodes.filter((node) => node !== nodeToDelete);
       let updatedEdges = edges.filter(
@@ -271,7 +284,11 @@ const GraphComponent = (props, ref) => {
       setEdges(updatedEdges);
       setSelectedNodes([]);
       setSelectedEdge(null);
-    } else if (selectedEdge != null) {
+    }
+    //edge deletion
+    if (selectedEdge != null) {
+      if (userType === 0 && props.controlParams["delete_edge"].value === false)
+        return;
       const updatedEdges = edges.filter((edge) => edge !== selectedEdge);
       setEdges(updatedEdges);
       setSelectedEdge(null);
@@ -287,6 +304,8 @@ const GraphComponent = (props, ref) => {
   };
 
   const handleNodeDrag = (index, e) => {
+    if (userType === 0 && props.controlParams["drag_node"].value === false)
+      return;
     const newPosition = e.target.position();
     // Calculate the new position of the node
     const updatedX = newPosition.x;
@@ -446,7 +465,7 @@ const GraphComponent = (props, ref) => {
               key={index}
               x={node.x}
               y={node.y}
-              draggable
+              draggable={props.controlParams["drag_node"].value}
               onMouseEnter={() => handleNodeHover(node)}
               onMouseLeave={handleNodeUnhover}
               onDragMove={(e) => handleNodeDrag(index, e)}

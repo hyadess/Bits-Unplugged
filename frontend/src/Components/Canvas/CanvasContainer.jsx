@@ -238,6 +238,9 @@ const CanvasContainer = (props, ref) => {
             <DynamicComponent
               input={props.input}
               setInput={props.setInput}
+              params={params}
+              uiParams={uiParams}
+              controlParams={controlParams}
               ref={ref}
             />
           )}

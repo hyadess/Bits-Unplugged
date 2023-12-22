@@ -34,7 +34,14 @@ class ProblemController extends Controller {
   };
 
   getProblemById = async (req, res) => {
-    let result = await problemRepository.getProblemById(req.params.problem_id);
+    let result;
+    if (req.body.type == 0) {
+      result = await problemRepository.getPublishedProblemById(
+        req.params.problem_id
+      );
+    } else {
+      result = await problemRepository.getProblemById(req.params.problem_id);
+    }
     this.handleResponse(result, res);
   };
 

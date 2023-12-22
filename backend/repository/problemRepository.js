@@ -74,6 +74,23 @@ class ProblemsRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+
+  getPublishedProblemById = async (problem_id) => {
+    const query = `
+    SELECT St.*, S.name as series_name, T.name as topic_name 
+    FROM Problem P
+    LEFT JOIN Series S
+    ON P.series_id = S.series_id
+    LEFT JOIN Topic T
+    ON S.topic_id = T.topic_id
+    LEFT JOIN State St
+    ON St.state_id = P.submit_state_id
+    WHERE problem_id = $1 AND is_live = true;
+    `;
+    const params = [problem_id];
+    const result = await this.query(query, params);
+    return result;
+  };
   deleteProblem = async (problem_id) => {
     const query = `
     DELETE FROM Problem
@@ -90,7 +107,7 @@ class ProblemsRepository extends Repository {
       if (prob.submit_state_id !== null) {
         const query = `
           Update State
-          SET title = $2, statement = $3, canvas_data = $4, solution_checker = $5, params = $6, ui_params = $7, control_params = $8, last_updated = $9
+          SET title = $2, statement = $3, canvas_data = $4, solution_checker = $5, params = $6, ui_params = $7, control_params = $8, last_updated = $9, canvas_id = $10
           WHERE state_id = $1;
         `;
         const params = [
@@ -103,6 +120,7 @@ class ProblemsRepository extends Repository {
           prob.ui_params,
           prob.control_params,
           Date.now(),
+          prob.canvas_id,
         ];
         const result2 = await this.query(query, params);
         if (result2.success) {

@@ -17,7 +17,7 @@ export default function AddProblem() {
   const [seriesList, setSeriesList] = useState([]);
 
   const getSeriesList = async () => {
-    const res = await seriesController.getSeriessByTopic(id);
+    const res = await seriesController.getSeriesByTopic(id);
     if (res.success) {
       setSeriesList(res.data);
       setLoading(false);

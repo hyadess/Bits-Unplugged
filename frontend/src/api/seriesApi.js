@@ -1,14 +1,19 @@
 import Api from "./base";
 
 class SeriesApi extends Api {
-  getAllSeriess = async () => {
+  getAllSeries = async () => {
     return await this.get("/series");
   };
-  getSeriessByTopic = async (topic_id) => {
+  getSeriesByTopic = async (topic_id) => {
     return await this.get("/series/by_topic/" + topic_id);
   };
-  getSeriessById = async (series_id) => {
+  getSeriesById = async (series_id) => {
     return await this.get("/series/" + series_id);
+  };
+  updateSeries = async (id, data) => {
+    return await this.put("/series/" + id, {
+      series: data,
+    });
   };
 }
 export default SeriesApi;

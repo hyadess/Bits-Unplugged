@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthController from "../controller/authController";
+import AuthController from "../../controller/authController";
 import { useSearchParams, createSearchParams } from "react-router-dom";
 import { CircularProgress, Switch } from "@mui/material";
 import "./Login.scss";
-import Banner from "../Components/Banner";
+import Banner from "../../Components/Banner";
+import Layout1 from "../../Components/Layouts/Layout1";
 const authController = new AuthController();
-
 
 const InputField = (props) => {
   return (
@@ -22,7 +22,7 @@ const InputField = (props) => {
         type={props.type}
         name={props.name}
         id={props.id}
-        class="border sm:text-sm rounded-lg  block w-full p-2.5   bu-input-primary"
+        class="border sm:text-sm rounded-lg  block w-full p-2.5 bu-input-primary"
         placeholder={props.placeholder}
         required={props.required}
         onChange={(e) => props.onChange(e.target.value)}
@@ -76,7 +76,7 @@ const Login = () => {
     }
   };
   return (
-    <div className="min-h-screen bu-bg-color">
+    <Layout1>
       <section>
         <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto gap-5 min-h-screen">
           <>
@@ -223,7 +223,7 @@ const Login = () => {
           </>
         </div>
       </section>
-    </div>
+    </Layout1>
   );
 };
 

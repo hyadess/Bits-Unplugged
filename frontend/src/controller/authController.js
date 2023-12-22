@@ -18,6 +18,7 @@ class AuthController extends Controller {
    */
   login = async (data) => {
     const res = await this.authApi.login(data);
+    console.log(res);
     if (res.success) {
       this.cookies.set("token", res.token, {
         path: "/",

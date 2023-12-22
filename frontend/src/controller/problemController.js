@@ -8,6 +8,14 @@ class ProblemController extends Controller {
   /**
    * For Problem Setter
    */
+  getAllProblems = async () => {
+    const res = await this.problemApi.getAllProblems();
+    return res;
+  };
+  getSubmittedProblems = async () => {
+    const res = await this.problemApi.getSubmittedProblems();
+    return res;
+  };
   getMyProblems = async () => {
     const res = await this.problemApi.getMyProblems();
     return res;
@@ -20,20 +28,28 @@ class ProblemController extends Controller {
     const res = await this.problemApi.getProblemById(problem_id);
     return res;
   };
-  addProblem = async (series_id) => {
-    const res = await this.problemApi.addProblem(series_id);
+  addProblem = async (title) => {
+    const res = await this.problemApi.addProblem(title);
     return res;
   };
   updateTitle = async (problem_id, title) => {
     const res = await this.problemApi.updateTitle(problem_id, title);
     return res;
   };
+  updateSeries = async (problem_id, series_id) => {
+    const res = await this.problemApi.updateSeries(problem_id, series_id);
+    return res;
+  };
   updateStatement = async (problem_id, statement) => {
     const res = await this.problemApi.updateStatement(problem_id, statement);
     return res;
   };
-  updateCanvas = async (problem_id, canvas_data) => {
-    const res = await this.problemApi.updateCanvas(problem_id, canvas_data);
+  updateCanvas = async (problem_id, canvas_id, canvas_data) => {
+    const res = await this.problemApi.updateCanvas(
+      problem_id,
+      canvas_id,
+      canvas_data
+    );
     return res;
   };
 
@@ -42,10 +58,17 @@ class ProblemController extends Controller {
     return res;
   };
 
+  submitProblem = async (problem_id) => {
+    const res = await this.problemApi.submitProblem(problem_id);
+    return res;
+  };
+
   publishProblem = async (problem_id) => {
+    // Submitted by problem setter vs Live
     const res = await this.problemApi.publishProblem(problem_id);
     return res;
   };
+
   unpublishProblem = async (problem_id) => {
     const res = await this.problemApi.unpublishProblem(problem_id);
     return res;

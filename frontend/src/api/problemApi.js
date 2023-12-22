@@ -1,6 +1,12 @@
 import Api from "./base";
 
 class ProblemApi extends Api {
+  getAllProblems = async () => {
+    return await this.get("/problem");
+  };
+  getSubmittedProblems = async () => {
+    return await this.get("/problem/submitted");
+  };
   getMyProblems = async () => {
     return await this.get("/problem/created");
   };
@@ -10,9 +16,9 @@ class ProblemApi extends Api {
   getProblemById = async (problem_id) => {
     return await this.get("/problem/" + problem_id);
   };
-  addProblem = async (series_id) => {
+  addProblem = async (title) => {
     return await this.post("/problem/", {
-      series_id: series_id,
+      title: title,
     });
   };
   updateTitle = async (problem_id, title) => {
@@ -20,13 +26,19 @@ class ProblemApi extends Api {
       title: title,
     });
   };
+  updateSeries = async (problem_id, series_id) => {
+    return await this.put("/problem/" + problem_id + "/series", {
+      series_id: series_id,
+    });
+  };
   updateStatement = async (problem_id, statement) => {
     return await this.put("/problem/" + problem_id + "/statement", {
       statement: statement,
     });
   };
-  updateCanvas = async (problem_id, canvas_data) => {
+  updateCanvas = async (problem_id, canvas_id, canvas_data) => {
     return await this.put("/problem/" + problem_id + "/canvas", {
+      canvas_id: canvas_id,
       canvas_data: canvas_data,
     });
   };
@@ -40,6 +52,9 @@ class ProblemApi extends Api {
   };
   publishProblem = async (problem_id) => {
     return await this.post("/problem/" + problem_id + "/publish", {});
+  };
+  submitProblem = async (problem_id) => {
+    return await this.post("/problem/" + problem_id + "/submit", {});
   };
   unpublishProblem = async (problem_id) => {
     return await this.post("/problem/" + problem_id + "/unpublish", {});

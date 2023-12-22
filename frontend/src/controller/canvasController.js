@@ -8,5 +8,13 @@ class CanvasController extends Controller {
     return res;
   };
   // Todo: Get Canvas by Id
+  getCanvasById = async (id) => {
+    const res = await this.canvasApi.getCanvasById(id);
+    return res;
+  };
+  updateCanvas = async (id, data) => {
+    const res = await this.canvasApi.updateCanvas(id, data);
+    return res;
+  };
 }
 export default CanvasController;

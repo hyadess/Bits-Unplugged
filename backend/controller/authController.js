@@ -4,6 +4,7 @@ const { JWT_SECRET } = require("../config/config");
 const authRepository = new AuthRepository();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { ADMIN_PASS } = require("../config/config");
 
 const tokenExpiryDuration = 86400;
 class AuthController extends Controller {
@@ -47,6 +48,20 @@ class AuthController extends Controller {
     var emailFormat =
       /^[a-zA-Z0-9_.+]+(?<!^[0-9]*)@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
+    if (req.body.type == 2) {
+      // console.log(ADMIN_PASS);
+      if (bcrypt.compareSync(req.body.pass, ADMIN_PASS)) {
+        return res.status(200).json({
+          success: true,
+          token: this.getToken(-1, req.body.email, ADMIN_PASS, req.body.type),
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          error: "Invalid credentials",
+        });
+      }
+    }
     let result;
     if (req.body.email !== "" && req.body.email.match(emailFormat)) {
       result = await authRepository.getUserByEmailType(

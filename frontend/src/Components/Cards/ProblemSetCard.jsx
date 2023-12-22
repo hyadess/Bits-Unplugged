@@ -23,10 +23,10 @@ const ProblemSetCard = ({ id, idx, name, deleteAction, is_live }) => {
   };
 
   const publishProblem = async () => {
-    await problemController.publishProblem(id);
+    // await problemController.publishProblem(id);
   };
   const unpublishProblem = async () => {
-    await problemController.unpublishProblem(id);
+    // await problemController.unpublishProblem(id);
   };
   return (
     <div class="items-center w-full">

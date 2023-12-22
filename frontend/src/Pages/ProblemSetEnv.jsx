@@ -12,7 +12,41 @@ import "./ProblemSetEnv.scss";
 import Confirmation from "../Components/Confirmation";
 import { faTrashCan, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { SelectionField, SelectionField2 } from "../Components/InputFields";
+
+import CanvasController from "../controller/canvasController";
 const problemController = new ProblemController();
+const canvasController = new CanvasController();
+
+const CustomSelectionField = (props) => {
+  return (
+    <div className="w-full">
+      <label
+        for={props.name}
+        class="block mb-2 text-sm font-medium bu-text-primary"
+      >
+        {props.label}
+      </label>
+      <select
+        value={props.value}
+        type="text"
+        name={props.name}
+        id={props.id}
+        class="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
+        placeholder={props.placeholder}
+        required={props.required}
+        onChange={props.onChange(props.id)}
+      >
+        <option value="" disabled hidden></option>
+        {props.options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
 
 export default function ProblemSetEnv() {
   const { prob_id } = useParams();
@@ -26,7 +60,6 @@ export default function ProblemSetEnv() {
     //console.log(prob_id)
     const res = await problemController.getProblemById(prob_id);
     if (res.success) {
-      //const data=JSON.parse(res.data[0].canvas_data);
       setInput(res.data[0].canvas_data);
       setTitle(res.data[0].title);
       setProblemStatement(res.data[0].statement);
@@ -63,6 +96,39 @@ export default function ProblemSetEnv() {
   const [input, setInput] = useState("");
   const canvasRef = useRef();
   const [activeComponent, setActiveComponent] = useState("statement");
+  const [canvasList, setCanvasList] = useState([]);
+  const [canvasFullList, setCanvasFullList] = useState([]);
+  const getCanvasList = async () => {
+    const res = await canvasController.getAllCanvas();
+
+    if (res.success) {
+      setCanvasFullList(res.data);
+      const newArray = res.data.map((item) => ({
+        value: item.canvas_id,
+        label: item.name,
+      }));
+      console.log("::::::", newArray);
+      setCanvasList(newArray);
+      setLoading(false);
+      console.log(res);
+    }
+  };
+
+  const getCanvas = async () => {};
+
+  const handleCanvasChange = (prop) => (e) => {
+    setCanvasId(e.target.value);
+    var res = canvasFullList.find((element) => {
+      return element.canvas_id == e.target.value;
+    });
+
+    if (res) {
+      console.log("Found: ", res.template);
+      setCode(res.template);
+      setInput(null);
+    }
+  };
+
   const renderComponent = () => {
     switch (activeComponent) {
       case "statement":
@@ -75,12 +141,22 @@ export default function ProblemSetEnv() {
       case "canvas":
         return (
           <>
-            <CanvasContainer
-              id={canvasId}
-              input={input}
-              setInput={setInput}
-              ref={canvasRef}
+            <SelectionField2
+              label="Choose Canvas"
+              onChange={handleCanvasChange}
+              id="canvas_id"
+              value={canvasId == null ? "" : canvasId}
+              options={canvasList}
             />
+            {canvasId && (
+              <CanvasContainer
+                id={canvasId}
+                input={input}
+                setInput={setInput}
+                ref={canvasRef}
+              />
+            )}
+
             <div
               className="flex py-5"
               style={{ justifyContent: "space-between", marginLeft: "auto" }}
@@ -100,6 +176,8 @@ export default function ProblemSetEnv() {
                 variant="contained"
                 onClick={() => {
                   setInput(canvasRef.current.getData());
+                  updateCanvas(canvasRef.current.getData());
+                  updateCode();
                 }}
                 size="large"
                 startIcon={
@@ -163,10 +241,12 @@ export default function ProblemSetEnv() {
     }
   };
 
-  const updateCanvas = async () => {
-    console.log(input);
-    //const string_input=JSON.stringify(input)
-    const res = await problemController.updateCanvas(prob_id, input);
+  const updateCanvas = async (canvas_data) => {
+    const res = await problemController.updateCanvas(
+      prob_id,
+      canvasId,
+      canvas_data
+    );
     if (res.success) {
       console.log(res);
     }
@@ -182,15 +262,18 @@ export default function ProblemSetEnv() {
   const updateAll = async () => {
     await updateTitle();
     await updateStatement();
-    await updateCanvas();
+    await updateCanvas(input);
     await updateCode();
-    await problemController.publishProblem(prob_id);
+    await problemController.submitProblem(prob_id);
   };
 
-  useEffect(() => {
-    updateCanvas();
-  }, [input]);
+  // useEffect(() => {
+  //   updateCanvas();
+  // }, [input]);
 
+  useEffect(() => {
+    getCanvasList();
+  }, []);
   // useEffect(() => {
   //   updateStatement();
   // }, [problemStatement]);

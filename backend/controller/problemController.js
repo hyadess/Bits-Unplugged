@@ -58,6 +58,7 @@ class ProblemController extends Controller {
   updateCanvas = async (req, res) => {
     let result = await problemRepository.updateCanvas(
       req.params.problem_id,
+      req.body.canvas_id,
       req.body.canvas_data
     );
     this.handleResponse(result, res);

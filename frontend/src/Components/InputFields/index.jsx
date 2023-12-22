@@ -147,9 +147,9 @@ export const SelectionField2 = (props) => {
         required={props.required}
         onChange={props.onChange(props.id)}
       >
-        {/* <option value="" disabled hidden>
+        <option value="" disabled hidden>
           Select an option
-        </option> */}
+        </option>
         {props.options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}

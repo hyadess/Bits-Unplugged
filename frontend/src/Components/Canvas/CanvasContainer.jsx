@@ -42,7 +42,7 @@ const useStyles = makeStyles({
 
 const CanvasContainer = (props, ref) => {
   const classes = useStyles();
-  const id = props.id;
+  const [id, setId] = useState(props.id);
   // const componentName = "GraphComponent";
   const [DynamicComponent, setDynamicComponent] = useState(null);
   const [canvasList, setCanvasList] = useState([]);
@@ -69,7 +69,7 @@ const CanvasContainer = (props, ref) => {
     if (res.success) {
       setCanvasList(res.data);
       console.log(res.data);
-      const match = res.data.filter((canvas) => canvas.canvas_id == id);
+      const match = res.data.filter((canvas) => canvas.canvas_id == props.id);
       console.log(match);
       if (match.length == 1) {
         setSelectedComponent(match[0].classname);
@@ -79,6 +79,13 @@ const CanvasContainer = (props, ref) => {
         setControlParams(match[0].control_params);
         setCanvas(match[0]);
         console.log("=>", match[0]);
+      } else {
+        setSelectedComponent(null);
+        seCanvasInfo(null);
+        setParams({});
+        setUiParams({});
+        setControlParams({});
+        setCanvas(null);
       }
     }
   };
@@ -96,6 +103,8 @@ const CanvasContainer = (props, ref) => {
 
   useEffect(() => {
     getCanvasList();
+  }, [props.id]);
+  useEffect(() => {
     setType(cookies.get("type"));
   }, []);
 

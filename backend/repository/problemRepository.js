@@ -1,6 +1,8 @@
 const Repository = require("./base");
 const SeriesRepository = require("./seriesRepository");
 const seriesRepository = new SeriesRepository();
+const CanvasRepository = require("./canvasRepository");
+const canvasRepository = new CanvasRepository();
 class ProblemsRepository extends Repository {
   constructor() {
     super();
@@ -51,7 +53,7 @@ class ProblemsRepository extends Repository {
   };
   getProblemById = async (problem_id) => {
     const query = `
-    SELECT P.*, S.canvas_id, S.name as series_name, T.name as topic_name 
+    SELECT P.*, S.name as series_name, T.name as topic_name 
     FROM Problem P
     LEFT JOIN Series S
     ON P.series_id = S.series_id
@@ -112,14 +114,14 @@ class ProblemsRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
-  updateCanvas = async (problem_id, canvas_data) => {
+  updateCanvas = async (problem_id, canvas_id, canvas_data) => {
     console.log("=>", canvas_data);
     const query = `
     Update Problem
-    SET canvas_data = $2
+    SET canvas_data = $3, canvas_id = $2
     WHERE problem_id = $1;
     `;
-    const params = [problem_id, canvas_data];
+    const params = [problem_id, canvas_id, canvas_data];
     const result = await this.query(query, params);
     return result;
   };
@@ -146,24 +148,15 @@ class ProblemsRepository extends Repository {
   addProblem = async (author_id, data) => {
     // Assign series template to this problem
     // console.log(data);
-    const res = await seriesRepository.getSeriesById(data.series_id);
-    if (res.success) {
-      const query = `
-      INSERT INTO Problem (author_id, series_id, title, creation_time, solution_checker)
-      VALUES ($1, $2, $3, $4, $5)
+    // const res = await canvasRepository.getCanvasById(data.series_id);
+    const query = `
+      INSERT INTO Problem (author_id, title, creation_time)
+      VALUES ($1, $2, $3)
       RETURNING problem_id;
       `;
-      const params = [
-        author_id,
-        data.series_id,
-        "Untitled",
-        Date.now(),
-        res.data[0].template,
-      ];
-      const result = await this.query(query, params);
-      return result;
-    }
-    return res;
+    const params = [author_id, data.title, Date.now()];
+    const result = await this.query(query, params);
+    return result;
   };
 }
 

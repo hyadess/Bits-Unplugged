@@ -24,8 +24,8 @@ class ProblemController extends Controller {
     const res = await this.problemApi.getProblemById(problem_id);
     return res;
   };
-  addProblem = async (series_id) => {
-    const res = await this.problemApi.addProblem(series_id);
+  addProblem = async (title) => {
+    const res = await this.problemApi.addProblem(title);
     return res;
   };
   updateTitle = async (problem_id, title) => {
@@ -40,8 +40,12 @@ class ProblemController extends Controller {
     const res = await this.problemApi.updateStatement(problem_id, statement);
     return res;
   };
-  updateCanvas = async (problem_id, canvas_data) => {
-    const res = await this.problemApi.updateCanvas(problem_id, canvas_data);
+  updateCanvas = async (problem_id, canvas_id, canvas_data) => {
+    const res = await this.problemApi.updateCanvas(
+      problem_id,
+      canvas_id,
+      canvas_data
+    );
     return res;
   };
 

@@ -581,8 +581,8 @@ const TowerOfHanoi = (props, ref) => {
               </FormControl>
             </div>
           ) : (
-            <Typography variant="h5" className="p-0 m-0" color={"white"}>
-              <b>Moves: {numberOfMoves}</b>
+            <Typography variant="h5" className="p-0 m-0 bu-text-primary">
+              <b className="bu-text-primary">Moves: {numberOfMoves}</b>
             </Typography>
           )}
         </div>

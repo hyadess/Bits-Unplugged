@@ -16,11 +16,15 @@ import {
   Rect,
   Shape,
 } from "react-konva";
+import Modal from "react-modal";
 import "./GraphComponent.scss";
+import { Button } from "@mui/material";
 const RADIUS = 30;
 const EDGECLICKRANGE = 20;
 const canvasWidth = 1440;
 const canvasHeight = 1080;
+
+Modal.setAppElement("#root");
 
 const GraphComponent = (props, ref) => {
   const [edgeIndex, setEdgeIndex] = useState(0);
@@ -37,6 +41,43 @@ const GraphComponent = (props, ref) => {
 
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
+
+  //for edge weight entering prompt
+  const [isPromptOpen, setIsPromptOpen] = useState(false);
+  const [curEdgeWeight, setCurEdgeWeight] = useState("");
+  const openPrompt = () => {
+    setIsPromptOpen(true);
+  };
+
+  const closePrompt = () => {
+    setCurEdgeWeight("");
+    setIsPromptOpen(false);
+  };
+
+  const handlePromptSubmit = (value) => {
+    setCurEdgeWeight(value);
+    if (
+      curEdgeWeight === "" ||
+      curEdgeWeight === null ||
+      isNaN(curEdgeWeight)
+    ) {
+      setCurEdgeWeight("");
+      setSelectedNodes([selectedNodes[0]]);
+      return;
+    }
+
+    const newEdge = {
+      start: selectedNodes[0],
+      end: selectedNodes[1],
+      weight: curEdgeWeight,
+    };
+    //setEdgeIndex(edgeIndex + 1);
+    setEdges([...edges, newEdge]);
+    setSelectedNodes([]);
+
+    setCurEdgeWeight("");
+    setIsPromptOpen(false);
+  };
 
   useImperativeHandle(ref, () => {
     return {
@@ -197,22 +238,8 @@ const GraphComponent = (props, ref) => {
           (edge.start === node && edge.end === selectedNodes[0])
       );
       if (!alreadyExists) {
-        const newEdge = {
-          start: selectedNodes[0],
-          end: node,
-          weight: "assign",
-        };
-        //setEdgeIndex(edgeIndex + 1);
-        setEdges([...edges, newEdge]);
-        setSelectedNodes([]);
-
-        while (true) {
-          const newWeight = prompt("Enter weight for the new edge:", "");
-          if (newWeight !== null && !isNaN(newWeight)) {
-            newEdge.weight = newWeight;
-            break;
-          }
-        }
+        setSelectedNodes([...selectedNodes, node]);
+        openPrompt();
       }
     } else if (selectedNodes.includes(node)) {
       // If the clicked node is already selected, unselect it
@@ -485,6 +512,31 @@ const GraphComponent = (props, ref) => {
       {/* <div className="export-button-container">
         <button onClick={exportGraphData} className="export-button"></button>
       </div> */}
+
+      <Modal
+        className="modal-container"
+        isOpen={isPromptOpen}
+        onRequestClose={closePrompt}
+        contentLabel="Edge Weight Input"
+      >
+        <p className="modal-title">ENTER THE WEIGHT:</p>
+        <input
+          className="modal-input"
+          type="number"
+          value={curEdgeWeight}
+          onChange={(e) => setCurEdgeWeight(e.target.value)}
+          placeholder="Edge Weight"
+        />
+        <button
+          className="modal-buttons"
+          onClick={() => handlePromptSubmit(curEdgeWeight)}
+        >
+          SUBMIT
+        </button>
+        <button className="modal-buttons" onClick={closePrompt}>
+          CANCEL
+        </button>
+      </Modal>
     </div>
   );
 };

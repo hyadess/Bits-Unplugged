@@ -39,3 +39,53 @@
   transform: scale(1.1); /* Scale up the button when hovered */
   background-color: rgba(165, 186, 207, 0.753);
 }
+
+// modal.scss
+
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(75, 73, 73);
+  width: 500px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.modal-title {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: antiquewhite;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  background-color: transparent;
+  color: aliceblue;
+  border: 0;
+}
+
+.modal-buttons {
+  justify-content: center;
+  color: azure;
+  font-size: large;
+  font-weight: 400;
+  padding: 10px;
+  border-radius: 3em;
+
+  button {
+    margin: 8px;
+  }
+}
+.modal-buttons:hover {
+  transform: scale(1.1);
+  font-weight: 500;
+  background-color: rgba(31, 194, 99, 0.946);
+}
+

@@ -30,7 +30,7 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        <hr class="my-6  sm:mx-autolg:my-8 bu-horizontal-bar" />
+        <hr class="my-6  sm:mx-auto lg:my-8 bu-horizontal-bar" />
         <span class="block text-sm  sm:text-center bu-text-subtitle">
           © 2023{" "}
           <a href="https://flowbite.com/" class="hover:underline">

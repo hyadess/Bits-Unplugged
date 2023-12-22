@@ -53,9 +53,9 @@ class ProblemsRepository extends Repository {
     const query = `
     SELECT P.*, S.canvas_id, S.name as series_name, T.name as topic_name 
     FROM Problem P
-    JOIN Series S
+    LEFT JOIN Series S
     ON P.series_id = S.series_id
-    JOIN Topic T
+    LEFT JOIN Topic T
     ON S.topic_id = T.topic_id
     WHERE problem_id = $1;
     `;

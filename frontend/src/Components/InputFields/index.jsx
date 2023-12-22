@@ -72,6 +72,62 @@ export const TextField2 = (props) => {
   );
 };
 
+export const TextArea2 = (props) => {
+  return (
+    <div>
+      <label
+        for={props.name}
+        class="block mb-2 text-sm font-medium bu-text-primary"
+      >
+        {props.label}
+      </label>
+      <textarea
+        value={props.value}
+        type="text"
+        name={props.name}
+        id={props.id}
+        class="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary m-0"
+        placeholder={props.placeholder}
+        required={props.required}
+        onChange={props.onChange(props.id)}
+      />
+    </div>
+  );
+};
+
+
+export const SelectionField = (props) => {
+  return (
+    <div className="w-full">
+      <label
+        for={props.name}
+        class="block mb-2 text-sm font-medium bu-text-primary"
+      >
+        {props.label}
+      </label>
+      <select
+        value={props.value}
+        type="text"
+        name={props.name}
+        id={props.id}
+        class="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
+        placeholder={props.placeholder}
+        required={props.required}
+        onChange={(e) => props.onChange(e.target.value)}
+      >
+        {/* <option value="" disabled hidden>
+          Select an option
+        </option> */}
+        {props.options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
 export const SelectionField2 = (props) => {
   return (
     <div>
@@ -91,6 +147,9 @@ export const SelectionField2 = (props) => {
         required={props.required}
         onChange={props.onChange(props.id)}
       >
+        {/* <option value="" disabled hidden>
+          Select an option
+        </option> */}
         {props.options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}

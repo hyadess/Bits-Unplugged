@@ -20,7 +20,7 @@ class CanvasController extends Controller {
   updateCanvas = async (req, res) => {
     let result = await canvasRepository.updateCanvas(
       req.params.canvas_id,
-      req.body
+      req.body.canvas
     );
     this.handleResponse(result, res);
   };

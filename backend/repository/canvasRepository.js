@@ -34,10 +34,20 @@ class CanvasRepository extends Repository {
     // First Update to Canvas Table
     const query = `
       UPDATE Canvas
-      SET name = $2, classname = $3, info = $4, logo = $5
+      SET name = $2, classname = $3, info = $4, logo = $5, params = $6, ui_params = $7, control_params = $8, template = $9
       WHERE canvas_id = $1;
     `;
-    const params = [canvas_id, data.name, data.classname, data.info, data.logo];
+    const params = [
+      canvas_id,
+      data.name,
+      data.classname,
+      data.info,
+      data.logo,
+      data.params,
+      data.ui_params,
+      data.control_params,
+      data.template,
+    ];
     const result = await this.query(query, params);
     return result;
   };

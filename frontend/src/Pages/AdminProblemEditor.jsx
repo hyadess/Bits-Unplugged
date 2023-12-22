@@ -26,6 +26,7 @@ const problemController = new ProblemController();
 const topicController = new TopicController();
 const seriesController = new SeriesController();
 
+
 const AdminProblemEditor = () => {
   const navigator = useNavigate();
   const switchPath = (pathname) => {
@@ -38,6 +39,12 @@ const AdminProblemEditor = () => {
   const [seriesList, setSeriesList] = useState([]);
   const handleChange = (prop) => (event) => {
     setProblem({ ...problem, [prop]: event.target.value });
+  };
+  const handleSeriesChange = (prop) => (event) => {
+    setProblem({
+      ...problem,
+      [prop]: event.target.value == "" ? null : event.target.value,
+    });
   };
   const getProblem = async () => {
     console.log(id);
@@ -52,13 +59,16 @@ const AdminProblemEditor = () => {
   const getSeriesList = async () => {
     const res = await seriesController.getAllSeries();
     if (res.success) {
-      const newArray = res.data.map((item) => ({
-        value: item.series_id,
-        label: item.name,
-      }));
+      const newArray = [
+        { value: "", label: "Unassigned" },
+        ...res.data.map((item) => ({
+          value: item.series_id,
+          label: item.name,
+        })),
+      ];
       setSeriesList(newArray);
       setLoading(false);
-      console.log(res);
+      console.log(newArray);
     }
   };
 
@@ -112,9 +122,9 @@ const AdminProblemEditor = () => {
         /> */}
         <SelectionField2
           label="Series"
-          onChange={handleChange}
+          onChange={handleSeriesChange}
           id="series_id"
-          value={problem.series_id}
+          value={problem.series_id == null ? "" : problem.series_id}
           options={seriesList}
         />
         <div className="flex flex-row items-center">

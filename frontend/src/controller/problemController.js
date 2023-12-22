@@ -12,6 +12,10 @@ class ProblemController extends Controller {
     const res = await this.problemApi.getAllProblems();
     return res;
   };
+  getSubmittedProblems = async () => {
+    const res = await this.problemApi.getSubmittedProblems();
+    return res;
+  };
   getMyProblems = async () => {
     const res = await this.problemApi.getMyProblems();
     return res;
@@ -51,6 +55,11 @@ class ProblemController extends Controller {
 
   deleteProblem = async (problem_id) => {
     const res = await this.problemApi.deleteProblem(problem_id);
+    return res;
+  };
+
+  submitProblem = async (problem_id) => {
+    const res = await this.problemApi.submitProblem(problem_id);
     return res;
   };
 

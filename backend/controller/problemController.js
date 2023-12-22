@@ -10,7 +10,10 @@ class ProblemController extends Controller {
     let result = await problemRepository.getAllProblems();
     this.handleResponse(result, res);
   };
-
+  getSubmittedProblems = async (req, res) => {
+    let result = await problemRepository.getSubmittedProblems();
+    this.handleResponse(result, res);
+  };
   getMyProblems = async (req, res) => {
     let result = await problemRepository.getMyProblems(req.body.user_id);
     this.handleResponse(result, res);
@@ -31,7 +34,14 @@ class ProblemController extends Controller {
   };
 
   getProblemById = async (req, res) => {
-    let result = await problemRepository.getProblemById(req.params.problem_id);
+    let result;
+    if (req.body.type == 0) {
+      result = await problemRepository.getPublishedProblemById(
+        req.params.problem_id
+      );
+    } else {
+      result = await problemRepository.getProblemById(req.params.problem_id);
+    }
     this.handleResponse(result, res);
   };
 
@@ -82,6 +92,11 @@ class ProblemController extends Controller {
 
   deleteProblem = async (req, res) => {
     let result = await problemRepository.deleteProblem(req.params.problem_id);
+    this.handleResponse(result, res);
+  };
+
+  submitProblem = async (req, res) => {
+    let result = await problemRepository.submitProblem(req.params.problem_id);
     this.handleResponse(result, res);
   };
 

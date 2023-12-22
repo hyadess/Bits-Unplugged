@@ -53,12 +53,14 @@ export default function ProblemsCanvas() {
 
   const renderProblem = async () => {
     const result = await problemController.getProblemById(id);
-    setProblem(result.data[0]);
-    setInput(result.data[0].canvas_data);
-    setCanvas_Id(result.data[0].canvas_id);
-    setStatement(result.data[0].statement);
-    setTitle(result.data[0].title);
-    console.log(result.data[0].canvas_data);
+    if (result.success) {
+      setProblem(result.data[0]);
+      setInput(result.data[0].canvas_data);
+      setCanvas_Id(result.data[0].canvas_id);
+      setStatement(result.data[0].statement);
+      setTitle(result.data[0].title);
+      console.log(result.data[0]);
+    }
   };
 
   const renderComponent = () => {

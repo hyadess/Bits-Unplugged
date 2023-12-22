@@ -19,7 +19,7 @@ async function tokenValidationMiddleware(req, res, next) {
     if (err) {
       return res.status(403).send({ error: "access denied" });
     } else if ("type" in data && data.type == "2") {
-      console.log(data);
+      // console.log(data);
       req.body["type"] = data.type;
       next();
     } else {

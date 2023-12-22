@@ -15,6 +15,15 @@ class ProblemsRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+  getSubmittedProblems = async () => {
+    const query = `
+    SELECT * FROM Problem
+    WHERE submit_state_id IS NOT NULL;
+    `;
+    const params = [];
+    const result = await this.query(query, params);
+    return result;
+  };
   getMyProblems = async (author_id) => {
     const query = `
     SELECT * FROM Problem
@@ -65,6 +74,23 @@ class ProblemsRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+
+  getPublishedProblemById = async (problem_id) => {
+    const query = `
+    SELECT St.*, S.name as series_name, T.name as topic_name 
+    FROM Problem P
+    LEFT JOIN Series S
+    ON P.series_id = S.series_id
+    LEFT JOIN Topic T
+    ON S.topic_id = T.topic_id
+    LEFT JOIN State St
+    ON St.state_id = P.submit_state_id
+    WHERE problem_id = $1 AND is_live = true;
+    `;
+    const params = [problem_id];
+    const result = await this.query(query, params);
+    return result;
+  };
   deleteProblem = async (problem_id) => {
     const query = `
     DELETE FROM Problem
@@ -73,6 +99,69 @@ class ProblemsRepository extends Repository {
     const params = [problem_id];
     const result = await this.query(query, params);
     return result;
+  };
+  submitProblem = async (problem_id) => {
+    const result1 = await this.getProblemById(problem_id);
+    if (result1.success) {
+      const prob = result1.data[0];
+      if (prob.submit_state_id !== null) {
+        const query = `
+          Update State
+          SET title = $2, statement = $3, canvas_data = $4, solution_checker = $5, params = $6, ui_params = $7, control_params = $8, last_updated = $9, canvas_id = $10
+          WHERE state_id = $1;
+        `;
+        const params = [
+          prob.submit_state_id,
+          prob.title,
+          prob.statement,
+          prob.canvas_data,
+          prob.solution_checker,
+          prob.params,
+          prob.ui_params,
+          prob.control_params,
+          Date.now(),
+          prob.canvas_id,
+        ];
+        const result2 = await this.query(query, params);
+        if (result2.success) {
+          const query = `
+          Update Problem
+          SET is_live = $2
+          WHERE problem_id = $1;
+        `;
+          const params = [problem_id, false];
+          const result3 = await this.query(query, params);
+          return result3;
+        }
+      } else {
+        const query = `
+          INSERT INTO State (title, statement, canvas_data, solution_checker, params, ui_params, control_params, last_updated)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+          RETURNING state_id;
+        `;
+        const params = [
+          prob.title,
+          prob.statement,
+          prob.canvas_data,
+          prob.solution_checker,
+          prob.params,
+          prob.ui_params,
+          prob.control_params,
+          Date.now(),
+        ];
+        const result2 = await this.query(query, params);
+        if (result2.success) {
+          const query = `
+          Update Problem
+          SET submit_state_id = $2, is_live = $3
+          WHERE problem_id = $1;
+        `;
+          const params = [problem_id, result2.data[0].state_id, false];
+          const result3 = await this.query(query, params);
+          return result3;
+        }
+      }
+    }
   };
   publishProblem = async (problem_id) => {
     const query = `

@@ -28,7 +28,7 @@ const AdminProblems = () => {
   const baseURL = "https";
 
   const getProblemList = async () => {
-    const res = await problemController.getAllProblems();
+    const res = await problemController.getSubmittedProblems();
     if (res.success) {
       setProblemList(res.data);
       setLoading(false);
@@ -47,16 +47,17 @@ const AdminProblems = () => {
 
       {!loading && (
         <TableContainer>
-          {problemList.map((problem, index) => (
-            <ProblemCard
-              idx={index + 1}
-              id={`Problem ${index + 1}`}
-              name={problem.title}
-              image={problem.logo}
-              path={`/admin/problems/${problem.problem_id}`}
-              action="Get Started"
-            />
-          ))}
+          {problemList &&
+            problemList.map((problem, index) => (
+              <ProblemCard
+                idx={index + 1}
+                id={`Problem ${index + 1}`}
+                name={problem.title}
+                image={problem.logo}
+                path={`/admin/problems/${problem.problem_id}`}
+                action="Get Started"
+              />
+            ))}
         </TableContainer>
       )}
     </Layout4>

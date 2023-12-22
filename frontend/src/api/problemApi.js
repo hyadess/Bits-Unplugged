@@ -4,6 +4,9 @@ class ProblemApi extends Api {
   getAllProblems = async () => {
     return await this.get("/problem");
   };
+  getSubmittedProblems = async () => {
+    return await this.get("/problem/submitted");
+  };
   getMyProblems = async () => {
     return await this.get("/problem/created");
   };
@@ -49,6 +52,9 @@ class ProblemApi extends Api {
   };
   publishProblem = async (problem_id) => {
     return await this.post("/problem/" + problem_id + "/publish", {});
+  };
+  submitProblem = async (problem_id) => {
+    return await this.post("/problem/" + problem_id + "/submit", {});
   };
   unpublishProblem = async (problem_id) => {
     return await this.post("/problem/" + problem_id + "/unpublish", {});

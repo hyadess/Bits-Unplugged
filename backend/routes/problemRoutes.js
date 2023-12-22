@@ -7,6 +7,7 @@ router.use(authMiddleware);
 
 // All
 router.get("/", problemController.getAllProblems); // pending
+router.get("/submitted", problemController.getSubmittedProblems); // pending
 router.get("/by_series/:series_id", problemController.getProblemsBySeries);
 router.get("/by_topic/:topic_id", problemController.getProblemsByTopic);
 // router.post("/:problem_id/rate", problemController.rateProblem); // later
@@ -27,6 +28,7 @@ router.put(
   problemController.updateSolutionChecker
 ); // pending
 
+router.post("/:problem_id/submit", problemController.submitProblem); // pending
 router.post("/:problem_id/publish", problemController.publishProblem); // pending
 router.post("/:problem_id/unpublish", problemController.unpublishProblem);
 module.exports = router;

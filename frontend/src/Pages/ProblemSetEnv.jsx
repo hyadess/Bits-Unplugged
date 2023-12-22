@@ -262,9 +262,9 @@ export default function ProblemSetEnv() {
   const updateAll = async () => {
     await updateTitle();
     await updateStatement();
-    await updateCanvas();
+    await updateCanvas(input);
     await updateCode();
-    await problemController.publishProblem(prob_id);
+    await problemController.submitProblem(prob_id);
   };
 
   // useEffect(() => {

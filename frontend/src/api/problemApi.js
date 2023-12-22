@@ -13,9 +13,9 @@ class ProblemApi extends Api {
   getProblemById = async (problem_id) => {
     return await this.get("/problem/" + problem_id);
   };
-  addProblem = async (series_id) => {
+  addProblem = async (title) => {
     return await this.post("/problem/", {
-      series_id: series_id,
+      title: title,
     });
   };
   updateTitle = async (problem_id, title) => {
@@ -33,8 +33,9 @@ class ProblemApi extends Api {
       statement: statement,
     });
   };
-  updateCanvas = async (problem_id, canvas_data) => {
+  updateCanvas = async (problem_id, canvas_id, canvas_data) => {
     return await this.put("/problem/" + problem_id + "/canvas", {
+      canvas_id: canvas_id,
       canvas_data: canvas_data,
     });
   };

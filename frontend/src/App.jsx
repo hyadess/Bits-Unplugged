@@ -47,6 +47,7 @@ import AdminSeriesEditor from "./Pages/AdminSeriesEditor";
 import AdminProblemEditor from "./Pages/AdminProblemEditor";
 import AdminCanvasList from "./Pages/AdminCanvasList";
 import AdminCanvasEditor from "./Pages/AdminCanvasEditor";
+import CanvasSelector from "./Pages/CanvasSelector";
 // import { ReactComponent as YourSvg } from "../public/manifest.json";
 const showToast = (message, type) => {
   console.log(message, type);
@@ -205,6 +206,7 @@ const App = () => {
 
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route element={<ProblemSetter />}>
+            <Route path="/canvas" element={<CanvasSelector />} />
             <Route
               path="/problem/:id/preview"
               element={
@@ -229,6 +231,15 @@ const App = () => {
                 </SetterLayout>
               }
             />
+            <Route
+              path="/problemSet"
+              element={
+                <SetterLayout>
+                  <ProblemSet />
+                </SetterLayout>
+              }
+            />
+            <Route path="/problemSet/series/:id" element={<AddProblem />} />
           </Route>
           <Route element={<ProblemSolver />}>
             <Route
@@ -248,6 +259,9 @@ const App = () => {
                 </SolverLayout>
               }
             />
+          </Route>
+
+          <Route element={<Private />}>
             <Route
               path="/topics"
               element={
@@ -272,9 +286,6 @@ const App = () => {
                 </SolverLayout>
               }
             />
-
-            <Route path="/problemSet/series/:id" element={<AddProblem />} />
-
             <Route
               path="/profile/:username"
               element={

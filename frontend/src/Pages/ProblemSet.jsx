@@ -81,11 +81,14 @@ const ProblemSet = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmittedValue(inputValue);
-    closeModal();
-    await getProblemId(inputValue);
-    switchPath(`/problem/${problemId}/edit`);
+    // e.preventDefault();
+    console.log("Submitted: ", inputValue);
+    if (inputValue !== "") {
+      setSubmittedValue(inputValue);
+      closeModal();
+      await getProblemId(inputValue);
+      switchPath(`/problem/${problemId}/edit`);
+    }
   };
 
   useEffect(() => {
@@ -154,7 +157,7 @@ const ProblemSet = () => {
             </button>
             <div className="modal-content">
               <h2 className="bu-text-primary">Enter Problem Title</h2>
-              <form onSubmit={handleSubmit}>
+              <div>
                 <input
                   type="text"
                   value={inputValue}
@@ -162,10 +165,13 @@ const ProblemSet = () => {
                   placeholder="Problem title"
                   className="modal-input bu-input-primary"
                 />
-                <button type="submit" className="modal-submit-button">
+                <button
+                  onClick={handleSubmit}
+                  className=" font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-primary"
+                >
                   Submit
                 </button>
-              </form>
+              </div>
             </div>
           </div>
         </div>

@@ -31,8 +31,13 @@ const GraphComponent = (props, ref) => {
   const [userType, setUserType] = useState(0);
   const [edgeIndex, setEdgeIndex] = useState(0);
   const [nodeIndex, setNodeIndex] = useState(0);
-  const [nodes, setNodes] = useState([]);
-  const [edges, setEdges] = useState([]);
+  const [data, setData] = useState({
+    variant: "tree",
+    directed: false,
+    weighted: true,
+    nodes: [],
+    edges: [],
+  });
   const [selectedNodes, setSelectedNodes] = useState([]);
   const [selectedEdge, setSelectedEdge] = useState(null);
   const [hoveredNode, setHoveredNode] = useState(null);
@@ -40,13 +45,30 @@ const GraphComponent = (props, ref) => {
   const [zoom, setZoom] = useState(1);
   const stageRef = useRef(null);
   const windowRef = useRef(null);
-
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
 
-  //for edge weight entering prompt
+  //custom sets................................................................................................
+
+  const setNodes = (nodes) => {
+    setData((prevData) => ({
+      ...prevData,
+      nodes: nodes,
+    }));
+  };
+  const setEdges = (edges) => {
+    setData((prevData) => ({
+      ...prevData,
+      edges: edges,
+    }));
+  };
+
+  //...........................................................................................................
+
+  //for edge weight entering prompt..............................................................................
   const [isPromptOpen, setIsPromptOpen] = useState(false);
   const [curEdgeWeight, setCurEdgeWeight] = useState("");
+
   const openPrompt = () => {
     setIsPromptOpen(true);
   };
@@ -58,6 +80,7 @@ const GraphComponent = (props, ref) => {
 
   const handlePromptSubmit = (value) => {
     setCurEdgeWeight(value);
+    const edges = data.edges;
     if (
       curEdgeWeight === "" ||
       curEdgeWeight === null ||
@@ -80,6 +103,7 @@ const GraphComponent = (props, ref) => {
     setCurEdgeWeight("");
     setIsPromptOpen(false);
   };
+  //............................................................................................................
 
   useImperativeHandle(ref, () => {
     return {
@@ -198,8 +222,8 @@ const GraphComponent = (props, ref) => {
         let minDistance = Number.MAX_VALUE; // Initialize with a very large value
         let nearestEdge = null;
 
-        edges.forEach((edge) => {
-          const { start, end } = edge;
+        data.edges.forEach((edge) => {
+          const { start, end, weight } = edge;
           const distance = pointToLineDistance(
             x,
             y,
@@ -226,7 +250,7 @@ const GraphComponent = (props, ref) => {
           const newNode = { x, y, nodeIndex };
           setNodeIndex(nodeIndex + 1);
 
-          setNodes([...nodes, newNode]);
+          setNodes([...data.nodes, newNode]);
         }
       }, 20);
     } else {
@@ -242,7 +266,7 @@ const GraphComponent = (props, ref) => {
       setSelectedNodes([node]);
     } else if (selectedNodes.length === 1 && selectedNodes[0] !== node) {
       // don't add any more node if there exists one................
-      const alreadyExists = edges.some(
+      const alreadyExists = data.edges.some(
         (edge) =>
           (edge.start === selectedNodes[0] && edge.end === node) ||
           (edge.start === node && edge.end === selectedNodes[0])
@@ -267,8 +291,8 @@ const GraphComponent = (props, ref) => {
       if (userType === 0 && props.controlParams["delete_node"].value === false)
         return;
       const nodeToDelete = selectedNodes[0];
-      const updatedNodes = nodes.filter((node) => node !== nodeToDelete);
-      let updatedEdges = edges.filter(
+      const updatedNodes = data.nodes.filter((node) => node !== nodeToDelete);
+      let updatedEdges = data.edges.filter(
         (edge) =>
           edge.start.x !== nodeToDelete.x &&
           edge.start.y !== nodeToDelete.y &&
@@ -289,7 +313,7 @@ const GraphComponent = (props, ref) => {
     if (selectedEdge != null) {
       if (userType === 0 && props.controlParams["delete_edge"].value === false)
         return;
-      const updatedEdges = edges.filter((edge) => edge !== selectedEdge);
+      const updatedEdges = data.edges.filter((edge) => edge !== selectedEdge);
       setEdges(updatedEdges);
       setSelectedEdge(null);
     }
@@ -299,7 +323,7 @@ const GraphComponent = (props, ref) => {
     const newWeight = prompt("Enter new weight for the edge:", edge.weight);
     if (newWeight !== null && !isNaN(newWeight)) {
       edge.weight = parseFloat(newWeight);
-      setEdges([...edges]);
+      setEdges([...data.edges]);
     }
   };
 
@@ -327,7 +351,7 @@ const GraphComponent = (props, ref) => {
     console.log("clampedX:", updatedX);
     console.log("clampedY:", updatedY);
     // Update the node's position
-    const updatedNodes = [...nodes];
+    const updatedNodes = [...data.nodes];
 
     if (selectedNodes.includes(updatedNodes[index])) {
       // If the clicked node is already selected, unselect it
@@ -346,10 +370,10 @@ const GraphComponent = (props, ref) => {
     };
 
     setNodes(updatedNodes);
-    const updatedEdges = edges.map((edge) => {
-      if (edge.start.nodeIndex === nodes[index].nodeIndex) {
+    const updatedEdges = data.edges.map((edge) => {
+      if (edge.start.nodeIndex === data.nodes[index].nodeIndex) {
         return { ...edge, start: updatedNodes[index] };
-      } else if (edge.end.nodeIndex === nodes[index].nodeIndex) {
+      } else if (edge.end.nodeIndex === data.nodes[index].nodeIndex) {
         return { ...edge, end: updatedNodes[index] };
       }
       return edge;
@@ -365,6 +389,8 @@ const GraphComponent = (props, ref) => {
   };
 
   const exportGraphData = () => {
+    const nodes = data.nodes;
+    const edges = data.edges;
     const graphData = {
       nodes,
       edges,
@@ -388,10 +414,24 @@ const GraphComponent = (props, ref) => {
       //const data = JSON.parse(props.input);
       const data = props.input;
       console.log("importing");
-      setNodes(data.nodes);
-      setEdges(data.edges);
+
+      setData((prevData) => ({
+        ...prevData,
+        directed: props.params["directed_edge"].value,
+      }));
+      setData((prevData) => ({
+        ...prevData,
+        weighted: props.params["weighted_edge"].value,
+      }));
+      setData((prevData) => ({
+        ...prevData,
+        nodes: data.nodes,
+      }));
+      setData((prevData) => ({
+        ...prevData,
+        edges: data.edges,
+      }));
       console.log(data);
-      // console.log(nodes);
 
       let maxIndex = 0;
 
@@ -419,7 +459,7 @@ const GraphComponent = (props, ref) => {
         // scaleY={Math.min(window.innerWidth / 900, 1)}
       >
         <Layer>
-          {edges.map((edge, index) => {
+          {data.edges.map((edge, index) => {
             // calculations.......................
             const dx = edge.end.x - edge.start.x;
             const dy = edge.end.y - edge.start.y;
@@ -460,7 +500,7 @@ const GraphComponent = (props, ref) => {
               </React.Fragment>
             );
           })}
-          {nodes.map((node, index) => (
+          {data.nodes.map((node, index) => (
             <Group
               key={index}
               x={node.x}

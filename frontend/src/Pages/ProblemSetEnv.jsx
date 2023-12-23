@@ -154,6 +154,7 @@ export default function ProblemSetEnv() {
                 input={input}
                 setInput={setInput}
                 ref={canvasRef}
+                mode="edit"
               />
             )}
 

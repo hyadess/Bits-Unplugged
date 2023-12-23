@@ -40,9 +40,8 @@ const CanvasSelector = () => {
     getCanvasList();
   }, []);
   return (
-    <Layout4 nav={<PrivateNavbar />}>
+    <>
       <Title title={`Canvas`} sub_title={`Select a canvas to create problem`} />
-
       {!loading && (
         <CardContainer col={3}>
           {canvasList.map((canvas, index) => (
@@ -56,7 +55,7 @@ const CanvasSelector = () => {
           ))}
         </CardContainer>
       )}
-    </Layout4>
+    </>
   );
 };
 

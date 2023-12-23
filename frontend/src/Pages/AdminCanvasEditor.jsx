@@ -506,7 +506,6 @@ const AdminCanvasEditor = () => {
           setCanvas={setCanvas}
           id="control_params"
         />
-        <div></div>
         <button
           className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-primary"
           onClick={handleSave}

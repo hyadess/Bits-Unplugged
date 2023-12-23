@@ -45,36 +45,38 @@ const ProblemSetCard = ({ id, idx, name, deleteAction, is_live }) => {
           {name}
         </h5>
 
-        <div className="w-10% md:w-5% flex items-center justify-center">
-          <IconButton onClick={() => switchPath(`/problem/${id}/edit`)}>
-            <div className="flex items-center bu-text-primary">
-              <FontAwesomeIcon icon={faPenToSquare} size="md" />
-            </div>
-          </IconButton>
-        </div>
-
-        <div className="w-10% md:w-5% flex items-center justify-center">
-          {is_live == 1 ? (
-            <IconButton onClick={() => unpublishProblem()}>
+        <div className="w-30% md:w-15% flex flex-row justify-end">
+          <div className="w-1/3 flex items-center justify-center">
+            <IconButton onClick={() => switchPath(`/problem/${id}/edit`)}>
               <div className="flex items-center bu-text-primary">
-                <CheckCircleIcon sx={{ fontSize: "1.5rem" }} />
+                <FontAwesomeIcon icon={faPenToSquare} size="md" />
               </div>
             </IconButton>
-          ) : (
-            <IconButton onClick={() => publishProblem()}>
-              <div className="flex items-center bu-text-subtitle">
-                <AddTaskIcon sx={{ fontSize: "1.5rem" }} />
-              </div>
-            </IconButton>
-          )}
-        </div>
+          </div>
 
-        <div className="w-10% md:w-5% flex items-center justify-center">
-          <IconButton onClick={() => setOpen(true)}>
-            <div className="flex items-center bu-text-primary">
-              <FontAwesomeIcon icon={faTrashCan} size="md" />
-            </div>
-          </IconButton>
+          <div className="w-1/3 flex items-center justify-center">
+            {is_live == 1 ? (
+              <IconButton onClick={() => unpublishProblem()}>
+                <div className="flex items-center bu-text-primary">
+                  <CheckCircleIcon sx={{ fontSize: "1.5rem" }} />
+                </div>
+              </IconButton>
+            ) : (
+              <IconButton onClick={() => publishProblem()}>
+                <div className="flex items-center bu-text-subtitle">
+                  <AddTaskIcon sx={{ fontSize: "1.5rem" }} />
+                </div>
+              </IconButton>
+            )}
+          </div>
+
+          <div className="w-1/3 flex items-center justify-center">
+            <IconButton onClick={() => setOpen(true)}>
+              <div className="flex items-center bu-text-primary">
+                <FontAwesomeIcon icon={faTrashCan} size="md" />
+              </div>
+            </IconButton>
+          </div>
         </div>
       </div>
       <Confirmation

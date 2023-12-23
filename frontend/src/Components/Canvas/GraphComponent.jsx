@@ -286,8 +286,8 @@ const GraphComponent = (props, ref) => {
       // don't add any more node if there exists one................
       const alreadyExists = data.edges.some(
         (edge) =>
-          (edge.start === selectedNodes[0] && edge.end === node) ||
-          (edge.start === node && edge.end === selectedNodes[0])
+          (edge.start.nodeIndex === selectedNodes[0].nodeIndex && edge.end.nodeIndex === node.nodeIndex) ||
+          (edge.start.nodeIndex === node.nodeIndex && edge.end.nodeIndex === selectedNodes[0].nodeIndex)
       );
       if (!alreadyExists) {
         setSelectedNodes([...selectedNodes, node]);

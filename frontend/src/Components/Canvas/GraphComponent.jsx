@@ -13,6 +13,7 @@ import {
   Line,
   Text,
   Group,
+  RegularPolygon,
   Rect,
   Shape,
 } from "react-konva";
@@ -504,21 +505,40 @@ const GraphComponent = (props, ref) => {
             const endOffsetX = Math.cos(angle + Math.PI) * RADIUS;
             const endOffsetY = Math.sin(angle + Math.PI) * RADIUS;
 
-            //edge weight related.............................
+            //edge direction related.............................
+
+            // Calculate the position of the arrowhead
+            const arrowheadX = edge.end.x + endOffsetX - 10 * Math.cos(angle);
+            const arrowheadY = edge.end.y + endOffsetY - 10 * Math.sin(angle);
 
             return (
               <React.Fragment key={index}>
-                <Line
-                  key={index}
-                  points={[
-                    edge.start.x + startOffsetX,
-                    edge.start.y + startOffsetY,
-                    edge.end.x + endOffsetX,
-                    edge.end.y + endOffsetY,
-                  ]}
-                  stroke={selectedEdge !== edge ? "#879294" : "#ec3965"}
-                  strokeWidth={selectedEdge !== edge ? 3 : 3}
-                />
+                <Group>
+                  <Line
+                    key={index}
+                    points={[
+                      edge.start.x + startOffsetX,
+                      edge.start.y + startOffsetY,
+                      edge.end.x + endOffsetX,
+                      edge.end.y + endOffsetY,
+                    ]}
+                    stroke={selectedEdge !== edge ? "#879294" : "#ec3965"}
+                    strokeWidth={selectedEdge !== edge ? 3 : 3}
+                  />
+                  {data.directed === true ? (
+                    <RegularPolygon
+                      sides={3} // Triangle for arrowhead
+                      radius={12} // Adjust the size of the arrowhead
+                      x={arrowheadX}
+                      y={arrowheadY}
+                      rotation={angle * (180 / Math.PI)+90}
+                      fill={selectedEdge !== edge ? "#879294" : "#ec3965"}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </Group>
+
                 {data.weighted == true ? (
                   <Text
                     x={(edge.start.x + edge.end.x) / 2 + 20}

@@ -69,14 +69,6 @@ const CustomSelectionField = (props) => {
 
 const ChoiceList = ({ params, setCanvas, id, property }) => {
   const [newChoice, setNewChoice] = useState();
-  useEffect(() => {
-    console.log(
-      "----------->",
-      params ? params[property] : "undefined",
-      id,
-      property
-    );
-  }, [params]);
 
   const handleDelete = (idx) => {
     if (params[property].list[idx] == params[property].value) {
@@ -108,12 +100,16 @@ const ChoiceList = ({ params, setCanvas, id, property }) => {
   return (
     <div>
       <div className="bu-nav-color p-5 rounded-lg flex flex-col gap-5">
+        <label className="bu-text-primary text-xl font-bold">
+          {"Selection Field Choices"}
+        </label>
+        <hr class="bu-horizontal-bar" />
         {params &&
           params[property].list.map((choice, index) => (
             <>
               <div className="grid grid-cols-2 items-center gap-5">
                 <TextField2
-                  label="Choice"
+                  label={"Choice " + (index + 1)}
                   onChange={(prop) => (e) => {
                     params[property].list[index] = e.target.value;
                     setCanvas((prevJson) => ({
@@ -144,7 +140,7 @@ const ChoiceList = ({ params, setCanvas, id, property }) => {
 
         <div className="grid grid-cols-2 items-center gap-5">
           <TextField
-            label="Choice"
+            label="New Choice"
             onChange={setNewChoice}
             value={newChoice}
             id={"new_choice"}
@@ -373,7 +369,7 @@ const OptionList = ({ params, setCanvas, id }) => {
             }}
           >
             <FontAwesomeIcon icon={faAdd} />
-            CREATE NEW PARAM
+            CREATE
           </button>
         </div>
       </div>

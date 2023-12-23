@@ -124,7 +124,9 @@ const Public = () => {
   const isLoggedIn = !!cookies.get("token");
   const type = cookies.get("type");
   return isLoggedIn ? (
-    <Navigate to={type === 0 ? "/topics" : "/problemSet"} />
+    <Navigate
+      to={type === 0 ? "/topics" : type === 1 ? "/problemSet" : "/admin"}
+    />
   ) : (
     <Outlet />
   );

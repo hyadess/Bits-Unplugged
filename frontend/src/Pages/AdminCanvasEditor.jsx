@@ -164,16 +164,22 @@ const ChoiceList = ({ params, setCanvas, id, property }) => {
     </div>
   );
 };
+
 const OptionList = ({ params, setCanvas, id }) => {
-  const handleChange = (prop) => (event) => {
-    // setCanvas({ ...canvas, [prop]: event.target.value });
-  };
+  const [newOption, setNewOption] = useState({
+    option: "",
+    type: "",
+    value: "",
+  });
   return (
-    <div className="pt-2 flex flex-col gap-5" style={{ minHeight: "1rem" }}>
+    <div
+      className="pt-2 flex flex-col gap-5 mb-5"
+      style={{ minHeight: "1rem" }}
+    >
       {params &&
         Object.keys(params).map((key, index) => (
           <div className="flex flex-col gap-5">
-            <div className="grid grid-cols-3 items-center gap-5">
+            <div className="grid grid-cols-4 items-center gap-5">
               <TextField2
                 label="Option"
                 onChange={(prop) => (e) => {
@@ -284,6 +290,19 @@ const OptionList = ({ params, setCanvas, id }) => {
               ) : (
                 <></>
               )}
+              <button
+                className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-delete flex flex-row gap-4 items-center mt-7 justify-center"
+                onClick={() => {
+                  delete params[key];
+                  setCanvas((prevJson) => ({
+                    ...prevJson,
+                    [id]: params,
+                  }));
+                }}
+              >
+                <FontAwesomeIcon icon={faTrashCan} />
+                DELETE
+              </button>
             </div>
             {params[key].type == "select" ? (
               <ChoiceList
@@ -297,6 +316,67 @@ const OptionList = ({ params, setCanvas, id }) => {
             )}
           </div>
         ))}
+
+      <div className="flex flex-col gap-3 p-5 bu-nav-color rounded-lg">
+        <label className="bu-text-primary text-xl font-bold">New Param</label>
+        <hr className="bu-horizontal-bar"></hr>
+        <div className="grid grid-cols-3 items-center gap-5">
+          <TextField2
+            label="Option"
+            onChange={(prop) => (e) => {
+              setNewOption((prevJson) => ({
+                ...prevJson,
+                option: e.target.value,
+              }));
+            }}
+            value={newOption.option}
+            id={"option"}
+          ></TextField2>
+          <SelectionField2
+            label="Type"
+            onChange={(prop) => (e) => {
+              setNewOption((prevJson) => ({
+                ...prevJson,
+                type: e.target.value,
+              }));
+            }}
+            id="series_id"
+            value={newOption.type}
+            options={[
+              { value: "select", label: "Select" },
+              { value: "switch", label: "Switch" },
+            ]}
+          />
+          <button
+            className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-primary flex flex-row gap-4 items-center mt-7 justify-center"
+            onClick={() => {
+              if (newOption.option !== "" && newOption.type !== "") {
+                if (newOption.type === "switch") {
+                  params[newOption.option] = { value: false, type: "switch" };
+                } else {
+                  params[newOption.option] = {
+                    value: "",
+                    type: "select",
+                    list: [],
+                  };
+                }
+                setCanvas((prevJson) => ({
+                  ...prevJson,
+                  [id]: params,
+                }));
+                setNewOption({
+                  option: "",
+                  type: "",
+                  value: "",
+                });
+              }
+            }}
+          >
+            <FontAwesomeIcon icon={faAdd} />
+            CREATE NEW PARAM
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
@@ -406,10 +486,29 @@ const AdminCanvasEditor = () => {
             }}
           />
         </div>
+        <div className="bu-bg-title text-white p-5 rounded-md text-2xl font-bold">
+          Design Params
+        </div>
         <OptionList params={canvas.params} setCanvas={setCanvas} id="params" />
+        <div className="bu-bg-title text-white p-5 rounded-md text-2xl font-bold">
+          UI Params
+        </div>
+        <OptionList
+          params={canvas.ui_params}
+          setCanvas={setCanvas}
+          id="ui_params"
+        />
+        <div className="bu-bg-title text-white p-5 rounded-md text-2xl font-bold">
+          Control Params
+        </div>
+        <OptionList
+          params={canvas.control_params}
+          setCanvas={setCanvas}
+          id="control_params"
+        />
         <div></div>
         <button
-          className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-primary mt-5"
+          className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-primary"
           onClick={handleSave}
         >
           Save

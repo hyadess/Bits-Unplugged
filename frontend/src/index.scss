@@ -23,6 +23,25 @@ code {
   align-items: center;
 }
 
+.bu-bg-title {
+  background-color: #1C5B5F;
+}
+.dark {
+  .bu-bg-title {
+    @apply bg-pink-600;
+  }  
+}
+
+// .bu-color-1 {
+//   @apply text-white;
+// }
+
+// .dark {
+//   .bu-color-1 {
+//     @apply text-gray-900;
+//   }  
+// }
+
 .bu-bg-color {
   background-color: #ebebeb;
   color: #ebebeb;
@@ -59,11 +78,21 @@ code {
   }  
 }
 
+.bu-text-secondary {
+  @apply text-white;
+}
+
+.dark {
+  .bu-text-secondary {
+    @apply text-gray-900;
+  }  
+}
+
 .bu-text-primary-hover {
   @apply text-gray-900;
   &:hover {
     color: #1C5B5F;
-  fill: #1C5B5F;
+    fill: #1C5B5F;
   }
 }
 

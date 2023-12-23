@@ -38,7 +38,7 @@ const AdminCanvasList = () => {
     getCanvasList();
   }, []);
   return (
-    <Layout4 nav={<AdminNavbar />}>
+    <>
       <Title title={`Canvas`} sub_title={`Add/Delete/Update Canvas`} />
 
       {!loading && (
@@ -54,7 +54,7 @@ const AdminCanvasList = () => {
           ))}
         </CardContainer>
       )}
-    </Layout4>
+    </>
   );
 };
 

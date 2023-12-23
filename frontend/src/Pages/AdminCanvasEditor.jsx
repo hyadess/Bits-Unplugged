@@ -436,7 +436,7 @@ const AdminCanvasEditor = () => {
     setCanvas({ ...canvas, template: ref.current.getValue() });
   };
   return (
-    <Layout4 nav={<AdminNavbar />}>
+    <>
       <Title title={canvas.name} sub_title={canvas.description} />
       <div className="flex flex-col gap-5">
         <TextArea2
@@ -509,7 +509,7 @@ const AdminCanvasEditor = () => {
           Save
         </button>
       </div>
-    </Layout4>
+    </>
   );
 };
 

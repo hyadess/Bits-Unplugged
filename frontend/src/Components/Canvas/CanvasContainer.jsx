@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import SettingsIcon from "@mui/icons-material/Settings";
+import EyeIcon from "../Icons/EyeIcon";
 const canvasController = new CanvasController();
 const cookies = new Cookies();
 const useStyles = makeStyles({
@@ -54,6 +55,7 @@ const CanvasContainer = (props, ref) => {
   const [controlParams, setControlParams] = useState({});
   const [type, setType] = useState(-1);
   const [canvas, setCanvas] = useState(null);
+  const [canvasMode, setCanvasMode] = useState("edit");
   const loadComponent = async (name) => {
     try {
       const module = await import(`./${name}`);
@@ -204,7 +206,7 @@ const CanvasContainer = (props, ref) => {
               backgroundColor: "rgba(17, 24, 39, 0.9)",
             }}
           >
-            {props.mode === "preview" ? (
+            {canvasMode === "preview" ? (
               <div className="flex flex-col">
                 <h1 className="text-white">Ui Parameters</h1>
                 <Divider sx={{ bgcolor: "white" }} />
@@ -239,16 +241,29 @@ const CanvasContainer = (props, ref) => {
               input={props.input}
               setInput={props.setInput}
               ref={ref}
+              mode={canvasMode}
             />
           )}
         </div>
       </Zoom>
       <SettingsMenu />
       <div
-        className="flex flex-row p-2"
+        className="flex flex-row p-2 items-center"
         style={{ position: "absolute", top: "0", right: "0" }}
       >
-        {type === 1 ? (
+        {props.mode === "edit" && (
+          <Switch
+            checked={canvasMode === "preview"}
+            onChange={() => {
+              if (canvasMode === "edit") {
+                setCanvasMode("preview");
+              } else {
+                setCanvasMode("edit");
+              }
+            }}
+          />
+        )}
+        {props.mode === "edit" && (
           <IconButton
             sx={{
               fontSize: "2rem",
@@ -261,8 +276,6 @@ const CanvasContainer = (props, ref) => {
               <SettingsIcon sx={{ fontSize: "2rem" }} />
             </div>
           </IconButton>
-        ) : (
-          <></>
         )}
 
         <IconButton

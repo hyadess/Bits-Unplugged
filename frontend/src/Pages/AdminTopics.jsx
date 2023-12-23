@@ -49,7 +49,7 @@ const AdminTopics = () => {
     getTopicList();
   }, []);
   return (
-    <Layout4 nav={<AdminNavbar />}>
+    <>
       <Title title={`Topics`} sub_title={`Add/Delete/Update Topics`} />
 
       {!loading && (
@@ -65,7 +65,7 @@ const AdminTopics = () => {
           ))}
         </CardContainer>
       )}
-    </Layout4>
+    </>
   );
 };
 

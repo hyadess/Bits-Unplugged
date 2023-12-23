@@ -39,9 +39,12 @@ const GraphComponent = (props, ref) => {
     nodes: [],
     edges: [],
   });
+  //node and edge hover and select
   const [selectedNodes, setSelectedNodes] = useState([]);
   const [selectedEdge, setSelectedEdge] = useState(null);
   const [hoveredNode, setHoveredNode] = useState(null);
+  const [hoveredEdge, setHoveredEdge] = useState(null);
+  //controls
   const [ctrlKeyPressed, setCtrlKeyPressed] = useState(false);
   const [zoom, setZoom] = useState(1);
   const stageRef = useRef(null);
@@ -197,13 +200,21 @@ const GraphComponent = (props, ref) => {
     setUserType(cookies.get("type"));
   }, []);
 
-  // node hovering........................
+  // node  and edge hovering........................
   const handleNodeHover = (node) => {
     setHoveredNode(node);
   };
   const handleNodeUnhover = () => {
     setHoveredNode(null);
   };
+  const handleEdgeHover = (edge) => {
+    setHoveredEdge(edge);
+  };
+  const handleEdgeUnhover = () => {
+    setHoveredEdge(null);
+  };
+
+  //node and edge creation and deletion.................
 
   let clickTimer = null;
 
@@ -411,6 +422,8 @@ const GraphComponent = (props, ref) => {
     });
   };
 
+  //export and import data....................
+
   const exportGraphData = () => {
     const nodes = data.nodes;
     const edges = data.edges;
@@ -522,7 +535,15 @@ const GraphComponent = (props, ref) => {
                       edge.end.x + endOffsetX,
                       edge.end.y + endOffsetY,
                     ]}
-                    stroke={selectedEdge !== edge ? "#879294" : "#ec3965"}
+                    onMouseEnter={() => handleEdgeHover(edge)}
+                    onMouseLeave={handleEdgeUnhover}
+                    stroke={
+                      hoveredEdge === edge
+                        ? "#2bb557"
+                        : selectedEdge !== edge
+                        ? "#879294"
+                        : "#ec3965"
+                    }
                     strokeWidth={selectedEdge !== edge ? 3 : 3}
                   />
                   {data.directed === true ? (
@@ -531,8 +552,14 @@ const GraphComponent = (props, ref) => {
                       radius={12} // Adjust the size of the arrowhead
                       x={arrowheadX}
                       y={arrowheadY}
-                      rotation={angle * (180 / Math.PI)+90}
-                      fill={selectedEdge !== edge ? "#879294" : "#ec3965"}
+                      rotation={angle * (180 / Math.PI) + 90}
+                      fill={
+                        hoveredEdge === edge
+                          ? "#2bb557"
+                          : selectedEdge !== edge
+                          ? "#879294"
+                          : "#ec3965"
+                      }
                     />
                   ) : (
                     <></>
@@ -547,7 +574,13 @@ const GraphComponent = (props, ref) => {
                     fontSize={25}
                     strokeWidth={selectedEdge !== edge ? 3 : 3}
                     background="red"
-                    fill={selectedEdge !== edge ? "#879294" : "#ec3965"}
+                    fill={
+                      hoveredEdge === edge
+                        ? "#2bb557"
+                        : selectedEdge !== edge
+                        ? "#879294"
+                        : "#ec3965"
+                    }
                     width={45}
                     draggable
                     onClick={() => changeEdgeWeight(edge)}

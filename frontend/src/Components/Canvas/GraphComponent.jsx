@@ -75,6 +75,7 @@ const GraphComponent = (props, ref) => {
 
   const closePrompt = () => {
     setCurEdgeWeight("");
+    setSelectedNodes([selectedNodes[0]]);
     setIsPromptOpen(false);
   };
 
@@ -184,6 +185,11 @@ const GraphComponent = (props, ref) => {
   useEffect(() => {
     importGraphData();
   }, [props.input]);
+
+  useEffect(() => {
+    changeGraphType();
+  }, [props.params]);
+
   // define user type..............
   useEffect(() => {
     const cookies = new Cookies();
@@ -273,7 +279,20 @@ const GraphComponent = (props, ref) => {
       );
       if (!alreadyExists) {
         setSelectedNodes([...selectedNodes, node]);
-        openPrompt();
+        if (data.weighted === true)
+          openPrompt(); // need to take weight input...........
+        else {
+          const edges = data.edges;
+          // just create the edge....................
+          const newEdge = {
+            start: selectedNodes[0],
+            end: node,
+            weight: "0",
+          };
+          //setEdgeIndex(edgeIndex + 1);
+          setEdges([...edges, newEdge]);
+          setSelectedNodes([]);
+        }
       }
     } else if (selectedNodes.includes(node)) {
       // If the clicked node is already selected, unselect it
@@ -320,6 +339,9 @@ const GraphComponent = (props, ref) => {
   };
 
   const changeEdgeWeight = (edge) => {
+    // no weight change for unweighted graphs.........
+    if (data.weighted === false) return;
+    // weight change prompt........................
     const newWeight = prompt("Enter new weight for the edge:", edge.weight);
     if (newWeight !== null && !isNaN(newWeight)) {
       edge.weight = parseFloat(newWeight);
@@ -446,6 +468,19 @@ const GraphComponent = (props, ref) => {
     }
   };
 
+  const changeGraphType = () => {
+    if (props.params != null) {
+      setData((prevData) => ({
+        ...prevData,
+        directed: props.params["directed_edge"].value,
+      }));
+      setData((prevData) => ({
+        ...prevData,
+        weighted: props.params["weighted_edge"].value,
+      }));
+    }
+  };
+
   const changeIndex = () => {};
 
   return (
@@ -484,19 +519,22 @@ const GraphComponent = (props, ref) => {
                   stroke={selectedEdge !== edge ? "#879294" : "#ec3965"}
                   strokeWidth={selectedEdge !== edge ? 3 : 3}
                 />
-
-                <Text
-                  x={(edge.start.x + edge.end.x) / 2 + 20}
-                  y={(edge.start.y + edge.end.y) / 2}
-                  text={edge.weight}
-                  fontSize={25}
-                  strokeWidth={selectedEdge !== edge ? 3 : 3}
-                  background="red"
-                  fill={selectedEdge !== edge ? "#879294" : "#ec3965"}
-                  width={45}
-                  draggable
-                  onClick={() => changeEdgeWeight(edge)}
-                />
+                {data.weighted == true ? (
+                  <Text
+                    x={(edge.start.x + edge.end.x) / 2 + 20}
+                    y={(edge.start.y + edge.end.y) / 2}
+                    text={edge.weight}
+                    fontSize={25}
+                    strokeWidth={selectedEdge !== edge ? 3 : 3}
+                    background="red"
+                    fill={selectedEdge !== edge ? "#879294" : "#ec3965"}
+                    width={45}
+                    draggable
+                    onClick={() => changeEdgeWeight(edge)}
+                  />
+                ) : (
+                  <></>
+                )}
               </React.Fragment>
             );
           })}

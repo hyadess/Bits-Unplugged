@@ -265,6 +265,8 @@ const GraphComponent = (props, ref) => {
           else setSelectedEdge(nearestEdge);
         } else {
           //check if i have control params permission to add nodes
+          if (props.controlParams === null || !props.controlParams["add_node"])
+            return;
           if (userType === 0 && props.controlParams["add_node"].value === false)
             return;
           const newNode = { x, y, nodeIndex };
@@ -327,7 +329,10 @@ const GraphComponent = (props, ref) => {
 
   const deleteSelectedNodeOrEdge = () => {
     //node deletion
+
     if (selectedNodes.length === 1) {
+      if (props.controlParams === null || !props.controlParams["delete_node"])
+        return;
       if (userType === 0 && props.controlParams["delete_node"].value === false)
         return;
       const nodeToDelete = selectedNodes[0];
@@ -351,6 +356,8 @@ const GraphComponent = (props, ref) => {
     }
     //edge deletion
     if (selectedEdge != null) {
+      if (props.controlParams === null || !props.controlParams["delete_edge"])
+        return;
       if (userType === 0 && props.controlParams["delete_edge"].value === false)
         return;
       const updatedEdges = data.edges.filter((edge) => edge !== selectedEdge);
@@ -371,6 +378,8 @@ const GraphComponent = (props, ref) => {
   };
 
   const handleNodeDrag = (index, e) => {
+    if (props.controlParams === null || !props.controlParams["drag_node"])
+      return;
     if (userType === 0 && props.controlParams["drag_node"].value === false)
       return;
     const newPosition = e.target.position();
@@ -459,15 +468,6 @@ const GraphComponent = (props, ref) => {
       //const data = JSON.parse(props.input);
       const data = props.input;
       console.log("importing");
-
-      setData((prevData) => ({
-        ...prevData,
-        directed: props.params["directed_edge"].value,
-      }));
-      setData((prevData) => ({
-        ...prevData,
-        weighted: props.params["weighted_edge"].value,
-      }));
       setData((prevData) => ({
         ...prevData,
         nodes: data.nodes,
@@ -489,10 +489,7 @@ const GraphComponent = (props, ref) => {
 
       setNodeIndex(maxIndex + 1);
     }
-  };
-
-  const changeGraphType = () => {
-    if (props.params != null) {
+    if (props.params !== null) {
       setData((prevData) => ({
         ...prevData,
         directed: props.params["directed_edge"].value,
@@ -500,6 +497,23 @@ const GraphComponent = (props, ref) => {
       setData((prevData) => ({
         ...prevData,
         weighted: props.params["weighted_edge"].value,
+      }));
+    }
+  };
+
+  const changeGraphType = () => {
+    if (props.params != null) {
+      setData((prevData) => ({
+        ...prevData,
+        directed: props.params["directed_edge"]
+          ? props.params["directed_edge"].value
+          : prevData.directed,
+      }));
+      setData((prevData) => ({
+        ...prevData,
+        weighted: props.params["weighted_edge"]
+          ? props.params["weighted_edge"].value
+          : prevData.weighted,
       }));
     }
   };
@@ -611,7 +625,12 @@ const GraphComponent = (props, ref) => {
               key={index}
               x={node.x}
               y={node.y}
-              draggable={props.controlParams["drag_node"].value}
+              draggable={
+                props.controlParams === null ||
+                !props.controlParams["drag_node"]
+                  ? false
+                  : props.controlParams["drag_node"].value
+              }
               onMouseEnter={() => handleNodeHover(node)}
               onMouseLeave={handleNodeUnhover}
               onDragMove={(e) => handleNodeDrag(index, e)}

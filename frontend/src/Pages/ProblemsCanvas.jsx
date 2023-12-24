@@ -66,7 +66,7 @@ export default function ProblemsCanvas() {
 
   return (
     <div>
-      {problem && canvas_id && canvasRef ? (
+      {problem ? (
         <>
           <div>
             <div className="flex flex-row justify-between">
@@ -121,9 +121,8 @@ export default function ProblemsCanvas() {
               </p>
             </div>
           </div>
-
-          <div className="w-full flex flex-col gap-5">
-            {canvas_id && canvasRef ? (
+          {canvas_id && canvasRef && (
+            <div className="w-full flex flex-col gap-5">
               <CanvasContainer
                 id={canvas_id}
                 input={input}
@@ -131,51 +130,34 @@ export default function ProblemsCanvas() {
                 mode={"preview"}
                 ref={canvasRef}
               />
-            ) : (
-              <></>
-            )}
-            <div
-              className="flex flex-row justify-between"
-              // style={{ justifyContent: "space-between", marginLeft: "auto" }}
-            >
-              {/* <button
-          style={{ float: "right" }}
-          type="submit"
-          class="text-white bg-pink-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-lg px-7 py-3.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800"
-          onClick={() => {
-            problemController.checkSolution(
-              problem.solution_checker,
-              canvasRef.current.getData()
-            );
-          }}
-        >
-          Submit
-        </button> */}
-
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => canvasRef.current.handleReset()}
-                startIcon={
-                  <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-                }
-              >
-                Reset
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  problemController.checkSolution(
-                    problem.solution_checker,
-                    canvasRef.current.getData()
-                  );
-                }}
-                endIcon={<SendIcon sx={{ fontSize: "2rem", color: "white" }} />}
-              >
-                Submit
-              </Button>
+              <div className="flex flex-row justify-between">
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => canvasRef.current.handleReset()}
+                  startIcon={
+                    <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+                  }
+                >
+                  Reset
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    problemController.checkSolution(
+                      problem.solution_checker,
+                      canvasRef.current.getData()
+                    );
+                  }}
+                  endIcon={
+                    <SendIcon sx={{ fontSize: "2rem", color: "white" }} />
+                  }
+                >
+                  Submit
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
         </>
       ) : (
         <></>

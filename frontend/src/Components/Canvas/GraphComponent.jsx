@@ -286,8 +286,10 @@ const GraphComponent = (props, ref) => {
       // don't add any more node if there exists one................
       const alreadyExists = data.edges.some(
         (edge) =>
-          (edge.start.nodeIndex === selectedNodes[0].nodeIndex && edge.end.nodeIndex === node.nodeIndex) ||
-          (edge.start.nodeIndex === node.nodeIndex && edge.end.nodeIndex === selectedNodes[0].nodeIndex)
+          (edge.start.nodeIndex === selectedNodes[0].nodeIndex &&
+            edge.end.nodeIndex === node.nodeIndex) ||
+          (edge.start.nodeIndex === node.nodeIndex &&
+            edge.end.nodeIndex === selectedNodes[0].nodeIndex)
       );
       if (!alreadyExists) {
         setSelectedNodes([...selectedNodes, node]);
@@ -312,6 +314,11 @@ const GraphComponent = (props, ref) => {
         selectedNodes.filter((selectedNode) => selectedNode !== node)
       );
     }
+  };
+
+  const handleEdgeClick = (edge) => {
+    if (selectedEdge == edge) setSelectedEdge(null);
+    else setSelectedEdge(edge);
   };
 
   // deleting node or edge is done by ctrl+x
@@ -526,7 +533,7 @@ const GraphComponent = (props, ref) => {
 
             return (
               <React.Fragment key={index}>
-                <Group>
+                <Group onClick={() => handleEdgeClick(edge)}>
                   <Line
                     key={index}
                     points={[

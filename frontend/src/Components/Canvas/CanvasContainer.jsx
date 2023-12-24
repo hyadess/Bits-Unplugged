@@ -43,11 +43,7 @@ const useStyles = makeStyles({
 });
 
 const CanvasContainer = (props, ref) => {
-  const classes = useStyles();
-  const [id, setId] = useState(props.id);
-  // const componentName = "GraphComponent";
   const [DynamicComponent, setDynamicComponent] = useState(null);
-  const [canvasList, setCanvasList] = useState([]);
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [canvasInfo, seCanvasInfo] = useState(null);
   const [settings, setSettings] = useState(false);
@@ -68,24 +64,17 @@ const CanvasContainer = (props, ref) => {
   };
 
   // Fix this
-  const getCanvasList = async () => {
-    const res = await canvasController.getAllCanvas();
+  const getCanvas = async () => {
+    console.log("Canvas changed");
+    const res = await canvasController.getCanvasById(props.id);
     if (res.success) {
-      setCanvasList(res.data);
-      console.log(res.data);
-      const match = res.data.filter((canvas) => canvas.canvas_id == props.id);
-      console.log(match);
-      if (match.length == 1) {
-        setSelectedComponent(match[0].classname);
-        seCanvasInfo(match[0].info);
-        setParams(match[0].params);
-        setUiParams(match[0].ui_params);
-        setControlParams(match[0].control_params);
-        setCanvas(match[0]);
-        // console.log(match[0].classname);
-        // if (match[0].classname === null) {
-        //   setLoading(false);
-        // }
+      if (res.data.length == 1) {
+        setSelectedComponent(res.data[0].classname);
+        seCanvasInfo(res.data[0].info);
+        setParams(res.data[0].params);
+        setUiParams(res.data[0].ui_params);
+        setControlParams(res.data[0].control_params);
+        setCanvas(res.data[0]);
       } else {
         setSelectedComponent(null);
         seCanvasInfo(null);
@@ -109,7 +98,7 @@ const CanvasContainer = (props, ref) => {
   }, [selectedComponent]);
 
   useEffect(() => {
-    getCanvasList();
+    getCanvas();
   }, [props.id]);
   useEffect(() => {
     setType(cookies.get("type"));

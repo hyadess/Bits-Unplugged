@@ -40,7 +40,7 @@ const AdminSeries = () => {
     getSeriesList();
   }, []);
   return (
-    <Layout4 nav={<AdminNavbar />}>
+    <>
       <Title title={`Series`} sub_title={`Add/Delete/Update Series`} />
 
       {!loading && (
@@ -56,7 +56,7 @@ const AdminSeries = () => {
           ))}
         </CardContainer>
       )}
-    </Layout4>
+    </>
   );
 };
 

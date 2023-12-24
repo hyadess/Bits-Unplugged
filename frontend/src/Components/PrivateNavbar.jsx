@@ -68,7 +68,7 @@ const PrivateNavbar = (props) => {
 
   return (
     <>
-      {type >= 0 ? (
+      {type >= 0 && (
         <div className="flex flex-row w-full justify-between md:justify-center">
           <div className="hidden md:flex h-20 w-1/5 items-center px-5">
             <div
@@ -173,8 +173,6 @@ const PrivateNavbar = (props) => {
             </div>
           </div>
         </div>
-      ) : (
-        <></>
       )}
     </>
   );

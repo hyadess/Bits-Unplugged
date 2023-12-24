@@ -51,7 +51,7 @@ const AdminTopicEditor = () => {
     getTopic();
   }, []);
   return (
-    <Layout4 nav={<AdminNavbar />}>
+    <>
       <Title title={topic.name} sub_title={topic.description} />
       <div className="flex flex-col gap-5">
         <TextField2
@@ -79,7 +79,7 @@ const AdminTopicEditor = () => {
           Save
         </button>
       </div>
-    </Layout4>
+    </>
   );
 };
 

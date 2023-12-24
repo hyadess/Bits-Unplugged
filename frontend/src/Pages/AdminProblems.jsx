@@ -42,7 +42,7 @@ const AdminProblems = () => {
     getProblemList();
   }, []);
   return (
-    <Layout4 nav={<AdminNavbar />}>
+    <>
       <Title title={`Problems`} sub_title={`Add/Delete/Update Problems`} />
 
       {!loading && (
@@ -60,7 +60,7 @@ const AdminProblems = () => {
             ))}
         </TableContainer>
       )}
-    </Layout4>
+    </>
   );
 };
 

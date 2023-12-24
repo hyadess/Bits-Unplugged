@@ -6,6 +6,7 @@ import { CircularProgress, Switch } from "@mui/material";
 import "./Login.scss";
 import Banner from "../../Components/Banner";
 import Layout1 from "../../Components/Layouts/Layout1";
+import { setLoading } from "../../App";
 const authController = new AuthController();
 
 const InputField = (props) => {
@@ -59,19 +60,22 @@ const Login = () => {
         setSearchParams(searchParams);
       }
     }
+    setLoading(false);
   }, [type]);
 
   const handleSubmit = async () => {
     if (!loggingIn) {
+      setLoading(true);
       const res = await authController.login({
         email: email,
         pass: password,
         type: type == "solver" ? 0 : 1,
       });
       if (res.success) {
-        console.log("Logged IN");
         setLoggingIn(true);
         type == "solver" ? navigate("/topics") : navigate("/problemSet");
+      } else {
+        setLoading(false);
       }
     }
   };
@@ -80,7 +84,13 @@ const Login = () => {
       <section>
         <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto gap-5 min-h-screen">
           <>
-            <div onClick={() => navigate("/home")} className="cursor-pointer">
+            <div
+              onClick={() => {
+                setLoading(true);
+                navigate("/home");
+              }}
+              className="cursor-pointer"
+            >
               <Banner width={200} height={50} />
             </div>
             <div class="w-full rounded-lg shadow-lg border md:mt-0 sm:max-w-md xl:p-0 bu-card-secondary">

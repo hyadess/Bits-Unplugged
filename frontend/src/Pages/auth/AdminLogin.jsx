@@ -7,6 +7,7 @@ import "./Login.scss";
 import Banner from "../../Components/Banner";
 import Layout1 from "../../Components/Layouts/Layout1";
 import { PasswordField } from "../../Components/InputFields";
+import { setLoading } from "../../App";
 const authController = new AuthController();
 
 const InputField = (props) => {
@@ -48,6 +49,7 @@ const AdminLogin = () => {
         type: 2,
       });
       if (res.success) {
+        setLoading(true);
         console.log("Logged IN");
         setLoggingIn(true);
         navigate("/admin");
@@ -59,7 +61,13 @@ const AdminLogin = () => {
       <section>
         <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto gap-5 min-h-screen">
           <>
-            <div onClick={() => navigate("/home")} className="cursor-pointer">
+            <div
+              onClick={() => {
+                setLoading(true);
+                navigate("/home");
+              }}
+              className="cursor-pointer"
+            >
               <Banner width={200} height={50} />
             </div>
             <div class="w-full rounded-lg shadow-lg border md:mt-0 sm:max-w-md xl:p-0 bu-card-secondary">

@@ -7,6 +7,7 @@ import Cookies from "universal-cookie";
 import ProfileController from "../controller/profileController";
 import Logo from "./Logo";
 import Banner from "./Banner";
+import { setLoading } from "../App";
 const authController = new AuthController();
 const profileController = new ProfileController();
 const PublicNavbar = (props) => {
@@ -48,6 +49,7 @@ const PublicNavbar = (props) => {
         <div
           className="p-5 pl-0"
           onClick={() => {
+            setLoading(true);
             switchPath("/home");
           }}
         >

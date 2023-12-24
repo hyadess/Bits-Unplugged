@@ -14,6 +14,7 @@ import Confirmation from "../Confirmation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { setLoading } from "../../App";
 const problemController = new ProblemController();
 const ProblemSetCard = ({ id, idx, name, deleteAction, is_live }) => {
   const [open, setOpen] = useState(false);
@@ -22,6 +23,9 @@ const ProblemSetCard = ({ id, idx, name, deleteAction, is_live }) => {
     navigator(pathname);
   };
 
+  useEffect(() => {
+    setLoading(false);
+  }, []);
   const publishProblem = async () => {
     // await problemController.publishProblem(id);
   };
@@ -40,7 +44,10 @@ const ProblemSetCard = ({ id, idx, name, deleteAction, is_live }) => {
         </h5>
         <h5
           class="text-2xl md:text-3xl pl-5 font-bold tracking-tight bu-text-title w-75% cursor-pointer"
-          onClick={() => switchPath(`/problem/${id}/preview`)}
+          onClick={() => {
+            setLoading(true);
+            switchPath(`/problem/${id}/preview`);
+          }}
         >
           {name}
         </h5>

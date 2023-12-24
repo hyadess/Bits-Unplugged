@@ -40,19 +40,14 @@ const App = () => {
 
   return (
     <div>
-      <Dialog open={loading}>
-        <DialogContent>
-          <Circles color="#00BFFF" height={100} width={100} />
-          {/* <div style={{ position: "relative" }}>
-            <div style={{ position: "absolute", top: "0" }}>
-              <P1 />
-            </div>
-            <div style={{ position: "absolute" }}>
-              <P1 />
-            </div>
-          </div> */}
-        </DialogContent>
-      </Dialog>
+      {loading ? (
+        <div class="bu-bg-color fixed z-40 top-0 left-0 w-full h-full flex justify-center items-center">
+          <div class="loader-animation border-[6px] border-solid border-white dark:border-gray-800 rounded-full border-t-[8px] border-t-[#1C5B5F] dark:border-t-pink-600 w-16 h-16 animate-spin"></div>
+        </div>
+      ) : (
+        <></>
+      )}
+
       <ToastContainer
         style={{ width: "270px" }}
         position="top-right"

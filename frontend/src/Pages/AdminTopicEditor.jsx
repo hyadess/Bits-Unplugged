@@ -13,6 +13,7 @@ import TopicController from "../controller/topicController";
 import Layout4 from "../Components/Layouts/Layout4";
 import AdminNavbar from "../Components/navbar/AdminNavbar";
 import { TextField, TextField2 } from "../Components/InputFields";
+import { setLoading } from "../App";
 const topicController = new TopicController();
 
 const AdminTopicEditor = () => {
@@ -22,7 +23,7 @@ const AdminTopicEditor = () => {
   };
   const [type, setType] = useState(-1);
   const { id } = useParams();
-  const [loading, setLoading] = useState(false);
+
   const [topic, setTopic] = useState([]);
   const [data, setData] = useState();
   const handleChange = (prop) => (event) => {
@@ -41,7 +42,6 @@ const AdminTopicEditor = () => {
   const handleSave = async () => {
     const res = await topicController.updateTopic(id, topic);
     if (res.success) {
-      setLoading(false);
       console.log(res);
     }
   };

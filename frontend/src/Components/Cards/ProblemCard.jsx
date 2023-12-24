@@ -9,6 +9,7 @@ import AddTaskIcon from "@mui/icons-material/AddTask";
 import { Button, IconButton } from "@mui/material";
 import ProblemController from "../../controller/problemController";
 import EditIcon from "@mui/icons-material/Edit";
+import { setLoading } from "../../App";
 const problemController = new ProblemController();
 export default function ProblemCard({
   id,
@@ -18,6 +19,9 @@ export default function ProblemCard({
   deleteAction,
   is_live,
 }) {
+  useEffect(() => {
+    setLoading(false);
+  }, []);
   const navigator = useNavigate();
   const switchPath = (pathname) => {
     navigator(pathname);
@@ -41,7 +45,10 @@ export default function ProblemCard({
         </h5>
         <h5
           class="text-2xl md:text-3xl pl-5 font-bold tracking-tight bu-text-title w-75% cursor-pointer"
-          onClick={() => switchPath(path)}
+          onClick={() => {
+            setLoading(true);
+            switchPath(path);
+          }}
         >
           {name}
         </h5>

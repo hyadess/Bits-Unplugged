@@ -10,12 +10,17 @@ import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import "./ProblemSetEnv.scss";
 import Confirmation from "../Components/Confirmation";
-import { faTrashCan, faUpload } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSave,
+  faTrashCan,
+  faUpload,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SelectionField, SelectionField2 } from "../Components/InputFields";
 
 import CanvasController from "../controller/canvasController";
 import { setLoading } from "../App";
+import { Save } from "@mui/icons-material";
 const problemController = new ProblemController();
 const canvasController = new CanvasController();
 
@@ -289,18 +294,19 @@ export default function ProblemSetEnv() {
     <div>
       <div>
         <div class="items-center py-4 mx-auto max-w-screen-2xl md:grid md:grid-cols-2 sm:pt-16">
-          <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold ">
+          <div class="mt-4 md:mt-0 flex flex-row items-center">
+            <h2 class="text-center md:text-left text-5xl tracking-tight font-extrabold ">
               <span class="bu-text-title">
                 <div onClick={handleTextClick} style={{ cursor: "pointer" }}>
                   {isTextEditable ? (
                     <input
-                      className="title"
+                      className="title text-4xl"
                       type="text"
                       on
                       value={title}
                       onChange={handleTextChange}
                       onClick={(e) => e.stopPropagation()} // Prevent the click event from propagating to the div
+                      onBlur={() => updateTitle()}
                     />
                   ) : (
                     title
@@ -308,6 +314,9 @@ export default function ProblemSetEnv() {
                 </div>
               </span>
             </h2>
+            {/* <div className="bu-text-primary text-3xl bu-button-primary p-3 rounded-lg">
+              <FontAwesomeIcon icon={faSave} />
+            </div> */}
           </div>
           <div className="souvik-button-container gap-2">
             <button

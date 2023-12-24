@@ -19,6 +19,7 @@ import {
 import { makeStyles } from "@mui/styles";
 import SettingsIcon from "@mui/icons-material/Settings";
 import EyeIcon from "../Icons/EyeIcon";
+import { setLoading } from "../../App";
 const canvasController = new CanvasController();
 const cookies = new Cookies();
 const useStyles = makeStyles({
@@ -66,6 +67,7 @@ const CanvasContainer = (props, ref) => {
     }
   };
 
+  // Fix this
   const getCanvasList = async () => {
     const res = await canvasController.getAllCanvas();
     if (res.success) {
@@ -80,7 +82,10 @@ const CanvasContainer = (props, ref) => {
         setUiParams(match[0].ui_params);
         setControlParams(match[0].control_params);
         setCanvas(match[0]);
-        console.log("=>", match[0]);
+        // console.log(match[0].classname);
+        // if (match[0].classname === null) {
+        //   setLoading(false);
+        // }
       } else {
         setSelectedComponent(null);
         seCanvasInfo(null);

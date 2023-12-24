@@ -10,11 +10,17 @@ import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import "./ProblemSetEnv.scss";
 import Confirmation from "../Components/Confirmation";
-import { faTrashCan, faUpload } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSave,
+  faTrashCan,
+  faUpload,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SelectionField, SelectionField2 } from "../Components/InputFields";
 
 import CanvasController from "../controller/canvasController";
+import { setLoading } from "../App";
+import { Save } from "@mui/icons-material";
 const problemController = new ProblemController();
 const canvasController = new CanvasController();
 
@@ -65,7 +71,6 @@ export default function ProblemSetEnv() {
       setProblemStatement(res.data[0].statement);
       setCode(res.data[0].solution_checker);
       setCanvasId(res.data[0].canvas_id);
-      console.log(res.data[0]);
       setLoading(false);
     }
   };
@@ -87,8 +92,6 @@ export default function ProblemSetEnv() {
 
   // Function to handle changes in the textarea
 
-  const [loading, setLoading] = useState(false);
-
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
   const [open, setOpen] = useState(false);
@@ -100,7 +103,6 @@ export default function ProblemSetEnv() {
   const [canvasFullList, setCanvasFullList] = useState([]);
   const getCanvasList = async () => {
     const res = await canvasController.getAllCanvas();
-
     if (res.success) {
       setCanvasFullList(res.data);
       const newArray = res.data.map((item) => ({
@@ -109,7 +111,6 @@ export default function ProblemSetEnv() {
       }));
       console.log("::::::", newArray);
       setCanvasList(newArray);
-      setLoading(false);
       console.log(res);
     }
   };
@@ -212,7 +213,6 @@ export default function ProblemSetEnv() {
     const res = await problemController.deleteProblem(prob_id);
     if (res.success) {
       switchPath("/problemSet");
-      setLoading(false);
     }
   };
 
@@ -286,7 +286,6 @@ export default function ProblemSetEnv() {
     }
 
     return () => {
-      //updateAll();
       console.log("Leaving MyComponent");
     };
   }, [prob_id]);
@@ -295,18 +294,19 @@ export default function ProblemSetEnv() {
     <div>
       <div>
         <div class="items-center py-4 mx-auto max-w-screen-2xl md:grid md:grid-cols-2 sm:pt-16">
-          <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-center md:text-left text-5xl tracking-tight font-extrabold ">
+          <div class="mt-4 md:mt-0 flex flex-row items-center">
+            <h2 class="text-center md:text-left text-5xl tracking-tight font-extrabold ">
               <span class="bu-text-title">
                 <div onClick={handleTextClick} style={{ cursor: "pointer" }}>
                   {isTextEditable ? (
                     <input
-                      className="title"
+                      className="title text-4xl"
                       type="text"
                       on
                       value={title}
                       onChange={handleTextChange}
                       onClick={(e) => e.stopPropagation()} // Prevent the click event from propagating to the div
+                      onBlur={() => updateTitle()}
                     />
                   ) : (
                     title
@@ -314,6 +314,9 @@ export default function ProblemSetEnv() {
                 </div>
               </span>
             </h2>
+            {/* <div className="bu-text-primary text-3xl bu-button-primary p-3 rounded-lg">
+              <FontAwesomeIcon icon={faSave} />
+            </div> */}
           </div>
           <div className="souvik-button-container gap-2">
             <button

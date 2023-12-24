@@ -21,6 +21,7 @@ import Modal from "react-modal";
 import "./GraphComponent.scss";
 import { Button } from "@mui/material";
 import Cookies from "universal-cookie";
+import { setLoading } from "../../App";
 const RADIUS = 30;
 const EDGECLICKRANGE = 20;
 const canvasWidth = 1440;
@@ -188,6 +189,7 @@ const GraphComponent = (props, ref) => {
   //import data.........
   useEffect(() => {
     importGraphData();
+    setLoading(false);
   }, [props.input]);
 
   useEffect(() => {
@@ -542,8 +544,14 @@ const GraphComponent = (props, ref) => {
                       edge.end.x + endOffsetX,
                       edge.end.y + endOffsetY,
                     ]}
-                    onMouseEnter={() => handleEdgeHover(edge)}
-                    onMouseLeave={handleEdgeUnhover}
+                    onMouseEnter={() => {
+                      document.body.style.cursor = "pointer";
+                      handleEdgeHover(edge);
+                    }}
+                    onMouseLeave={() => {
+                      document.body.style.cursor = "default";
+                      handleEdgeUnhover();
+                    }}
                     stroke={
                       hoveredEdge === edge
                         ? "#2bb557"

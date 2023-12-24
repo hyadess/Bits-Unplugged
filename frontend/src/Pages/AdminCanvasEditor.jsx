@@ -25,6 +25,7 @@ import CanvasController from "../controller/canvasController";
 import { Divider, MenuItem, Select, Switch } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { setLoading } from "../App";
 
 const topicController = new TopicController();
 
@@ -387,7 +388,7 @@ const AdminCanvasEditor = () => {
   const [type, setType] = useState(-1);
   const { id } = useParams();
   const [canvas, setCanvas] = useState([]);
-  const [loading, setLoading] = useState(false);
+
   const handleChange = (prop) => (event) => {
     setCanvas({ ...canvas, [prop]: event.target.value });
   };
@@ -399,14 +400,12 @@ const AdminCanvasEditor = () => {
     if (res.success) {
       setCanvas(res.data[0]);
       setLoading(false);
-      console.log(res);
     }
   };
 
   const handleSave = async () => {
     const res = await canvasController.updateCanvas(id, canvas);
     if (res.success) {
-      setLoading(false);
       console.log(res);
     }
   };

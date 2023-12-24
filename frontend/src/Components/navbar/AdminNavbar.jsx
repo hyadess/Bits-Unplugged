@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../Logo";
 import AuthController from "../../controller/authController";
+import { setLoading } from "../../App";
 const authController = new AuthController();
 const AdminNavbar = () => {
   const navigator = useNavigate();
+  const location = useLocation();
   const switchPath = (pathname) => {
     navigator(pathname);
   };
@@ -41,6 +43,7 @@ const AdminNavbar = () => {
         <div
           className="p-5 pl-0"
           onClick={() => {
+            setLoading(true);
             switchPath("/home");
           }}
         >
@@ -53,7 +56,12 @@ const AdminNavbar = () => {
             className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
             style={{ alignItems: "center", justifyContent: "center" }}
             data-tip="Home"
-            onClick={() => switchPath("/admin/topics")}
+            onClick={() => {
+              if (location.pathname !== "/admin/topics") {
+                setLoading(true);
+                switchPath("/admin/topics");
+              }
+            }}
           >
             <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
               Topics
@@ -65,7 +73,12 @@ const AdminNavbar = () => {
             className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
             style={{ alignItems: "center", justifyContent: "center" }}
             data-tip="Home"
-            onClick={() => switchPath("/admin/series")}
+            onClick={() => {
+              if (location.pathname !== "/admin/series") {
+                setLoading(true);
+                switchPath("/admin/series");
+              }
+            }}
           >
             <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
               Series
@@ -76,7 +89,12 @@ const AdminNavbar = () => {
             className="icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
             style={{ alignItems: "center", justifyContent: "center" }}
             data-tip="Marketplace"
-            onClick={() => switchPath("/admin/problems")}
+            onClick={() => {
+              if (location.pathname !== "/admin/problems") {
+                setLoading(true);
+                switchPath("/admin/problems");
+              }
+            }}
           >
             <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
               Problems
@@ -86,7 +104,12 @@ const AdminNavbar = () => {
             className="icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
             style={{ alignItems: "center", justifyContent: "center" }}
             data-tip="Marketplace"
-            onClick={() => switchPath("/admin/canvas")}
+            onClick={() => {
+              if (location.pathname !== "/admin/canvas") {
+                setLoading(true);
+                switchPath("/admin/canvas");
+              }
+            }}
           >
             <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
               Canvas
@@ -96,7 +119,12 @@ const AdminNavbar = () => {
             className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
             style={{ alignItems: "center", justifyContent: "center" }}
             data-tip="Home"
-            onClick={() => switchPath("/admin/contests")}
+            onClick={() => {
+              if (location.pathname !== "/admin/contests") {
+                setLoading(true);
+                switchPath("/admin/contests");
+              }
+            }}
           >
             <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
               Contests
@@ -108,7 +136,12 @@ const AdminNavbar = () => {
             className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
             style={{ alignItems: "center", justifyContent: "center" }}
             data-tip="Home"
-            onClick={() => switchPath("/admin/setters")}
+            onClick={() => {
+              if (location.pathname !== "/admin/setters") {
+                setLoading(true);
+                switchPath("/admin/setters");
+              }
+            }}
           >
             <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
               Setters

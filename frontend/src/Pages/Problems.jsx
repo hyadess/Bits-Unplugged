@@ -6,6 +6,7 @@ import ProblemController from "../controller/problemController";
 import ProblemCard from "../Components/Cards/ProblemCard";
 import TableContainer from "../Components/Containers/TableContainer";
 import Title from "../Components/Title";
+import { setLoading } from "../App";
 
 const problemController = new ProblemController();
 
@@ -16,7 +17,7 @@ export default function Problems() {
   };
 
   const { id } = useParams();
-  const [loading, setLoading] = useState(false);
+
   const [problemList, setProblemList] = useState([]);
   const [data, setData] = useState();
   const baseURL = "https";
@@ -34,8 +35,7 @@ export default function Problems() {
     const res = await problemController.getProblemsBySeries(id);
     if (res.success) {
       setProblemList(res.data);
-      setLoading(false);
-      console.log(res);
+      // setLoading(false);
     }
   };
 
@@ -43,26 +43,30 @@ export default function Problems() {
     getProblemList();
   }, []);
   return (
-    <div>
-      <Title
-        title={"Problem Solving"}
-        sub_title={"Solve problems for particular series right on our site now"}
-      />
+    <>
+      {problemList.length && (
+        <>
+          <Title
+            title={"Problem Solving"}
+            sub_title={
+              "Solve problems for particular series right on our site now"
+            }
+          />
 
-      {!loading && (
-        <TableContainer>
-          {problemList.map((problem, index) => (
-            <ProblemCard
-              idx={index + 1}
-              id={`Problem ${index + 1}`}
-              name={problem.title}
-              image={problem.logo}
-              path={`/problem/${problem.problem_id}`}
-              action="Get Started"
-            />
-          ))}
-        </TableContainer>
+          <TableContainer>
+            {problemList.map((problem, index) => (
+              <ProblemCard
+                idx={index + 1}
+                id={`Problem ${index + 1}`}
+                name={problem.title}
+                image={problem.logo}
+                path={`/problem/${problem.problem_id}`}
+                action="Get Started"
+              />
+            ))}
+          </TableContainer>
+        </>
       )}
-    </div>
+    </>
   );
 }

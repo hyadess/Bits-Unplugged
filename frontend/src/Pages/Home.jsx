@@ -7,6 +7,7 @@ import Cookies from "universal-cookie";
 import Banner from "../Components/Banner";
 import ImageLoader from "../Components/ImageLoader";
 import "./Home.scss";
+import { setLoading } from "../App";
 
 const Home = () => {
   const [type, setType] = useState(-1);
@@ -56,13 +57,14 @@ const Home = () => {
           </p>
 
           <div
-            onClick={() =>
+            onClick={() => {
+              setLoading(true);
               type === 2
                 ? navigator("/admin")
                 : type === 1
                 ? navigator("/problemSet")
-                : navigator("/topics")
-            }
+                : navigator("/topics");
+            }}
             class="inline-flex text-center items-center font-medium rounded-lg text-sm px-5 py-2.5 bu-button-secondary bu-text-primary cursor-pointer"
           >
             Get started

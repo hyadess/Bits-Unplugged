@@ -20,6 +20,7 @@ import {
 import TopicController from "../controller/topicController";
 
 import SeriesController from "../controller/seriesController";
+import { setLoading } from "../App";
 
 const topicController = new TopicController();
 
@@ -32,7 +33,7 @@ const AdminSeriesEditor = () => {
   };
   const [type, setType] = useState(-1);
   const { id } = useParams();
-  const [loading, setLoading] = useState(false);
+
   const [series, setSeries] = useState([]);
   const [topicList, setTopicList] = useState([]);
   const handleChange = (prop) => (event) => {
@@ -44,7 +45,6 @@ const AdminSeriesEditor = () => {
     if (res.success) {
       setSeries(res.data[0]);
       setLoading(false);
-      console.log(res);
     }
   };
 
@@ -56,15 +56,12 @@ const AdminSeriesEditor = () => {
         label: item.name,
       }));
       setTopicList(newArray);
-      setLoading(false);
-      console.log(res);
     }
   };
 
   const handleSave = async () => {
     const res = await seriesController.updateSeries(id, series);
     if (res.success) {
-      setLoading(false);
       console.log(res);
     }
   };

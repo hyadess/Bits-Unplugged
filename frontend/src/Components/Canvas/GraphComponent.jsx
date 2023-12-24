@@ -544,8 +544,14 @@ const GraphComponent = (props, ref) => {
                       edge.end.x + endOffsetX,
                       edge.end.y + endOffsetY,
                     ]}
-                    onMouseEnter={() => handleEdgeHover(edge)}
-                    onMouseLeave={handleEdgeUnhover}
+                    onMouseEnter={() => {
+                      document.body.style.cursor = "pointer";
+                      handleEdgeHover(edge);
+                    }}
+                    onMouseLeave={() => {
+                      document.body.style.cursor = "default";
+                      handleEdgeUnhover();
+                    }}
                     stroke={
                       hoveredEdge === edge
                         ? "#2bb557"

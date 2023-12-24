@@ -318,6 +318,11 @@ const GraphComponent = (props, ref) => {
     }
   };
 
+  const handleEdgeClick = (edge) => {
+    if (selectedEdge == edge) setSelectedEdge(null);
+    else setSelectedEdge(edge);
+  };
+
   // deleting node or edge is done by ctrl+x
 
   const deleteSelectedNodeOrEdge = () => {
@@ -530,7 +535,7 @@ const GraphComponent = (props, ref) => {
 
             return (
               <React.Fragment key={index}>
-                <Group>
+                <Group onClick={() => handleEdgeClick(edge)}>
                   <Line
                     key={index}
                     points={[

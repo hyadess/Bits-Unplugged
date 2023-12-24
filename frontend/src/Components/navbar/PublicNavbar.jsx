@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthController from "../controller/authController";
+import AuthController from "../../controller/authController";
 import { Avatar, InputAdornment, Typography } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Cookies from "universal-cookie";
-import ProfileController from "../controller/profileController";
-import Logo from "./Logo";
-import Banner from "./Banner";
-import { setLoading } from "../App";
+import ProfileController from "../../controller/profileController";
+import Logo from "../Logo";
+import Banner from "../Banner";
+import { setLoading } from "../../App";
 const authController = new AuthController();
 const profileController = new ProfileController();
 const PublicNavbar = (props) => {

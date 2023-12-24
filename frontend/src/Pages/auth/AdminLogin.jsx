@@ -52,7 +52,7 @@ const AdminLogin = () => {
         setLoading(true);
         console.log("Logged IN");
         setLoggingIn(true);
-        navigate("/admin");
+        navigate("/admin/topics");
       }
     }
   };

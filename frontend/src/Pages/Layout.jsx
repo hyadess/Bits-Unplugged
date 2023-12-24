@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../Components/Navbar";
 import Main from "./SolverLayout";
 import { Card } from "@mui/material";
-import PrivateNavbar from "../Components/PrivateNavbar";
+import PrivateNavbar from "../Components/navbar/PrivateNavbar";
 const Layout = (props) => {
   return (
     <div className="layout-container">

@@ -24,7 +24,7 @@ import CanvasContainer from "./Components/Canvas/CanvasContainer";
 
 import ProblemSetEnv from "./Pages/ProblemSetEnv";
 import SolutionChecker from "./Pages/SolutionChecker";
-import PublicNavbar from "./Components/PublicNavbar";
+import PublicNavbar from "./Components/navbar/PublicNavbar";
 import Layout2 from "./Components/Layouts/Layout2";
 import ProblemSetSeriesCard from "./Components/Cards/ProblemSetSeriesCard";
 import AdminLogin from "./Pages/auth/AdminLogin";
@@ -41,7 +41,7 @@ import CanvasSelector from "./Pages/CanvasSelector";
 import AdminContests from "./Pages/AdminContests";
 import AdminSetters from "./Pages/AdminSetters";
 
-import PrivateNavbar from "./Components/PrivateNavbar";
+import PrivateNavbar from "./Components/navbar/PrivateNavbar";
 import AdminNavbar from "./Components/navbar/AdminNavbar";
 import LayoutMain from "./Components/Layouts/LayoutMain";
 

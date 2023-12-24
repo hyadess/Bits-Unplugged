@@ -7,67 +7,54 @@ import CardContainer from "../Components/Containers/CardContainer";
 import Cookies from "universal-cookie";
 import Title from "../Components/Title";
 import TopicCard from "../Components/Cards/TopicCard";
+import { setLoading } from "../App";
 const topicController = new TopicController();
 
-export default function Problems() {
+const Topics = () => {
   const [type, setType] = useState(-1);
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
 
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState();
   const [topicList, setTopicList] = useState([]);
-  const baseURL = "https";
-  const getData = async () => {
-    try {
-      const res = await axios.get(`${baseURL}/courses`);
-      setData(res.data);
-      setLoading(false);
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const getTopicList = async () => {
     const res = await topicController.getAllTopics();
     if (res.success) {
       setTopicList(res.data);
-      setLoading(false);
       console.log(res);
+      // setLoading(false);
     }
   };
 
   useEffect(() => {
     const cookies = new Cookies();
     setType(cookies.get("type"));
-
     getTopicList();
   }, []);
   return (
-    <div>
-      <Title
-        title={`Problem ${type === 0 ? "Solving" : "Setting"}`}
-        sub_title={`${
-          type == 0 ? "Solve" : "Set"
-        } problems for particular series right
+    <>
+      {topicList.length && (
+        <>
+          <Title
+            title={`Problem ${type === 0 ? "Solving" : "Setting"}`}
+            sub_title={`${
+              type == 0 ? "Solve" : "Set"
+            } problems for particular series right
         on our site`}
-      />
-
-      {!loading && (
-        <CardContainer col={3}>
-          {topicList.map((topic, index) => (
-            <CustomCard
-              id={`Topic ${index + 1}`}
-              name={topic.name}
-              image={topic.logo}
-              path={`/topics/${topic.topic_id}`}
-              action="View Series"
-            />
-          ))}
-        </CardContainer>
+          />
+          <CardContainer col={3}>
+            {topicList.map((topic, index) => (
+              <CustomCard
+                id={`Topic ${index + 1}`}
+                name={topic.name}
+                image={topic.logo}
+                path={`/topics/${topic.topic_id}`}
+                action="View Series"
+              />
+            ))}
+          </CardContainer>
+        </>
       )}
-    </div>
+    </>
   );
-}
+};
+
+export default Topics;

@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SelectionField, SelectionField2 } from "../Components/InputFields";
 
 import CanvasController from "../controller/canvasController";
+import { setLoading } from "../App";
 const problemController = new ProblemController();
 const canvasController = new CanvasController();
 
@@ -65,7 +66,6 @@ export default function ProblemSetEnv() {
       setProblemStatement(res.data[0].statement);
       setCode(res.data[0].solution_checker);
       setCanvasId(res.data[0].canvas_id);
-      console.log(res.data[0]);
       setLoading(false);
     }
   };
@@ -87,8 +87,6 @@ export default function ProblemSetEnv() {
 
   // Function to handle changes in the textarea
 
-  const [loading, setLoading] = useState(false);
-
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
   const [open, setOpen] = useState(false);
@@ -100,7 +98,6 @@ export default function ProblemSetEnv() {
   const [canvasFullList, setCanvasFullList] = useState([]);
   const getCanvasList = async () => {
     const res = await canvasController.getAllCanvas();
-
     if (res.success) {
       setCanvasFullList(res.data);
       const newArray = res.data.map((item) => ({
@@ -109,7 +106,6 @@ export default function ProblemSetEnv() {
       }));
       console.log("::::::", newArray);
       setCanvasList(newArray);
-      setLoading(false);
       console.log(res);
     }
   };
@@ -212,7 +208,6 @@ export default function ProblemSetEnv() {
     const res = await problemController.deleteProblem(prob_id);
     if (res.success) {
       switchPath("/problemSet");
-      setLoading(false);
     }
   };
 
@@ -286,7 +281,6 @@ export default function ProblemSetEnv() {
     }
 
     return () => {
-      //updateAll();
       console.log("Leaving MyComponent");
     };
   }, [prob_id]);

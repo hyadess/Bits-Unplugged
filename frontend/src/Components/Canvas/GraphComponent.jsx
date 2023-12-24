@@ -21,6 +21,7 @@ import Modal from "react-modal";
 import "./GraphComponent.scss";
 import { Button } from "@mui/material";
 import Cookies from "universal-cookie";
+import { setLoading } from "../../App";
 const RADIUS = 30;
 const EDGECLICKRANGE = 20;
 const canvasWidth = 1440;
@@ -188,6 +189,7 @@ const GraphComponent = (props, ref) => {
   //import data.........
   useEffect(() => {
     importGraphData();
+    setLoading(false);
   }, [props.input]);
 
   useEffect(() => {
@@ -286,8 +288,10 @@ const GraphComponent = (props, ref) => {
       // don't add any more node if there exists one................
       const alreadyExists = data.edges.some(
         (edge) =>
-          (edge.start.nodeIndex === selectedNodes[0].nodeIndex && edge.end.nodeIndex === node.nodeIndex) ||
-          (edge.start.nodeIndex === node.nodeIndex && edge.end.nodeIndex === selectedNodes[0].nodeIndex)
+          (edge.start.nodeIndex === selectedNodes[0].nodeIndex &&
+            edge.end.nodeIndex === node.nodeIndex) ||
+          (edge.start.nodeIndex === node.nodeIndex &&
+            edge.end.nodeIndex === selectedNodes[0].nodeIndex)
       );
       if (!alreadyExists) {
         setSelectedNodes([...selectedNodes, node]);

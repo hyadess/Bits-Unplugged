@@ -18,6 +18,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import Cookies from "universal-cookie";
 // import { NumberField } from "../InputFields/inputField";
 import "./TowerOfHanoi.scss";
+import { setLoading } from "../../App";
 // import "bootstrap/dist/css/bootstrap.min.css";
 
 const cookie = new Cookies();
@@ -158,16 +159,18 @@ const TowerOfHanoi = (props, ref) => {
   };
 
   // useEffect(() => {
-  //   initializePegs();
+//   initializePegs();
   // }, [numberOfDisks, numberOfPegs]);
 
   useEffect(() => {
     if (props.input != null && props.input.pegs != null) {
       importData();
+      setLoading(false);
     } else {
       setNumberOfDisks(3);
       setNumberOfPegs(3);
       initializePegs(3);
+      setLoading(false);
     }
   }, []);
   useEffect(() => {

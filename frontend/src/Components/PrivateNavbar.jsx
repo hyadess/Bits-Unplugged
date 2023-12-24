@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import AuthController from "../controller/authController";
 import { Avatar, InputAdornment, Typography } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -10,12 +10,15 @@ import Banner from "./Banner";
 import SearchBar from "./InputFields/SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { setLoading } from "../App";
 const authController = new AuthController();
 const profileController = new ProfileController();
 const PrivateNavbar = (props) => {
   const [user, setUser] = useState(null);
   const [type, setType] = useState(-1);
   const [search, setSearch] = useState(false);
+  const [tab, setTab] = useState("home");
+  const location = useLocation();
   const navigator = useNavigate();
   const switchPath = (pathname) => {
     navigator(pathname);
@@ -56,8 +59,11 @@ const PrivateNavbar = (props) => {
   }, [darkMode]);
 
   useEffect(() => {
-    setProfile();
+    console.log(location.pathname);
+  }, [location.pathname]);
 
+  useEffect(() => {
+    setProfile();
     console.log("Color-scheme: ", localStorage.getItem("color-theme"));
     if (localStorage.getItem("color-theme") === "dark") {
       setDarkMode(true);
@@ -75,7 +81,10 @@ const PrivateNavbar = (props) => {
               className={`p-5 pl-0 transition-all duration-300 ease-in-out ${
                 !search ? "opacity-100" : "opacity-0 hidden"
               }`}
-              onClick={() => navigator("/home")}
+              onClick={() => {
+                setLoading(true);
+                navigator("/home");
+              }}
             >
               <Logo width={180} height={45} />
             </div>
@@ -88,9 +97,20 @@ const PrivateNavbar = (props) => {
                 className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
                 style={{ alignItems: "center", justifyContent: "center" }}
                 data-tip="Home"
-                onClick={() =>
-                  type === 0 ? navigator("/topics") : navigator("/problemSet")
-                }
+                onClick={() => {
+                  if (type == 0) {
+                    if (location.pathname !== "/topics") {
+                      setLoading(true);
+                      navigator("/topics");
+                    }
+                  }
+                  if (type === 1) {
+                    if (location.pathname !== "/problemSet") {
+                      setLoading(true);
+                      navigator("/problemSet");
+                    }
+                  }
+                }}
               >
                 <div className="text-xs md:text-lg md:font-bold bu-text-primary-hover  flex flex-row items-center gap-3 ">
                   <FontAwesomeIcon icon={faHouse} />

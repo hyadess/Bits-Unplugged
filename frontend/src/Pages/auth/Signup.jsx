@@ -7,6 +7,7 @@ import { CircularProgress, Switch } from "@mui/material";
 import { useSearchParams, createSearchParams } from "react-router-dom";
 import Banner from "../../Components/Banner";
 import Layout1 from "../../Components/Layouts/Layout1";
+import { setLoading } from "../../App";
 const authController = new AuthController();
 
 const InputField = (props) => {
@@ -149,7 +150,13 @@ const Signup = () => {
   return (
     <Layout1>
       <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto gap-5 min-h-screen">
-        <div onClick={() => navigate("/home")} className="cursor-pointer">
+        <div
+          onClick={() => {
+            setLoading(true);
+            navigate("/home");
+          }}
+          className="cursor-pointer"
+        >
           <Banner width={200} height={50} />
         </div>
 

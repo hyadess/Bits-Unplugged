@@ -22,10 +22,10 @@ import TopicController from "../controller/topicController";
 import SeriesController from "../controller/seriesController";
 import ProblemController from "../controller/problemController";
 import { Switch } from "@mui/material";
+import { setLoading } from "../App";
 const problemController = new ProblemController();
 const topicController = new TopicController();
 const seriesController = new SeriesController();
-
 
 const AdminProblemEditor = () => {
   const navigator = useNavigate();
@@ -34,7 +34,6 @@ const AdminProblemEditor = () => {
   };
   const [type, setType] = useState(-1);
   const { id } = useParams();
-  const [loading, setLoading] = useState(false);
   const [problem, setProblem] = useState([]);
   const [seriesList, setSeriesList] = useState([]);
   const handleChange = (prop) => (event) => {
@@ -52,7 +51,6 @@ const AdminProblemEditor = () => {
     if (res.success) {
       setProblem(res.data[0]);
       setLoading(false);
-      console.log(res);
     }
   };
 
@@ -67,7 +65,6 @@ const AdminProblemEditor = () => {
         })),
       ];
       setSeriesList(newArray);
-      setLoading(false);
       console.log(newArray);
     }
   };
@@ -76,7 +73,6 @@ const AdminProblemEditor = () => {
     {
       const res = await problemController.updateSeries(id, problem.series_id);
       if (res.success) {
-        setLoading(false);
         console.log(res);
       }
     }
@@ -86,7 +82,6 @@ const AdminProblemEditor = () => {
         ? problemController.publishProblem(id)
         : problemController.unpublishProblem(id);
       if (res.success) {
-        setLoading(false);
         console.log(res);
       }
     }

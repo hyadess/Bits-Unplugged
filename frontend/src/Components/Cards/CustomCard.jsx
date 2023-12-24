@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Zoom } from "@mui/material";
 import ImageLoader from "../ImageLoader";
+import { setLoading } from "../../App";
 const CustomCard = ({ id, name, image, path, action }) => {
   const navigator = useNavigate();
   const switchPath = (pathname) => {
@@ -34,7 +35,10 @@ const CustomCard = ({ id, name, image, path, action }) => {
           />
           <div className="w-full flex items-center justify-center cursor-pointer">
             <div
-              onClick={() => switchPath(path)}
+              onClick={() => {
+                setLoading(true);
+                switchPath(path);
+              }}
               class="inline-flex my-8 items-center  font-medium rounded-lg text-sm px-5 py-2.5 text-center bu-button-secondary"
             >
               <h5 class="text-lg text-center font-bold tracking-tight bu-text-primary">

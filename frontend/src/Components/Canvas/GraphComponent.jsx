@@ -460,34 +460,26 @@ const GraphComponent = (props, ref) => {
   };
 
   const importGraphData = () => {
-    // if (props.input != null) {
-    //   // here input is props object....................
-    //   console.log(props.input);
+    if (props.input != null) {
+      // here input is props object....................
+      console.log(props.input);
 
-    //   //const data = JSON.parse(props.input);
-    //   const data = props.input;
-    //   console.log("importing");
-    //   setData((prevData) => ({
-    //     ...prevData,
-    //     nodes: data.nodes,
-    //   }));
-    //   setData((prevData) => ({
-    //     ...prevData,
-    //     edges: data.edges,
-    //   }));
-    //   console.log(data);
+      //const data = JSON.parse(props.input);
+      console.log("importing");
+      setData(props.input);
+      console.log(data);
 
-    //   let maxIndex = 0;
+      let maxIndex = 0;
 
-    //   // Assuming nodes is an array of objects with an 'index' property
-    //   data.nodes.forEach((node) => {
-    //     if (node.nodeIndex > maxIndex) {
-    //       maxIndex = node.nodeIndex;
-    //     }
-    //   });
+      // Assuming nodes is an array of objects with an 'index' property
+      data.nodes.forEach((node) => {
+        if (node.nodeIndex > maxIndex) {
+          maxIndex = node.nodeIndex;
+        }
+      });
 
-    //   setNodeIndex(maxIndex + 1);
-    // }
+      setNodeIndex(maxIndex + 1);
+    }
     // data=props.input;
     // setData=props.setInput;
   };

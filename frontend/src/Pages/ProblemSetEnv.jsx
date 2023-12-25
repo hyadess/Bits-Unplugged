@@ -109,18 +109,27 @@ export default function ProblemSetEnv() {
         value: item.canvas_id,
         label: item.name,
       }));
-      console.log("::::::", newArray);
+
       setCanvasList(newArray);
       console.log(res);
     }
   };
 
-  const getCanvas = async () => {};
+  const reset = async () => {
+    const result = await problemController.getProblemById(prob_id);
+    if (result.success) {
+      setInput(result.data[0].canvas_data);
+      if (result.data[0].canvas_id !== canvasId) {
+        setCanvasId(result.data[0].canvas_id);
+        changeCanvas(result.data[0].canvas_id);
+      }
+    }
+  };
 
-  const handleCanvasChange = (prop) => (e) => {
-    setCanvasId(e.target.value);
+  const changeCanvas = (canvas_id) => {
+    setCanvasId(canvas_id);
     var res = canvasFullList.find((element) => {
-      return element.canvas_id == e.target.value;
+      return element.canvas_id == canvas_id;
     });
 
     if (res) {
@@ -128,6 +137,9 @@ export default function ProblemSetEnv() {
       setCode(res.template);
       setInput(null);
     }
+  };
+  const handleCanvasChange = (prop) => (e) => {
+    changeCanvas(e.target.value);
   };
 
   const renderComponent = () => {
@@ -167,7 +179,7 @@ export default function ProblemSetEnv() {
                 variant="contained"
                 color="success"
                 size="large"
-                onClick={() => canvasRef.current.handleReset()}
+                onClick={() => reset()}
                 startIcon={
                   <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
                 }
@@ -177,8 +189,8 @@ export default function ProblemSetEnv() {
               <Button
                 variant="contained"
                 onClick={() => {
-                  setInput(canvasRef.current.getData());
-                  updateCanvas(canvasRef.current.getData());
+                  // setInput(canvasRef.current.getData());
+                  updateCanvas(input);
                   updateCode();
                 }}
                 size="large"

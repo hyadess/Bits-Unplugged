@@ -33,7 +33,7 @@ export default function ProblemsCanvas() {
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
   const [input, setInput] = useState(null);
-  const [canvas_id, setCanvas_Id] = useState(null);
+  const [canvasId, setCanvasId] = useState(null);
   const [title, setTitle] = useState("");
   const [statement, setStatement] = useState("");
   const [data, setData] = useState();
@@ -56,11 +56,17 @@ export default function ProblemsCanvas() {
     if (result.success) {
       setProblem(result.data[0]);
       setInput(result.data[0].canvas_data);
-      setCanvas_Id(result.data[0].canvas_id);
+      setCanvasId(result.data[0].canvas_id);
       setStatement(result.data[0].statement);
       setTitle(result.data[0].title);
-
       if (result.data[0].canvas_id === null) setLoading(false);
+    }
+  };
+
+  const reset = async () => {
+    const result = await problemController.getProblemById(id);
+    if (result.success) {
+      setInput(result.data[0].canvas_data);
     }
   };
 
@@ -121,10 +127,10 @@ export default function ProblemsCanvas() {
               </p>
             </div>
           </div>
-          {canvas_id && canvasRef && (
+          {canvasId && canvasRef && (
             <div className="w-full flex flex-col gap-5">
               <CanvasContainer
-                id={canvas_id}
+                id={canvasId}
                 input={input}
                 setInput={setInput}
                 mode={"preview"}
@@ -134,7 +140,7 @@ export default function ProblemsCanvas() {
                 <Button
                   variant="contained"
                   color="success"
-                  onClick={() => canvasRef.current.handleReset()}
+                  onClick={() => reset()}
                   startIcon={
                     <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
                   }
@@ -146,7 +152,7 @@ export default function ProblemsCanvas() {
                   onClick={() => {
                     problemController.checkSolution(
                       problem.solution_checker,
-                      canvasRef.current.getData()
+                      input
                     );
                   }}
                   endIcon={

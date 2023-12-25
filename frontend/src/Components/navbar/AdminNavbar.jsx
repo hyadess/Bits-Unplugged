@@ -61,8 +61,7 @@ const AdminNavbar = () => {
           <AdminNavButton path="/admin/contests" label="Contests" />
           <AdminNavButton path="/admin/setters" label="Setters" />
           <button
-            className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
-            style={{ alignItems: "center", justifyContent: "center" }}
+            className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info border-b-4 border-transparent items-center justify-center"
             data-tip="Home"
             onClick={() => {
               setLoading(true);

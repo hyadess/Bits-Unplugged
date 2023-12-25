@@ -228,21 +228,21 @@ const CanvasContainer = (props, ref) => {
   };
   return (
     <div className="relative mt-5">
-      <Zoom in={true}>
-        <div className="canvas-container" style={{ minHeight: "40vh" }}>
-          {DynamicComponent && (
-            <DynamicComponent
-              input={props.input}
-              setInput={props.setInput}
-              params={params}
-              uiParams={uiParams}
-              controlParams={controlParams}
-              ref={ref}
-              mode={canvasMode}
-            />
-          )}
-        </div>
-      </Zoom>
+      {/* <Zoom in={true}> */}
+      <div className="canvas-container" style={{ minHeight: "40vh" }}>
+        {DynamicComponent && (
+          <DynamicComponent
+            input={props.input}
+            setInput={props.setInput}
+            params={params}
+            uiParams={uiParams}
+            controlParams={controlParams}
+            ref={ref}
+            mode={canvasMode}
+          />
+        )}
+      </div>
+      {/* </Zoom> */}
       <SettingsMenu />
       <div
         className="flex flex-row p-2 items-center"

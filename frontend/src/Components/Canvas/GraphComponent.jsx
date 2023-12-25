@@ -33,7 +33,8 @@ const GraphComponent = (props, ref) => {
   const [userType, setUserType] = useState(0);
   const [edgeIndex, setEdgeIndex] = useState(0);
   const [nodeIndex, setNodeIndex] = useState(0);
-  const [data, setData] = useState(props.input);
+  const data=props.input;
+  const setData=props.setInput;
   //node and edge hover and select
   const [selectedNodes, setSelectedNodes] = useState([]);
   const [selectedEdge, setSelectedEdge] = useState(null);
@@ -61,9 +62,9 @@ const GraphComponent = (props, ref) => {
       edges: edges,
     }));
   };
-  useEffect(() => {
-    setData(props.input);
-  }, [props.input]);
+  // useEffect(() => {
+  //   setData(props.input);
+  // }, [props.input]);
 
   //...........................................................................................................
 

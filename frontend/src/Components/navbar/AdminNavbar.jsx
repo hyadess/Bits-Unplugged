@@ -3,7 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../Logo";
 import AuthController from "../../controller/authController";
 import { setLoading } from "../../App";
+import AdminNavButton from "./AdminNavButton";
 const authController = new AuthController();
+
 const AdminNavbar = () => {
   const navigator = useNavigate();
   const location = useLocation();
@@ -52,108 +54,18 @@ const AdminNavbar = () => {
       </div>
       <div className="flex md:justify-center w-full md:w-3/5">
         <>
-          <button
-            className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
-            style={{ alignItems: "center", justifyContent: "center" }}
-            data-tip="Home"
-            onClick={() => {
-              if (location.pathname !== "/admin/topics") {
-                setLoading(true);
-                switchPath("/admin/topics");
-              }
-            }}
-          >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
-              Topics
-            </div>
-            <div className="divider hidden md:flex "></div>
-          </button>
-
+          <AdminNavButton path="/admin/topics" label="Topics" />
+          <AdminNavButton path="/admin/series" label="Series" />
+          <AdminNavButton path="/admin/problems" label="Problems" />
+          <AdminNavButton path="/admin/canvas" label="Canvas" />
+          <AdminNavButton path="/admin/contests" label="Contests" />
+          <AdminNavButton path="/admin/setters" label="Setters" />
           <button
             className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
             style={{ alignItems: "center", justifyContent: "center" }}
             data-tip="Home"
             onClick={() => {
-              if (location.pathname !== "/admin/series") {
-                setLoading(true);
-                switchPath("/admin/series");
-              }
-            }}
-          >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
-              Series
-            </div>
-            <div className="divider hidden md:flex "></div>
-          </button>
-          <button
-            className="icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
-            style={{ alignItems: "center", justifyContent: "center" }}
-            data-tip="Marketplace"
-            onClick={() => {
-              if (location.pathname !== "/admin/problems") {
-                setLoading(true);
-                switchPath("/admin/problems");
-              }
-            }}
-          >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
-              Problems
-            </div>
-          </button>
-          <button
-            className="icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
-            style={{ alignItems: "center", justifyContent: "center" }}
-            data-tip="Marketplace"
-            onClick={() => {
-              if (location.pathname !== "/admin/canvas") {
-                setLoading(true);
-                switchPath("/admin/canvas");
-              }
-            }}
-          >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
-              Canvas
-            </div>
-          </button>
-          <button
-            className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
-            style={{ alignItems: "center", justifyContent: "center" }}
-            data-tip="Home"
-            onClick={() => {
-              if (location.pathname !== "/admin/contests") {
-                setLoading(true);
-                switchPath("/admin/contests");
-              }
-            }}
-          >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
-              Contests
-            </div>
-            <div className="divider hidden md:flex "></div>
-          </button>
-
-          <button
-            className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
-            style={{ alignItems: "center", justifyContent: "center" }}
-            data-tip="Home"
-            onClick={() => {
-              if (location.pathname !== "/admin/setters") {
-                setLoading(true);
-                switchPath("/admin/setters");
-              }
-            }}
-          >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
-              Setters
-            </div>
-            <div className="divider hidden md:flex "></div>
-          </button>
-
-          <button
-            className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
-            style={{ alignItems: "center", justifyContent: "center" }}
-            data-tip="Home"
-            onClick={() => {
+              setLoading(true);
               authController.logout();
               switchPath("/admin/login");
             }}

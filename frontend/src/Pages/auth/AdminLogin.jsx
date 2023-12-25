@@ -50,12 +50,15 @@ const AdminLogin = () => {
       });
       if (res.success) {
         setLoading(true);
-        console.log("Logged IN");
         setLoggingIn(true);
-        navigate("/admin");
+        navigate("/admin/topics");
       }
     }
   };
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
   return (
     <Layout1>
       <section>

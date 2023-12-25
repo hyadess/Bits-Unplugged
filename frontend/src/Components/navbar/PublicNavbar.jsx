@@ -1,17 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import AuthController from "../controller/authController";
+import { useLocation, useNavigate } from "react-router-dom";
+import AuthController from "../../controller/authController";
 import { Avatar, InputAdornment, Typography } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Cookies from "universal-cookie";
-import ProfileController from "../controller/profileController";
-import Logo from "./Logo";
-import Banner from "./Banner";
-import { setLoading } from "../App";
+import ProfileController from "../../controller/profileController";
+import Logo from "../Logo";
+import Banner from "../Banner";
+import { setLoading } from "../../App";
 const authController = new AuthController();
 const profileController = new ProfileController();
 const PublicNavbar = (props) => {
   const navigator = useNavigate();
+  const location = useLocation();
   const switchPath = (pathname) => {
     navigator(pathname);
   };
@@ -49,8 +50,10 @@ const PublicNavbar = (props) => {
         <div
           className="p-5 pl-0"
           onClick={() => {
-            setLoading(true);
-            switchPath("/home");
+            if (location.pathname !== "/home") {
+              setLoading(true);
+              switchPath("/home");
+            }
           }}
         >
           <Logo />
@@ -62,7 +65,9 @@ const PublicNavbar = (props) => {
             className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
             style={{ alignItems: "center", justifyContent: "center" }}
             data-tip="Home"
-            onClick={() => switchPath("/home")}
+            onClick={() => {
+              switchPath("/home");
+            }}
           >
             <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
               Home

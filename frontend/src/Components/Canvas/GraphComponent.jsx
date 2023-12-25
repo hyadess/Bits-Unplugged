@@ -263,6 +263,10 @@ const GraphComponent = (props, ref) => {
         if (nearestEdge && minDistance <= 1.0 * EDGECLICKRANGE) {
           if (selectedEdge == nearestEdge) setSelectedEdge(null);
           else setSelectedEdge(nearestEdge);
+        } else if (selectedEdge !== null) {
+          setSelectedEdge(null);
+        } else if (selectedNodes.length > 0) {
+          setSelectedNodes([]);
         } else {
           //check if i have control params permission to add nodes
           if (props.controlParams === null || !props.controlParams["add_node"])
@@ -573,7 +577,10 @@ const GraphComponent = (props, ref) => {
                         ? "#879294"
                         : "#ec3965"
                     }
-                    strokeWidth={selectedEdge !== edge ? 3 : 3}
+                    strokeWidth={
+                      selectedEdge !== edge && hoveredEdge !== edge ? 3 : 6
+                    }
+                    // strokeWidth={Math.min(edge.weight / 5.0, 20)}
                   />
                   {data.directed === true ? (
                     <RegularPolygon
@@ -698,28 +705,36 @@ const GraphComponent = (props, ref) => {
       </div> */}
 
       <Modal
-        className="modal-container"
+        className="modal-container bu-nav-color"
         isOpen={isPromptOpen}
         onRequestClose={closePrompt}
         contentLabel="Edge Weight Input"
       >
-        <p className="modal-title">ENTER THE WEIGHT:</p>
-        <input
-          className="modal-input"
-          type="number"
-          value={curEdgeWeight}
-          onChange={(e) => setCurEdgeWeight(e.target.value)}
-          placeholder="Edge Weight"
-        />
-        <button
-          className="modal-buttons"
-          onClick={() => handlePromptSubmit(curEdgeWeight)}
-        >
-          SUBMIT
-        </button>
-        <button className="modal-buttons" onClick={closePrompt}>
-          CANCEL
-        </button>
+        <div className="flex flex-col gap-5">
+          <p className="bu-text-primary font-bold text-xl">ENTER THE WEIGHT</p>
+          <input
+            className="bu-input-primary rounded-lg"
+            type="number"
+            value={curEdgeWeight}
+            onChange={(e) => setCurEdgeWeight(e.target.value)}
+            placeholder="Edge Weight"
+            // autofocus
+          />
+          <div className="flex flex-row gap-5 justify-center">
+            <button
+              className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-delete w-full"
+              onClick={closePrompt}
+            >
+              CANCEL
+            </button>
+            <button
+              className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-primary w-full"
+              onClick={() => handlePromptSubmit(curEdgeWeight)}
+            >
+              SUBMIT
+            </button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

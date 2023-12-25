@@ -11,7 +11,7 @@ import AdminNavbar from "../Components/navbar/AdminNavbar";
 import Layout4 from "../Components/Layouts/Layout4";
 
 import CanvasController from "../controller/canvasController";
-import PrivateNavbar from "../Components/PrivateNavbar";
+import PrivateNavbar from "../Components/navbar/PrivateNavbar";
 import SetterCanvasCard from "../Components/Cards/SetterCanvasCard";
 const canvasController = new CanvasController();
 

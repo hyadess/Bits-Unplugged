@@ -11,7 +11,6 @@ import Cookies from "universal-cookie";
 import Home from "./Pages/Home";
 import Playground from "./Pages/Playground";
 import Problems from "./Pages/Problems";
-import Profile from "./Pages/Profile";
 import PlaygroundCanvas from "./Pages/PlaygroundCanvas";
 import Login from "./Pages/auth/Login";
 import Signup from "./Pages/auth/Signup";
@@ -24,7 +23,7 @@ import CanvasContainer from "./Components/Canvas/CanvasContainer";
 
 import ProblemSetEnv from "./Pages/ProblemSetEnv";
 import SolutionChecker from "./Pages/SolutionChecker";
-import PublicNavbar from "./Components/PublicNavbar";
+import PublicNavbar from "./Components/navbar/PublicNavbar";
 import Layout2 from "./Components/Layouts/Layout2";
 import ProblemSetSeriesCard from "./Components/Cards/ProblemSetSeriesCard";
 import AdminLogin from "./Pages/auth/AdminLogin";
@@ -41,7 +40,7 @@ import CanvasSelector from "./Pages/CanvasSelector";
 import AdminContests from "./Pages/AdminContests";
 import AdminSetters from "./Pages/AdminSetters";
 
-import PrivateNavbar from "./Components/PrivateNavbar";
+import PrivateNavbar from "./Components/navbar/PrivateNavbar";
 import AdminNavbar from "./Components/navbar/AdminNavbar";
 import LayoutMain from "./Components/Layouts/LayoutMain";
 
@@ -50,6 +49,8 @@ import Layout from "./Pages/Layout";
 import Navbar from "./Components/Navbar";
 import SolverLayout from "./Pages/SolverLayout";
 import SetterLayout from "./Pages/SetterLayout";
+import SetterProfile from "./Pages/SetterProfile";
+import SolverProfile from "./Pages/SolverProfile";
 const cookies = new Cookies();
 
 const Private = () => {
@@ -279,6 +280,15 @@ const AppRoutes = () => {
             }
           />
           <Route path="/problemSet/series/:id" element={<AddProblem />} />
+
+          <Route
+            path="/setter/:username"
+            element={
+              <LayoutMain>
+                <SetterProfile />
+              </LayoutMain>
+            }
+          />
         </Route>
         <Route element={<ProblemSolver />}>
           <Route
@@ -302,7 +312,47 @@ const AppRoutes = () => {
           <Route
             path="/topics"
             element={
-              <LayoutMain>
+              <LayoutMain
+                left={
+                  <div
+                    className="max-w-sm rounded-lg shadow-lg border bu-nav-color bu-text-primary"
+                    style={{
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Put unsolved and bookmarked problems here
+                  </div>
+                }
+                right={
+                  <div className="flex flex-col gap-5 w-full">
+                    <div
+                      className="max-w-sm rounded-lg shadow-lg bu-nav-color bu-text-primary"
+                      style={{
+                        height: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      Put Stats here
+                    </div>
+                    <div
+                      className="max-w-sm  border rounded-lg shadow-lg bu-nav-color bu-text-primary"
+                      style={{
+                        height: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      Put Stats here
+                    </div>
+                  </div>
+                }
+              >
                 <Topics />
               </LayoutMain>
             }
@@ -323,18 +373,26 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
+          <Route
+            path="/user/:username"
+            element={
+              <LayoutMain>
+                <SolverProfile />
+              </LayoutMain>
+            }
+          />
         </Route>
-
+        {/* 
         <Route element={<Private />}>
           <Route
             path="/profile/:username"
             element={
               <LayoutMain>
-                <Profile />
+                <SolverProfile />
               </LayoutMain>
             }
           />
-        </Route>
+        </Route> */}
 
         <Route element={<Public />}>
           <Route path="/login" element={<Login />} />

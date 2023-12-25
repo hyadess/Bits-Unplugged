@@ -60,7 +60,6 @@ const PrivateNavbar = (props) => {
 
   useEffect(() => {
     console.log(location.pathname);
-    console.log(location.pathname.startsWith("/topics"));
   }, [location.pathname]);
 
   useEffect(() => {
@@ -96,8 +95,8 @@ const PrivateNavbar = (props) => {
             <>
               <button
                 className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center ${
-                  (type == 0 && location.pathname.startsWith("/topics")) ||
-                  (type == 1 && location.pathname.startsWith("/problemSet"))
+                  (type == 0 && location.pathname === "/topics") ||
+                  (type == 1 && location.pathname === "/problemSet")
                     ? "border-b-4 border-[#1C5B5F] dark:border-pink-500"
                     : "border-transparent"
                 }`}
@@ -119,8 +118,8 @@ const PrivateNavbar = (props) => {
               >
                 <div
                   className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
-                    (type == 0 && location.pathname.startsWith("/topics")) ||
-                    (type == 1 && location.pathname.startsWith("/problemSet"))
+                    (type == 0 && location.pathname === "/topics") ||
+                    (type == 1 && location.pathname === "/problemSet")
                       ? "bu-text-title"
                       : "bu-text-primary-hover"
                   }`}

@@ -11,6 +11,10 @@ import SearchBar from "../InputFields/SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
+import {
+  faBuromobelexperte,
+  faTrello,
+} from "@fortawesome/free-brands-svg-icons";
 const authController = new AuthController();
 const profileController = new ProfileController();
 const PrivateNavbar = (props) => {
@@ -128,6 +132,23 @@ const PrivateNavbar = (props) => {
                   Home
                 </div>
                 <div className="divider hidden md:flex "></div>
+              </button>
+
+              <button
+                className={`icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info items-center justify-center border-b-4 ${
+                  location.pathname === "/contests"
+                    ? "border-[#1C5B5F] dark:border-pink-500"
+                    : "border-transparent"
+                }`}
+                data-tip="Marketplace"
+                onClick={() => {
+                  switchPath("/contests");
+                }}
+              >
+                <div className="text-xs md:text-lg md:font-bold md:text-white-800 flex flex-row gap-3 items-center bu-text-primary-hover ">
+                  <FontAwesomeIcon icon={faTrello} />
+                  Contests
+                </div>
               </button>
 
               <button

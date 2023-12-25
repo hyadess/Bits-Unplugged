@@ -312,7 +312,47 @@ const AppRoutes = () => {
           <Route
             path="/topics"
             element={
-              <LayoutMain>
+              <LayoutMain
+                left={
+                  <div
+                    className="max-w-sm rounded-lg shadow-lg border bu-nav-color bu-text-primary"
+                    style={{
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Put unsolved and bookmarked problems here
+                  </div>
+                }
+                right={
+                  <div className="flex flex-col gap-5 w-full">
+                    <div
+                      className="max-w-sm rounded-lg shadow-lg bu-nav-color bu-text-primary"
+                      style={{
+                        height: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      Put Stats here
+                    </div>
+                    <div
+                      className="max-w-sm  border rounded-lg shadow-lg bu-nav-color bu-text-primary"
+                      style={{
+                        height: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      Put Stats here
+                    </div>
+                  </div>
+                }
+              >
                 <Topics />
               </LayoutMain>
             }

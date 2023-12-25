@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Title from "../Components/Title";
-export default function Profile() {
+export default function SolverProfile() {
   const navigator = useNavigate();
   const switchPath = (pathname) => {
     navigator(pathname);
@@ -24,6 +24,7 @@ export default function Profile() {
   useEffect(() => {
     //getData()
   }, []);
+
   return (
     <div className="flex flex-col">
       <Title title={"Profile Page"} />

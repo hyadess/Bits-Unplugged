@@ -33,8 +33,8 @@ const GraphComponent = (props, ref) => {
   const [userType, setUserType] = useState(0);
   const [edgeIndex, setEdgeIndex] = useState(0);
   const [nodeIndex, setNodeIndex] = useState(0);
-  const data=props.input;
-  const setData=props.setInput;
+  const data = props.input;
+  const setData = props.setInput;
   //node and edge hover and select
   const [selectedNodes, setSelectedNodes] = useState([]);
   const [selectedEdge, setSelectedEdge] = useState(null);
@@ -224,6 +224,7 @@ const GraphComponent = (props, ref) => {
           // Do nothing or handle text click separately
           return;
         }
+
 
         const stage = stageRef.current;
         const { x, y } = stage.getPointerPosition();
@@ -462,7 +463,7 @@ const GraphComponent = (props, ref) => {
   };
 
   const importGraphData = () => {
-    if (props.input != null) {
+    if (props.input !== null) {
       // here input is props object....................
       console.log(props.input);
 
@@ -481,6 +482,12 @@ const GraphComponent = (props, ref) => {
       });
 
       setNodeIndex(maxIndex + 1);
+    }
+    else
+    {
+      setEdges([]);
+      setNodes([]);
+
     }
     // data=props.input;
     // setData=props.setInput;
@@ -515,65 +522,91 @@ const GraphComponent = (props, ref) => {
         // scaleX={Math.min(window.innerWidth / 970, 1)}
         // scaleY={Math.min(window.innerWidth / 900, 1)}
       >
-        <Layer>
-          {data.edges.map((edge, index) => {
-            // calculations.......................
-            const dx = edge.end.x - edge.start.x;
-            const dy = edge.end.y - edge.start.y;
-            const angle = Math.atan2(dy, dx);
-            const startOffsetX = Math.cos(angle) * RADIUS;
-            const startOffsetY = Math.sin(angle) * RADIUS;
-            const endOffsetX = Math.cos(angle + Math.PI) * RADIUS;
-            const endOffsetY = Math.sin(angle + Math.PI) * RADIUS;
+        {data === null ? (
+          <></>
+        ) : (
+          <Layer>
+            {data.edges.map((edge, index) => {
+              // calculations.......................
+              const dx = edge.end.x - edge.start.x;
+              const dy = edge.end.y - edge.start.y;
+              const angle = Math.atan2(dy, dx);
+              const startOffsetX = Math.cos(angle) * RADIUS;
+              const startOffsetY = Math.sin(angle) * RADIUS;
+              const endOffsetX = Math.cos(angle + Math.PI) * RADIUS;
+              const endOffsetY = Math.sin(angle + Math.PI) * RADIUS;
 
-            //edge direction related.............................
+              //edge direction related.............................
 
-            // Calculate the position of the arrowhead
-            const arrowheadX = edge.end.x + endOffsetX - 10 * Math.cos(angle);
-            const arrowheadY = edge.end.y + endOffsetY - 10 * Math.sin(angle);
+              // Calculate the position of the arrowhead
+              const arrowheadX = edge.end.x + endOffsetX - 10 * Math.cos(angle);
+              const arrowheadY = edge.end.y + endOffsetY - 10 * Math.sin(angle);
 
-            return (
-              <React.Fragment key={index}>
-                <Group onClick={() => handleEdgeClick(edge)}>
-                  <Line
-                    key={index}
-                    points={[
-                      edge.start.x + startOffsetX,
-                      edge.start.y + startOffsetY,
-                      edge.end.x + endOffsetX,
-                      edge.end.y + endOffsetY,
-                    ]}
-                    onMouseEnter={() => {
-                      document.body.style.cursor = "pointer";
-                      handleEdgeHover(edge);
-                    }}
-                    onMouseLeave={() => {
-                      document.body.style.cursor = "default";
-                      handleEdgeUnhover();
-                    }}
-                    stroke={
-                      hoveredEdge === edge
-                        ? "#2bb557"
-                        : selectedEdge !== edge
-                        ? "#879294"
-                        : "#ec3965"
-                    }
-                    strokeWidth={
-                      selectedEdge !== edge && hoveredEdge !== edge ? 3 : 6
-                    }
-                    // strokeWidth={Math.min(edge.weight / 5.0, 20)}
-                  />
+              return (
+                <React.Fragment key={index}>
+                  <Group onClick={() => handleEdgeClick(edge)}>
+                    <Line
+                      key={index}
+                      points={[
+                        edge.start.x + startOffsetX,
+                        edge.start.y + startOffsetY,
+                        edge.end.x + endOffsetX,
+                        edge.end.y + endOffsetY,
+                      ]}
+                      onMouseEnter={() => {
+                        document.body.style.cursor = "pointer";
+                        handleEdgeHover(edge);
+                      }}
+                      onMouseLeave={() => {
+                        document.body.style.cursor = "default";
+                        handleEdgeUnhover();
+                      }}
+                      stroke={
+                        hoveredEdge === edge
+                          ? "#2bb557"
+                          : selectedEdge !== edge
+                          ? "#879294"
+                          : "#ec3965"
+                      }
+                      strokeWidth={
+                        selectedEdge !== edge && hoveredEdge !== edge ? 3 : 6
+                      }
+                      // strokeWidth={Math.min(edge.weight / 5.0, 20)}
+                    />
+                    {props.params === null ||
+                    !props.params["directed_edge"] ||
+                    props.params["directed_edge"].value === false ? (
+                      <></>
+                    ) : (
+                      <RegularPolygon
+                        sides={3} // Triangle for arrowhead
+                        radius={12} // Adjust the size of the arrowhead
+                        x={arrowheadX}
+                        y={arrowheadY}
+                        rotation={angle * (180 / Math.PI) + 90}
+                        fill={
+                          hoveredEdge === edge
+                            ? "#2bb557"
+                            : selectedEdge !== edge
+                            ? "#879294"
+                            : "#ec3965"
+                        }
+                      />
+                    )}
+                  </Group>
+
                   {props.params === null ||
-                  !props.params["directed_edge"] ||
-                  props.params["directed_edge"].value === false ? (
+                  !props.params["weighted_edge"] ||
+                  props.params["weighted_edge"].value === false ? (
                     <></>
                   ) : (
-                    <RegularPolygon
-                      sides={3} // Triangle for arrowhead
-                      radius={12} // Adjust the size of the arrowhead
-                      x={arrowheadX}
-                      y={arrowheadY}
-                      rotation={angle * (180 / Math.PI) + 90}
+                    <Text
+                      x={(edge.start.x + edge.end.x) / 2 + 20}
+                      y={(edge.start.y + edge.end.y) / 2}
+                      text={edge.weight}
+                      fontSize={25}
+                      strokeWidth={selectedEdge !== edge ? 3 : 3}
+                      background="red"
                       fill={
                         hoveredEdge === edge
                           ? "#2bb557"
@@ -581,109 +614,87 @@ const GraphComponent = (props, ref) => {
                           ? "#879294"
                           : "#ec3965"
                       }
+                      width={45}
+                      draggable
+                      onClick={() => changeEdgeWeight(edge)}
                     />
                   )}
-                </Group>
-
-                {props.params === null ||
-                !props.params["weighted_edge"] ||
-                props.params["weighted_edge"].value === false ? (
-                  <></>
-                ) : (
-                  <Text
-                    x={(edge.start.x + edge.end.x) / 2 + 20}
-                    y={(edge.start.y + edge.end.y) / 2}
-                    text={edge.weight}
-                    fontSize={25}
-                    strokeWidth={selectedEdge !== edge ? 3 : 3}
-                    background="red"
-                    fill={
-                      hoveredEdge === edge
-                        ? "#2bb557"
-                        : selectedEdge !== edge
-                        ? "#879294"
-                        : "#ec3965"
-                    }
-                    width={45}
-                    draggable
-                    onClick={() => changeEdgeWeight(edge)}
-                  />
-                )}
-              </React.Fragment>
-            );
-          })}
-          {data.nodes.map((node, index) => (
-            <Group
-              key={index}
-              x={node.x}
-              y={node.y}
-              draggable={
-                props.controlParams === null ||
-                !props.controlParams["drag_node"]
-                  ? false
-                  : props.controlParams["drag_node"].value
-              }
-              onMouseEnter={() => handleNodeHover(node)}
-              onMouseLeave={handleNodeUnhover}
-              onDragMove={(e) => handleNodeDrag(index, e)}
-              onClick={() => handleNodeClick(node)}
-            >
-              <Circle
-                radius={hoveredNode === node ? RADIUS * 1.2 : RADIUS}
-                className={hoveredNode === node ? "node-hovered" : ""}
-                fill={
-                  selectedNodes.includes(node)
-                    ? "#ec3965"
-                    : hoveredNode === node
-                    ? "#38bf27"
-                    : "#a4a3a3"
+                </React.Fragment>
+              );
+            })}
+            {data.nodes.map((node, index) => (
+              <Group
+                key={index}
+                x={node.x}
+                y={node.y}
+                draggable={
+                  props.controlParams === null ||
+                  !props.controlParams["drag_node"]
+                    ? false
+                    : props.controlParams["drag_node"].value
                 }
-                stroke={
-                  selectedNodes.includes(node)
-                    ? ""
-                    : hoveredNode === node
-                    ? ""
-                    : ""
-                }
-                strokeWidth={
-                  selectedNodes.includes(node)
-                    ? 0
-                    : hoveredNode === node
-                    ? 0
-                    : 3
-                }
-                brightness={
-                  selectedNodes.includes(node)
-                    ? 0.5
-                    : hoveredNode === node
-                    ? 0
-                    : 0.8
-                }
-              />
-              <Text
-                text={node.nodeIndex.toString()} // Display the node number
-                align="center" // Center-align the text
-                verticalAlign="middle" // Vertically align the text
-                fontSize={30} // Set font size
-                fill={
-                  selectedNodes.includes(node)
-                    ? "white"
-                    : hoveredNode === node
-                    ? "white"
-                    : "white"
-                } // Set text color
-                ref={(nodeTextRef) => {
-                  if (nodeTextRef) {
-                    const textWidth = nodeTextRef.getClientRect().width;
-                    const textHeight = nodeTextRef.getClientRect().height;
-                    nodeTextRef.offsetX(textWidth / 2);
-                    nodeTextRef.offsetY(textHeight / 2);
+                onMouseEnter={() => handleNodeHover(node)}
+                onMouseLeave={handleNodeUnhover}
+                onDragMove={(e) => handleNodeDrag(index, e)}
+                onClick={() => handleNodeClick(node)}
+              >
+                <Circle
+                  radius={hoveredNode === node ? RADIUS * 1.2 : RADIUS}
+                  className={hoveredNode === node ? "node-hovered" : ""}
+                  fill={
+                    selectedNodes.includes(node)
+                      ? "#ec3965"
+                      : hoveredNode === node
+                      ? "#38bf27"
+                      : "#a4a3a3"
                   }
-                }}
-              />
-            </Group>
-          ))}
-        </Layer>
+                  stroke={
+                    selectedNodes.includes(node)
+                      ? ""
+                      : hoveredNode === node
+                      ? ""
+                      : ""
+                  }
+                  strokeWidth={
+                    selectedNodes.includes(node)
+                      ? 0
+                      : hoveredNode === node
+                      ? 0
+                      : 3
+                  }
+                  brightness={
+                    selectedNodes.includes(node)
+                      ? 0.5
+                      : hoveredNode === node
+                      ? 0
+                      : 0.8
+                  }
+                />
+                <Text
+                  text={node.nodeIndex.toString()} // Display the node number
+                  align="center" // Center-align the text
+                  verticalAlign="middle" // Vertically align the text
+                  fontSize={30} // Set font size
+                  fill={
+                    selectedNodes.includes(node)
+                      ? "white"
+                      : hoveredNode === node
+                      ? "white"
+                      : "white"
+                  } // Set text color
+                  ref={(nodeTextRef) => {
+                    if (nodeTextRef) {
+                      const textWidth = nodeTextRef.getClientRect().width;
+                      const textHeight = nodeTextRef.getClientRect().height;
+                      nodeTextRef.offsetX(textWidth / 2);
+                      nodeTextRef.offsetY(textHeight / 2);
+                    }
+                  }}
+                />
+              </Group>
+            ))}
+          </Layer>
+        )}
       </Stage>
       {/* <div className="export-button-container">
         <button onClick={exportGraphData} className="export-button"></button>

@@ -65,6 +65,7 @@ const AdminNavbar = () => {
             style={{ alignItems: "center", justifyContent: "center" }}
             data-tip="Home"
             onClick={() => {
+              setLoading(true);
               authController.logout();
               switchPath("/admin/login");
             }}

@@ -60,7 +60,7 @@ const Home = () => {
             onClick={() => {
               setLoading(true);
               type === 2
-                ? navigator("/admin")
+                ? navigator("/admin/topics")
                 : type === 1
                 ? navigator("/problemSet")
                 : navigator("/topics");

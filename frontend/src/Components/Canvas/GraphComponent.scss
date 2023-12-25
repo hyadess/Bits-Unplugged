@@ -47,12 +47,13 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgb(75, 73, 73);
+  // background-color: rgb(75, 73, 73);
   width: 500px;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  // box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
+  z-index: 1000;
 }
 
 .modal-title {

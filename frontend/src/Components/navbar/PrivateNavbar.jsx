@@ -94,15 +94,15 @@ const PrivateNavbar = (props) => {
           <div className="flex justify-start md:justify-center w-8/12 md:w-3/5">
             <>
               <button
-                className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center ${
-                  (type == 0 && location.pathname === "/topics") ||
-                  (type == 1 && location.pathname === "/problemSet")
-                    ? "border-b-4 border-[#1C5B5F] dark:border-pink-500"
+                className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
+                  (type === 0 && location.pathname === "/topics") ||
+                  (type === 1 && location.pathname === "/problemSet")
+                    ? "border-[#1C5B5F] dark:border-pink-500"
                     : "border-transparent"
                 }`}
                 data-tip="Home"
                 onClick={() => {
-                  if (type == 0) {
+                  if (type === 0) {
                     if (location.pathname !== "/topics") {
                       setLoading(true);
                       navigator("/topics");

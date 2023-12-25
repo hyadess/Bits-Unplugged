@@ -79,7 +79,7 @@ export default function SolutionChecker(props) {
     );
   return (
     <div
-      className="flex flex-col md:flex-row gap-0 md:gap-0 w-full pb-10 h-160 md:h-128"
+      className="flex flex-col md:flex-row gap-0 md:gap-0 w-full pb-10 h-160 md:h-160"
       style={{ marginTop: "1rem" }}
     >
       <div className="w-full md:w-9/12 h-1/2 md:h-full">

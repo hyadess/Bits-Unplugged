@@ -50,19 +50,20 @@ const GraphComponent = (props, ref) => {
   //custom sets................................................................................................
 
   const setNodes = (nodes) => {
-    setData((prevData) => ({
+    props.setInput((prevData) => ({
       ...prevData,
       nodes: nodes,
     }));
-    props.setInput(data);
   };
   const setEdges = (edges) => {
-    setData((prevData) => ({
+    props.setInput((prevData) => ({
       ...prevData,
       edges: edges,
     }));
-    props.setInput(data);
   };
+  useEffect(() => {
+    setData(props.input);
+  }, [props.input]);
 
   //...........................................................................................................
 

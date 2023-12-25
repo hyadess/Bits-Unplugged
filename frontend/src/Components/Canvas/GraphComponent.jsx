@@ -263,6 +263,10 @@ const GraphComponent = (props, ref) => {
         if (nearestEdge && minDistance <= 1.0 * EDGECLICKRANGE) {
           if (selectedEdge == nearestEdge) setSelectedEdge(null);
           else setSelectedEdge(nearestEdge);
+        } else if (selectedEdge !== null) {
+          setSelectedEdge(null);
+        } else if (selectedNodes.length > 0) {
+          setSelectedNodes([]);
         } else {
           //check if i have control params permission to add nodes
           if (props.controlParams === null || !props.controlParams["add_node"])
@@ -573,7 +577,10 @@ const GraphComponent = (props, ref) => {
                         ? "#879294"
                         : "#ec3965"
                     }
-                    strokeWidth={selectedEdge !== edge ? 3 : 3}
+                    strokeWidth={
+                      selectedEdge !== edge && hoveredEdge !== edge ? 3 : 6
+                    }
+                    // strokeWidth={Math.min(edge.weight / 5.0, 20)}
                   />
                   {data.directed === true ? (
                     <RegularPolygon
@@ -711,7 +718,7 @@ const GraphComponent = (props, ref) => {
             value={curEdgeWeight}
             onChange={(e) => setCurEdgeWeight(e.target.value)}
             placeholder="Edge Weight"
-            autofocus
+            // autofocus
           />
           <div className="flex flex-row gap-5 justify-center">
             <button

@@ -33,13 +33,8 @@ const GraphComponent = (props, ref) => {
   const [userType, setUserType] = useState(0);
   const [edgeIndex, setEdgeIndex] = useState(0);
   const [nodeIndex, setNodeIndex] = useState(0);
-  const [data, setData] = useState({
-    variant: "tree",
-    directed: false,
-    weighted: true,
-    nodes: [],
-    edges: [],
-  });
+  const data=props.input;
+  const setData=props.setInput;
   //node and edge hover and select
   const [selectedNodes, setSelectedNodes] = useState([]);
   const [selectedEdge, setSelectedEdge] = useState(null);
@@ -56,17 +51,20 @@ const GraphComponent = (props, ref) => {
   //custom sets................................................................................................
 
   const setNodes = (nodes) => {
-    setData((prevData) => ({
+    props.setInput((prevData) => ({
       ...prevData,
       nodes: nodes,
     }));
   };
   const setEdges = (edges) => {
-    setData((prevData) => ({
+    props.setInput((prevData) => ({
       ...prevData,
       edges: edges,
     }));
   };
+  // useEffect(() => {
+  //   setData(props.input);
+  // }, [props.input]);
 
   //...........................................................................................................
 
@@ -111,14 +109,14 @@ const GraphComponent = (props, ref) => {
   };
   //............................................................................................................
 
-  useImperativeHandle(ref, () => {
-    return {
-      handleReset: () => {
-        importGraphData();
-      },
-      getData: () => exportGraphData(),
-    };
-  });
+  // useImperativeHandle(ref, () => {
+  //   return {
+  //     handleReset: () => {
+  //       importGraphData();
+  //     },
+  //     getData: () => exportGraphData(),
+  //   };
+  // });
 
   useLayoutEffect(() => {
     const updateParentWidth = () => {
@@ -186,20 +184,13 @@ const GraphComponent = (props, ref) => {
       //exportGraphData();
     };
   }, [ctrlKeyPressed]);
-  //import data.........
-  useEffect(() => {
-    importGraphData();
-    setLoading(false);
-  }, [props.input]);
 
-  useEffect(() => {
-    changeGraphType();
-  }, [props.params]);
-
-  // define user type..............
+  // at start..............
   useEffect(() => {
     const cookies = new Cookies();
     setUserType(cookies.get("type"));
+    importGraphData();
+    setLoading(false);
   }, []);
 
   // node  and edge hovering........................
@@ -301,7 +292,11 @@ const GraphComponent = (props, ref) => {
       );
       if (!alreadyExists) {
         setSelectedNodes([...selectedNodes, node]);
-        if (data.weighted === true)
+        if (
+          props.params !== null &&
+          props.params["weighted_edge"] &&
+          props.params["weighted_edge"].value === true
+        )
           openPrompt(); // need to take weight input...........
         else {
           const edges = data.edges;
@@ -372,7 +367,9 @@ const GraphComponent = (props, ref) => {
 
   const changeEdgeWeight = (edge) => {
     // no weight change for unweighted graphs.........
-    if (data.weighted === false) return;
+    if (props.params === null || !props.params["weighted_edge"]) return;
+    if (userType === 1 && props.params["weighted_edge"].value === false) return;
+
     // weight change prompt........................
     const newWeight = prompt("Enter new weight for the edge:", edge.weight);
     if (newWeight !== null && !isNaN(newWeight)) {
@@ -470,16 +467,8 @@ const GraphComponent = (props, ref) => {
       console.log(props.input);
 
       //const data = JSON.parse(props.input);
-      const data = props.input;
       console.log("importing");
-      setData((prevData) => ({
-        ...prevData,
-        nodes: data.nodes,
-      }));
-      setData((prevData) => ({
-        ...prevData,
-        edges: data.edges,
-      }));
+      setData(props.input);
       console.log(data);
 
       let maxIndex = 0;
@@ -493,34 +482,26 @@ const GraphComponent = (props, ref) => {
 
       setNodeIndex(maxIndex + 1);
     }
-    if (props.params !== null) {
-      setData((prevData) => ({
-        ...prevData,
-        directed: props.params["directed_edge"].value,
-      }));
-      setData((prevData) => ({
-        ...prevData,
-        weighted: props.params["weighted_edge"].value,
-      }));
-    }
+    // data=props.input;
+    // setData=props.setInput;
   };
 
-  const changeGraphType = () => {
-    if (props.params != null) {
-      setData((prevData) => ({
-        ...prevData,
-        directed: props.params["directed_edge"]
-          ? props.params["directed_edge"].value
-          : prevData.directed,
-      }));
-      setData((prevData) => ({
-        ...prevData,
-        weighted: props.params["weighted_edge"]
-          ? props.params["weighted_edge"].value
-          : prevData.weighted,
-      }));
-    }
-  };
+  // const changeGraphType = () => {
+  //   if (props.params != null) {
+  //     setData((prevData) => ({
+  //       ...prevData,
+  //       directed: props.params["directed_edge"]
+  //         ? props.params["directed_edge"].value
+  //         : prevData.directed,
+  //     }));
+  //     setData((prevData) => ({
+  //       ...prevData,
+  //       weighted: props.params["weighted_edge"]
+  //         ? props.params["weighted_edge"].value
+  //         : prevData.weighted,
+  //     }));
+  //   }
+  // };
 
   const changeIndex = () => {};
 
@@ -582,7 +563,11 @@ const GraphComponent = (props, ref) => {
                     }
                     // strokeWidth={Math.min(edge.weight / 5.0, 20)}
                   />
-                  {data.directed === true ? (
+                  {props.params === null ||
+                  !props.params["directed_edge"] ||
+                  props.params["directed_edge"].value === false ? (
+                    <></>
+                  ) : (
                     <RegularPolygon
                       sides={3} // Triangle for arrowhead
                       radius={12} // Adjust the size of the arrowhead
@@ -597,12 +582,14 @@ const GraphComponent = (props, ref) => {
                           : "#ec3965"
                       }
                     />
-                  ) : (
-                    <></>
                   )}
                 </Group>
 
-                {data.weighted == true ? (
+                {props.params === null ||
+                !props.params["weighted_edge"] ||
+                props.params["weighted_edge"].value === false ? (
+                  <></>
+                ) : (
                   <Text
                     x={(edge.start.x + edge.end.x) / 2 + 20}
                     y={(edge.start.y + edge.end.y) / 2}
@@ -621,8 +608,6 @@ const GraphComponent = (props, ref) => {
                     draggable
                     onClick={() => changeEdgeWeight(edge)}
                   />
-                ) : (
-                  <></>
                 )}
               </React.Fragment>
             );

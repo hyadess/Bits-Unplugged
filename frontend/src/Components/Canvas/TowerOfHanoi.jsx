@@ -463,8 +463,14 @@ const TowerOfHanoi = (props, ref) => {
     console.log("New Render", x, y);
     return (
       <Rect
-        onMouseEnter={(e) => handleDiskHover(e)}
-        onMouseLeave={(e) => handleDiskUnhover(e)}
+        onMouseEnter={(e) => {
+          document.body.style.cursor = "pointer";
+          handleDiskHover(e);
+        }}
+        onMouseLeave={(e) => {
+          document.body.style.cursor = "default";
+          handleDiskUnhover(e);
+        }}
         key={disk}
         x={x}
         y={y}
@@ -627,8 +633,14 @@ const TowerOfHanoi = (props, ref) => {
                 />
                 {extraDisk !== -1 ? (
                   <Rect
-                    onMouseEnter={(e) => handleDiskHover(e)}
-                    onMouseLeave={(e) => handleDiskUnhover(e)}
+                    onMouseEnter={(e) => {
+                      document.body.style.cursor = "pointer";
+                      handleDiskHover(e);
+                    }}
+                    onMouseLeave={(e) => {
+                      document.body.style.cursor = "default";
+                      handleDiskUnhover(e);
+                    }}
                     key={-1}
                     x={
                       pegWidth * 1 +

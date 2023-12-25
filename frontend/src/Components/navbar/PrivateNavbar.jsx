@@ -198,7 +198,9 @@ const PrivateNavbar = (props) => {
                     : "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Solid_black.svg/2048px-Solid_black.svg.png"
                 }
                 onClick={() => {
-                  switchPath("/profile/" + user.username);
+                  type === 0
+                    ? switchPath("/user/" + user.username)
+                    : switchPath("/setter/" + user.username);
                 }}
               />
             </div>

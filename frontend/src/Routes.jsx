@@ -11,7 +11,6 @@ import Cookies from "universal-cookie";
 import Home from "./Pages/Home";
 import Playground from "./Pages/Playground";
 import Problems from "./Pages/Problems";
-import Profile from "./Pages/Profile";
 import PlaygroundCanvas from "./Pages/PlaygroundCanvas";
 import Login from "./Pages/auth/Login";
 import Signup from "./Pages/auth/Signup";
@@ -50,6 +49,8 @@ import Layout from "./Pages/Layout";
 import Navbar from "./Components/Navbar";
 import SolverLayout from "./Pages/SolverLayout";
 import SetterLayout from "./Pages/SetterLayout";
+import SetterProfile from "./Pages/SetterProfile";
+import SolverProfile from "./Pages/SolverProfile";
 const cookies = new Cookies();
 
 const Private = () => {
@@ -279,6 +280,15 @@ const AppRoutes = () => {
             }
           />
           <Route path="/problemSet/series/:id" element={<AddProblem />} />
+
+          <Route
+            path="/setter/:username"
+            element={
+              <LayoutMain>
+                <SetterProfile />
+              </LayoutMain>
+            }
+          />
         </Route>
         <Route element={<ProblemSolver />}>
           <Route
@@ -323,18 +333,26 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
+          <Route
+            path="/user/:username"
+            element={
+              <LayoutMain>
+                <SolverProfile />
+              </LayoutMain>
+            }
+          />
         </Route>
-
+        {/* 
         <Route element={<Private />}>
           <Route
             path="/profile/:username"
             element={
               <LayoutMain>
-                <Profile />
+                <SolverProfile />
               </LayoutMain>
             }
           />
-        </Route>
+        </Route> */}
 
         <Route element={<Public />}>
           <Route path="/login" element={<Login />} />

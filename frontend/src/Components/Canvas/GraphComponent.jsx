@@ -109,14 +109,14 @@ const GraphComponent = (props, ref) => {
   };
   //............................................................................................................
 
-  // useImperativeHandle(ref, () => {
-  //   return {
-  //     handleReset: () => {
-  //       importGraphData();
-  //     },
-  //     getData: () => exportGraphData(),
-  //   };
-  // });
+  useImperativeHandle(ref, () => {
+    return {
+      handleReset: () => {
+        importGraphData();
+      },
+      getData: () => exportGraphData(),
+    };
+  });
 
   useLayoutEffect(() => {
     const updateParentWidth = () => {

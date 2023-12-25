@@ -32,6 +32,7 @@ export default function ProblemsCanvas() {
 
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
+  const [backup, setBackup] = useState(null);
   const [input, setInput] = useState(null);
   const [canvasId, setCanvasId] = useState(null);
   const [title, setTitle] = useState("");
@@ -39,6 +40,7 @@ export default function ProblemsCanvas() {
   const [data, setData] = useState();
   const [canvas, setCanvas] = useState(null);
   const [type, setType] = useState(-1);
+  const [resetTrigger, setResetTrigger] = useState(false);
   const baseURL = "https";
   const canvasRef = useRef();
 
@@ -56,6 +58,7 @@ export default function ProblemsCanvas() {
     if (result.success) {
       setProblem(result.data[0]);
       setInput(result.data[0].canvas_data);
+      setBackup(result.data[0].canvas_data);
       setCanvasId(result.data[0].canvas_id);
       setStatement(result.data[0].statement);
       setTitle(result.data[0].title);
@@ -67,9 +70,13 @@ export default function ProblemsCanvas() {
     const result = await problemController.getProblemById(id);
     if (result.success) {
       setInput(result.data[0].canvas_data);
+      setResetTrigger(!resetTrigger);
     }
   };
 
+  useEffect(() => {
+    canvasRef.current !== undefined && canvasRef.current.handleReset();
+  }, [resetTrigger]);
   return (
     <div>
       {problem ? (
@@ -140,7 +147,10 @@ export default function ProblemsCanvas() {
                 <Button
                   variant="contained"
                   color="success"
-                  onClick={() => reset()}
+                  onClick={() => {
+                    reset();
+                    // canvasRef.current.handleReset(); // Call this after reset
+                  }}
                   startIcon={
                     <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
                   }
@@ -150,6 +160,7 @@ export default function ProblemsCanvas() {
                 <Button
                   variant="contained"
                   onClick={() => {
+                    setBackup({ ...input });
                     problemController.checkSolution(
                       problem.solution_checker,
                       input

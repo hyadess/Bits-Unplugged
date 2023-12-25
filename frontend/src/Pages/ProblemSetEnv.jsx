@@ -101,6 +101,7 @@ export default function ProblemSetEnv() {
   const [activeComponent, setActiveComponent] = useState("statement");
   const [canvasList, setCanvasList] = useState([]);
   const [canvasFullList, setCanvasFullList] = useState([]);
+  const [resetTrigger, setResetTrigger] = useState(false);
   const getCanvasList = async () => {
     const res = await canvasController.getAllCanvas();
     if (res.success) {
@@ -123,6 +124,7 @@ export default function ProblemSetEnv() {
         setCanvasId(result.data[0].canvas_id);
         changeCanvas(result.data[0].canvas_id);
       }
+      setResetTrigger(!resetTrigger);
     }
   };
 
@@ -141,6 +143,10 @@ export default function ProblemSetEnv() {
   const handleCanvasChange = (prop) => (e) => {
     changeCanvas(e.target.value);
   };
+
+  useEffect(() => {
+    canvasRef.current !== undefined && canvasRef.current.handleReset();
+  }, [resetTrigger]);
 
   const renderComponent = () => {
     switch (activeComponent) {
@@ -179,7 +185,10 @@ export default function ProblemSetEnv() {
                 variant="contained"
                 color="success"
                 size="large"
-                onClick={() => reset()}
+                onClick={() => {
+                  reset();
+                  // canvasRef.current.handleReset();
+                }}
                 startIcon={
                   <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
                 }

@@ -34,7 +34,14 @@ export default function Problems() {
   const getProblemList = async () => {
     const res = await problemController.getProblemsBySeries(id);
     if (res.success) {
-      setProblemList(res.data);
+      // Filter out objects with serial_no equal to 0
+      const filteredArray = res.data.filter((item) => item.serial_no !== 0);
+
+      // Sort the remaining objects based on serial_no in ascending order
+      const sortedArray = filteredArray.sort(
+        (a, b) => a.serial_no - b.serial_no
+      );
+      setProblemList(sortedArray);
       // setLoading(false);
     }
   };

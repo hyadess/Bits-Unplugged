@@ -36,10 +36,20 @@ class ProblemApi extends Api {
       statement: statement,
     });
   };
-  updateCanvas = async (problem_id, canvas_id, canvas_data) => {
+  updateCanvas = async (
+    problem_id,
+    canvas_id,
+    canvas_data,
+    params,
+    uiParams,
+    controlParams
+  ) => {
     return await this.put("/problem/" + problem_id + "/canvas", {
       canvas_id: canvas_id,
       canvas_data: canvas_data,
+      params: params,
+      ui_params: uiParams,
+      control_params: controlParams,
     });
   };
   updateSolutionChecker = async (problem_id, code) => {

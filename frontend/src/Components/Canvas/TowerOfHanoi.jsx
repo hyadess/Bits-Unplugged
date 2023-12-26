@@ -619,8 +619,13 @@ const TowerOfHanoi = (props, ref) => {
       );
     });
   useEffect(() => {
-    console.log("->", props.mode === "edit" || props.uiParams.n_disks);
-  }, [props.mode]);
+    console.log(
+      "->",
+      props.mode,
+      props.mode === "edit",
+      props?.uiParams?.n_disks?.value ?? "Undefined"
+    );
+  }, [props.mode, props.uiParams]);
   const handleNumberOfDisksChange = (event) => {
     const value = parseInt(event.target.value, 10);
     if (!isNaN(value) && value >= 1 && value <= 10) {

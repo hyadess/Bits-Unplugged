@@ -24,39 +24,12 @@ import { Save } from "@mui/icons-material";
 const problemController = new ProblemController();
 const canvasController = new CanvasController();
 
-const CustomSelectionField = (props) => {
-  return (
-    <div className="w-full">
-      <label
-        for={props.name}
-        class="block mb-2 text-sm font-medium bu-text-primary"
-      >
-        {props.label}
-      </label>
-      <select
-        value={props.value}
-        type="text"
-        name={props.name}
-        id={props.id}
-        class="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
-        placeholder={props.placeholder}
-        required={props.required}
-        onChange={props.onChange(props.id)}
-      >
-        <option value="" disabled hidden></option>
-        {props.options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-};
 
 export default function ProblemSetEnv() {
   const { prob_id } = useParams();
-
+  const [params, setParams] = useState({});
+  const [uiParams, setUiParams] = useState({});
+  const [controlParams, setControlParams] = useState({});
   const navigator = useNavigate();
   const switchPath = (pathname) => {
     navigator(pathname);
@@ -71,6 +44,9 @@ export default function ProblemSetEnv() {
       setProblemStatement(res.data[0].statement);
       setCode(res.data[0].solution_checker);
       setCanvasId(res.data[0].canvas_id);
+      setParams(res.data[0].params);
+      setUiParams(res.data[0].ui_params);
+      setControlParams(res.data[0].control_params);
       setLoading(false);
     }
   };
@@ -135,9 +111,11 @@ export default function ProblemSetEnv() {
     });
 
     if (res) {
-      console.log("Found: ", res.template);
       setCode(res.template);
       setInput(null);
+      setParams(res.params);
+      setUiParams(res.ui_params);
+      setControlParams(res.control_params);
     }
   };
   const handleCanvasChange = (prop) => (e) => {
@@ -174,6 +152,12 @@ export default function ProblemSetEnv() {
                 setInput={setInput}
                 ref={canvasRef}
                 mode="edit"
+                params={params}
+                setParams={setParams}
+                uiParams={uiParams}
+                setUiParams={setUiParams}
+                controlParams={controlParams}
+                setControlParams={setControlParams}
               />
             )}
 
@@ -199,7 +183,7 @@ export default function ProblemSetEnv() {
                 variant="contained"
                 onClick={() => {
                   // setInput(canvasRef.current.getData());
-                  updateCanvas(input);
+                  updateCanvas();
                   updateCode();
                 }}
                 size="large"
@@ -263,11 +247,14 @@ export default function ProblemSetEnv() {
     }
   };
 
-  const updateCanvas = async (canvas_data) => {
+  const updateCanvas = async () => {
     const res = await problemController.updateCanvas(
       prob_id,
       canvasId,
-      canvas_data
+      input,
+      params,
+      uiParams,
+      controlParams
     );
     if (res.success) {
       console.log(res);
@@ -284,21 +271,14 @@ export default function ProblemSetEnv() {
   const updateAll = async () => {
     await updateTitle();
     await updateStatement();
-    await updateCanvas(input);
+    await updateCanvas();
     await updateCode();
     await problemController.submitProblem(prob_id);
   };
 
-  // useEffect(() => {
-  //   updateCanvas();
-  // }, [input]);
-
   useEffect(() => {
     getCanvasList();
   }, []);
-  // useEffect(() => {
-  //   updateStatement();
-  // }, [problemStatement]);
 
   useEffect(() => {
     console.log(prob_id);

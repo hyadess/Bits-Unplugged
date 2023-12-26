@@ -22,37 +22,40 @@ import EyeIcon from "../Icons/EyeIcon";
 import { setLoading } from "../../App";
 const canvasController = new CanvasController();
 const cookies = new Cookies();
-const useStyles = makeStyles({
-  select: {
-    "&:before": {
-      borderColor: "white",
-    },
-    "&:after": {
-      borderColor: "white",
-    },
-    "&:not(.Mui-disabled):hover::before": {
-      borderColor: "white",
-    },
-  },
-  icon: {
-    fill: "white",
-  },
-  root: {
-    color: "white",
-  },
-});
+// const useStyles = makeStyles({
+//   select: {
+//     "&:before": {
+//       borderColor: "white",
+//     },
+//     "&:after": {
+//       borderColor: "white",
+//     },
+//     "&:not(.Mui-disabled):hover::before": {
+//       borderColor: "white",
+//     },
+//   },
+//   icon: {
+//     fill: "white",
+//   },
+//   root: {
+//     color: "white",
+//   },
+// });
 
 const CanvasContainer = (props, ref) => {
   const [DynamicComponent, setDynamicComponent] = useState(null);
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [canvasInfo, seCanvasInfo] = useState(null);
   const [settings, setSettings] = useState(false);
-  const [params, setParams] = useState({});
-  const [uiParams, setUiParams] = useState({});
-  const [controlParams, setControlParams] = useState({});
+  const [params, setParams] = [props.params, props.setParams];
+  const [uiParams, setUiParams] = [props.uiParams, props.setUiParams];
+  const [controlParams, setControlParams] = [
+    props.controlParams,
+    props.setControlParams,
+  ];
   const [type, setType] = useState(-1);
   const [canvas, setCanvas] = useState(null);
-  const [canvasMode, setCanvasMode] = useState("edit");
+  const [canvasMode, setCanvasMode] = useState(props.mode);
   const loadComponent = async (name) => {
     try {
       const module = await import(`./${name}`);
@@ -71,17 +74,17 @@ const CanvasContainer = (props, ref) => {
       if (res.data.length == 1) {
         setSelectedComponent(res.data[0].classname);
         seCanvasInfo(res.data[0].info);
-        setParams(res.data[0].params);
-        setUiParams(res.data[0].ui_params);
-        setControlParams(res.data[0].control_params);
-        setCanvas(res.data[0]);
+        // setParams(res.data[0].params);
+        // setUiParams(res.data[0].ui_params);
+        // setControlParams(res.data[0].control_params);
+        // setCanvas(res.data[0]);
       } else {
         setSelectedComponent(null);
         seCanvasInfo(null);
-        setParams({});
-        setUiParams({});
-        setControlParams({});
-        setCanvas(null);
+        // setParams({});
+        // setUiParams({});
+        // setControlParams({});
+        // setCanvas(null);
       }
     }
   };

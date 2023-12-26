@@ -321,13 +321,16 @@ export default function ProblemSetEnv() {
                 <div onClick={handleTextClick} style={{ cursor: "pointer" }}>
                   {isTextEditable ? (
                     <input
-                      className="title text-4xl"
+                      className="border title text-4xl rounded-lg border-[#1C5B5F] outline-none focus:border-green-800 focus:ring-green-800 focus:ring-4 h-[3.5rem]"
                       type="text"
-                      on
+                      autoFocus
                       value={title}
                       onChange={handleTextChange}
                       onClick={(e) => e.stopPropagation()} // Prevent the click event from propagating to the div
-                      onBlur={() => updateTitle()}
+                      onBlur={() => {
+                        updateTitle();
+                        handleTextClick();
+                      }}
                     />
                   ) : (
                     title

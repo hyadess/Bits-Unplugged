@@ -500,7 +500,7 @@ const TowerOfHanoi = (props, ref) => {
         updatedPegs[sourcePegIndex][updatedPegs[sourcePegIndex].length - 1]
       );
 
-      const diskIndexInPeg = updatedPegs[nearestPegIndex].indexOf(diskValue);
+      // const diskIndexInPeg = updatedPegs[nearestPegIndex].indexOf(diskValue);
 
       // e.target.to({
       //   x:
@@ -559,7 +559,7 @@ const TowerOfHanoi = (props, ref) => {
       setPegs(updatedPegs);
       setDraggableDisks(updatedDraggable);
       setNumberOfMoves(data.numberOfMoves - 1);
-      setExtraDisk(-1);
+      // setExtraDisk(-1);
       // console.log("Increase Disks");
       setNumberOfDisks(data.numberOfDisks + 1);
       // e.target.to({

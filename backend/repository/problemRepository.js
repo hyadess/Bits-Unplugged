@@ -240,6 +240,16 @@ class ProblemsRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+  updateSerial = async (problem_id, serial_no) => {
+    const query = `
+    Update Problem
+    SET serial_no = $2
+    WHERE problem_id = $1;
+    `;
+    const params = [problem_id, serial_no];
+    const result = await this.query(query, params);
+    return result;
+  };
   updataSolutionChecker = async (problem_id, code) => {
     const query = `
     Update Problem

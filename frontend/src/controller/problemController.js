@@ -40,6 +40,10 @@ class ProblemController extends Controller {
     const res = await this.problemApi.updateSeries(problem_id, series_id);
     return res;
   };
+  updateSerial = async (problem_id, serial_no) => {
+    const res = await this.problemApi.updateSerial(problem_id, serial_no);
+    return res;
+  };
   updateStatement = async (problem_id, statement) => {
     const res = await this.problemApi.updateStatement(problem_id, statement);
     return res;

@@ -31,6 +31,11 @@ class ProblemApi extends Api {
       series_id: series_id,
     });
   };
+  updateSerial = async (problem_id, serial_no) => {
+    return await this.put("/problem/" + problem_id + "/serial", {
+      serial_no: serial_no,
+    });
+  };
   updateStatement = async (problem_id, statement) => {
     return await this.put("/problem/" + problem_id + "/statement", {
       statement: statement,

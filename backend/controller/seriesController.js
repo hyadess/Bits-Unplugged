@@ -34,6 +34,21 @@ class SeriesController extends Controller {
     let result = await seriesRepository.deleteSeries(req.params.series_id);
     this.handleResponse(result, res);
   };
+  getAllProblems = async (req, res) => {
+    let result = await seriesRepository.getAllProblems(req.params.series_id);
+    this.handleResponse(result, res);
+  };
+  // assignSeries
+  // deleteProblemSerial = async (req, res) => {
+  //   let result = await seriesRepository.deleteProblemSerial(
+  //     req.params.problem_id
+  //   );
+  //   this.handleResponse(result, res);
+  // };
+  // setProblemSerial = async (req, res) => {
+  //   let result = await seriesRepository.setProblemSerial(req.params.problem_id,req.params.series_id,);
+  //   this.handleResponse(result, res);
+  // };
 }
 
 module.exports = SeriesController;

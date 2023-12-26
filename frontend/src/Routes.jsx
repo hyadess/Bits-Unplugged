@@ -123,7 +123,7 @@ const Public = () => {
   const type = cookies.get("type");
   return isLoggedIn ? (
     <Navigate
-      to={type === 0 ? "/topics" : type === 1 ? "/problemSet" : "/admin"}
+      to={type === 0 ? "/topics" : type === 1 ? "/problemSet" : "/admin/topics"}
     />
   ) : (
     <Outlet />

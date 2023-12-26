@@ -20,6 +20,7 @@ router.delete("/:problem_id", problemController.deleteProblem); // pending
 
 router.put("/:problem_id/title", problemController.updateTitle); // pending
 router.put("/:problem_id/series", problemController.updateSeries); 
+router.put("/:problem_id/serial", problemController.updateSerial); 
 router.put("/:problem_id/canvas", problemController.updateCanvas); // pending
 // router.put("/:problem_id/hints", problemController.updateHints); // later
 router.put("/:problem_id/statement", problemController.updateStatement); // pending

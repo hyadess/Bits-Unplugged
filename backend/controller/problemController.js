@@ -69,7 +69,10 @@ class ProblemController extends Controller {
     let result = await problemRepository.updateCanvas(
       req.params.problem_id,
       req.body.canvas_id,
-      req.body.canvas_data
+      req.body.canvas_data,
+      req.body.params,
+      req.body.ui_params,
+      req.body.control_params
     );
     this.handleResponse(result, res);
   };

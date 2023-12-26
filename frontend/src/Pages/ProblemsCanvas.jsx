@@ -43,6 +43,9 @@ export default function ProblemsCanvas() {
   const [resetTrigger, setResetTrigger] = useState(false);
   const baseURL = "https";
   const canvasRef = useRef();
+  const [params, setParams] = useState({});
+  const [uiParams, setUiParams] = useState({});
+  const [controlParams, setControlParams] = useState({});
 
   useEffect(() => {
     renderProblem();
@@ -61,6 +64,9 @@ export default function ProblemsCanvas() {
       setBackup(result.data[0].canvas_data);
       setCanvasId(result.data[0].canvas_id);
       setStatement(result.data[0].statement);
+      setParams(result.data[0].params);
+      setUiParams(result.data[0].ui_params);
+      setControlParams(result.data[0].control_params);
       setTitle(result.data[0].title);
       if (result.data[0].canvas_id === null) setLoading(false);
     }
@@ -142,6 +148,12 @@ export default function ProblemsCanvas() {
                 setInput={setInput}
                 mode={"preview"}
                 ref={canvasRef}
+                params={params}
+                setParams={setParams}
+                uiParams={uiParams}
+                setUiParams={setUiParams}
+                controlParams={controlParams}
+                setControlParams={setControlParams}
               />
               <div className="flex flex-row justify-between">
                 <Button

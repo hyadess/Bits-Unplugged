@@ -44,11 +44,21 @@ class ProblemController extends Controller {
     const res = await this.problemApi.updateStatement(problem_id, statement);
     return res;
   };
-  updateCanvas = async (problem_id, canvas_id, canvas_data) => {
+  updateCanvas = async (
+    problem_id,
+    canvas_id,
+    canvas_data,
+    params,
+    uiParams,
+    controlParams
+  ) => {
     const res = await this.problemApi.updateCanvas(
       problem_id,
       canvas_id,
-      canvas_data
+      canvas_data,
+      params,
+      uiParams,
+      controlParams
     );
     return res;
   };

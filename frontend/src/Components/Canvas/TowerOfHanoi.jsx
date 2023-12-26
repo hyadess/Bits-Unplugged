@@ -500,7 +500,7 @@ const TowerOfHanoi = (props, ref) => {
         updatedPegs[sourcePegIndex][updatedPegs[sourcePegIndex].length - 1]
       );
 
-      const diskIndexInPeg = updatedPegs[nearestPegIndex].indexOf(diskValue);
+      // const diskIndexInPeg = updatedPegs[nearestPegIndex].indexOf(diskValue);
 
       // e.target.to({
       //   x:
@@ -559,7 +559,7 @@ const TowerOfHanoi = (props, ref) => {
       setPegs(updatedPegs);
       setDraggableDisks(updatedDraggable);
       setNumberOfMoves(data.numberOfMoves - 1);
-      setExtraDisk(-1);
+      // setExtraDisk(-1);
       // console.log("Increase Disks");
       setNumberOfDisks(data.numberOfDisks + 1);
       // e.target.to({
@@ -619,8 +619,13 @@ const TowerOfHanoi = (props, ref) => {
       );
     });
   useEffect(() => {
-    console.log(window.innerWidth);
-  });
+    console.log(
+      "->",
+      props.mode,
+      props.mode === "edit",
+      props?.uiParams?.n_disks?.value ?? "Undefined"
+    );
+  }, [props.mode, props.uiParams]);
   const handleNumberOfDisksChange = (event) => {
     const value = parseInt(event.target.value, 10);
     if (!isNaN(value) && value >= 1 && value <= 10) {
@@ -663,9 +668,25 @@ const TowerOfHanoi = (props, ref) => {
       {data && (
         <>
           <div className="toh-header hbox">
-            <div className="flex-center">
-              {isProblemSetting ? (
-                <div className="hbox w-full">
+            {(props.mode === "edit" || props.uiParams.undo.value) && (
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  padding: "1rem",
+                }}
+                onClick={() => handleUndo()}
+              >
+                <div className="flex items-center bu-text-primary">
+                  <UndoIcon sx={{ fontSize: "2rem" }} />
+                </div>
+              </IconButton>
+            )}
+            <div className="flex flex-row flex-start w-full gap-5 min-h-[2.5rem] ">
+              {(props.mode === "edit" || props.uiParams.n_disks.value) && (
+                <div className="hbox w-20%">
                   <FormControl fullWidth variant="outlined">
                     <InputLabel
                       htmlFor="outlined-adornment"
@@ -695,21 +716,12 @@ const TowerOfHanoi = (props, ref) => {
                     />
                   </FormControl>
                 </div>
-              ) : (
+              )}
+              {props.mode === "preview" && props.uiParams.moves.value && (
                 <Typography variant="h5" className="p-0 m-0 bu-text-primary">
                   <b className="bu-text-primary">Moves: {data.numberOfMoves}</b>
                 </Typography>
               )}
-              <IconButton
-                sx={{
-                  fontSize: "2rem",
-                }}
-                onClick={() => handleUndo()}
-              >
-                <div className="flex items-center bu-text-primary">
-                  <UndoIcon sx={{ fontSize: "2rem" }} />
-                </div>
-              </IconButton>
             </div>
           </div>
           <Divider sx={{ bgcolor: "rgb(236, 72, 153)" }} />
@@ -722,7 +734,10 @@ const TowerOfHanoi = (props, ref) => {
               }
               height={
                 Math.min(window.innerWidth / 800, 1) *
-                (280 + (isProblemSetting ? diskHeight * 1.2 : 0))
+                (280 +
+                  (props.mode === "edit" || props.uiParams.custom_disk.value
+                    ? diskHeight * 1.2
+                    : 0))
               }
               scaleX={Math.min(window.innerWidth / 970, 1)}
               scaleY={Math.min(window.innerWidth / 900, 1)}
@@ -730,7 +745,7 @@ const TowerOfHanoi = (props, ref) => {
               <Layer onDragMove={(e) => handleDiskDrag(e)}>
                 {pegElements}
                 {diskElements}
-                {isProblemSetting ? (
+                {props.mode === "edit" || props.uiParams.custom_disk.value ? (
                   <>
                     <Line
                       points={[0, 260, 20 + pegWidth * data.numberOfPegs, 260]}

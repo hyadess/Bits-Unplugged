@@ -68,6 +68,8 @@ class ProblemsRepository extends Repository {
     ON P.series_id = S.series_id
     LEFT JOIN Topic T
     ON S.topic_id = T.topic_id
+    LEFT JOIN Canvas C
+    ON C.canvas_id = P.canvas_id
     WHERE problem_id = $1;
     `;
     const params = [problem_id];
@@ -203,14 +205,28 @@ class ProblemsRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
-  updateCanvas = async (problem_id, canvas_id, canvas_data) => {
+  updateCanvas = async (
+    problem_id,
+    canvas_id,
+    canvas_data,
+    design_params,
+    ui_params,
+    control_params
+  ) => {
     console.log("=>", canvas_data);
     const query = `
     Update Problem
-    SET canvas_data = $3, canvas_id = $2
+    SET canvas_id = $2, canvas_data = $3, params = $4, ui_params = $5, control_params = $6
     WHERE problem_id = $1;
     `;
-    const params = [problem_id, canvas_id, canvas_data];
+    const params = [
+      problem_id,
+      canvas_id,
+      canvas_data,
+      design_params,
+      ui_params,
+      control_params,
+    ];
     const result = await this.query(query, params);
     return result;
   };

@@ -24,39 +24,12 @@ import { Save } from "@mui/icons-material";
 const problemController = new ProblemController();
 const canvasController = new CanvasController();
 
-const CustomSelectionField = (props) => {
-  return (
-    <div className="w-full">
-      <label
-        for={props.name}
-        class="block mb-2 text-sm font-medium bu-text-primary"
-      >
-        {props.label}
-      </label>
-      <select
-        value={props.value}
-        type="text"
-        name={props.name}
-        id={props.id}
-        class="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
-        placeholder={props.placeholder}
-        required={props.required}
-        onChange={props.onChange(props.id)}
-      >
-        <option value="" disabled hidden></option>
-        {props.options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-};
 
 export default function ProblemSetEnv() {
   const { prob_id } = useParams();
-
+  const [params, setParams] = useState({});
+  const [uiParams, setUiParams] = useState({});
+  const [controlParams, setControlParams] = useState({});
   const navigator = useNavigate();
   const switchPath = (pathname) => {
     navigator(pathname);
@@ -71,6 +44,9 @@ export default function ProblemSetEnv() {
       setProblemStatement(res.data[0].statement);
       setCode(res.data[0].solution_checker);
       setCanvasId(res.data[0].canvas_id);
+      setParams(res.data[0].params);
+      setUiParams(res.data[0].ui_params);
+      setControlParams(res.data[0].control_params);
       setLoading(false);
     }
   };
@@ -101,6 +77,7 @@ export default function ProblemSetEnv() {
   const [activeComponent, setActiveComponent] = useState("statement");
   const [canvasList, setCanvasList] = useState([]);
   const [canvasFullList, setCanvasFullList] = useState([]);
+  const [resetTrigger, setResetTrigger] = useState(false);
   const getCanvasList = async () => {
     const res = await canvasController.getAllCanvas();
     if (res.success) {
@@ -123,6 +100,7 @@ export default function ProblemSetEnv() {
         setCanvasId(result.data[0].canvas_id);
         changeCanvas(result.data[0].canvas_id);
       }
+      setResetTrigger(!resetTrigger);
     }
   };
 
@@ -133,14 +111,20 @@ export default function ProblemSetEnv() {
     });
 
     if (res) {
-      console.log("Found: ", res.template);
       setCode(res.template);
       setInput(null);
+      setParams(res.params);
+      setUiParams(res.ui_params);
+      setControlParams(res.control_params);
     }
   };
   const handleCanvasChange = (prop) => (e) => {
     changeCanvas(e.target.value);
   };
+
+  useEffect(() => {
+    canvasRef.current !== undefined && canvasRef.current.handleReset();
+  }, [resetTrigger]);
 
   const renderComponent = () => {
     switch (activeComponent) {
@@ -168,6 +152,12 @@ export default function ProblemSetEnv() {
                 setInput={setInput}
                 ref={canvasRef}
                 mode="edit"
+                params={params}
+                setParams={setParams}
+                uiParams={uiParams}
+                setUiParams={setUiParams}
+                controlParams={controlParams}
+                setControlParams={setControlParams}
               />
             )}
 
@@ -179,7 +169,10 @@ export default function ProblemSetEnv() {
                 variant="contained"
                 color="success"
                 size="large"
-                onClick={() => reset()}
+                onClick={() => {
+                  reset();
+                  // canvasRef.current.handleReset();
+                }}
                 startIcon={
                   <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
                 }
@@ -190,7 +183,7 @@ export default function ProblemSetEnv() {
                 variant="contained"
                 onClick={() => {
                   // setInput(canvasRef.current.getData());
-                  updateCanvas(input);
+                  updateCanvas();
                   updateCode();
                 }}
                 size="large"
@@ -254,11 +247,14 @@ export default function ProblemSetEnv() {
     }
   };
 
-  const updateCanvas = async (canvas_data) => {
+  const updateCanvas = async () => {
     const res = await problemController.updateCanvas(
       prob_id,
       canvasId,
-      canvas_data
+      input,
+      params,
+      uiParams,
+      controlParams
     );
     if (res.success) {
       console.log(res);
@@ -275,21 +271,14 @@ export default function ProblemSetEnv() {
   const updateAll = async () => {
     await updateTitle();
     await updateStatement();
-    await updateCanvas(input);
+    await updateCanvas();
     await updateCode();
     await problemController.submitProblem(prob_id);
   };
 
-  // useEffect(() => {
-  //   updateCanvas();
-  // }, [input]);
-
   useEffect(() => {
     getCanvasList();
   }, []);
-  // useEffect(() => {
-  //   updateStatement();
-  // }, [problemStatement]);
 
   useEffect(() => {
     console.log(prob_id);
@@ -312,13 +301,16 @@ export default function ProblemSetEnv() {
                 <div onClick={handleTextClick} style={{ cursor: "pointer" }}>
                   {isTextEditable ? (
                     <input
-                      className="title text-4xl"
+                      className="border title text-4xl rounded-lg border-[#1C5B5F] outline-none focus:border-green-800 focus:ring-green-800 focus:ring-4 h-[3.5rem]"
                       type="text"
-                      on
+                      autoFocus
                       value={title}
                       onChange={handleTextChange}
                       onClick={(e) => e.stopPropagation()} // Prevent the click event from propagating to the div
-                      onBlur={() => updateTitle()}
+                      onBlur={() => {
+                        updateTitle();
+                        handleTextClick();
+                      }}
                     />
                   ) : (
                     title

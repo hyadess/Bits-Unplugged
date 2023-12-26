@@ -5,14 +5,14 @@ import React, {
   useImperativeHandle,
 } from "react";
 import { Stage, Layer, Rect, Label, Text, Tag, Line } from "react-konva";
-
+import UndoIcon from "@mui/icons-material/Undo";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { InputAdornment, Typography } from "@mui/material";
+import { IconButton, InputAdornment, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import SaveIcon from "@mui/icons-material/Save";
 import Cookies from "universal-cookie";
@@ -23,20 +23,17 @@ import { setLoading } from "../../App";
 
 const cookie = new Cookies();
 const TowerOfHanoi = (props, ref) => {
-  const data = props.input;
-  const setData = props.setInput;
-  // const [data, setData] = useState({
-  //   numberOfMoves: 0,
-  //   numberOfDisks: 3,
-  //   numberOfPegs: 3,
-  //   pegs: [],
-  // });
+  const [data, setData] = [props.input, props.setInput];
+  // const setData = props.setInput;
 
   const [draggableDisks, setDraggableDisks] = useState([]);
   const [hoveredPeg, setHoveredPeg] = useState(null);
   const [isProblemSetting, setIsProblemSetting] = useState(
     cookie.get("type") != 0
   );
+
+  // const [history, setHistory]
+  // start: 0, end: 1;
   const [scaleX, setScaleX] = useState(window.innerWidth / 900);
   const [scaleY, setScaleY] = useState(window.innerWidth / 800);
   const pegWidth = 200;
@@ -45,7 +42,7 @@ const TowerOfHanoi = (props, ref) => {
   const baseY = 220;
   const sep = 10;
   const [extraDisk, setExtraDisk] = useState(0);
-  // const [history, setHistory] = useState([]);
+  const [history, setHistory] = useState([]);
 
   const setNumberOfDisks = (n) => {
     setData((prevData) => {
@@ -71,47 +68,33 @@ const TowerOfHanoi = (props, ref) => {
   useImperativeHandle(ref, () => {
     return {
       handleReset: () => handleReset(),
-      getData: () => exportData(),
+      // getData: () => exportData(),
     };
   });
+
+  const handleReset = (e) => {
+    if (props.input != null && props.input.pegs != null) {
+      setNumberOfMoves(0);
+      importData();
+    } else {
+      setNumberOfDisks(3);
+      initializePegs(3, 3);
+    }
+    setHistory([]);
+  };
 
   useEffect(() => {
     console.log("=>", data);
   }, [data]);
 
-  const exportData = () => {
-    // const data = {
-    //   numberOfMoves,
-    //   numberOfDisks,
-    //   numberOfPegs,
-    //   pegs,
-    // };
-    // Convert the JavaScript object to a JSON string
-    // const jsonData = JSON.stringify(data, null, 2);
-    // console.log("exporting");
-    // console.log(jsonData);
-
-    return data;
-  };
-
+  useEffect(() => {
+    console.log(history);
+  }, [history]);
   const importData = () => {
     if (props.input != null && props.input.pegs != null) {
-      // setNumberOfMoves(0);
-      const toh_data = props.input;
-      // setData({ ...props.input });
-      // setData(props.input);
-
-      // setPegs(toh_data.pegs.map((subArray) => [...subArray]));
-      // setNumberOfDisks(toh_data.numberOfDisks);
-      // setNumberOfPegs(toh_data.numberOfPegs);
-
-      const list = toh_data.pegs.map((peg) => peg[peg.length - 1]);
+      const list = props.input.pegs.map((peg) => peg[peg.length - 1]);
       setDraggableDisks(list);
-
-      // console.log(toh_data.pegs.map((subArray) => [...subArray]));
     } else {
-      // setData({ ...data, numberOfDisks: 3 });
-      // setData({ ...data, numberOfPegs: 3 });
       setNumberOfDisks(3);
       setNumberOfPegs(3);
       initializePegs(3, 3);
@@ -130,7 +113,7 @@ const TowerOfHanoi = (props, ref) => {
     "darkkhaki",
   ];
   const handleDiskHover = (e) => {
-    console.log("Extra:", e.target.attrs);
+    // console.log("Extra:", e.target.attrs);
     if (
       draggableDisks.includes(e.target.attrs.disk) ||
       e.target.attrs.isExtra
@@ -144,16 +127,6 @@ const TowerOfHanoi = (props, ref) => {
     }
   };
 
-  // Bug
-  const handleReset = (e) => {
-    if (props.input != null && props.input.pegs != null) {
-      setNumberOfMoves(0);
-      importData();
-    } else {
-      setNumberOfDisks(3);
-      initializePegs(3, 3);
-    }
-  };
   const handleDiskDrag = (e) => {
     const diskValue = e.target.attrs.disk;
     const sourceX = e.target.x();
@@ -195,12 +168,9 @@ const TowerOfHanoi = (props, ref) => {
     setHoveredPeg(null);
   };
 
-  // useEffect(() => {
-  //   initializePegs();
-  // }, [numberOfDisks, numberOfPegs]);
-
   useEffect(() => {
     if (props.input != null && props.input.pegs != null) {
+      setNumberOfMoves(0);
       importData();
       setLoading(false);
     } else {
@@ -211,28 +181,17 @@ const TowerOfHanoi = (props, ref) => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   importData();
-  // }, [props]);
-
   const initializePegs = (nDisks, nPegs) => {
-    // setData({ ...data, numberOfMoves: 0 });
-
     setNumberOfMoves(0);
     const initialPegs = [Array.from({ length: nDisks }, (_, i) => i)];
     for (let i = 1; i < nPegs; i++) {
       initialPegs.push([]);
     }
 
-    // setData({ ...data, pegs: initialPegs });
     setPegs(initialPegs);
     setDraggableDisks([
       initialPegs[0][initialPegs[0][initialPegs[0].length - 1]],
     ]);
-    // setNumberOfDisks(3);
-    // const new_pegs = initialPegs;
-    // setHistory(Array(new_pegs));
-    // console.log([new_pegs], numberOfPegs);
   };
   const calculateDiskWidth = (disk) => pegWidth - diskWidthFactor * disk;
 
@@ -280,6 +239,11 @@ const TowerOfHanoi = (props, ref) => {
     let minDistance = Infinity;
 
     if (isProblemSetting && sourceY > 250) {
+      // Delete
+      setHistory((prevArray) => [
+        ...prevArray,
+        { start: sourcePegIndex, end: -1, diskValue: diskValue },
+      ]);
       const updatedDraggable = [...draggableDisks];
       const updatedPegs = [...data.pegs];
 
@@ -288,9 +252,6 @@ const TowerOfHanoi = (props, ref) => {
         if (index !== -1) {
           updatedPegs[sourcePegIndex].splice(index, 1);
         }
-      }
-
-      if (sourcePegIndex !== -1) {
         updatedDraggable.push(
           updatedPegs[sourcePegIndex][updatedPegs[sourcePegIndex].length - 1]
         );
@@ -329,6 +290,7 @@ const TowerOfHanoi = (props, ref) => {
       });
 
       if (sourcePegIndex === -1) {
+        // New one
         if (
           data.pegs[nearestPegIndex].length < 10 &&
           (data.pegs[nearestPegIndex].length === 0 ||
@@ -336,6 +298,14 @@ const TowerOfHanoi = (props, ref) => {
               10 <=
               diskValue % 10)
         ) {
+          setHistory((prevArray) => [
+            ...prevArray,
+            {
+              start: sourcePegIndex,
+              end: nearestPegIndex,
+              diskValue: diskValue,
+            },
+          ]);
           const updatedDraggable = [...draggableDisks];
           const updatedPegs = [...data.pegs];
           // Find a free value % 10 = diskValue
@@ -393,6 +363,12 @@ const TowerOfHanoi = (props, ref) => {
             diskValue % 10) &&
         data.pegs[nearestPegIndex].length < 10
       ) {
+        // Transfer
+        setHistory((prevArray) => [
+          ...prevArray,
+          { start: sourcePegIndex, end: nearestPegIndex, diskValue: diskValue },
+        ]);
+
         const updatedDraggable = [...draggableDisks];
         const updatedPegs = [...data.pegs];
         updatedPegs[nearestPegIndex].push(diskValue);
@@ -432,7 +408,6 @@ const TowerOfHanoi = (props, ref) => {
 
         setPegs(updatedPegs);
         setDraggableDisks(updatedDraggable);
-
         setNumberOfMoves(data.numberOfMoves + 1);
       } else {
         const diskIndexInPeg = data.pegs[sourcePegIndex].indexOf(diskValue);
@@ -455,6 +430,7 @@ const TowerOfHanoi = (props, ref) => {
     }
     setHoveredPeg(null);
   };
+
   const pegElements =
     data !== null &&
     data.pegs.map((peg, index) => (
@@ -488,13 +464,114 @@ const TowerOfHanoi = (props, ref) => {
       </>
     ));
 
-  // const handleUndo = () => {
-  //   if (history.length === 1) {
-  //     return;
-  //   }
-  //   const previous = history[history.length - 1];
-  //   this.setPegs(previous);
-  // };
+  const handleUndo = () => {
+    if (history.length === 0) {
+      return;
+    }
+    const previous = history[history.length - 1];
+    setHistory((prevArray) => [...prevArray.slice(0, -1)]);
+
+    const sourcePegIndex = previous.end;
+    const nearestPegIndex = previous.start;
+    if (sourcePegIndex !== -1 && nearestPegIndex !== -1) {
+      const diskValue =
+        data.pegs[sourcePegIndex][data.pegs[sourcePegIndex].length - 1];
+      const updatedDraggable = [...draggableDisks];
+      const updatedPegs = [...data.pegs];
+      updatedPegs[nearestPegIndex].push(diskValue);
+
+      var index = updatedPegs[sourcePegIndex].indexOf(diskValue);
+      if (index !== -1) {
+        updatedPegs[sourcePegIndex].splice(index, 1);
+      }
+
+      if (data.pegs[nearestPegIndex].length > 1) {
+        var index2 = updatedDraggable.indexOf(
+          updatedPegs[nearestPegIndex][updatedPegs[nearestPegIndex].length - 2]
+        );
+        if (index2 !== -1) {
+          updatedDraggable.splice(index2, 1);
+        } else {
+          console.log("Not found");
+        }
+      }
+
+      updatedDraggable.push(
+        updatedPegs[sourcePegIndex][updatedPegs[sourcePegIndex].length - 1]
+      );
+
+      // const diskIndexInPeg = updatedPegs[nearestPegIndex].indexOf(diskValue);
+
+      // e.target.to({
+      //   x:
+      //     (pegWidth + sep) * nearestPegIndex +
+      //     pegWidth / 2 -
+      //     calculateDiskWidth(e.target.attrs.disk % 10) / 2,
+      //   y: baseY - diskIndexInPeg * diskHeight,
+      //   duration: 0.2,
+      // });
+
+      setPegs(updatedPegs);
+      setDraggableDisks(updatedDraggable);
+      setNumberOfMoves(data.numberOfMoves - 1);
+    } else if (sourcePegIndex !== -1) {
+      const updatedDraggable = [...draggableDisks];
+      const updatedPegs = [...data.pegs];
+      const diskValue =
+        data.pegs[sourcePegIndex][data.pegs[sourcePegIndex].length - 1];
+
+      var index = updatedPegs[sourcePegIndex].indexOf(diskValue);
+      if (index !== -1) {
+        updatedPegs[sourcePegIndex].splice(index, 1);
+      }
+      updatedDraggable.push(
+        updatedPegs[sourcePegIndex][updatedPegs[sourcePegIndex].length - 1]
+      );
+
+      setPegs(updatedPegs);
+      setDraggableDisks(updatedDraggable);
+      setExtraDisk(diskValue % 10);
+      if (sourcePegIndex !== -1) {
+        setNumberOfDisks(data.numberOfDisks - 1);
+      }
+    } else {
+      const updatedDraggable = [...draggableDisks];
+      const updatedPegs = [...data.pegs];
+      let diskValue = previous.diskValue;
+      // Find a free value % 10 = diskValue
+      diskValue = findSmallestNumberNotInArray(data.pegs, diskValue % 10);
+      updatedPegs[nearestPegIndex].push(diskValue);
+
+      if (data.pegs[nearestPegIndex].length > 1) {
+        var index2 = updatedDraggable.indexOf(
+          updatedPegs[nearestPegIndex][updatedPegs[nearestPegIndex].length - 2]
+        );
+        if (index2 !== -1) {
+          updatedDraggable.splice(index2, 1);
+        } else {
+          console.log("Not found");
+        }
+      }
+
+      updatedDraggable.push(diskValue);
+
+      // const diskIndexInPeg = updatedPegs[nearestPegIndex].indexOf(diskValue);
+      setPegs(updatedPegs);
+      setDraggableDisks(updatedDraggable);
+      setNumberOfMoves(data.numberOfMoves - 1);
+      // setExtraDisk(-1);
+      // console.log("Increase Disks");
+      setNumberOfDisks(data.numberOfDisks + 1);
+      // e.target.to({
+      //   x:
+      //     (pegWidth + sep) * nearestPegIndex +
+      //     pegWidth / 2 -
+      //     calculateDiskWidth(e.target.attrs.disk % 10) / 2,
+      //   y: baseY - diskIndexInPeg * diskHeight,
+      //   duration: 0.2,
+      // });
+    }
+  };
 
   const diskElements =
     data !== null &&
@@ -508,7 +585,7 @@ const TowerOfHanoi = (props, ref) => {
         pegIndex * sep;
       const y = baseY - diskIndexInPeg * diskHeight;
 
-      console.log("New Render", x, y);
+      // console.log("New Render", x, y);
       return (
         <Rect
           onMouseEnter={(e) => {
@@ -542,8 +619,13 @@ const TowerOfHanoi = (props, ref) => {
       );
     });
   useEffect(() => {
-    console.log(window.innerWidth);
-  });
+    console.log(
+      "->",
+      props.mode,
+      props.mode === "edit",
+      props?.uiParams?.n_disks?.value ?? "Undefined"
+    );
+  }, [props.mode, props.uiParams]);
   const handleNumberOfDisksChange = (event) => {
     const value = parseInt(event.target.value, 10);
     if (!isNaN(value) && value >= 1 && value <= 10) {
@@ -561,13 +643,7 @@ const TowerOfHanoi = (props, ref) => {
 
   const KonvaButton = (props) => {
     return (
-      <Label
-        // width={pegWidth}
-        // height={5}
-        onClick={props.onClick}
-        x={props.x}
-        y={props.y}
-      >
+      <Label onClick={props.onClick} x={props.x} y={props.y}>
         <Tag
           fill="black"
           lineJoin="round"
@@ -576,8 +652,6 @@ const TowerOfHanoi = (props, ref) => {
           shadowOffset={10}
           shadowOpacity={0.5}
           cornerRadius={10}
-          // width={pegWidth}
-          // height={5}
         ></Tag>
         <Text
           text={props.text}
@@ -594,9 +668,25 @@ const TowerOfHanoi = (props, ref) => {
       {data && (
         <>
           <div className="toh-header hbox">
-            <div className="flex-center">
-              {isProblemSetting ? (
-                <div className="hbox w-full">
+            {(props.mode === "edit" || props.uiParams.undo.value) && (
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  padding: "1rem",
+                }}
+                onClick={() => handleUndo()}
+              >
+                <div className="flex items-center bu-text-primary">
+                  <UndoIcon sx={{ fontSize: "2rem" }} />
+                </div>
+              </IconButton>
+            )}
+            <div className="flex flex-row flex-start w-full gap-5 min-h-[2.5rem] ">
+              {(props.mode === "edit" || props.uiParams.n_disks.value) && (
+                <div className="hbox w-20%">
                   <FormControl fullWidth variant="outlined">
                     <InputLabel
                       htmlFor="outlined-adornment"
@@ -626,7 +716,8 @@ const TowerOfHanoi = (props, ref) => {
                     />
                   </FormControl>
                 </div>
-              ) : (
+              )}
+              {props.mode === "preview" && props.uiParams.moves.value && (
                 <Typography variant="h5" className="p-0 m-0 bu-text-primary">
                   <b className="bu-text-primary">Moves: {data.numberOfMoves}</b>
                 </Typography>
@@ -643,7 +734,10 @@ const TowerOfHanoi = (props, ref) => {
               }
               height={
                 Math.min(window.innerWidth / 800, 1) *
-                (280 + (isProblemSetting ? diskHeight * 1.2 : 0))
+                (280 +
+                  (props.mode === "edit" || props.uiParams.custom_disk.value
+                    ? diskHeight * 1.2
+                    : 0))
               }
               scaleX={Math.min(window.innerWidth / 970, 1)}
               scaleY={Math.min(window.innerWidth / 900, 1)}
@@ -651,7 +745,7 @@ const TowerOfHanoi = (props, ref) => {
               <Layer onDragMove={(e) => handleDiskDrag(e)}>
                 {pegElements}
                 {diskElements}
-                {isProblemSetting ? (
+                {props.mode === "edit" || props.uiParams.custom_disk.value ? (
                   <>
                     <Line
                       points={[0, 260, 20 + pegWidth * data.numberOfPegs, 260]}

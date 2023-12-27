@@ -60,8 +60,8 @@ export default function ProblemsCanvas() {
     const result = await problemController.getProblemById(id);
     if (result.success) {
       setProblem(result.data[0]);
-      setInput(result.data[0].canvas_data);
-      setBackup(result.data[0].canvas_data);
+      setInput(JSON.parse(JSON.stringify(result.data[0].canvas_data)));
+      setBackup(JSON.parse(JSON.stringify(result.data[0].canvas_data)));
       setCanvasId(result.data[0].canvas_id);
       setStatement(result.data[0].statement);
       setParams(result.data[0].params);
@@ -73,13 +73,15 @@ export default function ProblemsCanvas() {
   };
 
   const reset = async () => {
-    const result = await problemController.getProblemById(id);
-    if (result.success) {
-      setInput(result.data[0].canvas_data);
+    // const result = await problemController.getProblemById(id);
+    // if (result.success)
+    {
+      setInput(JSON.parse(JSON.stringify(backup)));
       setResetTrigger(!resetTrigger);
     }
   };
 
+  useEffect(() => {}, [backup]);
   useEffect(() => {
     canvasRef.current !== undefined && canvasRef.current.handleReset();
   }, [resetTrigger]);
@@ -172,7 +174,7 @@ export default function ProblemsCanvas() {
                 <Button
                   variant="contained"
                   onClick={() => {
-                    setBackup({ ...input });
+                    // setBackup({ ...input });
                     problemController.checkSolution(
                       problem.solution_checker,
                       input

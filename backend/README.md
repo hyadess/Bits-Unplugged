@@ -14,14 +14,14 @@ GET /topic/:topic_id
 PUT /topic/:topic_id
 DELETE /topic/:topic_id
 
-## algorithm
+## series
 
 ## canvas
 
 ## problem
 
 GET /problem/by_topic/:topic_id
-GET /problem/by_algo/:algo_id
+GET /problem/by_series/:series_id
 
 GET /problem/
 POST /problem/

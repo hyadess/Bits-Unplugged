@@ -54,11 +54,31 @@
     -->
     <title>Bits Unplugged</title>
     <!-- <script src="../path/to/flowbite/dist/flowbite.min.js"></script> -->
-    
+    <style>
+      .svgLoader {
+        animation: spin 0.5s linear infinite;
+        margin: auto;
+      }
+      .divLoader {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root">
+      <!-- <div class="loader bu-bg-color fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center">
+      <div class="loader-animation border-[6px] border-solid border-white dark:border-gray-800 rounded-full border-t-[8px] border-t-[#1C5B5F] dark:border-t-pink-600 w-16 h-16 animate-spin"></div>
+    </div> -->
+  </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

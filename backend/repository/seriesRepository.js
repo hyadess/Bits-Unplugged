@@ -74,6 +74,38 @@ class SeriesRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+
+  getAllProblems = async (series_id) => {
+    const query = `
+      SELECT * FROM Problem
+      WHERE series_id = $1;
+    `;
+    const params = [series_id];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  // deleteProblemSerial = async (problem_id) => {
+  //   const query = `
+  //   DELETE FROM Serial
+  //   WHERE problem_id = $1;
+  // `;
+  //   const params = [problem_id];
+  //   const result = await this.query(query, params);
+  //   return result;
+  // };
+  // setProblemSerial = async (problem_id, series_id, serial_no) => {
+  //   const result = await deleteProblemSerial(problem_id);
+  //   if (result.success) {
+  //     const query2 = `
+  //     INSERT INTO Serial (problem_id, series_id, serial_no)
+  //     VALUES ($1, $2, $3);
+  //   `;
+  //     const params2 = [problem_id, series_id, serial_no];
+  //     const result2 = await this.query(query2, params2);
+  //     return result2;
+  //   }
+  // };
 }
 
 module.exports = SeriesRepository;

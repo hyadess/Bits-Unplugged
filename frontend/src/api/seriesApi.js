@@ -15,5 +15,8 @@ class SeriesApi extends Api {
       series: data,
     });
   };
+  getAllProblems = async (series_id) => {
+    return await this.get("/series/" + series_id + "/problems");
+  };
 }
 export default SeriesApi;

@@ -6,6 +6,7 @@ import React, {
 } from "react";
 import { Stage, Layer, Rect, Label, Text, Tag, Line } from "react-konva";
 import UndoIcon from "@mui/icons-material/Undo";
+import RedoIcon from "@mui/icons-material/Redo";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
@@ -43,6 +44,7 @@ const TowerOfHanoi = (props, ref) => {
   const sep = 10;
   const [extraDisk, setExtraDisk] = useState(0);
   const [history, setHistory] = useState([]);
+  const [currentHistory, setCurrentHistory] = useState(-1);
 
   const setNumberOfDisks = (n) => {
     setData((prevData) => {
@@ -80,7 +82,8 @@ const TowerOfHanoi = (props, ref) => {
       setNumberOfDisks(3);
       initializePegs(3, 3);
     }
-    setHistory([]);
+    // setHistory([]);
+    setCurrentHistory(-1);
   };
 
   useEffect(() => {
@@ -240,6 +243,11 @@ const TowerOfHanoi = (props, ref) => {
 
     if (isProblemSetting && sourceY > 250) {
       // Delete
+      if (currentHistory < history.length - 1) {
+        setHistory((prevArray) => [...prevArray.slice(0, currentHistory + 1)]);
+      }
+
+      setCurrentHistory(currentHistory + 1);
       setHistory((prevArray) => [
         ...prevArray,
         { start: sourcePegIndex, end: -1, diskValue: diskValue },
@@ -298,6 +306,13 @@ const TowerOfHanoi = (props, ref) => {
               10 <=
               diskValue % 10)
         ) {
+          if (currentHistory < history.length - 1) {
+            setHistory((prevArray) => [
+              ...prevArray.slice(0, currentHistory + 1),
+            ]);
+          }
+
+          setCurrentHistory(currentHistory + 1);
           setHistory((prevArray) => [
             ...prevArray,
             {
@@ -364,6 +379,14 @@ const TowerOfHanoi = (props, ref) => {
         data.pegs[nearestPegIndex].length < 10
       ) {
         // Transfer
+        console.log("History:", history);
+        if (currentHistory < history.length - 1) {
+          setHistory((prevArray) => [
+            ...prevArray.slice(0, currentHistory + 1),
+          ]);
+        }
+        setCurrentHistory(currentHistory + 1);
+
         setHistory((prevArray) => [
           ...prevArray,
           { start: sourcePegIndex, end: nearestPegIndex, diskValue: diskValue },
@@ -464,15 +487,9 @@ const TowerOfHanoi = (props, ref) => {
       </>
     ));
 
-  const handleUndo = () => {
-    if (history.length === 0) {
-      return;
-    }
-    const previous = history[history.length - 1];
-    setHistory((prevArray) => [...prevArray.slice(0, -1)]);
-
-    const sourcePegIndex = previous.end;
-    const nearestPegIndex = previous.start;
+  const applyMove = (move, dir) => {
+    const sourcePegIndex = dir > 0 ? move.start : move.end;
+    const nearestPegIndex = dir > 0 ? move.end : move.start;
     if (sourcePegIndex !== -1 && nearestPegIndex !== -1) {
       const diskValue =
         data.pegs[sourcePegIndex][data.pegs[sourcePegIndex].length - 1];
@@ -513,7 +530,7 @@ const TowerOfHanoi = (props, ref) => {
 
       setPegs(updatedPegs);
       setDraggableDisks(updatedDraggable);
-      setNumberOfMoves(data.numberOfMoves - 1);
+      setNumberOfMoves(data.numberOfMoves + dir);
     } else if (sourcePegIndex !== -1) {
       const updatedDraggable = [...draggableDisks];
       const updatedPegs = [...data.pegs];
@@ -537,7 +554,7 @@ const TowerOfHanoi = (props, ref) => {
     } else {
       const updatedDraggable = [...draggableDisks];
       const updatedPegs = [...data.pegs];
-      let diskValue = previous.diskValue;
+      let diskValue = move.diskValue;
       // Find a free value % 10 = diskValue
       diskValue = findSmallestNumberNotInArray(data.pegs, diskValue % 10);
       updatedPegs[nearestPegIndex].push(diskValue);
@@ -558,7 +575,7 @@ const TowerOfHanoi = (props, ref) => {
       // const diskIndexInPeg = updatedPegs[nearestPegIndex].indexOf(diskValue);
       setPegs(updatedPegs);
       setDraggableDisks(updatedDraggable);
-      setNumberOfMoves(data.numberOfMoves - 1);
+      setNumberOfMoves(data.numberOfMoves + dir);
       // setExtraDisk(-1);
       // console.log("Increase Disks");
       setNumberOfDisks(data.numberOfDisks + 1);
@@ -571,6 +588,24 @@ const TowerOfHanoi = (props, ref) => {
       //   duration: 0.2,
       // });
     }
+  };
+  const handleRedo = () => {
+    if (history.length - 1 === currentHistory) {
+      return;
+    }
+
+    const next = history[currentHistory + 1];
+    applyMove(next, +1);
+    setCurrentHistory(currentHistory + 1);
+  };
+  const handleUndo = () => {
+    if (currentHistory === -1) {
+      return;
+    }
+    const previous = history[currentHistory];
+    // setHistory((prevArray) => [...prevArray.slice(0, -1)]);
+    setCurrentHistory(currentHistory - 1);
+    applyMove(previous, -1);
   };
 
   const diskElements =
@@ -669,20 +704,36 @@ const TowerOfHanoi = (props, ref) => {
         <>
           <div className="toh-header hbox">
             {(props.mode === "edit" || props.uiParams.undo.value) && (
-              <IconButton
-                sx={{
-                  fontSize: "2rem",
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  padding: "1rem",
-                }}
-                onClick={() => handleUndo()}
-              >
-                <div className="flex items-center bu-text-primary">
-                  <UndoIcon sx={{ fontSize: "2rem" }} />
-                </div>
-              </IconButton>
+              <div className="absolute bottom-0 left-0 flex flex-row px-2">
+                <IconButton
+                  sx={{
+                    fontSize: "2rem",
+                    // position: "absolute",
+                    // bottom: 0,
+                    // left: 0,
+                    // padding: "0.5rem",
+                  }}
+                  onClick={() => handleUndo()}
+                >
+                  <div className="flex items-center bu-text-primary">
+                    <UndoIcon sx={{ fontSize: "2rem" }} />
+                  </div>
+                </IconButton>
+                <IconButton
+                  sx={{
+                    fontSize: "2rem",
+                    // position: "absolute",
+                    // bottom: 0,
+                    // left: 0,
+                    // padding: "0.5rem",
+                  }}
+                  onClick={() => handleRedo()}
+                >
+                  <div className="flex items-center bu-text-primary">
+                    <RedoIcon sx={{ fontSize: "2rem" }} />
+                  </div>
+                </IconButton>
+              </div>
             )}
             <div className="flex flex-row flex-start w-full gap-5 min-h-[2.5rem] ">
               {(props.mode === "edit" || props.uiParams.n_disks.value) && (

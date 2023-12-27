@@ -39,11 +39,13 @@ export default function ProblemSetEnv() {
     //console.log(prob_id)
     const res = await problemController.getProblemById(prob_id);
     if (res.success) {
-      setInput(res.data[0].canvas_data);
+      setInput(JSON.parse(JSON.stringify(res.data[0].canvas_data)));
+      setBackup(JSON.parse(JSON.stringify(res.data[0].canvas_data)));
       setTitle(res.data[0].title);
       setProblemStatement(res.data[0].statement);
       setCode(res.data[0].solution_checker);
       setCanvasId(res.data[0].canvas_id);
+      setBackupId(res.data[0].canvas_id);
       setParams(res.data[0].params);
       setUiParams(res.data[0].ui_params);
       setControlParams(res.data[0].control_params);
@@ -52,6 +54,7 @@ export default function ProblemSetEnv() {
   };
 
   //title.......................
+  const [backupId, setBackupId] = useState(null);
   const [canvasId, setCanvasId] = useState(null);
   const [title, setTitle] = useState("Title");
   const [isTextEditable, setIsTextEditable] = useState(false);
@@ -72,7 +75,8 @@ export default function ProblemSetEnv() {
   const [stdout, setStdout] = useState([]);
   const [open, setOpen] = useState(false);
   const [code, setCode] = useState("");
-  const [input, setInput] = useState("");
+  const [backup, setBackup] = useState(null);
+  const [input, setInput] = useState(null);
   const canvasRef = useRef();
   const [activeComponent, setActiveComponent] = useState("statement");
   const [canvasList, setCanvasList] = useState([]);
@@ -93,12 +97,13 @@ export default function ProblemSetEnv() {
   };
 
   const reset = async () => {
-    const result = await problemController.getProblemById(prob_id);
-    if (result.success) {
-      setInput(result.data[0].canvas_data);
-      if (result.data[0].canvas_id !== canvasId) {
-        setCanvasId(result.data[0].canvas_id);
-        changeCanvas(result.data[0].canvas_id);
+    // const result = await problemController.getProblemById(prob_id);
+    // if (result.success)
+    {
+      setInput(JSON.parse(JSON.stringify(backup)));
+      if (backupId !== canvasId) {
+        setCanvasId(backupId);
+        changeCanvas(backupId);
       }
       setResetTrigger(!resetTrigger);
     }

@@ -11,6 +11,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import "./ProblemSetEnv.scss";
 import Confirmation from "../Components/Confirmation";
 import {
+  faExpand,
   faSave,
   faTrashCan,
   faUpload,
@@ -23,7 +24,6 @@ import { setLoading } from "../App";
 import { Save } from "@mui/icons-material";
 const problemController = new ProblemController();
 const canvasController = new CanvasController();
-
 
 export default function ProblemSetEnv() {
   const { prob_id } = useParams();
@@ -128,7 +128,9 @@ export default function ProblemSetEnv() {
   };
 
   useEffect(() => {
-    canvasRef.current !== undefined && canvasRef.current.handleReset();
+    canvasRef.current !== undefined &&
+      canvasRef.current !== null &&
+      canvasRef.current.handleReset();
   }, [resetTrigger]);
 
   const renderComponent = () => {
@@ -328,6 +330,18 @@ export default function ProblemSetEnv() {
             </div> */}
           </div>
           <div className="souvik-button-container gap-2">
+            <button
+              className="submit-button"
+              class="font-medium rounded-lg text-lg px-7 py-3.5 text-center flex flex-row gap-4 items-center bu-button bg-teal-300 hover:bg-teal-400 active:ring-teal-300 dark:bg-green-600 dark:hover:bg-green-700 dark:active:ring-green-600"
+              onClick={() => {
+                setLoading(true);
+                switchPath(`/problem/${prob_id}/preview`);
+              }}
+              // onClick={() => setOpen(true)}
+            >
+              <FontAwesomeIcon icon={faExpand} />
+              PREVIEW
+            </button>
             <button
               className="submit-button"
               class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-delete flex flex-row gap-4 items-center"

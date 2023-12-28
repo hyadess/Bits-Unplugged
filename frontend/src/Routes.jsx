@@ -51,6 +51,8 @@ import SolverLayout from "./Pages/SolverLayout";
 import SetterLayout from "./Pages/SetterLayout";
 import SetterProfile from "./Pages/SetterProfile";
 import SolverProfile from "./Pages/SolverProfile";
+import Contests from "./Pages/Contests";
+import SetterContests from "./Pages/SetterContests";
 const cookies = new Cookies();
 
 const Private = () => {
@@ -204,6 +206,14 @@ const AppRoutes = () => {
             }
           />
           <Route
+            path="/admin/problems/:id/preview"
+            element={
+              <LayoutMain>
+                <ProblemsCanvas />
+              </LayoutMain>
+            }
+          />
+          <Route
             path="/admin/canvas"
             element={
               <LayoutMain>
@@ -272,13 +282,14 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/problemSet"
+            path="/setter/contests"
             element={
               <LayoutMain>
-                <ProblemSet />
+                <SetterContests />
               </LayoutMain>
             }
           />
+
           <Route path="/problemSet/series/:id" element={<AddProblem />} />
 
           <Route
@@ -305,6 +316,15 @@ const AppRoutes = () => {
             element={
               <LayoutMain>
                 <Problems />
+              </LayoutMain>
+            }
+          />
+
+          <Route
+            path="/contests"
+            element={
+              <LayoutMain>
+                <Contests />
               </LayoutMain>
             }
           />

@@ -142,6 +142,7 @@ const PrivateNavbar = (props) => {
                 }`}
                 data-tip="Marketplace"
                 onClick={() => {
+                  setLoading(true);
                   switchPath("/contests");
                 }}
               >

@@ -46,8 +46,8 @@ const Home = () => {
           <h2 class="mb-4 text-center md:text-left text-4xl tracking-tight font-extrabold bu-text-primary">
             {" "}
             A platform for learning{" "}
-            <span class="text-[#1C5B5F] text-5xl">Computer Science</span>{" "}
-            without coding{" "}
+            <span class="bu-text-title text-5xl">Computer Science</span> without
+            coding{" "}
           </h2>
 
           <p class="mb-6 text-center md:text-left  font-light bu-text-subtitle md:text-lg">

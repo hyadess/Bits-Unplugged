@@ -103,14 +103,18 @@ export default function ProblemsCanvas() {
                     : ""}
                 </span>
               </div>
-              {type == 1 ? (
+              {type !== 0 ? (
                 <div className="flex items-center">
                   <button
                     className="submit-button"
                     class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary"
                     onClick={() => {
                       setLoading(true);
-                      navigator(`/problem/${problem.problem_id}/edit`);
+                      navigator(
+                        type == 2
+                          ? `/admin/problems/${problem.problem_id}`
+                          : `/problem/${problem.problem_id}/edit`
+                      );
                     }}
                   >
                     <div class="flex flex-row gap-4 items-center">

@@ -204,6 +204,14 @@ const AppRoutes = () => {
             }
           />
           <Route
+            path="/admin/problems/:id/preview"
+            element={
+              <LayoutMain>
+                <ProblemsCanvas />
+              </LayoutMain>
+            }
+          />
+          <Route
             path="/admin/canvas"
             element={
               <LayoutMain>

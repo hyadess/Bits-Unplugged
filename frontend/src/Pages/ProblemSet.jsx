@@ -88,11 +88,7 @@ const ProblemSet = () => {
         </div>
       </div>
 
-      {/* <Suspense
-        fallback={<div className="bu-text-primary text-5xl">Loading...</div>}
-      > */}
       <SetterProblems />
-      {/* </Suspense> */}
 
       {modalIsOpen && (
         <div className="custom-modal-overlay">

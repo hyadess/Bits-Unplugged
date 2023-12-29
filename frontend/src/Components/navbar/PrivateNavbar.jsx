@@ -55,9 +55,11 @@ const PrivateNavbar = (props) => {
       if (darkMode) {
         document.documentElement.classList.add("dark");
         localStorage.setItem("color-theme", "dark");
+        window.dispatchEvent(new Event("storage"));
       } else {
         document.documentElement.classList.remove("dark");
         localStorage.setItem("color-theme", "light");
+        window.dispatchEvent(new Event("storage"));
       }
     }
   }, [darkMode]);
@@ -68,7 +70,7 @@ const PrivateNavbar = (props) => {
 
   useEffect(() => {
     setProfile();
-    console.log("Color-scheme: ", localStorage.getItem("color-theme"));
+
     if (localStorage.getItem("color-theme") === "dark") {
       setDarkMode(true);
     } else {
@@ -136,16 +138,25 @@ const PrivateNavbar = (props) => {
 
               <button
                 className={`icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info items-center justify-center border-b-4 ${
-                  location.pathname === "/contests"
+                  (type === 0 && location.pathname === "/contests") ||
+                  (type === 1 && location.pathname === "/setter/contests")
                     ? "border-[#1C5B5F] dark:border-pink-500"
                     : "border-transparent"
                 }`}
                 data-tip="Marketplace"
                 onClick={() => {
-                  switchPath("/contests");
+                  setLoading(true);
+                  switchPath((type == 1 ? "setter" : "") + "/contests");
                 }}
               >
-                <div className="text-xs md:text-lg md:font-bold md:text-white-800 flex flex-row gap-3 items-center bu-text-primary-hover ">
+                <div
+                  className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
+                    (type == 0 && location.pathname === "/contests") ||
+                    (type == 1 && location.pathname === "/setter/contests")
+                      ? "bu-text-title"
+                      : "bu-text-primary-hover"
+                  }`}
+                >
                   <FontAwesomeIcon icon={faTrello} />
                   Contests
                 </div>

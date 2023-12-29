@@ -10,8 +10,9 @@ function ImageLoader({ src, alt, style, className }) {
         src={src}
         alt={alt}
         className={
-          `smooth-image image-${imageLoaded ? "visible" : "hidden"} ` +
-          className
+          `transition-opacity duration-1000 opacity-${
+            imageLoaded ? "100" : "0"
+          } ` + className
         }
         onLoad={() => {
           setLoading(false);

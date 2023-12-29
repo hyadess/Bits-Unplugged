@@ -1,0 +1,62 @@
+.w-md-editor-preview
+{
+    p {
+        font-size:1.5rem;
+    }
+}
+
+body .w-md-editor-text-pre > code,
+body .w-md-editor-text-input {
+  font-size: 23px !important;
+  line-height: 35px !important;
+  padding: 20px;
+  outline: none;
+
+  &:focus {
+    outline: none;
+    border: none;
+  }
+}
+
+
+body .w-md-editor-text {
+  padding: 20px !important;
+}
+.w-md-editor-preview
+{
+  @apply bg-transparent;
+  p {
+    @apply bg-transparent;
+  }
+}
+.w-md-editor{
+  background-color: #FBFBFB;
+  @apply text-black;
+  @apply border-none;
+}
+
+.dark {
+  .w-md-editor {
+    background-color: rgba(59, 64, 70, 0.334);
+    @apply text-white;
+  }
+}
+
+.wmde-markdown, .wmde-markdown-color
+{
+  @apply bg-transparent;
+}
+
+.w-md-editor-toolbar ul
+{
+  @apply pl-3;
+  @apply flex;
+  @apply flex-row;
+  @apply gap-2;
+}
+
+.w-md-editor-toolbar svg
+{
+  width: 15px;
+  height: 15px;
+}

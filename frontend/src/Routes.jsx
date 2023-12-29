@@ -51,6 +51,7 @@ import SolverLayout from "./Pages/SolverLayout";
 import SetterLayout from "./Pages/SetterLayout";
 import SetterProfile from "./Pages/SetterProfile";
 import SolverProfile from "./Pages/SolverProfile";
+import ProblemsSubmissions from "./Pages/ProblemsSubmissions";
 const cookies = new Cookies();
 
 const Private = () => {
@@ -296,6 +297,14 @@ const AppRoutes = () => {
             element={
               <LayoutMain>
                 <ProblemsCanvas />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/submission/:id"
+            element={
+              <LayoutMain>
+                <ProblemsSubmissions />
               </LayoutMain>
             }
           />

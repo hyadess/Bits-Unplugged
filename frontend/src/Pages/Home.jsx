@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import Banner from "../Components/Banner";
 import ImageLoader from "../Components/ImageLoader";
-import "./Home.scss";
 import { setLoading } from "../App";
 
 const Home = () => {
@@ -31,12 +30,12 @@ const Home = () => {
           /> */}
         <div className="flex flex-row gap-0">
           <ImageLoader
-            className="w-full home-cover-light"
+            className="w-full block dark:hidden"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
             alt="dashboard image"
           />
           <ImageLoader
-            className="w-full home-cover-dark"
+            className="w-full hidden dark:block"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup-dark.svg"
             alt="dashboard image"
           />

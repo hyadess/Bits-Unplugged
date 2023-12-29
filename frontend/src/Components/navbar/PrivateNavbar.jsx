@@ -55,9 +55,11 @@ const PrivateNavbar = (props) => {
       if (darkMode) {
         document.documentElement.classList.add("dark");
         localStorage.setItem("color-theme", "dark");
+        window.dispatchEvent(new Event("storage"));
       } else {
         document.documentElement.classList.remove("dark");
         localStorage.setItem("color-theme", "light");
+        window.dispatchEvent(new Event("storage"));
       }
     }
   }, [darkMode]);
@@ -68,7 +70,7 @@ const PrivateNavbar = (props) => {
 
   useEffect(() => {
     setProfile();
-    console.log("Color-scheme: ", localStorage.getItem("color-theme"));
+
     if (localStorage.getItem("color-theme") === "dark") {
       setDarkMode(true);
     } else {

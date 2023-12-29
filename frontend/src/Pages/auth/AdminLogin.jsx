@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import AuthController from "../../controller/authController";
 import { useSearchParams, createSearchParams } from "react-router-dom";
 import { CircularProgress, Switch } from "@mui/material";
-import "./Login.scss";
 import Banner from "../../Components/Banner";
 import Layout1 from "../../Components/Layouts/Layout1";
 import { PasswordField } from "../../Components/InputFields";

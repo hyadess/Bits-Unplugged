@@ -6,8 +6,6 @@ import { Button } from "@mui/material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import SendIcon from "@mui/icons-material/Send";
-import "./ProblemSetEnv.scss";
-import "./Submitbtn.scss";
 import Cookies from "universal-cookie";
 import Latex from "react-latex";
 import EditIcon from "@mui/icons-material/Edit";
@@ -15,6 +13,12 @@ import Title from "../Components/Title";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../App";
+import MDEditor from "@uiw/react-md-editor";
+import MarkdownEditor from "@uiw/react-markdown-editor";
+import katex from "katex";
+import "katex/dist/katex.css";
+import { getCodeString } from "rehype-rewrite";
+import "./ProblemsCanvas.scss";
 //<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 const problemController = new ProblemController();
 
@@ -80,6 +84,25 @@ export default function ProblemsCanvas() {
       setResetTrigger(!resetTrigger);
     }
   };
+  const calculateNumberOfLines = (content) => {
+    return content.split("\n").length;
+  };
+
+  function getColorModeFromLocalStorage() {
+    return localStorage.getItem("color-theme") || "light";
+  }
+
+  const [colorMode, setColorMode] = useState(getColorModeFromLocalStorage());
+
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      setColorMode(getColorModeFromLocalStorage);
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   useEffect(() => {}, [backup]);
   useEffect(() => {
@@ -103,14 +126,17 @@ export default function ProblemsCanvas() {
                     : ""}
                 </span>
               </div>
-              {type == 1 ? (
+              {type !== 0 ? (
                 <div className="flex items-center">
                   <button
-                    className="submit-button"
-                    class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary"
+                    className="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary"
                     onClick={() => {
                       setLoading(true);
-                      navigator(`/problem/${problem.problem_id}/edit`);
+                      navigator(
+                        type == 2
+                          ? `/admin/problems/${problem.problem_id}`
+                          : `/problem/${problem.problem_id}/edit`
+                      );
                     }}
                   >
                     <div class="flex flex-row gap-4 items-center">
@@ -135,9 +161,79 @@ export default function ProblemsCanvas() {
                     borderRadius: "20px",
                   }}
                 >
-                  <h3>
-                    <Latex>{statement}</Latex>
-                  </h3>
+                  <div data-color-mode={colorMode} className="text-2xl">
+                    <div className="wmde-markdown-var "> </div>
+                    {/* <MDEditor value={text} onChange={setText} /> */}
+                    <MDEditor
+                      height={
+                        60 +
+                        35 * calculateNumberOfLines(statement) +
+                        statement.length / 2
+                      }
+                      preview="preview"
+                      hideToolbar={true}
+                      enableScroll={false}
+                      visibleDragbar={false}
+                      className="border-none"
+                      value={statement}
+                      style={{
+                        whiteSpace: "pre-wrap",
+                        padding: "20px",
+                        borderRadius: "20px",
+                        border: 0,
+                        // fontSize: "23px !important;",
+                      }}
+                      previewOptions={{
+                        components: {
+                          code: ({ children = [], className, ...props }) => {
+                            if (
+                              typeof children === "string" &&
+                              /\$\$(.*)\$\$/.test(children)
+                            ) {
+                              const html = katex.renderToString(
+                                children.replace(/\$\$(.*)\$\$/, "$1"),
+                                {
+                                  throwOnError: false,
+                                }
+                              );
+                              return (
+                                <code
+                                  dangerouslySetInnerHTML={{ __html: html }}
+                                  style={{ background: "transparent" }}
+                                />
+                              );
+                            }
+                            const code =
+                              props.node && props.node.children
+                                ? getCodeString(props.node.children)
+                                : children;
+                            if (
+                              typeof code === "string" &&
+                              typeof className === "string" &&
+                              /language-katex/.test(
+                                className.toLocaleLowerCase()
+                              )
+                            ) {
+                              const html = katex.renderToString(code, {
+                                throwOnError: false,
+                              });
+                              return (
+                                <code
+                                  style={{ fontSize: "150%" }}
+                                  dangerouslySetInnerHTML={{ __html: html }}
+                                />
+                              );
+                            }
+                            return (
+                              <code className={String(className)}>
+                                {children}
+                              </code>
+                            );
+                          },
+                        },
+                      }}
+                    />
+                  </div>
                 </div>
               </p>
             </div>

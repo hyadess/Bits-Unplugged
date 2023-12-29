@@ -1,13 +1,25 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAsyncError, useNavigate, useParams } from "react-router-dom";
-import { Button, TextareaAutosize } from "@mui/material";
-import "./SolutionChecker.scss";
-// import ProblemController from "../controller/problemController";
-import Editor from "@monaco-editor/react";
+import Editor, { loader } from "@monaco-editor/react";
 import ProblemController from "../controller/problemController";
 import { showToast } from "../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import monaco_theme from "../Components/themes/Monokai.json";
+loader.init().then((monaco) => {
+  // fetch("../Components/themes/Monokai.json")
+  //   .then((data) => data.json())
+  //   .then((data) => {
+  //     console.log(data);
+  //     monaco.editor.defineTheme("light-theme", data);
+  //     monaco.editor.setTheme("light-theme");
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error loading theme:", error);
+  //   });
+  monaco.editor.defineTheme("light-theme", monaco_theme);
+});
+
 const problemController = new ProblemController();
 //<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 export default function SolutionChecker(props) {
@@ -73,10 +85,10 @@ export default function SolutionChecker(props) {
     problemController.updateSolutionChecker(prob_id, ref.current.getValue());
   };
 
-  const p =
-    props.output == "" ? null : (
-      <div className="out-display">{props.output}</div>
-    );
+  // const p =
+  //   props.output == "" ? null : (
+  //     <div className="out-display">{props.output}</div>
+  //   );
   return (
     <div
       className="flex flex-col md:flex-row gap-0 md:gap-0 w-full pb-10 h-160 md:h-160"
@@ -86,7 +98,7 @@ export default function SolutionChecker(props) {
         <Editor
           ref={editorRef}
           height="100%" // Set the height to 100% of its parent div
-          className="white-border"
+          className="box-border border-4 border-solid border-[#504f4fe7] border-spacing-4 border-r-0"
           language="javascript"
           theme="vs-dark"
           value={props.code}
@@ -107,7 +119,7 @@ export default function SolutionChecker(props) {
         <div className="flex flex-row md:flex-col gap-0 h-80% md:h-90%">
           <div className="w-1/2 md:w-full h-full md:h-1/2">
             <Editor
-              className="white-border"
+              className="box-border border-4 border-solid border-[#504f4fe7] border-spacing-4 "
               ref={inputRef}
               width="100%"
               height="100%" // Set the height to 100% of its parent div
@@ -125,10 +137,7 @@ export default function SolutionChecker(props) {
               }}
             />
           </div>
-          <div
-            className="w-1/2 md:w-full h-full md:h-1/2 text-display m-0"
-            style={{ borderRadius: "0px" }}
-          >
+          <div className="w-1/2 md:w-full h-full md:h-1/2 m-0 text-left p-5 bg-[#222222] text-lg text-white box-border border-4 border-solid border-[#5b5a5ae7] border-spacing-4 border-t-0">
             {props.stdout}
           </div>
         </div>
@@ -140,7 +149,7 @@ export default function SolutionChecker(props) {
             borderRadius: "0px",
           }}
           type="submit"
-          class="text-white font-bold rounded-lg text-lg md:text-md px-7 py-3.5 text-center bu-button-secondary w-full h-20% md:h-10% flex flex-row gap-5 justify-center items-center"
+          class="text-white font-bold rounded-lg text-lg md:text-md px-7 py-3.5 text-center bu-button-secondary w-full h-20% md:h-10% flex flex-row gap-5 justify-center items-center box-border border-4 border-solid border-[#5b5a5ae7] border-spacing-4 border-t-0"
           onClick={submit}
         >
           <FontAwesomeIcon icon={faPlay} />

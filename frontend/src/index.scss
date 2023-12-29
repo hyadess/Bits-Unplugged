@@ -141,94 +141,91 @@ code {
   }
 }
 
-.bu-button-primary { // If on card
-  @apply text-gray-900;
+.bu-button {
   @apply transition-colors;
   @apply duration-300;
   @apply ease-in-out;
+  @apply text-gray-900;
+  &:active {
+    @apply ring-4;
+  }
+}
 
+.dark
+{
+  .bu-button {
+    @apply text-white;
+  }
+}
+
+.bu-button-primary { // If on card
+  @extend .bu-button;
   background-color: #AADFCF;
   &:hover {
     background-color: #84cfb8;
   }
-  &:focus {
-    background-color: #54dab2;
-    @apply ring-2;
+  &:active {
+    --tw-ring-color: #AADFCF;
   }
 }
 
 .dark {
   .bu-button-primary { // If on card
-    @apply text-white;
     @apply bg-pink-600;
     &:hover {
       @apply bg-pink-700;
     }
-    &:focus {
-      @apply ring-pink-800;
-      @apply ring-2;
+    &:active {
+      @apply ring-pink-600;
     }
   }
 }
 
 .bu-button-secondary {  // If on bg
-  @apply text-gray-900;
+  @extend .bu-button;
   background-color: #94cebc;
-  @apply transition-colors;
-  @apply duration-300;
-  @apply ease-in-out;
   &:hover {
     background-color: rgb(124, 193, 172);
   }
-  &:focus {
-    background-color: #69c3a8;
-    @apply ring-2;
+  &:active {
+    --tw-ring-color: #94cebc;
   }
 }
 
 
 .dark {
   .bu-button-secondary { // If on bg
-    @apply text-white;
     @apply bg-pink-700;
     &:hover {
       @apply bg-pink-800;
     }
-    &:focus {
-      @apply ring-pink-900;
-      @apply ring-4;
+    &:active {
+      @apply ring-pink-700;
     }
   }
 }
 
 .bu-button-delete { // If on card
-  @apply text-gray-900;
+  @extend .bu-button;
   @apply bg-red-300;
-  @apply transition-colors;
-  @apply duration-300;
-  @apply ease-in-out;
   &:hover {
     @apply bg-red-400;
   }
-  &:focus {
-    @apply bg-red-400;
-    @apply ring-red-500;
-    // @apply ring-4;
+  &:active {
+    // @apply bg-red-400;
+    @apply ring-red-300;
   }
-  
 }
 
 .dark {
   .bu-button-delete { // If on card
-    @apply text-white;
     @apply bg-blue-600;
     &:hover {
       @apply bg-blue-700;
     }
-    &:focus {
-      @apply bg-blue-700;
-      @apply ring-blue-800;
-      @apply ring-2;
+    &:active {
+      // @apply bg-blue-700;
+      @apply ring-blue-600;
     }
   }
 }
@@ -327,4 +324,15 @@ code {
   width: 40px;
   height: 40px;
   transition: background-color 0.3s, color 0.3s;
+}
+
+.hbox {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+.vbox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }

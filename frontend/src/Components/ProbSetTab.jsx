@@ -1,16 +1,15 @@
 
-import React from 'react';
-import './ProbSetTab.scss';
+import React from "react";
 
 const ProbSetTab = (props) => {
   const tabs = ["statement", "canvas", "solution"];
 
   return (
-    <div className="tabs-container">
-      <ul className="tabs-list">
+    <div className="flex w-full mx-auto justify-between">
+      <div className="p-0 flex flex-grow justify-between w-full">
         {tabs.map((tab) => (
-          <li
-            className={`cursor-pointer flex-grow px-5 py-2 text-center  font-bold text-2xl ${
+          <div
+            className={`cursor-pointer flex-grow px-5 py-2 text-center  font-bold text-2xl  ${
               tab === props.activeTab
                 ? "border-b-4 bu-text-title"
                 : "bu-text-disable"
@@ -18,9 +17,9 @@ const ProbSetTab = (props) => {
             onClick={() => props.click(tab)}
           >
             {tab}
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

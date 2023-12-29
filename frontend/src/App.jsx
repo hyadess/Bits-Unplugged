@@ -1,12 +1,8 @@
 import "./App.scss";
 
 import React, { useState, useEffect } from "react";
-
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
-import { Dialog, DialogContent } from "@mui/material";
-import { Circles } from "react-loader-spinner";
-
 import AppRoutes from "./Routes";
 
 const showToast = (message, type) => {
@@ -42,7 +38,7 @@ const App = () => {
     <div>
       {loading ? (
         <div class="bu-bg-color fixed z-40 top-0 left-0 w-full h-full flex justify-center items-center">
-          <div class="loader-animation border-[6px] border-solid border-white dark:border-gray-800 rounded-full border-t-[8px] border-t-[#1C5B5F] dark:border-t-pink-600 w-16 h-16 animate-spin"></div>
+          <div class="border-[6px] border-solid border-white dark:border-gray-800 rounded-full border-t-[8px] border-t-[#1C5B5F] dark:border-t-pink-600 w-16 h-16 animate-spin"></div>
         </div>
       ) : (
         <></>

@@ -41,13 +41,10 @@ import PrivateNavbar from "./Components/navbar/PrivateNavbar";
 import AdminNavbar from "./Components/navbar/AdminNavbar";
 import LayoutMain from "./Components/Layouts/LayoutMain";
 
-import AddProblem from "./Pages/AddProblem";
-import Layout from "./Pages/Layout";
 import Navbar from "./Components/Navbar";
-import SolverLayout from "./Pages/SolverLayout";
-import SetterLayout from "./Pages/SetterLayout";
-import SetterProfile from "./Pages/SetterProfile";
-import SolverProfile from "./Pages/SolverProfile";
+
+
+
 import ProblemsSubmissions from "./Pages/ProblemsSubmissions";
 import SetterProfile from "./Pages/setter/SetterProfile";
 import Profile from "./Pages/user/Profille";

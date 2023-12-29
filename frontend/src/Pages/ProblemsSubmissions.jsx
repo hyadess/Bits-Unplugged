@@ -6,8 +6,7 @@ import { Button } from "@mui/material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import SendIcon from "@mui/icons-material/Send";
-import "./ProblemSetEnv.scss";
-import "./Submitbtn.scss";
+
 import Cookies from "universal-cookie";
 import Latex from "react-latex";
 import EditIcon from "@mui/icons-material/Edit";

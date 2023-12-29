@@ -6,8 +6,6 @@ import { Button } from "@mui/material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import SendIcon from "@mui/icons-material/Send";
-import "./ProblemSetEnv.scss";
-import "./Submitbtn.scss";
 import Cookies from "universal-cookie";
 import Latex from "react-latex";
 import EditIcon from "@mui/icons-material/Edit";
@@ -106,8 +104,7 @@ export default function ProblemsCanvas() {
               {type !== 0 ? (
                 <div className="flex items-center">
                   <button
-                    className="submit-button"
-                    class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary"
+                    className="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary"
                     onClick={() => {
                       setLoading(true);
                       navigator(

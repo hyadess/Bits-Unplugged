@@ -1,5 +1,5 @@
 import React from "react";
-import MainContainer from "../Components/Containers/MainContainer";
+import MainContainer from "../../Components/Containers/MainContainer";
 const SolverLayout = (props) => {
   return (
     <div>

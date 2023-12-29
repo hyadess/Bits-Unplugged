@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./Statement.scss";
 import Latex from "react-latex";
-import ProblemController from "../controller/problemController";
+import ProblemController from "../../controller/problemController";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 const problemController = new ProblemController();
@@ -31,12 +31,13 @@ function ProblemStatement(props) {
     <div className="flex flex-col gap-5 pb-5">
       <div className="flex flex-col md:flex-row gap-0 md:gap-5">
         <textarea
-          className="text-area w-full md:w-1/2 m-0 bu-text-primary bu-bg-color"
+          className="text-area w-full md:w-1/2 m-0 bu-text-primary bu-bg-color hover:border-black leading-normal p-[20px] text-[25px] border-none rounded-[20px] resize-none mt-[20px]"
           placeholder=" "
           value={text}
           style={{ height: "50vh" }}
           onChange={(e) => handleProblemStatementChange(e)}
         ></textarea>
+
         <div
           className="w-full md:w-1/2 border-2 border-gray-500 dark:border-gray-200 bu-text-primary preview-area"
           style={{
@@ -56,19 +57,12 @@ function ProblemStatement(props) {
         </div>
       </div>
       <button
-        className="submit-button"
-        class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary flex flex-row gap-3 items-center justify-center focus:outline-none"
+        className="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary flex flex-row gap-3 items-center justify-center focus:outline-none"
         onClick={updateStatement}
       >
         <FontAwesomeIcon icon={faFloppyDisk} size="md" />
         SAVE
       </button>
-      {/* <div className="flex-center" style={{ justifyContent: "flex-end" }}>
-          <button
-            onClick={updateStatement}
-            className="export-button-statement"
-          ></button>
-        </div> */}
     </div>
   );
 }

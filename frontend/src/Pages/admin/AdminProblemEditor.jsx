@@ -1,28 +1,22 @@
 import React, { useState, useEffect } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 
 import Cookies from "universal-cookie";
-import CustomCard from "../Components/Cards/CustomCard";
-import CardContainer from "../Components/Containers/CardContainer";
-import ProblemSetSeriesCard from "../Components/Cards/ProblemSetSeriesCard";
-import Title from "../Components/Title";
+import Title from "../../Components/Title";
 
-import Layout4 from "../Components/Layouts/Layout4";
-import AdminNavbar from "../Components/navbar/AdminNavbar";
 import {
   SelectionField2,
   TextField,
   TextField2,
-} from "../Components/InputFields";
+} from "../../Components/InputFields";
 
-import TopicController from "../controller/topicController";
+import TopicController from "../../controller/topicController";
 
-import SeriesController from "../controller/seriesController";
-import ProblemController from "../controller/problemController";
+import SeriesController from "../../controller/seriesController";
+import ProblemController from "../../controller/problemController";
 import { Switch } from "@mui/material";
-import { setLoading } from "../App";
+import { setLoading } from "../../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpand } from "@fortawesome/free-solid-svg-icons";
 const problemController = new ProblemController();
@@ -101,8 +95,7 @@ const AdminProblemEditor = () => {
         <Title title={problem.title} sub_title={""} />
         <div className="flex flex-row items-center">
           <button
-            className="submit-button"
-            class="font-medium rounded-lg text-lg px-7 py-3.5 text-center flex flex-row gap-4 items-center bu-button bg-teal-300 hover:bg-teal-400 active:ring-teal-300 dark:bg-green-600 dark:hover:bg-green-700 dark:active:ring-green-600"
+            className="font-medium rounded-lg text-lg px-7 py-3.5 text-center flex flex-row gap-4 items-center bu-button bg-teal-300 hover:bg-teal-400 active:ring-teal-300 dark:bg-green-600 dark:hover:bg-green-700 dark:active:ring-green-600"
             onClick={() => {
               setLoading(true);
               switchPath(`/admin/problems/${id}/preview`);

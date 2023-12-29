@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-import SeriesController from "../controller/seriesController";
+import SeriesController from "../../controller/seriesController";
 import Cookies from "universal-cookie";
-import CustomCard from "../Components/Cards/CustomCard";
-import CardContainer from "../Components/Containers/CardContainer";
-import ProblemSetSeriesCard from "../Components/Cards/ProblemSetSeriesCard";
-import Title from "../Components/Title";
-import { setLoading } from "../App";
+import CustomCard from "../../Components/Cards/CustomCard";
+import CardContainer from "../../Components/Containers/CardContainer";
+import Title from "../../Components/Title";
+import { setLoading } from "../../App";
 const seriesController = new SeriesController();
 
 export default function Problems() {
@@ -42,25 +40,15 @@ export default function Problems() {
           />
 
           <CardContainer col={3}>
-            {seriesList.map((series, index) =>
-              type == 0 ? (
-                <CustomCard
-                  id={`Series ${index + 1}`}
-                  name={series.name}
-                  image={series.logo}
-                  path={`/series/${series.series_id}`}
-                  action="View Problems"
-                />
-              ) : (
-                <ProblemSetSeriesCard
-                  idx={index + 1}
-                  id={series.series_id}
-                  name={series.name}
-                  image={series.logo}
-                  path={series.series_id}
-                />
-              )
-            )}
+            {seriesList.map((series, index) => (
+              <CustomCard
+                id={`Series ${index + 1}`}
+                name={series.name}
+                image={series.logo}
+                path={`/series/${series.series_id}`}
+                action="View Problems"
+              />
+            ))}
           </CardContainer>
         </>
       )}

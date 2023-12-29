@@ -9,50 +9,42 @@ import {
 } from "react-router-dom";
 import Cookies from "universal-cookie";
 import Home from "./Pages/Home";
-import Playground from "./Pages/Playground";
-import Problems from "./Pages/Problems";
-import PlaygroundCanvas from "./Pages/PlaygroundCanvas";
+import Problems from "./Pages/user/Problems";
 import Login from "./Pages/auth/Login";
 import Signup from "./Pages/auth/Signup";
 import ProblemsCanvas from "./Pages/ProblemsCanvas";
-import Topics from "./Pages/Topics";
-import Series from "./Pages/Series";
-import ProblemSet from "./Pages/ProblemSet";
+import Topics from "./Pages/user/Topics";
+import Series from "./Pages/user/Series";
+import ProblemSet from "./Pages/setter/ProblemSet";
 import GraphComponent from "./Components/Canvas/GraphComponent";
 import CanvasContainer from "./Components/Canvas/CanvasContainer";
 
-import ProblemSetEnv from "./Pages/ProblemSetEnv";
+import ProblemSetEnv from "./Pages/setter/ProblemSetEnv";
 import SolutionChecker from "./Pages/SolutionChecker";
 import PublicNavbar from "./Components/navbar/PublicNavbar";
 import Layout2 from "./Components/Layouts/Layout2";
-import ProblemSetSeriesCard from "./Components/Cards/ProblemSetSeriesCard";
 import AdminLogin from "./Pages/auth/AdminLogin";
-import AdminHome from "./Pages/home/AdminHome";
-import AdminTopics from "./Pages/AdminTopics";
-import AdminSeries from "./Pages/AdminSeries";
-import AdminProblems from "./Pages/AdminProblems";
-import AdminTopicEditor from "./Pages/AdminTopicEditor";
-import AdminSeriesEditor from "./Pages/AdminSeriesEditor";
-import AdminProblemEditor from "./Pages/AdminProblemEditor";
-import AdminCanvasList from "./Pages/AdminCanvasList";
-import AdminCanvasEditor from "./Pages/AdminCanvasEditor";
-import CanvasSelector from "./Pages/CanvasSelector";
-import AdminContests from "./Pages/AdminContests";
-import AdminSetters from "./Pages/AdminSetters";
+import AdminHome from "./Pages/admin/AdminHome";
+import AdminTopics from "./Pages/admin/AdminTopics";
+import AdminSeries from "./Pages/admin/AdminSeries";
+import AdminProblems from "./Pages/admin/AdminProblems";
+import AdminTopicEditor from "./Pages/admin/AdminTopicEditor";
+import AdminSeriesEditor from "./Pages/admin/AdminSeriesEditor";
+import AdminProblemEditor from "./Pages/admin/AdminProblemEditor";
+import AdminCanvasList from "./Pages/admin/AdminCanvasList";
+import AdminCanvasEditor from "./Pages/admin/AdminCanvasEditor";
+import CanvasSelector from "./Pages/setter/CanvasSelector";
+import AdminContests from "./Pages/admin/AdminContests";
+import AdminSetters from "./Pages/admin/AdminSetters";
 
 import PrivateNavbar from "./Components/navbar/PrivateNavbar";
 import AdminNavbar from "./Components/navbar/AdminNavbar";
 import LayoutMain from "./Components/Layouts/LayoutMain";
 
-import AddProblem from "./Pages/AddProblem";
-import Layout from "./Pages/Layout";
-import Navbar from "./Components/Navbar";
-import SolverLayout from "./Pages/SolverLayout";
-import SetterLayout from "./Pages/SetterLayout";
-import SetterProfile from "./Pages/SetterProfile";
-import SolverProfile from "./Pages/SolverProfile";
-import Contests from "./Pages/Contests";
-import SetterContests from "./Pages/SetterContests";
+import SetterProfile from "./Pages/setter/SetterProfile";
+import Profile from "./Pages/user/Profille";
+import Contests from "./Pages/user/Contests";
+import SetterContests from "./Pages/setter/SetterContests";
 const cookies = new Cookies();
 
 const Private = () => {
@@ -290,8 +282,6 @@ const AppRoutes = () => {
             }
           />
 
-          <Route path="/problemSet/series/:id" element={<AddProblem />} />
-
           <Route
             path="/setter/:username"
             element={
@@ -397,7 +387,7 @@ const AppRoutes = () => {
             path="/user/:username"
             element={
               <LayoutMain>
-                <SolverProfile />
+                <Profile />
               </LayoutMain>
             }
           />
@@ -408,7 +398,7 @@ const AppRoutes = () => {
             path="/profile/:username"
             element={
               <LayoutMain>
-                <SolverProfile />
+                <Profile />
               </LayoutMain>
             }
           />

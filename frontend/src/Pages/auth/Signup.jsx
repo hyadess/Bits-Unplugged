@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthController from "../../controller/authController";
 import { toast } from "react-toastify";
-import "./Login.scss";
 import { CircularProgress, Switch } from "@mui/material";
 import { useSearchParams, createSearchParams } from "react-router-dom";
 import Banner from "../../Components/Banner";

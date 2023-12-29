@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import TopicController from "../controller/topicController";
-import CustomCard from "../Components/Cards/CustomCard";
-import CardContainer from "../Components/Containers/CardContainer";
+import TopicController from "../../controller/topicController";
+import CustomCard from "../../Components/Cards/CustomCard";
+import CardContainer from "../../Components/Containers/CardContainer";
 import Cookies from "universal-cookie";
-import Title from "../Components/Title";
-import TopicCard from "../Components/Cards/TopicCard";
-import { setLoading } from "../App";
+import Title from "../../Components/Title";
+import TopicCard from "../../Components/Cards/TopicCard";
+import { setLoading } from "../../App";
 const topicController = new TopicController();
 
 const Topics = () => {

@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import CustomCard from "../Components/Cards/CustomCard";
-import CardContainer from "../Components/Containers/CardContainer";
+import CustomCard from "../../Components/Cards/CustomCard";
+import CardContainer from "../../Components/Containers/CardContainer";
 import Cookies from "universal-cookie";
-import Title from "../Components/Title";
-import TopicCard from "../Components/Cards/TopicCard";
-import AdminNavbar from "../Components/navbar/AdminNavbar";
-import Layout4 from "../Components/Layouts/Layout4";
+import Title from "../../Components/Title";
+import TopicCard from "../../Components/Cards/TopicCard";
+import AdminNavbar from "../../Components/navbar/AdminNavbar";
+import Layout4 from "../../Components/Layouts/Layout4";
 
-import SeriesController from "../controller/seriesController";
+import SeriesController from "../../controller/seriesController";
 const seriesController = new SeriesController();
 
 const AdminSeries = () => {

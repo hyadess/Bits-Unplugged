@@ -94,7 +94,7 @@ export default function SetterCanvasCard({ idx, id, name, image, path }) {
                 >
                   <CancelIcon />
                 </button>
-                <div className="modal-content ">
+                <div className="modal-content">
                   <h2>Enter Problem Title</h2>
                   <form onSubmit={handleSubmit}>
                     <input

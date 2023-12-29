@@ -3,29 +3,29 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Editor from "@monaco-editor/react";
 import Cookies from "universal-cookie";
-import CustomCard from "../Components/Cards/CustomCard";
-import CardContainer from "../Components/Containers/CardContainer";
-import ProblemSetSeriesCard from "../Components/Cards/ProblemSetSeriesCard";
-import Title from "../Components/Title";
+import CustomCard from "../../Components/Cards/CustomCard";
+import CardContainer from "../../Components/Containers/CardContainer";
+
+import Title from "../../Components/Title";
 import AddIcon from "@mui/icons-material/Add";
 
-import Layout4 from "../Components/Layouts/Layout4";
-import AdminNavbar from "../Components/navbar/AdminNavbar";
+import Layout4 from "../../Components/Layouts/Layout4";
+import AdminNavbar from "../../Components/navbar/AdminNavbar";
 import {
   SelectionField,
   SelectionField2,
   TextArea2,
   TextField,
   TextField2,
-} from "../Components/InputFields";
+} from "../../Components/InputFields";
 
-import TopicController from "../controller/topicController";
+import TopicController from "../../controller/topicController";
 
-import CanvasController from "../controller/canvasController";
+import CanvasController from "../../controller/canvasController";
 import { Divider, MenuItem, Select, Switch } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { setLoading } from "../App";
+import { setLoading } from "../../App";
 
 const topicController = new TopicController();
 

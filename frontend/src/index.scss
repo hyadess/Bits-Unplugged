@@ -325,3 +325,14 @@ code {
   height: 40px;
   transition: background-color 0.3s, color 0.3s;
 }
+
+.hbox {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+.vbox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

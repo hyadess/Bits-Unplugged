@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import CanvasContainer from "../Components/Canvas/CanvasContainer";
-import SolutionChecker from "./SolutionChecker";
+import CanvasContainer from "../../Components/Canvas/CanvasContainer";
+import SolutionChecker from "../SolutionChecker";
 import { Button } from "@mui/material";
-import ProblemController from "../controller/problemController";
-import ProbSetTab from "../Components/ProbSetTab";
+import ProblemController from "../../controller/problemController";
+import ProbSetTab from "../../Components/ProbSetTab";
 import ProblemStatement from "./Statement";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
-import "./ProblemSetEnv.scss";
-import Confirmation from "../Components/Confirmation";
+import Confirmation from "../../Components/Confirmation";
 import {
   faExpand,
   faSave,
@@ -17,10 +16,10 @@ import {
   faUpload,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SelectionField, SelectionField2 } from "../Components/InputFields";
+import { SelectionField, SelectionField2 } from "../../Components/InputFields";
 
-import CanvasController from "../controller/canvasController";
-import { setLoading } from "../App";
+import CanvasController from "../../controller/canvasController";
+import { setLoading } from "../../App";
 import { Save } from "@mui/icons-material";
 const problemController = new ProblemController();
 const canvasController = new CanvasController();
@@ -329,10 +328,9 @@ export default function ProblemSetEnv() {
               <FontAwesomeIcon icon={faSave} />
             </div> */}
           </div>
-          <div className="souvik-button-container gap-2">
+          <div className="flex flex-row justify-end gap-2">
             <button
-              className="submit-button"
-              class="font-medium rounded-lg text-lg px-7 py-3.5 text-center flex flex-row gap-4 items-center bu-button bg-teal-300 hover:bg-teal-400 active:ring-teal-300 dark:bg-green-600 dark:hover:bg-green-700 dark:active:ring-green-600"
+              className="font-medium rounded-lg text-lg px-7 py-3.5 text-center flex flex-row gap-4 items-center bu-button bg-teal-300 hover:bg-teal-400 active:ring-teal-300 dark:bg-green-600 dark:hover:bg-green-700 dark:active:ring-green-600"
               onClick={() => {
                 setLoading(true);
                 switchPath(`/problem/${prob_id}/preview`);
@@ -343,8 +341,7 @@ export default function ProblemSetEnv() {
               PREVIEW
             </button>
             <button
-              className="submit-button"
-              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-delete flex flex-row gap-4 items-center"
+              className="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-delete flex flex-row gap-4 items-center"
               // onClick={deleteProblem}
               onClick={() => setOpen(true)}
             >
@@ -352,8 +349,7 @@ export default function ProblemSetEnv() {
               DELETE
             </button>
             <button
-              className="submit-button"
-              class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary flex flex-row gap-4 items-center"
+              className="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary flex flex-row gap-4 items-center"
               onClick={updateAll}
             >
               <FontAwesomeIcon icon={faUpload} />

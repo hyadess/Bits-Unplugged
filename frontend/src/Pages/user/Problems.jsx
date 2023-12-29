@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-import ProblemController from "../controller/problemController";
+import ProblemController from "../../controller/problemController";
 
-import ProblemCard from "../Components/Cards/ProblemCard";
-import TableContainer from "../Components/Containers/TableContainer";
-import Title from "../Components/Title";
-import { setLoading } from "../App";
+import ProblemCard from "../../Components/Cards/ProblemCard";
+import TableContainer from "../../Components/Containers/TableContainer";
+import Title from "../../Components/Title";
+import { setLoading } from "../../App";
 
 const problemController = new ProblemController();
 
@@ -17,19 +16,7 @@ export default function Problems() {
   };
 
   const { id } = useParams();
-
   const [problemList, setProblemList] = useState([]);
-  const [data, setData] = useState();
-  const baseURL = "https";
-  const getData = async () => {
-    try {
-      const res = await axios.get(`${baseURL}/courses`);
-      setData(res.data);
-      setLoading(false);
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const getProblemList = async () => {
     const res = await problemController.getProblemsBySeries(id);

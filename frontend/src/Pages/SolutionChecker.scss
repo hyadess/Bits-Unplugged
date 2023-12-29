@@ -1,31 +1,32 @@
 textarea {
-  width: 100%;
-  padding: 12px; /* Padding for all sides */
-  margin: 10px; /* Margin for all sides */
-  border: 1px solid #e0e0e0; /* Lighter border color */
-  border-radius: 5px;
-  font-size: 16px;
-  line-height: 1.5;
-  resize: vertical;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Box shadow for all sides except top */
+  // width: 100%;
+  // padding: 12px; /* Padding for all sides */
+  // margin: 10px; /* Margin for all sides */
+  // border: 1px solid #e0e0e0; /* Lighter border color */
+  // border-radius: 5px;
+  // font-size: 16px;
+  // line-height: 1.5;
+  // resize: vertical;
+  // box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Box shadow for all sides except top */
 }
 
-/* Style for the focused textarea */
-textarea:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 123, 255, 0.5); /* Add a box shadow on the bottom and another on the sides when focused */
-}
+// /* Style for the focused textarea */
+// textarea:focus {
+//   outline: none;
+//   border-color: #1C5B5F;
+//   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1),
+//               0 0 5px rgba(53, 53, 54, 0.5); /* Add a box shadow on the bottom and another on the sides when focused */
+// }
 
-/* Optional: Add a placeholder style */
-textarea::placeholder {
-  color: #999;
-}
+// /* Optional: Add a placeholder style */
+// textarea::placeholder {
+//   color: #999;
+// }
 
-/* Optional: Add a hover effect */
-textarea:hover {
-  border-color: #ccc; /* Lighter border color on hover */
-}
+// /* Optional: Add a hover effect */
+// textarea:hover {
+//   border-color: #ccc; /* Lighter border color on hover */
+// }
 .text-display {
   // margin: 15px 0;
   text-align: left; /* Center-align the text */

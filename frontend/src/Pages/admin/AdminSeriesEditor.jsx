@@ -4,25 +4,23 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 import Cookies from "universal-cookie";
-import CustomCard from "../Components/Cards/CustomCard";
-import CardContainer from "../Components/Containers/CardContainer";
-import ProblemSetSeriesCard from "../Components/Cards/ProblemSetSeriesCard";
-import Title from "../Components/Title";
 
-import Layout4 from "../Components/Layouts/Layout4";
-import AdminNavbar from "../Components/navbar/AdminNavbar";
+import Title from "../../Components/Title";
+
+import Layout4 from "../../Components/Layouts/Layout4";
+import AdminNavbar from "../../Components/navbar/AdminNavbar";
 import {
   SelectionField2,
   TextField,
   TextField2,
-} from "../Components/InputFields";
+} from "../../Components/InputFields";
 
-import TopicController from "../controller/topicController";
-import ProblemController from "../controller/problemController";
-import SeriesController from "../controller/seriesController";
-import { setLoading } from "../App";
+import TopicController from "../../controller/topicController";
+import ProblemController from "../../controller/problemController";
+import SeriesController from "../../controller/seriesController";
+import { setLoading } from "../../App";
 import { TableContainer } from "@mui/material";
-import ProblemCard from "../Components/Cards/ProblemCard";
+import ProblemCard from "../../Components/Cards/ProblemCard";
 
 const topicController = new TopicController();
 const problemController = new ProblemController();

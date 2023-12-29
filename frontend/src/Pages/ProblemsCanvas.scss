@@ -46,3 +46,17 @@ body .w-md-editor-text {
 {
   @apply bg-transparent;
 }
+
+.w-md-editor-toolbar ul
+{
+  @apply pl-3;
+  @apply flex;
+  @apply flex-row;
+  @apply gap-2;
+}
+
+.w-md-editor-toolbar svg
+{
+  width: 15px;
+  height: 15px;
+}

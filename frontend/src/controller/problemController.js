@@ -100,10 +100,10 @@ class ProblemController extends Controller {
       const verdict = eval(code + "; solutionChecker(input);");
       console.log = originalConsoleLog;
       if (verdict) {
-        output = "Accepted.";
+        output = "Accepted";
         showToast(output, "success");
       } else {
-        output = "Wrong answer.";
+        output = "Wrong answer";
         showToast(output, "error");
       }
     } catch (error) {

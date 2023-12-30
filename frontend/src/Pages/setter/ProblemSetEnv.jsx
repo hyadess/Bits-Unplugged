@@ -43,13 +43,19 @@ const SolutionCheckerTab = ({
   reset,
   updateCanvas,
   updateCode,
+  checkerCanvas,
+  setCheckerCanvas,
 }) => {
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
+  // const [checkerCanvas, setCheckerCanvas] = useState(null);
 
-  useEffect(() => {
-    console.log(canvasId);
-  }, []);
+  // useEffect(() => {}, []);
+
+  // useEffect(() => {
+  //   setCheckerCanvas(JSON.parse(JSON.stringify(input)));
+  // }, [input]);
+
   const handleCheckSolution = async () => {
     try {
       const result = await problemController.checkSolution(code, input);
@@ -86,8 +92,8 @@ const SolutionCheckerTab = ({
         <>
           <CanvasContainer
             id={canvasId}
-            input={input}
-            setInput={setInput}
+            input={checkerCanvas}
+            setInput={setCheckerCanvas}
             ref={canvasRef}
             mode="preview"
             params={params}
@@ -117,8 +123,8 @@ const SolutionCheckerTab = ({
             <Button
               variant="contained"
               onClick={() => {
-                updateCanvas();
-                updateCode();
+                // updateCanvas();
+                // updateCode();
               }}
               size="large"
               startIcon={<SaveIcon sx={{ fontSize: "2rem", color: "white" }} />}
@@ -136,6 +142,7 @@ export default function ProblemSetEnv() {
   const { prob_id } = useParams();
   const [params, setParams] = useState({});
   const [uiParams, setUiParams] = useState({});
+  const [checkerCanvas, setCheckerCanvas] = useState(null);
   const [controlParams, setControlParams] = useState({});
   const navigator = useNavigate();
   const switchPath = (pathname) => {
@@ -148,6 +155,7 @@ export default function ProblemSetEnv() {
     if (res.success) {
       setInput(JSON.parse(JSON.stringify(res.data[0].canvas_data)));
       setBackup(JSON.parse(JSON.stringify(res.data[0].canvas_data)));
+      setCheckerCanvas(JSON.parse(JSON.stringify(res.data[0].canvas_data)));
       setTitle(res.data[0].title);
       setProblemStatement(res.data[0].statement);
       setCode(res.data[0].solution_checker);
@@ -228,6 +236,7 @@ export default function ProblemSetEnv() {
       setControlParams(res.control_params);
     }
   };
+
   const handleCanvasChange = (prop) => (e) => {
     changeCanvas(e.target.value);
   };
@@ -329,6 +338,8 @@ export default function ProblemSetEnv() {
               reset={reset}
               updateCanvas={updateCanvas}
               updateCode={updateCode}
+              checkerCanvas={checkerCanvas}
+              setCheckerCanvas={setCheckerCanvas}
             />
           )
         );
@@ -361,6 +372,7 @@ export default function ProblemSetEnv() {
   };
 
   const updateCanvas = async () => {
+    setCheckerCanvas(JSON.parse(JSON.stringify(input)));
     const res = await problemController.updateCanvas(
       prob_id,
       canvasId,

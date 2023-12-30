@@ -19,7 +19,7 @@ class ProblemApi extends Api {
   addProblem = async (title) => {
     return await this.post("/problem/", {
       title: title,
-    });
+    }); 
   };
   updateTitle = async (problem_id, title) => {
     return await this.put("/problem/" + problem_id + "/title", {

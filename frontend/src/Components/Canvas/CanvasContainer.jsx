@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, forwardRef } from "react";
 import { Route, useParams } from "react-router-dom";
 import CanvasController from "../../controller/canvasController";
-import "./CanvasContainer.scss";
 import Cookies from "universal-cookie";
 import InfoIcon from "@mui/icons-material/Info";
 import {
@@ -230,7 +229,10 @@ const CanvasContainer = (props, ref) => {
   return (
     <div className="relative mt-5">
       {/* <Zoom in={true}> */}
-      <div className="canvas-container" style={{ minHeight: "40vh" }}>
+      <div
+        className="rounded-[30px] bg-[#fbfbfb] dark:bg-[#3b4046] dark:bg-opacity-[0.334]"
+        style={{ minHeight: "40vh" }}
+      >
         {DynamicComponent && (
           <DynamicComponent
             input={props.input}

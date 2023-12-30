@@ -40,6 +40,11 @@ import PrivateNavbar from "./Components/navbar/PrivateNavbar";
 import AdminNavbar from "./Components/navbar/AdminNavbar";
 import LayoutMain from "./Components/Layouts/LayoutMain";
 
+import Navbar from "./Components/Navbar";
+
+
+
+import ProblemsSubmissions from "./Pages/ProblemsSubmissions";
 import SetterProfile from "./Pages/setter/SetterProfile";
 import Profile from "./Pages/user/Profille";
 import Contests from "./Pages/user/Contests";
@@ -288,6 +293,14 @@ const AppRoutes = () => {
             element={
               <LayoutMain>
                 <ProblemsCanvas />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/submission/:id"
+            element={
+              <LayoutMain>
+                <ProblemsSubmissions />
               </LayoutMain>
             }
           />

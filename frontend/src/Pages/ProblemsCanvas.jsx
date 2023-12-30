@@ -146,7 +146,23 @@ export default function ProblemsCanvas() {
                   </button>
                 </div>
               ) : (
-                <></>
+                <div className="flex items-center">
+                  <button
+                    className="submit-button"
+                    class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary"
+                    onClick={() => {
+                      setLoading(true);
+                      console.log(problem);
+                      navigator(`/submission/${id}`);
+                      
+                    }}
+                  >
+                    <div class="flex flex-row gap-4 items-center">
+                      
+                      SUBMISSIONS
+                    </div>
+                  </button>
+                </div>
               )}
             </div>
 

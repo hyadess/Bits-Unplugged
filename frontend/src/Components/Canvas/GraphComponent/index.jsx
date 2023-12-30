@@ -92,6 +92,7 @@ const GraphComponent = (props, ref) => {
     ) {
       setCurEdgeWeight("");
       setSelectedNodes([selectedNodes[0]]);
+      setIsPromptOpen(false);
       return;
     }
 

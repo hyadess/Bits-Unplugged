@@ -18,7 +18,8 @@ import MarkdownEditor from "@uiw/react-markdown-editor";
 import katex from "katex";
 import "katex/dist/katex.css";
 import { getCodeString } from "rehype-rewrite";
-import "./ProblemsCanvas.scss";
+
+import MarkdownPreview from "../Components/Markdown/MarkdownPreview";
 //<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 const problemController = new ProblemController();
 
@@ -174,79 +175,7 @@ export default function ProblemsCanvas() {
                     borderRadius: "20px",
                   }}
                 >
-                  <div data-color-mode={colorMode} className="text-2xl">
-                    <div className="wmde-markdown-var "> </div>
-                    {/* <MDEditor value={text} onChange={setText} /> */}
-                    <MDEditor
-                      height={
-                        60 +
-                        35 * calculateNumberOfLines(statement) +
-                        statement.length / 2
-                      }
-                      preview="preview"
-                      hideToolbar={true}
-                      enableScroll={false}
-                      visibleDragbar={false}
-                      className="border-none"
-                      value={statement}
-                      style={{
-                        whiteSpace: "pre-wrap",
-                        padding: "20px",
-                        borderRadius: "20px",
-                        border: 0,
-                        // fontSize: "23px !important;",
-                      }}
-                      previewOptions={{
-                        components: {
-                          code: ({ children = [], className, ...props }) => {
-                            if (
-                              typeof children === "string" &&
-                              /\$\$(.*)\$\$/.test(children)
-                            ) {
-                              const html = katex.renderToString(
-                                children.replace(/\$\$(.*)\$\$/, "$1"),
-                                {
-                                  throwOnError: false,
-                                }
-                              );
-                              return (
-                                <code
-                                  dangerouslySetInnerHTML={{ __html: html }}
-                                  style={{ background: "transparent" }}
-                                />
-                              );
-                            }
-                            const code =
-                              props.node && props.node.children
-                                ? getCodeString(props.node.children)
-                                : children;
-                            if (
-                              typeof code === "string" &&
-                              typeof className === "string" &&
-                              /language-katex/.test(
-                                className.toLocaleLowerCase()
-                              )
-                            ) {
-                              const html = katex.renderToString(code, {
-                                throwOnError: false,
-                              });
-                              return (
-                                <code
-                                  style={{ fontSize: "150%" }}
-                                  dangerouslySetInnerHTML={{ __html: html }}
-                                />
-                              );
-                            }
-                            return (
-                              <code className={String(className)}>
-                                {children}
-                              </code>
-                            );
-                          },
-                        },
-                      }}
-                    />
-                  </div>
+                  <MarkdownPreview colorMode={colorMode} text={statement} />
                 </div>
               </div>
             </div>

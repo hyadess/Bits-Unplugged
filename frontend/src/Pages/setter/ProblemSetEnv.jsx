@@ -25,119 +25,6 @@ const problemController = new ProblemController();
 const canvasController = new CanvasController();
 
 
-const SolutionCheckerTab = ({
-  code,
-  setCode,
-  input,
-  checkerType,
-  setCheckerType,
-  canvasId,
-  setInput,
-  canvasRef,
-  params,
-  setParams,
-  uiParams,
-  setUiParams,
-  controlParams,
-  setControlParams,
-  reset,
-  updateCanvas,
-  updateCode,
-  checkerCanvas,
-  setCheckerCanvas,
-}) => {
-  const [output, setOutput] = useState("");
-  const [stdout, setStdout] = useState([]);
-  // const [checkerCanvas, setCheckerCanvas] = useState(null);
-
-  // useEffect(() => {}, []);
-
-  // useEffect(() => {
-  //   setCheckerCanvas(JSON.parse(JSON.stringify(input)));
-  // }, [input]);
-
-  const handleCheckSolution = async () => {
-    try {
-      const result = await problemController.checkSolution(code, input);
-      setOutput(result.output);
-      setStdout(result.stdout);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  return (
-    <>
-      <SelectionField
-        label="Choose Checker"
-        onChange={setCheckerType}
-        value={checkerType}
-        options={[
-          { label: "code", value: 0 },
-          { label: "canvas", value: 1 },
-        ]}
-      />
-      {checkerType == 0 ? (
-        <SolutionChecker
-          code={code}
-          setCode={setCode}
-          input={input}
-          stdout={stdout}
-          output={output}
-          setOutput={setOutput}
-          setStdout={setStdout}
-          checkSubmit={handleCheckSolution}
-        />
-      ) : (
-        <>
-          <CanvasContainer
-            id={canvasId}
-            input={checkerCanvas}
-            setInput={setCheckerCanvas}
-            ref={canvasRef}
-            mode="preview"
-            params={params}
-            setParams={setParams}
-            uiParams={uiParams}
-            setUiParams={setUiParams}
-            controlParams={controlParams}
-            setControlParams={setControlParams}
-          />
-          <div
-            className="flex py-5"
-            style={{ justifyContent: "space-between", marginLeft: "auto" }}
-          >
-            <Button
-              variant="contained"
-              color="success"
-              size="large"
-              onClick={() => {
-                reset();
-              }}
-              startIcon={
-                <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-              }
-            >
-              Reset
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => {
-                // updateCanvas();
-                // updateCode();
-              }}
-              size="large"
-              startIcon={<SaveIcon sx={{ fontSize: "2rem", color: "white" }} />}
-            >
-              Save
-            </Button>
-          </div>
-        </>
-      )}
-    </>
-  );
-};
-
 export default function ProblemSetEnv() {
   const { prob_id } = useParams();
   const [params, setParams] = useState({});
@@ -261,6 +148,9 @@ export default function ProblemSetEnv() {
   }, [resetTrigger]);
 
   const SolutionCheckerTab = () => {
+    const resetChecker = () => {
+      setCheckerCanvas(JSON.parse(JSON.stringify(backup)));
+    };
     return (
       <>
         <SelectionField
@@ -307,7 +197,7 @@ export default function ProblemSetEnv() {
                 color="success"
                 size="large"
                 onClick={() => {
-                  reset();
+                  resetChecker();
                 }}
                 startIcon={
                   <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />

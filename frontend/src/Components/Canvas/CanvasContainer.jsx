@@ -230,7 +230,7 @@ const CanvasContainer = (props, ref) => {
     <div className="relative mt-5">
       {/* <Zoom in={true}> */}
       <div
-        className="rounded-[30px] bg-[#fbfbfb] dark:bg-[#3b4046] dark:bg-opacity-[0.334]"
+        className="rounded-[30px] bg-[#fbfbfb] dark:bg-[#1F2531]"
         style={{ minHeight: "40vh" }}
       >
         {DynamicComponent && (

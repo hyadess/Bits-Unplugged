@@ -262,8 +262,7 @@ const GraphComponent = (props, ref) => {
           //check if i have control params permission to add nodes
           if (props.controlParams === null || !props.controlParams["add_node"])
             return;
-          if (userType === 0 && props.controlParams["add_node"].value === false)
-            return;
+          if (props.controlParams["add_node"].value === false) return;
           const newNode = { x, y, nodeIndex };
           setNodeIndex(nodeIndex + 1);
 
@@ -280,6 +279,12 @@ const GraphComponent = (props, ref) => {
 
   const handleNodeClick = (node) => {
     if (selectedNodes.length === 0) {
+      setSelectedNodes([node]);
+    } else if (
+      props.controlParams !== null &&
+      props.controlParams["add_edge"] &&
+      props.controlParams["add_edge"].value === false
+    ) {
       setSelectedNodes([node]);
     } else if (selectedNodes.length === 1 && selectedNodes[0] !== node) {
       // don't add any more node if there exists one................
@@ -332,8 +337,7 @@ const GraphComponent = (props, ref) => {
     if (selectedNodes.length === 1) {
       if (props.controlParams === null || !props.controlParams["delete_node"])
         return;
-      if (userType === 0 && props.controlParams["delete_node"].value === false)
-        return;
+      if (props.controlParams["delete_node"].value === false) return;
       const nodeToDelete = selectedNodes[0];
       const updatedNodes = data.nodes.filter((node) => node !== nodeToDelete);
       let updatedEdges = data.edges.filter(
@@ -357,8 +361,7 @@ const GraphComponent = (props, ref) => {
     if (selectedEdge != null) {
       if (props.controlParams === null || !props.controlParams["delete_edge"])
         return;
-      if (userType === 0 && props.controlParams["delete_edge"].value === false)
-        return;
+      if (props.controlParams["delete_edge"].value === false) return;
       const updatedEdges = data.edges.filter((edge) => edge !== selectedEdge);
       setEdges(updatedEdges);
       setSelectedEdge(null);
@@ -381,8 +384,7 @@ const GraphComponent = (props, ref) => {
   const handleNodeDrag = (index, e) => {
     if (props.controlParams === null || !props.controlParams["drag_node"])
       return;
-    if (userType === 0 && props.controlParams["drag_node"].value === false)
-      return;
+    if (props.controlParams["drag_node"].value === false) return;
     const newPosition = e.target.position();
     // Calculate the new position of the node
     const updatedX = newPosition.x;

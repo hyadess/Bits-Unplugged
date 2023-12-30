@@ -42,8 +42,8 @@ const CustomSelectionField = (props) => {
   return (
     <div className="w-full">
       <label
-        for={props.name}
-        class="block mb-2 text-sm font-medium bu-text-primary"
+        // for={props.name}
+        className="block mb-2 text-sm font-medium bu-text-primary"
       >
         {props.label}
       </label>
@@ -52,14 +52,14 @@ const CustomSelectionField = (props) => {
         type="text"
         name={props.name}
         id={props.id}
-        class="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
+        className="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
         placeholder={props.placeholder}
         required={props.required}
         onChange={props.onChange(props.id)}
       >
         <option value="" disabled hidden></option>
-        {props.options.map((option) => (
-          <option key={option} value={option}>
+        {props.options.map((option, index) => (
+          <option key={index} value={option}>
             {option}
           </option>
         ))}
@@ -104,7 +104,7 @@ const ChoiceList = ({ params, setCanvas, id, property }) => {
         <label className="bu-text-primary text-xl font-bold">
           {"Selection Field Choices"}
         </label>
-        <hr class="bu-horizontal-bar" />
+        <hr className="bu-horizontal-bar" />
         {params &&
           params[property].list.map((choice, index) => (
             <>
@@ -157,7 +157,7 @@ const ChoiceList = ({ params, setCanvas, id, property }) => {
         </div>
       </div>
 
-      {/* <hr class="mt-5 sm:mx-auto bu-horizontal-bar" /> */}
+      {/* <hr className="mt-5 sm:mx-auto bu-horizontal-bar" /> */}
     </div>
   );
 };
@@ -175,7 +175,7 @@ const OptionList = ({ params, setCanvas, id }) => {
     >
       {params &&
         Object.keys(params).map((key, index) => (
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5" key={index}>
             <div className="grid grid-cols-4 items-center gap-5">
               <TextField2
                 label="Option"
@@ -457,12 +457,15 @@ const AdminCanvasEditor = () => {
           id="logo"
         />
 
-        <label for="template" class="block text-sm font-medium bu-text-primary">
+        <label
+          // for="template"
+          className="block text-sm font-medium bu-text-primary"
+        >
           Template
         </label>
         <div className="w-full h-96">
           <Editor
-            ref={editorRef}
+            // ref={editorRef}
             height="100%" // Set the height to 100% of its parent div
             className="white-border"
             language="javascript"

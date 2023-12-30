@@ -33,7 +33,6 @@ import AdminSeriesEditor from "./Pages/admin/AdminSeriesEditor";
 import AdminProblemEditor from "./Pages/admin/AdminProblemEditor";
 import AdminCanvasList from "./Pages/admin/AdminCanvasList";
 import AdminCanvasEditor from "./Pages/admin/AdminCanvasEditor";
-import CanvasSelector from "./Pages/setter/CanvasSelector";
 import AdminContests from "./Pages/admin/AdminContests";
 import AdminSetters from "./Pages/admin/AdminSetters";
 
@@ -42,8 +41,6 @@ import AdminNavbar from "./Components/navbar/AdminNavbar";
 import LayoutMain from "./Components/Layouts/LayoutMain";
 
 import Navbar from "./Components/Navbar";
-
-
 
 import ProblemsSubmissions from "./Pages/ProblemsSubmissions";
 import SetterProfile from "./Pages/setter/SetterProfile";
@@ -247,14 +244,6 @@ const AppRoutes = () => {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route element={<ProblemSetter />}>
           <Route
-            path="/canvas"
-            element={
-              <LayoutMain>
-                <CanvasSelector />
-              </LayoutMain>
-            }
-          />
-          <Route
             path="/problem/:id/preview"
             element={
               <LayoutMain>
@@ -338,7 +327,7 @@ const AppRoutes = () => {
               <LayoutMain
                 left={
                   <div
-                    className="max-w-sm rounded-lg shadow-lg border bu-nav-color bu-text-primary"
+                    className="w-full rounded-lg shadow-lg border bu-nav-color bu-text-primary"
                     style={{
                       height: "100%",
                       display: "flex",
@@ -352,7 +341,7 @@ const AppRoutes = () => {
                 right={
                   <div className="flex flex-col gap-5 w-full">
                     <div
-                      className="max-w-sm rounded-lg shadow-lg bu-nav-color bu-text-primary"
+                      className="w-full rounded-lg shadow-lg bu-nav-color bu-text-primary"
                       style={{
                         height: "50%",
                         display: "flex",
@@ -363,7 +352,7 @@ const AppRoutes = () => {
                       Put Stats here
                     </div>
                     <div
-                      className="max-w-sm  border rounded-lg shadow-lg bu-nav-color bu-text-primary"
+                      className="w-full  border rounded-lg shadow-lg bu-nav-color bu-text-primary"
                       style={{
                         height: "50%",
                         display: "flex",
@@ -443,6 +432,8 @@ const AppRoutes = () => {
             </Layout2>
           }
         />
+
+        <Route path="/*" element={<Navigate replace to="/" />} />
       </Routes>
     </Router>
   );

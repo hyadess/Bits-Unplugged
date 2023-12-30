@@ -13,8 +13,8 @@ const InputField = (props) => {
   return (
     <div>
       <label
-        for={props.name}
-        class="block mb-2 text-sm font-medium bu-text-primary"
+        // for={props.name}
+        className="block mb-2 text-sm font-medium bu-text-primary"
       >
         {props.label}
       </label>
@@ -23,7 +23,7 @@ const InputField = (props) => {
         type={props.type}
         name={props.name}
         id={props.id}
-        class="border sm:text-sm rounded-lg  block w-full p-2.5  placeholder-gray-400 bu-input-primary"
+        className="border sm:text-sm rounded-lg  block w-full p-2.5  placeholder-gray-400 bu-input-primary"
         placeholder={props.placeholder}
         required={props.required}
         onChange={(e) => props.onChange(e.target.value)}
@@ -148,7 +148,7 @@ const Signup = () => {
 
   return (
     <Layout1>
-      <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto gap-5 min-h-screen">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto gap-5 min-h-screen">
         <div
           onClick={() => {
             setLoading(true);
@@ -159,8 +159,8 @@ const Signup = () => {
           <Banner width={200} height={50} />
         </div>
 
-        <div class="w-full  rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bu-card-secondary">
-          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+        <div className="w-full  rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bu-card-secondary">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <div className="hbox flex-center">
               <h6
                 className={
@@ -194,17 +194,17 @@ const Signup = () => {
                 Setter
               </h6>
             </div>
-            <h1 class="text-xl font-bold leading-tight tracking-tight  md:text-2xl bu-text-primary">
+            <h1 className="text-xl font-bold leading-tight tracking-tight  md:text-2xl bu-text-primary">
               Sign up for an account
             </h1>
-            <div class="space-y-4 md:space-y-6" action="#">
+            <div className="space-y-4 md:space-y-6" action="#">
               <InputField
                 label="Full Name"
                 type="text"
                 name="name"
                 id="name"
                 placeholder="Your name"
-                required="true"
+                required={true}
                 onChange={setFullName}
                 value={fullName}
               />
@@ -214,7 +214,7 @@ const Signup = () => {
                 name="username"
                 id="username"
                 placeholder="Username"
-                required="true"
+                required={true}
                 onChange={setUserName}
                 value={userName}
               />
@@ -222,7 +222,7 @@ const Signup = () => {
               {/* <div>
                   <label
                     for="date"
-                    class="block mb-2 text-sm font-medium text-gray-900 text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 text-white"
                   >
                     Date of Birth
                   </label>
@@ -230,16 +230,16 @@ const Signup = () => {
                     type="date"
                     name="dateofbirth"
                     id="dateofbirth"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-pink-600 focus:border-pink-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-pink-600 focus:border-pink-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     placeholder="MM/DD/YYYY"
-                    required="true"
+                    required={true}
                     onChange={(e) => setDateOfBirth(e.target.value)}
                   />
                 </div> */}
               {/* <div>
                   <label
                     for="institution"
-                    class="block mb-2 text-sm font-medium text-gray-900 text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 text-white"
                   >
                     Name of Institution
                   </label>
@@ -247,7 +247,7 @@ const Signup = () => {
                     type="text"
                     name="institution"
                     id="institution"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-pink-600 focus:border-pink-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-pink-600 focus:border-pink-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Institution name"
                     required=""
                     onChange={(e) => setInstitution(e.target.value)}
@@ -256,15 +256,15 @@ const Signup = () => {
                 <div>
                   <label
                     for="profession"
-                    class="block mb-2 text-sm font-medium text-gray-900 text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 text-white"
                   >
                     Profession
                   </label>
                   <select
                     name="profession"
                     id="profession"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-pink-600 focus:border-pink-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                    required="true"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-pink-600 focus:border-pink-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                    required={true}
                     onChange={(e) => setProfession(e.target.value)}
                   >
                     <option value="">Select a Profession</option>
@@ -279,7 +279,7 @@ const Signup = () => {
                 name="email"
                 id="email"
                 placeholder="email"
-                required="true"
+                required={true}
                 onChange={setEmail}
                 value={email}
               />
@@ -290,7 +290,7 @@ const Signup = () => {
                   name="password"
                   id="password"
                   placeholder="••••••••"
-                  required="true"
+                  required={true}
                   onChange={setPassword}
                   value={password}
                   // onInput={validatePassword}
@@ -298,8 +298,8 @@ const Signup = () => {
 
               <div>
                 <label
-                  for="password"
-                  class="block mb-2 text-sm font-medium bu-text-primary"
+                  // for="password"
+                  className="block mb-2 text-sm font-medium bu-text-primary"
                 >
                   Password
                 </label>
@@ -309,28 +309,28 @@ const Signup = () => {
                     name="password"
                     id="password"
                     placeholder="••••••••"
-                    class="border sm:text-sm rounded-lg  block w-full p-2.5  placeholder-gray-400 bu-input-primary"
-                    required="true"
+                    className="border sm:text-sm rounded-lg  block w-full p-2.5  placeholder-gray-400 bu-input-primary"
+                    required={true}
                     onChange={(e) => setPassword(e.target.value)}
                     onInput={validatePassword}
                   />
                   <button
                     onClick={() => setShowPassword(!showPassword)}
-                    class="block mb-2 text-sm font-medium  bu-text-primary"
+                    className="block mb-2 text-sm font-medium  bu-text-primary"
                   >
                     {showPassword ? "Hide" : "Show"}
                   </button>
                 </div>
                 {showValidationMessage && (
-                  <span class="block mb-2 text-sm font-medium  text-red-500">
+                  <span className="block mb-2 text-sm font-medium  text-red-500">
                     {validationMessage}
                   </span>
                 )}
               </div>
               <div>
                 <label
-                  for="confirmpassword"
-                  class="block mb-2 text-sm font-medium bu-text-primary"
+                  // for="confirmpassword"
+                  className="block mb-2 text-sm font-medium bu-text-primary"
                 >
                   Confirm Password
                 </label>
@@ -339,22 +339,22 @@ const Signup = () => {
                   name="confirmpassword"
                   id="confirmpassword"
                   placeholder="••••••••"
-                  class="border sm:text-sm rounded-lg  block w-full p-2.5  placeholder-gray-400 bu-input-primary"
-                  required="true"
+                  className="border sm:text-sm rounded-lg  block w-full p-2.5  placeholder-gray-400 bu-input-primary"
+                  required={true}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
               </div>
               {!signingUp && (
                 <button
                   // type="submit"
-                  class="w-full text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center bu-button-secondary"
+                  className="w-full text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center bu-button-secondary"
                   onClick={handleSubmit}
                 >
                   Sign up
                 </button>
               )}
 
-              <p class="text-sm font-light bu-text-subtitle">
+              <p className="text-sm font-light bu-text-subtitle">
                 Already have an account?{" "}
                 <a
                   onClick={handleLogin}

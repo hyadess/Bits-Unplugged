@@ -19,7 +19,8 @@ import MarkdownEditor from "@uiw/react-markdown-editor";
 import katex from "katex";
 import "katex/dist/katex.css";
 import { getCodeString } from "rehype-rewrite";
-import "./ProblemsCanvas.scss";
+
+import MarkdownPreview from "../Components/Markdown/MarkdownPreview";
 //<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 const problemController = new ProblemController();
 const submissionController = new SubmissionController();
@@ -120,13 +121,13 @@ export default function ProblemsCanvas() {
         <>
           <div>
             <div className="flex flex-row justify-between">
-              <div class="flex flex-col py-4 max-w-screen-xl sm:pt-12 gap-3">
-                <div class="mt-4 md:mt-0">
-                  <h2 class="text-left text-5xl tracking-tight font-extrabold ">
-                    <span class="bu-text-title">{title}</span>
+              <div className="flex flex-col py-4 max-w-screen-xl sm:pt-12 gap-3">
+                <div className="mt-4 md:mt-0">
+                  <h2 className="text-left text-5xl tracking-tight font-extrabold ">
+                    <span className="bu-text-title">{title}</span>
                   </h2>
                 </div>
-                <span class="bu-text-subtitle text-xl">
+                <span className="bu-text-subtitle text-xl">
                   {problem
                     ? problem.topic_name + " > " + problem.series_name
                     : ""}
@@ -140,13 +141,13 @@ export default function ProblemsCanvas() {
                       setLoading(true);
                       navigator(
                         type == 2
-                          ? `/admin/problems/${problem.problem_id}`
-                          : `/problem/${problem.problem_id}/edit`
+                          ? `/admin/problems/${id}`
+                          : `/problem/${id}/edit`
                       );
                     }}
                   >
-                    <div class="flex flex-row gap-4 items-center">
-                      <FontAwesomeIcon icon={faPenToSquare} size="md" />
+                    <div className="flex flex-row gap-4 items-center">
+                      <FontAwesomeIcon icon={faPenToSquare} size="sm" />
                       EDIT
                     </div>
                   </button>
@@ -154,15 +155,16 @@ export default function ProblemsCanvas() {
               ) : (
                 <div className="flex items-center">
                   <button
-                    className="submit-button"
-                    class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary"
+                    className="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary"
                     onClick={() => {
                       setLoading(true);
                       console.log(problem);
                       navigator(`/submission/${id}`);
                     }}
                   >
-                    <div class="flex flex-row gap-4 items-center">
+
+                    <div className="flex flex-row gap-4 items-center">
+
                       SUBMISSIONS
                     </div>
                   </button>
@@ -170,8 +172,8 @@ export default function ProblemsCanvas() {
               )}
             </div>
 
-            <div class="items-center mx-auto max-w-screen-2xl">
-              <p class="mb-6 text-left  font-light md:text-lg bu-text-primary">
+            <div className="items-center mx-auto max-w-screen-2xl">
+              <div className="mb-6 text-left  font-light md:text-lg bu-text-primary">
                 <div
                   style={{
                     width: "100%",
@@ -181,81 +183,9 @@ export default function ProblemsCanvas() {
                     borderRadius: "20px",
                   }}
                 >
-                  <div data-color-mode={colorMode} className="text-2xl">
-                    <div className="wmde-markdown-var "> </div>
-                    {/* <MDEditor value={text} onChange={setText} /> */}
-                    <MDEditor
-                      height={
-                        60 +
-                        35 * calculateNumberOfLines(statement) +
-                        statement.length / 2
-                      }
-                      preview="preview"
-                      hideToolbar={true}
-                      enableScroll={false}
-                      visibleDragbar={false}
-                      className="border-none"
-                      value={statement}
-                      style={{
-                        whiteSpace: "pre-wrap",
-                        padding: "20px",
-                        borderRadius: "20px",
-                        border: 0,
-                        // fontSize: "23px !important;",
-                      }}
-                      previewOptions={{
-                        components: {
-                          code: ({ children = [], className, ...props }) => {
-                            if (
-                              typeof children === "string" &&
-                              /\$\$(.*)\$\$/.test(children)
-                            ) {
-                              const html = katex.renderToString(
-                                children.replace(/\$\$(.*)\$\$/, "$1"),
-                                {
-                                  throwOnError: false,
-                                }
-                              );
-                              return (
-                                <code
-                                  dangerouslySetInnerHTML={{ __html: html }}
-                                  style={{ background: "transparent" }}
-                                />
-                              );
-                            }
-                            const code =
-                              props.node && props.node.children
-                                ? getCodeString(props.node.children)
-                                : children;
-                            if (
-                              typeof code === "string" &&
-                              typeof className === "string" &&
-                              /language-katex/.test(
-                                className.toLocaleLowerCase()
-                              )
-                            ) {
-                              const html = katex.renderToString(code, {
-                                throwOnError: false,
-                              });
-                              return (
-                                <code
-                                  style={{ fontSize: "150%" }}
-                                  dangerouslySetInnerHTML={{ __html: html }}
-                                />
-                              );
-                            }
-                            return (
-                              <code className={String(className)}>
-                                {children}
-                              </code>
-                            );
-                          },
-                        },
-                      }}
-                    />
-                  </div>
+                  <MarkdownPreview colorMode={colorMode} text={statement} />
                 </div>
-              </p>
+              </div>
             </div>
           </div>
           {canvasId && canvasRef && (

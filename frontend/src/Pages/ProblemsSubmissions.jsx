@@ -62,6 +62,7 @@ export default function ProblemsSubmissions() {
   };
 
   return problem ? (
+
     <>
       <div class="flex flex-col py-4 max-w-screen-xl sm:pt-12 gap-3">
         <div class="mt-4 md:mt-0">
@@ -86,6 +87,7 @@ export default function ProblemsSubmissions() {
         ))}
       </TableContainer>
     </>
+
   ) : (
     <></>
   );

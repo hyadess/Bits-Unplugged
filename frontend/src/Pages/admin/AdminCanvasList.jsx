@@ -45,6 +45,7 @@ const AdminCanvasList = () => {
         <CardContainer col={3}>
           {canvasList.map((canvas, index) => (
             <CustomCard
+              key={index}
               id={`Canvas ${index + 1}`}
               name={canvas.name}
               image={canvas.logo}

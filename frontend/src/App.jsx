@@ -1,5 +1,3 @@
-import "./App.scss";
-
 import React, { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,7 +14,7 @@ const showToast = (message, type) => {
 
 var setLoading;
 const App = () => {
-  const [loading, setL] = useState(false);
+  const [loading, setL] = useState(true);
   useEffect(() => {
     if (
       localStorage.getItem("color-theme") === "dark" ||
@@ -37,8 +35,8 @@ const App = () => {
   return (
     <div>
       {loading ? (
-        <div class="bu-bg-color fixed z-40 top-0 left-0 w-full h-full flex justify-center items-center">
-          <div class="border-[6px] border-solid border-white dark:border-gray-800 rounded-full border-t-[8px] border-t-[#1C5B5F] dark:border-t-pink-600 w-16 h-16 animate-spin"></div>
+        <div className="bu-bg-color fixed z-40 top-0 left-0 w-full h-full flex justify-center items-center">
+          <div className="border-[6px] border-solid border-white dark:border-gray-800 rounded-full border-t-[8px] border-t-[#1C5B5F] dark:border-t-pink-600 w-16 h-16 animate-spin"></div>
         </div>
       ) : (
         <></>

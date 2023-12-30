@@ -23,8 +23,8 @@ const AdminTopicEditor = () => {
   const [type, setType] = useState(-1);
   const { id } = useParams();
 
-  const [topic, setTopic] = useState([]);
-  const [data, setData] = useState();
+  const [topic, setTopic] = useState(null);
+
   const handleChange = (prop) => (event) => {
     setTopic({ ...topic, [prop]: event.target.value });
   };
@@ -50,35 +50,37 @@ const AdminTopicEditor = () => {
     getTopic();
   }, []);
   return (
-    <>
-      <Title title={topic.name} sub_title={topic.description} />
-      <div className="flex flex-col gap-5">
-        <TextField2
-          label="Topic Name"
-          onChange={handleChange}
-          value={topic.name}
-          id="name"
-        />
-        <TextField2
-          label="Description"
-          onChange={handleChange}
-          value={topic.description}
-          id="description"
-        />
-        <TextField2
-          label="Logo URL"
-          onChange={handleChange}
-          value={topic.logo}
-          id="logo"
-        />
-        <button
-          className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-primary mt-5"
-          onClick={handleSave}
-        >
-          Save
-        </button>
-      </div>
-    </>
+    topic && (
+      <>
+        <Title title={topic.name} sub_title={topic.description} />
+        <div className="flex flex-col gap-5">
+          <TextField2
+            label="Topic Name"
+            onChange={handleChange}
+            value={topic.name}
+            id="name"
+          />
+          <TextField2
+            label="Description"
+            onChange={handleChange}
+            value={topic.description}
+            id="description"
+          />
+          <TextField2
+            label="Logo URL"
+            onChange={handleChange}
+            value={topic.logo}
+            id="logo"
+          />
+          <button
+            className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-primary mt-5"
+            onClick={handleSave}
+          >
+            Save
+          </button>
+        </div>
+      </>
+    )
   );
 };
 

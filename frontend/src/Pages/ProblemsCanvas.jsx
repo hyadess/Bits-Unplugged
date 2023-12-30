@@ -114,13 +114,13 @@ export default function ProblemsCanvas() {
         <>
           <div>
             <div className="flex flex-row justify-between">
-              <div class="flex flex-col py-4 max-w-screen-xl sm:pt-12 gap-3">
-                <div class="mt-4 md:mt-0">
-                  <h2 class="text-left text-5xl tracking-tight font-extrabold ">
-                    <span class="bu-text-title">{title}</span>
+              <div className="flex flex-col py-4 max-w-screen-xl sm:pt-12 gap-3">
+                <div className="mt-4 md:mt-0">
+                  <h2 className="text-left text-5xl tracking-tight font-extrabold ">
+                    <span className="bu-text-title">{title}</span>
                   </h2>
                 </div>
-                <span class="bu-text-subtitle text-xl">
+                <span className="bu-text-subtitle text-xl">
                   {problem
                     ? problem.topic_name + " > " + problem.series_name
                     : ""}
@@ -134,13 +134,13 @@ export default function ProblemsCanvas() {
                       setLoading(true);
                       navigator(
                         type == 2
-                          ? `/admin/problems/${problem.problem_id}`
-                          : `/problem/${problem.problem_id}/edit`
+                          ? `/admin/problems/${id}`
+                          : `/problem/${id}/edit`
                       );
                     }}
                   >
-                    <div class="flex flex-row gap-4 items-center">
-                      <FontAwesomeIcon icon={faPenToSquare} size="md" />
+                    <div className="flex flex-row gap-4 items-center">
+                      <FontAwesomeIcon icon={faPenToSquare} size="sm" />
                       EDIT
                     </div>
                   </button>
@@ -148,17 +148,14 @@ export default function ProblemsCanvas() {
               ) : (
                 <div className="flex items-center">
                   <button
-                    className="submit-button"
-                    class="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary"
+                    className="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary"
                     onClick={() => {
                       setLoading(true);
                       console.log(problem);
                       navigator(`/submission/${id}`);
-                      
                     }}
                   >
-                    <div class="flex flex-row gap-4 items-center">
-                      
+                    <div className="flex flex-row gap-4 items-center">
                       SUBMISSIONS
                     </div>
                   </button>
@@ -166,8 +163,8 @@ export default function ProblemsCanvas() {
               )}
             </div>
 
-            <div class="items-center mx-auto max-w-screen-2xl">
-              <p class="mb-6 text-left  font-light md:text-lg bu-text-primary">
+            <div className="items-center mx-auto max-w-screen-2xl">
+              <div className="mb-6 text-left  font-light md:text-lg bu-text-primary">
                 <div
                   style={{
                     width: "100%",
@@ -251,7 +248,7 @@ export default function ProblemsCanvas() {
                     />
                   </div>
                 </div>
-              </p>
+              </div>
             </div>
           </div>
           {canvasId && canvasRef && (

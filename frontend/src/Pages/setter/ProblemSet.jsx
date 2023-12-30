@@ -10,8 +10,7 @@ import Title from "../../Components/Title";
 import AddIcon from "@mui/icons-material/Add";
 import { setLoading } from "../../App";
 import SetterProblems from "./SetterProblems";
-// const SetterProblems = React.lazy(() => import("./SetterProblems"));
-// import LazyLoad from "react-lazyload";
+
 const problemController = new ProblemController();
 const topicController = new TopicController();
 
@@ -68,7 +67,7 @@ const ProblemSet = () => {
       <div className="fixed bottom-10 z-10 right-10 hidden md:flex items-center justify-center ">
         <div
           onClick={openModal}
-          class="w-16 h-16 rounded-full justify-center inline-flex items-center text-white font-medium text-sm p-4 text-center ursor-pointer shadow-lg cursor-pointer bu-button-secondary "
+          className="w-16 h-16 rounded-full justify-center inline-flex items-center text-white font-medium text-sm p-4 text-center ursor-pointer shadow-lg cursor-pointer bu-button-secondary "
         >
           <div className="text-primary-900 dark:text-gray-900">
             <AddIcon sx={{ fontSize: "4rem" }} />
@@ -79,10 +78,10 @@ const ProblemSet = () => {
       <div className="flex md:hidden items-center justify-center">
         <div
           onClick={openModal}
-          class="w-full justify-center inline-flex my-8  text-center bu-button-secondary font-medium rounded-lg text-sm p-4   cursor-pointer gap-3 items-center"
+          className="w-full justify-center inline-flex my-8  text-center bu-button-secondary font-medium rounded-lg text-sm p-4   cursor-pointer gap-3 items-center"
         >
           <AddIcon sx={{ fontSize: "2rem" }} />
-          <h5 class="text-2xl md:text-3xl text-center font-bold tracking-tight ">
+          <h5 className="text-2xl md:text-3xl text-center font-bold tracking-tight ">
             New Problem
           </h5>
         </div>

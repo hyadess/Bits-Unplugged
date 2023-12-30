@@ -42,13 +42,13 @@ export default function ProblemsSubmissions() {
   };
 
   return problem ? (
-    <div class="flex flex-col py-4 max-w-screen-xl sm:pt-12 gap-3">
-      <div class="mt-4 md:mt-0">
-        <h2 class="text-left text-5xl tracking-tight font-extrabold ">
-          <span class="bu-text-title">{problem.title}</span>
+    <div className="flex flex-col py-4 max-w-screen-xl sm:pt-12 gap-3">
+      <div className="mt-4 md:mt-0">
+        <h2 className="text-left text-5xl tracking-tight font-extrabold ">
+          <span className="bu-text-title">{problem.title}</span>
         </h2>
       </div>
-      <span class="bu-text-subtitle text-xl">
+      <span className="bu-text-subtitle text-xl">
         {problem ? problem.topic_name + " > " + problem.series_name : ""}
       </span>
     </div>

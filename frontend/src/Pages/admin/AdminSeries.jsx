@@ -47,6 +47,7 @@ const AdminSeries = () => {
         <CardContainer col={3}>
           {seriesList.map((series, index) => (
             <CustomCard
+              key={index}
               id={`Series ${index + 1}`}
               name={series.name}
               image={series.logo}

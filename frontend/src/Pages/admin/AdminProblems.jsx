@@ -50,6 +50,7 @@ const AdminProblems = () => {
           {problemList &&
             problemList.map((problem, index) => (
               <ProblemCard
+                key={index}
                 idx={index + 1}
                 id={`Problem ${index + 1}`}
                 name={problem.title}

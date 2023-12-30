@@ -79,7 +79,7 @@ class ProblemsRepository extends Repository {
 
   getPublishedProblemById = async (problem_id) => {
     const query = `
-    SELECT St.*, S.name as series_name, T.name as topic_name 
+    SELECT P.problem_id, St.*, S.name as series_name, T.name as topic_name 
     FROM Problem P
     LEFT JOIN Series S
     ON P.series_id = S.series_id

@@ -33,7 +33,6 @@ import AdminSeriesEditor from "./Pages/admin/AdminSeriesEditor";
 import AdminProblemEditor from "./Pages/admin/AdminProblemEditor";
 import AdminCanvasList from "./Pages/admin/AdminCanvasList";
 import AdminCanvasEditor from "./Pages/admin/AdminCanvasEditor";
-import CanvasSelector from "./Pages/setter/CanvasSelector";
 import AdminContests from "./Pages/admin/AdminContests";
 import AdminSetters from "./Pages/admin/AdminSetters";
 
@@ -246,14 +245,6 @@ const AppRoutes = () => {
 
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route element={<ProblemSetter />}>
-          <Route
-            path="/canvas"
-            element={
-              <LayoutMain>
-                <CanvasSelector />
-              </LayoutMain>
-            }
-          />
           <Route
             path="/problem/:id/preview"
             element={

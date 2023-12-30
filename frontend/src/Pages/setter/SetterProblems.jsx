@@ -42,6 +42,7 @@ const SetterProblems = () => {
         .sort((a, b) => a.problem_id - b.problem_id)
         .map((prob, index) => (
           <ProblemSetCard
+            key={index}
             idx={index + 1}
             id={prob.problem_id}
             name={prob.title}

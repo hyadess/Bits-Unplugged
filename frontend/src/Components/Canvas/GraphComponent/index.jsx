@@ -18,10 +18,10 @@ import {
   Shape,
 } from "react-konva";
 import Modal from "react-modal";
-import "./GraphComponent.scss";
+import "./styles.scss";
 import { Button } from "@mui/material";
 import Cookies from "universal-cookie";
-import { setLoading } from "../../App";
+import { setLoading } from "../../../App";
 const RADIUS = 30;
 const EDGECLICKRANGE = 20;
 const canvasWidth = 1440;
@@ -224,7 +224,6 @@ const GraphComponent = (props, ref) => {
           // Do nothing or handle text click separately
           return;
         }
-
 
         const stage = stageRef.current;
         const { x, y } = stage.getPointerPosition();
@@ -482,12 +481,9 @@ const GraphComponent = (props, ref) => {
       });
 
       setNodeIndex(maxIndex + 1);
-    }
-    else
-    {
+    } else {
       setEdges([]);
       setNodes([]);
-
     }
     // data=props.input;
     // setData=props.setInput;
@@ -615,7 +611,6 @@ const GraphComponent = (props, ref) => {
                           : "#ec3965"
                       }
                       width={45}
-                      draggable
                       onClick={() => changeEdgeWeight(edge)}
                     />
                   )}

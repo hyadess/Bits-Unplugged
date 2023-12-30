@@ -96,9 +96,9 @@ export default function SolutionChecker(props) {
     >
       <div className="w-full md:w-9/12 h-1/2 md:h-full">
         <Editor
-          ref={editorRef}
+          // ref={editorRef}
           height="100%" // Set the height to 100% of its parent div
-          className="box-border border-4 border-solid border-[#504f4fe7] border-spacing-4 border-r-0"
+          className="box-border border-4 border-solid border-[#504f4fe7] border-spacing-4 md:border-r-0"
           language="javascript"
           theme="vs-dark"
           value={props.code}
@@ -119,8 +119,8 @@ export default function SolutionChecker(props) {
         <div className="flex flex-row md:flex-col gap-0 h-80% md:h-90%">
           <div className="w-1/2 md:w-full h-full md:h-1/2">
             <Editor
-              className="box-border border-4 border-solid border-[#504f4fe7] border-spacing-4 "
-              ref={inputRef}
+              className="box-border border-4 border-solid border-[#504f4fe7] border-spacing-4 border-r-0 md:border-r-4 border-t-0 md:border-t-4"
+              // ref={inputRef}
               width="100%"
               height="100%" // Set the height to 100% of its parent div
               language="json"
@@ -149,7 +149,7 @@ export default function SolutionChecker(props) {
             borderRadius: "0px",
           }}
           type="submit"
-          class="text-white font-bold rounded-lg text-lg md:text-md px-7 py-3.5 text-center bu-button-secondary w-full h-20% md:h-10% flex flex-row gap-5 justify-center items-center box-border border-4 border-solid border-[#5b5a5ae7] border-spacing-4 border-t-0"
+          className="text-white font-bold rounded-lg text-lg md:text-md px-7 py-3.5 text-center bu-button-secondary w-full h-20% md:h-10% flex flex-row gap-5 justify-center items-center box-border border-4 border-solid border-[#5b5a5ae7] border-spacing-4 border-t-0"
           onClick={submit}
         >
           <FontAwesomeIcon icon={faPlay} />

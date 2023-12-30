@@ -21,7 +21,7 @@ const ImageLoader = ({ src, alt, style, className }) => {
         style={style}
       />
       {!imageLoaded && (
-        <div style={style}>
+        <div>
           <span className="loader" />
         </div>
       )}

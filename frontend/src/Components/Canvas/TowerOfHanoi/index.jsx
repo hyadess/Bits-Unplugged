@@ -178,7 +178,7 @@ const DiskElements = ({
           document.body.style.cursor = "default";
           handleDiskUnhover(e);
         }}
-        key={index}
+        key={disk}
         x={x}
         y={y}
         width={calculateDiskWidth(disk % 10)}

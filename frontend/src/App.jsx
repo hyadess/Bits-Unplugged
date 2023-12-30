@@ -14,7 +14,7 @@ const showToast = (message, type) => {
 
 var setLoading;
 const App = () => {
-  const [loading, setL] = useState(false);
+  const [loading, setL] = useState(true);
   useEffect(() => {
     if (
       localStorage.getItem("color-theme") === "dark" ||

@@ -24,6 +24,114 @@ import { Save } from "@mui/icons-material";
 const problemController = new ProblemController();
 const canvasController = new CanvasController();
 
+
+const SolutionCheckerTab = ({
+  code,
+  setCode,
+  input,
+  checkerType,
+  setCheckerType,
+  canvasId,
+  setInput,
+  canvasRef,
+  params,
+  setParams,
+  uiParams,
+  setUiParams,
+  controlParams,
+  setControlParams,
+  reset,
+  updateCanvas,
+  updateCode,
+}) => {
+  const [output, setOutput] = useState("");
+  const [stdout, setStdout] = useState([]);
+
+  useEffect(() => {
+    console.log(canvasId);
+  }, []);
+  const handleCheckSolution = async () => {
+    try {
+      const result = await problemController.checkSolution(code, input);
+      setOutput(result.output);
+      setStdout(result.stdout);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <>
+      <SelectionField
+        label="Choose Checker"
+        onChange={setCheckerType}
+        value={checkerType}
+        options={[
+          { label: "code", value: 0 },
+          { label: "canvas", value: 1 },
+        ]}
+      />
+      {checkerType == 0 ? (
+        <SolutionChecker
+          code={code}
+          setCode={setCode}
+          input={input}
+          stdout={stdout}
+          output={output}
+          setOutput={setOutput}
+          setStdout={setStdout}
+          checkSubmit={handleCheckSolution}
+        />
+      ) : (
+        <>
+          <CanvasContainer
+            id={canvasId}
+            input={input}
+            setInput={setInput}
+            ref={canvasRef}
+            mode="preview"
+            params={params}
+            setParams={setParams}
+            uiParams={uiParams}
+            setUiParams={setUiParams}
+            controlParams={controlParams}
+            setControlParams={setControlParams}
+          />
+          <div
+            className="flex py-5"
+            style={{ justifyContent: "space-between", marginLeft: "auto" }}
+          >
+            <Button
+              variant="contained"
+              color="success"
+              size="large"
+              onClick={() => {
+                reset();
+              }}
+              startIcon={
+                <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+              }
+            >
+              Reset
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                updateCanvas();
+                updateCode();
+              }}
+              size="large"
+              startIcon={<SaveIcon sx={{ fontSize: "2rem", color: "white" }} />}
+            >
+              Save
+            </Button>
+          </div>
+        </>
+      )}
+    </>
+  );
+};
+
 export default function ProblemSetEnv() {
   const { prob_id } = useParams();
   const [params, setParams] = useState({});
@@ -33,7 +141,7 @@ export default function ProblemSetEnv() {
   const switchPath = (pathname) => {
     navigator(pathname);
   };
-
+  const [checkerType, setCheckerType] = useState(0);
   const getProblem = async () => {
     //console.log(prob_id)
     const res = await problemController.getProblemById(prob_id);
@@ -70,8 +178,6 @@ export default function ProblemSetEnv() {
 
   // Function to handle changes in the textarea
 
-  const [output, setOutput] = useState("");
-  const [stdout, setStdout] = useState([]);
   const [open, setOpen] = useState(false);
   const [code, setCode] = useState("");
   const [backup, setBackup] = useState(null);
@@ -204,16 +310,27 @@ export default function ProblemSetEnv() {
         );
       case "solution":
         return (
-          <SolutionChecker
-            code={code}
-            setCode={setCode}
-            input={input}
-            stdout={stdout}
-            output={output}
-            setOutput={setOutput}
-            setStdout={setStdout}
-            checkSubmit={handleCheckSolution}
-          />
+          canvasId && (
+            <SolutionCheckerTab
+              code={code}
+              setCode={setCode}
+              input={input}
+              checkerType={checkerType}
+              setCheckerType={setCheckerType}
+              canvasId={canvasId}
+              setInput={setInput}
+              canvasRef={canvasRef}
+              params={params}
+              setParams={setParams}
+              uiParams={uiParams}
+              setUiParams={setUiParams}
+              controlParams={controlParams}
+              setControlParams={setControlParams}
+              reset={reset}
+              updateCanvas={updateCanvas}
+              updateCode={updateCode}
+            />
+          )
         );
       default:
         return null;
@@ -224,16 +341,6 @@ export default function ProblemSetEnv() {
     const res = await problemController.deleteProblem(prob_id);
     if (res.success) {
       switchPath("/problemSet");
-    }
-  };
-
-  const handleCheckSolution = async () => {
-    try {
-      const result = await problemController.checkSolution(code, input);
-      setOutput(result.output);
-      setStdout(result.stdout);
-    } catch (error) {
-      console.error(error);
     }
   };
 

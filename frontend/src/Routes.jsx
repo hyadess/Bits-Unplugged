@@ -42,8 +42,6 @@ import LayoutMain from "./Components/Layouts/LayoutMain";
 
 import Navbar from "./Components/Navbar";
 
-
-
 import ProblemsSubmissions from "./Pages/ProblemsSubmissions";
 import SetterProfile from "./Pages/setter/SetterProfile";
 import Profile from "./Pages/user/Profille";
@@ -329,7 +327,7 @@ const AppRoutes = () => {
               <LayoutMain
                 left={
                   <div
-                    className="max-w-sm rounded-lg shadow-lg border bu-nav-color bu-text-primary"
+                    className="w-full rounded-lg shadow-lg border bu-nav-color bu-text-primary"
                     style={{
                       height: "100%",
                       display: "flex",
@@ -343,7 +341,7 @@ const AppRoutes = () => {
                 right={
                   <div className="flex flex-col gap-5 w-full">
                     <div
-                      className="max-w-sm rounded-lg shadow-lg bu-nav-color bu-text-primary"
+                      className="w-full rounded-lg shadow-lg bu-nav-color bu-text-primary"
                       style={{
                         height: "50%",
                         display: "flex",
@@ -354,7 +352,7 @@ const AppRoutes = () => {
                       Put Stats here
                     </div>
                     <div
-                      className="max-w-sm  border rounded-lg shadow-lg bu-nav-color bu-text-primary"
+                      className="w-full  border rounded-lg shadow-lg bu-nav-color bu-text-primary"
                       style={{
                         height: "50%",
                         display: "flex",
@@ -434,6 +432,8 @@ const AppRoutes = () => {
             </Layout2>
           }
         />
+
+        <Route path="/*" element={<Navigate replace to="/" />} />
       </Routes>
     </Router>
   );

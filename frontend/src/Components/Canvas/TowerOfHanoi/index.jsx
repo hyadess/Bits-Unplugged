@@ -836,7 +836,7 @@ const TowerOfHanoi = (props, ref) => {
             {(props.mode === "edit" || props.uiParams.undo.value) && (
               <UndoRedoButton handleUndo={handleUndo} handleRedo={handleRedo} />
             )}
-            <div className="flex flex-row flex-start w-full gap-5 min-h-[2.5rem] ">
+            <div className="flex flex-row flex-start w-full gap-5 min-h-[2.5rem] items-center">
               {(props.mode === "edit" || props.uiParams.n_disks.value) && (
                 <NumberOfDisksInput
                   data={data}

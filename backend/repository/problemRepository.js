@@ -35,7 +35,7 @@ class ProblemsRepository extends Repository {
   };
   getProblemsBySeries = async (series_id) => {
     const query = `
-      SELECT P.*, S.canvas_id, S.name as series_name, T.name as topic_name 
+      SELECT P.*, S.name as series_name, T.name as topic_name 
       FROM Problem P
       JOIN Series S
       ON P.series_id = S.series_id

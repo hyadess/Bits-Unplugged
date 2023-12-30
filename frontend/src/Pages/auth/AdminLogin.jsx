@@ -41,16 +41,17 @@ const AdminLogin = () => {
 
   const handleSubmit = async () => {
     if (!loggingIn) {
-      console.log("Trying to Login");
+      setLoading(true);
       const res = await authController.login({
         email: email,
         pass: password,
         type: 2,
       });
       if (res.success) {
-        setLoading(true);
         setLoggingIn(true);
         navigate("/admin/topics");
+      } else {
+        setLoading(false);
       }
     }
   };

@@ -163,7 +163,7 @@ const PrivateNavbar = (props) => {
               </button>
 
               <button
-                className="icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
+                className="icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info items-center justify-center border-b-4 border-transparent"
                 style={{ alignItems: "center", justifyContent: "center" }}
                 data-tip="Marketplace"
                 onClick={() => {
@@ -171,7 +171,7 @@ const PrivateNavbar = (props) => {
                   switchPath("/login");
                 }}
               >
-                <div className="text-xs md:text-lg md:font-bold md:text-white-800 flex flex-row gap-3 items-center bu-text-primary-hover ">
+                <div className="text-xs md:text-lg md:font-bold flex flex-row gap-3 items-center bu-text-primary-hover ">
                   <FontAwesomeIcon icon={faRightFromBracket} />
                   Logout
                 </div>

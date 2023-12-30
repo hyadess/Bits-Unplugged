@@ -22,9 +22,9 @@ const Home = () => {
   }, []);
   return (
     <div>
-      <div class="gap-8 h-screen items-center py-8 px-4 mx-auto max-w-screen-xl flex flex-col md:flex-row sm:py-16 lg:px-6 xl:gap-16">
+      <div className="gap-8 h-screen items-center py-8 px-4 mx-auto max-w-screen-xl flex flex-col md:flex-row sm:py-16 lg:px-6 xl:gap-16">
         {/* <img
-            class="w-full dark:hidden"
+            className="w-full dark:hidden"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
             alt="dashboard image"
           /> */}
@@ -41,15 +41,17 @@ const Home = () => {
           />
         </div>
 
-        <div class="mt-4 md:mt-0">
-          <h2 class="mb-4 text-center md:text-left text-4xl tracking-tight font-extrabold bu-text-primary">
+        <div className="mt-4 md:mt-0">
+          <h2 className="mb-4 text-center md:text-left text-4xl tracking-tight font-extrabold bu-text-primary">
             {" "}
             A platform for learning{" "}
-            <span class="bu-text-title text-5xl">Computer Science</span> without
-            coding{" "}
+            <span className="bu-text-title text-5xl">
+              Computer Science
+            </span>{" "}
+            without coding{" "}
           </h2>
 
-          <p class="mb-6 text-center md:text-left  font-light bu-text-subtitle md:text-lg">
+          <p className="mb-6 text-center md:text-left  font-light bu-text-subtitle md:text-lg">
             Bits unplugged is a platform for students to learn complex CS
             concepts without needing to write a single line of code through an
             interactive medium
@@ -64,19 +66,19 @@ const Home = () => {
                 ? navigator("/problemSet")
                 : navigator("/topics");
             }}
-            class="inline-flex text-center items-center font-medium rounded-lg text-sm px-5 py-2.5 bu-button-secondary bu-text-primary cursor-pointer"
+            className="inline-flex text-center items-center font-medium rounded-lg text-sm px-5 py-2.5 bu-button-secondary bu-text-primary cursor-pointer"
           >
             Get started
             <svg
-              class="ml-2 -mr-1 w-5 h-5"
+              className="ml-2 -mr-1 w-5 h-5"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                clip-rule="evenodd"
+                clipRule="evenodd"
               ></path>
             </svg>
           </div>
@@ -84,13 +86,13 @@ const Home = () => {
       </div>
 
       <section>
-        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
-          <div class="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold bu-text-primary">
+        <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
+          <div className="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
+            <h2 className="mb-4 text-4xl tracking-tight font-extrabold bu-text-primary">
               Our Team
             </h2>
 
-            <p class="font-light lg:mb-16 sm:text-xl bu-text-subtitle">
+            <p className="font-light lg:mb-16 sm:text-xl bu-text-subtitle">
               Meet our dynamic team who are here to help you at each step of
               your journey
             </p>

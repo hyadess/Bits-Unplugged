@@ -300,10 +300,10 @@ export default function ProblemSetEnv() {
   return (
     <div>
       <div>
-        <div class="items-center py-4 mx-auto max-w-screen-2xl md:grid md:grid-cols-2 sm:pt-16">
-          <div class="mt-4 md:mt-0 flex flex-row items-center">
-            <h2 class="text-center md:text-left text-5xl tracking-tight font-extrabold ">
-              <span class="bu-text-title">
+        <div className="items-center py-4 mx-auto max-w-screen-2xl md:grid md:grid-cols-2 sm:pt-16">
+          <div className="mt-4 md:mt-0 flex flex-row items-center">
+            <h2 className="text-center md:text-left text-5xl tracking-tight font-extrabold ">
+              <span className="bu-text-title">
                 <div onClick={handleTextClick} style={{ cursor: "pointer" }}>
                   {isTextEditable ? (
                     <input

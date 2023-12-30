@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef, forwardRef } from "react";
 import { Route, useParams } from "react-router-dom";
-import GraphComponent from "./GraphComponent";
-import TowerOfHanoi from "./TowerOfHanoi";
 import CanvasController from "../../controller/canvasController";
 import "./CanvasContainer.scss";
 import Cookies from "universal-cookie";

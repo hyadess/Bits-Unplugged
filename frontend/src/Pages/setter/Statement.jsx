@@ -86,7 +86,7 @@ function ProblemStatement(props) {
       <div data-color-mode={colorMode} className="mt-5">
         <div className="wmde-markdown-var"> </div>
         <MDEditor
-          height={60 + 35 * calculateNumberOfLines(text) + text.length / 2}
+          height={80 + 35 * calculateNumberOfLines(text) + text.length / 2}
           value={text}
           onChange={setText}
           style={{ borderRadius: "0 0 20px 20px" }}
@@ -205,7 +205,7 @@ function ProblemStatement(props) {
         className="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary flex flex-row gap-3 items-center justify-center focus:outline-none"
         onClick={updateStatement}
       >
-        <FontAwesomeIcon icon={faFloppyDisk} size="md" />
+        <FontAwesomeIcon icon={faFloppyDisk} size="sm" />
         SAVE
       </button>
     </div>

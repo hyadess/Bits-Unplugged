@@ -30,8 +30,8 @@ export const TextField = (props) => {
   return (
     <div>
       <label
-        for={props.name}
-        class="block mb-2 text-sm font-medium bu-text-primary"
+        // for={props.name}
+        className="block mb-2 text-sm font-medium bu-text-primary"
       >
         {props.label}
       </label>
@@ -40,7 +40,7 @@ export const TextField = (props) => {
         type="text"
         name={props.name}
         id={props.id}
-        class="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
+        className="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
         placeholder={props.placeholder}
         required={props.required}
         onChange={(e) => props.onChange(e.target.value)}
@@ -53,8 +53,8 @@ export const TextField2 = (props) => {
   return (
     <div>
       <label
-        for={props.name}
-        class="block mb-2 text-sm font-medium bu-text-primary"
+        // for={props.name}
+        className="block mb-2 text-sm font-medium bu-text-primary"
       >
         {props.label}
       </label>
@@ -63,7 +63,7 @@ export const TextField2 = (props) => {
         type="text"
         name={props.name}
         id={props.id}
-        class="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
+        className="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
         placeholder={props.placeholder}
         required={props.required}
         onChange={props.onChange(props.id)}
@@ -76,8 +76,8 @@ export const TextArea2 = (props) => {
   return (
     <div>
       <label
-        for={props.name}
-        class="block mb-2 text-sm font-medium bu-text-primary"
+        // for={props.name}
+        className="block mb-2 text-sm font-medium bu-text-primary"
       >
         {props.label}
       </label>
@@ -86,7 +86,7 @@ export const TextArea2 = (props) => {
         type="text"
         name={props.name}
         id={props.id}
-        class="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary m-0"
+        className="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary m-0"
         placeholder={props.placeholder}
         required={props.required}
         onChange={props.onChange(props.id)}
@@ -95,13 +95,12 @@ export const TextArea2 = (props) => {
   );
 };
 
-
 export const SelectionField = (props) => {
   return (
     <div className="w-full">
       <label
-        for={props.name}
-        class="block mb-2 text-sm font-medium bu-text-primary"
+        // for={props.name}
+        className="block mb-2 text-sm font-medium bu-text-primary"
       >
         {props.label}
       </label>
@@ -110,7 +109,7 @@ export const SelectionField = (props) => {
         type="text"
         name={props.name}
         id={props.id}
-        class="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
+        className="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
         placeholder={props.placeholder}
         required={props.required}
         onChange={(e) => props.onChange(e.target.value)}
@@ -132,8 +131,8 @@ export const SelectionField2 = (props) => {
   return (
     <div>
       <label
-        for={props.name}
-        class="block mb-2 text-sm font-medium bu-text-primary"
+        // for={props.name}
+        className="block mb-2 text-sm font-medium bu-text-primary"
       >
         {props.label}
       </label>
@@ -142,7 +141,7 @@ export const SelectionField2 = (props) => {
         type="text"
         name={props.name}
         id={props.id}
-        class="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
+        className="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
         placeholder={props.placeholder}
         required={props.required}
         onChange={props.onChange(props.id)}
@@ -165,8 +164,8 @@ export const PasswordField = (props) => {
   return (
     <div>
       <label
-        for={props.name}
-        class="block mb-2 text-sm font-medium bu-text-primary"
+        // for={props.name}
+        className="block mb-2 text-sm font-medium bu-text-primary"
       >
         {props.label}
       </label>

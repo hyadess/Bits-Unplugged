@@ -10,21 +10,21 @@ const TopicCard = ({ id, name, image, path, action }) => {
 
   return (
     <Zoom in={true}>
-      <div class="flex flex-col items-center h-full md:px-0">
-        <div class="flex flex-row max-w-sm border rounded-lg shadow-lg bu-card-primary h-full w-full">
-          <div class="flex flex-col justify-between w-full">
-            <h5 class="mt-4 text-2xl text-center font-bold tracking-tight bu-text-primary px-3">
+      <div className="flex flex-col items-center h-full md:px-0">
+        <div className="flex flex-row max-w-sm border rounded-lg shadow-lg bu-card-primary h-full w-full">
+          <div className="flex flex-col justify-between w-full">
+            <h5 className="mt-4 text-2xl text-center font-bold tracking-tight bu-text-primary px-3">
               {id}
             </h5>
-            <h5 class="flex items-center justify-center mb-4 text-3xl text-center font-bold tracking-tight  bu-text-title px-3 h-full">
+            <h5 className="flex items-center justify-center mb-4 text-3xl text-center font-bold tracking-tight  bu-text-title px-3 h-full">
               {name}
             </h5>
             <div className="w-full flex items-center justify-center cursor-pointer">
               <div
                 onClick={() => switchPath(path)}
-                class="inline-flex my-8 items-center  font-medium rounded-lg text-sm px-5 py-2.5 text-center bu-button-secondary"
+                className="inline-flex my-8 items-center  font-medium rounded-lg text-sm px-5 py-2.5 text-center bu-button-secondary"
               >
-                <h5 class="text-lg text-center font-bold tracking-tight bu-text-primary">
+                <h5 className="text-lg text-center font-bold tracking-tight bu-text-primary">
                   {action}
                 </h5>
               </div>

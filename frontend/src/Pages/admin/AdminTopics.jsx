@@ -56,6 +56,7 @@ const AdminTopics = () => {
         <CardContainer col={3}>
           {topicList.map((topic, index) => (
             <CustomCard
+              key={index}
               id={`Topic ${index + 1}`}
               name={topic.name}
               image={topic.logo}

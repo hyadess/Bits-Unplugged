@@ -168,6 +168,19 @@ export default function ProblemSetEnv() {
     }
   };
 
+  const [output, setOutput] = useState("");
+  const [stdout, setStdout] = useState([]);
+
+  const handleCheckSolution = async () => {
+    try {
+      const result = await problemController.checkSolution(code, input);
+      setOutput(result.output);
+      setStdout(result.stdout);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   //title.......................
   const [backupId, setBackupId] = useState(null);
   const [canvasId, setCanvasId] = useState(null);
@@ -247,6 +260,81 @@ export default function ProblemSetEnv() {
       canvasRef.current.handleReset();
   }, [resetTrigger]);
 
+  const SolutionCheckerTab = () => {
+    return (
+      <>
+        <SelectionField
+          label="Choose Checker"
+          onChange={setCheckerType}
+          value={checkerType}
+          options={[
+            { label: "code", value: 0 },
+            { label: "canvas", value: 1 },
+          ]}
+        />
+        {checkerType == 0 ? (
+          <SolutionChecker
+            code={code}
+            setCode={setCode}
+            input={input}
+            stdout={stdout}
+            output={output}
+            setOutput={setOutput}
+            setStdout={setStdout}
+            checkSubmit={handleCheckSolution}
+          />
+        ) : (
+          <>
+            <CanvasContainer
+              id={canvasId}
+              input={checkerCanvas}
+              setInput={setCheckerCanvas}
+              ref={canvasRef}
+              mode="preview"
+              params={params}
+              setParams={setParams}
+              uiParams={uiParams}
+              setUiParams={setUiParams}
+              controlParams={controlParams}
+              setControlParams={setControlParams}
+            />
+            <div
+              className="flex py-5"
+              style={{ justifyContent: "space-between", marginLeft: "auto" }}
+            >
+              <Button
+                variant="contained"
+                color="success"
+                size="large"
+                onClick={() => {
+                  reset();
+                }}
+                startIcon={
+                  <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+                }
+              >
+                Reset
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  // updateCanvas();
+                  // updateCode();
+                }}
+                size="large"
+                startIcon={
+                  <SaveIcon sx={{ fontSize: "2rem", color: "white" }} />
+                }
+              >
+                Save
+              </Button>
+            </div>
+          </>
+        )}
+      </>
+    );
+  };
+
   const renderComponent = () => {
     switch (activeComponent) {
       case "statement":
@@ -318,31 +406,7 @@ export default function ProblemSetEnv() {
           </>
         );
       case "solution":
-        return (
-          canvasId && (
-            <SolutionCheckerTab
-              code={code}
-              setCode={setCode}
-              input={input}
-              checkerType={checkerType}
-              setCheckerType={setCheckerType}
-              canvasId={canvasId}
-              setInput={setInput}
-              canvasRef={canvasRef}
-              params={params}
-              setParams={setParams}
-              uiParams={uiParams}
-              setUiParams={setUiParams}
-              controlParams={controlParams}
-              setControlParams={setControlParams}
-              reset={reset}
-              updateCanvas={updateCanvas}
-              updateCode={updateCode}
-              checkerCanvas={checkerCanvas}
-              setCheckerCanvas={setCheckerCanvas}
-            />
-          )
-        );
+        return canvasId && SolutionCheckerTab();
       default:
         return null;
     }

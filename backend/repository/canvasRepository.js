@@ -32,6 +32,7 @@ class CanvasRepository extends Repository {
   };
   updateCanvas = async (canvas_id, data) => {
     // First Update to Canvas Table
+    console.log(canvas_id);
     const query = `
       UPDATE Canvas
       SET name = $2, classname = $3, info = $4, logo = $5, params = $6, ui_params = $7, control_params = $8, template = $9

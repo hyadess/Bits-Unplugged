@@ -9,8 +9,9 @@ import Title from "../../Components/Title";
 import TopicCard from "../../Components/Cards/TopicCard";
 import AdminNavbar from "../../Components/navbar/AdminNavbar";
 import Layout4 from "../../Components/Layouts/Layout4";
-
+import AddIcon from "@mui/icons-material/Add";
 import CanvasController from "../../controller/canvasController";
+import Modal from "../../Components/Modal";
 const canvasController = new CanvasController();
 
 const AdminCanvasList = () => {
@@ -37,6 +38,34 @@ const AdminCanvasList = () => {
     setType(cookies.get("type"));
     getCanvasList();
   }, []);
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const getCanvasId = async (name) => {
+    const res = await canvasController.addCanvas(name);
+    if (res.success) {
+      return res.data[0].canvas_id;
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (inputValue !== "") {
+      setLoading(true);
+      closeModal();
+      const canvasId = await getCanvasId(inputValue);
+      switchPath(`/admin/canvas/${canvasId}`);
+    }
+  };
+
   return (
     <>
       <Title title={`Canvas`} sub_title={`Add/Delete/Update Canvas`} />
@@ -55,6 +84,29 @@ const AdminCanvasList = () => {
           ))}
         </CardContainer>
       )}
+
+      <div className="fixed bottom-10 z-10 right-10 hidden md:flex items-center justify-center ">
+        <div
+          onClick={openModal}
+          className="w-16 h-16 rounded-full justify-center inline-flex items-center text-white font-medium text-sm p-4 text-center ursor-pointer shadow-lg cursor-pointer bu-button-secondary "
+        >
+          <div className="text-primary-900 dark:text-gray-900">
+            <AddIcon sx={{ fontSize: "4rem" }} />
+          </div>
+        </div>
+      </div>
+
+      <Modal
+        placeholder={"Canvas name"}
+        label={"Enter Canvas Name"}
+        isOpen={modalIsOpen}
+        onClose={closeModal}
+        onSubmit={handleSubmit}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+        }}
+        value={inputValue}
+      />
     </>
   );
 };

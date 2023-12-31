@@ -12,5 +12,10 @@ class TopicApi extends Api {
       topic: data,
     });
   };
+  addTopic = async (name) => {
+    return await this.post("/topic/", {
+      name: name,
+    });
+  };
 }
 export default TopicApi;

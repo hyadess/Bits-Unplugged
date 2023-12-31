@@ -9,8 +9,9 @@ import Title from "../../Components/Title";
 import TopicCard from "../../Components/Cards/TopicCard";
 import AdminNavbar from "../../Components/navbar/AdminNavbar";
 import Layout4 from "../../Components/Layouts/Layout4";
-
+import Modal from "../../Components/Modal";
 import TopicController from "../../controller/topicController";
+import AddIcon from "@mui/icons-material/Add";
 const topicController = new TopicController();
 
 const AdminTopics = () => {
@@ -21,18 +22,7 @@ const AdminTopics = () => {
   };
 
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState();
   const [topicList, setTopicList] = useState([]);
-  const baseURL = "https";
-  const getData = async () => {
-    try {
-      const res = await axios.get(`${baseURL}/courses`);
-      setData(res.data);
-      setLoading(false);
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const getTopicList = async () => {
     const res = await topicController.getAllTopics();
@@ -48,10 +38,48 @@ const AdminTopics = () => {
     setType(cookies.get("type"));
     getTopicList();
   }, []);
+
+  
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const getTopicId = async (name) => {
+    const res = await topicController.addTopic(name);
+    if (res.success) {
+      return res.data[0].topic_id;
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Submitted: ", inputValue);
+    if (inputValue !== "") {
+      setLoading(true);
+      closeModal();
+      const topicId = await getTopicId(inputValue);
+      switchPath(`/admin/topics/${topicId}`);
+    }
+  };
+
   return (
     <>
       <Title title={`Topics`} sub_title={`Add/Delete/Update Topics`} />
-
+      <div className="fixed bottom-10 z-10 right-10 hidden md:flex items-center justify-center ">
+        <div
+          onClick={openModal}
+          className="w-16 h-16 rounded-full justify-center inline-flex items-center text-white font-medium text-sm p-4 text-center ursor-pointer shadow-lg cursor-pointer bu-button-secondary "
+        >
+          <div className="text-primary-900 dark:text-gray-900">
+            <AddIcon sx={{ fontSize: "4rem" }} />
+          </div>
+        </div>
+      </div>
       {!loading && (
         <CardContainer col={3}>
           {topicList.map((topic, index) => (
@@ -66,6 +94,19 @@ const AdminTopics = () => {
           ))}
         </CardContainer>
       )}
+
+      <Modal
+        placeholder={"Topic name"}
+        label={"Enter Topic Name"}
+        isOpen={modalIsOpen}
+        onClose={closeModal}
+        onSubmit={handleSubmit}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+          console.log(e.target.value);
+        }}
+        value={inputValue}
+      />
     </>
   );
 };

@@ -10,5 +10,8 @@ class CanvasApi extends Api {
   updateCanvas = async (id, data) => {
     return await this.put("/canvas/" + id, { canvas: data });
   };
+  addCanvas = async (name) => {
+    return await this.post("/canvas/", { name: name });
+  };
 }
 export default CanvasApi;

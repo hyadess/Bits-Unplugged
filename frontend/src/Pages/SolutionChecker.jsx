@@ -60,6 +60,7 @@ export default function SolutionChecker(props) {
     try {
       const result = await problemController.checkSolution(
         ref.current.getValue(),
+        0,
         JSON.parse(ref2.current.getValue())
       );
       props.setOutput(result.output);
@@ -82,11 +83,14 @@ export default function SolutionChecker(props) {
 
   const editorMount = (editor, monaco) => {
     ref.current = editor;
+    monaco.editor.setTheme("light-theme");
   };
 
   const inputMount = (editor, monaco) => {
     ref2.current = editor;
+    monaco.editor.setTheme("light-theme");
   };
+
   const codeChanged = () => {
     props.setCode(ref.current.getValue());
   };
@@ -94,7 +98,7 @@ export default function SolutionChecker(props) {
   const submit = () => {
     // console.log(prob_id);
     handleCheckSolution();
-    problemController.updateSolutionChecker(prob_id, ref.current.getValue());
+    // problemController.updateSolutionChecker(prob_id, ref.current.getValue(), 0);
   };
 
   // const p =
@@ -104,7 +108,7 @@ export default function SolutionChecker(props) {
   return (
     stringed && (
       <div
-        className="flex flex-col md:flex-row gap-0 md:gap-0 w-full mb-10 h-160 md:h-160 bg-[#1F2531]"
+        className="flex flex-col md:flex-row gap-0 md:gap-0 w-full h-160 md:h-160 bg-[#1F2531]"
         style={{ marginTop: "1rem" }}
       >
         <div className="w-full md:w-9/12 h-1/2 md:h-full bg-[#1F2531]">
@@ -115,7 +119,7 @@ export default function SolutionChecker(props) {
             language="javascript"
             theme="light-theme"
             value={props.code}
-            onMount={setEditorTheme}
+            onMount={editorMount}
             beforeMount={defineEditorTheme}
             onChange={codeChanged}
             options={{
@@ -140,8 +144,7 @@ export default function SolutionChecker(props) {
                 language="json"
                 theme="light-theme"
                 value={stringed}
-                // onMount={inputMount}
-
+                onMount={inputMount}
                 options={{
                   inlineSuggest: true,
                   fontSize: "10px",

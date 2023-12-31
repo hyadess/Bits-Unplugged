@@ -94,7 +94,8 @@ export default function ProblemsCanvas() {
   };
   const solutionSubmit = async (e) => {
     let res = await problemController.checkSolution(
-      problem.solution_checker,
+      problem.checker_type == 0 ? problem.checker_code : problem.checker_canvas,
+      problem.checker_type,
       input
     );
     console.log("output " + res.output);

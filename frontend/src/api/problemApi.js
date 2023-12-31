@@ -22,7 +22,7 @@ class ProblemApi extends Api {
   addProblem = async (title) => {
     return await this.post("/problem/", {
       title: title,
-    }); 
+    });
   };
   updateTitle = async (problem_id, title) => {
     return await this.put("/problem/" + problem_id + "/title", {
@@ -60,9 +60,10 @@ class ProblemApi extends Api {
       control_params: controlParams,
     });
   };
-  updateSolutionChecker = async (problem_id, code) => {
+  updateSolutionChecker = async (problem_id, solution_checker, type) => {
     return await this.put("/problem/" + problem_id + "/solution_checker", {
-      solution_checker: code,
+      solution_checker: solution_checker,
+      checker_type: type,
     });
   };
   deleteProblem = async (problem_id) => {

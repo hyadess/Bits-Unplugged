@@ -63,6 +63,9 @@ const CanvasContainer = (props, ref) => {
     }
   };
 
+  useEffect(() => {
+    setCanvasMode(props.mode);
+  }, [props.mode]);
   // Fix this
   const getCanvas = async () => {
     console.log("Canvas changed");

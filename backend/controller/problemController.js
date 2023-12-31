@@ -103,7 +103,8 @@ class ProblemController extends Controller {
   updateSolutionChecker = async (req, res) => {
     let result = await problemRepository.updataSolutionChecker(
       req.params.problem_id,
-      req.body.solution_checker
+      req.body.solution_checker,
+      req.body.checker_type
     );
     this.handleResponse(result, res);
   };

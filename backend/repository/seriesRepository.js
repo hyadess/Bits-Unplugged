@@ -34,10 +34,11 @@ class SeriesRepository extends Repository {
   };
   addSeries = async (data) => {
     const query = `
-      INSERT INTO Series (topic_id, name, description, logo)
-      VALUES ($1, $2, $3, $4);
+      INSERT INTO Series (name)
+      VALUES ($1)
+      RETURNING series_id;
     `;
-    const params = [data.topic_id, data.name, data.description, data.logo];
+    const params = [data.name];
     const result = await this.query(query, params);
     return result;
   };

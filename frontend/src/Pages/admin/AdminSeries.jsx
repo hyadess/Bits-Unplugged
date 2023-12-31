@@ -9,8 +9,9 @@ import Title from "../../Components/Title";
 import TopicCard from "../../Components/Cards/TopicCard";
 import AdminNavbar from "../../Components/navbar/AdminNavbar";
 import Layout4 from "../../Components/Layouts/Layout4";
-
+import AddIcon from "@mui/icons-material/Add";
 import SeriesController from "../../controller/seriesController";
+import Modal from "../../Components/Modal";
 const seriesController = new SeriesController();
 
 const AdminSeries = () => {
@@ -21,9 +22,7 @@ const AdminSeries = () => {
   };
 
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState();
   const [seriesList, setSeriesList] = useState([]);
-  const baseURL = "https";
 
   const getSeriesList = async () => {
     const res = await seriesController.getAllSeries();
@@ -39,6 +38,34 @@ const AdminSeries = () => {
     setType(cookies.get("type"));
     getSeriesList();
   }, []);
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const getSeriesId = async (name) => {
+    const res = await seriesController.addSeries(name);
+    if (res.success) {
+      return res.data[0].series_id;
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (inputValue !== "") {
+      setLoading(true);
+      closeModal();
+      const seriesId = await getSeriesId(inputValue);
+      switchPath(`/admin/series/${seriesId}`);
+    }
+  };
+
   return (
     <>
       <Title title={`Series`} sub_title={`Add/Delete/Update Series`} />
@@ -57,6 +84,29 @@ const AdminSeries = () => {
           ))}
         </CardContainer>
       )}
+
+      <div className="fixed bottom-10 z-10 right-10 hidden md:flex items-center justify-center ">
+        <div
+          onClick={openModal}
+          className="w-16 h-16 rounded-full justify-center inline-flex items-center text-white font-medium text-sm p-4 text-center ursor-pointer shadow-lg cursor-pointer bu-button-secondary "
+        >
+          <div className="text-primary-900 dark:text-gray-900">
+            <AddIcon sx={{ fontSize: "4rem" }} />
+          </div>
+        </div>
+      </div>
+
+      <Modal
+        placeholder={"Series name"}
+        label={"Enter Series Name"}
+        isOpen={modalIsOpen}
+        onClose={closeModal}
+        onSubmit={handleSubmit}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+        }}
+        value={inputValue}
+      />
     </>
   );
 };

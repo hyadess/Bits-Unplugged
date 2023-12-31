@@ -24,10 +24,11 @@ class TopicRepository extends Repository {
   };
   addTopic = async (data) => {
     const query = `
-      INSERT INTO topic (name, description, logo)
-      VALUES ($1, $2, $3);
+      INSERT INTO topic (name)
+      VALUES ($1)
+      RETURNING topic_id;
     `;
-    const params = [data.name, data.description, data.logo];
+    const params = [data.name];
     const result = await this.query(query, params);
     return result;
   };

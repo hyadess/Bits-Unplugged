@@ -444,7 +444,7 @@ export default function ProblemSetEnv() {
   };
 
   const updateCanvas = async () => {
-    setCheckerCanvas(JSON.parse(JSON.stringify(input)));
+    // setCheckerCanvas(JSON.parse(JSON.stringify(input)));
     const res = await problemController.updateCanvas(
       prob_id,
       canvasId,

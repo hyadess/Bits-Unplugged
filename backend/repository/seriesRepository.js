@@ -34,16 +34,10 @@ class SeriesRepository extends Repository {
   };
   addSeries = async (data) => {
     const query = `
-      INSERT INTO Series (topic_id, canvas_id, name, description, logo)
-      VALUES ($1, $2, $3, $4, $5);
+      INSERT INTO Series (topic_id, name, description, logo)
+      VALUES ($1, $2, $3, $4);
     `;
-    const params = [
-      data.topic_id,
-      data.canvas_id,
-      data.name,
-      data.description,
-      data.logo,
-    ];
+    const params = [data.topic_id, data.name, data.description, data.logo];
     const result = await this.query(query, params);
     return result;
   };
@@ -51,13 +45,12 @@ class SeriesRepository extends Repository {
     // First Update to Canvas Table
     const query = `
       UPDATE Series
-      SET topic_id = $2,canvas_id = $3, name = $4, description = $5, logo = $6
+      SET topic_id = $2, name = $3, description = $4, logo = $5
       WHERE series_id = $1;
     `;
     const params = [
       series_id,
       data.topic_id,
-      data.canvas_id,
       data.name,
       data.description,
       data.logo,

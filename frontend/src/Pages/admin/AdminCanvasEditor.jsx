@@ -441,20 +441,23 @@ const AdminCanvasEditor = () => {
         <TextArea2
           label="Canvas Name"
           onChange={handleChange}
-          value={canvas.name}
+          value={canvas.name ?? ""}
           id="name"
+          required={false}
         />
         <TextArea2
           label="Info"
           onChange={handleChange}
-          value={canvas.info}
+          value={canvas.info ?? ""}
           id="info"
+          required={false}
         />
         <TextArea2
           label="Logo URL"
           onChange={handleChange}
-          value={canvas.logo}
+          value={canvas.logo ?? ""}
           id="logo"
+          required={false}
         />
 
         <label

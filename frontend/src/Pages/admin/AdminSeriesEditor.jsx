@@ -128,7 +128,7 @@ const AdminSeriesEditor = () => {
             label="Topic"
             onChange={handleChange}
             id="topic_id"
-            value={series.topic_id}
+            value={series.topic_id == null ? "" : series.topic_id}
             options={topicList}
           />
           <div className="bu-bg-title text-white p-5 rounded-md text-3xl font-bold">

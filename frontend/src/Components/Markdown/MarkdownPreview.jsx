@@ -19,7 +19,7 @@ const MarkdownPreview = ({ colorMode, text }) => {
     <div data-color-mode={colorMode} className="text-2xl">
       <div className="wmde-markdown-var "> </div>
       <MDEditor
-        height={60 + 35 * calculateNumberOfLines(text) + text.length / 2}
+        height={70 + 35 * calculateNumberOfLines(text) + text.length / 2}
         preview="preview"
         hideToolbar={true}
         enableScroll={false}

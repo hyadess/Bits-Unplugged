@@ -127,9 +127,7 @@ class ProblemsRepository extends Repository {
       if (prob.submit_state_id !== null) {
         const query = `
           Update State
-          SET title = $2, statement = $3, canvas_data = $4, ${
-            prob.checker_type == 0 ? "checker_code" : "checker_canvas"
-          } = $5, params = $6, ui_params = $7, control_params = $8, last_updated = $9, canvas_id = $10, checker_type = $11
+          SET title = $2, statement = $3, canvas_data = $4, checker_code = $5, params = $6, ui_params = $7, control_params = $8, last_updated = $9, canvas_id = $10, checker_type = $11, checker_canvas = $12
           WHERE state_id = $1;
         `;
         const params = [
@@ -137,13 +135,14 @@ class ProblemsRepository extends Repository {
           prob.title,
           prob.statement,
           prob.canvas_data,
-          prob.solution_checker,
+          prob.checker_code,
           prob.params,
           prob.ui_params,
           prob.control_params,
           Date.now(),
           prob.canvas_id,
           prob.checker_type,
+          prob.checker_canvas,
         ];
         const result2 = await this.query(query, params);
         if (result2.success) {

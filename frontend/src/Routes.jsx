@@ -325,45 +325,45 @@ const AppRoutes = () => {
             path="/topics"
             element={
               <LayoutMain
-                left={
-                  <div
-                    className="w-full rounded-lg shadow-lg border bu-nav-color bu-text-primary"
-                    style={{
-                      height: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    Put unsolved and bookmarked problems here
-                  </div>
-                }
-                right={
-                  <div className="flex flex-col gap-5 w-full">
-                    <div
-                      className="w-full rounded-lg shadow-lg bu-nav-color bu-text-primary"
-                      style={{
-                        height: "50%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      Put Stats here
-                    </div>
-                    <div
-                      className="w-full  border rounded-lg shadow-lg bu-nav-color bu-text-primary"
-                      style={{
-                        height: "50%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      Put Stats here
-                    </div>
-                  </div>
-                }
+              // left={
+              //   <div
+              //     className="w-full rounded-lg shadow-lg border bu-nav-color bu-text-primary"
+              //     style={{
+              //       height: "100%",
+              //       display: "flex",
+              //       alignItems: "center",
+              //       justifyContent: "center",
+              //     }}
+              //   >
+              //     Put unsolved and bookmarked problems here
+              //   </div>
+              // }
+              // right={
+              //   <div className="flex flex-col gap-5 w-full">
+              //     <div
+              //       className="w-full rounded-lg shadow-lg bu-nav-color bu-text-primary"
+              //       style={{
+              //         height: "50%",
+              //         display: "flex",
+              //         alignItems: "center",
+              //         justifyContent: "center",
+              //       }}
+              //     >
+              //       Put Stats here
+              //     </div>
+              //     <div
+              //       className="w-full  border rounded-lg shadow-lg bu-nav-color bu-text-primary"
+              //       style={{
+              //         height: "50%",
+              //         display: "flex",
+              //         alignItems: "center",
+              //         justifyContent: "center",
+              //       }}
+              //     >
+              //       Put Stats here
+              //     </div>
+              //   </div>
+              // }
               >
                 <Topics />
               </LayoutMain>

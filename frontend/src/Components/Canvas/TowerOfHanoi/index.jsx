@@ -312,6 +312,7 @@ const TowerOfHanoi = (props, ref) => {
     });
   };
   const setNumberOfMoves = (n) => {
+    if (props.mode === "edit") return;
     setData((prevData) => {
       return { ...prevData, numberOfMoves: n };
     });
@@ -326,7 +327,6 @@ const TowerOfHanoi = (props, ref) => {
 
   const handleReset = (e) => {
     if (props.input != null && props.input.pegs != null) {
-      setNumberOfMoves(0);
       importData();
     } else {
       setNumberOfDisks(3);
@@ -411,7 +411,7 @@ const TowerOfHanoi = (props, ref) => {
 
   useEffect(() => {
     if (props.input != null && props.input.pegs != null) {
-      setNumberOfMoves(0);
+      // setNumberOfMoves(0);
       importData();
       setLoading(false);
     } else {

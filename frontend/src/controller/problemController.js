@@ -20,6 +20,10 @@ class ProblemController extends Controller {
     const res = await this.problemApi.getMyProblems();
     return res;
   };
+  getUnsolvedProblemsBySeries = async (series_id) => {
+    const res = await this.problemApi.getUnsolvedProblemsBySeries(series_id);
+    return res;
+  };
   getProblemsBySeries = async (series_id) => {
     const res = await this.problemApi.getProblemsBySeries(series_id);
     return res;

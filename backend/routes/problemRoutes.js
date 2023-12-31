@@ -9,6 +9,7 @@ router.use(authMiddleware);
 router.get("/", problemController.getAllProblems); // pending
 router.get("/submitted", problemController.getSubmittedProblems); // pending
 router.get("/by_series/:series_id", problemController.getProblemsBySeries);
+router.get("/by_series/unsolved/:series_id", problemController.getUnsolvedProblemsBySeries);
 router.get("/by_topic/:topic_id", problemController.getProblemsByTopic);
 // router.post("/:problem_id/rate", problemController.rateProblem); // later
 

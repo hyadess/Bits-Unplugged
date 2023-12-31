@@ -5,7 +5,7 @@
 -- Dumped from database version 15.5 (Ubuntu 15.5-1.pgdg22.04+1)
 -- Dumped by pg_dump version 15.5 (Ubuntu 15.5-1.pgdg22.04+1)
 
--- Started on 2023-12-31 03:31:40 +06
+-- Started on 2023-12-31 10:31:04 +06
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -29,7 +29,7 @@ CREATE SCHEMA public;
 ALTER SCHEMA public OWNER TO postgres;
 
 --
--- TOC entry 3487 (class 0 OID 0)
+-- TOC entry 3502 (class 0 OID 0)
 -- Dependencies: 5
 -- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
 --
@@ -42,7 +42,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 214 (class 1259 OID 17208)
+-- TOC entry 214 (class 1259 OID 17569)
 -- Name: author; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -55,7 +55,7 @@ CREATE TABLE public.author (
 ALTER TABLE public.author OWNER TO postgres;
 
 --
--- TOC entry 215 (class 1259 OID 17212)
+-- TOC entry 215 (class 1259 OID 17573)
 -- Name: Author_author_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -71,7 +71,7 @@ CREATE SEQUENCE public."Author_author_id_seq"
 ALTER TABLE public."Author_author_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3489 (class 0 OID 0)
+-- TOC entry 3504 (class 0 OID 0)
 -- Dependencies: 215
 -- Name: Author_author_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -80,7 +80,23 @@ ALTER SEQUENCE public."Author_author_id_seq" OWNED BY public.author.author_id;
 
 
 --
--- TOC entry 216 (class 1259 OID 17213)
+-- TOC entry 239 (class 1259 OID 17715)
+-- Name: activity; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.activity (
+    user_id integer NOT NULL,
+    problem_id integer NOT NULL,
+    conseq_failed_attempt integer,
+    is_solved boolean,
+    last_solve_time bigint
+);
+
+
+ALTER TABLE public.activity OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1259 OID 17574)
 -- Name: auth; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -95,7 +111,7 @@ CREATE TABLE public.auth (
 ALTER TABLE public.auth OWNER TO postgres;
 
 --
--- TOC entry 217 (class 1259 OID 17216)
+-- TOC entry 217 (class 1259 OID 17577)
 -- Name: auth_auth_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -111,7 +127,7 @@ CREATE SEQUENCE public.auth_auth_id_seq
 ALTER TABLE public.auth_auth_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3490 (class 0 OID 0)
+-- TOC entry 3505 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: auth_auth_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -120,7 +136,7 @@ ALTER SEQUENCE public.auth_auth_id_seq OWNED BY public.auth.auth_id;
 
 
 --
--- TOC entry 218 (class 1259 OID 17217)
+-- TOC entry 218 (class 1259 OID 17578)
 -- Name: canvas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -140,7 +156,7 @@ CREATE TABLE public.canvas (
 ALTER TABLE public.canvas OWNER TO postgres;
 
 --
--- TOC entry 219 (class 1259 OID 17225)
+-- TOC entry 219 (class 1259 OID 17586)
 -- Name: canvas_canvas_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -156,7 +172,7 @@ CREATE SEQUENCE public.canvas_canvas_id_seq
 ALTER TABLE public.canvas_canvas_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3491 (class 0 OID 0)
+-- TOC entry 3506 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: canvas_canvas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -165,7 +181,7 @@ ALTER SEQUENCE public.canvas_canvas_id_seq OWNED BY public.canvas.canvas_id;
 
 
 --
--- TOC entry 220 (class 1259 OID 17226)
+-- TOC entry 220 (class 1259 OID 17587)
 -- Name: problem; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -191,7 +207,7 @@ CREATE TABLE public.problem (
 ALTER TABLE public.problem OWNER TO postgres;
 
 --
--- TOC entry 3492 (class 0 OID 0)
+-- TOC entry 3507 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: TABLE problem; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -202,7 +218,7 @@ COMMENT ON TABLE public.problem IS '
 
 
 --
--- TOC entry 221 (class 1259 OID 17234)
+-- TOC entry 221 (class 1259 OID 17595)
 -- Name: problem_author_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -218,7 +234,7 @@ CREATE SEQUENCE public.problem_author_id_seq
 ALTER TABLE public.problem_author_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3493 (class 0 OID 0)
+-- TOC entry 3508 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: problem_author_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -227,7 +243,7 @@ ALTER SEQUENCE public.problem_author_id_seq OWNED BY public.problem.author_id;
 
 
 --
--- TOC entry 222 (class 1259 OID 17235)
+-- TOC entry 222 (class 1259 OID 17596)
 -- Name: problem_problem_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -243,7 +259,7 @@ CREATE SEQUENCE public.problem_problem_id_seq
 ALTER TABLE public.problem_problem_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3494 (class 0 OID 0)
+-- TOC entry 3509 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: problem_problem_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -252,7 +268,7 @@ ALTER SEQUENCE public.problem_problem_id_seq OWNED BY public.problem.problem_id;
 
 
 --
--- TOC entry 223 (class 1259 OID 17236)
+-- TOC entry 223 (class 1259 OID 17597)
 -- Name: problem_series_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -268,7 +284,7 @@ CREATE SEQUENCE public.problem_series_id_seq
 ALTER TABLE public.problem_series_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3495 (class 0 OID 0)
+-- TOC entry 3510 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: problem_series_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -277,7 +293,7 @@ ALTER SEQUENCE public.problem_series_id_seq OWNED BY public.problem.series_id;
 
 
 --
--- TOC entry 224 (class 1259 OID 17237)
+-- TOC entry 224 (class 1259 OID 17598)
 -- Name: profile; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -294,7 +310,7 @@ CREATE TABLE public.profile (
 ALTER TABLE public.profile OWNER TO postgres;
 
 --
--- TOC entry 225 (class 1259 OID 17242)
+-- TOC entry 225 (class 1259 OID 17603)
 -- Name: serial; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -308,7 +324,7 @@ CREATE TABLE public.serial (
 ALTER TABLE public.serial OWNER TO postgres;
 
 --
--- TOC entry 226 (class 1259 OID 17246)
+-- TOC entry 226 (class 1259 OID 17607)
 -- Name: series; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -326,7 +342,7 @@ CREATE TABLE public.series (
 ALTER TABLE public.series OWNER TO postgres;
 
 --
--- TOC entry 227 (class 1259 OID 17251)
+-- TOC entry 227 (class 1259 OID 17612)
 -- Name: series_canvas_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -342,7 +358,7 @@ CREATE SEQUENCE public.series_canvas_id_seq
 ALTER TABLE public.series_canvas_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3496 (class 0 OID 0)
+-- TOC entry 3511 (class 0 OID 0)
 -- Dependencies: 227
 -- Name: series_canvas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -351,7 +367,7 @@ ALTER SEQUENCE public.series_canvas_id_seq OWNED BY public.series.canvas_id;
 
 
 --
--- TOC entry 228 (class 1259 OID 17252)
+-- TOC entry 228 (class 1259 OID 17613)
 -- Name: series_series_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -367,7 +383,7 @@ CREATE SEQUENCE public.series_series_id_seq
 ALTER TABLE public.series_series_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3497 (class 0 OID 0)
+-- TOC entry 3512 (class 0 OID 0)
 -- Dependencies: 228
 -- Name: series_series_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -376,7 +392,7 @@ ALTER SEQUENCE public.series_series_id_seq OWNED BY public.series.series_id;
 
 
 --
--- TOC entry 229 (class 1259 OID 17253)
+-- TOC entry 229 (class 1259 OID 17614)
 -- Name: series_topic_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -392,7 +408,7 @@ CREATE SEQUENCE public.series_topic_id_seq
 ALTER TABLE public.series_topic_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3498 (class 0 OID 0)
+-- TOC entry 3513 (class 0 OID 0)
 -- Dependencies: 229
 -- Name: series_topic_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -401,7 +417,7 @@ ALTER SEQUENCE public.series_topic_id_seq OWNED BY public.series.topic_id;
 
 
 --
--- TOC entry 230 (class 1259 OID 17254)
+-- TOC entry 230 (class 1259 OID 17615)
 -- Name: state; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -422,7 +438,7 @@ CREATE TABLE public.state (
 ALTER TABLE public.state OWNER TO postgres;
 
 --
--- TOC entry 231 (class 1259 OID 17259)
+-- TOC entry 231 (class 1259 OID 17620)
 -- Name: state_state_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -438,7 +454,7 @@ CREATE SEQUENCE public.state_state_id_seq
 ALTER TABLE public.state_state_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3499 (class 0 OID 0)
+-- TOC entry 3514 (class 0 OID 0)
 -- Dependencies: 231
 -- Name: state_state_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -447,7 +463,7 @@ ALTER SEQUENCE public.state_state_id_seq OWNED BY public.state.state_id;
 
 
 --
--- TOC entry 235 (class 1259 OID 17346)
+-- TOC entry 232 (class 1259 OID 17621)
 -- Name: submissions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -463,7 +479,7 @@ CREATE TABLE public.submissions (
 ALTER TABLE public.submissions OWNER TO postgres;
 
 --
--- TOC entry 236 (class 1259 OID 17365)
+-- TOC entry 233 (class 1259 OID 17624)
 -- Name: submissions_submission_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -479,8 +495,8 @@ CREATE SEQUENCE public.submissions_submission_id_seq
 ALTER TABLE public.submissions_submission_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3500 (class 0 OID 0)
--- Dependencies: 236
+-- TOC entry 3515 (class 0 OID 0)
+-- Dependencies: 233
 -- Name: submissions_submission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -488,7 +504,7 @@ ALTER SEQUENCE public.submissions_submission_id_seq OWNED BY public.submissions.
 
 
 --
--- TOC entry 232 (class 1259 OID 17260)
+-- TOC entry 234 (class 1259 OID 17625)
 -- Name: topic; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -503,7 +519,7 @@ CREATE TABLE public.topic (
 ALTER TABLE public.topic OWNER TO postgres;
 
 --
--- TOC entry 233 (class 1259 OID 17265)
+-- TOC entry 235 (class 1259 OID 17630)
 -- Name: topic_topic_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -519,8 +535,8 @@ CREATE SEQUENCE public.topic_topic_id_seq
 ALTER TABLE public.topic_topic_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3501 (class 0 OID 0)
--- Dependencies: 233
+-- TOC entry 3516 (class 0 OID 0)
+-- Dependencies: 235
 -- Name: topic_topic_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -528,7 +544,57 @@ ALTER SEQUENCE public.topic_topic_id_seq OWNED BY public.topic.topic_id;
 
 
 --
--- TOC entry 234 (class 1259 OID 17266)
+-- TOC entry 238 (class 1259 OID 17714)
+-- Name: userActivity_problem_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."userActivity_problem_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."userActivity_problem_id_seq" OWNER TO postgres;
+
+--
+-- TOC entry 3517 (class 0 OID 0)
+-- Dependencies: 238
+-- Name: userActivity_problem_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."userActivity_problem_id_seq" OWNED BY public.activity.problem_id;
+
+
+--
+-- TOC entry 237 (class 1259 OID 17713)
+-- Name: userActivity_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."userActivity_user_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."userActivity_user_id_seq" OWNER TO postgres;
+
+--
+-- TOC entry 3518 (class 0 OID 0)
+-- Dependencies: 237
+-- Name: userActivity_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."userActivity_user_id_seq" OWNED BY public.activity.user_id;
+
+
+--
+-- TOC entry 236 (class 1259 OID 17631)
 -- Name: user_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -544,8 +610,8 @@ CREATE SEQUENCE public.user_user_id_seq
 ALTER TABLE public.user_user_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3502 (class 0 OID 0)
--- Dependencies: 234
+-- TOC entry 3519 (class 0 OID 0)
+-- Dependencies: 236
 -- Name: user_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -553,7 +619,23 @@ ALTER SEQUENCE public.user_user_id_seq OWNED BY public.profile.user_id;
 
 
 --
--- TOC entry 3266 (class 2604 OID 17335)
+-- TOC entry 3290 (class 2604 OID 17718)
+-- Name: activity user_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.activity ALTER COLUMN user_id SET DEFAULT nextval('public."userActivity_user_id_seq"'::regclass);
+
+
+--
+-- TOC entry 3291 (class 2604 OID 17719)
+-- Name: activity problem_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.activity ALTER COLUMN problem_id SET DEFAULT nextval('public."userActivity_problem_id_seq"'::regclass);
+
+
+--
+-- TOC entry 3272 (class 2604 OID 17632)
 -- Name: auth auth_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -561,7 +643,7 @@ ALTER TABLE ONLY public.auth ALTER COLUMN auth_id SET DEFAULT nextval('public.au
 
 
 --
--- TOC entry 3264 (class 2604 OID 17336)
+-- TOC entry 3270 (class 2604 OID 17633)
 -- Name: author author_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -569,7 +651,7 @@ ALTER TABLE ONLY public.author ALTER COLUMN author_id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3267 (class 2604 OID 17337)
+-- TOC entry 3273 (class 2604 OID 17634)
 -- Name: canvas canvas_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -577,7 +659,7 @@ ALTER TABLE ONLY public.canvas ALTER COLUMN canvas_id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3271 (class 2604 OID 17338)
+-- TOC entry 3277 (class 2604 OID 17635)
 -- Name: problem problem_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -585,7 +667,7 @@ ALTER TABLE ONLY public.problem ALTER COLUMN problem_id SET DEFAULT nextval('pub
 
 
 --
--- TOC entry 3272 (class 2604 OID 17339)
+-- TOC entry 3278 (class 2604 OID 17636)
 -- Name: problem author_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -593,7 +675,7 @@ ALTER TABLE ONLY public.problem ALTER COLUMN author_id SET DEFAULT nextval('publ
 
 
 --
--- TOC entry 3276 (class 2604 OID 17340)
+-- TOC entry 3282 (class 2604 OID 17637)
 -- Name: profile user_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -601,7 +683,7 @@ ALTER TABLE ONLY public.profile ALTER COLUMN user_id SET DEFAULT nextval('public
 
 
 --
--- TOC entry 3278 (class 2604 OID 17341)
+-- TOC entry 3284 (class 2604 OID 17638)
 -- Name: series series_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -609,7 +691,7 @@ ALTER TABLE ONLY public.series ALTER COLUMN series_id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3279 (class 2604 OID 17342)
+-- TOC entry 3285 (class 2604 OID 17639)
 -- Name: series topic_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -617,7 +699,7 @@ ALTER TABLE ONLY public.series ALTER COLUMN topic_id SET DEFAULT nextval('public
 
 
 --
--- TOC entry 3280 (class 2604 OID 17343)
+-- TOC entry 3286 (class 2604 OID 17640)
 -- Name: series canvas_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -625,7 +707,7 @@ ALTER TABLE ONLY public.series ALTER COLUMN canvas_id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3281 (class 2604 OID 17344)
+-- TOC entry 3287 (class 2604 OID 17641)
 -- Name: state state_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -633,7 +715,7 @@ ALTER TABLE ONLY public.state ALTER COLUMN state_id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 3283 (class 2604 OID 17366)
+-- TOC entry 3288 (class 2604 OID 17642)
 -- Name: submissions submission_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -641,7 +723,7 @@ ALTER TABLE ONLY public.submissions ALTER COLUMN submission_id SET DEFAULT nextv
 
 
 --
--- TOC entry 3282 (class 2604 OID 17345)
+-- TOC entry 3289 (class 2604 OID 17643)
 -- Name: topic topic_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -649,7 +731,19 @@ ALTER TABLE ONLY public.topic ALTER COLUMN topic_id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 3461 (class 0 OID 17213)
+-- TOC entry 3496 (class 0 OID 17715)
+-- Dependencies: 239
+-- Data for Name: activity; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.activity (user_id, problem_id, conseq_failed_attempt, is_solved, last_solve_time) FROM stdin;
+16	69	1	t	1703996951910
+16	68	1	t	1703996984565
+\.
+
+
+--
+-- TOC entry 3473 (class 0 OID 17574)
 -- Dependencies: 216
 -- Data for Name: auth; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -669,7 +763,7 @@ COPY public.auth (auth_id, email, hashpass, authtype) FROM stdin;
 
 
 --
--- TOC entry 3459 (class 0 OID 17208)
+-- TOC entry 3471 (class 0 OID 17569)
 -- Dependencies: 214
 -- Data for Name: author; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -685,7 +779,7 @@ COPY public.author (author_id, approved) FROM stdin;
 
 
 --
--- TOC entry 3463 (class 0 OID 17217)
+-- TOC entry 3475 (class 0 OID 17578)
 -- Dependencies: 218
 -- Data for Name: canvas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -698,7 +792,7 @@ COPY public.canvas (canvas_id, name, classname, info, logo, params, control_para
 
 
 --
--- TOC entry 3465 (class 0 OID 17226)
+-- TOC entry 3477 (class 0 OID 17587)
 -- Dependencies: 220
 -- Data for Name: problem; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -716,7 +810,7 @@ COPY public.problem (problem_id, series_id, author_id, title, statement, canvas_
 
 
 --
--- TOC entry 3469 (class 0 OID 17237)
+-- TOC entry 3481 (class 0 OID 17598)
 -- Dependencies: 224
 -- Data for Name: profile; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -736,7 +830,7 @@ COPY public.profile (user_id, fullname, username, image, dob, is_public) FROM st
 
 
 --
--- TOC entry 3470 (class 0 OID 17242)
+-- TOC entry 3482 (class 0 OID 17603)
 -- Dependencies: 225
 -- Data for Name: serial; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -746,7 +840,7 @@ COPY public.serial (problem_id, series_id, serial_no) FROM stdin;
 
 
 --
--- TOC entry 3471 (class 0 OID 17246)
+-- TOC entry 3483 (class 0 OID 17607)
 -- Dependencies: 226
 -- Data for Name: series; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -760,7 +854,7 @@ COPY public.series (series_id, topic_id, canvas_id, name, description, logo, tem
 
 
 --
--- TOC entry 3475 (class 0 OID 17254)
+-- TOC entry 3487 (class 0 OID 17615)
 -- Dependencies: 230
 -- Data for Name: state; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -777,24 +871,22 @@ COPY public.state (state_id, title, statement, canvas_data, solution_checker, pa
 
 
 --
--- TOC entry 3480 (class 0 OID 17346)
--- Dependencies: 235
+-- TOC entry 3489 (class 0 OID 17621)
+-- Dependencies: 232
 -- Data for Name: submissions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.submissions (time_stamp, verdict, submission_id, problem_id, user_id) FROM stdin;
-456	Accepted	2	30	1
-566	Wrong Answer	3	30	1
-456	Accepted	6	30	16
-1703971422849	Wrong answer	17	30	16
-1703971455883	Accepted	18	68	16
-1703971471499	Wrong answer	19	68	16
+1703996885265	Accepted	30	68	16
+1703996928160	Accepted	31	69	16
+1703996951909	Wrong answer	32	69	16
+1703996984565	Wrong answer	33	68	16
 \.
 
 
 --
--- TOC entry 3477 (class 0 OID 17260)
--- Dependencies: 232
+-- TOC entry 3491 (class 0 OID 17625)
+-- Dependencies: 234
 -- Data for Name: topic; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -807,7 +899,7 @@ COPY public.topic (topic_id, name, description, logo) FROM stdin;
 
 
 --
--- TOC entry 3503 (class 0 OID 0)
+-- TOC entry 3520 (class 0 OID 0)
 -- Dependencies: 215
 -- Name: Author_author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -816,7 +908,7 @@ SELECT pg_catalog.setval('public."Author_author_id_seq"', 6, true);
 
 
 --
--- TOC entry 3504 (class 0 OID 0)
+-- TOC entry 3521 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: auth_auth_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -825,7 +917,7 @@ SELECT pg_catalog.setval('public.auth_auth_id_seq', 1, true);
 
 
 --
--- TOC entry 3505 (class 0 OID 0)
+-- TOC entry 3522 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: canvas_canvas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -834,7 +926,7 @@ SELECT pg_catalog.setval('public.canvas_canvas_id_seq', 4, true);
 
 
 --
--- TOC entry 3506 (class 0 OID 0)
+-- TOC entry 3523 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: problem_author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -843,7 +935,7 @@ SELECT pg_catalog.setval('public.problem_author_id_seq', 1, false);
 
 
 --
--- TOC entry 3507 (class 0 OID 0)
+-- TOC entry 3524 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: problem_problem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -852,7 +944,7 @@ SELECT pg_catalog.setval('public.problem_problem_id_seq', 97, true);
 
 
 --
--- TOC entry 3508 (class 0 OID 0)
+-- TOC entry 3525 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: problem_series_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -861,7 +953,7 @@ SELECT pg_catalog.setval('public.problem_series_id_seq', 1, false);
 
 
 --
--- TOC entry 3509 (class 0 OID 0)
+-- TOC entry 3526 (class 0 OID 0)
 -- Dependencies: 227
 -- Name: series_canvas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -870,7 +962,7 @@ SELECT pg_catalog.setval('public.series_canvas_id_seq', 1, false);
 
 
 --
--- TOC entry 3510 (class 0 OID 0)
+-- TOC entry 3527 (class 0 OID 0)
 -- Dependencies: 228
 -- Name: series_series_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -879,7 +971,7 @@ SELECT pg_catalog.setval('public.series_series_id_seq', 4, true);
 
 
 --
--- TOC entry 3511 (class 0 OID 0)
+-- TOC entry 3528 (class 0 OID 0)
 -- Dependencies: 229
 -- Name: series_topic_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -888,7 +980,7 @@ SELECT pg_catalog.setval('public.series_topic_id_seq', 1, false);
 
 
 --
--- TOC entry 3512 (class 0 OID 0)
+-- TOC entry 3529 (class 0 OID 0)
 -- Dependencies: 231
 -- Name: state_state_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -897,17 +989,17 @@ SELECT pg_catalog.setval('public.state_state_id_seq', 8, true);
 
 
 --
--- TOC entry 3513 (class 0 OID 0)
--- Dependencies: 236
+-- TOC entry 3530 (class 0 OID 0)
+-- Dependencies: 233
 -- Name: submissions_submission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.submissions_submission_id_seq', 19, true);
+SELECT pg_catalog.setval('public.submissions_submission_id_seq', 33, true);
 
 
 --
--- TOC entry 3514 (class 0 OID 0)
--- Dependencies: 233
+-- TOC entry 3531 (class 0 OID 0)
+-- Dependencies: 235
 -- Name: topic_topic_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -915,8 +1007,26 @@ SELECT pg_catalog.setval('public.topic_topic_id_seq', 8, true);
 
 
 --
--- TOC entry 3515 (class 0 OID 0)
--- Dependencies: 234
+-- TOC entry 3532 (class 0 OID 0)
+-- Dependencies: 238
+-- Name: userActivity_problem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."userActivity_problem_id_seq"', 1, false);
+
+
+--
+-- TOC entry 3533 (class 0 OID 0)
+-- Dependencies: 237
+-- Name: userActivity_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."userActivity_user_id_seq"', 1, false);
+
+
+--
+-- TOC entry 3534 (class 0 OID 0)
+-- Dependencies: 236
 -- Name: user_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -924,7 +1034,7 @@ SELECT pg_catalog.setval('public.user_user_id_seq', 19, true);
 
 
 --
--- TOC entry 3285 (class 2606 OID 17279)
+-- TOC entry 3293 (class 2606 OID 17645)
 -- Name: author Author_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -933,7 +1043,7 @@ ALTER TABLE ONLY public.author
 
 
 --
--- TOC entry 3287 (class 2606 OID 17281)
+-- TOC entry 3295 (class 2606 OID 17647)
 -- Name: auth auth_email_authtype_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -942,7 +1052,7 @@ ALTER TABLE ONLY public.auth
 
 
 --
--- TOC entry 3289 (class 2606 OID 17283)
+-- TOC entry 3297 (class 2606 OID 17649)
 -- Name: auth auth_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -951,7 +1061,7 @@ ALTER TABLE ONLY public.auth
 
 
 --
--- TOC entry 3291 (class 2606 OID 17285)
+-- TOC entry 3299 (class 2606 OID 17651)
 -- Name: canvas canvas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -960,7 +1070,7 @@ ALTER TABLE ONLY public.canvas
 
 
 --
--- TOC entry 3293 (class 2606 OID 17287)
+-- TOC entry 3301 (class 2606 OID 17653)
 -- Name: problem problem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -969,7 +1079,7 @@ ALTER TABLE ONLY public.problem
 
 
 --
--- TOC entry 3299 (class 2606 OID 17289)
+-- TOC entry 3307 (class 2606 OID 17655)
 -- Name: serial serial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -978,7 +1088,7 @@ ALTER TABLE ONLY public.serial
 
 
 --
--- TOC entry 3301 (class 2606 OID 17291)
+-- TOC entry 3309 (class 2606 OID 17657)
 -- Name: series series_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -987,7 +1097,7 @@ ALTER TABLE ONLY public.series
 
 
 --
--- TOC entry 3303 (class 2606 OID 17293)
+-- TOC entry 3311 (class 2606 OID 17659)
 -- Name: state state_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -996,7 +1106,7 @@ ALTER TABLE ONLY public.state
 
 
 --
--- TOC entry 3307 (class 2606 OID 17373)
+-- TOC entry 3313 (class 2606 OID 17661)
 -- Name: submissions submissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1005,7 +1115,7 @@ ALTER TABLE ONLY public.submissions
 
 
 --
--- TOC entry 3305 (class 2606 OID 17295)
+-- TOC entry 3315 (class 2606 OID 17663)
 -- Name: topic topic_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1014,7 +1124,16 @@ ALTER TABLE ONLY public.topic
 
 
 --
--- TOC entry 3295 (class 2606 OID 17297)
+-- TOC entry 3317 (class 2606 OID 17721)
+-- Name: activity userActivity_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.activity
+    ADD CONSTRAINT "userActivity_pkey" PRIMARY KEY (user_id, problem_id);
+
+
+--
+-- TOC entry 3303 (class 2606 OID 17665)
 -- Name: profile user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1023,7 +1142,7 @@ ALTER TABLE ONLY public.profile
 
 
 --
--- TOC entry 3297 (class 2606 OID 17299)
+-- TOC entry 3305 (class 2606 OID 17667)
 -- Name: profile user_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1032,7 +1151,7 @@ ALTER TABLE ONLY public.profile
 
 
 --
--- TOC entry 3308 (class 2606 OID 17300)
+-- TOC entry 3318 (class 2606 OID 17668)
 -- Name: auth auth_auth_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1041,7 +1160,7 @@ ALTER TABLE ONLY public.auth
 
 
 --
--- TOC entry 3309 (class 2606 OID 17305)
+-- TOC entry 3319 (class 2606 OID 17673)
 -- Name: problem problem_author_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1050,7 +1169,7 @@ ALTER TABLE ONLY public.problem
 
 
 --
--- TOC entry 3310 (class 2606 OID 17310)
+-- TOC entry 3320 (class 2606 OID 17678)
 -- Name: problem problem_canvas_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1059,7 +1178,7 @@ ALTER TABLE ONLY public.problem
 
 
 --
--- TOC entry 3311 (class 2606 OID 17315)
+-- TOC entry 3321 (class 2606 OID 17683)
 -- Name: problem problem_series_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1068,7 +1187,7 @@ ALTER TABLE ONLY public.problem
 
 
 --
--- TOC entry 3312 (class 2606 OID 17320)
+-- TOC entry 3322 (class 2606 OID 17688)
 -- Name: problem problem_submit_state_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1077,7 +1196,7 @@ ALTER TABLE ONLY public.problem
 
 
 --
--- TOC entry 3313 (class 2606 OID 17325)
+-- TOC entry 3323 (class 2606 OID 17693)
 -- Name: series series_canvas_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1086,7 +1205,7 @@ ALTER TABLE ONLY public.series
 
 
 --
--- TOC entry 3314 (class 2606 OID 17330)
+-- TOC entry 3324 (class 2606 OID 17698)
 -- Name: series series_topic_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1095,7 +1214,7 @@ ALTER TABLE ONLY public.series
 
 
 --
--- TOC entry 3315 (class 2606 OID 17408)
+-- TOC entry 3325 (class 2606 OID 17703)
 -- Name: submissions submissions_problem_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1104,7 +1223,7 @@ ALTER TABLE ONLY public.submissions
 
 
 --
--- TOC entry 3316 (class 2606 OID 17418)
+-- TOC entry 3326 (class 2606 OID 17708)
 -- Name: submissions submissions_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1113,7 +1232,25 @@ ALTER TABLE ONLY public.submissions
 
 
 --
--- TOC entry 3488 (class 0 OID 0)
+-- TOC entry 3327 (class 2606 OID 17727)
+-- Name: activity userActivity_problem_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.activity
+    ADD CONSTRAINT "userActivity_problem_id_fkey" FOREIGN KEY (problem_id) REFERENCES public.problem(problem_id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 3328 (class 2606 OID 17722)
+-- Name: activity userActivity_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.activity
+    ADD CONSTRAINT "userActivity_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.profile(user_id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 3503 (class 0 OID 0)
 -- Dependencies: 5
 -- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -1122,7 +1259,7 @@ REVOKE USAGE ON SCHEMA public FROM PUBLIC;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2023-12-31 03:31:40 +06
+-- Completed on 2023-12-31 10:31:04 +06
 
 --
 -- PostgreSQL database dump complete

@@ -91,8 +91,8 @@ class ProblemController extends Controller {
     const res = await this.problemApi.unpublishProblem(problem_id);
     return res;
   };
-  checkSolution = async (code, input) => {
-    console.log(code);
+
+  checkWithCode = async (code, input) => {
     const stdout = [];
     const originalConsoleLog = console.log;
     console.log = function (...args) {
@@ -121,9 +121,37 @@ class ProblemController extends Controller {
       stdout: stdout,
     };
   };
+  checkSolution = async (solution_checker, checker_type, input) => {
+    if (checker_type == 0)
+      return await this.checkWithCode(solution_checker, input);
+    else if (checker_type == 1) {
+      const verdict =
+        JSON.stringify(solution_checker) === JSON.stringify(input);
+      let output = "";
+      if (verdict) {
+        output = "Accepted";
+        showToast(output, "success");
+      } else {
+        output = "Wrong answer";
+        showToast(output, "error");
+      }
 
-  updateSolutionChecker = async (problem_id, code) => {
-    const res = await this.problemApi.updateSolutionChecker(problem_id, code);
+      return {
+        output: output,
+      };
+    }
+  };
+
+  updateSolutionChecker = async (
+    problem_id,
+    solution_checker,
+    checker_type
+  ) => {
+    const res = await this.problemApi.updateSolutionChecker(
+      problem_id,
+      solution_checker,
+      checker_type
+    );
     return res;
   };
 }

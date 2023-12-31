@@ -2,10 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 15.5 (Ubuntu 15.5-1.pgdg22.04+1)
+-- Dumped from database version 15.1 (Ubuntu 15.1-1.pgdg20.04+1)
 -- Dumped by pg_dump version 15.5 (Ubuntu 15.5-1.pgdg22.04+1)
-
--- Started on 2023-12-31 10:31:04 +06
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,30 +17,19 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 5 (class 2615 OID 2200)
 -- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
-CREATE SCHEMA public;
+-- *not* creating schema, since initdb creates it
 
 
 ALTER SCHEMA public OWNER TO postgres;
-
---
--- TOC entry 3502 (class 0 OID 0)
--- Dependencies: 5
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
---
-
-COMMENT ON SCHEMA public IS 'standard public schema';
-
 
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
 --
--- TOC entry 214 (class 1259 OID 17569)
 -- Name: author; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -55,7 +42,6 @@ CREATE TABLE public.author (
 ALTER TABLE public.author OWNER TO postgres;
 
 --
--- TOC entry 215 (class 1259 OID 17573)
 -- Name: Author_author_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -71,8 +57,6 @@ CREATE SEQUENCE public."Author_author_id_seq"
 ALTER TABLE public."Author_author_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3504 (class 0 OID 0)
--- Dependencies: 215
 -- Name: Author_author_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -80,7 +64,6 @@ ALTER SEQUENCE public."Author_author_id_seq" OWNED BY public.author.author_id;
 
 
 --
--- TOC entry 239 (class 1259 OID 17715)
 -- Name: activity; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -96,7 +79,50 @@ CREATE TABLE public.activity (
 ALTER TABLE public.activity OWNER TO postgres;
 
 --
--- TOC entry 216 (class 1259 OID 17574)
+-- Name: activity_problem_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.activity_problem_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.activity_problem_id_seq OWNER TO postgres;
+
+--
+-- Name: activity_problem_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.activity_problem_id_seq OWNED BY public.activity.problem_id;
+
+
+--
+-- Name: activity_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.activity_user_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.activity_user_id_seq OWNER TO postgres;
+
+--
+-- Name: activity_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.activity_user_id_seq OWNED BY public.activity.user_id;
+
+
+--
 -- Name: auth; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -111,7 +137,6 @@ CREATE TABLE public.auth (
 ALTER TABLE public.auth OWNER TO postgres;
 
 --
--- TOC entry 217 (class 1259 OID 17577)
 -- Name: auth_auth_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -127,8 +152,6 @@ CREATE SEQUENCE public.auth_auth_id_seq
 ALTER TABLE public.auth_auth_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3505 (class 0 OID 0)
--- Dependencies: 217
 -- Name: auth_auth_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -136,7 +159,6 @@ ALTER SEQUENCE public.auth_auth_id_seq OWNED BY public.auth.auth_id;
 
 
 --
--- TOC entry 218 (class 1259 OID 17578)
 -- Name: canvas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -156,7 +178,6 @@ CREATE TABLE public.canvas (
 ALTER TABLE public.canvas OWNER TO postgres;
 
 --
--- TOC entry 219 (class 1259 OID 17586)
 -- Name: canvas_canvas_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -172,8 +193,6 @@ CREATE SEQUENCE public.canvas_canvas_id_seq
 ALTER TABLE public.canvas_canvas_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3506 (class 0 OID 0)
--- Dependencies: 219
 -- Name: canvas_canvas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -181,7 +200,6 @@ ALTER SEQUENCE public.canvas_canvas_id_seq OWNED BY public.canvas.canvas_id;
 
 
 --
--- TOC entry 220 (class 1259 OID 17587)
 -- Name: problem; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -194,21 +212,21 @@ CREATE TABLE public.problem (
     canvas_data json,
     is_live boolean DEFAULT false,
     creation_time bigint,
-    solution_checker character varying(10000),
+    checker_code character varying(10000) DEFAULT 'function solutionChecker(data) {}'::character varying,
     params json,
     ui_params json,
     control_params json,
     canvas_id integer,
     submit_state_id integer,
-    serial_no integer DEFAULT 0
+    serial_no integer DEFAULT 0,
+    checker_type integer DEFAULT 0,
+    checker_canvas json DEFAULT '{}'::json
 );
 
 
 ALTER TABLE public.problem OWNER TO postgres;
 
 --
--- TOC entry 3507 (class 0 OID 0)
--- Dependencies: 220
 -- Name: TABLE problem; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -218,7 +236,14 @@ COMMENT ON TABLE public.problem IS '
 
 
 --
--- TOC entry 221 (class 1259 OID 17595)
+-- Name: COLUMN problem.checker_type; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.problem.checker_type IS '0 - checker_code
+1 - checker_canvas';
+
+
+--
 -- Name: problem_author_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -234,8 +259,6 @@ CREATE SEQUENCE public.problem_author_id_seq
 ALTER TABLE public.problem_author_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3508 (class 0 OID 0)
--- Dependencies: 221
 -- Name: problem_author_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -243,7 +266,6 @@ ALTER SEQUENCE public.problem_author_id_seq OWNED BY public.problem.author_id;
 
 
 --
--- TOC entry 222 (class 1259 OID 17596)
 -- Name: problem_problem_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -259,8 +281,6 @@ CREATE SEQUENCE public.problem_problem_id_seq
 ALTER TABLE public.problem_problem_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3509 (class 0 OID 0)
--- Dependencies: 222
 -- Name: problem_problem_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -268,7 +288,6 @@ ALTER SEQUENCE public.problem_problem_id_seq OWNED BY public.problem.problem_id;
 
 
 --
--- TOC entry 223 (class 1259 OID 17597)
 -- Name: problem_series_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -284,8 +303,6 @@ CREATE SEQUENCE public.problem_series_id_seq
 ALTER TABLE public.problem_series_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3510 (class 0 OID 0)
--- Dependencies: 223
 -- Name: problem_series_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -293,7 +310,6 @@ ALTER SEQUENCE public.problem_series_id_seq OWNED BY public.problem.series_id;
 
 
 --
--- TOC entry 224 (class 1259 OID 17598)
 -- Name: profile; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -310,64 +326,21 @@ CREATE TABLE public.profile (
 ALTER TABLE public.profile OWNER TO postgres;
 
 --
--- TOC entry 225 (class 1259 OID 17603)
--- Name: serial; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.serial (
-    problem_id integer NOT NULL,
-    series_id integer NOT NULL,
-    serial_no integer DEFAULT 0
-);
-
-
-ALTER TABLE public.serial OWNER TO postgres;
-
---
--- TOC entry 226 (class 1259 OID 17607)
 -- Name: series; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.series (
     series_id integer NOT NULL,
     topic_id integer NOT NULL,
-    canvas_id integer NOT NULL,
     name character varying(30),
     description character varying(1000),
-    logo text,
-    template character varying(1000)
+    logo text
 );
 
 
 ALTER TABLE public.series OWNER TO postgres;
 
 --
--- TOC entry 227 (class 1259 OID 17612)
--- Name: series_canvas_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.series_canvas_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.series_canvas_id_seq OWNER TO postgres;
-
---
--- TOC entry 3511 (class 0 OID 0)
--- Dependencies: 227
--- Name: series_canvas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.series_canvas_id_seq OWNED BY public.series.canvas_id;
-
-
---
--- TOC entry 228 (class 1259 OID 17613)
 -- Name: series_series_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -383,8 +356,6 @@ CREATE SEQUENCE public.series_series_id_seq
 ALTER TABLE public.series_series_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3512 (class 0 OID 0)
--- Dependencies: 228
 -- Name: series_series_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -392,7 +363,6 @@ ALTER SEQUENCE public.series_series_id_seq OWNED BY public.series.series_id;
 
 
 --
--- TOC entry 229 (class 1259 OID 17614)
 -- Name: series_topic_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -408,8 +378,6 @@ CREATE SEQUENCE public.series_topic_id_seq
 ALTER TABLE public.series_topic_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3513 (class 0 OID 0)
--- Dependencies: 229
 -- Name: series_topic_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -417,7 +385,6 @@ ALTER SEQUENCE public.series_topic_id_seq OWNED BY public.series.topic_id;
 
 
 --
--- TOC entry 230 (class 1259 OID 17615)
 -- Name: state; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -426,19 +393,20 @@ CREATE TABLE public.state (
     title character varying(100),
     statement character varying(10000),
     canvas_data json,
-    solution_checker character varying(10000),
+    checker_code character varying(10000),
     params json,
     ui_params json,
     control_params json,
     last_updated bigint,
-    canvas_id integer
+    canvas_id integer,
+    checker_type integer DEFAULT 0,
+    checker_canvas json
 );
 
 
 ALTER TABLE public.state OWNER TO postgres;
 
 --
--- TOC entry 231 (class 1259 OID 17620)
 -- Name: state_state_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -454,8 +422,6 @@ CREATE SEQUENCE public.state_state_id_seq
 ALTER TABLE public.state_state_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3514 (class 0 OID 0)
--- Dependencies: 231
 -- Name: state_state_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -463,23 +429,21 @@ ALTER SEQUENCE public.state_state_id_seq OWNED BY public.state.state_id;
 
 
 --
--- TOC entry 232 (class 1259 OID 17621)
 -- Name: submissions; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.submissions (
-    time_stamp bigint,
-    verdict character varying(50),
     submission_id integer NOT NULL,
-    problem_id integer NOT NULL,
-    user_id integer NOT NULL
+    problem_id integer,
+    user_id integer,
+    verdict character varying(50),
+    time_stamp bigint
 );
 
 
 ALTER TABLE public.submissions OWNER TO postgres;
 
 --
--- TOC entry 233 (class 1259 OID 17624)
 -- Name: submissions_submission_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -495,8 +459,6 @@ CREATE SEQUENCE public.submissions_submission_id_seq
 ALTER TABLE public.submissions_submission_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3515 (class 0 OID 0)
--- Dependencies: 233
 -- Name: submissions_submission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -504,7 +466,6 @@ ALTER SEQUENCE public.submissions_submission_id_seq OWNED BY public.submissions.
 
 
 --
--- TOC entry 234 (class 1259 OID 17625)
 -- Name: topic; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -519,7 +480,6 @@ CREATE TABLE public.topic (
 ALTER TABLE public.topic OWNER TO postgres;
 
 --
--- TOC entry 235 (class 1259 OID 17630)
 -- Name: topic_topic_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -535,8 +495,6 @@ CREATE SEQUENCE public.topic_topic_id_seq
 ALTER TABLE public.topic_topic_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3516 (class 0 OID 0)
--- Dependencies: 235
 -- Name: topic_topic_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -544,57 +502,6 @@ ALTER SEQUENCE public.topic_topic_id_seq OWNED BY public.topic.topic_id;
 
 
 --
--- TOC entry 238 (class 1259 OID 17714)
--- Name: userActivity_problem_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public."userActivity_problem_id_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public."userActivity_problem_id_seq" OWNER TO postgres;
-
---
--- TOC entry 3517 (class 0 OID 0)
--- Dependencies: 238
--- Name: userActivity_problem_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public."userActivity_problem_id_seq" OWNED BY public.activity.problem_id;
-
-
---
--- TOC entry 237 (class 1259 OID 17713)
--- Name: userActivity_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public."userActivity_user_id_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public."userActivity_user_id_seq" OWNER TO postgres;
-
---
--- TOC entry 3518 (class 0 OID 0)
--- Dependencies: 237
--- Name: userActivity_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public."userActivity_user_id_seq" OWNED BY public.activity.user_id;
-
-
---
--- TOC entry 236 (class 1259 OID 17631)
 -- Name: user_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -610,8 +517,6 @@ CREATE SEQUENCE public.user_user_id_seq
 ALTER TABLE public.user_user_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3519 (class 0 OID 0)
--- Dependencies: 236
 -- Name: user_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -619,23 +524,20 @@ ALTER SEQUENCE public.user_user_id_seq OWNED BY public.profile.user_id;
 
 
 --
--- TOC entry 3290 (class 2604 OID 17718)
 -- Name: activity user_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.activity ALTER COLUMN user_id SET DEFAULT nextval('public."userActivity_user_id_seq"'::regclass);
+ALTER TABLE ONLY public.activity ALTER COLUMN user_id SET DEFAULT nextval('public.activity_user_id_seq'::regclass);
 
 
 --
--- TOC entry 3291 (class 2604 OID 17719)
 -- Name: activity problem_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.activity ALTER COLUMN problem_id SET DEFAULT nextval('public."userActivity_problem_id_seq"'::regclass);
+ALTER TABLE ONLY public.activity ALTER COLUMN problem_id SET DEFAULT nextval('public.activity_problem_id_seq'::regclass);
 
 
 --
--- TOC entry 3272 (class 2604 OID 17632)
 -- Name: auth auth_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -643,7 +545,6 @@ ALTER TABLE ONLY public.auth ALTER COLUMN auth_id SET DEFAULT nextval('public.au
 
 
 --
--- TOC entry 3270 (class 2604 OID 17633)
 -- Name: author author_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -651,7 +552,6 @@ ALTER TABLE ONLY public.author ALTER COLUMN author_id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3273 (class 2604 OID 17634)
 -- Name: canvas canvas_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -659,7 +559,6 @@ ALTER TABLE ONLY public.canvas ALTER COLUMN canvas_id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3277 (class 2604 OID 17635)
 -- Name: problem problem_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -667,7 +566,6 @@ ALTER TABLE ONLY public.problem ALTER COLUMN problem_id SET DEFAULT nextval('pub
 
 
 --
--- TOC entry 3278 (class 2604 OID 17636)
 -- Name: problem author_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -675,7 +573,6 @@ ALTER TABLE ONLY public.problem ALTER COLUMN author_id SET DEFAULT nextval('publ
 
 
 --
--- TOC entry 3282 (class 2604 OID 17637)
 -- Name: profile user_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -683,7 +580,6 @@ ALTER TABLE ONLY public.profile ALTER COLUMN user_id SET DEFAULT nextval('public
 
 
 --
--- TOC entry 3284 (class 2604 OID 17638)
 -- Name: series series_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -691,7 +587,6 @@ ALTER TABLE ONLY public.series ALTER COLUMN series_id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3285 (class 2604 OID 17639)
 -- Name: series topic_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -699,15 +594,6 @@ ALTER TABLE ONLY public.series ALTER COLUMN topic_id SET DEFAULT nextval('public
 
 
 --
--- TOC entry 3286 (class 2604 OID 17640)
--- Name: series canvas_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.series ALTER COLUMN canvas_id SET DEFAULT nextval('public.series_canvas_id_seq'::regclass);
-
-
---
--- TOC entry 3287 (class 2604 OID 17641)
 -- Name: state state_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -715,7 +601,6 @@ ALTER TABLE ONLY public.state ALTER COLUMN state_id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 3288 (class 2604 OID 17642)
 -- Name: submissions submission_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -723,7 +608,6 @@ ALTER TABLE ONLY public.submissions ALTER COLUMN submission_id SET DEFAULT nextv
 
 
 --
--- TOC entry 3289 (class 2604 OID 17643)
 -- Name: topic topic_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -731,20 +615,18 @@ ALTER TABLE ONLY public.topic ALTER COLUMN topic_id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 3496 (class 0 OID 17715)
--- Dependencies: 239
 -- Data for Name: activity; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.activity (user_id, problem_id, conseq_failed_attempt, is_solved, last_solve_time) FROM stdin;
-16	69	1	t	1703996951910
-16	68	1	t	1703996984565
+16	70	0	t	1704003263928
+16	68	0	t	1704003973760
+16	30	0	t	1704010521958
+1	30	0	t	1704019060950
 \.
 
 
 --
--- TOC entry 3473 (class 0 OID 17574)
--- Dependencies: 216
 -- Data for Name: auth; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -763,8 +645,6 @@ COPY public.auth (auth_id, email, hashpass, authtype) FROM stdin;
 
 
 --
--- TOC entry 3471 (class 0 OID 17569)
--- Dependencies: 214
 -- Data for Name: author; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -779,8 +659,6 @@ COPY public.author (author_id, approved) FROM stdin;
 
 
 --
--- TOC entry 3475 (class 0 OID 17578)
--- Dependencies: 218
 -- Data for Name: canvas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -792,26 +670,21 @@ COPY public.canvas (canvas_id, name, classname, info, logo, params, control_para
 
 
 --
--- TOC entry 3477 (class 0 OID 17587)
--- Dependencies: 220
 -- Data for Name: problem; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.problem (problem_id, series_id, author_id, title, statement, canvas_data, is_live, creation_time, solution_checker, params, ui_params, control_params, canvas_id, submit_state_id, serial_no) FROM stdin;
-36	2	1	Double TOH	Move the disks from left peg to right peg.	{"numberOfMoves":0,"numberOfDisks":10,"numberOfPegs":3,"pegs":[[0,10,2,12,4,14,6,16,8,18],[],[]]}	t	1694059054029	function solutionChecker(data) {\n  return data.numberOfMoves === 2 * (2 ** (data.numberOfDisks/2) - 1);\n}	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	2	2	5
-68	2	1	Reverse the Disks	Reverse the 3 disks.	{"numberOfMoves":3,"numberOfDisks":3,"numberOfPegs":3,"pegs":[[0],[1],[2]]}	t	1700994610385	function solutionChecker(data) {\n  // Check if the pegs are ordered as 2, 1, 0\n  const isPegsOrdered = data.pegs.map(peg => peg[0]).toString() === "2,1,0";\n  // Check if the number of moves is equal to 3\n  const isNumberOfMovesEqual3 = data.numberOfMoves === 3;\n  // Check both conditions\n  if (isPegsOrdered && isNumberOfMovesEqual3) {\n    console.log("Pegs are ordered as 2, 1, 0, and the number of moves is 3.");\n    return true;\n  } else {\n    console.log("Pegs are not ordered as 2, 1, 0, or the number of moves is not 3.");\n    return false;\n  }\n  }	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	2	8	1
-69	2	1	3 Disks	Move the 3 disks from left peg to right peg. You can use the middle peg to temporarily keep the disks. 	{"numberOfMoves":0,"numberOfDisks":3,"numberOfPegs":3,"pegs":[[0,1,2],[],[]]}	t	1701438806364	/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.pegs[2].length === 3;\n}\n	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	2	6	2
-70	2	1	Min 3 Disks	You already how to move 3 disks from one peg to another. But can you do it in minimum possible moves?	{"numberOfMoves":0,"numberOfDisks":3,"numberOfPegs":3,"pegs":[[0,1,2],[],[]]}	t	1701439115392	/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.numberOfMoves == 7 && data.pegs[2].length==3;\n}\n	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	2	7	3
-71	2	1	Min 4 Disks	Move the 4 disks from left to right peg in minimum possible moves.	{"numberOfMoves":0,"numberOfDisks":4,"numberOfPegs":3,"pegs":[[0,1,2,3],[],[]]}	t	1701441086141	/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.numberOfMoves == 15 && data.pegs[2].length == 4;\n}\n	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	2	5	4
-74	4	1	Rearrange	Drag the nodes to make the graph a plane graph. In a plane graph there is no crossing edges.	{"nodes":[{"x":261.0943039990184,"y":51,"nodeIndex":0},{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},{"x":400.0497106351415,"y":415,"nodeIndex":6},{"x":651.9616204655157,"y":410,"nodeIndex":7}],"edges":[{"start":{"x":261.0943039990184,"y":51,"nodeIndex":0},"end":{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},"weight":"1"},{"start":{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},"end":{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},"weight":"1"},{"start":{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},"end":{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},"weight":"1"},{"start":{"x":261.0943039990184,"y":51,"nodeIndex":0},"end":{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},"weight":"1"},{"start":{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},"end":{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},"weight":"1"},{"start":{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},"end":{"x":400.0497106351415,"y":415,"nodeIndex":6},"weight":"1"},{"start":{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},"end":{"x":651.9616204655157,"y":410,"nodeIndex":7},"weight":"1"},{"start":{"x":400.0497106351415,"y":415,"nodeIndex":6},"end":{"x":651.9616204655157,"y":410,"nodeIndex":7},"weight":"1"},{"start":{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},"end":{"x":651.9616204655157,"y":410,"nodeIndex":7},"weight":""},{"start":{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},"end":{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},"weight":"1"},{"start":{"x":261.0943039990184,"y":51,"nodeIndex":0},"end":{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},"weight":"1"},{"start":{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},"end":{"x":400.0497106351415,"y":415,"nodeIndex":6},"weight":"1"}]}	t	1702049450177	/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction isIntersecting(a, b, c, d) {\n    // Returns true if line segment (a, b) intersects with line segment (c, d)\n    function ccw(a, b, c) {\n        return (c.y - a.y) * (b.x - a.x) > (b.y - a.y) * (c.x - a.x);\n    }\n\n    return (\n        ccw(a, c, d) !== ccw(b, c, d) &&\n        ccw(a, b, c) !== ccw(a, b, d)\n    );\n}\n\n\nfunction hasCommonNode(edgeA, edgeB) {\n    return (\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.end) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.end)\n    );\n}\n\nfunction solutionChecker(data) {\n    const nodes = data.nodes;\n    const edges = data.edges;\n\n    for (let i = 0; i < edges.length; i++) {\n        const edgeA = edges[i];\n        \n        const startA = nodes[edgeA.start.nodeIndex];\n        const endA = nodes[edgeA.end.nodeIndex];\n\n        for (let j = i + 1; j < edges.length; j++) {\n            const edgeB = edges[j];\n\n            const startB = nodes[edgeB.start.nodeIndex];\n            const endB = nodes[edgeB.end.nodeIndex];\n\n            if (\n                isIntersecting(startA, endA, startB, endB) &&\n                !hasCommonNode(edgeA, edgeB)\n            ) {\n                // console.log(startA.x,startA.y,  startB.x, startB.y, endA.x, endA.y, endB.x, endB.y)\n                return false;\n            }\n        }\n    }\n\n    // No intersections found, it's a plane graph\n    return true;\n}	{"variant":{"value":"simple_graph","type":"select","list":["simple_graph","tree"]},"directed_edge":{"value":false,"type":"switch"},"weighted_edge":{"value":true,"type":"switch"}}	{}	{"add_node":{"value":true,"type":"switch"},"delete_node":{"value":true,"type":"switch"},"drag_node":{"value":true,"type":"switch"},"add_edge":{"value":true,"type":"switch"},"delete_edge":{"value":true,"type":"switch"}}	1	4	0
-30	1	1	Road Construction	There are 5 cities numbered from 0 to 4. We can construct roads between cities. Each road has a number associated with it denoting the cost to construct a road. We want to minimize our cost. Remove the roads from the given canvas in a way that from every city we can go to every other city and cost of constructing the remaining roads are minimum.	{"nodes":[{"x":191.46353373570471,"y":209.08105010004624,"nodeIndex":0},{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},{"x":717.4589382793936,"y":266.96633313305256,"nodeIndex":2},{"x":440.46237224675286,"y":238.0461718019531,"nodeIndex":3},{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4}],"edges":[{"start":{"x":191.46353373570471,"y":209.08105010004624,"nodeIndex":0},"end":{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},"weight":"10"},{"start":{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},"end":{"x":717.4589382793936,"y":266.96633313305256,"nodeIndex":2},"weight":"30"},{"start":{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},"end":{"x":440.46237224675286,"y":238.0461718019531,"nodeIndex":3},"weight":"5"},{"start":{"x":191.46353373570471,"y":209.08105010004624,"nodeIndex":0},"end":{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4},"weight":"2"},{"start":{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4},"end":{"x":717.4589382793936,"y":266.96633313305256,"nodeIndex":2},"weight":"50"},{"start":{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4},"end":{"x":440.46237224675286,"y":238.0461718019531,"nodeIndex":3},"weight":"3"}]}	t	1694032352472	/**\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  const graph = new Map();\n  for (const edge of data.edges) {\n  const { start, end, weight } = edge;\n  \n  if (!graph.has(start.nodeIndex)) {\n    graph.set(start.nodeIndex, []);\n  }\n  \n  if (!graph.has(end.nodeIndex)) {\n    graph.set(end.nodeIndex, []);\n  }\n  \n  graph.get(start.nodeIndex).push({ nodeIndex: end.nodeIndex, weight: parseInt(weight) });\n  graph.get(end.nodeIndex).push({ nodeIndex: start.nodeIndex, weight: parseInt(weight) });\n}\n\n// Step 3: Implement DFS to check if the graph is disconnected\nfunction isDisconnected() {\n  const visited = new Set();\n  const nodes = [...graph.keys()];\n  \n  function dfs(node) {\n    visited.add(node);\n    for (const neighbor of graph.get(node)) {\n      if (!visited.has(neighbor.nodeIndex)) {\n        dfs(neighbor.nodeIndex);\n      }\n    }\n  }\n  \n  dfs(nodes[0]); // Start DFS from the first node\n  \n  return visited.size !== nodes.length;\n}\n\nconst disconnected = isDisconnected();\n\n// Step 4: Calculate the sum of edge weights\nfunction sumEdgeWeights() {\n  let sum = 0;\n  for (const edges of graph.values()) {\n    for (const edge of edges) {\n      sum += edge.weight;\n    }\n  }\n  return sum/2;\n}\n\n\n\n\t// if (disconnected)\n\t// \treturn false;\n\n\t// else {\n  const edgeWeightSum = sumEdgeWeights();\n  console.log(edgeWeightSum);\n\t\tif(edgeWeightSum == 40){\n\t\t\treturn true;\t\n\t\t}\n\t\telse {\n\t\t\treturn false;\n\t\t}\n\t// }\n\n}	{"variant":{"value":"simple_graph","type":"select","list":["simple_graph","tree"]},"directed_edge":{"value":false,"type":"switch"},"weighted_edge":{"value":true,"type":"switch"}}	{}	{"add_node":{"value":true,"type":"switch"},"delete_node":{"value":true,"type":"switch"},"drag_node":{"value":true,"type":"switch"},"add_edge":{"value":true,"type":"switch"},"delete_edge":{"value":true,"type":"switch"}}	1	3	1
-97	\N	1	lets see	ghggi	{"edges":[],"nodes":[{"x":353.2833251953125,"y":158.41668701171875,"nodeIndex":0},{"x":528.2833251953125,"y":222.41668701171875,"nodeIndex":1}]}	f	1703886979497	/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  const edges =  data.edges.map(edge => ({\n\t\tstart: edge.start.nodeIndex,\n\t\tend: edge.end.nodeIndex,\n\t\tweight: edge.weight\n\t}));\n\t\n  return false;\n}	{"variant":{"value":"simple_graph","type":"select","list":["simple_graph","tree"]},"directed_edge":{"value":false,"type":"switch"},"weighted_edge":{"value":true,"type":"switch"}}	{}	{"add_node":{"value":true,"type":"switch"},"delete_node":{"value":true,"type":"switch"},"drag_node":{"value":true,"type":"switch"},"add_edge":{"value":true,"type":"switch"},"delete_edge":{"value":true,"type":"switch"}}	1	\N	0
+COPY public.problem (problem_id, series_id, author_id, title, statement, canvas_data, is_live, creation_time, checker_code, params, ui_params, control_params, canvas_id, submit_state_id, serial_no, checker_type, checker_canvas) FROM stdin;
+36	2	1	Double TOH	Move the disks from left peg to right peg.	{"numberOfMoves":0,"numberOfDisks":10,"numberOfPegs":3,"pegs":[[0,10,2,12,4,14,6,16,8,18],[],[]]}	t	1694059054029	function solutionChecker(data) {\n  return data.numberOfMoves === 2 * (2 ** (data.numberOfDisks/2) - 1);\n}	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	2	2	5	0	{}
+68	2	1	Reverse the Disks	Reverse the 3 disks.	{"numberOfMoves":3,"numberOfDisks":3,"numberOfPegs":3,"pegs":[[0],[1],[2]]}	t	1700994610385	function solutionChecker(data) {\n  // Check if the pegs are ordered as 2, 1, 0\n  const isPegsOrdered = data.pegs.map(peg => peg[0]).toString() === "2,1,0";\n  // Check if the number of moves is equal to 3\n  const isNumberOfMovesEqual3 = data.numberOfMoves === 3;\n  // Check both conditions\n  if (isPegsOrdered && isNumberOfMovesEqual3) {\n    console.log("Pegs are ordered as 2, 1, 0, and the number of moves is 3.");\n    return true;\n  } else {\n    console.log("Pegs are not ordered as 2, 1, 0, or the number of moves is not 3.");\n    return false;\n  }\n  }	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	2	8	1	0	{}
+69	2	1	3 Disks	Move the 3 disks from left peg to right peg. You can use the middle peg to temporarily keep the disks. 	{"numberOfMoves":0,"numberOfDisks":3,"numberOfPegs":3,"pegs":[[0,1,2],[],[]]}	f	1701438806364	/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.pegs[2].length === 3;\n}\n	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":false,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	2	6	2	0	{}
+70	2	1	Min 3 Disks	You already how to move 3 disks from one peg to another. But can you do it in minimum possible moves?	{"numberOfMoves":0,"numberOfDisks":3,"numberOfPegs":3,"pegs":[[0,1,2],[],[]]}	t	1701439115392	/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.numberOfMoves == 7 && data.pegs[2].length==3;\n}\n	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	2	7	3	0	{}
+71	2	1	Min 4 Disks	Move the 4 disks from left to right peg in minimum possible moves.	{"numberOfMoves":0,"numberOfDisks":4,"numberOfPegs":3,"pegs":[[0,1,2,3],[],[]]}	t	1701441086141	/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.numberOfMoves == 15 && data.pegs[2].length == 4;\n}\n	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	2	5	4	0	{}
+30	1	1	Road Construction	There are 5 cities numbered from 0 to 4. We can construct roads between cities. Each road has a number associated with it denoting the cost to construct a road. We want to minimize our cost. **Remove the roads from the given canvas in a way that from every city we can go to every other city and cost of constructing the remaining roads are minimum.**	{"nodes":[{"x":191.46353373570471,"y":209.08105010004624,"nodeIndex":0},{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},{"x":717.4589382793936,"y":266.96633313305256,"nodeIndex":2},{"x":440.46237224675286,"y":238.0461718019531,"nodeIndex":3},{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4}],"edges":[{"start":{"x":191.46353373570471,"y":209.08105010004624,"nodeIndex":0},"end":{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},"weight":"10"},{"start":{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},"end":{"x":717.4589382793936,"y":266.96633313305256,"nodeIndex":2},"weight":"30"},{"start":{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},"end":{"x":440.46237224675286,"y":238.0461718019531,"nodeIndex":3},"weight":"5"},{"start":{"x":191.46353373570471,"y":209.08105010004624,"nodeIndex":0},"end":{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4},"weight":"2"},{"start":{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4},"end":{"x":717.4589382793936,"y":266.96633313305256,"nodeIndex":2},"weight":"50"},{"start":{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4},"end":{"x":440.46237224675286,"y":238.0461718019531,"nodeIndex":3},"weight":"3"}]}	t	1694032352472	/**\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  const graph = new Map();\n  for (const edge of data.edges) {\n  const { start, end, weight } = edge;\n  \n  if (!graph.has(start.nodeIndex)) {\n    graph.set(start.nodeIndex, []);\n  }\n  \n  if (!graph.has(end.nodeIndex)) {\n    graph.set(end.nodeIndex, []);\n  }\n  \n  graph.get(start.nodeIndex).push({ nodeIndex: end.nodeIndex, weight: parseInt(weight) });\n  graph.get(end.nodeIndex).push({ nodeIndex: start.nodeIndex, weight: parseInt(weight) });\n}\n\n// Step 3: Implement DFS to check if the graph is disconnected\nfunction isDisconnected() {\n  const visited = new Set();\n  const nodes = [...graph.keys()];\n  \n  function dfs(node) {\n    visited.add(node);\n    for (const neighbor of graph.get(node)) {\n      if (!visited.has(neighbor.nodeIndex)) {\n        dfs(neighbor.nodeIndex);\n      }\n    }\n  }\n  \n  dfs(nodes[0]); // Start DFS from the first node\n  \n  return visited.size !== nodes.length;\n}\n\nconst disconnected = isDisconnected();\n\n// Step 4: Calculate the sum of edge weights\nfunction sumEdgeWeights() {\n  let sum = 0;\n  for (const edges of graph.values()) {\n    for (const edge of edges) {\n      sum += edge.weight;\n    }\n  }\n  return sum/2;\n}\n\n\n\n\t// if (disconnected)\n\t// \treturn false;\n\n\t// else {\n  const edgeWeightSum = sumEdgeWeights();\n  console.log(edgeWeightSum);\n\t\tif(edgeWeightSum == 40){\n\t\t\treturn true;\t\n\t\t}\n\t\telse {\n\t\t\treturn false;\n\t\t}\n\t// }\n\n}\n\n\n/* Test */	{"variant":{"value":"simple_graph","type":"select","list":["simple_graph","tree"]},"directed_edge":{"value":false,"type":"switch"},"weighted_edge":{"value":true,"type":"switch"}}	{}	{"add_node":{"value":false,"type":"switch"},"delete_node":{"value":false,"type":"switch"},"drag_node":{"value":false,"type":"switch"},"add_edge":{"value":false,"type":"switch"},"delete_edge":{"value":true,"type":"switch"}}	1	3	1	1	{"nodes":[{"x":191.46353373570471,"y":209.08105010004624,"nodeIndex":0},{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},{"x":717.4589382793936,"y":266.96633313305256,"nodeIndex":2},{"x":440.46237224675286,"y":238.0461718019531,"nodeIndex":3},{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4}],"edges":[{"start":{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},"end":{"x":717.4589382793936,"y":266.96633313305256,"nodeIndex":2},"weight":"30"},{"start":{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},"end":{"x":440.46237224675286,"y":238.0461718019531,"nodeIndex":3},"weight":"5"},{"start":{"x":191.46353373570471,"y":209.08105010004624,"nodeIndex":0},"end":{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4},"weight":"2"},{"start":{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4},"end":{"x":440.46237224675286,"y":238.0461718019531,"nodeIndex":3},"weight":"3"}]}
+74	4	1	Rearrange	Drag the nodes to make the graph a plane graph. In a plane graph there is no crossing edges.	{"nodes":[{"x":261.0943039990184,"y":51,"nodeIndex":0},{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},{"x":400.0497106351415,"y":415,"nodeIndex":6},{"x":651.9616204655157,"y":410,"nodeIndex":7}],"edges":[{"start":{"x":261.0943039990184,"y":51,"nodeIndex":0},"end":{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},"weight":"1"},{"start":{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},"end":{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},"weight":"1"},{"start":{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},"end":{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},"weight":"1"},{"start":{"x":261.0943039990184,"y":51,"nodeIndex":0},"end":{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},"weight":"1"},{"start":{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},"end":{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},"weight":"1"},{"start":{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},"end":{"x":400.0497106351415,"y":415,"nodeIndex":6},"weight":"1"},{"start":{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},"end":{"x":651.9616204655157,"y":410,"nodeIndex":7},"weight":"1"},{"start":{"x":400.0497106351415,"y":415,"nodeIndex":6},"end":{"x":651.9616204655157,"y":410,"nodeIndex":7},"weight":"1"},{"start":{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},"end":{"x":651.9616204655157,"y":410,"nodeIndex":7},"weight":""},{"start":{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},"end":{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},"weight":"1"},{"start":{"x":261.0943039990184,"y":51,"nodeIndex":0},"end":{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},"weight":"1"},{"start":{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},"end":{"x":400.0497106351415,"y":415,"nodeIndex":6},"weight":"1"}]}	t	1702049450177	/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction isIntersecting(a, b, c, d) {\n    // Returns true if line segment (a, b) intersects with line segment (c, d)\n    function ccw(a, b, c) {\n        return (c.y - a.y) * (b.x - a.x) > (b.y - a.y) * (c.x - a.x);\n    }\n\n    return (\n        ccw(a, c, d) !== ccw(b, c, d) &&\n        ccw(a, b, c) !== ccw(a, b, d)\n    );\n}\n\n\nfunction hasCommonNode(edgeA, edgeB) {\n    return (\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.end) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.end)\n    );\n}\n\nfunction solutionChecker(data) {\n    const nodes = data.nodes;\n    const edges = data.edges;\n\n    for (let i = 0; i < edges.length; i++) {\n        const edgeA = edges[i];\n        \n        const startA = nodes[edgeA.start.nodeIndex];\n        const endA = nodes[edgeA.end.nodeIndex];\n\n        for (let j = i + 1; j < edges.length; j++) {\n            const edgeB = edges[j];\n\n            const startB = nodes[edgeB.start.nodeIndex];\n            const endB = nodes[edgeB.end.nodeIndex];\n\n            if (\n                isIntersecting(startA, endA, startB, endB) &&\n                !hasCommonNode(edgeA, edgeB)\n            ) {\n                // console.log(startA.x,startA.y,  startB.x, startB.y, endA.x, endA.y, endB.x, endB.y)\n                return false;\n            }\n        }\n    }\n\n    // No intersections found, it's a plane graph\n    return true;\n}	{"variant":{"value":"simple_graph","type":"select","list":["simple_graph","tree"]},"directed_edge":{"value":false,"type":"switch"},"weighted_edge":{"value":true,"type":"switch"}}	{}	{"add_node":{"value":true,"type":"switch"},"delete_node":{"value":true,"type":"switch"},"drag_node":{"value":true,"type":"switch"},"add_edge":{"value":true,"type":"switch"},"delete_edge":{"value":true,"type":"switch"}}	1	4	0	0	{}
 \.
 
 
 --
--- TOC entry 3481 (class 0 OID 17598)
--- Dependencies: 224
 -- Data for Name: profile; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -830,63 +703,54 @@ COPY public.profile (user_id, fullname, username, image, dob, is_public) FROM st
 
 
 --
--- TOC entry 3482 (class 0 OID 17603)
--- Dependencies: 225
--- Data for Name: serial; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.serial (problem_id, series_id, serial_no) FROM stdin;
-\.
-
-
---
--- TOC entry 3483 (class 0 OID 17607)
--- Dependencies: 226
 -- Data for Name: series; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.series (series_id, topic_id, canvas_id, name, description, logo, template) FROM stdin;
-3	8	3	Red Black	\N	https://ds055uzetaobb.cloudfront.net/brioche/uploads/DtAKvHZ65j-rb-1.png?width=1200	function solutionChecker(data) {\n  return false;\n}\n
-4	6	1	Planar Graph	\N	https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs00373-018-1932-6/MediaObjects/373_2018_1932_Fig3_HTML.png	/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  const edges =  data.edges.map(edge => ({\n\t\tstart: edge.start.nodeIndex,\n\t\tend: edge.end.nodeIndex,\n\t\tweight: edge.weight\n\t}));\n\t\n  return false;\n}
-2	2	2	Tower Of Hanoi	\N	https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbAENY_duGomNEm95iTrLS6t6phHPiZ0pSAbgIwhXTOYCcIvfcj1z6QiSeM_PQblTkfoU&usqp=CAU	/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return false;\n}\n
-1	6	1	Minimum Spanning Tree		https://blog-c7ff.kxcdn.com/blog/wp-content/uploads/2017/01/blog-10.jpg	/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  const edges =  data.edges.map(edge => ({\n\t\tstart: edge.start.nodeIndex,\n\t\tend: edge.end.nodeIndex,\n\t\tweight: edge.weight\n\t}));\n\t\n  return false;\n}
+COPY public.series (series_id, topic_id, name, description, logo) FROM stdin;
+1	6	Minimum Spanning Tree		https://blog-c7ff.kxcdn.com/blog/wp-content/uploads/2017/01/blog-10.jpg
+3	8	Red Black	\N	https://ds055uzetaobb.cloudfront.net/brioche/uploads/DtAKvHZ65j-rb-1.png?width=1200
+4	6	Planar Graph	\N	https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs00373-018-1932-6/MediaObjects/373_2018_1932_Fig3_HTML.png
+2	2	Tower Of Hanoi	\N	https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbAENY_duGomNEm95iTrLS6t6phHPiZ0pSAbgIwhXTOYCcIvfcj1z6QiSeM_PQblTkfoU&usqp=CAU
 \.
 
 
 --
--- TOC entry 3487 (class 0 OID 17615)
--- Dependencies: 230
 -- Data for Name: state; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.state (state_id, title, statement, canvas_data, solution_checker, params, ui_params, control_params, last_updated, canvas_id) FROM stdin;
-2	Double TOH	Move the disks from left peg to right peg.	{"numberOfMoves":0,"numberOfDisks":10,"numberOfPegs":3,"pegs":[[0,10,2,12,4,14,6,16,8,18],[],[]]}	function solutionChecker(data) {\n  return data.numberOfMoves === 2 * (2 ** (data.numberOfDisks/2) - 1);\n}	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	1703588507720	2
-4	Rearrange	Drag the nodes to make the graph a plane graph. In a plane graph there is no crossing edges.	{"nodes":[{"x":261.0943039990184,"y":51,"nodeIndex":0},{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},{"x":400.0497106351415,"y":415,"nodeIndex":6},{"x":651.9616204655157,"y":410,"nodeIndex":7}],"edges":[{"start":{"x":261.0943039990184,"y":51,"nodeIndex":0},"end":{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},"weight":"1"},{"start":{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},"end":{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},"weight":"1"},{"start":{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},"end":{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},"weight":"1"},{"start":{"x":261.0943039990184,"y":51,"nodeIndex":0},"end":{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},"weight":"1"},{"start":{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},"end":{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},"weight":"1"},{"start":{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},"end":{"x":400.0497106351415,"y":415,"nodeIndex":6},"weight":"1"},{"start":{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},"end":{"x":651.9616204655157,"y":410,"nodeIndex":7},"weight":"1"},{"start":{"x":400.0497106351415,"y":415,"nodeIndex":6},"end":{"x":651.9616204655157,"y":410,"nodeIndex":7},"weight":"1"},{"start":{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},"end":{"x":651.9616204655157,"y":410,"nodeIndex":7},"weight":""},{"start":{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},"end":{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},"weight":"1"},{"start":{"x":261.0943039990184,"y":51,"nodeIndex":0},"end":{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},"weight":"1"},{"start":{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},"end":{"x":400.0497106351415,"y":415,"nodeIndex":6},"weight":"1"}]}	/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction isIntersecting(a, b, c, d) {\n    // Returns true if line segment (a, b) intersects with line segment (c, d)\n    function ccw(a, b, c) {\n        return (c.y - a.y) * (b.x - a.x) > (b.y - a.y) * (c.x - a.x);\n    }\n\n    return (\n        ccw(a, c, d) !== ccw(b, c, d) &&\n        ccw(a, b, c) !== ccw(a, b, d)\n    );\n}\n\n\nfunction hasCommonNode(edgeA, edgeB) {\n    return (\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.end) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.end)\n    );\n}\n\nfunction solutionChecker(data) {\n    const nodes = data.nodes;\n    const edges = data.edges;\n\n    for (let i = 0; i < edges.length; i++) {\n        const edgeA = edges[i];\n        \n        const startA = nodes[edgeA.start.nodeIndex];\n        const endA = nodes[edgeA.end.nodeIndex];\n\n        for (let j = i + 1; j < edges.length; j++) {\n            const edgeB = edges[j];\n\n            const startB = nodes[edgeB.start.nodeIndex];\n            const endB = nodes[edgeB.end.nodeIndex];\n\n            if (\n                isIntersecting(startA, endA, startB, endB) &&\n                !hasCommonNode(edgeA, edgeB)\n            ) {\n                // console.log(startA.x,startA.y,  startB.x, startB.y, endA.x, endA.y, endB.x, endB.y)\n                return false;\n            }\n        }\n    }\n\n    // No intersections found, it's a plane graph\n    return true;\n}	{"variant":{"value":"simple_graph","type":"select","list":["simple_graph","tree"]},"directed_edge":{"value":false,"type":"switch"},"weighted_edge":{"value":true,"type":"switch"}}	{}	{"add_node":{"value":true,"type":"switch"},"delete_node":{"value":true,"type":"switch"},"drag_node":{"value":true,"type":"switch"},"add_edge":{"value":true,"type":"switch"},"delete_edge":{"value":true,"type":"switch"}}	1703588523366	1
-3	Road Construction	There are 5 cities numbered from 0 to 4. We can construct roads between cities. Each road has a number associated with it denoting the cost to construct a road. We want to minimize our cost. Remove the roads from the given canvas in a way that from every city we can go to every other city and cost of constructing the remaining roads are minimum.	{"nodes":[{"x":191.46353373570471,"y":209.08105010004624,"nodeIndex":0},{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},{"x":717.4589382793936,"y":266.96633313305256,"nodeIndex":2},{"x":440.46237224675286,"y":238.0461718019531,"nodeIndex":3},{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4}],"edges":[{"start":{"x":191.46353373570471,"y":209.08105010004624,"nodeIndex":0},"end":{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},"weight":"10"},{"start":{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},"end":{"x":717.4589382793936,"y":266.96633313305256,"nodeIndex":2},"weight":"30"},{"start":{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},"end":{"x":440.46237224675286,"y":238.0461718019531,"nodeIndex":3},"weight":"5"},{"start":{"x":191.46353373570471,"y":209.08105010004624,"nodeIndex":0},"end":{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4},"weight":"2"},{"start":{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4},"end":{"x":717.4589382793936,"y":266.96633313305256,"nodeIndex":2},"weight":"50"},{"start":{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4},"end":{"x":440.46237224675286,"y":238.0461718019531,"nodeIndex":3},"weight":"3"}]}	/**\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  const graph = new Map();\n  for (const edge of data.edges) {\n  const { start, end, weight } = edge;\n  \n  if (!graph.has(start.nodeIndex)) {\n    graph.set(start.nodeIndex, []);\n  }\n  \n  if (!graph.has(end.nodeIndex)) {\n    graph.set(end.nodeIndex, []);\n  }\n  \n  graph.get(start.nodeIndex).push({ nodeIndex: end.nodeIndex, weight: parseInt(weight) });\n  graph.get(end.nodeIndex).push({ nodeIndex: start.nodeIndex, weight: parseInt(weight) });\n}\n\n// Step 3: Implement DFS to check if the graph is disconnected\nfunction isDisconnected() {\n  const visited = new Set();\n  const nodes = [...graph.keys()];\n  \n  function dfs(node) {\n    visited.add(node);\n    for (const neighbor of graph.get(node)) {\n      if (!visited.has(neighbor.nodeIndex)) {\n        dfs(neighbor.nodeIndex);\n      }\n    }\n  }\n  \n  dfs(nodes[0]); // Start DFS from the first node\n  \n  return visited.size !== nodes.length;\n}\n\nconst disconnected = isDisconnected();\n\n// Step 4: Calculate the sum of edge weights\nfunction sumEdgeWeights() {\n  let sum = 0;\n  for (const edges of graph.values()) {\n    for (const edge of edges) {\n      sum += edge.weight;\n    }\n  }\n  return sum/2;\n}\n\n\n\n\t// if (disconnected)\n\t// \treturn false;\n\n\t// else {\n  const edgeWeightSum = sumEdgeWeights();\n  console.log(edgeWeightSum);\n\t\tif(edgeWeightSum == 40){\n\t\t\treturn true;\t\n\t\t}\n\t\telse {\n\t\t\treturn false;\n\t\t}\n\t// }\n\n}	{"variant":{"value":"simple_graph","type":"select","list":["simple_graph","tree"]},"directed_edge":{"value":false,"type":"switch"},"weighted_edge":{"value":true,"type":"switch"}}	{}	{"add_node":{"value":true,"type":"switch"},"delete_node":{"value":true,"type":"switch"},"drag_node":{"value":true,"type":"switch"},"add_edge":{"value":true,"type":"switch"},"delete_edge":{"value":true,"type":"switch"}}	1703588500618	1
-5	Min 4 Disks	Move the 4 disks from left to right peg in minimum possible moves.	{"numberOfMoves":0,"numberOfDisks":4,"numberOfPegs":3,"pegs":[[0,1,2,3],[],[]]}	/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.numberOfMoves == 15 && data.pegs[2].length == 4;\n}\n	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	1703657604703	2
-7	Min 3 Disks	You already how to move 3 disks from one peg to another. But can you do it in minimum possible moves?	{"numberOfMoves":0,"numberOfDisks":3,"numberOfPegs":3,"pegs":[[0,1,2],[],[]]}	/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.numberOfMoves == 7 && data.pegs[2].length==3;\n}\n	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	1703658129540	2
-6	3 Disks	Move the 3 disks from left peg to right peg. You can use the middle peg to temporarily keep the disks. 	{"numberOfMoves":0,"numberOfDisks":3,"numberOfPegs":3,"pegs":[[0,1,2],[],[]]}	/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.pegs[2].length === 3;\n}\n	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	1703658249952	2
-8	Reverse the Disks	Reverse the 3 disks.	{"numberOfMoves":3,"numberOfDisks":3,"numberOfPegs":3,"pegs":[[0],[1],[2]]}	function solutionChecker(data) {\n  // Check if the pegs are ordered as 2, 1, 0\n  const isPegsOrdered = data.pegs.map(peg => peg[0]).toString() === "2,1,0";\n  // Check if the number of moves is equal to 3\n  const isNumberOfMovesEqual3 = data.numberOfMoves === 3;\n  // Check both conditions\n  if (isPegsOrdered && isNumberOfMovesEqual3) {\n    console.log("Pegs are ordered as 2, 1, 0, and the number of moves is 3.");\n    return true;\n  } else {\n    console.log("Pegs are not ordered as 2, 1, 0, or the number of moves is not 3.");\n    return false;\n  }\n  }	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	1703618071622	2
+COPY public.state (state_id, title, statement, canvas_data, checker_code, params, ui_params, control_params, last_updated, canvas_id, checker_type, checker_canvas) FROM stdin;
+2	Double TOH	Move the disks from left peg to right peg.	{"numberOfMoves":0,"numberOfDisks":10,"numberOfPegs":3,"pegs":[[0,10,2,12,4,14,6,16,8,18],[],[]]}	function solutionChecker(data) {\n  return data.numberOfMoves === 2 * (2 ** (data.numberOfDisks/2) - 1);\n}	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	1703588507720	2	0	\N
+4	Rearrange	Drag the nodes to make the graph a plane graph. In a plane graph there is no crossing edges.	{"nodes":[{"x":261.0943039990184,"y":51,"nodeIndex":0},{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},{"x":400.0497106351415,"y":415,"nodeIndex":6},{"x":651.9616204655157,"y":410,"nodeIndex":7}],"edges":[{"start":{"x":261.0943039990184,"y":51,"nodeIndex":0},"end":{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},"weight":"1"},{"start":{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},"end":{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},"weight":"1"},{"start":{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},"end":{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},"weight":"1"},{"start":{"x":261.0943039990184,"y":51,"nodeIndex":0},"end":{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},"weight":"1"},{"start":{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},"end":{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},"weight":"1"},{"start":{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},"end":{"x":400.0497106351415,"y":415,"nodeIndex":6},"weight":"1"},{"start":{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},"end":{"x":651.9616204655157,"y":410,"nodeIndex":7},"weight":"1"},{"start":{"x":400.0497106351415,"y":415,"nodeIndex":6},"end":{"x":651.9616204655157,"y":410,"nodeIndex":7},"weight":"1"},{"start":{"x":524.010600061905,"y":283.6704440926645,"nodeIndex":3},"end":{"x":651.9616204655157,"y":410,"nodeIndex":7},"weight":""},{"start":{"x":529.0116966200333,"y":52.689220058515446,"nodeIndex":1},"end":{"x":646.9634480623959,"y":177.67987494309193,"nodeIndex":5},"weight":"1"},{"start":{"x":261.0943039990184,"y":51,"nodeIndex":0},"end":{"x":386.0526347901497,"y":173.1300047808519,"nodeIndex":4},"weight":"1"},{"start":{"x":275.09357296026633,"y":293.6705298276685,"nodeIndex":2},"end":{"x":400.0497106351415,"y":415,"nodeIndex":6},"weight":"1"}]}	/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction isIntersecting(a, b, c, d) {\n    // Returns true if line segment (a, b) intersects with line segment (c, d)\n    function ccw(a, b, c) {\n        return (c.y - a.y) * (b.x - a.x) > (b.y - a.y) * (c.x - a.x);\n    }\n\n    return (\n        ccw(a, c, d) !== ccw(b, c, d) &&\n        ccw(a, b, c) !== ccw(a, b, d)\n    );\n}\n\n\nfunction hasCommonNode(edgeA, edgeB) {\n    return (\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.end) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.end)\n    );\n}\n\nfunction solutionChecker(data) {\n    const nodes = data.nodes;\n    const edges = data.edges;\n\n    for (let i = 0; i < edges.length; i++) {\n        const edgeA = edges[i];\n        \n        const startA = nodes[edgeA.start.nodeIndex];\n        const endA = nodes[edgeA.end.nodeIndex];\n\n        for (let j = i + 1; j < edges.length; j++) {\n            const edgeB = edges[j];\n\n            const startB = nodes[edgeB.start.nodeIndex];\n            const endB = nodes[edgeB.end.nodeIndex];\n\n            if (\n                isIntersecting(startA, endA, startB, endB) &&\n                !hasCommonNode(edgeA, edgeB)\n            ) {\n                // console.log(startA.x,startA.y,  startB.x, startB.y, endA.x, endA.y, endB.x, endB.y)\n                return false;\n            }\n        }\n    }\n\n    // No intersections found, it's a plane graph\n    return true;\n}	{"variant":{"value":"simple_graph","type":"select","list":["simple_graph","tree"]},"directed_edge":{"value":false,"type":"switch"},"weighted_edge":{"value":true,"type":"switch"}}	{}	{"add_node":{"value":true,"type":"switch"},"delete_node":{"value":true,"type":"switch"},"drag_node":{"value":true,"type":"switch"},"add_edge":{"value":true,"type":"switch"},"delete_edge":{"value":true,"type":"switch"}}	1703588523366	1	0	\N
+6	3 Disks	Move the 3 disks from left peg to right peg. You can use the middle peg to temporarily keep the disks. 	{"numberOfMoves":0,"numberOfDisks":3,"numberOfPegs":3,"pegs":[[0,1,2],[],[]]}	/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.pegs[2].length === 3;\n}\n	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":false,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	1703962294639	2	0	\N
+5	Min 4 Disks	Move the 4 disks from left to right peg in minimum possible moves.	{"numberOfMoves":0,"numberOfDisks":4,"numberOfPegs":3,"pegs":[[0,1,2,3],[],[]]}	/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.numberOfMoves == 15 && data.pegs[2].length == 4;\n}\n	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	1703657604703	2	0	\N
+7	Min 3 Disks	You already how to move 3 disks from one peg to another. But can you do it in minimum possible moves?	{"numberOfMoves":0,"numberOfDisks":3,"numberOfPegs":3,"pegs":[[0,1,2],[],[]]}	/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.numberOfMoves == 7 && data.pegs[2].length==3;\n}\n	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	1703658129540	2	0	\N
+8	Reverse the Disks	Reverse the 3 disks.	{"numberOfMoves":3,"numberOfDisks":3,"numberOfPegs":3,"pegs":[[0],[1],[2]]}	function solutionChecker(data) {\n  // Check if the pegs are ordered as 2, 1, 0\n  const isPegsOrdered = data.pegs.map(peg => peg[0]).toString() === "2,1,0";\n  // Check if the number of moves is equal to 3\n  const isNumberOfMovesEqual3 = data.numberOfMoves === 3;\n  // Check both conditions\n  if (isPegsOrdered && isNumberOfMovesEqual3) {\n    console.log("Pegs are ordered as 2, 1, 0, and the number of moves is 3.");\n    return true;\n  } else {\n    console.log("Pegs are not ordered as 2, 1, 0, or the number of moves is not 3.");\n    return false;\n  }\n  }	{"custom_disk":{"value":true,"type":"switch"},"ordered":{"value":true,"type":"switch"}}	{"moves":{"value":true,"type":"switch"},"n_disks":{"value":false,"type":"switch"},"custom_disk":{"value":false,"type":"switch"},"undo":{"value":true,"type":"switch"}}	{}	1703618071622	2	0	\N
+3	Road Construction	There are 5 cities numbered from 0 to 4. We can construct roads between cities. Each road has a number associated with it denoting the cost to construct a road. We want to minimize our cost. **Remove the roads from the given canvas in a way that from every city we can go to every other city and cost of constructing the remaining roads are minimum.**	{"nodes":[{"x":191.46353373570471,"y":209.08105010004624,"nodeIndex":0},{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},{"x":717.4589382793936,"y":266.96633313305256,"nodeIndex":2},{"x":440.46237224675286,"y":238.0461718019531,"nodeIndex":3},{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4}],"edges":[{"start":{"x":191.46353373570471,"y":209.08105010004624,"nodeIndex":0},"end":{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},"weight":"10"},{"start":{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},"end":{"x":717.4589382793936,"y":266.96633313305256,"nodeIndex":2},"weight":"30"},{"start":{"x":480.45356288618734,"y":79.05215958998558,"nodeIndex":1},"end":{"x":440.46237224675286,"y":238.0461718019531,"nodeIndex":3},"weight":"5"},{"start":{"x":191.46353373570471,"y":209.08105010004624,"nodeIndex":0},"end":{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4},"weight":"2"},{"start":{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4},"end":{"x":717.4589382793936,"y":266.96633313305256,"nodeIndex":2},"weight":"50"},{"start":{"x":415.4808662930142,"y":394.99793083470826,"nodeIndex":4},"end":{"x":440.46237224675286,"y":238.0461718019531,"nodeIndex":3},"weight":"3"}]}	/**\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  const graph = new Map();\n  for (const edge of data.edges) {\n  const { start, end, weight } = edge;\n  \n  if (!graph.has(start.nodeIndex)) {\n    graph.set(start.nodeIndex, []);\n  }\n  \n  if (!graph.has(end.nodeIndex)) {\n    graph.set(end.nodeIndex, []);\n  }\n  \n  graph.get(start.nodeIndex).push({ nodeIndex: end.nodeIndex, weight: parseInt(weight) });\n  graph.get(end.nodeIndex).push({ nodeIndex: start.nodeIndex, weight: parseInt(weight) });\n}\n\n// Step 3: Implement DFS to check if the graph is disconnected\nfunction isDisconnected() {\n  const visited = new Set();\n  const nodes = [...graph.keys()];\n  \n  function dfs(node) {\n    visited.add(node);\n    for (const neighbor of graph.get(node)) {\n      if (!visited.has(neighbor.nodeIndex)) {\n        dfs(neighbor.nodeIndex);\n      }\n    }\n  }\n  \n  dfs(nodes[0]); // Start DFS from the first node\n  \n  return visited.size !== nodes.length;\n}\n\nconst disconnected = isDisconnected();\n\n// Step 4: Calculate the sum of edge weights\nfunction sumEdgeWeights() {\n  let sum = 0;\n  for (const edges of graph.values()) {\n    for (const edge of edges) {\n      sum += edge.weight;\n    }\n  }\n  return sum/2;\n}\n\n\n\n\t// if (disconnected)\n\t// \treturn false;\n\n\t// else {\n  const edgeWeightSum = sumEdgeWeights();\n  console.log(edgeWeightSum);\n\t\tif(edgeWeightSum == 40){\n\t\t\treturn true;\t\n\t\t}\n\t\telse {\n\t\t\treturn false;\n\t\t}\n\t// }\n\n}	{"variant":{"value":"simple_graph","type":"select","list":["simple_graph","tree"]},"directed_edge":{"value":false,"type":"switch"},"weighted_edge":{"value":true,"type":"switch"}}	{}	{"add_node":{"value":false,"type":"switch"},"delete_node":{"value":false,"type":"switch"},"drag_node":{"value":false,"type":"switch"},"add_edge":{"value":false,"type":"switch"},"delete_edge":{"value":true,"type":"switch"}}	1704019165086	1	1	\N
 \.
 
 
 --
--- TOC entry 3489 (class 0 OID 17621)
--- Dependencies: 232
 -- Data for Name: submissions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.submissions (time_stamp, verdict, submission_id, problem_id, user_id) FROM stdin;
-1703996885265	Accepted	30	68	16
-1703996928160	Accepted	31	69	16
-1703996951909	Wrong answer	32	69	16
-1703996984565	Wrong answer	33	68	16
+COPY public.submissions (submission_id, problem_id, user_id, verdict, time_stamp) FROM stdin;
+1	68	16	Wrong answer	1704002979513
+2	68	16	Accepted	1704002999602
+3	70	16	Wrong answer	1704003096052
+4	70	16	Accepted	1704003263927
+5	68	16	Wrong answer	1704003969494
+6	68	16	Accepted	1704003973755
+7	30	16	Accepted	1704010521922
+8	30	1	solutionChecker is not defined	1704013305378
+9	30	1	Accepted	1704013438482
+10	30	1	Wrong answer	1704013442217
+11	30	1	Wrong answer	1704019049263
+12	30	1	Wrong answer	1704019056293
+13	30	1	Accepted	1704019060949
 \.
 
 
 --
--- TOC entry 3491 (class 0 OID 17625)
--- Dependencies: 234
 -- Data for Name: topic; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -899,8 +763,6 @@ COPY public.topic (topic_id, name, description, logo) FROM stdin;
 
 
 --
--- TOC entry 3520 (class 0 OID 0)
--- Dependencies: 215
 -- Name: Author_author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -908,8 +770,20 @@ SELECT pg_catalog.setval('public."Author_author_id_seq"', 6, true);
 
 
 --
--- TOC entry 3521 (class 0 OID 0)
--- Dependencies: 217
+-- Name: activity_problem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.activity_problem_id_seq', 1, false);
+
+
+--
+-- Name: activity_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.activity_user_id_seq', 1, false);
+
+
+--
 -- Name: auth_auth_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -917,8 +791,6 @@ SELECT pg_catalog.setval('public.auth_auth_id_seq', 1, true);
 
 
 --
--- TOC entry 3522 (class 0 OID 0)
--- Dependencies: 219
 -- Name: canvas_canvas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -926,8 +798,6 @@ SELECT pg_catalog.setval('public.canvas_canvas_id_seq', 4, true);
 
 
 --
--- TOC entry 3523 (class 0 OID 0)
--- Dependencies: 221
 -- Name: problem_author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -935,8 +805,6 @@ SELECT pg_catalog.setval('public.problem_author_id_seq', 1, false);
 
 
 --
--- TOC entry 3524 (class 0 OID 0)
--- Dependencies: 222
 -- Name: problem_problem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -944,8 +812,6 @@ SELECT pg_catalog.setval('public.problem_problem_id_seq', 97, true);
 
 
 --
--- TOC entry 3525 (class 0 OID 0)
--- Dependencies: 223
 -- Name: problem_series_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -953,17 +819,6 @@ SELECT pg_catalog.setval('public.problem_series_id_seq', 1, false);
 
 
 --
--- TOC entry 3526 (class 0 OID 0)
--- Dependencies: 227
--- Name: series_canvas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.series_canvas_id_seq', 1, false);
-
-
---
--- TOC entry 3527 (class 0 OID 0)
--- Dependencies: 228
 -- Name: series_series_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -971,8 +826,6 @@ SELECT pg_catalog.setval('public.series_series_id_seq', 4, true);
 
 
 --
--- TOC entry 3528 (class 0 OID 0)
--- Dependencies: 229
 -- Name: series_topic_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -980,8 +833,6 @@ SELECT pg_catalog.setval('public.series_topic_id_seq', 1, false);
 
 
 --
--- TOC entry 3529 (class 0 OID 0)
--- Dependencies: 231
 -- Name: state_state_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -989,17 +840,13 @@ SELECT pg_catalog.setval('public.state_state_id_seq', 8, true);
 
 
 --
--- TOC entry 3530 (class 0 OID 0)
--- Dependencies: 233
 -- Name: submissions_submission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.submissions_submission_id_seq', 33, true);
+SELECT pg_catalog.setval('public.submissions_submission_id_seq', 13, true);
 
 
 --
--- TOC entry 3531 (class 0 OID 0)
--- Dependencies: 235
 -- Name: topic_topic_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -1007,26 +854,6 @@ SELECT pg_catalog.setval('public.topic_topic_id_seq', 8, true);
 
 
 --
--- TOC entry 3532 (class 0 OID 0)
--- Dependencies: 238
--- Name: userActivity_problem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public."userActivity_problem_id_seq"', 1, false);
-
-
---
--- TOC entry 3533 (class 0 OID 0)
--- Dependencies: 237
--- Name: userActivity_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public."userActivity_user_id_seq"', 1, false);
-
-
---
--- TOC entry 3534 (class 0 OID 0)
--- Dependencies: 236
 -- Name: user_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -1034,7 +861,6 @@ SELECT pg_catalog.setval('public.user_user_id_seq', 19, true);
 
 
 --
--- TOC entry 3293 (class 2606 OID 17645)
 -- Name: author Author_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1043,7 +869,6 @@ ALTER TABLE ONLY public.author
 
 
 --
--- TOC entry 3295 (class 2606 OID 17647)
 -- Name: auth auth_email_authtype_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1052,7 +877,6 @@ ALTER TABLE ONLY public.auth
 
 
 --
--- TOC entry 3297 (class 2606 OID 17649)
 -- Name: auth auth_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1061,7 +885,6 @@ ALTER TABLE ONLY public.auth
 
 
 --
--- TOC entry 3299 (class 2606 OID 17651)
 -- Name: canvas canvas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1070,7 +893,6 @@ ALTER TABLE ONLY public.canvas
 
 
 --
--- TOC entry 3301 (class 2606 OID 17653)
 -- Name: problem problem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1079,16 +901,6 @@ ALTER TABLE ONLY public.problem
 
 
 --
--- TOC entry 3307 (class 2606 OID 17655)
--- Name: serial serial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.serial
-    ADD CONSTRAINT serial_pkey PRIMARY KEY (problem_id, series_id);
-
-
---
--- TOC entry 3309 (class 2606 OID 17657)
 -- Name: series series_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1097,7 +909,6 @@ ALTER TABLE ONLY public.series
 
 
 --
--- TOC entry 3311 (class 2606 OID 17659)
 -- Name: state state_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1106,7 +917,6 @@ ALTER TABLE ONLY public.state
 
 
 --
--- TOC entry 3313 (class 2606 OID 17661)
 -- Name: submissions submissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1115,7 +925,6 @@ ALTER TABLE ONLY public.submissions
 
 
 --
--- TOC entry 3315 (class 2606 OID 17663)
 -- Name: topic topic_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1124,7 +933,6 @@ ALTER TABLE ONLY public.topic
 
 
 --
--- TOC entry 3317 (class 2606 OID 17721)
 -- Name: activity userActivity_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1133,7 +941,6 @@ ALTER TABLE ONLY public.activity
 
 
 --
--- TOC entry 3303 (class 2606 OID 17665)
 -- Name: profile user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1142,7 +949,6 @@ ALTER TABLE ONLY public.profile
 
 
 --
--- TOC entry 3305 (class 2606 OID 17667)
 -- Name: profile user_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1151,7 +957,6 @@ ALTER TABLE ONLY public.profile
 
 
 --
--- TOC entry 3318 (class 2606 OID 17668)
 -- Name: auth auth_auth_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1160,7 +965,6 @@ ALTER TABLE ONLY public.auth
 
 
 --
--- TOC entry 3319 (class 2606 OID 17673)
 -- Name: problem problem_author_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1169,7 +973,6 @@ ALTER TABLE ONLY public.problem
 
 
 --
--- TOC entry 3320 (class 2606 OID 17678)
 -- Name: problem problem_canvas_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1178,7 +981,6 @@ ALTER TABLE ONLY public.problem
 
 
 --
--- TOC entry 3321 (class 2606 OID 17683)
 -- Name: problem problem_series_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1187,7 +989,6 @@ ALTER TABLE ONLY public.problem
 
 
 --
--- TOC entry 3322 (class 2606 OID 17688)
 -- Name: problem problem_submit_state_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1196,16 +997,6 @@ ALTER TABLE ONLY public.problem
 
 
 --
--- TOC entry 3323 (class 2606 OID 17693)
--- Name: series series_canvas_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.series
-    ADD CONSTRAINT series_canvas_id_fkey FOREIGN KEY (canvas_id) REFERENCES public.canvas(canvas_id) ON UPDATE CASCADE ON DELETE SET NULL NOT VALID;
-
-
---
--- TOC entry 3324 (class 2606 OID 17698)
 -- Name: series series_topic_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1214,25 +1005,22 @@ ALTER TABLE ONLY public.series
 
 
 --
--- TOC entry 3325 (class 2606 OID 17703)
 -- Name: submissions submissions_problem_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.submissions
-    ADD CONSTRAINT submissions_problem_id_fkey FOREIGN KEY (problem_id) REFERENCES public.problem(problem_id) ON UPDATE CASCADE ON DELETE RESTRICT NOT VALID;
+    ADD CONSTRAINT submissions_problem_id_fkey FOREIGN KEY (problem_id) REFERENCES public.problem(problem_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- TOC entry 3326 (class 2606 OID 17708)
 -- Name: submissions submissions_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.submissions
-    ADD CONSTRAINT submissions_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profile(user_id) ON UPDATE CASCADE ON DELETE RESTRICT NOT VALID;
+    ADD CONSTRAINT submissions_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profile(user_id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- TOC entry 3327 (class 2606 OID 17727)
 -- Name: activity userActivity_problem_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1241,7 +1029,6 @@ ALTER TABLE ONLY public.activity
 
 
 --
--- TOC entry 3328 (class 2606 OID 17722)
 -- Name: activity userActivity_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1250,16 +1037,12 @@ ALTER TABLE ONLY public.activity
 
 
 --
--- TOC entry 3503 (class 0 OID 0)
--- Dependencies: 5
 -- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
 --
 
 REVOKE USAGE ON SCHEMA public FROM PUBLIC;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
-
--- Completed on 2023-12-31 10:31:04 +06
 
 --
 -- PostgreSQL database dump complete

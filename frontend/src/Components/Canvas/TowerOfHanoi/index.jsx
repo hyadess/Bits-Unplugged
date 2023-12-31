@@ -479,7 +479,10 @@ const TowerOfHanoi = (props, ref) => {
     let nearestPegIndex = sourcePegIndex;
     let minDistance = Infinity;
 
-    if (isProblemSetting && sourceY > 250) {
+    if (
+      (props.mode === "edit" || props.uiParams.custom_disk.value) &&
+      sourceY > 250
+    ) {
       // Delete
       if (currentHistory < history.length - 1) {
         setHistory((prevArray) => [...prevArray.slice(0, currentHistory + 1)]);
@@ -828,6 +831,10 @@ const TowerOfHanoi = (props, ref) => {
   //   }
   // };
 
+  useEffect(() => {
+    console.log("mode changed", props.mode);
+  }, [props.mode]);
+  
   return (
     <div className="tower-of-hanoi vbox">
       {data && (

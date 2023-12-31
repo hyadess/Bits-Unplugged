@@ -48,7 +48,7 @@ class ProblemsRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
-  getUnsolvedProblemsBySeries = async (user_id,series_id) => {
+  getUnsolvedProblemsBySeries = async (user_id, series_id) => {
     const query = `
     SELECT P.*, 
     S.name AS series_name, 
@@ -61,11 +61,10 @@ class ProblemsRepository extends Repository {
     AND P.is_live = TRUE
     AND S.series_id = $2;
     `;
-    const params = [user_id,series_id];
+    const params = [user_id, series_id];
     const result = await this.query(query, params);
     return result;
   };
-
 
   getProblemsByTopic = async (topic_id) => {
     const query = `
@@ -128,7 +127,9 @@ class ProblemsRepository extends Repository {
       if (prob.submit_state_id !== null) {
         const query = `
           Update State
-          SET title = $2, statement = $3, canvas_data = $4, solution_checker = $5, params = $6, ui_params = $7, control_params = $8, last_updated = $9, canvas_id = $10
+          SET title = $2, statement = $3, canvas_data = $4, ${
+            prob.checker_type == 0 ? "checker_code" : "checker_canvas"
+          } = $5, params = $6, ui_params = $7, control_params = $8, last_updated = $9, canvas_id = $10, checker_type = $11
           WHERE state_id = $1;
         `;
         const params = [
@@ -142,6 +143,7 @@ class ProblemsRepository extends Repository {
           prob.control_params,
           Date.now(),
           prob.canvas_id,
+          prob.checker_type,
         ];
         const result2 = await this.query(query, params);
         if (result2.success) {
@@ -156,8 +158,10 @@ class ProblemsRepository extends Repository {
         }
       } else {
         const query = `
-          INSERT INTO State (title, statement, canvas_data, solution_checker, params, ui_params, control_params, last_updated)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+          INSERT INTO State (title, statement, canvas_data, ${
+            prob.checker_type == 0 ? "checker_code" : "checker_canvas"
+          }, params, ui_params, control_params, last_updated, canvas_id, checker_type)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
           RETURNING state_id;
         `;
         const params = [
@@ -169,6 +173,8 @@ class ProblemsRepository extends Repository {
           prob.ui_params,
           prob.control_params,
           Date.now(),
+          prob.canvas_id,
+          prob.checker_type,
         ];
         const result2 = await this.query(query, params);
         if (result2.success) {
@@ -269,13 +275,19 @@ class ProblemsRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
-  updataSolutionChecker = async (problem_id, code) => {
+  updataSolutionChecker = async (
+    problem_id,
+    solution_checker,
+    checker_type
+  ) => {
     const query = `
     Update Problem
-    SET solution_checker = $2
+    SET ${
+      checker_type == 0 ? "checker_code" : "checker_canvas"
+    } = $2, checker_type = $3
     WHERE problem_id = $1;
     `;
-    const params = [problem_id, code];
+    const params = [problem_id, solution_checker, checker_type];
     const result = await this.query(query, params);
     return result;
   };

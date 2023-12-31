@@ -20,6 +20,10 @@ class ProblemController extends Controller {
     const res = await this.problemApi.getMyProblems();
     return res;
   };
+  getUnsolvedProblemsBySeries = async (series_id) => {
+    const res = await this.problemApi.getUnsolvedProblemsBySeries(series_id);
+    return res;
+  };
   getProblemsBySeries = async (series_id) => {
     const res = await this.problemApi.getProblemsBySeries(series_id);
     return res;
@@ -100,10 +104,10 @@ class ProblemController extends Controller {
       const verdict = eval(code + "; solutionChecker(input);");
       console.log = originalConsoleLog;
       if (verdict) {
-        output = "Accepted.";
+        output = "Accepted";
         showToast(output, "success");
       } else {
-        output = "Wrong answer.";
+        output = "Wrong answer";
         showToast(output, "error");
       }
     } catch (error) {

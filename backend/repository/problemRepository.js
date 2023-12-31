@@ -48,6 +48,25 @@ class ProblemsRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+  getUnsolvedProblemsBySeries = async (user_id,series_id) => {
+    const query = `
+    SELECT P.*, 
+    S.name AS series_name, 
+    T.name AS topic_name 
+    FROM Problem P
+    JOIN Series S ON P.series_id = S.series_id
+    JOIN Topic T ON S.topic_id = T.topic_id
+    LEFT JOIN Activity U ON P.problem_id = U.problem_id AND U.user_id = $1
+    WHERE (U.user_id IS NULL OR U.is_solved = FALSE)
+    AND P.is_live = TRUE
+    AND S.series_id = $2;
+    `;
+    const params = [user_id,series_id];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+
   getProblemsByTopic = async (topic_id) => {
     const query = `
     SELECT * 

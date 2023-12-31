@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import CanvasContainer from "../Components/Canvas/CanvasContainer";
 import ProblemController from "../controller/problemController";
+import SubmissionController from "../controller/submissionController";
+import UserActivityController from "../controller/userActivityController";
 import { Button } from "@mui/material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
@@ -22,6 +24,8 @@ import { getCodeString } from "rehype-rewrite";
 import MarkdownPreview from "../Components/Markdown/MarkdownPreview";
 //<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 const problemController = new ProblemController();
+const submissionController = new SubmissionController();
+const userActivityController = new UserActivityController();
 
 export default function ProblemsCanvas() {
   /**
@@ -88,7 +92,17 @@ export default function ProblemsCanvas() {
   const calculateNumberOfLines = (content) => {
     return content.split("\n").length;
   };
-
+  const solutionSubmit = async (e) => {
+    let res = await problemController.checkSolution(
+      problem.solution_checker,
+      input
+    );
+    console.log("output " + res.output);
+    submissionController.submitSolution(res.output, id);
+    if (res.output === "Accepted")
+      userActivityController.updateOnSuccessfulAttempt(id);
+    else userActivityController.updateOnFailedAttempt(id);
+  };
   function getColorModeFromLocalStorage() {
     return localStorage.getItem("color-theme") || "light";
   }
@@ -211,13 +225,7 @@ export default function ProblemsCanvas() {
                 </Button>
                 <Button
                   variant="contained"
-                  onClick={() => {
-                    // setBackup({ ...input });
-                    problemController.checkSolution(
-                      problem.solution_checker,
-                      input
-                    );
-                  }}
+                  onClick={solutionSubmit}
                   endIcon={
                     <SendIcon sx={{ fontSize: "2rem", color: "white" }} />
                   }

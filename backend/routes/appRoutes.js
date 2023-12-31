@@ -5,6 +5,8 @@ const topicRoutes = require("./topicRoutes");
 const seriesRoutes = require("./seriesRoutes");
 const canvasRoutes = require("./canvasRoutes");
 const profileRoutes = require("./profileRoutes");
+const submissionRoutes=require("./submissionRoutes");
+const userActivityRoutes=require("./userActivityRoutes");
 const base = require("../repository/base");
 router.get("/", async (req, res) => {
   const result = await new base().check();
@@ -21,5 +23,7 @@ router.use("/series", seriesRoutes);
 router.use("/problem", problemRoutes);
 router.use("/canvas", canvasRoutes);
 router.use("/profile", profileRoutes);
+router.use("/submission",submissionRoutes);
+router.use("/userActivity",userActivityRoutes);
 
 module.exports = router;

@@ -260,10 +260,11 @@ const GraphComponent = (props, ref) => {
         } else if (selectedNodes.length > 0) {
           setSelectedNodes([]);
         } else {
-          //check if i have control params permission to add nodes
-          if (props.controlParams === null || !props.controlParams["add_node"])
+          if (
+            props.mode === "preview" &&
+            props?.controlParams?.add_node?.value === false
+          )
             return;
-          if (props.controlParams["add_node"].value === false) return;
           const newNode = { x, y, nodeIndex };
           setNodeIndex(nodeIndex + 1);
 

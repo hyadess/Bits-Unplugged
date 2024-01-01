@@ -2,7 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, useBeforeUnload } from "react-router-dom";
 import CanvasContainer from "../../Components/Canvas/CanvasContainer";
 import SolutionChecker from "../SolutionChecker";
-import { Button, IconButton, Modal, Tooltip, Zoom } from "@mui/material";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import Tooltip from "@mui/material/Tooltip";
+import Zoom from "@mui/material/Zoom";
 import ProblemController from "../../controller/problemController";
 import ProbSetTab from "../../Components/ProbSetTab";
 import ProblemStatement from "./Statement";
@@ -21,6 +25,9 @@ import { SelectionField, SelectionField2 } from "../../Components/InputFields";
 
 import CanvasController from "../../controller/canvasController";
 import { setLoading } from "../../App";
+// import TabContext from "@mui/lab/TabContext";
+// import TabList from "@mui/lab/TabList";
+// import TabPanel from "@mui/lab/TabPanel";
 
 const problemController = new ProblemController();
 const canvasController = new CanvasController();
@@ -544,6 +551,7 @@ export default function ProblemSetEnv() {
       <ProbSetTab activeTab={activeComponent} click={setActiveComponent} />
 
       <div className="component-container">
+        {/* Slow Transition */}
         {activeComponent === "statement" ? (
           <ProblemStatement
             statement={problemStatement}
@@ -591,6 +599,55 @@ export default function ProblemSetEnv() {
         ) : (
           <></>
         )}
+
+        {/* Faster transition */}
+        <div className={activeComponent === "statement" ? "block" : "hidden"}>
+          <ProblemStatement
+            statement={problemStatement}
+            setStatement={setProblemStatement}
+          />
+        </div>
+        <div className={activeComponent === "canvas" ? "block" : "hidden"}>
+          <CanvasDesignTab
+            handleCanvasChange={handleCanvasChange}
+            canvasId={canvasId}
+            canvasList={canvasList}
+            input={input}
+            setInput={setInput}
+            canvasRef={canvasRef}
+            params={params}
+            setParams={setParams}
+            uiParams={uiParams}
+            setUiParams={setUiParams}
+            controlParams={controlParams}
+            setControlParams={setControlParams}
+            reset={reset}
+            updateCanvas={updateCanvas}
+            updateSolutionChecker={updateSolutionChecker}
+          />
+        </div>
+        <div className={activeComponent === "solution" ? "block" : "hidden"}>
+          <SolutionCheckerTab
+            checkerType={checkerType}
+            setCheckerType={setCheckerType}
+            code={code}
+            setCode={setCode}
+            input={input}
+            handleCheckSolution={handleCheckSolution}
+            canvasId={canvasId}
+            checkerCanvas={checkerCanvas}
+            setCheckerCanvas={setCheckerCanvas}
+            params={params}
+            setParams={setParams}
+            setUiParams={setUiParams}
+            uiParams={uiParams}
+            controlParams={controlParams}
+            setControlParams={setControlParams}
+            updateSolutionChecker={updateSolutionChecker}
+            backup={backup}
+            canvasRef={canvasRef}
+          />
+        </div>
       </div>
       <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} />
     </div>

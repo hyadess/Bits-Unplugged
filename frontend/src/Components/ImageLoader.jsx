@@ -9,11 +9,9 @@ const ImageLoader = ({ src, alt, style, className }) => {
       <img
         src={src}
         alt={alt}
-        className={
-          `transition-opacity duration-1000 opacity-${
-            imageLoaded ? "100" : "0"
-          } ` + className
-        }
+        className={`transition-opacity duration-1000 opacity-${
+          imageLoaded ? "100" : "0"
+        } ${className ? className : ""}`}
         onLoad={() => {
           setLoading(false);
           setImageLoaded(true);

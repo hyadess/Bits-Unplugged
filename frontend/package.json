@@ -83,6 +83,7 @@
     ]
   },
   "devDependencies": {
+    "babel-plugin-root-import": "^6.6.0",
     "prettier": "^3.1.1",
     "prettier-plugin-tailwindcss": "^0.5.10"
   }

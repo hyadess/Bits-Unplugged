@@ -843,21 +843,21 @@ const TowerOfHanoi = (props, ref) => {
             {(props.mode === "edit" || props.uiParams.undo.value) && (
               <UndoRedoButton handleUndo={handleUndo} handleRedo={handleRedo} />
             )}
-            <div className="flex-start flex min-h-[10rem] w-full flex-row items-center gap-5">
-              {/* {(props.mode === "edit" || props.uiParams.n_disks.value) && (
+            <div className="flex-start flex min-h-[2.5] w-full flex-row items-center gap-5">
+              {(props.mode === "edit" || props.uiParams.n_disks.value) && (
                 <NumberOfDisksInput
                   data={data}
                   handleNumberOfDisksChange={handleNumberOfDisksChange}
                 />
-              )} */}
-              {/* {props.mode === "preview" && props.uiParams.moves.value && (
+              )}
+              {props.mode === "preview" && props.uiParams.moves.value && (
                 <Typography variant="h5" className="bu-text-primary m-0 p-0">
                   <b className="bu-text-primary">Moves: {data.numberOfMoves}</b>
                 </Typography>
-              )} */}
+              )}
             </div>
           </div>
-          {/* <Divider sx={{ bgcolor: "rgb(236, 72, 153)" }} /> */}
+          <Divider sx={{ bgcolor: "rgb(236, 72, 153)" }} />
           <div className={`toh-canvas vbox flex-center`}>
             <Stage
               x={20}
@@ -866,12 +866,11 @@ const TowerOfHanoi = (props, ref) => {
                 (60 + pegWidth * data.numberOfPegs)
               }
               height={
-                // Math.min(window.innerWidth / 800, 1) *
-                // (280 +
-                //   (props.mode === "edit" || props.uiParams.custom_disk.value
-                //     ? diskHeight * 1.2
-                //     : 0))
-                500
+                Math.min(window.innerWidth / 800, 1) *
+                (280 +
+                  (props.mode === "edit" || props.uiParams.custom_disk.value
+                    ? diskHeight * 1.2
+                    : 0))
               }
               scaleX={Math.min(window.innerWidth / 970, 1)}
               scaleY={Math.min(window.innerWidth / 900, 1)}

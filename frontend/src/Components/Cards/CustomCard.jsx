@@ -28,10 +28,12 @@ const CustomCard = ({ id, name, image, path, action }) => {
             }
             alt=""
             style={{
-              width: "15rem",
-              height: "14rem",
+              // width: "15rem",
+              // height: "14rem",
               objectFit: "cover",
+              aspectRatio: "1/1",
             }}
+            className="w-[18rem] md:w-full"
           />
           <div className="flex w-full cursor-pointer items-center justify-center">
             <div

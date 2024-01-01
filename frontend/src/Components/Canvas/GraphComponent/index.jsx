@@ -512,9 +512,12 @@ const GraphComponent = (props, ref) => {
   const changeIndex = () => {};
 
   return (
-    <div className="graph-container w-full pt-16" ref={windowRef}>
+    <div
+      className="graph-container w-full pt-16 overflow-hidden"
+      ref={windowRef}
+    >
       <Stage
-        width={window.innerWidth * 0.65}
+        width={window.innerWidth * 0.57}
         height={500}
         onClick={handleCanvasClick}
         ref={stageRef}

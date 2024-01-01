@@ -118,7 +118,7 @@ const GraphComponent = (props, ref) => {
     };
   });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const updateParentWidth = () => {
       if (windowRef.current) {
         setWidth(windowRef.current.offsetWidth);
@@ -189,7 +189,7 @@ const GraphComponent = (props, ref) => {
   useEffect(() => {
     const cookies = new Cookies();
     setUserType(cookies.get("type"));
-    importGraphData(data);
+    importGraphData(props.input);
     setLoading(false);
   }, []);
 
@@ -382,6 +382,14 @@ const GraphComponent = (props, ref) => {
     }
   };
 
+  useEffect(() => {
+    console.log("mode changed", props.mode);
+  }, [props.mode]);
+
+  useEffect(() => {
+    console.log("=>", data);
+  }, [data]);
+
   const handleNodeDrag = (index, e) => {
     if (props.controlParams === null || !props.controlParams["drag_node"])
       return;
@@ -465,7 +473,8 @@ const GraphComponent = (props, ref) => {
   // };
 
   const importGraphData = (newData) => {
-    if (newData !== null) {
+    console.log("Import:", newData);
+    if (newData !== null && newData.nodes !== null) {
       let maxIndex = 0;
       // Assuming nodes is an array of objects with an 'index' property
       newData.nodes.forEach((node) => {
@@ -503,9 +512,12 @@ const GraphComponent = (props, ref) => {
   const changeIndex = () => {};
 
   return (
-    <div className="graph-container w-full pt-16" ref={windowRef}>
+    <div
+      className="graph-container w-full pt-16 overflow-hidden"
+      ref={windowRef}
+    >
       <Stage
-        width={width}
+        width={window.innerWidth * 0.57}
         height={500}
         onClick={handleCanvasClick}
         ref={stageRef}

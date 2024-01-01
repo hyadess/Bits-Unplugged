@@ -550,55 +550,8 @@ export default function ProblemSetEnv() {
       </div>
       <ProbSetTab activeTab={activeComponent} click={setActiveComponent} />
 
-      <div className="component-container">
+      <div className="component-container relative">
         {/* Slow Transition */}
-        {activeComponent === "statement" ? (
-          <ProblemStatement
-            statement={problemStatement}
-            setStatement={setProblemStatement}
-          />
-        ) : activeComponent === "canvas" ? (
-          <CanvasDesignTab
-            handleCanvasChange={handleCanvasChange}
-            canvasId={canvasId}
-            canvasList={canvasList}
-            input={input}
-            setInput={setInput}
-            canvasRef={canvasRef}
-            params={params}
-            setParams={setParams}
-            uiParams={uiParams}
-            setUiParams={setUiParams}
-            controlParams={controlParams}
-            setControlParams={setControlParams}
-            reset={reset}
-            updateCanvas={updateCanvas}
-            updateSolutionChecker={updateSolutionChecker}
-          />
-        ) : activeComponent === "solution" ? (
-          <SolutionCheckerTab
-            checkerType={checkerType}
-            setCheckerType={setCheckerType}
-            code={code}
-            setCode={setCode}
-            input={input}
-            handleCheckSolution={handleCheckSolution}
-            canvasId={canvasId}
-            checkerCanvas={checkerCanvas}
-            setCheckerCanvas={setCheckerCanvas}
-            params={params}
-            setParams={setParams}
-            setUiParams={setUiParams}
-            uiParams={uiParams}
-            controlParams={controlParams}
-            setControlParams={setControlParams}
-            updateSolutionChecker={updateSolutionChecker}
-            backup={backup}
-            canvasRef={canvasRef}
-          />
-        ) : (
-          <></>
-        )}
 
         {/* Faster transition */}
         <div className={activeComponent === "statement" ? "block" : "hidden"}>

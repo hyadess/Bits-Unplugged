@@ -21,8 +21,6 @@ import { SelectionField, SelectionField2 } from "../../Components/InputFields";
 
 import CanvasController from "../../controller/canvasController";
 import { setLoading } from "../../App";
-import { Save } from "@mui/icons-material";
-import { check } from "prettier";
 
 const problemController = new ProblemController();
 const canvasController = new CanvasController();

@@ -24,7 +24,6 @@ import { Save } from "@mui/icons-material";
 const problemController = new ProblemController();
 const canvasController = new CanvasController();
 
-
 const SolutionCheckerTab = ({
   checkerType,
   setCheckerType,
@@ -436,7 +435,7 @@ export default function ProblemSetEnv() {
   const updateStatement = async () => {
     const res = await problemController.updateStatement(
       prob_id,
-      problemStatement
+      problemStatement,
     );
     if (res.success) {
       console.log(res);
@@ -444,14 +443,15 @@ export default function ProblemSetEnv() {
   };
 
   const updateCanvas = async () => {
-    // setCheckerCanvas(JSON.parse(JSON.stringify(input)));
+    if (checkerCanvas == null)
+      setCheckerCanvas(JSON.parse(JSON.stringify(input)));
     const res = await problemController.updateCanvas(
       prob_id,
       canvasId,
       input,
       params,
       uiParams,
-      controlParams
+      controlParams,
     );
     if (res.success) {
       console.log(res);
@@ -462,7 +462,7 @@ export default function ProblemSetEnv() {
     const res = await problemController.updateSolutionChecker(
       prob_id,
       checkerType == 0 ? code : checkerCanvas,
-      checkerType
+      checkerType,
     );
     if (res.success) {
       console.log(res);
@@ -495,14 +495,14 @@ export default function ProblemSetEnv() {
   return (
     <div>
       <div>
-        <div className="items-center py-4 mx-auto max-w-screen-2xl md:grid md:grid-cols-2 sm:pt-16">
-          <div className="mt-4 md:mt-0 flex flex-row items-center">
-            <h2 className="text-center md:text-left text-5xl tracking-tight font-extrabold ">
+        <div className="mx-auto max-w-screen-2xl items-center py-4 sm:pt-16 md:grid md:grid-cols-2">
+          <div className="mt-4 flex flex-row items-center md:mt-0">
+            <h2 className="text-center text-5xl font-extrabold tracking-tight md:text-left ">
               <span className="bu-text-title">
                 <div onClick={handleTextClick} style={{ cursor: "pointer" }}>
                   {isTextEditable ? (
                     <input
-                      className="border title text-4xl rounded-lg border-[#1C5B5F] outline-none focus:border-green-800 focus:ring-green-800 focus:ring-4 h-[3.5rem]"
+                      className="title h-[3.5rem] rounded-lg border border-[#1C5B5F] text-4xl outline-none focus:border-green-800 focus:ring-4 focus:ring-green-800"
                       type="text"
                       autoFocus
                       value={title}
@@ -525,7 +525,7 @@ export default function ProblemSetEnv() {
           </div>
           <div className="flex flex-row justify-end gap-2">
             <button
-              className="font-medium rounded-lg text-lg px-7 py-3.5 text-center flex flex-row gap-4 items-center bu-button bg-teal-300 hover:bg-teal-400 active:ring-teal-300 dark:bg-green-600 dark:hover:bg-green-700 dark:active:ring-green-600"
+              className="bu-button flex flex-row items-center gap-4 rounded-lg bg-teal-300 px-7 py-3.5 text-center text-lg font-medium hover:bg-teal-400 active:ring-teal-300 dark:bg-green-600 dark:hover:bg-green-700 dark:active:ring-green-600"
               onClick={() => {
                 setLoading(true);
                 switchPath(`/problem/${prob_id}/preview`);
@@ -536,7 +536,7 @@ export default function ProblemSetEnv() {
               PREVIEW
             </button>
             <button
-              className="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-delete flex flex-row gap-4 items-center"
+              className="bu-button-delete flex flex-row items-center gap-4 rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white"
               // onClick={deleteProblem}
               onClick={() => setOpen(true)}
             >
@@ -544,7 +544,7 @@ export default function ProblemSetEnv() {
               DELETE
             </button>
             <button
-              className="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary flex flex-row gap-4 items-center"
+              className="bu-button-primary flex flex-row items-center gap-4 rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white"
               onClick={updateAll}
             >
               <FontAwesomeIcon icon={faUpload} />

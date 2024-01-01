@@ -11,12 +11,12 @@ const CustomCard = ({ id, name, image, path, action }) => {
 
   return (
     <Zoom in={true}>
-      <div className="flex flex-col items-center h-full md:px-0">
-        <div className="flex flex-col max-w-sm border rounded-lg shadow-lg bu-card-primary h-full">
-          <h5 className="mt-4 text-2xl text-center font-bold tracking-tight bu-text-primary px-3">
+      <div className="flex h-full flex-col items-center md:px-0">
+        <div className="bu-card-primary flex h-full max-w-sm flex-col rounded-lg border shadow-lg">
+          <h5 className="bu-text-primary mt-4 px-3 text-center text-2xl font-bold tracking-tight">
             {id}
           </h5>
-          <h5 className="flex items-center justify-center mb-4 text-3xl text-center font-bold tracking-tight  bu-text-title px-3 h-full">
+          <h5 className="bu-text-title mb-4 flex h-full items-center justify-center px-3 text-center  text-3xl font-bold tracking-tight">
             {name}
           </h5>
 
@@ -28,20 +28,20 @@ const CustomCard = ({ id, name, image, path, action }) => {
             }
             alt=""
             style={{
-              width: 500,
-              height: 200,
+              width: "15rem",
+              height: "14rem",
               objectFit: "cover",
             }}
           />
-          <div className="w-full flex items-center justify-center cursor-pointer">
+          <div className="flex w-full cursor-pointer items-center justify-center">
             <div
               onClick={() => {
                 setLoading(true);
                 switchPath(path);
               }}
-              className="inline-flex my-8 items-center  font-medium rounded-lg text-sm px-5 py-2.5 text-center bu-button-secondary"
+              className="bu-button-secondary my-8 inline-flex  items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
             >
-              <h5 className="text-lg text-center font-bold tracking-tight bu-text-primary">
+              <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
                 {action}
               </h5>
             </div>

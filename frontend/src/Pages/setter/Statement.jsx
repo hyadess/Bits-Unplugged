@@ -13,25 +13,25 @@ import MarkdownPreview from "../../Components/Markdown/MarkdownPreview";
 const problemController = new ProblemController();
 function ProblemStatement(props) {
   const { prob_id } = useParams();
-  const [text, setText] = useState(props.problemStatement);
+  // const [text, setText] = useState(props.problemStatement);
 
-  const handleProblemStatementChange = (event) => {
-    setText(event.target.value);
-  };
+  // const handleProblemStatementChange = (event) => {
+  //   setText(event.target.value);
+  // };
 
-  useEffect(() => {
-    setText(props.problemStatement);
-  }, [props.problemStatement]);
+  // useEffect(() => {
+  //   setText(props.problemStatement);
+  // }, [props.problemStatement]);
 
   const updateStatement = async () => {
-    console.log(text);
-    props.setStatement(text);
-    const res = await problemController.updateStatement(prob_id, text);
+    const res = await problemController.updateStatement(
+      prob_id,
+      props.statement
+    );
     if (res.success) {
       console.log(res);
     }
   };
-
 
   function getColorModeFromLocalStorage() {
     return localStorage.getItem("color-theme") || "light";
@@ -52,11 +52,15 @@ function ProblemStatement(props) {
     <div className="flex flex-col gap-5 pb-5">
       {/* <MarkdownEditor value={text} onChange={setText} height="200px" /> */}
 
-      <MarkdownEditor colorMode={colorMode} text={text} setText={setText} />
+      <MarkdownEditor
+        colorMode={colorMode}
+        text={props.statement}
+        setText={props.setStatement}
+      />
 
-      <MarkdownPreview colorMode={colorMode} text={text} />
+      <MarkdownPreview colorMode={colorMode} text={props.statement} />
       <button
-        className="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary flex flex-row gap-3 items-center justify-center focus:outline-none"
+        className="bu-button-primary flex flex-row items-center justify-center gap-3 rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white focus:outline-none"
         onClick={updateStatement}
       >
         <FontAwesomeIcon icon={faFloppyDisk} size="sm" />

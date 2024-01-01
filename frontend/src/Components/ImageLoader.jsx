@@ -19,7 +19,7 @@ const ImageLoader = ({ src, alt, style, className }) => {
         style={style}
       />
       {!imageLoaded && (
-        <div>
+        <div className="smooth-preloader">
           <span className="loader" />
         </div>
       )}

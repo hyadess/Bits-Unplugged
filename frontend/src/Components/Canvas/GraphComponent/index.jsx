@@ -33,8 +33,7 @@ const GraphComponent = (props, ref) => {
   const [userType, setUserType] = useState(0);
   const [edgeIndex, setEdgeIndex] = useState(0);
   const [nodeIndex, setNodeIndex] = useState(0);
-  const data = props.input;
-  const setData = props.setInput;
+  const [data, setData] = [props.input, props.setInput];
   //node and edge hover and select
   const [selectedNodes, setSelectedNodes] = useState([]);
   const [selectedEdge, setSelectedEdge] = useState(null);
@@ -51,13 +50,13 @@ const GraphComponent = (props, ref) => {
   //custom sets................................................................................................
 
   const setNodes = (nodes) => {
-    props.setInput((prevData) => ({
+    setData((prevData) => ({
       ...prevData,
       nodes: nodes,
     }));
   };
   const setEdges = (edges) => {
-    props.setInput((prevData) => ({
+    setData((prevData) => ({
       ...prevData,
       edges: edges,
     }));
@@ -112,10 +111,10 @@ const GraphComponent = (props, ref) => {
 
   useImperativeHandle(ref, () => {
     return {
-      handleReset: () => {
-        importGraphData();
+      handleReset: (resetData) => {
+        importGraphData(resetData);
       },
-      getData: () => exportGraphData(),
+      // getData: () => exportGraphData(),
     };
   });
 
@@ -190,7 +189,7 @@ const GraphComponent = (props, ref) => {
   useEffect(() => {
     const cookies = new Cookies();
     setUserType(cookies.get("type"));
-    importGraphData();
+    importGraphData(data);
     setLoading(false);
   }, []);
 
@@ -447,38 +446,29 @@ const GraphComponent = (props, ref) => {
 
   //export and import data....................
 
-  const exportGraphData = () => {
-    const nodes = data.nodes;
-    const edges = data.edges;
-    const graphData = {
-      nodes,
-      edges,
-    };
-    // Convert the JavaScript object to a JSON string
-    const jsonData = JSON.stringify(graphData, null, 2);
-    console.log("exporting");
-    console.log(jsonData);
+  // const exportGraphData = () => {
+  //   const nodes = data.nodes;
+  //   const edges = data.edges;
+  //   const graphData = {
+  //     nodes,
+  //     edges,
+  //   };
+  //   // Convert the JavaScript object to a JSON string
+  //   const jsonData = JSON.stringify(graphData, null, 2);
+  //   console.log("exporting");
+  //   console.log(jsonData);
 
-    // storing object in input..........
+  //   // storing object in input..........
 
-    // props.setInput(graphData);
-    return graphData;
-  };
+  //   // props.setInput(graphData);
+  //   return graphData;
+  // };
 
-  const importGraphData = () => {
-    if (props.input !== null) {
-      // here input is props object....................
-      console.log(props.input);
-
-      //const data = JSON.parse(props.input);
-      console.log("importing");
-      setData(props.input);
-      console.log(data);
-
+  const importGraphData = (newData) => {
+    if (newData !== null) {
       let maxIndex = 0;
-
       // Assuming nodes is an array of objects with an 'index' property
-      data.nodes.forEach((node) => {
+      newData.nodes.forEach((node) => {
         if (node.nodeIndex > maxIndex) {
           maxIndex = node.nodeIndex;
         }
@@ -565,8 +555,8 @@ const GraphComponent = (props, ref) => {
                         hoveredEdge === edge
                           ? "#2bb557"
                           : selectedEdge !== edge
-                          ? "#879294"
-                          : "#ec3965"
+                            ? "#879294"
+                            : "#ec3965"
                       }
                       strokeWidth={
                         selectedEdge !== edge && hoveredEdge !== edge ? 3 : 6
@@ -588,8 +578,8 @@ const GraphComponent = (props, ref) => {
                           hoveredEdge === edge
                             ? "#2bb557"
                             : selectedEdge !== edge
-                            ? "#879294"
-                            : "#ec3965"
+                              ? "#879294"
+                              : "#ec3965"
                         }
                       />
                     )}
@@ -611,8 +601,8 @@ const GraphComponent = (props, ref) => {
                         hoveredEdge === edge
                           ? "#2bb557"
                           : selectedEdge !== edge
-                          ? "#879294"
-                          : "#ec3965"
+                            ? "#879294"
+                            : "#ec3965"
                       }
                       width={45}
                       onClick={() => changeEdgeWeight(edge)}
@@ -644,29 +634,29 @@ const GraphComponent = (props, ref) => {
                     selectedNodes.includes(node)
                       ? "#ec3965"
                       : hoveredNode === node
-                      ? "#38bf27"
-                      : "#a4a3a3"
+                        ? "#38bf27"
+                        : "#a4a3a3"
                   }
                   stroke={
                     selectedNodes.includes(node)
                       ? ""
                       : hoveredNode === node
-                      ? ""
-                      : ""
+                        ? ""
+                        : ""
                   }
                   strokeWidth={
                     selectedNodes.includes(node)
                       ? 0
                       : hoveredNode === node
-                      ? 0
-                      : 3
+                        ? 0
+                        : 3
                   }
                   brightness={
                     selectedNodes.includes(node)
                       ? 0.5
                       : hoveredNode === node
-                      ? 0
-                      : 0.8
+                        ? 0
+                        : 0.8
                   }
                 />
                 <Text
@@ -678,8 +668,8 @@ const GraphComponent = (props, ref) => {
                     selectedNodes.includes(node)
                       ? "white"
                       : hoveredNode === node
-                      ? "white"
-                      : "white"
+                        ? "white"
+                        : "white"
                   } // Set text color
                   ref={(nodeTextRef) => {
                     if (nodeTextRef) {

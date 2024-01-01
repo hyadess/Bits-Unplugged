@@ -22,14 +22,13 @@ const ProblemSet = () => {
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [submittedValue, setSubmittedValue] = useState("");
 
   let problemId = -1;
   const getProblemId = async (title) => {
     const res = await problemController.addProblem(title);
     if (res.success) {
       problemId = res.data[0].problem_id;
-      // setLoading(false); 
+      // setLoading(false);
     }
   };
 
@@ -50,7 +49,6 @@ const ProblemSet = () => {
     console.log("Submitted: ", inputValue);
     if (inputValue !== "") {
       setLoading(true);
-      setSubmittedValue(inputValue);
       closeModal();
       await getProblemId(inputValue);
       switchPath(`/problem/${problemId}/edit`);

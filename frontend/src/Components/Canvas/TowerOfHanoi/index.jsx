@@ -114,8 +114,7 @@ const NumberOfDisksInput = ({ data, handleNumberOfDisksChange }) => (
   </div>
 );
 const PegElements = ({ data, hoveredPeg }) =>
-  data !== null &&
-  data.pegs.map((peg, index) => {
+  data?.pegs?.map((peg, index) => {
     return (
       <Group key={index}>
         <Rect
@@ -156,8 +155,7 @@ const DiskElements = ({
   calculateDiskWidth,
   draggableDisks,
 }) =>
-  data !== null &&
-  data.pegs.flat().map((disk, index) => {
+  data?.pegs?.flat().map((disk, index) => {
     const pegIndex = data.pegs.findIndex((peg) => peg.includes(disk));
     const diskIndexInPeg = data.pegs[pegIndex].indexOf(disk);
     const x =
@@ -320,14 +318,14 @@ const TowerOfHanoi = (props, ref) => {
 
   useImperativeHandle(ref, () => {
     return {
-      handleReset: () => handleReset(),
+      handleReset: (resetData) => handleReset(resetData),
       // getData: () => exportData(),
     };
   });
 
-  const handleReset = (e) => {
-    if (props.input != null && props.input.pegs != null) {
-      importData();
+  const handleReset = (resetData) => {
+    if (resetData != null && resetData.pegs != null) {
+      importData(resetData);
     } else {
       setNumberOfDisks(3);
       initializePegs(3, 3);
@@ -343,10 +341,11 @@ const TowerOfHanoi = (props, ref) => {
   useEffect(() => {
     console.log(history);
   }, [history]);
-  const importData = () => {
-    if (props.input != null && props.input.pegs != null) {
-      const list = props.input.pegs.map((peg) => peg[peg.length - 1]);
+  const importData = (newData) => {
+    if (newData != null && newData.pegs != null) {
+      const list = newData.pegs.map((peg) => peg[peg.length - 1]);
       setDraggableDisks(list);
+      console.log("List:", list);
     } else {
       setNumberOfDisks(3);
       setNumberOfPegs(3);
@@ -412,7 +411,7 @@ const TowerOfHanoi = (props, ref) => {
   useEffect(() => {
     if (props.input != null && props.input.pegs != null) {
       // setNumberOfMoves(0);
-      importData();
+      importData(props.input);
       setLoading(false);
     } else {
       setNumberOfDisks(3);
@@ -834,7 +833,7 @@ const TowerOfHanoi = (props, ref) => {
   useEffect(() => {
     console.log("mode changed", props.mode);
   }, [props.mode]);
-  
+
   return (
     <div className="tower-of-hanoi vbox">
       {data && (
@@ -843,7 +842,7 @@ const TowerOfHanoi = (props, ref) => {
             {(props.mode === "edit" || props.uiParams.undo.value) && (
               <UndoRedoButton handleUndo={handleUndo} handleRedo={handleRedo} />
             )}
-            <div className="flex flex-row flex-start w-full gap-5 min-h-[2.5rem] items-center">
+            <div className="flex-start flex min-h-[2.5] w-full flex-row items-center gap-5">
               {(props.mode === "edit" || props.uiParams.n_disks.value) && (
                 <NumberOfDisksInput
                   data={data}
@@ -851,7 +850,7 @@ const TowerOfHanoi = (props, ref) => {
                 />
               )}
               {props.mode === "preview" && props.uiParams.moves.value && (
-                <Typography variant="h5" className="p-0 m-0 bu-text-primary">
+                <Typography variant="h5" className="bu-text-primary m-0 p-0">
                   <b className="bu-text-primary">Moves: {data.numberOfMoves}</b>
                 </Typography>
               )}

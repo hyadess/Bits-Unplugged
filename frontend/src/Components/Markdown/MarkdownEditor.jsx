@@ -18,7 +18,7 @@ const MarkdownEditor = ({ colorMode, text, setText }) => {
     <div data-color-mode={colorMode} className="mt-5">
       <div className="wmde-markdown-var"> </div>
       <MDEditor
-        height={80 + 35 * calculateNumberOfLines(text) + text.length / 2}
+        height={85 + 35 * calculateNumberOfLines(text) + text.length / 2}
         value={text}
         onChange={setText}
         style={{ borderRadius: "0 0 20px 20px" }}

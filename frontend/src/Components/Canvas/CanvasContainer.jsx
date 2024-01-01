@@ -17,6 +17,8 @@ import { makeStyles } from "@mui/styles";
 import SettingsIcon from "@mui/icons-material/Settings";
 import EyeIcon from "../Icons/EyeIcon";
 import { setLoading } from "../../App";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBroom } from "@fortawesome/free-solid-svg-icons";
 const canvasController = new CanvasController();
 const cookies = new Cookies();
 // const useStyles = makeStyles({
@@ -265,6 +267,21 @@ const CanvasContainer = (props, ref) => {
               }
             }}
           />
+        )}
+
+        {props.mode === "edit" && (
+          <IconButton
+            sx={{
+              fontSize: "2rem",
+              // width: "50px",
+              // height: "50px",
+            }}
+            onClick={() => ref.current.handleReset(null)}
+          >
+            <div className="flex items-center bu-text-primary text-3xl">
+              <FontAwesomeIcon icon={faBroom} />
+            </div>
+          </IconButton>
         )}
         {props.mode === "edit" && (
           <IconButton

@@ -23,10 +23,11 @@ class CanvasRepository extends Repository {
   };
   addCanvas = async (data) => {
     const query = `
-      INSERT INTO Canvas (name, classname, info, logo)
-      VALUES ($1, $2, $3, $4);
+      INSERT INTO Canvas (name)
+      VALUES ($1)
+      RETURNING canvas_id;
     `;
-    const params = [data.name, data.classname, data.info, data.logo];
+    const params = [data.name];
     const result = await this.query(query, params);
     return result;
   };

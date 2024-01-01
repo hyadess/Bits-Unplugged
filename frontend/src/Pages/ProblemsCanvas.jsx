@@ -96,7 +96,7 @@ export default function ProblemsCanvas() {
     let res = await problemController.checkSolution(
       problem.checker_type == 0 ? problem.checker_code : problem.checker_canvas,
       problem.checker_type,
-      input
+      input,
     );
     console.log("output " + res.output);
     submissionController.submitSolution(res.output, id);
@@ -130,9 +130,9 @@ export default function ProblemsCanvas() {
         <>
           <div>
             <div className="flex flex-row justify-between">
-              <div className="flex flex-col py-4 max-w-screen-xl sm:pt-12 gap-3">
+              <div className="flex max-w-screen-xl flex-col gap-3 py-4 sm:pt-12">
                 <div className="mt-4 md:mt-0">
-                  <h2 className="text-left text-5xl tracking-tight font-extrabold ">
+                  <h2 className="text-left text-5xl font-extrabold tracking-tight ">
                     <span className="bu-text-title">{title}</span>
                   </h2>
                 </div>
@@ -145,17 +145,17 @@ export default function ProblemsCanvas() {
               {type !== 0 ? (
                 <div className="flex items-center">
                   <button
-                    className="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary"
+                    className="bu-button-primary rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white"
                     onClick={() => {
                       setLoading(true);
                       navigator(
                         type == 2
                           ? `/admin/problems/${id}`
-                          : `/problem/${id}/edit`
+                          : `/problem/${id}/edit`,
                       );
                     }}
                   >
-                    <div className="flex flex-row gap-4 items-center">
+                    <div className="flex flex-row items-center gap-4">
                       <FontAwesomeIcon icon={faPenToSquare} size="sm" />
                       EDIT
                     </div>
@@ -164,14 +164,14 @@ export default function ProblemsCanvas() {
               ) : (
                 <div className="flex items-center">
                   <button
-                    className="text-white font-medium rounded-lg text-lg px-7 py-3.5 text-center bu-button-primary"
+                    className="bu-button-primary rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white"
                     onClick={() => {
                       setLoading(true);
                       console.log(problem);
                       navigator(`/submission/${id}`);
                     }}
                   >
-                    <div className="flex flex-row gap-4 items-center">
+                    <div className="flex flex-row items-center gap-4">
                       SUBMISSIONS
                     </div>
                   </button>
@@ -179,8 +179,8 @@ export default function ProblemsCanvas() {
               )}
             </div>
 
-            <div className="items-center mx-auto max-w-screen-2xl">
-              <div className="mb-6 text-left  font-light md:text-lg bu-text-primary">
+            <div className="mx-auto max-w-screen-2xl items-center">
+              <div className="bu-text-primary mb-6  text-left font-light md:text-lg">
                 <div
                   style={{
                     width: "100%",
@@ -196,7 +196,7 @@ export default function ProblemsCanvas() {
             </div>
           </div>
           {canvasId && canvasRef && (
-            <div className="w-full flex flex-col gap-5">
+            <div className="flex w-full flex-col gap-5">
               <CanvasContainer
                 id={canvasId}
                 input={input}

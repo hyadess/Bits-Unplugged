@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import Footer from "../Components/Footer";
 import TeamCard from "../Components/Cards/TeamCard";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +21,7 @@ const Home = () => {
   }, []);
   return (
     <div>
-      <div className="gap-8 h-screen items-center py-8 px-4 mx-auto max-w-screen-xl flex flex-col md:flex-row sm:py-16 lg:px-6 xl:gap-16">
+      <div className="mx-auto flex h-screen max-w-screen-xl flex-col items-center gap-8 px-4 py-8 sm:py-16 md:flex-row lg:px-6 xl:gap-16">
         {/* <img
             className="w-full dark:hidden"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
@@ -30,19 +29,19 @@ const Home = () => {
           /> */}
         <div className="flex flex-row gap-0">
           <ImageLoader
-            className="w-full block dark:hidden"
+            className="block w-full dark:hidden"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
             alt="dashboard image"
           />
           <ImageLoader
-            className="w-full hidden dark:block"
+            className="hidden w-full dark:block"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup-dark.svg"
             alt="dashboard image"
           />
         </div>
 
         <div className="mt-4 md:mt-0">
-          <h2 className="mb-4 text-center md:text-left text-4xl tracking-tight font-extrabold bu-text-primary">
+          <h2 className="bu-text-primary mb-4 text-center text-4xl font-extrabold tracking-tight md:text-left">
             {" "}
             A platform for learning{" "}
             <span className="bu-text-title text-5xl">
@@ -51,7 +50,7 @@ const Home = () => {
             without coding{" "}
           </h2>
 
-          <p className="mb-6 text-center md:text-left  font-light bu-text-subtitle md:text-lg">
+          <p className="bu-text-subtitle mb-6 text-center  font-light md:text-left md:text-lg">
             Bits unplugged is a platform for students to learn complex CS
             concepts without needing to write a single line of code through an
             interactive medium
@@ -63,14 +62,14 @@ const Home = () => {
               type === 2
                 ? navigator("/admin/topics")
                 : type === 1
-                ? navigator("/problemSet")
-                : navigator("/topics");
+                  ? navigator("/problemSet")
+                  : navigator("/topics");
             }}
-            className="inline-flex text-center items-center font-medium rounded-lg text-sm px-5 py-2.5 bu-button-secondary bu-text-primary cursor-pointer"
+            className="bu-button-secondary bu-text-primary inline-flex cursor-pointer items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
           >
             Get started
             <svg
-              className="ml-2 -mr-1 w-5 h-5"
+              className="-mr-1 ml-2 h-5 w-5"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -86,18 +85,18 @@ const Home = () => {
       </div>
 
       <section>
-        <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
-          <div className="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
-            <h2 className="mb-4 text-4xl tracking-tight font-extrabold bu-text-primary">
+        <div className="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16 ">
+          <div className="mx-auto mb-8 max-w-screen-sm text-center lg:mb-16">
+            <h2 className="bu-text-primary mb-4 text-4xl font-extrabold tracking-tight">
               Our Team
             </h2>
 
-            <p className="font-light lg:mb-16 sm:text-xl bu-text-subtitle">
+            <p className="bu-text-subtitle font-light sm:text-xl lg:mb-16">
               Meet our dynamic team who are here to help you at each step of
               your journey
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 place-items-center mx-auto gap-8 h-full w-full md:w-75%">
+          <div className="mx-auto grid h-full w-full grid-cols-1 place-items-center gap-8 md:w-75% md:grid-cols-3">
             <TeamCard
               name="Sayem Shahad Soummo"
               position="1905064"

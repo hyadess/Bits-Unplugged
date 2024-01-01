@@ -544,12 +544,13 @@ export default function ProblemSetEnv() {
       <ProbSetTab activeTab={activeComponent} click={setActiveComponent} />
 
       <div className="component-container">
-        {activeComponent === "statement" ? (
+        <div className={activeComponent === "statement" ? "block" : "hidden"}>
           <ProblemStatement
             statement={problemStatement}
             setStatement={setProblemStatement}
           />
-        ) : activeComponent === "canvas" ? (
+        </div>
+        <div className={activeComponent === "canvas" ? "block" : "hidden"}>
           <CanvasDesignTab
             handleCanvasChange={handleCanvasChange}
             canvasId={canvasId}
@@ -567,7 +568,8 @@ export default function ProblemSetEnv() {
             updateCanvas={updateCanvas}
             updateSolutionChecker={updateSolutionChecker}
           />
-        ) : activeComponent === "solution" ? (
+        </div>
+        <div className={activeComponent === "solution" ? "block" : "hidden"}>
           <SolutionCheckerTab
             checkerType={checkerType}
             setCheckerType={setCheckerType}
@@ -588,9 +590,7 @@ export default function ProblemSetEnv() {
             backup={backup}
             canvasRef={canvasRef}
           />
-        ) : (
-          <></>
-        )}
+        </div>
       </div>
       <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} />
     </div>

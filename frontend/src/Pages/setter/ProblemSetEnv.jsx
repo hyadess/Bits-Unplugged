@@ -142,7 +142,7 @@ export default function ProblemSetEnv() {
       setProblemStatement(res.data[0].statement);
       setCheckerType(res.data[0].checker_type ? res.data[0].checker_type : 0);
       if (res.data[0].checker_type == 0) setCode(res.data[0].checker_code);
-      else if (res.data[0].checker_canvas)
+      else if (res.data[0].checker_canvas !== null)
         setCheckerCanvas(res.data[0].checker_canvas);
       setCanvasId(res.data[0].canvas_id);
       setBackupId(res.data[0].canvas_id);
@@ -470,10 +470,10 @@ export default function ProblemSetEnv() {
   };
 
   const updateAll = async () => {
-    await updateTitle();
-    await updateStatement();
-    await updateCanvas();
-    await updateSolutionChecker();
+    // await updateTitle();
+    // await updateStatement();
+    // await updateCanvas();
+    // await updateSolutionChecker();
     await problemController.submitProblem(prob_id);
   };
 

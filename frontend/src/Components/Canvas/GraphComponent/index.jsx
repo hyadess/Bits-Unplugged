@@ -51,7 +51,7 @@ const GraphComponent = (props, ref) => {
 
   //node and edge hover and select
   const [selectedNodes, setSelectedNodes] = useState([]);
-  const [selectedEdge, setSelectedEdge] = useState(null);
+  // const [selectedEdge, setSelectedEdge] = useState(null);
   const [hoveredNode, setHoveredNode] = useState(null);
   const [hoveredEdge, setHoveredEdge] = useState(null);
   //controls
@@ -77,10 +77,10 @@ const GraphComponent = (props, ref) => {
     }));
   };
   const setSelectedEdges = (edges) => {
-    // setData((prevData) => ({
-    //   ...prevData,
-    //   selected_edges: edges,
-    // }));
+    setData((prevData) => ({
+      ...prevData,
+      selectedEdges: edges,
+    }));
   };
 
   //...........................................................................................................
@@ -332,13 +332,20 @@ const GraphComponent = (props, ref) => {
         //if clicked nere an edge, select that edge, else, create a node!!!
 
         if (nearestEdge && minDistance <= 1.0 * EDGECLICKRANGE) {
-          if (selectedEdge === nearestEdge) setSelectedEdge(null);
-          else {
-            setSelectedEdge(nearestEdge);
+          if (data.selectedEdges.includes(nearestEdge)) {
+            // setSelectedEdge(null);
+            setSelectedEdges(
+              data.selectedEdges.filter(
+                (selectedEdge) => selectedEdge !== nearestEdge
+              )
+            );
+          } else {
+            // setSelectedEdge(nearestEdge);
+            setSelectedEdges([...data.selectedEdges, nearestEdge]);
             setSelectedNodes([]);
           }
-        } else if (selectedEdge !== null) {
-          setSelectedEdge(null);
+        } else if (data.selectedEdges.length > 0) {
+          setSelectedEdges([]);
         } else if (selectedNodes.length > 0) {
           setSelectedNodes([]);
         } else {
@@ -349,7 +356,8 @@ const GraphComponent = (props, ref) => {
             return;
           // const newNode = { x, y, nodeIndex };
 
-          setSelectedEdge(null);
+          setSelectedEdges([]);
+
           setNodes({ ...data.nodes, [nodeIndex]: { x, y } });
           setNodeIndex(nodeIndex + 1);
 
@@ -362,18 +370,22 @@ const GraphComponent = (props, ref) => {
       clickTimer = null;
       // Handle the double click logic here, if needed
     }
+
+    console.log(data.selectedEdges);
   };
 
   const handleNodeClick = (nodeKey) => {
     if (selectedNodes.length === 0) {
       setSelectedNodes([nodeKey]);
-      setSelectedEdge(null);
+
+      setSelectedEdges([]);
     } else if (
       props.mode === "preview" &&
       props?.controlParams?.add_edge?.value === false
     ) {
       setSelectedNodes([nodeKey]);
-      setSelectedEdge(null);
+
+      setSelectedEdges([]);
     } else if (selectedNodes.length === 1 && selectedNodes[0] !== nodeKey) {
       // don't add any more node if there exists one................
       const alreadyExists = data.edges.some(
@@ -404,7 +416,8 @@ const GraphComponent = (props, ref) => {
       setSelectedNodes((prev) =>
         prev.filter((selectedNode) => selectedNode !== nodeKey)
       );
-      setSelectedEdge(null);
+
+      setSelectedEdges([]);
     }
   };
 
@@ -437,24 +450,30 @@ const GraphComponent = (props, ref) => {
       setNodes(updatedNodes);
       setSelectedNodes([]);
 
-      if (selectedEdge != null) {
-        updatedEdges = updatedEdges.filter((edge) => edge !== selectedEdge);
-      }
+      // if (data.selectedEdges.length > 0) {
+      //   updatedEdges = updatedEdges.filter((edge) =>
+      //     data.selectedEdges.includes(edge)
+      //   );
+      // }
 
       setEdges(updatedEdges);
-      setSelectedEdge(null);
+
+      setSelectedEdges([]);
     }
 
     //edge deletion
-    if (selectedEdge != null) {
+    if (data.selectedEdges.length > 0) {
       if (
         props.mode === "preview" &&
         props?.controlParams?.delete_edge?.value === false
       )
         return;
-      updatedEdges = updatedEdges.filter((edge) => edge !== selectedEdge);
+      updatedEdges = updatedEdges.filter(
+        (edge) => !data.selectedEdges.includes(edge)
+      );
       setEdges(updatedEdges);
-      setSelectedEdge(null);
+
+      setSelectedEdges([]);
     }
   };
 
@@ -554,7 +573,7 @@ const GraphComponent = (props, ref) => {
 
   const Header = () => (
     <div className=" top-5 left-5 absolute flex flex-row gap-3 z-10">
-      {selectedEdge && (
+      {data?.selectedEdges.length > 0 && (
         <IconButton
           sx={
             {
@@ -570,7 +589,7 @@ const GraphComponent = (props, ref) => {
           </div>
         </IconButton>
       )}
-      {selectedEdge && (
+      {data?.selectedEdges.length === 1 && (
         <div className="no-ring-input">
           <FormControl fullWidth variant="outlined" size="small">
             <InputLabel
@@ -590,7 +609,7 @@ const GraphComponent = (props, ref) => {
               id="outlined-adornment"
               className="outline-none bu-text-primary"
               type="number"
-              value={selectedEdge.weight}
+              value={data?.selectedEdges[0]?.weight}
               // onChange={handleNumberOfDisksChange}
 
               label={"Edge weight"}
@@ -783,14 +802,15 @@ const GraphComponent = (props, ref) => {
                             // handleEdgeUnhover();
                           }}
                           stroke={
-                            selectedEdge === edge
+                            data.selectedEdges.includes(edge)
                               ? "#ec3965"
                               : hoveredEdge !== edge
                                 ? "#879294"
                                 : "#2bb557"
                           }
                           strokeWidth={
-                            selectedEdge !== edge && hoveredEdge !== edge
+                            !data.selectedEdges.includes(edge) &&
+                            hoveredEdge !== edge
                               ? 3
                               : 6
                           }
@@ -814,14 +834,15 @@ const GraphComponent = (props, ref) => {
                             // handleEdgeUnhover();
                           }}
                           stroke={
-                            selectedEdge === edge
+                            data.selectedEdges.includes(edge)
                               ? "#ec3965"
                               : hoveredEdge !== edge
                                 ? "#879294"
                                 : "#2bb557"
                           }
                           strokeWidth={
-                            selectedEdge !== edge && hoveredEdge !== edge
+                            !data.selectedEdges.includes(edge) &&
+                            hoveredEdge !== edge
                               ? 3
                               : 6
                           }
@@ -844,10 +865,10 @@ const GraphComponent = (props, ref) => {
                         }
                         text={edge.weight}
                         fontSize={25}
-                        strokeWidth={selectedEdge !== edge ? 5 : 3}
+                        strokeWidth={data.selectedEdges.includes(edge) ? 3 : 5}
                         background="red"
                         fill={
-                          selectedEdge === edge
+                          data.selectedEdges.includes(edge)
                             ? "#ec3965"
                             : hoveredEdge !== edge
                               ? "#879294"

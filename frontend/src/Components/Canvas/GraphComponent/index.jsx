@@ -332,7 +332,11 @@ const GraphComponent = (props, ref) => {
         //if clicked nere an edge, select that edge, else, create a node!!!
 
         if (nearestEdge && minDistance <= 1.0 * EDGECLICKRANGE) {
-          if (data.selectedEdges.includes(nearestEdge)) {
+          if (
+            data.selectedEdges.some((selectedEdge) =>
+              shallowEqualityCheck(selectedEdge, nearestEdge)
+            )
+          ) {
             // setSelectedEdge(null);
             setSelectedEdges(
               data.selectedEdges.filter(
@@ -468,8 +472,12 @@ const GraphComponent = (props, ref) => {
         props?.controlParams?.delete_edge?.value === false
       )
         return;
+
       updatedEdges = updatedEdges.filter(
-        (edge) => !data.selectedEdges.includes(edge)
+        (edge) =>
+          !data.selectedEdges.some((selectedEdge) =>
+            shallowEqualityCheck(selectedEdge, edge)
+          )
       );
       setEdges(updatedEdges);
 
@@ -665,6 +673,19 @@ const GraphComponent = (props, ref) => {
       )}
     </div>
   );
+  function shallowEqualityCheck(obj1, obj2) {
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+    for (const key of keys1) {
+      if (obj1[key] !== obj2[key]) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   const CustomModal = () => (
     <Modal
@@ -802,15 +823,18 @@ const GraphComponent = (props, ref) => {
                             // handleEdgeUnhover();
                           }}
                           stroke={
-                            data.selectedEdges.includes(edge)
+                            data.selectedEdges.some((selectedEdge) =>
+                              shallowEqualityCheck(selectedEdge, edge)
+                            )
                               ? "#ec3965"
                               : hoveredEdge !== edge
                                 ? "#879294"
                                 : "#2bb557"
                           }
                           strokeWidth={
-                            !data.selectedEdges.includes(edge) &&
-                            hoveredEdge !== edge
+                            !data.selectedEdges.some((selectedEdge) =>
+                              shallowEqualityCheck(selectedEdge, edge)
+                            ) && hoveredEdge !== edge
                               ? 3
                               : 6
                           }
@@ -834,15 +858,19 @@ const GraphComponent = (props, ref) => {
                             // handleEdgeUnhover();
                           }}
                           stroke={
-                            data.selectedEdges.includes(edge)
-                              ? "#ec3965"
+                            data.selectedEdges.some((selectedEdge) =>
+                              shallowEqualityCheck(selectedEdge, edge)
+                            )
+                              ? // data.selectedEdges.includes(edge)
+                                "#ec3965"
                               : hoveredEdge !== edge
                                 ? "#879294"
                                 : "#2bb557"
                           }
                           strokeWidth={
-                            !data.selectedEdges.includes(edge) &&
-                            hoveredEdge !== edge
+                            !data.selectedEdges.some((selectedEdge) =>
+                              shallowEqualityCheck(selectedEdge, edge)
+                            ) && hoveredEdge !== edge
                               ? 3
                               : 6
                           }
@@ -865,10 +893,18 @@ const GraphComponent = (props, ref) => {
                         }
                         text={edge.weight}
                         fontSize={25}
-                        strokeWidth={data.selectedEdges.includes(edge) ? 3 : 5}
+                        strokeWidth={
+                          data.selectedEdges.some((selectedEdge) =>
+                            shallowEqualityCheck(selectedEdge, edge)
+                          )
+                            ? 3
+                            : 5
+                        }
                         background="red"
                         fill={
-                          data.selectedEdges.includes(edge)
+                          data.selectedEdges.some((selectedEdge) =>
+                            shallowEqualityCheck(selectedEdge, edge)
+                          )
                             ? "#ec3965"
                             : hoveredEdge !== edge
                               ? "#879294"

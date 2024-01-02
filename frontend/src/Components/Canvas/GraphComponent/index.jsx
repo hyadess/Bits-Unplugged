@@ -17,6 +17,7 @@ import {
   RegularPolygon,
   Rect,
   Shape,
+  Arrow,
 } from "react-konva";
 import Modal from "react-modal";
 import "./styles.scss";
@@ -623,8 +624,16 @@ const GraphComponent = (props, ref) => {
               const angle = Math.atan2(dy, dx);
               const startOffsetX = Math.cos(angle) * RADIUS;
               const startOffsetY = Math.sin(angle) * RADIUS;
-              const endOffsetX = Math.cos(angle + Math.PI) * RADIUS;
-              const endOffsetY = Math.sin(angle + Math.PI) * RADIUS;
+              const endOffsetX =
+                Math.cos(angle + Math.PI) * RADIUS -
+                (props?.params["directed_edge"]?.value
+                  ? 3 * Math.cos(angle)
+                  : 0);
+              const endOffsetY =
+                Math.sin(angle + Math.PI) * RADIUS -
+                (props?.params["directed_edge"]?.value
+                  ? 3 * Math.sin(angle)
+                  : 0);
 
               //edge direction related.............................
 
@@ -632,84 +641,33 @@ const GraphComponent = (props, ref) => {
               const arrowheadX = edge.end.x + endOffsetX - 10 * Math.cos(angle);
               const arrowheadY = edge.end.y + endOffsetY - 10 * Math.sin(angle);
 
+              const weightOffsetX =
+                ((edge.start.y - edge.end.y) /
+                  Math.sqrt(
+                    Math.pow(edge.start.y - edge.end.y, 2) +
+                      Math.pow(edge.end.x - edge.start.x, 2)
+                  )) *
+                10;
+              const weightOffsetY =
+                ((edge.end.x - edge.start.x) /
+                  Math.sqrt(
+                    Math.pow(edge.start.y - edge.end.y, 2) +
+                      Math.pow(edge.end.x - edge.start.x, 2)
+                  )) *
+                10;
               return (
                 <React.Fragment key={index}>
                   <Group onClick={() => handleEdgeClick(edge)}>
-                    <Line
-                      key={index}
-                      points={[
-                        edge.start.x + startOffsetX,
-                        edge.start.y + startOffsetY,
-                        edge.end.x + endOffsetX,
-                        edge.end.y + endOffsetY,
-                      ]}
-                      onMouseEnter={() => {
-                        // document.body.style.cursor = "pointer";
-                        // handleEdgeHover(edge);
-                      }}
-                      onMouseLeave={() => {
-                        // document.body.style.cursor = "default";
-                        // handleEdgeUnhover();
-                      }}
-                      stroke={
-                        selectedEdge === edge
-                          ? "#ec3965"
-                          : hoveredEdge !== edge
-                            ? "#879294"
-                            : "#2bb557"
-                      }
-                      strokeWidth={
-                        selectedEdge !== edge && hoveredEdge !== edge ? 3 : 6
-                      }
-                      // strokeWidth={Math.min(edge.weight / 5.0, 20)}
-                    />
                     {props.params === null ||
                     !props.params["directed_edge"] ||
                     props.params["directed_edge"].value === false ? (
-                      <></>
-                    ) : (
-                      <RegularPolygon
-                        sides={3} // Triangle for arrowhead
-                        radius={12} // Adjust the size of the arrowhead
-                        x={arrowheadX}
-                        y={arrowheadY}
-                        rotation={angle * (180 / Math.PI) + 90}
-                        fill={
-                          selectedEdge === edge
-                            ? "#ec3965"
-                            : hoveredEdge !== edge
-                              ? "#879294"
-                              : "#2bb557"
-                        }
-                      />
-                    )}
-                  </Group>
-
-                  {props.params === null ||
-                  !props.params["weighted_edge"] ||
-                  props.params["weighted_edge"].value === false ? (
-                    <></>
-                  ) : (
-                    <>
-                      {/* <Line
+                      <Line
                         key={index}
                         points={[
-                          ((edge.start.y - edge.end.y) /
-                            Math.sqrt(
-                              Math.pow(edge.start.y - edge.end.y, 2) +
-                                Math.pow(edge.end.x - edge.start.x, 2)
-                            )) *
-                            20 +
-                            (edge.start.x + edge.end.x) / 2,
-                          ((edge.end.x - edge.start.x) /
-                            Math.sqrt(
-                              Math.pow(edge.start.y - edge.end.y, 2) +
-                                Math.pow(edge.end.x - edge.start.x, 2)
-                            )) *
-                            20 +
-                            (edge.start.y + edge.end.y) / 2,
-                          (edge.start.x + edge.end.x) / 2,
-                          (edge.start.y + edge.end.y) / 2,
+                          edge.start.x + startOffsetX,
+                          edge.start.y + startOffsetY,
+                          edge.end.x + endOffsetX,
+                          edge.end.y + endOffsetY,
                         ]}
                         onMouseEnter={() => {
                           // document.body.style.cursor = "pointer";
@@ -730,26 +688,48 @@ const GraphComponent = (props, ref) => {
                           selectedEdge !== edge && hoveredEdge !== edge ? 3 : 6
                         }
                         // strokeWidth={Math.min(edge.weight / 5.0, 20)}
-                      /> */}
+                      />
+                    ) : (
+                      <Arrow
+                        key={index}
+                        points={[
+                          edge.start.x + startOffsetX,
+                          edge.start.y + startOffsetY,
+                          edge.end.x + endOffsetX,
+                          edge.end.y + endOffsetY,
+                        ]}
+                        onMouseEnter={() => {
+                          // document.body.style.cursor = "pointer";
+                          // handleEdgeHover(edge);
+                        }}
+                        onMouseLeave={() => {
+                          // document.body.style.cursor = "default";
+                          // handleEdgeUnhover();
+                        }}
+                        stroke={
+                          selectedEdge === edge
+                            ? "#ec3965"
+                            : hoveredEdge !== edge
+                              ? "#879294"
+                              : "#2bb557"
+                        }
+                        strokeWidth={
+                          selectedEdge !== edge && hoveredEdge !== edge ? 3 : 6
+                        }
+                        // strokeWidth={Math.min(edge.weight / 5.0, 20)}
+                      />
+                    )}
+                  </Group>
+
+                  {props.params === null ||
+                  !props.params["weighted_edge"] ||
+                  props.params["weighted_edge"].value === false ? (
+                    <></>
+                  ) : (
+                    <>
                       <Text
-                        x={
-                          ((edge.start.y - edge.end.y) /
-                            Math.sqrt(
-                              Math.pow(edge.start.y - edge.end.y, 2) +
-                                Math.pow(edge.end.x - edge.start.x, 2)
-                            )) *
-                            10 +
-                          (edge.start.x + edge.end.x) / 2
-                        }
-                        y={
-                          ((edge.end.x - edge.start.x) /
-                            Math.sqrt(
-                              Math.pow(edge.start.y - edge.end.y, 2) +
-                                Math.pow(edge.end.x - edge.start.x, 2)
-                            )) *
-                            10 +
-                          (edge.start.y + edge.end.y) / 2
-                        }
+                        x={weightOffsetX + (edge.start.x + edge.end.x) / 2}
+                        y={weightOffsetY + (edge.start.y + edge.end.y) / 2}
                         text={edge.weight}
                         fontSize={25}
                         strokeWidth={selectedEdge !== edge ? 5 : 3}
@@ -823,6 +803,7 @@ const GraphComponent = (props, ref) => {
                         ? "#38bf27"
                         : "#a4a3a3"
                   }
+                  // opacity={0.5}
                   stroke={
                     selectedNodes.includes(node.nodeIndex)
                       ? ""

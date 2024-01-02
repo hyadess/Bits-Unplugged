@@ -96,7 +96,6 @@ export default function ProblemsCanvas() {
     let res = await problemController.checkSolution(
       problem.checker_code,
       problem.checker_canvas,
-      problem.checker_type,
       input
     );
     console.log("output " + res.output);

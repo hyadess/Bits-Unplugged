@@ -301,9 +301,8 @@ const GraphComponent = (props, ref) => {
     if (selectedNodes.length === 0) {
       setSelectedNodes([node]);
     } else if (
-      props.controlParams !== null &&
-      props.controlParams["add_edge"] &&
-      props.controlParams["add_edge"].value === false
+      props.mode === "preview" &&
+      props?.controlParams?.add_edge?.value === false
     ) {
       setSelectedNodes([node]);
     } else if (selectedNodes.length === 1 && selectedNodes[0] !== node) {
@@ -355,9 +354,11 @@ const GraphComponent = (props, ref) => {
     //node deletion
 
     if (selectedNodes.length === 1) {
-      if (props.controlParams === null || !props.controlParams["delete_node"])
+      if (
+        props.mode === "preview" &&
+        props?.controlParams?.delete_node?.value === false
+      )
         return;
-      if (props.controlParams["delete_node"].value === false) return;
       const nodeToDelete = selectedNodes[0];
       const updatedNodes = data.nodes.filter((node) => node !== nodeToDelete);
       let updatedEdges = data.edges.filter(
@@ -379,9 +380,11 @@ const GraphComponent = (props, ref) => {
     }
     //edge deletion
     if (selectedEdge != null) {
-      if (props.controlParams === null || !props.controlParams["delete_edge"])
+      if (
+        props.mode === "preview" &&
+        props?.controlParams?.delete_edge?.value === false
+      )
         return;
-      if (props.controlParams["delete_edge"].value === false) return;
       const updatedEdges = data.edges.filter((edge) => edge !== selectedEdge);
       setEdges(updatedEdges);
       setSelectedEdge(null);
@@ -410,9 +413,11 @@ const GraphComponent = (props, ref) => {
   }, [data]);
 
   const handleNodeDrag = (index, e) => {
-    if (props.controlParams === null || !props.controlParams["drag_node"])
+    if (
+      props.mode === "preview" &&
+      props?.controlParams?.drag_node?.value === false
+    )
       return;
-    if (props.controlParams["drag_node"].value === false) return;
     const newPosition = e.target.position();
     // Calculate the new position of the node
     const updatedX = newPosition.x;
@@ -649,10 +654,10 @@ const GraphComponent = (props, ref) => {
                 x={node.x}
                 y={node.y}
                 draggable={
-                  props.controlParams === null ||
-                  !props.controlParams["drag_node"]
+                  props.mode === "preview" &&
+                  props?.controlParams?.add_node?.value === false
                     ? false
-                    : props.controlParams["drag_node"].value
+                    : true
                 }
                 onMouseEnter={() => handleNodeHover(node)}
                 onMouseLeave={handleNodeUnhover}

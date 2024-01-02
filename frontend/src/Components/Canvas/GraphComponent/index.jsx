@@ -46,6 +46,9 @@ const GraphComponent = (props, ref) => {
   const [edgeIndex, setEdgeIndex] = useState(0);
   const [nodeIndex, setNodeIndex] = useState(0);
   const [data, setData] = [props.input, props.setInput];
+  // node: x, y, key, isSelected, isDraggable, isHovered, color
+  // edge: start, end, isSelected, isHovered
+
   //node and edge hover and select
   const [selectedNodes, setSelectedNodes] = useState([]);
   const [selectedEdge, setSelectedEdge] = useState(null);
@@ -73,9 +76,12 @@ const GraphComponent = (props, ref) => {
       edges: edges,
     }));
   };
-  // useEffect(() => {
-  //   setData(props.input);
-  // }, [props.input]);
+  const setSelectedEdges = (edges) => {
+    // setData((prevData) => ({
+    //   ...prevData,
+    //   selected_edges: edges,
+    // }));
+  };
 
   //...........................................................................................................
 
@@ -108,10 +114,8 @@ const GraphComponent = (props, ref) => {
     }
 
     const newEdge = {
-      start: data.nodes.filter(
-        (node) => node.nodeIndex === selectedNodes[0]
-      )[0],
-      end: data.nodes.filter((node) => node.nodeIndex === selectedNodes[1])[0],
+      start: selectedNodes[0],
+      end: selectedNodes[1],
       weight: curEdgeWeight,
     };
     //setEdgeIndex(edgeIndex + 1);
@@ -149,20 +153,6 @@ const GraphComponent = (props, ref) => {
     resizeObserver.observe(windowRef.current);
     return () => resizeObserver.disconnect(); // clean up
   }, []);
-
-  // useEffect(() => {
-  //   const updateParentWidth = () => {
-  //     if (windowRef.current) {
-  //       setWidth(windowRef.current.offsetWidth);
-  //       setHeight(windowRef.current.offsetHeight);
-  //     }
-  //   };
-  //   updateParentWidth();
-  //   window.addEventListener("resize", updateParentWidth);
-  //   return () => {
-  //     window.removeEventListener("resize", updateParentWidth);
-  //   };
-  // }, []);
 
   // Function to calculate the distance from a point to a line segment...used to select an edge!!!!
   const pointToLineDistance = (px, py, x1, y1, x2, y2) => {
@@ -265,13 +255,16 @@ const GraphComponent = (props, ref) => {
 
     data.edges.forEach((edge) => {
       const { start, end, weight } = edge;
+      if (data.nodes[end] === undefined || data.nodes[start] === undefined) {
+        return;
+      }
       const distance = pointToLineDistance(
         x,
         y,
-        start.x,
-        start.y,
-        end.x,
-        end.y
+        data.nodes[start].x,
+        data.nodes[start].y,
+        data.nodes[end].x,
+        data.nodes[end].y
       );
       if (distance < minDistance) {
         minDistance = distance;
@@ -316,13 +309,19 @@ const GraphComponent = (props, ref) => {
 
         data.edges.forEach((edge) => {
           const { start, end, weight } = edge;
+          if (
+            data.nodes[end] === undefined ||
+            data.nodes[start] === undefined
+          ) {
+            return;
+          }
           const distance = pointToLineDistance(
             x,
             y,
-            start.x,
-            start.y,
-            end.x,
-            end.y
+            data.nodes[start].x,
+            data.nodes[start].y,
+            data.nodes[end].x,
+            data.nodes[end].y
           );
           if (distance < minDistance) {
             minDistance = distance;
@@ -333,7 +332,7 @@ const GraphComponent = (props, ref) => {
         //if clicked nere an edge, select that edge, else, create a node!!!
 
         if (nearestEdge && minDistance <= 1.0 * EDGECLICKRANGE) {
-          if (selectedEdge == nearestEdge) setSelectedEdge(null);
+          if (selectedEdge === nearestEdge) setSelectedEdge(null);
           else {
             setSelectedEdge(nearestEdge);
             setSelectedNodes([]);
@@ -348,10 +347,13 @@ const GraphComponent = (props, ref) => {
             props?.controlParams?.add_node?.value === false
           )
             return;
-          const newNode = { x, y, nodeIndex };
-          setNodeIndex(nodeIndex + 1);
+          // const newNode = { x, y, nodeIndex };
+
           setSelectedEdge(null);
-          setNodes([...data.nodes, newNode]);
+          setNodes({ ...data.nodes, [nodeIndex]: { x, y } });
+          setNodeIndex(nodeIndex + 1);
+
+          console.log({ ...data.nodes, [nodeIndex]: { x, y } });
         }
       }, 20);
     } else {
@@ -362,42 +364,34 @@ const GraphComponent = (props, ref) => {
     }
   };
 
-  const handleNodeClick = (nodeIndex) => {
+  const handleNodeClick = (nodeKey) => {
     if (selectedNodes.length === 0) {
-      setSelectedNodes([nodeIndex]);
+      setSelectedNodes([nodeKey]);
       setSelectedEdge(null);
     } else if (
       props.mode === "preview" &&
       props?.controlParams?.add_edge?.value === false
     ) {
-      setSelectedNodes([nodeIndex]);
+      setSelectedNodes([nodeKey]);
       setSelectedEdge(null);
-    } else if (selectedNodes.length === 1 && selectedNodes[0] !== nodeIndex) {
+    } else if (selectedNodes.length === 1 && selectedNodes[0] !== nodeKey) {
       // don't add any more node if there exists one................
       const alreadyExists = data.edges.some(
         (edge) =>
-          (edge.start.nodeIndex === selectedNodes[0] &&
-            edge.end.nodeIndex === nodeIndex) ||
-          (edge.start.nodeIndex === nodeIndex &&
-            edge.end.nodeIndex === selectedNodes[0])
+          (edge.start === selectedNodes[0] && edge.end === nodeKey) ||
+          (edge.start === nodeKey && edge.end === selectedNodes[0])
       );
       if (!alreadyExists) {
-        setSelectedNodes([...selectedNodes, nodeIndex]);
+        setSelectedNodes([...selectedNodes, nodeKey]);
 
-        if (
-          props.params !== null &&
-          props.params["weighted_edge"] &&
-          props.params["weighted_edge"].value === true
-        )
+        if (props?.params?.weighted_edge?.value === true) {
           openPrompt(); // need to take weight input...........
-        else {
+        } else {
           const edges = data.edges;
           // just create the edge....................
           const newEdge = {
-            start: data.nodes.filter(
-              (node) => node.nodeIndex !== selectedNodes[0]
-            )[0],
-            end: data.nodes.filter((node) => node.nodeIndex !== nodeIndex)[0],
+            start: selectedNodes[0],
+            end: nodeKey,
             weight: "0",
           };
           //setEdgeIndex(edgeIndex + 1);
@@ -405,21 +399,18 @@ const GraphComponent = (props, ref) => {
           setSelectedNodes([]);
         }
       }
-    } else if (selectedNodes.includes(nodeIndex)) {
+    } else if (selectedNodes.includes(nodeKey)) {
       // If the clicked node is already selected, unselect it
       setSelectedNodes((prev) =>
-        prev.filter((selectedNode) => selectedNode !== nodeIndex)
+        prev.filter((selectedNode) => selectedNode !== nodeKey)
       );
       setSelectedEdge(null);
     }
   };
 
-  const handleEdgeClick = (edge) => {
-    if (selectedEdge == edge) setSelectedEdge(null);
-    else setSelectedEdge(edge);
-  };
-
   // deleting node or edge is done by ctrl+x
+
+  const deleteSelectedNode = () => {};
 
   const deleteSelectedNodeOrEdge = () => {
     //node deletion
@@ -430,33 +421,30 @@ const GraphComponent = (props, ref) => {
         props?.controlParams?.delete_node?.value === false
       )
         return;
-      const nodeToDelete = data.nodes.filter(
-        (node) => node.nodeIndex === selectedNodes[0]
-      )[0];
 
-      console.log(nodeToDelete);
+      const deletedKey = selectedNodes[0];
+      // const nodeToDelete = data.nodes.filter(
+      //   (node) => node.nodeIndex === selectedNodes[0]
+      // )[0];
 
-      const updatedNodes = data.nodes.filter(
-        (node) => node.nodeIndex !== nodeToDelete.nodeIndex
-      );
+      const updatedNodes = { ...data.nodes };
+      delete updatedNodes[deletedKey];
 
       updatedEdges = data.edges.filter(
-        (edge) =>
-          edge.start.nodeIndex !== nodeToDelete.nodeIndex &&
-          edge.end.nodeIndex !== nodeToDelete.nodeIndex
+        (edge) => edge.start !== deletedKey && edge.end !== deletedKey
       );
 
-      // console.log(updatedEdges);
+      setNodes(updatedNodes);
+      setSelectedNodes([]);
 
       if (selectedEdge != null) {
         updatedEdges = updatedEdges.filter((edge) => edge !== selectedEdge);
       }
 
-      setNodes(updatedNodes);
       setEdges(updatedEdges);
-      setSelectedNodes([]);
       setSelectedEdge(null);
     }
+
     //edge deletion
     if (selectedEdge != null) {
       if (
@@ -483,15 +471,8 @@ const GraphComponent = (props, ref) => {
     }
   };
 
-  useEffect(() => {
-    console.log("mode changed", props.mode);
-  }, [props.mode]);
-
-  useEffect(() => {
-    console.log("=>", data);
-  }, [data]);
-
-  const handleNodeDrag = (index, e) => {
+  const handleNodeDrag = (nodeKey, e) => {
+    console.log("Dragging");
     if (
       props.mode === "preview" &&
       props?.controlParams?.drag_node?.value === false
@@ -516,33 +497,28 @@ const GraphComponent = (props, ref) => {
     const clampedX = Math.max(stage.x() + RADIUS, Math.min(maxX, updatedX));
     const clampedY = Math.max(stage.y() + RADIUS, Math.min(maxY, updatedY));
 
-    console.log("clampedX:", updatedX);
-    console.log("clampedY:", updatedY);
     // Update the node's position
-    const updatedNodes = [...data.nodes];
+    const updatedNodes = { ...data.nodes };
 
-    if (selectedNodes.includes(updatedNodes[index])) {
+    if (selectedNodes.includes(nodeKey)) {
       // If the clicked node is already selected, unselect it
       setSelectedNodes(
-        selectedNodes.filter(
-          (selectedNode) =>
-            selectedNode.nodeIndex !== updatedNodes[index].nodeIndex
-        )
+        selectedNodes.filter((selectedNode) => selectedNode !== nodeKey)
       );
     }
 
-    updatedNodes[index] = {
+    updatedNodes[nodeKey] = {
       x: clampedX,
       y: clampedY,
-      nodeIndex: updatedNodes[index].nodeIndex,
     };
 
     setNodes(updatedNodes);
+
     const updatedEdges = data.edges.map((edge) => {
-      if (edge.start.nodeIndex === data.nodes[index].nodeIndex) {
-        return { ...edge, start: updatedNodes[index] };
-      } else if (edge.end.nodeIndex === data.nodes[index].nodeIndex) {
-        return { ...edge, end: updatedNodes[index] };
+      if (edge.start === nodeKey) {
+        return { ...edge, start: nodeKey };
+      } else if (edge.end === nodeKey) {
+        return { ...edge, end: nodeKey };
       }
       return edge;
     });
@@ -555,160 +531,159 @@ const GraphComponent = (props, ref) => {
       duration: 0.5,
     });
   };
-
-  //export and import data....................
-
-  // const exportGraphData = () => {
-  //   const nodes = data.nodes;
-  //   const edges = data.edges;
-  //   const graphData = {
-  //     nodes,
-  //     edges,
-  //   };
-  //   // Convert the JavaScript object to a JSON string
-  //   const jsonData = JSON.stringify(graphData, null, 2);
-  //   console.log("exporting");
-  //   console.log(jsonData);
-
-  //   // storing object in input..........
-
-  //   // props.setInput(graphData);
-  //   return graphData;
-  // };
+  const findMaxKey = (myHashmap) => {
+    const keys = Object.keys(myHashmap);
+    if (keys.length === 0) {
+      return null; // Handle the case when the hashmap is empty
+    }
+    return Math.max(...keys.map(Number));
+  };
 
   const importGraphData = (newData) => {
-    console.log("Import:", newData);
     if (newData !== null && newData.nodes !== null) {
-      let maxIndex = 0;
+      let maxIndex = findMaxKey(newData.nodes);
       // Assuming nodes is an array of objects with an 'index' property
-      newData.nodes.forEach((node) => {
-        if (node.nodeIndex > maxIndex) {
-          maxIndex = node.nodeIndex;
-        }
-      });
-
       setNodeIndex(maxIndex + 1);
     } else {
       setEdges([]);
-      setNodes([]);
+      setNodes({});
+      setSelectedEdges([]);
+      setNodeIndex(0);
     }
-    // data=props.input;
-    // setData=props.setInput;
   };
 
-  // const changeGraphType = () => {
-  //   if (props.params != null) {
-  //     setData((prevData) => ({
-  //       ...prevData,
-  //       directed: props.params["directed_edge"]
-  //         ? props.params["directed_edge"].value
-  //         : prevData.directed,
-  //     }));
-  //     setData((prevData) => ({
-  //       ...prevData,
-  //       weighted: props.params["weighted_edge"]
-  //         ? props.params["weighted_edge"].value
-  //         : prevData.weighted,
-  //     }));
-  //   }
-  // };
+  const Header = () => (
+    <div className=" top-5 left-5 absolute flex flex-row gap-3 z-10">
+      {selectedEdge && (
+        <IconButton
+          sx={
+            {
+              // fontSize: "2rem",
+              // width: "50px",
+              // height: "50px",
+            }
+          }
+          // onClick={() => alert(canvasInfo)}
+        >
+          <div className="flex items-center bu-text-primary cursor-pointer text-2xl">
+            <FontAwesomeIcon icon={faTrashCan} />
+          </div>
+        </IconButton>
+      )}
+      {selectedEdge && (
+        <div className="no-ring-input">
+          <FormControl fullWidth variant="outlined" size="small">
+            <InputLabel
+              htmlFor="outlined-adornment"
+              className="bu-text-primary"
+            >
+              Edge weight
+            </InputLabel>
+            <OutlinedInput
+              required
+              placeholder="# of disks"
+              inputProps={{
+                step: 1,
+                min: 1,
+                max: 10,
+              }}
+              id="outlined-adornment"
+              className="outline-none bu-text-primary"
+              type="number"
+              value={selectedEdge.weight}
+              // onChange={handleNumberOfDisksChange}
 
-  const changeIndex = () => {};
+              label={"Edge weight"}
+              size="small"
+            />
+          </FormControl>
+        </div>
+      )}
 
+      {selectedNodes.length === 1 && (
+        <IconButton
+          sx={
+            {
+              // fontSize: "2rem",
+              // width: "50px",
+              // height: "50px",
+            }
+          }
+          // onClick={() => alert(canvasInfo)}
+        >
+          <div className="flex items-center bu-text-primary cursor-pointer text-2xl">
+            <FontAwesomeIcon icon={faTrashCan} />
+          </div>
+        </IconButton>
+      )}
+      {selectedNodes.length === 1 && (
+        <div className="no-ring-input">
+          <FormControl fullWidth variant="outlined" size="small">
+            <InputLabel
+              htmlFor="outlined-adornment"
+              className="bu-text-primary"
+            >
+              Node ID
+            </InputLabel>
+            <OutlinedInput
+              required
+              placeholder="# of disks"
+              inputProps={{
+                step: 1,
+                min: 1,
+                max: 10,
+              }}
+              id="outlined-adornment"
+              className="outlined-input bu-text-primary"
+              type="text"
+              value={selectedNodes[0]}
+              // onChange={handleNumberOfDisksChange}
+              label={"Node ID"}
+              size="small"
+            />
+          </FormControl>
+        </div>
+      )}
+    </div>
+  );
+
+  const CustomModal = () => (
+    <Modal
+      className="modal-container bu-nav-color"
+      isOpen={isPromptOpen}
+      onRequestClose={closePrompt}
+      contentLabel="Edge Weight Input"
+    >
+      <div className="flex flex-col gap-5">
+        <p className="bu-text-primary font-bold text-xl">ENTER THE WEIGHT</p>
+        <input
+          className="bu-input-primary rounded-lg"
+          type="number"
+          value={curEdgeWeight}
+          onChange={(e) => setCurEdgeWeight(e.target.value)}
+          placeholder="Edge Weight"
+          // autofocus
+        />
+        <div className="flex flex-row gap-5 justify-center">
+          <button
+            className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-delete w-full"
+            onClick={closePrompt}
+          >
+            CANCEL
+          </button>
+          <button
+            className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-primary w-full"
+            onClick={() => handlePromptSubmit(curEdgeWeight)}
+          >
+            SUBMIT
+          </button>
+        </div>
+      </div>
+    </Modal>
+  );
   return (
     <div className="w-full  relative" ref={windowRef}>
-      <div className=" top-5 left-5 absolute flex flex-row gap-3 z-10">
-        {selectedEdge && (
-          <IconButton
-            sx={
-              {
-                // fontSize: "2rem",
-                // width: "50px",
-                // height: "50px",
-              }
-            }
-            // onClick={() => alert(canvasInfo)}
-          >
-            <div className="flex items-center bu-text-primary cursor-pointer text-2xl">
-              <FontAwesomeIcon icon={faTrashCan} />
-            </div>
-          </IconButton>
-        )}
-        {selectedEdge && (
-          <div className="no-ring-input">
-            <FormControl fullWidth variant="outlined" size="small">
-              <InputLabel
-                htmlFor="outlined-adornment"
-                className="bu-text-primary"
-              >
-                Edge weight
-              </InputLabel>
-              <OutlinedInput
-                required
-                placeholder="# of disks"
-                inputProps={{
-                  step: 1,
-                  min: 1,
-                  max: 10,
-                }}
-                id="outlined-adornment"
-                className="outline-none bu-text-primary"
-                type="number"
-                value={selectedEdge.weight}
-                // onChange={handleNumberOfDisksChange}
-
-                label={"Edge weight"}
-                size="small"
-              />
-            </FormControl>
-          </div>
-        )}
-
-        {selectedNodes.length === 1 && (
-          <IconButton
-            sx={
-              {
-                // fontSize: "2rem",
-                // width: "50px",
-                // height: "50px",
-              }
-            }
-            // onClick={() => alert(canvasInfo)}
-          >
-            <div className="flex items-center bu-text-primary cursor-pointer text-2xl">
-              <FontAwesomeIcon icon={faTrashCan} />
-            </div>
-          </IconButton>
-        )}
-        {selectedNodes.length === 1 && (
-          <div className="no-ring-input">
-            <FormControl fullWidth variant="outlined" size="small">
-              <InputLabel
-                htmlFor="outlined-adornment"
-                className="bu-text-primary"
-              >
-                Node ID
-              </InputLabel>
-              <OutlinedInput
-                required
-                placeholder="# of disks"
-                inputProps={{
-                  step: 1,
-                  min: 1,
-                  max: 10,
-                }}
-                id="outlined-adornment"
-                className="outlined-input bu-text-primary"
-                type="text"
-                value={selectedNodes[0]}
-                // onChange={handleNumberOfDisksChange}
-                label={"Node ID"}
-                size="small"
-              />
-            </FormControl>
-          </div>
-        )}
-      </div>
+      {Header()}
 
       <div className="graph-container pt-16 overflow-hidden w-full">
         <Stage
@@ -721,14 +696,18 @@ const GraphComponent = (props, ref) => {
           // scaleX={Math.min(width / 882, 1)}
           // scaleY={Math.min(width / 882, 1)}
         >
-          {data === null ? (
-            <></>
-          ) : (
+          {data && (
             <Layer>
               {data.edges.map((edge, index) => {
+                if (
+                  data.nodes[edge.end] === undefined ||
+                  data.nodes[edge.start] === undefined
+                ) {
+                  return <></>;
+                }
                 // calculations.......................
-                const dx = edge.end.x - edge.start.x;
-                const dy = edge.end.y - edge.start.y;
+                const dx = data.nodes[edge.end].x - data.nodes[edge.start].x;
+                const dy = data.nodes[edge.end].y - data.nodes[edge.start].y;
                 const angle = Math.atan2(dy, dx);
                 const startOffsetX = Math.cos(angle) * RADIUS;
                 const startOffsetY = Math.sin(angle) * RADIUS;
@@ -746,23 +725,37 @@ const GraphComponent = (props, ref) => {
                 //edge direction related.............................
 
                 // Calculate the position of the arrowhead
-                const arrowheadX =
+                {
+                  /* const arrowheadX =
                   edge.end.x + endOffsetX - 10 * Math.cos(angle);
                 const arrowheadY =
-                  edge.end.y + endOffsetY - 10 * Math.sin(angle);
+                  edge.end.y + endOffsetY - 10 * Math.sin(angle); */
+                }
 
                 const weightOffsetX =
-                  ((edge.start.y - edge.end.y) /
+                  ((data.nodes[edge.start].y - data.nodes[edge.end].y) /
                     Math.sqrt(
-                      Math.pow(edge.start.y - edge.end.y, 2) +
-                        Math.pow(edge.end.x - edge.start.x, 2)
+                      Math.pow(
+                        data.nodes[edge.start].y - data.nodes[edge.end].y,
+                        2
+                      ) +
+                        Math.pow(
+                          data.nodes[edge.end].x - data.nodes[edge.start].x,
+                          2
+                        )
                     )) *
                   10;
                 const weightOffsetY =
-                  ((edge.end.x - edge.start.x) /
+                  ((data.nodes[edge.end].x - data.nodes[edge.start].x) /
                     Math.sqrt(
-                      Math.pow(edge.start.y - edge.end.y, 2) +
-                        Math.pow(edge.end.x - edge.start.x, 2)
+                      Math.pow(
+                        data.nodes[edge.start].y - data.nodes[edge.end].y,
+                        2
+                      ) +
+                        Math.pow(
+                          data.nodes[edge.end].x - data.nodes[edge.start].x,
+                          2
+                        )
                     )) *
                   10;
                 return (
@@ -776,10 +769,10 @@ const GraphComponent = (props, ref) => {
                         <Line
                           key={index}
                           points={[
-                            edge.start.x + startOffsetX,
-                            edge.start.y + startOffsetY,
-                            edge.end.x + endOffsetX,
-                            edge.end.y + endOffsetY,
+                            data.nodes[edge.start].x + startOffsetX,
+                            data.nodes[edge.start].y + startOffsetY,
+                            data.nodes[edge.end].x + endOffsetX,
+                            data.nodes[edge.end].y + endOffsetY,
                           ]}
                           onMouseEnter={() => {
                             // document.body.style.cursor = "pointer";
@@ -807,10 +800,10 @@ const GraphComponent = (props, ref) => {
                         <Arrow
                           key={index}
                           points={[
-                            edge.start.x + startOffsetX,
-                            edge.start.y + startOffsetY,
-                            edge.end.x + endOffsetX,
-                            edge.end.y + endOffsetY,
+                            data.nodes[edge.start].x + startOffsetX,
+                            data.nodes[edge.start].y + startOffsetY,
+                            data.nodes[edge.end].x + endOffsetX,
+                            data.nodes[edge.end].y + endOffsetY,
                           ]}
                           onMouseEnter={() => {
                             // document.body.style.cursor = "pointer";
@@ -837,45 +830,47 @@ const GraphComponent = (props, ref) => {
                       )}
                     </Group>
 
-                    {props.params === null ||
-                    !props.params["weighted_edge"] ||
-                    props.params["weighted_edge"].value === false ? (
-                      <></>
-                    ) : (
-                      <>
-                        <Text
-                          x={weightOffsetX + (edge.start.x + edge.end.x) / 2}
-                          y={weightOffsetY + (edge.start.y + edge.end.y) / 2}
-                          text={edge.weight}
-                          fontSize={25}
-                          strokeWidth={selectedEdge !== edge ? 5 : 3}
-                          background="red"
-                          fill={
-                            selectedEdge === edge
-                              ? "#ec3965"
-                              : hoveredEdge !== edge
-                                ? "#879294"
-                                : "#2bb557"
-                          }
-                          width={45}
-                          onClick={() => changeEdgeWeight(edge)}
-                          rotation={
-                            (Math.atan2(
-                              edge.end.y - edge.start.y,
-                              edge.end.x - edge.start.x
-                            ) *
-                              180) /
-                            Math.PI
-                          }
-                        />
-                      </>
+                    {props?.params?.weighted_edge?.value && (
+                      <Text
+                        x={
+                          weightOffsetX +
+                          (data.nodes[edge.start].x + data.nodes[edge.end].x) /
+                            2
+                        }
+                        y={
+                          weightOffsetY +
+                          (data.nodes[edge.start].y + data.nodes[edge.end].y) /
+                            2
+                        }
+                        text={edge.weight}
+                        fontSize={25}
+                        strokeWidth={selectedEdge !== edge ? 5 : 3}
+                        background="red"
+                        fill={
+                          selectedEdge === edge
+                            ? "#ec3965"
+                            : hoveredEdge !== edge
+                              ? "#879294"
+                              : "#2bb557"
+                        }
+                        width={45}
+                        onClick={() => changeEdgeWeight(edge)}
+                        rotation={
+                          (Math.atan2(
+                            data.nodes[edge.end].y - data.nodes[edge.start].y,
+                            data.nodes[edge.end].x - data.nodes[edge.start].x
+                          ) *
+                            180) /
+                          Math.PI
+                        }
+                      />
                     )}
                   </React.Fragment>
                 );
               })}
-              {data.nodes.map((node, index) => (
+              {Object.entries(data.nodes).map(([nodeKey, node]) => (
                 <Group
-                  key={node.nodeIndex}
+                  key={nodeKey}
                   x={node.x}
                   y={node.y}
                   draggable={
@@ -886,15 +881,18 @@ const GraphComponent = (props, ref) => {
                   }
                   onMouseEnter={() => {
                     document.body.style.cursor = "pointer";
-                    handleNodeHover(node.nodeIndex);
+                    handleNodeHover(nodeKey);
                   }}
                   onMouseLeave={() => {
                     document.body.style.cursor = "default";
                     handleNodeUnhover();
                   }}
-                  onDragMove={(e) => handleNodeDrag(index, e)}
-                  onClick={() => handleNodeClick(node.nodeIndex)}
-                  onDragStart={() => setIsDragging(node.nodeIndex)}
+                  onDragMove={(e) => handleNodeDrag(nodeKey, e)}
+                  onClick={() => handleNodeClick(nodeKey)}
+                  onDragStart={() => {
+                    // console.log("DRAAAAAAAAAAAAG");
+                    setIsDragging(nodeKey);
+                  }}
                   onDragEnd={() => {
                     // handleNodeHover(node);
                     setIsDragging(-1);
@@ -902,60 +900,57 @@ const GraphComponent = (props, ref) => {
                 >
                   <Circle
                     radius={
-                      isDragging === node.nodeIndex
+                      isDragging === nodeKey
                         ? RADIUS * 1.2
-                        : hoveredNode === node.nodeIndex
+                        : hoveredNode === nodeKey
                           ? 1.1 * RADIUS
                           : RADIUS
                     }
-                    className={
-                      hoveredNode === node.nodeIndex ? "node-hovered" : ""
-                    }
+                    className={hoveredNode === nodeKey ? "node-hovered" : ""}
                     fill={
-                      selectedNodes.includes(node.nodeIndex)
+                      selectedNodes.includes(nodeKey)
                         ? "#ec3965"
-                        : hoveredNode === node.nodeIndex ||
-                            isDragging === node.nodeIndex
+                        : hoveredNode === nodeKey || isDragging === nodeKey
                           ? "#38bf27"
                           : "#a4a3a3"
                     }
                     // opacity={0.5}
                     stroke={
-                      selectedNodes.includes(node.nodeIndex)
+                      selectedNodes.includes(nodeKey)
                         ? ""
-                        : hoveredNode === node.nodeIndex
+                        : hoveredNode === nodeKey
                           ? ""
                           : ""
                     }
                     strokeWidth={
-                      selectedNodes.includes(node.nodeIndex)
+                      selectedNodes.includes(nodeKey)
                         ? 0
-                        : hoveredNode === node.nodeIndex
+                        : hoveredNode === nodeKey
                           ? 0
                           : 3
                     }
                     brightness={
-                      selectedNodes.includes(node.nodeIndex)
+                      selectedNodes.includes(nodeKey)
                         ? 0.5
-                        : hoveredNode === node.nodeIndex
+                        : hoveredNode === nodeKey
                           ? 0
                           : 0.8
                     }
-                    shadowOffsetX={isDragging === node.nodeIndex ? 7 : 0}
-                    shadowOffsetY={isDragging === node.nodeIndex ? 7 : 0}
+                    shadowOffsetX={isDragging === nodeKey ? 7 : 0}
+                    shadowOffsetY={isDragging === nodeKey ? 7 : 0}
                     shadowColor="black"
-                    shadowBlur={isDragging === node.nodeIndex ? 10 : 0}
-                    shadowOpacity={isDragging === node.nodeIndex ? 0.6 : 0}
+                    shadowBlur={isDragging === nodeKey ? 10 : 0}
+                    shadowOpacity={isDragging === nodeKey ? 0.6 : 0}
                   />
                   <Text
-                    text={node.nodeIndex.toString()} // Display the node number
+                    text={nodeKey.toString()} // Display the node number
                     align="center" // Center-align the text
                     verticalAlign="middle" // Vertically align the text
                     fontSize={30} // Set font size
                     fill={
-                      selectedNodes.includes(node.nodeIndex)
+                      selectedNodes.includes(nodeKey)
                         ? "white"
-                        : hoveredNode === node.nodeIndex
+                        : hoveredNode === nodeKey
                           ? "white"
                           : "white"
                     } // Set text color
@@ -975,42 +970,7 @@ const GraphComponent = (props, ref) => {
         </Stage>
       </div>
 
-      {/* <div className="export-button-container">
-        <button onClick={exportGraphData} className="export-button"></button>
-      </div> */}
-
-      <Modal
-        className="modal-container bu-nav-color"
-        isOpen={isPromptOpen}
-        onRequestClose={closePrompt}
-        contentLabel="Edge Weight Input"
-      >
-        <div className="flex flex-col gap-5">
-          <p className="bu-text-primary font-bold text-xl">ENTER THE WEIGHT</p>
-          <input
-            className="bu-input-primary rounded-lg"
-            type="number"
-            value={curEdgeWeight}
-            onChange={(e) => setCurEdgeWeight(e.target.value)}
-            placeholder="Edge Weight"
-            // autofocus
-          />
-          <div className="flex flex-row gap-5 justify-center">
-            <button
-              className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-delete w-full"
-              onClick={closePrompt}
-            >
-              CANCEL
-            </button>
-            <button
-              className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-primary w-full"
-              onClick={() => handlePromptSubmit(curEdgeWeight)}
-            >
-              SUBMIT
-            </button>
-          </div>
-        </div>
-      </Modal>
+      {CustomModal()}
     </div>
   );
 };

@@ -712,14 +712,14 @@ const GraphComponent = (props, ref) => {
 
       <div className="graph-container pt-16 overflow-hidden w-full">
         <Stage
-          // width={width} // small glitch // 1102
-          width={882}
+          width={width} // small glitch // 1102
+          // width={window.innerWidth * 0.57}
           height={500} // 630
           onClick={handleCanvasClick}
           onMouseMove={handleMouseMove}
           ref={stageRef}
-          scaleX={Math.min(width / 882, 1)}
-          scaleY={Math.min(width / 882, 1)}
+          // scaleX={Math.min(width / 882, 1)}
+          // scaleY={Math.min(width / 882, 1)}
         >
           {data === null ? (
             <></>

@@ -26,6 +26,7 @@ import { SelectionField, SelectionField2 } from "../../Components/InputFields";
 import CanvasController from "../../controller/canvasController";
 import { setLoading } from "../../App";
 import { IconButton } from "@mui/material";
+import Send from "@mui/icons-material/Send";
 // import TabContext from "@mui/lab/TabContext";
 // import TabList from "@mui/lab/TabList";
 // import TabPanel from "@mui/lab/TabPanel";
@@ -114,7 +115,6 @@ const SolutionCheckerTab = ({
   code,
   setCode,
   input,
-  handleCheckSolution,
   canvasId,
   checkerCanvas,
   setCheckerCanvas,
@@ -129,6 +129,25 @@ const SolutionCheckerTab = ({
 }) => {
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
+  const [test, setTest] = useState(null);
+  const handleCheckSolution = async () => {
+    try {
+      const result = await problemController.checkSolution(
+        code,
+        checkerCanvas,
+        test
+      );
+      console.log(result);
+      setOutput(result.output);
+      setStdout(result.stdout);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    setTest(JSON.parse(JSON.stringify(input)));
+  }, [input]);
+
   const resetChecker = () => {
     setCheckerCanvas(JSON.parse(JSON.stringify(input)));
     canvasRef.current !== undefined &&
@@ -136,6 +155,7 @@ const SolutionCheckerTab = ({
       canvasRef.current.handleReset(JSON.parse(JSON.stringify(input)));
   };
   const canvasRef = useRef();
+  const testRef = useRef();
   return (
     <>
       <SelectionField
@@ -202,6 +222,44 @@ const SolutionCheckerTab = ({
           Save
         </Button>
       </div>
+      <div className="bu-bg-title text-white p-5 rounded-md text-2xl font-bold">
+        Test Solution Checker
+      </div>
+      <CanvasContainer
+        id={canvasId}
+        input={test}
+        setInput={setTest}
+        ref={testRef}
+        mode="preview"
+        params={params}
+        setParams={setParams}
+        uiParams={uiParams}
+        setUiParams={setUiParams}
+        controlParams={controlParams}
+        setControlParams={setControlParams}
+      />
+      <div className="flex flex-row justify-between py-5">
+        <Button
+          variant="contained"
+          color="success"
+          onClick={() => {
+            setTest(input);
+            // canvasRef.current.handleReset(); // Call this after reset
+          }}
+          startIcon={
+            <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+          }
+        >
+          Reset
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleCheckSolution}
+          endIcon={<Send sx={{ fontSize: "2rem", color: "white" }} />}
+        >
+          Submit
+        </Button>
+      </div>
     </>
   );
 };
@@ -263,16 +321,6 @@ export default function ProblemSetEnv() {
 
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
-
-  const handleCheckSolution = async () => {
-    try {
-      const result = await problemController.checkSolution(code, input);
-      setOutput(result.output);
-      setStdout(result.stdout);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   // useBeforeUnload((e) => {
   //   console.log("Route changed");
@@ -597,7 +645,6 @@ export default function ProblemSetEnv() {
             code={code}
             setCode={setCode}
             input={input}
-            handleCheckSolution={handleCheckSolution}
             canvasId={canvasId}
             checkerCanvas={checkerCanvas}
             setCheckerCanvas={setCheckerCanvas}

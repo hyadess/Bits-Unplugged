@@ -94,9 +94,10 @@ export default function ProblemsCanvas() {
   };
   const solutionSubmit = async (e) => {
     let res = await problemController.checkSolution(
-      problem.checker_type == 0 ? problem.checker_code : problem.checker_canvas,
+      problem.checker_code,
+      problem.checker_canvas,
       problem.checker_type,
-      input,
+      input
     );
     console.log("output " + res.output);
     submissionController.submitSolution(res.output, id);
@@ -151,7 +152,7 @@ export default function ProblemsCanvas() {
                       navigator(
                         type == 2
                           ? `/admin/problems/${id}`
-                          : `/problem/${id}/edit`,
+                          : `/problem/${id}/edit`
                       );
                     }}
                   >

@@ -121,13 +121,20 @@ class ProblemController extends Controller {
       stdout: stdout,
     };
   };
-  checkSolution = async (solution_checker, checker_type, input) => {
-    if (checker_type == 0)
-      return await this.checkWithCode(solution_checker, input);
-    else if (checker_type == 1) {
-      const verdict =
-        JSON.stringify(solution_checker) === JSON.stringify(input);
-      let output = "";
+  checkSolution = async (checker_code, checker_canvas, input) => {
+    const stdout = [];
+    const originalConsoleLog = console.log;
+    console.log = function (...args) {
+      const stringifiedArgs = args.map((arg) => JSON.stringify(arg)).join(" ");
+      stdout.push(stringifiedArgs);
+    };
+
+    let output = "";
+    try {
+      const verdict = eval(
+        checker_code + "; solutionChecker(input,checker_canvas);"
+      );
+      console.log = originalConsoleLog;
       if (verdict) {
         output = "Accepted";
         showToast(output, "success");
@@ -135,11 +142,16 @@ class ProblemController extends Controller {
         output = "Wrong answer";
         showToast(output, "error");
       }
-
-      return {
-        output: output,
-      };
+    } catch (error) {
+      console.log = originalConsoleLog;
+      output = error.message;
+      showToast(output, "error");
     }
+
+    return {
+      output: output,
+      stdout: stdout,
+    };
   };
 
   updateSolutionChecker = async (

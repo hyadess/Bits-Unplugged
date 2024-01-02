@@ -381,6 +381,8 @@ export default function ProblemSetEnv() {
   const updateCanvas = async () => {
     // if (changeCanvas == null)
     //   setCheckerCanvas(JSON.parse(JSON.stringify(input)));
+
+    setBackup(JSON.parse(JSON.stringify(input)));
     const res = await problemController.updateCanvas(
       prob_id,
       canvasId,
@@ -468,7 +470,7 @@ export default function ProblemSetEnv() {
               arrow
               size="large"
             >
-              <IconButton >
+              <IconButton>
                 <div
                   data-tooltip-target="tooltip-default"
                   className="bu-text-primary flex cursor-pointer items-center text-3xl"

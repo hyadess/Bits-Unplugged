@@ -73,6 +73,11 @@ export default function SolutionChecker(props) {
   useEffect(() => {
     const jsonData = JSON.stringify(props.input ? props.input : {}, null, 2);
     setStringed(jsonData);
+  }, [props.input]);
+
+  useEffect(() => {
+    const jsonData = JSON.stringify(props.input ? props.input : {}, null, 2);
+    setStringed(jsonData);
 
     // Attach resize event listener
     window.addEventListener("resize", handleResize);

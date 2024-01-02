@@ -726,7 +726,13 @@ const GraphComponent = (props, ref) => {
                 }}
               >
                 <Circle
-                  radius={isDragging === index ? RADIUS * 1.1 : RADIUS}
+                  radius={
+                    isDragging === index
+                      ? RADIUS * 1.2
+                      : hoveredNode === node
+                        ? 1.1 * RADIUS
+                        : RADIUS
+                  }
                   className={hoveredNode === node ? "node-hovered" : ""}
                   fill={
                     selectedNodes.includes(node)

@@ -57,17 +57,7 @@ export default function SolutionChecker(props) {
   };
 
   const handleCheckSolution = async () => {
-    try {
-      const result = await problemController.checkSolution(
-        ref.current.getValue(),
-        0,
-        JSON.parse(ref2.current.getValue())
-      );
-      props.setOutput(result.output);
-      props.setStdout(result.stdout);
-    } catch (error) {
-      showToast("Invalid Input", "error");
-    }
+    await props.checkSubmit();
   };
 
   useEffect(() => {
@@ -86,6 +76,9 @@ export default function SolutionChecker(props) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    console.log("--->", props.stdout);
+  }, [props.stdout]);
   const editorMount = (editor, monaco) => {
     ref.current = editor;
     monaco.editor.setTheme("light-theme");
@@ -102,7 +95,7 @@ export default function SolutionChecker(props) {
 
   const submit = () => {
     // console.log(prob_id);
-    handleCheckSolution();
+    // handleCheckSolution();
     // problemController.updateSolutionChecker(prob_id, ref.current.getValue(), 0);
   };
 
@@ -160,7 +153,7 @@ export default function SolutionChecker(props) {
                 }}
               />
             </div>
-            <div className="w-1/2 md:w-full h-full md:h-1/2 m-0 text-left p-5 bg-[#1F2531] text-lg text-white box-border border-4 border-solid border-gray-600 border-spacing-4 border-t-0">
+            <div className="w-1/2 md:w-full h-full md:h-1/2 m-0 text-left p-5 bg-[#1F2531] text-md text-white box-border border-4 border-solid border-gray-600 border-spacing-4 border-t-0 break-all overflow-scroll">
               {props.stdout}
             </div>
           </div>
@@ -171,7 +164,7 @@ export default function SolutionChecker(props) {
             }}
             type="submit"
             className="text-white font-bold rounded-lg text-lg md:text-md px-7 py-3.5 text-center bu-button-secondary w-full h-20% md:h-10% flex flex-row gap-5 justify-center items-center box-border border-4 border-solid border-gray-600 border-spacing-4 border-t-0"
-            onClick={submit}
+            onClick={handleCheckSolution}
           >
             <FontAwesomeIcon icon={faPlay} />
             RUN

@@ -5,6 +5,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
   useLayoutEffect,
+  useCallback,
 } from "react";
 import {
   Stage,
@@ -118,19 +119,37 @@ const GraphComponent = (props, ref) => {
     };
   });
 
-  useEffect(() => {
-    const updateParentWidth = () => {
-      if (windowRef.current) {
-        setWidth(windowRef.current.offsetWidth);
-        setHeight(windowRef.current.offsetHeight);
-      }
-    };
-    updateParentWidth();
-    window.addEventListener("resize", updateParentWidth);
-    return () => {
-      window.removeEventListener("resize", updateParentWidth);
-    };
+  // const [height, setHeight] = useState(0);
+
+  const measuredRef = useCallback((node) => {
+    if (node !== null) {
+      setWidth(node.getBoundingClientRect().width);
+    }
   }, []);
+
+  useEffect(() => {
+    if (!windowRef.current) return;
+    const resizeObserver = new ResizeObserver(() => {
+      // Do what you want to do when the size of the element changes
+      setWidth(windowRef.current.offsetWidth);
+    });
+    resizeObserver.observe(windowRef.current);
+    return () => resizeObserver.disconnect(); // clean up
+  }, []);
+
+  // useEffect(() => {
+  //   const updateParentWidth = () => {
+  //     if (windowRef.current) {
+  //       setWidth(windowRef.current.offsetWidth);
+  //       setHeight(windowRef.current.offsetHeight);
+  //     }
+  //   };
+  //   updateParentWidth();
+  //   window.addEventListener("resize", updateParentWidth);
+  //   return () => {
+  //     window.removeEventListener("resize", updateParentWidth);
+  //   };
+  // }, []);
 
   // Function to calculate the distance from a point to a line segment...used to select an edge!!!!
   const pointToLineDistance = (px, py, x1, y1, x2, y2) => {
@@ -517,6 +536,7 @@ const GraphComponent = (props, ref) => {
       ref={windowRef}
     >
       <Stage
+        // width={width} // small glitch
         width={window.innerWidth * 0.57}
         height={500}
         onClick={handleCanvasClick}

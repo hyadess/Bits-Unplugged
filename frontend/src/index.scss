@@ -24,12 +24,12 @@ code {
 }
 
 .bu-bg-title {
-  background-color: #1C5B5F;
+  background-color: #1c5b5f;
 }
 .dark {
   .bu-bg-title {
     @apply bg-pink-600;
-  }  
+  }
 }
 
 // .bu-color-1 {
@@ -39,7 +39,7 @@ code {
 // .dark {
 //   .bu-color-1 {
 //     @apply text-gray-900;
-//   }  
+//   }
 // }
 
 .bu-bg-color {
@@ -65,7 +65,7 @@ code {
     @apply bg-slate-800;
     @apply border-slate-800;
     @apply text-white;
-  } 
+  }
 }
 
 .bu-text-primary {
@@ -75,7 +75,7 @@ code {
 .dark {
   .bu-text-primary {
     @apply text-white;
-  }  
+  }
 }
 
 .bu-text-secondary {
@@ -85,14 +85,14 @@ code {
 .dark {
   .bu-text-secondary {
     @apply text-gray-900;
-  }  
+  }
 }
 
 .bu-text-primary-hover {
   @apply text-gray-900;
   &:hover {
-    color: #1C5B5F;
-    fill: #1C5B5F;
+    color: #1c5b5f;
+    fill: #1c5b5f;
   }
 }
 
@@ -105,21 +105,19 @@ code {
   }
 }
 
-.bu-text-title{
-  color: #1C5B5F;
-  fill: #1C5B5F;
-  border-color: #1C5B5F;
+.bu-text-title {
+  color: #1c5b5f;
+  fill: #1c5b5f;
+  border-color: #1c5b5f;
 }
-
 
 .dark {
   .bu-text-title {
     @apply text-pink-500;
     @apply fill-pink-500;
     @apply border-pink-500;
-  }  
+  }
 }
-
 
 .bu-text-subtitle {
   @apply text-gray-500;
@@ -151,26 +149,27 @@ code {
   }
 }
 
-.dark
-{
+.dark {
   .bu-button {
     @apply text-white;
   }
 }
 
-.bu-button-primary { // If on card
+.bu-button-primary {
+  // If on card
   @extend .bu-button;
-  background-color: #AADFCF;
+  background-color: #aadfcf;
   &:hover {
     background-color: #84cfb8;
   }
   &:active {
-    --tw-ring-color: #AADFCF;
+    --tw-ring-color: #aadfcf;
   }
 }
 
 .dark {
-  .bu-button-primary { // If on card
+  .bu-button-primary {
+    // If on card
     @apply bg-pink-600;
     &:hover {
       @apply bg-pink-700;
@@ -181,7 +180,8 @@ code {
   }
 }
 
-.bu-button-secondary {  // If on bg
+.bu-button-secondary {
+  // If on bg
   @extend .bu-button;
   background-color: #94cebc;
   &:hover {
@@ -192,9 +192,9 @@ code {
   }
 }
 
-
 .dark {
-  .bu-button-secondary { // If on bg
+  .bu-button-secondary {
+    // If on bg
     @apply bg-pink-700;
     &:hover {
       @apply bg-pink-800;
@@ -205,7 +205,8 @@ code {
   }
 }
 
-.bu-button-delete { // If on card
+.bu-button-delete {
+  // If on card
   @extend .bu-button;
   @apply bg-red-300;
   &:hover {
@@ -218,7 +219,8 @@ code {
 }
 
 .dark {
-  .bu-button-delete { // If on card
+  .bu-button-delete {
+    // If on card
     @apply bg-blue-600;
     &:hover {
       @apply bg-blue-700;
@@ -235,7 +237,6 @@ code {
   &:hover {
     @apply text-gray-900;
   }
-
 }
 
 .dark {
@@ -247,12 +248,12 @@ code {
   }
 }
 
-.bu-horizontal-bar{
+.bu-horizontal-bar {
   @apply border-gray-600;
 }
 
 .dark {
-  .bu-horizontal-bar{
+  .bu-horizontal-bar {
     @apply border-gray-600;
   }
 }
@@ -323,7 +324,9 @@ code {
   border-radius: 50%;
   width: 40px;
   height: 40px;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 .hbox {
@@ -335,4 +338,10 @@ code {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.no-ring-input {
+  input:focus {
+    @apply ring-0;
+  }
 }

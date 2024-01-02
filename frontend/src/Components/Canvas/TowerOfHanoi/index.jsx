@@ -89,7 +89,7 @@ const UndoRedoButton = ({ handleUndo, handleRedo }) => {
   );
 };
 const NumberOfDisksInput = ({ data, handleNumberOfDisksChange }) => (
-  <div className="hbox w-20%">
+  <div className="no-ring-input w-20%">
     <FormControl fullWidth variant="outlined">
       <InputLabel htmlFor="outlined-adornment" className="bu-text-primary">
         Number of Disks

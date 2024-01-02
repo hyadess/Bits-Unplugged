@@ -21,9 +21,19 @@ import {
 } from "react-konva";
 import Modal from "react-modal";
 import "./styles.scss";
-import { Button } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  IconButton,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
 import Cookies from "universal-cookie";
 import { setLoading } from "../../../App";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { SelectionField } from "../../InputFields";
+import Info from "@mui/icons-material/Info";
 const RADIUS = 30;
 const EDGECLICKRANGE = 20;
 const canvasWidth = 1440;
@@ -275,6 +285,7 @@ const GraphComponent = (props, ref) => {
       if (hoveredEdge == nearestEdge);
       else {
         setHoveredEdge(nearestEdge);
+
         document.body.style.cursor = "pointer";
       }
     } else if (hoveredEdge !== null) {
@@ -289,8 +300,7 @@ const GraphComponent = (props, ref) => {
         if (
           e.target &&
           (e.target.getClassName() === "Text" ||
-            e.target.getClassName() === "Circle" ||
-            e.target.getClassName() === "Line")
+            e.target.getClassName() === "Circle")
         ) {
           // Do nothing or handle text click separately
           return;
@@ -324,7 +334,10 @@ const GraphComponent = (props, ref) => {
 
         if (nearestEdge && minDistance <= 1.0 * EDGECLICKRANGE) {
           if (selectedEdge == nearestEdge) setSelectedEdge(null);
-          else setSelectedEdge(nearestEdge);
+          else {
+            setSelectedEdge(nearestEdge);
+            setSelectedNodes([]);
+          }
         } else if (selectedEdge !== null) {
           setSelectedEdge(null);
         } else if (selectedNodes.length > 0) {
@@ -337,7 +350,7 @@ const GraphComponent = (props, ref) => {
             return;
           const newNode = { x, y, nodeIndex };
           setNodeIndex(nodeIndex + 1);
-
+          setSelectedEdge(null);
           setNodes([...data.nodes, newNode]);
         }
       }, 20);
@@ -352,11 +365,13 @@ const GraphComponent = (props, ref) => {
   const handleNodeClick = (nodeIndex) => {
     if (selectedNodes.length === 0) {
       setSelectedNodes([nodeIndex]);
+      setSelectedEdge(null);
     } else if (
       props.mode === "preview" &&
       props?.controlParams?.add_edge?.value === false
     ) {
       setSelectedNodes([nodeIndex]);
+      setSelectedEdge(null);
     } else if (selectedNodes.length === 1 && selectedNodes[0] !== nodeIndex) {
       // don't add any more node if there exists one................
       const alreadyExists = data.edges.some(
@@ -368,6 +383,7 @@ const GraphComponent = (props, ref) => {
       );
       if (!alreadyExists) {
         setSelectedNodes([...selectedNodes, nodeIndex]);
+
         if (
           props.params !== null &&
           props.params["weighted_edge"] &&
@@ -391,9 +407,10 @@ const GraphComponent = (props, ref) => {
       }
     } else if (selectedNodes.includes(nodeIndex)) {
       // If the clicked node is already selected, unselect it
-      setSelectedNodes(
-        selectedNodes.filter((selectedNode) => selectedNode !== nodeIndex)
+      setSelectedNodes((prev) =>
+        prev.filter((selectedNode) => selectedNode !== nodeIndex)
       );
+      setSelectedEdge(null);
     }
   };
 
@@ -599,264 +616,365 @@ const GraphComponent = (props, ref) => {
   const changeIndex = () => {};
 
   return (
-    <div
-      className="graph-container w-full pt-16 overflow-hidden"
-      ref={windowRef}
-    >
-      <Stage
-        // width={width} // small glitch
-        width={window.innerWidth * 0.57}
-        height={500}
-        onClick={handleCanvasClick}
-        onMouseMove={handleMouseMove}
-        ref={stageRef}
-        // scaleX={Math.min(window.innerWidth / 970, 1)}
-        // scaleY={Math.min(window.innerWidth / 900, 1)}
-      >
-        {data === null ? (
-          <></>
-        ) : (
-          <Layer>
-            {data.edges.map((edge, index) => {
-              // calculations.......................
-              const dx = edge.end.x - edge.start.x;
-              const dy = edge.end.y - edge.start.y;
-              const angle = Math.atan2(dy, dx);
-              const startOffsetX = Math.cos(angle) * RADIUS;
-              const startOffsetY = Math.sin(angle) * RADIUS;
-              const endOffsetX =
-                Math.cos(angle + Math.PI) * RADIUS -
-                (props?.params["directed_edge"]?.value
-                  ? 3 * Math.cos(angle)
-                  : 0);
-              const endOffsetY =
-                Math.sin(angle + Math.PI) * RADIUS -
-                (props?.params["directed_edge"]?.value
-                  ? 3 * Math.sin(angle)
-                  : 0);
-
-              //edge direction related.............................
-
-              // Calculate the position of the arrowhead
-              const arrowheadX = edge.end.x + endOffsetX - 10 * Math.cos(angle);
-              const arrowheadY = edge.end.y + endOffsetY - 10 * Math.sin(angle);
-
-              const weightOffsetX =
-                ((edge.start.y - edge.end.y) /
-                  Math.sqrt(
-                    Math.pow(edge.start.y - edge.end.y, 2) +
-                      Math.pow(edge.end.x - edge.start.x, 2)
-                  )) *
-                10;
-              const weightOffsetY =
-                ((edge.end.x - edge.start.x) /
-                  Math.sqrt(
-                    Math.pow(edge.start.y - edge.end.y, 2) +
-                      Math.pow(edge.end.x - edge.start.x, 2)
-                  )) *
-                10;
-              return (
-                <React.Fragment key={index}>
-                  <Group onClick={() => handleEdgeClick(edge)}>
-                    {props.params === null ||
-                    !props.params["directed_edge"] ||
-                    props.params["directed_edge"].value === false ? (
-                      <Line
-                        key={index}
-                        points={[
-                          edge.start.x + startOffsetX,
-                          edge.start.y + startOffsetY,
-                          edge.end.x + endOffsetX,
-                          edge.end.y + endOffsetY,
-                        ]}
-                        onMouseEnter={() => {
-                          // document.body.style.cursor = "pointer";
-                          // handleEdgeHover(edge);
-                        }}
-                        onMouseLeave={() => {
-                          // document.body.style.cursor = "default";
-                          // handleEdgeUnhover();
-                        }}
-                        stroke={
-                          selectedEdge === edge
-                            ? "#ec3965"
-                            : hoveredEdge !== edge
-                              ? "#879294"
-                              : "#2bb557"
-                        }
-                        strokeWidth={
-                          selectedEdge !== edge && hoveredEdge !== edge ? 3 : 6
-                        }
-                        // strokeWidth={Math.min(edge.weight / 5.0, 20)}
-                      />
-                    ) : (
-                      <Arrow
-                        key={index}
-                        points={[
-                          edge.start.x + startOffsetX,
-                          edge.start.y + startOffsetY,
-                          edge.end.x + endOffsetX,
-                          edge.end.y + endOffsetY,
-                        ]}
-                        onMouseEnter={() => {
-                          // document.body.style.cursor = "pointer";
-                          // handleEdgeHover(edge);
-                        }}
-                        onMouseLeave={() => {
-                          // document.body.style.cursor = "default";
-                          // handleEdgeUnhover();
-                        }}
-                        stroke={
-                          selectedEdge === edge
-                            ? "#ec3965"
-                            : hoveredEdge !== edge
-                              ? "#879294"
-                              : "#2bb557"
-                        }
-                        strokeWidth={
-                          selectedEdge !== edge && hoveredEdge !== edge ? 3 : 6
-                        }
-                        // strokeWidth={Math.min(edge.weight / 5.0, 20)}
-                      />
-                    )}
-                  </Group>
-
-                  {props.params === null ||
-                  !props.params["weighted_edge"] ||
-                  props.params["weighted_edge"].value === false ? (
-                    <></>
-                  ) : (
-                    <>
-                      <Text
-                        x={weightOffsetX + (edge.start.x + edge.end.x) / 2}
-                        y={weightOffsetY + (edge.start.y + edge.end.y) / 2}
-                        text={edge.weight}
-                        fontSize={25}
-                        strokeWidth={selectedEdge !== edge ? 5 : 3}
-                        background="red"
-                        fill={
-                          selectedEdge === edge
-                            ? "#ec3965"
-                            : hoveredEdge !== edge
-                              ? "#879294"
-                              : "#2bb557"
-                        }
-                        width={45}
-                        onClick={() => changeEdgeWeight(edge)}
-                        rotation={
-                          (Math.atan2(
-                            edge.end.y - edge.start.y,
-                            edge.end.x - edge.start.x
-                          ) *
-                            180) /
-                          Math.PI
-                        }
-                      />
-                    </>
-                  )}
-                </React.Fragment>
-              );
-            })}
-            {data.nodes.map((node, index) => (
-              <Group
-                key={node.nodeIndex}
-                x={node.x}
-                y={node.y}
-                draggable={
-                  props.mode === "preview" &&
-                  props?.controlParams?.add_node?.value === false
-                    ? false
-                    : true
-                }
-                onMouseEnter={() => {
-                  document.body.style.cursor = "pointer";
-                  handleNodeHover(node.nodeIndex);
-                }}
-                onMouseLeave={() => {
-                  document.body.style.cursor = "default";
-                  handleNodeUnhover();
-                }}
-                onDragMove={(e) => handleNodeDrag(index, e)}
-                onClick={() => handleNodeClick(node.nodeIndex)}
-                onDragStart={() => setIsDragging(node.nodeIndex)}
-                onDragEnd={() => {
-                  // handleNodeHover(node);
-                  setIsDragging(-1);
-                }}
-              >
-                <Circle
-                  radius={
-                    isDragging === node.nodeIndex
-                      ? RADIUS * 1.2
-                      : hoveredNode === node.nodeIndex
-                        ? 1.1 * RADIUS
-                        : RADIUS
-                  }
-                  className={
-                    hoveredNode === node.nodeIndex ? "node-hovered" : ""
-                  }
-                  fill={
-                    selectedNodes.includes(node.nodeIndex)
-                      ? "#ec3965"
-                      : hoveredNode === node.nodeIndex ||
-                          isDragging === node.nodeIndex
-                        ? "#38bf27"
-                        : "#a4a3a3"
-                  }
-                  // opacity={0.5}
-                  stroke={
-                    selectedNodes.includes(node.nodeIndex)
-                      ? ""
-                      : hoveredNode === node.nodeIndex
-                        ? ""
-                        : ""
-                  }
-                  strokeWidth={
-                    selectedNodes.includes(node.nodeIndex)
-                      ? 0
-                      : hoveredNode === node.nodeIndex
-                        ? 0
-                        : 3
-                  }
-                  brightness={
-                    selectedNodes.includes(node.nodeIndex)
-                      ? 0.5
-                      : hoveredNode === node.nodeIndex
-                        ? 0
-                        : 0.8
-                  }
-                  shadowOffsetX={isDragging === node.nodeIndex ? 7 : 0}
-                  shadowOffsetY={isDragging === node.nodeIndex ? 7 : 0}
-                  shadowColor="black"
-                  shadowBlur={isDragging === node.nodeIndex ? 10 : 0}
-                  shadowOpacity={isDragging === node.nodeIndex ? 0.6 : 0}
-                />
-                <Text
-                  text={node.nodeIndex.toString()} // Display the node number
-                  align="center" // Center-align the text
-                  verticalAlign="middle" // Vertically align the text
-                  fontSize={30} // Set font size
-                  fill={
-                    selectedNodes.includes(node.nodeIndex)
-                      ? "white"
-                      : hoveredNode === node.nodeIndex
-                        ? "white"
-                        : "white"
-                  } // Set text color
-                  ref={(nodeTextRef) => {
-                    if (nodeTextRef) {
-                      const textWidth = nodeTextRef.getClientRect().width;
-                      const textHeight = nodeTextRef.getClientRect().height;
-                      nodeTextRef.offsetX(textWidth / 2);
-                      nodeTextRef.offsetY(textHeight / 2);
-                    }
-                  }}
-                />
-              </Group>
-            ))}
-          </Layer>
+    <div className="w-full  relative" ref={windowRef}>
+      <div className=" top-5 left-5 absolute flex flex-row gap-3 z-10">
+        {selectedEdge && (
+          <IconButton
+            sx={
+              {
+                // fontSize: "2rem",
+                // width: "50px",
+                // height: "50px",
+              }
+            }
+            // onClick={() => alert(canvasInfo)}
+          >
+            <div className="flex items-center bu-text-primary cursor-pointer text-2xl">
+              <FontAwesomeIcon icon={faTrashCan} />
+            </div>
+          </IconButton>
         )}
-      </Stage>
+        {selectedEdge && (
+          <div className="no-ring-input">
+            <FormControl fullWidth variant="outlined" size="small">
+              <InputLabel
+                htmlFor="outlined-adornment"
+                className="bu-text-primary"
+              >
+                Edge weight
+              </InputLabel>
+              <OutlinedInput
+                required
+                placeholder="# of disks"
+                inputProps={{
+                  step: 1,
+                  min: 1,
+                  max: 10,
+                }}
+                id="outlined-adornment"
+                className="outline-none bu-text-primary"
+                type="number"
+                value={selectedEdge.weight}
+                // onChange={handleNumberOfDisksChange}
+
+                label={"Edge weight"}
+                size="small"
+              />
+            </FormControl>
+          </div>
+        )}
+
+        {selectedNodes.length === 1 && (
+          <IconButton
+            sx={
+              {
+                // fontSize: "2rem",
+                // width: "50px",
+                // height: "50px",
+              }
+            }
+            // onClick={() => alert(canvasInfo)}
+          >
+            <div className="flex items-center bu-text-primary cursor-pointer text-2xl">
+              <FontAwesomeIcon icon={faTrashCan} />
+            </div>
+          </IconButton>
+        )}
+        {selectedNodes.length === 1 && (
+          <div className="no-ring-input">
+            <FormControl fullWidth variant="outlined" size="small">
+              <InputLabel
+                htmlFor="outlined-adornment"
+                className="bu-text-primary"
+              >
+                Node ID
+              </InputLabel>
+              <OutlinedInput
+                required
+                placeholder="# of disks"
+                inputProps={{
+                  step: 1,
+                  min: 1,
+                  max: 10,
+                }}
+                id="outlined-adornment"
+                className="outlined-input bu-text-primary"
+                type="text"
+                value={selectedNodes[0]}
+                // onChange={handleNumberOfDisksChange}
+                label={"Node ID"}
+                size="small"
+              />
+            </FormControl>
+          </div>
+        )}
+      </div>
+
+      <div className="graph-container pt-16 overflow-hidden w-full">
+        <Stage
+          // width={width} // small glitch
+          width={window.innerWidth * 0.57}
+          height={500}
+          onClick={handleCanvasClick}
+          onMouseMove={handleMouseMove}
+          ref={stageRef}
+          // scaleX={Math.min(window.innerWidth / 970, 1)}
+          // scaleY={Math.min(window.innerWidth / 900, 1)}
+        >
+          {data === null ? (
+            <></>
+          ) : (
+            <Layer>
+              {data.edges.map((edge, index) => {
+                // calculations.......................
+                const dx = edge.end.x - edge.start.x;
+                const dy = edge.end.y - edge.start.y;
+                const angle = Math.atan2(dy, dx);
+                const startOffsetX = Math.cos(angle) * RADIUS;
+                const startOffsetY = Math.sin(angle) * RADIUS;
+                const endOffsetX =
+                  Math.cos(angle + Math.PI) * RADIUS -
+                  (props?.params["directed_edge"]?.value
+                    ? 3 * Math.cos(angle)
+                    : 0);
+                const endOffsetY =
+                  Math.sin(angle + Math.PI) * RADIUS -
+                  (props?.params["directed_edge"]?.value
+                    ? 3 * Math.sin(angle)
+                    : 0);
+
+                //edge direction related.............................
+
+                // Calculate the position of the arrowhead
+                const arrowheadX =
+                  edge.end.x + endOffsetX - 10 * Math.cos(angle);
+                const arrowheadY =
+                  edge.end.y + endOffsetY - 10 * Math.sin(angle);
+
+                const weightOffsetX =
+                  ((edge.start.y - edge.end.y) /
+                    Math.sqrt(
+                      Math.pow(edge.start.y - edge.end.y, 2) +
+                        Math.pow(edge.end.x - edge.start.x, 2)
+                    )) *
+                  10;
+                const weightOffsetY =
+                  ((edge.end.x - edge.start.x) /
+                    Math.sqrt(
+                      Math.pow(edge.start.y - edge.end.y, 2) +
+                        Math.pow(edge.end.x - edge.start.x, 2)
+                    )) *
+                  10;
+                return (
+                  <React.Fragment key={index}>
+                    <Group
+                    // onClick={() => handleEdgeClick(edge)}
+                    >
+                      {props.params === null ||
+                      !props.params["directed_edge"] ||
+                      props.params["directed_edge"].value === false ? (
+                        <Line
+                          key={index}
+                          points={[
+                            edge.start.x + startOffsetX,
+                            edge.start.y + startOffsetY,
+                            edge.end.x + endOffsetX,
+                            edge.end.y + endOffsetY,
+                          ]}
+                          onMouseEnter={() => {
+                            // document.body.style.cursor = "pointer";
+                            // handleEdgeHover(edge);
+                          }}
+                          onMouseLeave={() => {
+                            // document.body.style.cursor = "default";
+                            // handleEdgeUnhover();
+                          }}
+                          stroke={
+                            selectedEdge === edge
+                              ? "#ec3965"
+                              : hoveredEdge !== edge
+                                ? "#879294"
+                                : "#2bb557"
+                          }
+                          strokeWidth={
+                            selectedEdge !== edge && hoveredEdge !== edge
+                              ? 3
+                              : 6
+                          }
+                          // strokeWidth={Math.min(edge.weight / 5.0, 20)}
+                        />
+                      ) : (
+                        <Arrow
+                          key={index}
+                          points={[
+                            edge.start.x + startOffsetX,
+                            edge.start.y + startOffsetY,
+                            edge.end.x + endOffsetX,
+                            edge.end.y + endOffsetY,
+                          ]}
+                          onMouseEnter={() => {
+                            // document.body.style.cursor = "pointer";
+                            // handleEdgeHover(edge);
+                          }}
+                          onMouseLeave={() => {
+                            // document.body.style.cursor = "default";
+                            // handleEdgeUnhover();
+                          }}
+                          stroke={
+                            selectedEdge === edge
+                              ? "#ec3965"
+                              : hoveredEdge !== edge
+                                ? "#879294"
+                                : "#2bb557"
+                          }
+                          strokeWidth={
+                            selectedEdge !== edge && hoveredEdge !== edge
+                              ? 3
+                              : 6
+                          }
+                          // strokeWidth={Math.min(edge.weight / 5.0, 20)}
+                        />
+                      )}
+                    </Group>
+
+                    {props.params === null ||
+                    !props.params["weighted_edge"] ||
+                    props.params["weighted_edge"].value === false ? (
+                      <></>
+                    ) : (
+                      <>
+                        <Text
+                          x={weightOffsetX + (edge.start.x + edge.end.x) / 2}
+                          y={weightOffsetY + (edge.start.y + edge.end.y) / 2}
+                          text={edge.weight}
+                          fontSize={25}
+                          strokeWidth={selectedEdge !== edge ? 5 : 3}
+                          background="red"
+                          fill={
+                            selectedEdge === edge
+                              ? "#ec3965"
+                              : hoveredEdge !== edge
+                                ? "#879294"
+                                : "#2bb557"
+                          }
+                          width={45}
+                          onClick={() => changeEdgeWeight(edge)}
+                          rotation={
+                            (Math.atan2(
+                              edge.end.y - edge.start.y,
+                              edge.end.x - edge.start.x
+                            ) *
+                              180) /
+                            Math.PI
+                          }
+                        />
+                      </>
+                    )}
+                  </React.Fragment>
+                );
+              })}
+              {data.nodes.map((node, index) => (
+                <Group
+                  key={node.nodeIndex}
+                  x={node.x}
+                  y={node.y}
+                  draggable={
+                    props.mode === "preview" &&
+                    props?.controlParams?.add_node?.value === false
+                      ? false
+                      : true
+                  }
+                  onMouseEnter={() => {
+                    document.body.style.cursor = "pointer";
+                    handleNodeHover(node.nodeIndex);
+                  }}
+                  onMouseLeave={() => {
+                    document.body.style.cursor = "default";
+                    handleNodeUnhover();
+                  }}
+                  onDragMove={(e) => handleNodeDrag(index, e)}
+                  onClick={() => handleNodeClick(node.nodeIndex)}
+                  onDragStart={() => setIsDragging(node.nodeIndex)}
+                  onDragEnd={() => {
+                    // handleNodeHover(node);
+                    setIsDragging(-1);
+                  }}
+                >
+                  <Circle
+                    radius={
+                      isDragging === node.nodeIndex
+                        ? RADIUS * 1.2
+                        : hoveredNode === node.nodeIndex
+                          ? 1.1 * RADIUS
+                          : RADIUS
+                    }
+                    className={
+                      hoveredNode === node.nodeIndex ? "node-hovered" : ""
+                    }
+                    fill={
+                      selectedNodes.includes(node.nodeIndex)
+                        ? "#ec3965"
+                        : hoveredNode === node.nodeIndex ||
+                            isDragging === node.nodeIndex
+                          ? "#38bf27"
+                          : "#a4a3a3"
+                    }
+                    // opacity={0.5}
+                    stroke={
+                      selectedNodes.includes(node.nodeIndex)
+                        ? ""
+                        : hoveredNode === node.nodeIndex
+                          ? ""
+                          : ""
+                    }
+                    strokeWidth={
+                      selectedNodes.includes(node.nodeIndex)
+                        ? 0
+                        : hoveredNode === node.nodeIndex
+                          ? 0
+                          : 3
+                    }
+                    brightness={
+                      selectedNodes.includes(node.nodeIndex)
+                        ? 0.5
+                        : hoveredNode === node.nodeIndex
+                          ? 0
+                          : 0.8
+                    }
+                    shadowOffsetX={isDragging === node.nodeIndex ? 7 : 0}
+                    shadowOffsetY={isDragging === node.nodeIndex ? 7 : 0}
+                    shadowColor="black"
+                    shadowBlur={isDragging === node.nodeIndex ? 10 : 0}
+                    shadowOpacity={isDragging === node.nodeIndex ? 0.6 : 0}
+                  />
+                  <Text
+                    text={node.nodeIndex.toString()} // Display the node number
+                    align="center" // Center-align the text
+                    verticalAlign="middle" // Vertically align the text
+                    fontSize={30} // Set font size
+                    fill={
+                      selectedNodes.includes(node.nodeIndex)
+                        ? "white"
+                        : hoveredNode === node.nodeIndex
+                          ? "white"
+                          : "white"
+                    } // Set text color
+                    ref={(nodeTextRef) => {
+                      if (nodeTextRef) {
+                        const textWidth = nodeTextRef.getClientRect().width;
+                        const textHeight = nodeTextRef.getClientRect().height;
+                        nodeTextRef.offsetX(textWidth / 2);
+                        nodeTextRef.offsetY(textHeight / 2);
+                      }
+                    }}
+                  />
+                </Group>
+              ))}
+            </Layer>
+          )}
+        </Stage>
+      </div>
+
       {/* <div className="export-button-container">
         <button onClick={exportGraphData} className="export-button"></button>
       </div> */}

@@ -47,7 +47,7 @@ const GraphComponent = (props, ref) => {
   const windowRef = useRef(null);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
-
+  const [isDragging, setIsDragging] = useState(-1);
   //custom sets................................................................................................
 
   const setNodes = (nodes) => {
@@ -418,6 +418,7 @@ const GraphComponent = (props, ref) => {
       props?.controlParams?.drag_node?.value === false
     )
       return;
+
     const newPosition = e.target.position();
     // Calculate the new position of the node
     const updatedX = newPosition.x;
@@ -659,18 +660,29 @@ const GraphComponent = (props, ref) => {
                     ? false
                     : true
                 }
-                onMouseEnter={() => handleNodeHover(node)}
-                onMouseLeave={handleNodeUnhover}
+                onMouseEnter={() => {
+                  document.body.style.cursor = "pointer";
+                  handleNodeHover(node);
+                }}
+                onMouseLeave={() => {
+                  document.body.style.cursor = "default";
+                  handleNodeUnhover();
+                }}
                 onDragMove={(e) => handleNodeDrag(index, e)}
                 onClick={() => handleNodeClick(node)}
+                onDragStart={() => setIsDragging(index)}
+                onDragEnd={() => {
+                  // handleNodeHover(node);
+                  setIsDragging(-1);
+                }}
               >
                 <Circle
-                  radius={hoveredNode === node ? RADIUS * 1.2 : RADIUS}
+                  radius={isDragging === index ? RADIUS * 1.1 : RADIUS}
                   className={hoveredNode === node ? "node-hovered" : ""}
                   fill={
                     selectedNodes.includes(node)
                       ? "#ec3965"
-                      : hoveredNode === node
+                      : hoveredNode === node || isDragging === index
                         ? "#38bf27"
                         : "#a4a3a3"
                   }
@@ -695,6 +707,11 @@ const GraphComponent = (props, ref) => {
                         ? 0
                         : 0.8
                   }
+                  shadowOffsetX={isDragging === index ? 7 : 0}
+                  shadowOffsetY={isDragging === index ? 7 : 0}
+                  shadowColor="black"
+                  shadowBlur={isDragging === index ? 10 : 0}
+                  shadowOpacity={isDragging === index ? 0.6 : 0}
                 />
                 <Text
                   text={node.nodeIndex.toString()} // Display the node number

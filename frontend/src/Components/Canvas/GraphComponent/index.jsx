@@ -214,6 +214,7 @@ const GraphComponent = (props, ref) => {
 
   // node  and edge hovering........................
   const handleNodeHover = (node) => {
+    setHoveredEdge(null);
     setHoveredNode(node);
   };
   const handleNodeUnhover = () => {
@@ -230,6 +231,53 @@ const GraphComponent = (props, ref) => {
 
   let clickTimer = null;
 
+  const handleMouseMove = (e) => {
+    if (
+      e.target &&
+      (e.target.getClassName() === "Text" ||
+        e.target.getClassName() === "Circle")
+    ) {
+      // Do nothing or handle text click separately
+      return;
+    }
+
+    const stage = stageRef.current;
+    const { x, y } = stage.getPointerPosition();
+
+    // now,,, edge can be selected if we click nereby....so implement this........
+
+    let minDistance = Number.MAX_VALUE; // Initialize with a very large value
+    let nearestEdge = null;
+
+    data.edges.forEach((edge) => {
+      const { start, end, weight } = edge;
+      const distance = pointToLineDistance(
+        x,
+        y,
+        start.x,
+        start.y,
+        end.x,
+        end.y
+      );
+      if (distance < minDistance) {
+        minDistance = distance;
+        nearestEdge = edge;
+      }
+    });
+
+    //if clicked nere an edge, select that edge, else, create a node!!!
+
+    if (nearestEdge && minDistance <= 1.0 * EDGECLICKRANGE) {
+      if (hoveredEdge == nearestEdge);
+      else {
+        setHoveredEdge(nearestEdge);
+        document.body.style.cursor = "pointer";
+      }
+    } else if (hoveredEdge !== null) {
+      document.body.style.cursor = "default";
+      setHoveredEdge(null);
+    }
+  };
   const handleCanvasClick = (e) => {
     if (clickTimer === null) {
       // This is a single click
@@ -546,6 +594,7 @@ const GraphComponent = (props, ref) => {
         width={window.innerWidth * 0.57}
         height={500}
         onClick={handleCanvasClick}
+        onMouseMove={handleMouseMove}
         ref={stageRef}
         // scaleX={Math.min(window.innerWidth / 970, 1)}
         // scaleY={Math.min(window.innerWidth / 900, 1)}
@@ -582,19 +631,19 @@ const GraphComponent = (props, ref) => {
                         edge.end.y + endOffsetY,
                       ]}
                       onMouseEnter={() => {
-                        document.body.style.cursor = "pointer";
-                        handleEdgeHover(edge);
+                        // document.body.style.cursor = "pointer";
+                        // handleEdgeHover(edge);
                       }}
                       onMouseLeave={() => {
-                        document.body.style.cursor = "default";
-                        handleEdgeUnhover();
+                        // document.body.style.cursor = "default";
+                        // handleEdgeUnhover();
                       }}
                       stroke={
-                        hoveredEdge === edge
-                          ? "#2bb557"
-                          : selectedEdge !== edge
+                        selectedEdge === edge
+                          ? "#ec3965"
+                          : hoveredEdge !== edge
                             ? "#879294"
-                            : "#ec3965"
+                            : "#2bb557"
                       }
                       strokeWidth={
                         selectedEdge !== edge && hoveredEdge !== edge ? 3 : 6
@@ -613,11 +662,11 @@ const GraphComponent = (props, ref) => {
                         y={arrowheadY}
                         rotation={angle * (180 / Math.PI) + 90}
                         fill={
-                          hoveredEdge === edge
-                            ? "#2bb557"
-                            : selectedEdge !== edge
+                          selectedEdge === edge
+                            ? "#ec3965"
+                            : hoveredEdge !== edge
                               ? "#879294"
-                              : "#ec3965"
+                              : "#2bb557"
                         }
                       />
                     )}
@@ -633,14 +682,14 @@ const GraphComponent = (props, ref) => {
                       y={(edge.start.y + edge.end.y) / 2}
                       text={edge.weight}
                       fontSize={25}
-                      strokeWidth={selectedEdge !== edge ? 3 : 3}
+                      strokeWidth={selectedEdge !== edge ? 5 : 3}
                       background="red"
                       fill={
-                        hoveredEdge === edge
-                          ? "#2bb557"
-                          : selectedEdge !== edge
+                        selectedEdge === edge
+                          ? "#ec3965"
+                          : hoveredEdge !== edge
                             ? "#879294"
-                            : "#ec3965"
+                            : "#2bb557"
                       }
                       width={45}
                       onClick={() => changeEdgeWeight(edge)}

@@ -487,9 +487,18 @@ const GraphComponent = (props, ref) => {
 
   const changeEdgeWeight = (edge) => {
     // no weight change for unweighted graphs.........
-    if (props.params === null || !props.params["weighted_edge"]) return;
-    if (userType === 1 && props.params["weighted_edge"].value === false) return;
 
+    if (
+      props.mode === "preview" &&
+      props?.params?.weighted_edge?.value === false
+    )
+      return;
+
+    if (
+      props.mode === "preview" &&
+      props?.controlParams?.edit_weight?.value === false
+    )
+      return;
     // weight change prompt........................
     const newWeight = prompt("Enter new weight for the edge:", edge.weight);
     if (newWeight !== null && !isNaN(newWeight)) {

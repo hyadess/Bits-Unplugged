@@ -97,10 +97,8 @@ const GraphComponent = (props, ref) => {
     }
 
     const newEdge = {
-      start: data.nodes.filter(
-        (node) => node.nodeIndex === selectedNodes[0]
-      )[0],
-      end: data.nodes.filter((node) => node.nodeIndex === selectedNodes[1])[0],
+      start: selectedNodes[0],
+      end: selectedNodes[1],
       weight: curEdgeWeight,
     };
     //setEdgeIndex(edgeIndex + 1);
@@ -220,7 +218,6 @@ const GraphComponent = (props, ref) => {
     setHoveredNode(node);
   };
   const handleNodeUnhover = () => {
-    console.log("Mouse Unhover", hoveredNode);
     setHoveredNode(null);
   };
   const handleEdgeHover = (edge) => {
@@ -348,25 +345,25 @@ const GraphComponent = (props, ref) => {
     }
   };
 
-  const handleNodeClick = (nodeIndex) => {
+  const handleNodeClick = (node) => {
     if (selectedNodes.length === 0) {
-      setSelectedNodes([nodeIndex]);
+      setSelectedNodes([node]);
     } else if (
       props.mode === "preview" &&
       props?.controlParams?.add_edge?.value === false
     ) {
-      setSelectedNodes([nodeIndex]);
-    } else if (selectedNodes.length === 1 && selectedNodes[0] !== nodeIndex) {
+      setSelectedNodes([node]);
+    } else if (selectedNodes.length === 1 && selectedNodes[0] !== node) {
       // don't add any more node if there exists one................
       const alreadyExists = data.edges.some(
         (edge) =>
-          (edge.start.nodeIndex === selectedNodes[0] &&
-            edge.end.nodeIndex === nodeIndex) ||
-          (edge.start.nodeIndex === nodeIndex &&
-            edge.end.nodeIndex === selectedNodes[0])
+          (edge.start.nodeIndex === selectedNodes[0].nodeIndex &&
+            edge.end.nodeIndex === node.nodeIndex) ||
+          (edge.start.nodeIndex === node.nodeIndex &&
+            edge.end.nodeIndex === selectedNodes[0].nodeIndex)
       );
       if (!alreadyExists) {
-        setSelectedNodes([...selectedNodes, nodeIndex]);
+        setSelectedNodes([...selectedNodes, node]);
         if (
           props.params !== null &&
           props.params["weighted_edge"] &&
@@ -377,10 +374,8 @@ const GraphComponent = (props, ref) => {
           const edges = data.edges;
           // just create the edge....................
           const newEdge = {
-            start: data.nodes.filter(
-              (node) => node.nodeIndex !== selectedNodes[0]
-            )[0],
-            end: data.nodes.filter((node) => node.nodeIndex !== nodeIndex)[0],
+            start: selectedNodes[0],
+            end: node,
             weight: "0",
           };
           //setEdgeIndex(edgeIndex + 1);
@@ -388,10 +383,10 @@ const GraphComponent = (props, ref) => {
           setSelectedNodes([]);
         }
       }
-    } else if (selectedNodes.includes(nodeIndex)) {
+    } else if (selectedNodes.includes(node)) {
       // If the clicked node is already selected, unselect it
       setSelectedNodes(
-        selectedNodes.filter((selectedNode) => selectedNode !== nodeIndex)
+        selectedNodes.filter((selectedNode) => selectedNode !== node)
       );
     }
   };
@@ -405,30 +400,22 @@ const GraphComponent = (props, ref) => {
 
   const deleteSelectedNodeOrEdge = () => {
     //node deletion
-    let updatedEdges = data.edges;
+
     if (selectedNodes.length === 1) {
       if (
         props.mode === "preview" &&
         props?.controlParams?.delete_node?.value === false
       )
         return;
-      const nodeToDelete = data.nodes.filter(
-        (node) => node.nodeIndex === selectedNodes[0]
-      )[0];
-
-      console.log(nodeToDelete);
-
-      const updatedNodes = data.nodes.filter(
-        (node) => node.nodeIndex !== nodeToDelete.nodeIndex
-      );
-
-      updatedEdges = data.edges.filter(
+      const nodeToDelete = selectedNodes[0];
+      const updatedNodes = data.nodes.filter((node) => node !== nodeToDelete);
+      let updatedEdges = data.edges.filter(
         (edge) =>
-          edge.start.nodeIndex !== nodeToDelete.nodeIndex &&
-          edge.end.nodeIndex !== nodeToDelete.nodeIndex
+          edge.start.x !== nodeToDelete.x &&
+          edge.start.y !== nodeToDelete.y &&
+          edge.end.x !== nodeToDelete.x &&
+          edge.end.y !== nodeToDelete.y
       );
-
-      // console.log(updatedEdges);
 
       if (selectedEdge != null) {
         updatedEdges = updatedEdges.filter((edge) => edge !== selectedEdge);
@@ -446,7 +433,7 @@ const GraphComponent = (props, ref) => {
         props?.controlParams?.delete_edge?.value === false
       )
         return;
-      updatedEdges = updatedEdges.filter((edge) => edge !== selectedEdge);
+      const updatedEdges = data.edges.filter((edge) => edge !== selectedEdge);
       setEdges(updatedEdges);
       setSelectedEdge(null);
     }
@@ -713,7 +700,7 @@ const GraphComponent = (props, ref) => {
             })}
             {data.nodes.map((node, index) => (
               <Group
-                key={node.nodeIndex}
+                key={index}
                 x={node.x}
                 y={node.y}
                 draggable={
@@ -724,15 +711,15 @@ const GraphComponent = (props, ref) => {
                 }
                 onMouseEnter={() => {
                   document.body.style.cursor = "pointer";
-                  handleNodeHover(node.nodeIndex);
+                  handleNodeHover(node);
                 }}
                 onMouseLeave={() => {
                   document.body.style.cursor = "default";
                   handleNodeUnhover();
                 }}
                 onDragMove={(e) => handleNodeDrag(index, e)}
-                onClick={() => handleNodeClick(node.nodeIndex)}
-                onDragStart={() => setIsDragging(node.nodeIndex)}
+                onClick={() => handleNodeClick(node)}
+                onDragStart={() => setIsDragging(index)}
                 onDragEnd={() => {
                   // handleNodeHover(node);
                   setIsDragging(-1);
@@ -740,49 +727,46 @@ const GraphComponent = (props, ref) => {
               >
                 <Circle
                   radius={
-                    isDragging === node.nodeIndex
+                    isDragging === index
                       ? RADIUS * 1.2
-                      : hoveredNode === node.nodeIndex
+                      : hoveredNode === node
                         ? 1.1 * RADIUS
                         : RADIUS
                   }
-                  className={
-                    hoveredNode === node.nodeIndex ? "node-hovered" : ""
-                  }
+                  className={hoveredNode === node ? "node-hovered" : ""}
                   fill={
-                    selectedNodes.includes(node.nodeIndex)
+                    selectedNodes.includes(node)
                       ? "#ec3965"
-                      : hoveredNode === node.nodeIndex ||
-                          isDragging === node.nodeIndex
+                      : hoveredNode === node || isDragging === index
                         ? "#38bf27"
                         : "#a4a3a3"
                   }
                   stroke={
-                    selectedNodes.includes(node.nodeIndex)
+                    selectedNodes.includes(node)
                       ? ""
-                      : hoveredNode === node.nodeIndex
+                      : hoveredNode === node
                         ? ""
                         : ""
                   }
                   strokeWidth={
-                    selectedNodes.includes(node.nodeIndex)
+                    selectedNodes.includes(node)
                       ? 0
-                      : hoveredNode === node.nodeIndex
+                      : hoveredNode === node
                         ? 0
                         : 3
                   }
                   brightness={
-                    selectedNodes.includes(node.nodeIndex)
+                    selectedNodes.includes(node)
                       ? 0.5
-                      : hoveredNode === node.nodeIndex
+                      : hoveredNode === node
                         ? 0
                         : 0.8
                   }
-                  shadowOffsetX={isDragging === node.nodeIndex ? 7 : 0}
-                  shadowOffsetY={isDragging === node.nodeIndex ? 7 : 0}
+                  shadowOffsetX={isDragging === index ? 7 : 0}
+                  shadowOffsetY={isDragging === index ? 7 : 0}
                   shadowColor="black"
-                  shadowBlur={isDragging === node.nodeIndex ? 10 : 0}
-                  shadowOpacity={isDragging === node.nodeIndex ? 0.6 : 0}
+                  shadowBlur={isDragging === index ? 10 : 0}
+                  shadowOpacity={isDragging === index ? 0.6 : 0}
                 />
                 <Text
                   text={node.nodeIndex.toString()} // Display the node number
@@ -790,9 +774,9 @@ const GraphComponent = (props, ref) => {
                   verticalAlign="middle" // Vertically align the text
                   fontSize={30} // Set font size
                   fill={
-                    selectedNodes.includes(node.nodeIndex)
+                    selectedNodes.includes(node)
                       ? "white"
-                      : hoveredNode === node.nodeIndex
+                      : hoveredNode === node
                         ? "white"
                         : "white"
                   } // Set text color
@@ -811,8 +795,8 @@ const GraphComponent = (props, ref) => {
         )}
       </Stage>
       {/* <div className="export-button-container">
-        <button onClick={exportGraphData} className="export-button"></button>
-      </div> */}
+          <button onClick={exportGraphData} className="export-button"></button>
+        </div> */}
 
       <Modal
         className="modal-container bu-nav-color"

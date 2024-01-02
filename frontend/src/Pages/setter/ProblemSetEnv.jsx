@@ -438,7 +438,7 @@ export default function ProblemSetEnv() {
                 <div onClick={handleTextClick} style={{ cursor: "pointer" }}>
                   {isTextEditable ? (
                     <input
-                      className="title h-[3.5rem] rounded-lg border text-4xl outline-none focus:border-green-800 dark:focus:border-pink-600 focus:ring-4 focus:ring-green-800 dark:focus:ring-pink-600 border-[#1C5B5F] dark:border-pink-800 dark:bg-gray-700"
+                      className="title h-[3.5rem] rounded-lg border text-4xl outline-none focus:border-green-800 dark:focus:border-pink-600 !focus:ring-4 focus:ring-green-800 dark:focus:ring-pink-600 border-[#1C5B5F] dark:border-pink-800 dark:bg-gray-700"
                       type="text"
                       autoFocus
                       value={title}

@@ -76,6 +76,31 @@ const GraphComponent = (props, ref) => {
       edges: edges,
     }));
   };
+
+  const updateSelectedEdges = (newSelectedEdges) => {
+    const sortedEdges = [...newSelectedEdges].sort((a, b) => {
+      // Convert x and y to integers
+      const xA = parseInt(a.start, 10);
+      const yA = parseInt(a.end, 10);
+      const xB = parseInt(b.start, 10);
+      const yB = parseInt(b.end, 10);
+
+      // Compare x values
+      if (xA === xB) {
+        // If x values are equal, compare y values
+        return yA - yB;
+      } else {
+        return xA - xB;
+      }
+    });
+
+    console.log(sortedEdges);
+    setData((prevState) => ({
+      ...prevState,
+      selectedEdges: sortedEdges,
+    }));
+  };
+
   const setSelectedEdges = (edges) => {
     setData((prevData) => ({
       ...prevData,
@@ -338,14 +363,14 @@ const GraphComponent = (props, ref) => {
             )
           ) {
             // setSelectedEdge(null);
-            setSelectedEdges(
+            updateSelectedEdges(
               data.selectedEdges.filter(
                 (selectedEdge) => selectedEdge !== nearestEdge
               )
             );
           } else {
             // setSelectedEdge(nearestEdge);
-            setSelectedEdges([...data.selectedEdges, nearestEdge]);
+            updateSelectedEdges([...data.selectedEdges, nearestEdge]);
             setSelectedNodes([]);
           }
         } else if (data.selectedEdges.length > 0) {

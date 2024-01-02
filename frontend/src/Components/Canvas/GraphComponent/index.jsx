@@ -690,23 +690,89 @@ const GraphComponent = (props, ref) => {
                   props.params["weighted_edge"].value === false ? (
                     <></>
                   ) : (
-                    <Text
-                      x={(edge.start.x + edge.end.x) / 2 + 20}
-                      y={(edge.start.y + edge.end.y) / 2}
-                      text={edge.weight}
-                      fontSize={25}
-                      strokeWidth={selectedEdge !== edge ? 5 : 3}
-                      background="red"
-                      fill={
-                        selectedEdge === edge
-                          ? "#ec3965"
-                          : hoveredEdge !== edge
-                            ? "#879294"
-                            : "#2bb557"
-                      }
-                      width={45}
-                      onClick={() => changeEdgeWeight(edge)}
-                    />
+                    <>
+                      {/* <Line
+                        key={index}
+                        points={[
+                          ((edge.start.y - edge.end.y) /
+                            Math.sqrt(
+                              Math.pow(edge.start.y - edge.end.y, 2) +
+                                Math.pow(edge.end.x - edge.start.x, 2)
+                            )) *
+                            20 +
+                            (edge.start.x + edge.end.x) / 2,
+                          ((edge.end.x - edge.start.x) /
+                            Math.sqrt(
+                              Math.pow(edge.start.y - edge.end.y, 2) +
+                                Math.pow(edge.end.x - edge.start.x, 2)
+                            )) *
+                            20 +
+                            (edge.start.y + edge.end.y) / 2,
+                          (edge.start.x + edge.end.x) / 2,
+                          (edge.start.y + edge.end.y) / 2,
+                        ]}
+                        onMouseEnter={() => {
+                          // document.body.style.cursor = "pointer";
+                          // handleEdgeHover(edge);
+                        }}
+                        onMouseLeave={() => {
+                          // document.body.style.cursor = "default";
+                          // handleEdgeUnhover();
+                        }}
+                        stroke={
+                          selectedEdge === edge
+                            ? "#ec3965"
+                            : hoveredEdge !== edge
+                              ? "#879294"
+                              : "#2bb557"
+                        }
+                        strokeWidth={
+                          selectedEdge !== edge && hoveredEdge !== edge ? 3 : 6
+                        }
+                        // strokeWidth={Math.min(edge.weight / 5.0, 20)}
+                      /> */}
+                      <Text
+                        x={
+                          ((edge.start.y - edge.end.y) /
+                            Math.sqrt(
+                              Math.pow(edge.start.y - edge.end.y, 2) +
+                                Math.pow(edge.end.x - edge.start.x, 2)
+                            )) *
+                            10 +
+                          (edge.start.x + edge.end.x) / 2
+                        }
+                        y={
+                          ((edge.end.x - edge.start.x) /
+                            Math.sqrt(
+                              Math.pow(edge.start.y - edge.end.y, 2) +
+                                Math.pow(edge.end.x - edge.start.x, 2)
+                            )) *
+                            10 +
+                          (edge.start.y + edge.end.y) / 2
+                        }
+                        text={edge.weight}
+                        fontSize={25}
+                        strokeWidth={selectedEdge !== edge ? 5 : 3}
+                        background="red"
+                        fill={
+                          selectedEdge === edge
+                            ? "#ec3965"
+                            : hoveredEdge !== edge
+                              ? "#879294"
+                              : "#2bb557"
+                        }
+                        width={45}
+                        onClick={() => changeEdgeWeight(edge)}
+                        rotation={
+                          (Math.atan2(
+                            edge.end.y - edge.start.y,
+                            edge.end.x - edge.start.x
+                          ) *
+                            180) /
+                          Math.PI
+                        }
+                      />
+                    </>
                   )}
                 </React.Fragment>
               );

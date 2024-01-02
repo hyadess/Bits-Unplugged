@@ -25,6 +25,7 @@ import { SelectionField, SelectionField2 } from "../../Components/InputFields";
 
 import CanvasController from "../../controller/canvasController";
 import { setLoading } from "../../App";
+import { IconButton } from "@mui/material";
 // import TabContext from "@mui/lab/TabContext";
 // import TabList from "@mui/lab/TabList";
 // import TabPanel from "@mui/lab/TabPanel";
@@ -459,67 +460,73 @@ export default function ProblemSetEnv() {
               <FontAwesomeIcon icon={faSave} />
             </div> */}
           </div>
-          <div className="flex flex-row justify-end gap-5">
+          <div className="flex flex-row justify-end">
             <Tooltip
               title=<h1 className="text-lg text-white">Preview</h1>
               placement="top"
-              TransitionComponent={Zoom}
+              // TransitionComponent={Zoom}
               arrow
               size="large"
             >
-              <div
-                data-tooltip-target="tooltip-default"
-                className="bu-text-primary flex cursor-pointer items-center text-3xl"
-                onClick={() => {
-                  setLoading(true);
-                  switchPath(`/problem/${prob_id}/preview`);
-                }}
-              >
-                <FontAwesomeIcon icon={faExpand} />
-              </div>
+              <IconButton >
+                <div
+                  data-tooltip-target="tooltip-default"
+                  className="bu-text-primary flex cursor-pointer items-center text-3xl"
+                  onClick={() => {
+                    setLoading(true);
+                    switchPath(`/problem/${prob_id}/preview`);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faExpand} />
+                </div>
+              </IconButton>
             </Tooltip>
             <Tooltip
               title=<h1 className="text-lg text-white">Delete</h1>
               placement="top"
-              TransitionComponent={Zoom}
+              // TransitionComponent={Zoom}
               arrow
               size="large"
             >
-              <div
-                data-tooltip-target="tooltip-default"
-                className="bu-text-primary flex cursor-pointer items-center text-3xl"
-                onClick={() => setOpen(true)}
-              >
-                <FontAwesomeIcon icon={faTrashCan} />
-              </div>
+              <IconButton>
+                <div
+                  data-tooltip-target="tooltip-default"
+                  className="bu-text-primary flex cursor-pointer items-center text-3xl"
+                  onClick={() => setOpen(true)}
+                >
+                  <FontAwesomeIcon icon={faTrashCan} />
+                </div>
+              </IconButton>
             </Tooltip>
 
             <Tooltip
               title=<h1 className="text-lg text-white">Save all</h1>
               placement="top"
-              TransitionComponent={Zoom}
+              // TransitionComponent={Zoom}
               arrow
               size="large"
             >
-              <div
-                data-tooltip-target="tooltip-default"
-                className="bu-text-primary flex cursor-pointer items-center text-3xl"
-                // onClick={() => setOpen(true)}
-                onClick={async () => {
-                  await updateTitle();
-                  await updateStatement();
-                  await updateCanvas();
-                  await updateSolutionChecker();
-                }}
-              >
-                <FontAwesomeIcon icon={faSave} />
-              </div>
+              <IconButton>
+                <div
+                  data-tooltip-target="tooltip-default"
+                  className="bu-text-primary flex cursor-pointer items-center text-3xl"
+                  // onClick={() => setOpen(true)}
+                  onClick={async () => {
+                    await updateTitle();
+                    await updateStatement();
+                    await updateCanvas();
+                    await updateSolutionChecker();
+                  }}
+                >
+                  <FontAwesomeIcon icon={faSave} />
+                </div>
+              </IconButton>
             </Tooltip>
 
             <Tooltip
               title=<h1 className="text-lg text-white">Publish</h1>
               placement="top"
-              TransitionComponent={Zoom}
+              // TransitionComponent={Zoom}
               // enterDelay={500}
               // leaveDelay={200}
               arrow
@@ -537,13 +544,15 @@ export default function ProblemSetEnv() {
               //   },
               // }}
             >
-              <div
-                data-tooltip-target="tooltip-default"
-                className="bu-text-primary flex cursor-pointer items-center text-3xl"
-                onClick={updateAll}
-              >
-                <FontAwesomeIcon icon={faUpload} />
-              </div>
+              <IconButton>
+                <div
+                  data-tooltip-target="tooltip-default"
+                  className="bu-text-primary flex cursor-pointer items-center text-3xl"
+                  onClick={updateAll}
+                >
+                  <FontAwesomeIcon icon={faUpload} />
+                </div>
+              </IconButton>
             </Tooltip>
           </div>
         </div>

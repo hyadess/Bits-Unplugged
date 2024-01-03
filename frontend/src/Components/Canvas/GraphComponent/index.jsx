@@ -323,6 +323,7 @@ const GraphComponent = (props, ref) => {
     }
   };
   const handleCanvasClick = (e) => {
+    console.log(e.target.getClassName());
     if (clickTimer === null) {
       // This is a single click
       clickTimer = setTimeout(() => {
@@ -414,14 +415,19 @@ const GraphComponent = (props, ref) => {
       clickTimer = null;
       // Handle the double click logic here, if needed
     }
-
     console.log(data.selectedEdges);
   };
 
   const handleNodeClick = (nodeKey) => {
     if (selectedNodes.length === 0) {
       setSelectedNodes([nodeKey]);
-
+      setSelectedEdges([]);
+    } else if (selectedNodes.includes(nodeKey)) {
+      // If the clicked node is already selected, unselect it
+      setSelectedNodes((prev) =>
+        prev.filter((selectedNode) => selectedNode !== nodeKey)
+      );
+      console.log("Double click");
       setSelectedEdges([]);
     } else if (
       (props.mode === "preview" &&
@@ -456,13 +462,6 @@ const GraphComponent = (props, ref) => {
           // document.body.style.
         }
       }
-    } else if (selectedNodes.includes(nodeKey)) {
-      // If the clicked node is already selected, unselect it
-      setSelectedNodes((prev) =>
-        prev.filter((selectedNode) => selectedNode !== nodeKey)
-      );
-
-      setSelectedEdges([]);
     }
   };
 
@@ -548,6 +547,11 @@ const GraphComponent = (props, ref) => {
     }
   };
 
+  const isDragAllowed = () => {
+    return (
+      props.mode === "edit" || props?.controlParams?.drag_node?.value === true
+    );
+  };
   const handleNodeDrag = (nodeKey, e) => {
     console.log("Dragging");
     if (
@@ -1060,7 +1064,7 @@ const GraphComponent = (props, ref) => {
                                 : "#2bb557"
                           }
                           width={45}
-                          onClick={() => changeEdgeWeight(edge)}
+                          // onClick={() => changeEdgeWeight(edge)}
                           rotation={
                             (Math.atan2(
                               data.nodes[edge.end].y - data.nodes[edge.start].y,

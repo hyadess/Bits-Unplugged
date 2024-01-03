@@ -30,6 +30,7 @@ class TopicRepository extends Repository {
     `;
     const params = [data.name];
     const result = await this.query(query, params);
+    this.delete_redis("rediskey_" + "all_topics");
     return result;
   };
   updateTopic = async (topic_id, data) => {
@@ -40,6 +41,7 @@ class TopicRepository extends Repository {
     `;
     const params = [topic_id, data.name, data.description, data.logo];
     const result = await this.query(query, params);
+    this.delete_redis("rediskey_" + "all_topics");
     return result;
   };
   deleteTopic = async (topic_id) => {
@@ -49,6 +51,7 @@ class TopicRepository extends Repository {
     `;
     const params = [topic_id];
     const result = await this.query(query, params);
+    this.delete_redis("rediskey_" + "all_topics");
     return result;
   };
 }

@@ -27,11 +27,17 @@ import {
   IconButton,
   InputLabel,
   OutlinedInput,
+  Tooltip,
 } from "@mui/material";
 import Cookies from "universal-cookie";
 import { setLoading } from "../../../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAdd,
+  faArrowsToCircle,
+  faCirclePlus,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import { SelectionField } from "../../InputFields";
 import Info from "@mui/icons-material/Info";
 const RADIUS = 30;
@@ -62,6 +68,8 @@ const GraphComponent = (props, ref) => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [isDragging, setIsDragging] = useState(-1);
+  const [addNodeMode, setAddNodeMode] = useState(false);
+  const [addEdgeMode, setAddEdgeMode] = useState(false);
   //custom sets................................................................................................
 
   const setNodes = (nodes) => {
@@ -303,11 +311,14 @@ const GraphComponent = (props, ref) => {
       if (hoveredEdge == nearestEdge);
       else {
         setHoveredEdge(nearestEdge);
-
-        document.body.style.cursor = "pointer";
+        if (!addNodeMode && !addEdgeMode) {
+          document.body.style.cursor = "pointer";
+        }
       }
     } else if (hoveredEdge !== null) {
-      document.body.style.cursor = "default";
+      if (!addNodeMode && !addEdgeMode) {
+        document.body.style.cursor = "default";
+      }
       setHoveredEdge(null);
     }
   };
@@ -379,18 +390,22 @@ const GraphComponent = (props, ref) => {
           setSelectedNodes([]);
         } else {
           if (
-            props.mode === "preview" &&
-            props?.controlParams?.add_node?.value === false
+            (props.mode === "preview" &&
+              props?.controlParams?.add_node?.value === false) ||
+            !addNodeMode
           )
             return;
           // const newNode = { x, y, nodeIndex };
 
           setSelectedEdges([]);
 
-          setNodes({ ...data.nodes, [nodeIndex]: { x, y } });
+          setNodes({
+            ...data.nodes,
+            [nodeIndex]: { x: x, y: y, label: nodeIndex },
+          });
           setNodeIndex(nodeIndex + 1);
 
-          console.log({ ...data.nodes, [nodeIndex]: { x, y } });
+          console.log({ ...data.nodes, [nodeIndex]: { x, y, nodeIndex } });
         }
       }, 20);
     } else {
@@ -409,11 +424,11 @@ const GraphComponent = (props, ref) => {
 
       setSelectedEdges([]);
     } else if (
-      props.mode === "preview" &&
-      props?.controlParams?.add_edge?.value === false
+      (props.mode === "preview" &&
+        props?.controlParams?.add_edge?.value === false) ||
+      addEdgeMode === false
     ) {
       setSelectedNodes([nodeKey]);
-
       setSelectedEdges([]);
     } else if (selectedNodes.length === 1 && selectedNodes[0] !== nodeKey) {
       // don't add any more node if there exists one................
@@ -424,7 +439,6 @@ const GraphComponent = (props, ref) => {
       );
       if (!alreadyExists) {
         setSelectedNodes([...selectedNodes, nodeKey]);
-
         if (props?.params?.weighted_edge?.value === true) {
           openPrompt(); // need to take weight input...........
         } else {
@@ -438,6 +452,8 @@ const GraphComponent = (props, ref) => {
           //setEdgeIndex(edgeIndex + 1);
           setEdges([...edges, newEdge]);
           setSelectedNodes([]);
+          // setAddEdgeMode(false);
+          // document.body.style.
         }
       }
     } else if (selectedNodes.includes(nodeKey)) {
@@ -571,6 +587,7 @@ const GraphComponent = (props, ref) => {
     updatedNodes[nodeKey] = {
       x: clampedX,
       y: clampedY,
+      label: updatedNodes[nodeKey].label,
     };
 
     setNodes(updatedNodes);
@@ -614,91 +631,165 @@ const GraphComponent = (props, ref) => {
   };
 
   const Header = () => (
-    <div className=" top-5 left-5 absolute flex flex-row gap-3 z-10">
-      {data?.selectedEdges.length > 0 && (
-        <IconButton
-          sx={
-            {
-              // fontSize: "2rem",
-              // width: "50px",
-              // height: "50px",
-            }
-          }
-          // onClick={() => alert(canvasInfo)}
+    <div className="top-2 left-2 absolute flex flex-row gap-2 z-10">
+      {(props.mode === "edit" || props?.controlParams?.add_node?.value === true) 
+        && !((props.mode === "edit" || props?.controlParams?.delete_edge?.value === true) && data?.selectedEdges.length > 0) 
+        && !((props.mode === "edit" || props?.controlParams?.delete_node?.value === true) && selectedNodes.length > 0) && (
+        <Tooltip
+          title={<h1 className="text-lg text-white">Add Node</h1>}
+          placement="top"
+          // TransitionComponent={Zoom}
+          arrow
+          size="large"
         >
-          <div className="flex items-center bu-text-primary cursor-pointer text-2xl">
-            <FontAwesomeIcon icon={faTrashCan} />
-          </div>
-        </IconButton>
+          <IconButton
+            sx={
+              {
+                // fontSize: "2rem",
+                // width: "50px",
+                // height: "50px",
+              }
+            }
+            onClick={() => {
+              if (addNodeMode) document.body.style.cursor = "default";
+              else document.body.style.cursor = "crosshair";
+              if(!addNodeMode) setAddEdgeMode(false);
+              setAddNodeMode((prev) => !prev);
+            }}
+          >
+            <div className="flex items-center bu-text-primary cursor-pointer text-[1.8rem]">
+              <FontAwesomeIcon icon={faCirclePlus} />
+            </div>
+          </IconButton>
+        </Tooltip>
       )}
-      {data?.selectedEdges.length === 1 && (
-        <div className="no-ring-input">
+      {(props.mode === "edit" ||
+        props?.controlParams?.add_edge?.value === true) 
+        && !((props.mode === "edit" || props?.controlParams?.delete_edge?.value === true) && data?.selectedEdges.length > 0) 
+        && !((props.mode === "edit" || props?.controlParams?.delete_node?.value === true) && selectedNodes.length > 0) &&  (
+        <Tooltip
+          title={<h1 className="text-lg text-white">Add Edge</h1>}
+          placement="top"
+          // TransitionComponent={Zoom}
+          arrow
+          size="large"
+        >
+          <IconButton
+            sx={
+              {
+                // fontSize: "2rem",
+                // width: "50px",
+                // height: "50px",
+              }
+            }
+            onClick={() => {
+              if (addEdgeMode) document.body.style.cursor = "default";
+              else document.body.style.cursor = "copy";
+              if(!addEdgeMode) setAddNodeMode(false);
+              setAddEdgeMode((prev) => !prev);
+            }}
+          >
+            <div className="flex items-center bu-text-primary cursor-pointer text-[1.8rem]">
+              <FontAwesomeIcon icon={faArrowsToCircle} />
+            </div>
+          </IconButton>
+        </Tooltip>
+      )}
+      {(props.mode === "edit" ||
+        props?.controlParams?.delete_edge?.value === true) &&
+        data?.selectedEdges.length > 0 && (
+          <IconButton
+            sx={
+              {
+                // fontSize: "2rem",
+                // width: "50px",
+                // height: "50px",
+              }
+            }
+            onClick={() => deleteSelectedNodeOrEdge()}
+          >
+            <div className="flex items-center bu-text-primary cursor-pointer text-2xl">
+              <FontAwesomeIcon icon={faTrashCan} />
+            </div>
+          </IconButton>
+        )}
+      {(props.mode === "edit" ||
+        props?.controlParams?.edit_weight?.value === true) &&
+        data?.selectedEdges.length === 1 && (
+          <div className="no-ring-input flex-center">
+            <FormControl fullWidth variant="outlined" size="small">
+              <InputLabel
+                htmlFor="outlined-adornment"
+                className="bu-text-primary"
+              >
+                Edge weight
+              </InputLabel>
+              <OutlinedInput
+                required
+                placeholder="Edge weight"
+                inputProps={{
+                  step: 1,
+                  min: 1,
+                  // max: 10,
+                }}
+                id="outlined-adornment"
+                className="outline-none bu-text-primary"
+                type="number"
+                value={data?.selectedEdges[0]?.weight}
+                onChange={(e) => {
+                  data.edges = data.edges.filter(
+                    (edge) =>
+                      JSON.stringify(edge) !==
+                      JSON.stringify(data?.selectedEdges[0])
+                  );
+                  data.selectedEdges[0].weight = e.target.value;
+                  setEdges([...data.edges, data.selectedEdges[0]]);
+                }}
+                label={"Edge weight"}
+                size="small"
+              />
+            </FormControl>
+          </div>
+        )}
+
+      {(props.mode === "edit" ||
+        props?.controlParams?.delete_node?.value === true) &&
+        selectedNodes.length === 1 && (
+          <IconButton
+            sx={
+              {
+                // fontSize: "2rem",
+                // width: "50px",
+                // height: "50px",
+              }
+            }
+            onClick={() => deleteSelectedNodeOrEdge()}
+          >
+            <div className="flex items-center bu-text-primary cursor-pointer text-2xl">
+              <FontAwesomeIcon icon={faTrashCan} />
+            </div>
+          </IconButton>
+        )}
+      {props.mode === "edit" && selectedNodes.length === 1 && (
+        <div className="no-ring-input flex-center">
           <FormControl fullWidth variant="outlined" size="small">
             <InputLabel
               htmlFor="outlined-adornment"
               className="bu-text-primary"
             >
-              Edge weight
+              Node Label
             </InputLabel>
             <OutlinedInput
               required
               placeholder="# of disks"
-              inputProps={{
-                step: 1,
-                min: 1,
-                max: 10,
-              }}
-              id="outlined-adornment"
-              className="outline-none bu-text-primary"
-              type="number"
-              value={data?.selectedEdges[0]?.weight}
-              // onChange={handleNumberOfDisksChange}
-
-              label={"Edge weight"}
-              size="small"
-            />
-          </FormControl>
-        </div>
-      )}
-
-      {selectedNodes.length === 1 && (
-        <IconButton
-          sx={
-            {
-              // fontSize: "2rem",
-              // width: "50px",
-              // height: "50px",
-            }
-          }
-          // onClick={() => alert(canvasInfo)}
-        >
-          <div className="flex items-center bu-text-primary cursor-pointer text-2xl">
-            <FontAwesomeIcon icon={faTrashCan} />
-          </div>
-        </IconButton>
-      )}
-      {selectedNodes.length === 1 && (
-        <div className="no-ring-input">
-          <FormControl fullWidth variant="outlined" size="small">
-            <InputLabel
-              htmlFor="outlined-adornment"
-              className="bu-text-primary"
-            >
-              Node ID
-            </InputLabel>
-            <OutlinedInput
-              required
-              placeholder="# of disks"
-              inputProps={{
-                step: 1,
-                min: 1,
-                max: 10,
-              }}
               id="outlined-adornment"
               className="outlined-input bu-text-primary"
               type="text"
-              value={selectedNodes[0]}
-              // onChange={handleNumberOfDisksChange}
+              value={data?.nodes[selectedNodes[0]]?.label}
+              onChange={(e) => {
+                data.nodes[selectedNodes[0]].label = e.target.value;
+                setNodes(data.nodes);
+              }}
               label={"Node ID"}
               size="small"
             />
@@ -723,12 +814,12 @@ const GraphComponent = (props, ref) => {
 
   const CustomModal = () => (
     <Modal
-      className="modal-container bu-nav-color"
+      className="modal-container bu-nav-color z-[100]"
       isOpen={isPromptOpen}
       onRequestClose={closePrompt}
       contentLabel="Edge Weight Input"
     >
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 z-[100]">
         <p className="bu-text-primary font-bold text-xl">ENTER THE WEIGHT</p>
         <input
           className="bu-input-primary rounded-lg"
@@ -758,7 +849,38 @@ const GraphComponent = (props, ref) => {
   return (
     <div className="w-full  relative" ref={windowRef}>
       {Header()}
+      {/* <Tooltip
+        title="Click anywhere to add a node"
+        followCursor
+        size="large"
+        // open={addNodeMode}
+        // onOpen={()=>{}}
+        // onClose={()=>{}}
+      >
+        <div className="absolute h-full w-full z-10"></div>
+      </Tooltip> */}
 
+      <Tooltip
+        title={
+          addNodeMode?
+        <h1 className="text-md">
+          Click anywhere in the canvas to add a node 
+          <br/> 
+          Click on the "Add Node" icon again to cancel
+          </h1>:addEdgeMode? 
+          <h1 className="text-md">
+          Click on two nodes to add an edge between them
+          <br/> 
+          Click on the "Add Edge" icon again to cancel
+          </h1> :
+          <></>
+        }
+        followCursor
+        size="large"
+        open={(addNodeMode || addEdgeMode) && !isPromptOpen}
+        onOpen={()=>{}}
+        onClose={()=>{}}
+      >
       <div className="graph-container pt-16 overflow-hidden w-full">
         <Stage
           width={width} // small glitch // 1102
@@ -798,14 +920,6 @@ const GraphComponent = (props, ref) => {
 
                 //edge direction related.............................
 
-                // Calculate the position of the arrowhead
-                {
-                  /* const arrowheadX =
-                  edge.end.x + endOffsetX - 10 * Math.cos(angle);
-                const arrowheadY =
-                  edge.end.y + endOffsetY - 10 * Math.sin(angle); */
-                }
-
                 const weightOffsetX =
                   ((data.nodes[edge.start].y - data.nodes[edge.end].y) /
                     Math.sqrt(
@@ -834,9 +948,7 @@ const GraphComponent = (props, ref) => {
                   10;
                 return (
                   <React.Fragment key={index}>
-                    <Group
-                    // onClick={() => handleEdgeClick(edge)}
-                    >
+                    <Group>
                       {props.params === null ||
                       !props.params["directed_edge"] ||
                       props.params["directed_edge"].value === false ? (
@@ -848,14 +960,6 @@ const GraphComponent = (props, ref) => {
                             data.nodes[edge.end].x + endOffsetX,
                             data.nodes[edge.end].y + endOffsetY,
                           ]}
-                          onMouseEnter={() => {
-                            // document.body.style.cursor = "pointer";
-                            // handleEdgeHover(edge);
-                          }}
-                          onMouseLeave={() => {
-                            // document.body.style.cursor = "default";
-                            // handleEdgeUnhover();
-                          }}
                           stroke={
                             data.selectedEdges.some((selectedEdge) =>
                               shallowEqualityCheck(selectedEdge, edge)
@@ -872,7 +976,6 @@ const GraphComponent = (props, ref) => {
                               ? 3
                               : 6
                           }
-                          // strokeWidth={Math.min(edge.weight / 5.0, 20)}
                         />
                       ) : (
                         <Arrow
@@ -883,20 +986,11 @@ const GraphComponent = (props, ref) => {
                             data.nodes[edge.end].x + endOffsetX,
                             data.nodes[edge.end].y + endOffsetY,
                           ]}
-                          onMouseEnter={() => {
-                            // document.body.style.cursor = "pointer";
-                            // handleEdgeHover(edge);
-                          }}
-                          onMouseLeave={() => {
-                            // document.body.style.cursor = "default";
-                            // handleEdgeUnhover();
-                          }}
                           stroke={
                             data.selectedEdges.some((selectedEdge) =>
                               shallowEqualityCheck(selectedEdge, edge)
                             )
-                              ? // data.selectedEdges.includes(edge)
-                                "#ec3965"
+                              ? "#ec3965"
                               : hoveredEdge !== edge
                                 ? "#879294"
                                 : "#2bb557"
@@ -908,7 +1002,6 @@ const GraphComponent = (props, ref) => {
                               ? 3
                               : 6
                           }
-                          // strokeWidth={Math.min(edge.weight / 5.0, 20)}
                         />
                       )}
                     </Group>
@@ -971,11 +1064,15 @@ const GraphComponent = (props, ref) => {
                       : true
                   }
                   onMouseEnter={() => {
-                    document.body.style.cursor = "pointer";
+                    if (!addNodeMode && !addEdgeMode) {
+                      document.body.style.cursor = "pointer";
+                    }
                     handleNodeHover(nodeKey);
                   }}
                   onMouseLeave={() => {
-                    document.body.style.cursor = "default";
+                    if (!addNodeMode && !addEdgeMode) {
+                      document.body.style.cursor = "default";
+                    }
                     handleNodeUnhover();
                   }}
                   onDragMove={(e) => handleNodeDrag(nodeKey, e)}
@@ -1034,7 +1131,7 @@ const GraphComponent = (props, ref) => {
                     shadowOpacity={isDragging === nodeKey ? 0.6 : 0}
                   />
                   <Text
-                    text={nodeKey.toString()} // Display the node number
+                    text={data.nodes[nodeKey].label.toString()} // Display the node number
                     align="center" // Center-align the text
                     verticalAlign="middle" // Vertically align the text
                     fontSize={30} // Set font size
@@ -1060,6 +1157,8 @@ const GraphComponent = (props, ref) => {
           )}
         </Stage>
       </div>
+      </Tooltip>
+      
 
       {CustomModal()}
     </div>

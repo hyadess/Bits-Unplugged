@@ -632,69 +632,86 @@ const GraphComponent = (props, ref) => {
 
   const Header = () => (
     <div className="top-2 left-2 absolute flex flex-row gap-2 z-10">
-      {(props.mode === "edit" || props?.controlParams?.add_node?.value === true) 
-        && !((props.mode === "edit" || props?.controlParams?.delete_edge?.value === true) && data?.selectedEdges.length > 0) 
-        && !((props.mode === "edit" || props?.controlParams?.delete_node?.value === true) && selectedNodes.length > 0) && (
-        <Tooltip
-          title={<h1 className="text-lg text-white">Add Node</h1>}
-          placement="top"
-          // TransitionComponent={Zoom}
-          arrow
-          size="large"
-        >
-          <IconButton
-            sx={
-              {
-                // fontSize: "2rem",
-                // width: "50px",
-                // height: "50px",
-              }
-            }
-            onClick={() => {
-              if (addNodeMode) document.body.style.cursor = "default";
-              else document.body.style.cursor = "crosshair";
-              if(!addNodeMode) setAddEdgeMode(false);
-              setAddNodeMode((prev) => !prev);
-            }}
-          >
-            <div className="flex items-center bu-text-primary cursor-pointer text-[1.8rem]">
-              <FontAwesomeIcon icon={faCirclePlus} />
-            </div>
-          </IconButton>
-        </Tooltip>
-      )}
       {(props.mode === "edit" ||
-        props?.controlParams?.add_edge?.value === true) 
-        && !((props.mode === "edit" || props?.controlParams?.delete_edge?.value === true) && data?.selectedEdges.length > 0) 
-        && !((props.mode === "edit" || props?.controlParams?.delete_node?.value === true) && selectedNodes.length > 0) &&  (
-        <Tooltip
-          title={<h1 className="text-lg text-white">Add Edge</h1>}
-          placement="top"
-          // TransitionComponent={Zoom}
-          arrow
-          size="large"
-        >
-          <IconButton
-            sx={
-              {
-                // fontSize: "2rem",
-                // width: "50px",
-                // height: "50px",
-              }
-            }
-            onClick={() => {
-              if (addEdgeMode) document.body.style.cursor = "default";
-              else document.body.style.cursor = "copy";
-              if(!addEdgeMode) setAddNodeMode(false);
-              setAddEdgeMode((prev) => !prev);
-            }}
+        props?.controlParams?.add_node?.value === true) &&
+        !(
+          (props.mode === "edit" ||
+            props?.controlParams?.delete_edge?.value === true) &&
+          data?.selectedEdges.length > 0
+        ) &&
+        !(
+          (props.mode === "edit" ||
+            props?.controlParams?.delete_node?.value === true) &&
+          selectedNodes.length > 0
+        ) && (
+          <Tooltip
+            title={<h1 className="text-lg text-white">Add Node</h1>}
+            placement="top"
+            // TransitionComponent={Zoom}
+            arrow
+            size="large"
           >
-            <div className="flex items-center bu-text-primary cursor-pointer text-[1.8rem]">
-              <FontAwesomeIcon icon={faArrowsToCircle} />
-            </div>
-          </IconButton>
-        </Tooltip>
-      )}
+            <IconButton
+              sx={
+                {
+                  // fontSize: "2rem",
+                  // width: "50px",
+                  // height: "50px",
+                }
+              }
+              onClick={() => {
+                if (addNodeMode) document.body.style.cursor = "default";
+                else document.body.style.cursor = "crosshair";
+                if (!addNodeMode) setAddEdgeMode(false);
+                setAddNodeMode((prev) => !prev);
+              }}
+            >
+              <div className="flex items-center bu-text-primary cursor-pointer text-[1.8rem]">
+                <FontAwesomeIcon icon={faCirclePlus} />
+              </div>
+            </IconButton>
+          </Tooltip>
+        )}
+      {(props.mode === "edit" ||
+        props?.controlParams?.add_edge?.value === true) &&
+        !(
+          (props.mode === "edit" ||
+            props?.controlParams?.delete_edge?.value === true) &&
+          data?.selectedEdges.length > 0
+        ) &&
+        !(
+          (props.mode === "edit" ||
+            props?.controlParams?.delete_node?.value === true) &&
+          selectedNodes.length > 0
+        ) && (
+          <Tooltip
+            title={<h1 className="text-lg text-white">Add Edge</h1>}
+            placement="top"
+            // TransitionComponent={Zoom}
+            arrow
+            size="large"
+          >
+            <IconButton
+              sx={
+                {
+                  // fontSize: "2rem",
+                  // width: "50px",
+                  // height: "50px",
+                }
+              }
+              onClick={() => {
+                if (addEdgeMode) document.body.style.cursor = "default";
+                else document.body.style.cursor = "copy";
+                if (!addEdgeMode) setAddNodeMode(false);
+                setAddEdgeMode((prev) => !prev);
+              }}
+            >
+              <div className="flex items-center bu-text-primary cursor-pointer text-[1.8rem]">
+                <FontAwesomeIcon icon={faArrowsToCircle} />
+              </div>
+            </IconButton>
+          </Tooltip>
+        )}
       {(props.mode === "edit" ||
         props?.controlParams?.delete_edge?.value === true) &&
         data?.selectedEdges.length > 0 && (
@@ -862,105 +879,178 @@ const GraphComponent = (props, ref) => {
 
       <Tooltip
         title={
-          addNodeMode?
-        <h1 className="text-md">
-          Click anywhere in the canvas to add a node 
-          <br/> 
-          Click on the "Add Node" icon again to cancel
-          </h1>:addEdgeMode? 
-          <h1 className="text-md">
-          Click on two nodes to add an edge between them
-          <br/> 
-          Click on the "Add Edge" icon again to cancel
-          </h1> :
-          <></>
+          addNodeMode ? (
+            <h1 className="text-md">
+              Click anywhere in the canvas to add a node
+              <br />
+              Click on the "Add Node" icon again to cancel
+            </h1>
+          ) : addEdgeMode ? (
+            <h1 className="text-md">
+              Click on two nodes to add an edge between them
+              <br />
+              Click on the "Add Edge" icon again to cancel
+            </h1>
+          ) : (
+            <></>
+          )
         }
         followCursor
         size="large"
         open={(addNodeMode || addEdgeMode) && !isPromptOpen}
-        onOpen={()=>{}}
-        onClose={()=>{}}
+        onOpen={() => {}}
+        onClose={() => {}}
       >
-      <div className="graph-container pt-16 overflow-hidden w-full">
-        <Stage
-          width={width} // small glitch // 1102
-          // width={window.innerWidth * 0.57}
-          height={500} // 630
-          onClick={handleCanvasClick}
-          onMouseMove={handleMouseMove}
-          ref={stageRef}
-          // scaleX={Math.min(width / 882, 1)}
-          // scaleY={Math.min(width / 882, 1)}
-        >
-          {data && (
-            <Layer>
-              {data.edges.map((edge, index) => {
-                if (
-                  data.nodes[edge.end] === undefined ||
-                  data.nodes[edge.start] === undefined
-                ) {
-                  return <></>;
-                }
-                // calculations.......................
-                const dx = data.nodes[edge.end].x - data.nodes[edge.start].x;
-                const dy = data.nodes[edge.end].y - data.nodes[edge.start].y;
-                const angle = Math.atan2(dy, dx);
-                const startOffsetX = Math.cos(angle) * RADIUS;
-                const startOffsetY = Math.sin(angle) * RADIUS;
-                const endOffsetX =
-                  Math.cos(angle + Math.PI) * RADIUS -
-                  (props?.params["directed_edge"]?.value
-                    ? 3 * Math.cos(angle)
-                    : 0);
-                const endOffsetY =
-                  Math.sin(angle + Math.PI) * RADIUS -
-                  (props?.params["directed_edge"]?.value
-                    ? 3 * Math.sin(angle)
-                    : 0);
+        <div className="graph-container pt-16 overflow-hidden w-full">
+          <Stage
+            width={width} // small glitch // 1102
+            // width={window.innerWidth * 0.57}
+            height={500} // 630
+            onClick={handleCanvasClick}
+            onMouseMove={handleMouseMove}
+            ref={stageRef}
+            // scaleX={Math.min(width / 882, 1)}
+            // scaleY={Math.min(width / 882, 1)}
+          >
+            {data && (
+              <Layer>
+                {data.edges.map((edge, index) => {
+                  if (
+                    data.nodes[edge.end] === undefined ||
+                    data.nodes[edge.start] === undefined
+                  ) {
+                    return <></>;
+                  }
+                  // calculations.......................
+                  const dx = data.nodes[edge.end].x - data.nodes[edge.start].x;
+                  const dy = data.nodes[edge.end].y - data.nodes[edge.start].y;
+                  const angle = Math.atan2(dy, dx);
+                  const startOffsetX = Math.cos(angle) * RADIUS;
+                  const startOffsetY = Math.sin(angle) * RADIUS;
+                  const endOffsetX =
+                    Math.cos(angle + Math.PI) * RADIUS -
+                    (props?.params["directed_edge"]?.value
+                      ? 3 * Math.cos(angle)
+                      : 0);
+                  const endOffsetY =
+                    Math.sin(angle + Math.PI) * RADIUS -
+                    (props?.params["directed_edge"]?.value
+                      ? 3 * Math.sin(angle)
+                      : 0);
 
-                //edge direction related.............................
+                  //edge direction related.............................
 
-                const weightOffsetX =
-                  ((data.nodes[edge.start].y - data.nodes[edge.end].y) /
-                    Math.sqrt(
-                      Math.pow(
-                        data.nodes[edge.start].y - data.nodes[edge.end].y,
-                        2
-                      ) +
+                  const weightOffsetX =
+                    ((data.nodes[edge.start].y - data.nodes[edge.end].y) /
+                      Math.sqrt(
                         Math.pow(
-                          data.nodes[edge.end].x - data.nodes[edge.start].x,
+                          data.nodes[edge.start].y - data.nodes[edge.end].y,
                           2
-                        )
-                    )) *
-                  10;
-                const weightOffsetY =
-                  ((data.nodes[edge.end].x - data.nodes[edge.start].x) /
-                    Math.sqrt(
-                      Math.pow(
-                        data.nodes[edge.start].y - data.nodes[edge.end].y,
-                        2
-                      ) +
+                        ) +
+                          Math.pow(
+                            data.nodes[edge.end].x - data.nodes[edge.start].x,
+                            2
+                          )
+                      )) *
+                    10;
+                  const weightOffsetY =
+                    ((data.nodes[edge.end].x - data.nodes[edge.start].x) /
+                      Math.sqrt(
                         Math.pow(
-                          data.nodes[edge.end].x - data.nodes[edge.start].x,
+                          data.nodes[edge.start].y - data.nodes[edge.end].y,
                           2
-                        )
-                    )) *
-                  10;
-                return (
-                  <React.Fragment key={index}>
-                    <Group>
-                      {props.params === null ||
-                      !props.params["directed_edge"] ||
-                      props.params["directed_edge"].value === false ? (
-                        <Line
-                          key={index}
-                          points={[
-                            data.nodes[edge.start].x + startOffsetX,
-                            data.nodes[edge.start].y + startOffsetY,
-                            data.nodes[edge.end].x + endOffsetX,
-                            data.nodes[edge.end].y + endOffsetY,
-                          ]}
-                          stroke={
+                        ) +
+                          Math.pow(
+                            data.nodes[edge.end].x - data.nodes[edge.start].x,
+                            2
+                          )
+                      )) *
+                    10;
+                  return (
+                    <React.Fragment key={index}>
+                      <Group>
+                        {props.params === null ||
+                        !props.params["directed_edge"] ||
+                        props.params["directed_edge"].value === false ? (
+                          <Line
+                            key={index}
+                            points={[
+                              data.nodes[edge.start].x + startOffsetX,
+                              data.nodes[edge.start].y + startOffsetY,
+                              data.nodes[edge.end].x + endOffsetX,
+                              data.nodes[edge.end].y + endOffsetY,
+                            ]}
+                            stroke={
+                              data.selectedEdges.some((selectedEdge) =>
+                                shallowEqualityCheck(selectedEdge, edge)
+                              )
+                                ? "#ec3965"
+                                : hoveredEdge !== edge
+                                  ? "#879294"
+                                  : "#2bb557"
+                            }
+                            strokeWidth={
+                              !data.selectedEdges.some((selectedEdge) =>
+                                shallowEqualityCheck(selectedEdge, edge)
+                              ) && hoveredEdge !== edge
+                                ? 3
+                                : 6
+                            }
+                          />
+                        ) : (
+                          <Arrow
+                            key={index}
+                            points={[
+                              data.nodes[edge.start].x + startOffsetX,
+                              data.nodes[edge.start].y + startOffsetY,
+                              data.nodes[edge.end].x + endOffsetX,
+                              data.nodes[edge.end].y + endOffsetY,
+                            ]}
+                            stroke={
+                              data.selectedEdges.some((selectedEdge) =>
+                                shallowEqualityCheck(selectedEdge, edge)
+                              )
+                                ? "#ec3965"
+                                : hoveredEdge !== edge
+                                  ? "#879294"
+                                  : "#2bb557"
+                            }
+                            strokeWidth={
+                              !data.selectedEdges.some((selectedEdge) =>
+                                shallowEqualityCheck(selectedEdge, edge)
+                              ) && hoveredEdge !== edge
+                                ? 3
+                                : 6
+                            }
+                          />
+                        )}
+                      </Group>
+
+                      {props?.params?.weighted_edge?.value && (
+                        <Text
+                          x={
+                            weightOffsetX +
+                            (data.nodes[edge.start].x +
+                              data.nodes[edge.end].x) /
+                              2
+                          }
+                          y={
+                            weightOffsetY +
+                            (data.nodes[edge.start].y +
+                              data.nodes[edge.end].y) /
+                              2
+                          }
+                          text={edge.weight}
+                          fontSize={25}
+                          strokeWidth={
+                            data.selectedEdges.some((selectedEdge) =>
+                              shallowEqualityCheck(selectedEdge, edge)
+                            )
+                              ? 3
+                              : 5
+                          }
+                          background="red"
+                          fill={
                             data.selectedEdges.some((selectedEdge) =>
                               shallowEqualityCheck(selectedEdge, edge)
                             )
@@ -969,196 +1059,125 @@ const GraphComponent = (props, ref) => {
                                 ? "#879294"
                                 : "#2bb557"
                           }
-                          strokeWidth={
-                            !data.selectedEdges.some((selectedEdge) =>
-                              shallowEqualityCheck(selectedEdge, edge)
-                            ) && hoveredEdge !== edge
-                              ? 3
-                              : 6
-                          }
-                        />
-                      ) : (
-                        <Arrow
-                          key={index}
-                          points={[
-                            data.nodes[edge.start].x + startOffsetX,
-                            data.nodes[edge.start].y + startOffsetY,
-                            data.nodes[edge.end].x + endOffsetX,
-                            data.nodes[edge.end].y + endOffsetY,
-                          ]}
-                          stroke={
-                            data.selectedEdges.some((selectedEdge) =>
-                              shallowEqualityCheck(selectedEdge, edge)
-                            )
-                              ? "#ec3965"
-                              : hoveredEdge !== edge
-                                ? "#879294"
-                                : "#2bb557"
-                          }
-                          strokeWidth={
-                            !data.selectedEdges.some((selectedEdge) =>
-                              shallowEqualityCheck(selectedEdge, edge)
-                            ) && hoveredEdge !== edge
-                              ? 3
-                              : 6
+                          width={45}
+                          onClick={() => changeEdgeWeight(edge)}
+                          rotation={
+                            (Math.atan2(
+                              data.nodes[edge.end].y - data.nodes[edge.start].y,
+                              data.nodes[edge.end].x - data.nodes[edge.start].x
+                            ) *
+                              180) /
+                            Math.PI
                           }
                         />
                       )}
-                    </Group>
-
-                    {props?.params?.weighted_edge?.value && (
-                      <Text
-                        x={
-                          weightOffsetX +
-                          (data.nodes[edge.start].x + data.nodes[edge.end].x) /
-                            2
-                        }
-                        y={
-                          weightOffsetY +
-                          (data.nodes[edge.start].y + data.nodes[edge.end].y) /
-                            2
-                        }
-                        text={edge.weight}
-                        fontSize={25}
-                        strokeWidth={
-                          data.selectedEdges.some((selectedEdge) =>
-                            shallowEqualityCheck(selectedEdge, edge)
-                          )
-                            ? 3
-                            : 5
-                        }
-                        background="red"
-                        fill={
-                          data.selectedEdges.some((selectedEdge) =>
-                            shallowEqualityCheck(selectedEdge, edge)
-                          )
-                            ? "#ec3965"
-                            : hoveredEdge !== edge
-                              ? "#879294"
-                              : "#2bb557"
-                        }
-                        width={45}
-                        onClick={() => changeEdgeWeight(edge)}
-                        rotation={
-                          (Math.atan2(
-                            data.nodes[edge.end].y - data.nodes[edge.start].y,
-                            data.nodes[edge.end].x - data.nodes[edge.start].x
-                          ) *
-                            180) /
-                          Math.PI
-                        }
-                      />
-                    )}
-                  </React.Fragment>
-                );
-              })}
-              {Object.entries(data.nodes).map(([nodeKey, node]) => (
-                <Group
-                  key={nodeKey}
-                  x={node.x}
-                  y={node.y}
-                  draggable={
-                    props.mode === "preview" &&
-                    props?.controlParams?.add_node?.value === false
-                      ? false
-                      : true
-                  }
-                  onMouseEnter={() => {
-                    if (!addNodeMode && !addEdgeMode) {
-                      document.body.style.cursor = "pointer";
+                    </React.Fragment>
+                  );
+                })}
+                {Object.entries(data.nodes).map(([nodeKey, node]) => (
+                  <Group
+                    key={nodeKey}
+                    x={node.x}
+                    y={node.y}
+                    draggable={
+                      props.mode === "preview" &&
+                      props?.controlParams?.drag_node?.value === false
+                        ? false
+                        : true
                     }
-                    handleNodeHover(nodeKey);
-                  }}
-                  onMouseLeave={() => {
-                    if (!addNodeMode && !addEdgeMode) {
-                      document.body.style.cursor = "default";
-                    }
-                    handleNodeUnhover();
-                  }}
-                  onDragMove={(e) => handleNodeDrag(nodeKey, e)}
-                  onClick={() => handleNodeClick(nodeKey)}
-                  onDragStart={() => {
-                    // console.log("DRAAAAAAAAAAAAG");
-                    setIsDragging(nodeKey);
-                  }}
-                  onDragEnd={() => {
-                    // handleNodeHover(node);
-                    setIsDragging(-1);
-                  }}
-                >
-                  <Circle
-                    radius={
-                      isDragging === nodeKey
-                        ? RADIUS * 1.2
-                        : hoveredNode === nodeKey
-                          ? 1.1 * RADIUS
-                          : RADIUS
-                    }
-                    className={hoveredNode === nodeKey ? "node-hovered" : ""}
-                    fill={
-                      selectedNodes.includes(nodeKey)
-                        ? "#ec3965"
-                        : hoveredNode === nodeKey || isDragging === nodeKey
-                          ? "#38bf27"
-                          : "#a4a3a3"
-                    }
-                    // opacity={0.5}
-                    stroke={
-                      selectedNodes.includes(nodeKey)
-                        ? ""
-                        : hoveredNode === nodeKey
-                          ? ""
-                          : ""
-                    }
-                    strokeWidth={
-                      selectedNodes.includes(nodeKey)
-                        ? 0
-                        : hoveredNode === nodeKey
-                          ? 0
-                          : 3
-                    }
-                    brightness={
-                      selectedNodes.includes(nodeKey)
-                        ? 0.5
-                        : hoveredNode === nodeKey
-                          ? 0
-                          : 0.8
-                    }
-                    shadowOffsetX={isDragging === nodeKey ? 7 : 0}
-                    shadowOffsetY={isDragging === nodeKey ? 7 : 0}
-                    shadowColor="black"
-                    shadowBlur={isDragging === nodeKey ? 10 : 0}
-                    shadowOpacity={isDragging === nodeKey ? 0.6 : 0}
-                  />
-                  <Text
-                    text={data.nodes[nodeKey].label.toString()} // Display the node number
-                    align="center" // Center-align the text
-                    verticalAlign="middle" // Vertically align the text
-                    fontSize={30} // Set font size
-                    fill={
-                      selectedNodes.includes(nodeKey)
-                        ? "white"
-                        : hoveredNode === nodeKey
-                          ? "white"
-                          : "white"
-                    } // Set text color
-                    ref={(nodeTextRef) => {
-                      if (nodeTextRef) {
-                        const textWidth = nodeTextRef.getClientRect().width;
-                        const textHeight = nodeTextRef.getClientRect().height;
-                        nodeTextRef.offsetX(textWidth / 2);
-                        nodeTextRef.offsetY(textHeight / 2);
+                    onMouseEnter={() => {
+                      if (!addNodeMode && !addEdgeMode) {
+                        document.body.style.cursor = "pointer";
                       }
+                      handleNodeHover(nodeKey);
                     }}
-                  />
-                </Group>
-              ))}
-            </Layer>
-          )}
-        </Stage>
-      </div>
+                    onMouseLeave={() => {
+                      if (!addNodeMode && !addEdgeMode) {
+                        document.body.style.cursor = "default";
+                      }
+                      handleNodeUnhover();
+                    }}
+                    onDragMove={(e) => handleNodeDrag(nodeKey, e)}
+                    onClick={() => handleNodeClick(nodeKey)}
+                    onDragStart={() => {
+                      setIsDragging(nodeKey);
+                    }}
+                    onDragEnd={() => {
+                      setIsDragging(-1);
+                    }}
+                  >
+                    <Circle
+                      radius={
+                        isDragging === nodeKey
+                          ? RADIUS * 1.2
+                          : hoveredNode === nodeKey
+                            ? 1.1 * RADIUS
+                            : RADIUS
+                      }
+                      className={hoveredNode === nodeKey ? "node-hovered" : ""}
+                      fill={
+                        selectedNodes.includes(nodeKey)
+                          ? "#ec3965"
+                          : hoveredNode === nodeKey || isDragging === nodeKey
+                            ? "#38bf27"
+                            : "#a4a3a3"
+                      }
+                      // opacity={0.5}
+                      stroke={
+                        selectedNodes.includes(nodeKey)
+                          ? ""
+                          : hoveredNode === nodeKey
+                            ? ""
+                            : ""
+                      }
+                      strokeWidth={
+                        selectedNodes.includes(nodeKey)
+                          ? 0
+                          : hoveredNode === nodeKey
+                            ? 0
+                            : 3
+                      }
+                      brightness={
+                        selectedNodes.includes(nodeKey)
+                          ? 0.5
+                          : hoveredNode === nodeKey
+                            ? 0
+                            : 0.8
+                      }
+                      shadowOffsetX={isDragging === nodeKey ? 7 : 0}
+                      shadowOffsetY={isDragging === nodeKey ? 7 : 0}
+                      shadowColor="black"
+                      shadowBlur={isDragging === nodeKey ? 10 : 0}
+                      shadowOpacity={isDragging === nodeKey ? 0.6 : 0}
+                    />
+                    <Text
+                      text={data.nodes[nodeKey].label.toString()} // Display the node number
+                      align="center" // Center-align the text
+                      verticalAlign="middle" // Vertically align the text
+                      fontSize={30} // Set font size
+                      fill={
+                        selectedNodes.includes(nodeKey)
+                          ? "white"
+                          : hoveredNode === nodeKey
+                            ? "white"
+                            : "white"
+                      } // Set text color
+                      ref={(nodeTextRef) => {
+                        if (nodeTextRef) {
+                          const textWidth = nodeTextRef.getClientRect().width;
+                          const textHeight = nodeTextRef.getClientRect().height;
+                          nodeTextRef.offsetX(textWidth / 2);
+                          nodeTextRef.offsetY(textHeight / 2);
+                        }
+                      }}
+                    />
+                  </Group>
+                ))}
+              </Layer>
+            )}
+          </Stage>
+        </div>
       </Tooltip>
-      
 
       {CustomModal()}
     </div>

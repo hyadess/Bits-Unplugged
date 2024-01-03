@@ -26,7 +26,9 @@ import {
   FormControl,
   IconButton,
   InputLabel,
+  MenuItem,
   OutlinedInput,
+  Select,
   Tooltip,
 } from "@mui/material";
 import Cookies from "universal-cookie";
@@ -47,6 +49,17 @@ const canvasHeight = 1080;
 
 Modal.setAppElement("#root");
 
+const colorMap = {
+  Default: "#a4a3a3",
+  Red: "#ec3965",
+  Green: "#38bf27",
+  Blue: "#6488ea",
+  Yellow: "#fff44f",
+  Purple: "#d648d7",
+  Pink: "#ff69b4",
+  Orange: "#ff8c00",
+  Brown: "#635147",
+};
 const GraphComponent = (props, ref) => {
   const [userType, setUserType] = useState(0);
   const [edgeIndex, setEdgeIndex] = useState(0);
@@ -402,7 +415,7 @@ const GraphComponent = (props, ref) => {
 
           setNodes({
             ...data.nodes,
-            [nodeIndex]: { x: x, y: y, label: nodeIndex },
+            [nodeIndex]: { x: x, y: y, label: nodeIndex, color: "Default" },
           });
           setNodeIndex(nodeIndex + 1);
 
@@ -592,6 +605,7 @@ const GraphComponent = (props, ref) => {
       x: clampedX,
       y: clampedY,
       label: updatedNodes[nodeKey].label,
+      color: updatedNodes[nodeKey].color,
     };
 
     setNodes(updatedNodes);
@@ -633,7 +647,13 @@ const GraphComponent = (props, ref) => {
       setNodeIndex(0);
     }
   };
-
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxWidth: "5rem",
+      },
+    },
+  };
   const Header = () => (
     <div className="top-2 left-2 absolute flex flex-row gap-2 z-10">
       {(props.mode === "edit" ||
@@ -737,7 +757,7 @@ const GraphComponent = (props, ref) => {
       {(props.mode === "edit" ||
         props?.controlParams?.edit_weight?.value === true) &&
         data?.selectedEdges.length === 1 && (
-          <div className="no-ring-input flex-center">
+          <div className="no-ring-input flex-center p-1">
             <FormControl fullWidth variant="outlined" size="small">
               <InputLabel
                 htmlFor="outlined-adornment"
@@ -768,6 +788,7 @@ const GraphComponent = (props, ref) => {
                 }}
                 label={"Edge weight"}
                 size="small"
+                sx={{ width: "10rem" }}
               />
             </FormControl>
           </div>
@@ -792,7 +813,7 @@ const GraphComponent = (props, ref) => {
           </IconButton>
         )}
       {props.mode === "edit" && selectedNodes.length === 1 && (
-        <div className="no-ring-input flex-center">
+        <div className="no-ring-input flex-center p-1">
           <FormControl fullWidth variant="outlined" size="small">
             <InputLabel
               htmlFor="outlined-adornment"
@@ -802,7 +823,7 @@ const GraphComponent = (props, ref) => {
             </InputLabel>
             <OutlinedInput
               required
-              placeholder="# of disks"
+              placeholder="Node Label"
               id="outlined-adornment"
               className="outlined-input bu-text-primary"
               type="text"
@@ -811,12 +832,47 @@ const GraphComponent = (props, ref) => {
                 data.nodes[selectedNodes[0]].label = e.target.value;
                 setNodes(data.nodes);
               }}
-              label={"Node ID"}
+              label={"Node Label"}
               size="small"
+              sx={{ width: "10rem" }}
             />
           </FormControl>
         </div>
       )}
+
+      {(props.mode === "edit" ||
+        props?.controlParams?.edit_color?.value === true) &&
+        selectedNodes.length === 1 && (
+          <div className="no-ring-input flex-center p-1">
+            <FormControl fullWidth variant="outlined" size="small">
+              <InputLabel
+                htmlFor="outlined-adornment"
+                className="bu-text-primary"
+              >
+                Node Color
+              </InputLabel>
+              <Select
+                fullWidth
+                // required
+                id="outlined-adornment"
+                className="outlined-input bu-text-primary"
+                value={data?.nodes[selectedNodes[0]]?.color}
+                onChange={(e) => {
+                  data.nodes[selectedNodes[0]].color = e.target.value;
+                  setNodes(data.nodes);
+                }}
+                input={<OutlinedInput label={"Node Color"} />}
+                sx={{ width: "10rem" }}
+              >
+                {Object.keys(colorMap).map((value) => (
+                  <MenuItem key={value} value={value}>
+                    {value}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+        )}
     </div>
   );
   function shallowEqualityCheck(obj1, obj2) {
@@ -1112,39 +1168,42 @@ const GraphComponent = (props, ref) => {
                   >
                     <Circle
                       radius={
-                        isDragging === nodeKey
-                          ? RADIUS * 1.2
-                          : hoveredNode === nodeKey
-                            ? 1.1 * RADIUS
-                            : RADIUS
+                        // isDragging === nodeKey
+                        //   ? RADIUS * 1.2
+                        //   : hoveredNode === nodeKey
+                        //     ? 1.1 * RADIUS
+                        //     : RADIUS
+                        RADIUS
                       }
                       className={hoveredNode === nodeKey ? "node-hovered" : ""}
                       fill={
+                        // selectedNodes.includes(nodeKey)
+                        //   ? "#ec3965"
+                        //   : hoveredNode === nodeKey || isDragging === nodeKey
+                        //     ? "#38bf27"
+                        //     : "#a4a3a3"
+                        colorMap[data.nodes[nodeKey].color]
+                      }
+                      // opacity={0.5}
+                      stroke={
                         selectedNodes.includes(nodeKey)
                           ? "#ec3965"
                           : hoveredNode === nodeKey || isDragging === nodeKey
                             ? "#38bf27"
                             : "#a4a3a3"
                       }
-                      // opacity={0.5}
-                      stroke={
-                        selectedNodes.includes(nodeKey)
-                          ? ""
-                          : hoveredNode === nodeKey
-                            ? ""
-                            : ""
-                      }
+                      strokeEnabled={true}
                       strokeWidth={
                         selectedNodes.includes(nodeKey)
-                          ? 0
-                          : hoveredNode === nodeKey
-                            ? 0
-                            : 3
+                          ? 6
+                          : hoveredNode === nodeKey || isDragging === nodeKey
+                            ? 5
+                            : 0
                       }
                       brightness={
                         selectedNodes.includes(nodeKey)
                           ? 0.5
-                          : hoveredNode === nodeKey
+                          : hoveredNode === nodeKey || isDragging === nodeKey
                             ? 0
                             : 0.8
                       }

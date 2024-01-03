@@ -427,7 +427,10 @@ export default function ProblemSetEnv() {
   };
 
   const updateCanvas = async () => {
-    if (checkerCanvas == null)
+    if (
+      checkerCanvas == null ||
+      JSON.stringify(backup) === JSON.stringify(checkerCanvas)
+    )
       setCheckerCanvas(JSON.parse(JSON.stringify(input)));
 
     setBackup(JSON.parse(JSON.stringify(input)));

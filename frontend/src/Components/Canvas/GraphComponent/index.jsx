@@ -47,6 +47,12 @@ const canvasHeight = 1080;
 
 Modal.setAppElement("#root");
 
+const colorMap = {
+  Default: "#a4a3a3",
+  Red: "#ff0000",
+  Green: "#00ff00",
+  Blue: "#0000ff",
+};
 const GraphComponent = (props, ref) => {
   const [userType, setUserType] = useState(0);
   const [edgeIndex, setEdgeIndex] = useState(0);
@@ -402,7 +408,7 @@ const GraphComponent = (props, ref) => {
 
           setNodes({
             ...data.nodes,
-            [nodeIndex]: { x: x, y: y, label: nodeIndex },
+            [nodeIndex]: { x: x, y: y, label: nodeIndex, color: "Default" },
           });
           setNodeIndex(nodeIndex + 1);
 
@@ -592,6 +598,7 @@ const GraphComponent = (props, ref) => {
       x: clampedX,
       y: clampedY,
       label: updatedNodes[nodeKey].label,
+      color: updatedNodes[nodeKey].color,
     };
 
     setNodes(updatedNodes);
@@ -802,7 +809,7 @@ const GraphComponent = (props, ref) => {
             </InputLabel>
             <OutlinedInput
               required
-              placeholder="# of disks"
+              placeholder="Node Label"
               id="outlined-adornment"
               className="outlined-input bu-text-primary"
               type="text"
@@ -811,7 +818,34 @@ const GraphComponent = (props, ref) => {
                 data.nodes[selectedNodes[0]].label = e.target.value;
                 setNodes(data.nodes);
               }}
-              label={"Node ID"}
+              label={"Node Label"}
+              size="small"
+            />
+          </FormControl>
+        </div>
+      )}
+
+      {props.mode === "edit" && selectedNodes.length === 1 && (
+        <div className="no-ring-input flex-center">
+          <FormControl fullWidth variant="outlined" size="small">
+            <InputLabel
+              htmlFor="outlined-adornment"
+              className="bu-text-primary"
+            >
+              Node Color
+            </InputLabel>
+            <OutlinedInput
+              required
+              placeholder="# of disks"
+              id="outlined-adornment"
+              className="outlined-input bu-text-primary"
+              type="text"
+              value={data?.nodes[selectedNodes[0]]?.color}
+              onChange={(e) => {
+                data.nodes[selectedNodes[0]].color = e.target.value;
+                setNodes(data.nodes);
+              }}
+              label={"Node Color"}
               size="small"
             />
           </FormControl>
@@ -1120,31 +1154,33 @@ const GraphComponent = (props, ref) => {
                       }
                       className={hoveredNode === nodeKey ? "node-hovered" : ""}
                       fill={
+                        // selectedNodes.includes(nodeKey)
+                        //   ? "#ec3965"
+                        //   : hoveredNode === nodeKey || isDragging === nodeKey
+                        //     ? "#38bf27"
+                        //     : "#a4a3a3"
+                        colorMap[data.nodes[nodeKey].color]
+                      }
+                      // opacity={0.5}
+                      stroke={
                         selectedNodes.includes(nodeKey)
                           ? "#ec3965"
                           : hoveredNode === nodeKey || isDragging === nodeKey
                             ? "#38bf27"
                             : "#a4a3a3"
                       }
-                      // opacity={0.5}
-                      stroke={
-                        selectedNodes.includes(nodeKey)
-                          ? ""
-                          : hoveredNode === nodeKey
-                            ? ""
-                            : ""
-                      }
+                      strokeEnabled={true}
                       strokeWidth={
                         selectedNodes.includes(nodeKey)
-                          ? 0
-                          : hoveredNode === nodeKey
-                            ? 0
-                            : 3
+                          ? 5
+                          : hoveredNode === nodeKey || isDragging === nodeKey
+                            ? 5
+                            : 0
                       }
                       brightness={
                         selectedNodes.includes(nodeKey)
                           ? 0.5
-                          : hoveredNode === nodeKey
+                          : hoveredNode === nodeKey || isDragging === nodeKey
                             ? 0
                             : 0.8
                       }

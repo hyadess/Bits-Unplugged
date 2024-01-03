@@ -26,7 +26,9 @@ import {
   FormControl,
   IconButton,
   InputLabel,
+  MenuItem,
   OutlinedInput,
+  Select,
   Tooltip,
 } from "@mui/material";
 import Cookies from "universal-cookie";
@@ -645,7 +647,13 @@ const GraphComponent = (props, ref) => {
       setNodeIndex(0);
     }
   };
-
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxWidth: "5rem",
+      },
+    },
+  };
   const Header = () => (
     <div className="top-2 left-2 absolute flex flex-row gap-2 z-10">
       {(props.mode === "edit" ||
@@ -749,7 +757,7 @@ const GraphComponent = (props, ref) => {
       {(props.mode === "edit" ||
         props?.controlParams?.edit_weight?.value === true) &&
         data?.selectedEdges.length === 1 && (
-          <div className="no-ring-input flex-center">
+          <div className="no-ring-input flex-center p-1">
             <FormControl fullWidth variant="outlined" size="small">
               <InputLabel
                 htmlFor="outlined-adornment"
@@ -780,6 +788,7 @@ const GraphComponent = (props, ref) => {
                 }}
                 label={"Edge weight"}
                 size="small"
+                sx={{ width: "10rem" }}
               />
             </FormControl>
           </div>
@@ -804,7 +813,7 @@ const GraphComponent = (props, ref) => {
           </IconButton>
         )}
       {props.mode === "edit" && selectedNodes.length === 1 && (
-        <div className="no-ring-input flex-center">
+        <div className="no-ring-input flex-center p-1">
           <FormControl fullWidth variant="outlined" size="small">
             <InputLabel
               htmlFor="outlined-adornment"
@@ -825,37 +834,45 @@ const GraphComponent = (props, ref) => {
               }}
               label={"Node Label"}
               size="small"
+              sx={{ width: "10rem" }}
             />
           </FormControl>
         </div>
       )}
 
-      {props.mode === "edit" && selectedNodes.length === 1 && (
-        <div className="no-ring-input flex-center">
-          <FormControl fullWidth variant="outlined" size="small">
-            <InputLabel
-              htmlFor="outlined-adornment"
-              className="bu-text-primary"
-            >
-              Node Color
-            </InputLabel>
-            <OutlinedInput
-              required
-              placeholder="# of disks"
-              id="outlined-adornment"
-              className="outlined-input bu-text-primary"
-              type="text"
-              value={data?.nodes[selectedNodes[0]]?.color}
-              onChange={(e) => {
-                data.nodes[selectedNodes[0]].color = e.target.value;
-                setNodes(data.nodes);
-              }}
-              label={"Node Color"}
-              size="small"
-            />
-          </FormControl>
-        </div>
-      )}
+      {(props.mode === "edit" ||
+        props?.controlParams?.edit_color?.value === true) &&
+        selectedNodes.length === 1 && (
+          <div className="no-ring-input flex-center p-1">
+            <FormControl fullWidth variant="outlined" size="small">
+              <InputLabel
+                htmlFor="outlined-adornment"
+                className="bu-text-primary"
+              >
+                Node Color
+              </InputLabel>
+              <Select
+                fullWidth
+                // required
+                id="outlined-adornment"
+                className="outlined-input bu-text-primary"
+                value={data?.nodes[selectedNodes[0]]?.color}
+                onChange={(e) => {
+                  data.nodes[selectedNodes[0]].color = e.target.value;
+                  setNodes(data.nodes);
+                }}
+                input={<OutlinedInput label={"Node Color"} />}
+                sx={{ width: "10rem" }}
+              >
+                {Object.keys(colorMap).map((value) => (
+                  <MenuItem key={value} value={value}>
+                    {value}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+        )}
     </div>
   );
   function shallowEqualityCheck(obj1, obj2) {

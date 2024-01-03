@@ -49,9 +49,14 @@ Modal.setAppElement("#root");
 
 const colorMap = {
   Default: "#a4a3a3",
-  Red: "#ff0000",
-  Green: "#00ff00",
-  Blue: "#0000ff",
+  Red: "#ec3965",
+  Green: "#38bf27",
+  Blue: "#6488ea",
+  Yellow: "#fff44f",
+  Purple: "#d648d7",
+  Pink: "#ff69b4",
+  Orange: "#ff8c00",
+  Brown: "#635147",
 };
 const GraphComponent = (props, ref) => {
   const [userType, setUserType] = useState(0);
@@ -1146,11 +1151,12 @@ const GraphComponent = (props, ref) => {
                   >
                     <Circle
                       radius={
-                        isDragging === nodeKey
-                          ? RADIUS * 1.2
-                          : hoveredNode === nodeKey
-                            ? 1.1 * RADIUS
-                            : RADIUS
+                        // isDragging === nodeKey
+                        //   ? RADIUS * 1.2
+                        //   : hoveredNode === nodeKey
+                        //     ? 1.1 * RADIUS
+                        //     : RADIUS
+                        RADIUS
                       }
                       className={hoveredNode === nodeKey ? "node-hovered" : ""}
                       fill={
@@ -1172,7 +1178,7 @@ const GraphComponent = (props, ref) => {
                       strokeEnabled={true}
                       strokeWidth={
                         selectedNodes.includes(nodeKey)
-                          ? 5
+                          ? 6
                           : hoveredNode === nodeKey || isDragging === nodeKey
                             ? 5
                             : 0

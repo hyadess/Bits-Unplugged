@@ -5,7 +5,7 @@ import ProblemController from "../controller/problemController";
 import { showToast } from "../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
-import monaco_theme from "../Components/themes/my_theme.json";
+import monaco_theme from "../components/themes/my_theme.json";
 // loader.init().then((monaco) => {
 //   // fetch("../Components/themes/Monokai.json")
 //   //   .then((data) => data.json())

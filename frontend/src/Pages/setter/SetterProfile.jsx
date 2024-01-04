@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Title from "../../Components/Title";
+import Title from "../../components/Title";
 export default function SetterProfile() {
   const navigator = useNavigate();
   const switchPath = (pathname) => {

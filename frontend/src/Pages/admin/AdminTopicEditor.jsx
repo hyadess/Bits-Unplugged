@@ -4,14 +4,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 import Cookies from "universal-cookie";
-import CustomCard from "../../Components/Cards/CustomCard";
-import CardContainer from "../../Components/Containers/CardContainer";
-import Title from "../../Components/Title";
+import CustomCard from "../../components/Cards/CustomCard";
+import CardContainer from "../../components/Containers/CardContainer";
+import Title from "../../components/Title";
 
 import TopicController from "../../controller/topicController";
-import Layout4 from "../../Components/Layouts/Layout4";
-import AdminNavbar from "../../Components/navbar/AdminNavbar";
-import { TextField, TextField2 } from "../../Components/InputFields";
+import Layout4 from "../../components/Layouts/Layout4";
+import AdminNavbar from "../../components/navbar/AdminNavbar";
+import { TextField, TextField2 } from "../../components/InputFields";
 import { setLoading } from "../../App";
 const topicController = new TopicController();
 

@@ -4,8 +4,8 @@ import AuthController from "../../controller/authController";
 import { toast } from "react-toastify";
 import { CircularProgress, Switch } from "@mui/material";
 import { useSearchParams, createSearchParams } from "react-router-dom";
-import Banner from "../../Components/Banner";
-import Layout1 from "../../Components/Layouts/Layout1";
+import Banner from "../../components/Banner";
+import Layout1 from "../../components/Layouts/Layout1";
 import { setLoading } from "../../App";
 const authController = new AuthController();
 

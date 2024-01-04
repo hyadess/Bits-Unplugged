@@ -1,12 +1,12 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
-import ProblemSetCard from "../../Components/Cards/ProblemSetCard";
+import ProblemSetCard from "../../components/Cards/ProblemSetCard";
 import ProblemController from "../../controller/problemController";
 import TopicController from "../../controller/topicController";
-import TableContainer from "../../Components/Containers/TableContainer";
+import TableContainer from "../../components/Containers/TableContainer";
 import CancelIcon from "@mui/icons-material/Cancel";
 
-import Title from "../../Components/Title";
+import Title from "../../components/Title";
 import AddIcon from "@mui/icons-material/Add";
 import { setLoading } from "../../App";
 import SetterProblems from "./SetterProblems";

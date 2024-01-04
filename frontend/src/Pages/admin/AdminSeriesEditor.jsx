@@ -5,22 +5,22 @@ import axios from "axios";
 
 import Cookies from "universal-cookie";
 
-import Title from "../../Components/Title";
+import Title from "../../components/Title";
 
-import Layout4 from "../../Components/Layouts/Layout4";
-import AdminNavbar from "../../Components/navbar/AdminNavbar";
+import Layout4 from "../../components/Layouts/Layout4";
+import AdminNavbar from "../../components/navbar/AdminNavbar";
 import {
   SelectionField2,
   TextField,
   TextField2,
-} from "../../Components/InputFields";
+} from "../../components/InputFields";
 
 import TopicController from "../../controller/topicController";
 import ProblemController from "../../controller/problemController";
 import SeriesController from "../../controller/seriesController";
 import { setLoading } from "../../App";
 import { TableContainer } from "@mui/material";
-import ProblemCard from "../../Components/Cards/ProblemCard";
+import ProblemCard from "../../components/Cards/ProblemCard";
 
 const topicController = new TopicController();
 const problemController = new ProblemController();

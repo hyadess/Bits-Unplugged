@@ -62,7 +62,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "both": "concurrently \"npm run start\" \"nodemon ../backend/index.js\""
   },
   "eslintConfig": {
     "extends": [
@@ -85,6 +86,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.16",
     "babel-plugin-root-import": "^6.6.0",
+    "concurrently": "^8.2.2",
     "postcss": "^8.4.32",
     "prettier": "^3.1.1",
     "prettier-plugin-tailwindcss": "^0.5.10",

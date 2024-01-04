@@ -86,7 +86,10 @@ export default function ProblemsCanvas() {
     // if (result.success)
     {
       setInput(JSON.parse(JSON.stringify(backup)));
-      setResetTrigger(!resetTrigger);
+      canvasRef.current !== undefined &&
+      canvasRef.current !== null &&
+      canvasRef.current.handleReset(JSON.parse(JSON.stringify(backup)));
+      // setResetTrigger(!resetTrigger);
     }
   };
   const calculateNumberOfLines = (content) => {

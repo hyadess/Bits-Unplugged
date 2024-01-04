@@ -8,8 +8,8 @@ import MDEditor from "@uiw/react-md-editor";
 import katex from "katex";
 import "katex/dist/katex.css";
 import { getCodeString } from "rehype-rewrite";
-import MarkdownEditor from "../../Components/Markdown/MarkdownEditor";
-import MarkdownPreview from "../../Components/Markdown/MarkdownPreview";
+import MarkdownEditor from "../../components/Markdown/MarkdownEditor";
+import MarkdownPreview from "../../components/Markdown/MarkdownPreview";
 const problemController = new ProblemController();
 function ProblemStatement(props) {
   const { prob_id } = useParams();

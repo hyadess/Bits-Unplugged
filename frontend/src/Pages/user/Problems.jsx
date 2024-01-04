@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ProblemController from "../../controller/problemController";
 
-import ProblemCard from "../../Components/Cards/ProblemCard";
-import TableContainer from "../../Components/Containers/TableContainer";
-import Title from "../../Components/Title";
+import ProblemCard from "../../components/Cards/ProblemCard";
+import TableContainer from "../../components/Containers/TableContainer";
+import Title from "../../components/Title";
 import { setLoading } from "../../App";
 // import { Switch } from "@mui/material";
 // import { useState } from 'react'

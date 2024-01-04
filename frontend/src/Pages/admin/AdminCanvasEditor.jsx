@@ -3,21 +3,21 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Editor from "@monaco-editor/react";
 import Cookies from "universal-cookie";
-import CustomCard from "../../Components/Cards/CustomCard";
-import CardContainer from "../../Components/Containers/CardContainer";
+import CustomCard from "../../components/Cards/CustomCard";
+import CardContainer from "../../components/Containers/CardContainer";
 
-import Title from "../../Components/Title";
+import Title from "../../components/Title";
 import AddIcon from "@mui/icons-material/Add";
 
-import Layout4 from "../../Components/Layouts/Layout4";
-import AdminNavbar from "../../Components/navbar/AdminNavbar";
+import Layout4 from "../../components/Layouts/Layout4";
+import AdminNavbar from "../../components/navbar/AdminNavbar";
 import {
   SelectionField,
   SelectionField2,
   TextArea2,
   TextField,
   TextField2,
-} from "../../Components/InputFields";
+} from "../../components/InputFields";
 
 import TopicController from "../../controller/topicController";
 

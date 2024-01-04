@@ -1,5 +1,5 @@
-import Layout4 from "../../Components/Layouts/Layout4";
-import AdminNavbar from "../../Components/navbar/AdminNavbar";
+import Layout4 from "../../components/Layouts/Layout4";
+import AdminNavbar from "../../components/navbar/AdminNavbar";
 
 const AdminSetters = () => {
   return (

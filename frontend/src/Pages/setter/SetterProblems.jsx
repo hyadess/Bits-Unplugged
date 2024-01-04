@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import ProblemSetCard from "../../Components/Cards/ProblemSetCard";
+import ProblemSetCard from "../../components/Cards/ProblemSetCard";
 import ProblemController from "../../controller/problemController";
 import TopicController from "../../controller/topicController";
-import TableContainer from "../../Components/Containers/TableContainer";
+import TableContainer from "../../components/Containers/TableContainer";
 import CancelIcon from "@mui/icons-material/Cancel";
 
-import Title from "../../Components/Title";
+import Title from "../../components/Title";
 import AddIcon from "@mui/icons-material/Add";
 import { setLoading } from "../../App";
+import CardContainer from "../../components/Containers/CardContainer";
 
 const problemController = new ProblemController();
 const topicController = new TopicController();
@@ -37,7 +38,7 @@ const SetterProblems = () => {
   }, []);
 
   return (
-    <TableContainer>
+    <CardContainer col={2}>
       {problemList
         .sort((a, b) => a.problem_id - b.problem_id)
         .map((prob, index) => (
@@ -48,9 +49,11 @@ const SetterProblems = () => {
             name={prob.title}
             deleteAction={deleteAProblem}
             is_live={prob.is_live}
+            timestamp={prob.last_updated}
+            canvas={prob.canvas_name}
           />
         ))}
-    </TableContainer>
+    </CardContainer>
   );
 };
 

@@ -3,9 +3,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SeriesController from "../../controller/seriesController";
 import Cookies from "universal-cookie";
-import CustomCard from "../../Components/Cards/CustomCard";
-import CardContainer from "../../Components/Containers/CardContainer";
-import Title from "../../Components/Title";
+import CustomCard from "../../components/Cards/CustomCard";
+import CardContainer from "../../components/Containers/CardContainer";
+import Title from "../../components/Title";
 import { setLoading } from "../../App";
 const seriesController = new SeriesController();
 

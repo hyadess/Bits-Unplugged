@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Footer from "../Components/Footer";
-import TeamCard from "../Components/Cards/TeamCard";
+import Footer from "../components/Footer";
+import TeamCard from "../components/Cards/TeamCard";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-import Banner from "../Components/Banner";
-import ImageLoader from "../Components/ImageLoader";
+import Banner from "../components/Banner";
+import ImageLoader from "../components/ImageLoader";
 import { setLoading } from "../App";
 
 const Home = () => {

@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import TopicController from "../../controller/topicController";
-import CustomCard from "../../Components/Cards/CustomCard";
-import CardContainer from "../../Components/Containers/CardContainer";
+import CustomCard from "../../components/Cards/CustomCard";
+import CardContainer from "../../components/Containers/CardContainer";
 import Cookies from "universal-cookie";
-import Title from "../../Components/Title";
-import TopicCard from "../../Components/Cards/TopicCard";
+import Title from "../../components/Title";
+import TopicCard from "../../components/Cards/TopicCard";
 import { setLoading } from "../../App";
 const topicController = new TopicController();
 

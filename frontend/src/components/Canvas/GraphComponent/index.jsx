@@ -282,6 +282,7 @@ const GraphComponent = (props, ref) => {
   let clickTimer = null;
 
   const handleMouseMove = (e) => {
+    console.log("Move")
     if (
       e.target &&
       (e.target.getClassName() === "Text" ||
@@ -565,6 +566,7 @@ const GraphComponent = (props, ref) => {
       props.mode === "edit" || props?.controlParams?.drag_node?.value === true
     );
   };
+  
   const handleNodeDrag = (nodeKey, e) => {
     console.log("Dragging");
     if (
@@ -627,6 +629,8 @@ const GraphComponent = (props, ref) => {
       duration: 0.5,
     });
   };
+
+  
   const findMaxKey = (myHashmap) => {
     const keys = Object.keys(myHashmap);
     if (keys.length === 0) {

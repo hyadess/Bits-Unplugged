@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import CustomCard from "../../Components/Cards/CustomCard";
-import CardContainer from "../../Components/Containers/CardContainer";
+import CustomCard from "../../components/Cards/CustomCard";
+import CardContainer from "../../components/Containers/CardContainer";
 import Cookies from "universal-cookie";
-import Title from "../../Components/Title";
-import TopicCard from "../../Components/Cards/TopicCard";
-import AdminNavbar from "../../Components/navbar/AdminNavbar";
-import Layout4 from "../../Components/Layouts/Layout4";
-import ProblemCard from "../../Components/Cards/ProblemCard";
-import TableContainer from "../../Components/Containers/TableContainer";
+import Title from "../../components/Title";
+import TopicCard from "../../components/Cards/TopicCard";
+import AdminNavbar from "../../components/navbar/AdminNavbar";
+import Layout4 from "../../components/Layouts/Layout4";
+import ProblemCard from "../../components/Cards/ProblemCard";
+import TableContainer from "../../components/Containers/TableContainer";
 
 import ProblemController from "../../controller/problemController";
 const problemController = new ProblemController();

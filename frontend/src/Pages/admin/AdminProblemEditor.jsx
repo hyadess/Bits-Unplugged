@@ -3,13 +3,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Cookies from "universal-cookie";
-import Title from "../../Components/Title";
+import Title from "../../components/Title";
 
 import {
   SelectionField2,
   TextField,
   TextField2,
-} from "../../Components/InputFields";
+} from "../../components/InputFields";
 
 import TopicController from "../../controller/topicController";
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, useBeforeUnload } from "react-router-dom";
-import CanvasContainer from "../../Components/Canvas/CanvasContainer";
+import CanvasContainer from "../../components/Canvas/CanvasContainer";
 import SolutionChecker from "../SolutionChecker";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -8,11 +8,11 @@ import Tab from "@mui/material/Tab";
 import Tooltip from "@mui/material/Tooltip";
 import Zoom from "@mui/material/Zoom";
 import ProblemController from "../../controller/problemController";
-import ProbSetTab from "../../Components/ProbSetTab";
+import ProbSetTab from "../../components/ProbSetTab";
 import ProblemStatement from "./Statement";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
-import Confirmation from "../../Components/Confirmation";
+import Confirmation from "../../components/Confirmation";
 
 import {
   faExpand,
@@ -21,7 +21,7 @@ import {
   faUpload,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SelectionField, SelectionField2 } from "../../Components/InputFields";
+import { SelectionField, SelectionField2 } from "../../components/InputFields";
 
 import CanvasController from "../../controller/canvasController";
 import { setLoading } from "../../App";

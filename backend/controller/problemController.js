@@ -33,6 +33,30 @@ class ProblemController extends Controller {
     this.handleResponse(result, res);
   };
 
+  //new for souvik......................
+  getAllUnsolvedProblems = async (req, res) => {
+    let result = await problemRepository.getAllUnsolvedProblems(
+      req.body.user_id
+    );
+    this.handleResponse(result, res);
+  };
+  //new for souvik......................
+  getAllUnsolvedAndAttemptedProblems = async (req, res) => {
+    let result = await problemRepository.getAllUnsolvedAndAttemptedProblems(
+      req.body.user_id
+    );
+    this.handleResponse(result, res);
+  };
+  //new for souvik......................
+  getRecommendations = async (req, res) => {
+    let result = await problemRepository.getRecommendations(
+      req.body.user_id
+    );
+    this.handleResponse(result, res);
+  };
+
+
+
   getProblemsByTopic = async (req, res) => {
     let result = await problemRepository.getProblemsByTopic(
       req.params.topic_id

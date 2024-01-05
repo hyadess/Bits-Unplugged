@@ -10,6 +10,11 @@ router.get("/", problemController.getAllProblems);
 router.get("/submitted", problemController.getSubmittedProblems);
 router.get("/by_series/:series_id", problemController.getProblemsBySeries);
 router.get("/by_series/unsolved/:series_id", problemController.getUnsolvedProblemsBySeries);
+
+router.get("/unsolved",problemController.getAllUnsolvedProblems); //new for souvik
+router.get("/unsolved/attempted",problemController.getAllUnsolvedAndAttemptedProblems); //new for souvik..
+router.get("/recommendation",problemController.getRecommendations) // new for souvik.....
+
 router.get("/by_topic/:topic_id", problemController.getProblemsByTopic);
 // router.post("/:problem_id/rate", problemController.rateProblem); // later
 

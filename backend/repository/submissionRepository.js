@@ -42,11 +42,11 @@ class SubmissionRepository extends Repository{
 
     submitSolution = async (user_id, problem_id,data) => {
         const query = `
-          INSERT INTO Submissions (time_stamp, verdict, problem_id,user_id)
-          VALUES ($1, $2, $3, $4)
+          INSERT INTO Submissions (time_stamp, verdict, problem_id,user_id,json_data)
+          VALUES ($1, $2, $3, $4, $5)
           RETURNING submission_id;
           `;
-        const params = [Date.now(),data.verdict,problem_id,user_id];
+        const params = [Date.now(),data.verdict,problem_id,user_id,data.ansJson];
         const result = await this.query(query, params);
         return result;
     };

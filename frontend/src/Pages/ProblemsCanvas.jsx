@@ -102,7 +102,7 @@ export default function ProblemsCanvas() {
       input
     );
     console.log("output " + res.output);
-    submissionController.submitSolution(res.output, id);
+    submissionController.submitSolution(input,res.output, id);
     if (res.output === "Accepted")
       userActivityController.updateOnSuccessfulAttempt(id);
     else userActivityController.updateOnFailedAttempt(id);

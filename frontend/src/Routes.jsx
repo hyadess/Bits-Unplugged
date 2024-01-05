@@ -8,33 +8,33 @@ import {
   useNavigate,
 } from "react-router-dom";
 import Cookies from "universal-cookie";
-import Home from "./Pages/Home";
-import Problems from "./Pages/user/Problems";
-import Login from "./Pages/auth/Login";
-import Signup from "./Pages/auth/Signup";
-import ProblemsCanvas from "./Pages/ProblemsCanvas";
-import Topics from "./Pages/user/Topics";
-import Series from "./Pages/user/Series";
-import ProblemSet from "./Pages/setter/ProblemSet";
+import Home from "./pages/Home";
+import Problems from "./pages/user/Problems";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
+import ProblemsCanvas from "./pages/ProblemsCanvas";
+import Topics from "./pages/user/Topics";
+import Series from "./pages/user/Series";
+import ProblemSet from "./pages/setter/ProblemSet";
 import GraphComponent from "./components/Canvas/GraphComponent";
 import CanvasContainer from "./components/Canvas/CanvasContainer";
 
-import ProblemSetEnv from "./Pages/setter/ProblemSetEnv";
-import SolutionChecker from "./Pages/SolutionChecker";
+import ProblemSetEnv from "./pages/setter/ProblemSetEnv";
+import SolutionChecker from "./pages/SolutionChecker";
 import PublicNavbar from "./components/navbar/PublicNavbar";
 import Layout2 from "./components/Layouts/Layout2";
-import AdminLogin from "./Pages/auth/AdminLogin";
-import AdminHome from "./Pages/admin/AdminHome";
-import AdminTopics from "./Pages/admin/AdminTopics";
-import AdminSeries from "./Pages/admin/AdminSeries";
-import AdminProblems from "./Pages/admin/AdminProblems";
-import AdminTopicEditor from "./Pages/admin/AdminTopicEditor";
-import AdminSeriesEditor from "./Pages/admin/AdminSeriesEditor";
-import AdminProblemEditor from "./Pages/admin/AdminProblemEditor";
-import AdminCanvasList from "./Pages/admin/AdminCanvasList";
-import AdminCanvasEditor from "./Pages/admin/AdminCanvasEditor";
-import AdminContests from "./Pages/admin/AdminContests";
-import AdminSetters from "./Pages/admin/AdminSetters";
+import AdminLogin from "./pages/auth/AdminLogin";
+import AdminHome from "./pages/admin/AdminHome";
+import AdminTopics from "./pages/admin/AdminTopics";
+import AdminSeries from "./pages/admin/AdminSeries";
+import AdminProblems from "./pages/admin/AdminProblems";
+import AdminTopicEditor from "./pages/admin/AdminTopicEditor";
+import AdminSeriesEditor from "./pages/admin/AdminSeriesEditor";
+import AdminProblemEditor from "./pages/admin/AdminProblemEditor";
+import AdminCanvasList from "./pages/admin/AdminCanvasList";
+import AdminCanvasEditor from "./pages/admin/AdminCanvasEditor";
+import AdminContests from "./pages/admin/AdminContests";
+import AdminSetters from "./pages/admin/AdminSetters";
 
 import PrivateNavbar from "./components/navbar/PrivateNavbar";
 import AdminNavbar from "./components/navbar/AdminNavbar";
@@ -42,11 +42,11 @@ import LayoutMain from "./components/Layouts/LayoutMain";
 
 import Navbar from "./components/Navbar";
 
-import ProblemsSubmissions from "./Pages/ProblemsSubmissions";
-import SetterProfile from "./Pages/setter/SetterProfile";
-import Profile from "./Pages/user/Profille";
-import Contests from "./Pages/user/Contests";
-import SetterContests from "./Pages/setter/SetterContests";
+import ProblemsSubmissions from "./pages/ProblemsSubmissions";
+import SetterProfile from "./pages/setter/SetterProfile";
+import Profile from "./pages/user/Profille";
+import Contests from "./pages/user/Contests";
+import SetterContests from "./pages/setter/SetterContests";
 const cookies = new Cookies();
 
 const Private = () => {

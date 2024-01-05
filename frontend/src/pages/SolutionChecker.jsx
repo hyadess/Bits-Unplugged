@@ -4,8 +4,15 @@ import Editor, { loader, useMonaco } from "@monaco-editor/react";
 import ProblemController from "../controller/problemController";
 import { showToast } from "../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faPlay } from "@fortawesome/free-solid-svg-icons";
 import monaco_theme from "../components/themes/my_theme.json";
+import RotateLeftIcon from "@mui/icons-material/RotateLeft";
+import SaveIcon from "@mui/icons-material/Save";
+// import Confirmation from "../../components/Confirmation";
+import { Button, IconButton } from "@mui/material";
+import EyeIcon from "../components/Icons/EyeIcon";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 // loader.init().then((monaco) => {
 //   // fetch("../Components/themes/Monokai.json")
 //   //   .then((data) => data.json())
@@ -36,6 +43,7 @@ export default function SolutionChecker(props) {
   const [stringed, setStringed] = useState(null);
   const ref = useRef(null);
   const ref2 = useRef(null);
+  const [showStdOut, setShowStdOut] = useState(false);
   const navigator = useNavigate();
   const { prob_id } = useParams();
   const switchPath = (pathname) => {
@@ -77,7 +85,10 @@ export default function SolutionChecker(props) {
   }, []);
 
   useEffect(() => {
-    console.log("--->", props.stdout);
+    // console.log("--->", props.stdout.length == 0);
+    if (!showStdOut && props.stdout.length > 0) {
+      setShowStdOut(true);
+    }
   }, [props.stdout]);
   const editorMount = (editor, monaco) => {
     ref.current = editor;
@@ -105,70 +116,75 @@ export default function SolutionChecker(props) {
   //   );
   return (
     stringed && (
-      <div
-        className="flex flex-col md:flex-row gap-0 md:gap-0 w-full h-160 md:h-160 bg-[#1F2531]"
-        style={{ marginTop: "1rem" }}
-      >
-        <div className="w-full md:w-9/12 h-1/2 md:h-full bg-[#1F2531]">
-          <Editor
-            // ref={editorRef}
-            height="100%" // Set the height to 100% of its parent div
-            className="box-border border-4 border-solid border-gray-600 border-spacing-4 md:border-r-0"
-            language="javascript"
-            theme="light-theme"
-            value={props.code}
-            onMount={editorMount}
-            beforeMount={defineEditorTheme}
-            onChange={codeChanged}
-            options={{
-              inlineSuggest: true,
-              fontSize: "13px",
-              formatOnType: true,
-              autoClosingBrackets: true,
-              minimap: { enabled: false },
-              tabSize: 2,
-              // automaticLayout: true,
-            }}
-          />
-        </div>
-        <div className="flex flex-col w-full md:w-1/4 h-1/2 md:h-full gap-0">
-          <div className="flex flex-row md:flex-col gap-0 h-80% md:h-90%">
-            <div className="w-1/2 md:w-full h-full md:h-1/2">
-              <Editor
-                className="box-border border-4 border-solid border-gray-600 border-spacing-4 border-r-0 md:border-r-4 border-t-0 md:border-t-4"
-                // ref={inputRef}
-                width="100%"
-                height="100%" // Set the height to 100% of its parent div
-                language="json"
-                theme="light-theme"
-                value={stringed}
-                onMount={inputMount}
-                options={{
-                  inlineSuggest: true,
-                  fontSize: "10px",
-                  formatOnType: true,
-                  autoClosingBrackets: true,
-                  minimap: { enabled: false },
-                  lineNumbers: "off",
-                }}
-              />
-            </div>
-            <div className="w-1/2 md:w-full h-full md:h-1/2 m-0 text-left p-5 bg-[#1F2531] text-md text-white box-border border-4 border-solid border-gray-600 border-spacing-4 border-t-0 break-all overflow-scroll">
+      <div>
+        <div className="flex flex-col gap-0 md:gap-0 w-full bg-[#1F2531] mt-4 h-128">
+          <div
+            className={
+              "w-full bg-[#1F2531] " +
+              (props.stdout.length > 0 && showStdOut ? "h-2/3" : "h-full")
+            }
+          >
+            <Editor
+              // ref={editorRef}
+              height="100%" // Set the height to 100% of its parent div
+              className={
+                "box-border border-4 border-solid border-gray-600 border-spacing-4"
+              }
+              language="javascript"
+              theme="light-theme"
+              value={props.code}
+              onMount={editorMount}
+              beforeMount={defineEditorTheme}
+              onChange={codeChanged}
+              options={{
+                inlineSuggest: true,
+                fontSize: "13px",
+                formatOnType: true,
+                autoClosingBrackets: true,
+                minimap: { enabled: false },
+                tabSize: 2,
+                // automaticLayout: true,
+              }}
+            />
+          </div>
+
+          {props.stdout.length > 0 && showStdOut && (
+            <div
+              className={
+                "w-1/2 md:w-full h-1/3 m-0 text-left p-5 bg-[#1F2531] text-md text-white  break-all overflow-scroll  box-border border-4 border-solid border-gray-600 border-spacing-4 whitespace-pre border-t-0"
+              }
+            >
               {props.stdout}
             </div>
-          </div>
-          <button
-            style={{
-              float: "right",
-              borderRadius: "0px",
+          )}
+        </div>
+
+        <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
+          <div
+            className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
+            onClick={() => {
+              if (showStdOut) setShowStdOut(false);
+              else if (props.stdout.length > 0) setShowStdOut(true);
+              // setShowStdOut((prev) => !prev);
             }}
-            type="submit"
-            className="text-white font-bold rounded-lg text-lg md:text-md px-7 py-3.5 text-center bu-button-secondary w-full h-20% md:h-10% flex flex-row gap-5 justify-center items-center box-border border-4 border-solid border-gray-600 border-spacing-4 border-t-0"
+          >
+            {showStdOut ? <Visibility /> : <VisibilityOff />}
+          </div>
+
+          <div
+            className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
             onClick={handleCheckSolution}
           >
             <FontAwesomeIcon icon={faPlay} />
-            RUN
-          </button>
+            {/* RUN */}
+          </div>
+          <div
+            className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
+            onClick={async () => await props.save()}
+          >
+            {/* SAVE */}
+            <SaveIcon />
+          </div>
         </div>
       </div>
     )

@@ -13,7 +13,7 @@ import {
   Switch,
   Zoom,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+
 import SettingsIcon from "@mui/icons-material/Settings";
 import EyeIcon from "../Icons/EyeIcon";
 import { setLoading } from "../../App";
@@ -21,25 +21,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBroom } from "@fortawesome/free-solid-svg-icons";
 const canvasController = new CanvasController();
 const cookies = new Cookies();
-// const useStyles = makeStyles({
-//   select: {
-//     "&:before": {
-//       borderColor: "white",
-//     },
-//     "&:after": {
-//       borderColor: "white",
-//     },
-//     "&:not(.Mui-disabled):hover::before": {
-//       borderColor: "white",
-//     },
-//   },
-//   icon: {
-//     fill: "white",
-//   },
-//   root: {
-//     color: "white",
-//   },
-// });
 
 const CanvasContainer = (props, ref) => {
   const [DynamicComponent, setDynamicComponent] = useState(null);
@@ -57,7 +38,7 @@ const CanvasContainer = (props, ref) => {
   const [canvasMode, setCanvasMode] = useState(props.mode);
   const loadComponent = async (name) => {
     try {
-      const module = await import(`./${name}`);
+      const module = await import(/* @vite-ignore */ `./${name}`);
       return module.default;
     } catch (error) {
       console.error("Error loading component:", error);

@@ -514,7 +514,7 @@ export default function ProblemSetEnv() {
           </div>
           <div className="flex flex-row justify-end">
             <Tooltip
-              title=<h1 className="text-lg text-white">Preview</h1>
+              title={<h1 className="text-lg text-white">Preview</h1>}
               placement="top"
               // TransitionComponent={Zoom}
               arrow
@@ -534,7 +534,7 @@ export default function ProblemSetEnv() {
               </IconButton>
             </Tooltip>
             <Tooltip
-              title=<h1 className="text-lg text-white">Delete</h1>
+              title={<h1 className="text-lg text-white">Delete</h1>}
               placement="top"
               // TransitionComponent={Zoom}
               arrow
@@ -552,7 +552,7 @@ export default function ProblemSetEnv() {
             </Tooltip>
 
             <Tooltip
-              title=<h1 className="text-lg text-white">Save all</h1>
+              title={<h1 className="text-lg text-white">Save all</h1>}
               placement="top"
               // TransitionComponent={Zoom}
               arrow
@@ -576,7 +576,7 @@ export default function ProblemSetEnv() {
             </Tooltip>
 
             <Tooltip
-              title=<h1 className="text-lg text-white">Publish</h1>
+              title={<h1 className="text-lg text-white">Publish</h1>}
               placement="top"
               // TransitionComponent={Zoom}
               // enterDelay={500}

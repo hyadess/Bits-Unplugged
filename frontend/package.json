@@ -43,8 +43,7 @@
     "start": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "both": "concurrently \"npm run start\" \"nodemon ../backend/index.js\"",
-    "postinstall": "npm audit --production --audit-level=none"
+    "both": "concurrently \"npm run start\" \"nodemon ../backend/index.js\""
   },
   "eslintConfig": {
     "extends": [

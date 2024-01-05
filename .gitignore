@@ -3,3 +3,4 @@ build/
 .vscode/
 bugs.txt
 config.js
+dist/

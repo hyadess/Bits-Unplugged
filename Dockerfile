@@ -2,7 +2,8 @@
 
 FROM node:20 as client
 
-ENV NODE_ENV production
+ARG NODE_ENV
+ENV NODE_ENV $NODE_ENV
 
 WORKDIR /app/frontend/
 COPY frontend/package*.json .

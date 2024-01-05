@@ -2,6 +2,8 @@
 
 FROM node:20 as client
 
+ENV NODE_ENV production
+
 WORKDIR /app/frontend/
 COPY frontend/package*.json .
 RUN npm install --force --only=production
@@ -12,14 +14,18 @@ RUN npm run build
 
 FROM node:20
 
-RUN apt-get update && apt-get install -y redis-server
+RUN apt-get update
 WORKDIR /app/
-COPY --from=client /app/frontend/build/ ./frontend/build/
+COPY --from=client /app/frontend/dist/ ./frontend/build/
 
 WORKDIR /app/backend/
 COPY backend/package*.json .
 RUN npm install
 COPY backend/ .
 
+ARG NODE_ENV
+ENV NODE_ENV $NODE_ENV
+
+ARG PORT
 EXPOSE $PORT 
 CMD ["npm", "start"]

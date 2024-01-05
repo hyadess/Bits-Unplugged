@@ -125,7 +125,9 @@ class ProblemController extends Controller {
     const stdout = [];
     const originalConsoleLog = console.log;
     console.log = function (...args) {
-      const stringifiedArgs = args.map((arg) => JSON.stringify(arg)).join(" ");
+      const stringifiedArgs = args
+        .map((arg) => JSON.stringify(arg, null, "\t"))
+        .join(" ");
       stdout.push(stringifiedArgs);
     };
 

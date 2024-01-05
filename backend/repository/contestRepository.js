@@ -27,7 +27,7 @@ class ContestRepository extends Repository{
         SELECT C.*, CS.role as role
         FROM Contest C
         JOIN Contestsetter CS ON C.contest_id = CS.contest_id
-        WHERE cs.setter_id = $1;
+        WHERE CS.setter_id = $1;
 
         `;
         const params = [author_id];
@@ -40,7 +40,7 @@ class ContestRepository extends Repository{
         SELECT C.*, CS.role as role
         FROM Contest C
         JOIN Contestsetter CS ON C.contest_id = CS.contest_id
-        WHERE cs.setter_id = $1 AND CS.role = 'owner';
+        WHERE CS.setter_id = $1 AND CS.role = 'owner';
 
         `;
         const params = [author_id];

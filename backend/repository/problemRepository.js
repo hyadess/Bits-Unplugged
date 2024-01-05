@@ -87,7 +87,6 @@ class ProblemsRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
-
   //new for souvik....................
   getAllUnsolvedAndAttemptedProblems = async (user_id) => {
     const query = `
@@ -106,13 +105,11 @@ class ProblemsRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
-
   //new for souvik.........................
   getRecommendations =async (user_id)=>{
     //will change it later................................
     return await this.getAllUnsolvedAndAttemptedProblems(user_id);
   }
-
 
 
   getProblemsByTopic = async (topic_id) => {

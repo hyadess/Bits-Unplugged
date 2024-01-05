@@ -38,7 +38,7 @@ const CanvasContainer = (props, ref) => {
   const [canvasMode, setCanvasMode] = useState(props.mode);
   const loadComponent = async (name) => {
     try {
-      const module = await import(/* @vite-ignore */ `./${name}`);
+      const module = await import(/* @vite-ignore */ `./${name}/index.jsx`);
       return module.default;
     } catch (error) {
       console.error("Error loading component:", error);

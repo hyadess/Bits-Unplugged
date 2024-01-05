@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTag, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
-import { getTimeStamp } from "../../service/DateUtils";
+import { getTimeStamp } from "../../utils/DateUtil";
 const problemController = new ProblemController();
 const ProblemSetCard = ({
   id,

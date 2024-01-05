@@ -17,7 +17,7 @@ FROM node:20
 
 RUN apt-get update
 WORKDIR /app/
-COPY --from=client /app/frontend/dist/ ./frontend/build/
+COPY --from=client /app/frontend/build/ ./frontend/build/
 
 WORKDIR /app/backend/
 COPY backend/package*.json .

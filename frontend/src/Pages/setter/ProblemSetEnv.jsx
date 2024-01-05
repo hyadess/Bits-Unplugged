@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, useBeforeUnload } from "react-router-dom";
-import CanvasContainer from "../../Components/Canvas/CanvasContainer";
+import CanvasContainer from "../../components/Canvas/CanvasContainer";
 import SolutionChecker from "../SolutionChecker";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -8,11 +8,11 @@ import Tab from "@mui/material/Tab";
 import Tooltip from "@mui/material/Tooltip";
 import Zoom from "@mui/material/Zoom";
 import ProblemController from "../../controller/problemController";
-import ProbSetTab from "../../Components/ProbSetTab";
+import ProbSetTab from "../../components/ProbSetTab";
 import ProblemStatement from "./Statement";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
-import Confirmation from "../../Components/Confirmation";
+import Confirmation from "../../components/Confirmation";
 
 import {
   faExpand,
@@ -21,10 +21,12 @@ import {
   faUpload,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SelectionField, SelectionField2 } from "../../Components/InputFields";
+import { SelectionField, SelectionField2 } from "../../components/InputFields";
 
 import CanvasController from "../../controller/canvasController";
 import { setLoading } from "../../App";
+import { IconButton } from "@mui/material";
+import Send from "@mui/icons-material/Send";
 // import TabContext from "@mui/lab/TabContext";
 // import TabList from "@mui/lab/TabList";
 // import TabPanel from "@mui/lab/TabPanel";
@@ -113,7 +115,6 @@ const SolutionCheckerTab = ({
   code,
   setCode,
   input,
-  handleCheckSolution,
   canvasId,
   checkerCanvas,
   setCheckerCanvas,
@@ -128,6 +129,25 @@ const SolutionCheckerTab = ({
 }) => {
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
+  const [test, setTest] = useState(null);
+  const handleCheckSolution = async () => {
+    try {
+      const result = await problemController.checkSolution(
+        code,
+        checkerCanvas,
+        test
+      );
+      console.log(result);
+      setOutput(result.output);
+      setStdout(result.stdout);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    setTest(JSON.parse(JSON.stringify(input)));
+  }, [input]);
+
   const resetChecker = () => {
     setCheckerCanvas(JSON.parse(JSON.stringify(input)));
     canvasRef.current !== undefined &&
@@ -135,6 +155,7 @@ const SolutionCheckerTab = ({
       canvasRef.current.handleReset(JSON.parse(JSON.stringify(input)));
   };
   const canvasRef = useRef();
+  const testRef = useRef();
   return (
     <>
       <SelectionField
@@ -201,6 +222,44 @@ const SolutionCheckerTab = ({
           Save
         </Button>
       </div>
+      <div className="bu-bg-title text-white p-5 rounded-md text-2xl font-bold">
+        Test Solution Checker
+      </div>
+      <CanvasContainer
+        id={canvasId}
+        input={test}
+        setInput={setTest}
+        ref={testRef}
+        mode="preview"
+        params={params}
+        setParams={setParams}
+        uiParams={uiParams}
+        setUiParams={setUiParams}
+        controlParams={controlParams}
+        setControlParams={setControlParams}
+      />
+      <div className="flex flex-row justify-between py-5">
+        <Button
+          variant="contained"
+          color="success"
+          onClick={() => {
+            setTest(input);
+            // canvasRef.current.handleReset(); // Call this after reset
+          }}
+          startIcon={
+            <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+          }
+        >
+          Reset
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleCheckSolution}
+          endIcon={<Send sx={{ fontSize: "2rem", color: "white" }} />}
+        >
+          Submit
+        </Button>
+      </div>
     </>
   );
 };
@@ -262,16 +321,6 @@ export default function ProblemSetEnv() {
 
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
-
-  const handleCheckSolution = async () => {
-    try {
-      const result = await problemController.checkSolution(code, input);
-      setOutput(result.output);
-      setStdout(result.stdout);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   // useBeforeUnload((e) => {
   //   console.log("Route changed");
@@ -378,8 +427,13 @@ export default function ProblemSetEnv() {
   };
 
   const updateCanvas = async () => {
-    // if (changeCanvas == null)
-    //   setCheckerCanvas(JSON.parse(JSON.stringify(input)));
+    if (
+      checkerCanvas == null ||
+      JSON.stringify(backup) === JSON.stringify(checkerCanvas)
+    )
+      setCheckerCanvas(JSON.parse(JSON.stringify(input)));
+
+    setBackup(JSON.parse(JSON.stringify(input)));
     const res = await problemController.updateCanvas(
       prob_id,
       canvasId,
@@ -438,7 +492,7 @@ export default function ProblemSetEnv() {
                 <div onClick={handleTextClick} style={{ cursor: "pointer" }}>
                   {isTextEditable ? (
                     <input
-                      className="title h-[3.5rem] rounded-lg border text-4xl outline-none focus:border-green-800 dark:focus:border-pink-600 focus:ring-4 focus:ring-green-800 dark:focus:ring-pink-600 border-[#1C5B5F] dark:border-pink-800 dark:bg-gray-700"
+                      className="title h-[3.5rem] rounded-lg border text-4xl outline-none focus:border-green-800 dark:focus:border-pink-600 !focus:ring-4 focus:ring-green-800 dark:focus:ring-pink-600 border-[#1C5B5F] dark:border-pink-800 dark:bg-gray-700"
                       type="text"
                       autoFocus
                       value={title}
@@ -459,67 +513,73 @@ export default function ProblemSetEnv() {
               <FontAwesomeIcon icon={faSave} />
             </div> */}
           </div>
-          <div className="flex flex-row justify-end gap-5">
+          <div className="flex flex-row justify-end">
             <Tooltip
               title=<h1 className="text-lg text-white">Preview</h1>
               placement="top"
-              TransitionComponent={Zoom}
+              // TransitionComponent={Zoom}
               arrow
               size="large"
             >
-              <div
-                data-tooltip-target="tooltip-default"
-                className="bu-text-primary flex cursor-pointer items-center text-3xl"
-                onClick={() => {
-                  setLoading(true);
-                  switchPath(`/problem/${prob_id}/preview`);
-                }}
-              >
-                <FontAwesomeIcon icon={faExpand} />
-              </div>
+              <IconButton>
+                <div
+                  data-tooltip-target="tooltip-default"
+                  className="bu-text-primary flex cursor-pointer items-center text-3xl"
+                  onClick={() => {
+                    setLoading(true);
+                    switchPath(`/problem/${prob_id}/preview`);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faExpand} />
+                </div>
+              </IconButton>
             </Tooltip>
             <Tooltip
               title=<h1 className="text-lg text-white">Delete</h1>
               placement="top"
-              TransitionComponent={Zoom}
+              // TransitionComponent={Zoom}
               arrow
               size="large"
             >
-              <div
-                data-tooltip-target="tooltip-default"
-                className="bu-text-primary flex cursor-pointer items-center text-3xl"
-                onClick={() => setOpen(true)}
-              >
-                <FontAwesomeIcon icon={faTrashCan} />
-              </div>
+              <IconButton>
+                <div
+                  data-tooltip-target="tooltip-default"
+                  className="bu-text-primary flex cursor-pointer items-center text-3xl"
+                  onClick={() => setOpen(true)}
+                >
+                  <FontAwesomeIcon icon={faTrashCan} />
+                </div>
+              </IconButton>
             </Tooltip>
 
             <Tooltip
               title=<h1 className="text-lg text-white">Save all</h1>
               placement="top"
-              TransitionComponent={Zoom}
+              // TransitionComponent={Zoom}
               arrow
               size="large"
             >
-              <div
-                data-tooltip-target="tooltip-default"
-                className="bu-text-primary flex cursor-pointer items-center text-3xl"
-                // onClick={() => setOpen(true)}
-                onClick={async () => {
-                  await updateTitle();
-                  await updateStatement();
-                  await updateCanvas();
-                  await updateSolutionChecker();
-                }}
-              >
-                <FontAwesomeIcon icon={faSave} />
-              </div>
+              <IconButton>
+                <div
+                  data-tooltip-target="tooltip-default"
+                  className="bu-text-primary flex cursor-pointer items-center text-3xl"
+                  // onClick={() => setOpen(true)}
+                  onClick={async () => {
+                    await updateTitle();
+                    await updateStatement();
+                    await updateCanvas();
+                    await updateSolutionChecker();
+                  }}
+                >
+                  <FontAwesomeIcon icon={faSave} />
+                </div>
+              </IconButton>
             </Tooltip>
 
             <Tooltip
               title=<h1 className="text-lg text-white">Publish</h1>
               placement="top"
-              TransitionComponent={Zoom}
+              // TransitionComponent={Zoom}
               // enterDelay={500}
               // leaveDelay={200}
               arrow
@@ -537,13 +597,15 @@ export default function ProblemSetEnv() {
               //   },
               // }}
             >
-              <div
-                data-tooltip-target="tooltip-default"
-                className="bu-text-primary flex cursor-pointer items-center text-3xl"
-                onClick={updateAll}
-              >
-                <FontAwesomeIcon icon={faUpload} />
-              </div>
+              <IconButton>
+                <div
+                  data-tooltip-target="tooltip-default"
+                  className="bu-text-primary flex cursor-pointer items-center text-3xl"
+                  onClick={updateAll}
+                >
+                  <FontAwesomeIcon icon={faUpload} />
+                </div>
+              </IconButton>
             </Tooltip>
           </div>
         </div>
@@ -586,7 +648,6 @@ export default function ProblemSetEnv() {
             code={code}
             setCode={setCode}
             input={input}
-            handleCheckSolution={handleCheckSolution}
             canvasId={canvasId}
             checkerCanvas={checkerCanvas}
             setCheckerCanvas={setCheckerCanvas}

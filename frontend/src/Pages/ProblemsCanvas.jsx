@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import CanvasContainer from "../Components/Canvas/CanvasContainer";
+import CanvasContainer from "../components/Canvas/CanvasContainer";
 import ProblemController from "../controller/problemController";
 import SubmissionController from "../controller/submissionController";
 import UserActivityController from "../controller/userActivityController";
@@ -11,7 +11,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Cookies from "universal-cookie";
 import Latex from "react-latex";
 import EditIcon from "@mui/icons-material/Edit";
-import Title from "../Components/Title";
+import Title from "../components/Title";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../App";
@@ -21,7 +21,7 @@ import katex from "katex";
 import "katex/dist/katex.css";
 import { getCodeString } from "rehype-rewrite";
 
-import MarkdownPreview from "../Components/Markdown/MarkdownPreview";
+import MarkdownPreview from "../components/Markdown/MarkdownPreview";
 //<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 const problemController = new ProblemController();
 const submissionController = new SubmissionController();
@@ -86,7 +86,10 @@ export default function ProblemsCanvas() {
     // if (result.success)
     {
       setInput(JSON.parse(JSON.stringify(backup)));
-      setResetTrigger(!resetTrigger);
+      canvasRef.current !== undefined &&
+      canvasRef.current !== null &&
+      canvasRef.current.handleReset(JSON.parse(JSON.stringify(backup)));
+      // setResetTrigger(!resetTrigger);
     }
   };
   const calculateNumberOfLines = (content) => {
@@ -94,9 +97,9 @@ export default function ProblemsCanvas() {
   };
   const solutionSubmit = async (e) => {
     let res = await problemController.checkSolution(
-      problem.checker_type == 0 ? problem.checker_code : problem.checker_canvas,
-      problem.checker_type,
-      input,
+      problem.checker_code,
+      problem.checker_canvas,
+      input
     );
     console.log("output " + res.output);
     submissionController.submitSolution(res.output, id);
@@ -151,7 +154,7 @@ export default function ProblemsCanvas() {
                       navigator(
                         type == 2
                           ? `/admin/problems/${id}`
-                          : `/problem/${id}/edit`,
+                          : `/problem/${id}/edit`
                       );
                     }}
                   >

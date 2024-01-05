@@ -16,13 +16,13 @@ import ProblemsCanvas from "./Pages/ProblemsCanvas";
 import Topics from "./Pages/user/Topics";
 import Series from "./Pages/user/Series";
 import ProblemSet from "./Pages/setter/ProblemSet";
-import GraphComponent from "./Components/Canvas/GraphComponent";
-import CanvasContainer from "./Components/Canvas/CanvasContainer";
+import GraphComponent from "./components/Canvas/GraphComponent";
+import CanvasContainer from "./components/Canvas/CanvasContainer";
 
 import ProblemSetEnv from "./Pages/setter/ProblemSetEnv";
 import SolutionChecker from "./Pages/SolutionChecker";
-import PublicNavbar from "./Components/navbar/PublicNavbar";
-import Layout2 from "./Components/Layouts/Layout2";
+import PublicNavbar from "./components/navbar/PublicNavbar";
+import Layout2 from "./components/Layouts/Layout2";
 import AdminLogin from "./Pages/auth/AdminLogin";
 import AdminHome from "./Pages/admin/AdminHome";
 import AdminTopics from "./Pages/admin/AdminTopics";
@@ -36,11 +36,11 @@ import AdminCanvasEditor from "./Pages/admin/AdminCanvasEditor";
 import AdminContests from "./Pages/admin/AdminContests";
 import AdminSetters from "./Pages/admin/AdminSetters";
 
-import PrivateNavbar from "./Components/navbar/PrivateNavbar";
-import AdminNavbar from "./Components/navbar/AdminNavbar";
-import LayoutMain from "./Components/Layouts/LayoutMain";
+import PrivateNavbar from "./components/navbar/PrivateNavbar";
+import AdminNavbar from "./components/navbar/AdminNavbar";
+import LayoutMain from "./components/Layouts/LayoutMain";
 
-import Navbar from "./Components/Navbar";
+import Navbar from "./components/Navbar";
 
 import ProblemsSubmissions from "./Pages/ProblemsSubmissions";
 import SetterProfile from "./Pages/setter/SetterProfile";

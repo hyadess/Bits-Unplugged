@@ -5,6 +5,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
   useLayoutEffect,
+  useCallback,
 } from "react";
 import {
   Stage,
@@ -46,7 +47,7 @@ const GraphComponent = (props, ref) => {
   const windowRef = useRef(null);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
-
+  const [isDragging, setIsDragging] = useState(-1);
   //custom sets................................................................................................
 
   const setNodes = (nodes) => {
@@ -118,19 +119,37 @@ const GraphComponent = (props, ref) => {
     };
   });
 
-  useEffect(() => {
-    const updateParentWidth = () => {
-      if (windowRef.current) {
-        setWidth(windowRef.current.offsetWidth);
-        setHeight(windowRef.current.offsetHeight);
-      }
-    };
-    updateParentWidth();
-    window.addEventListener("resize", updateParentWidth);
-    return () => {
-      window.removeEventListener("resize", updateParentWidth);
-    };
+  // const [height, setHeight] = useState(0);
+
+  const measuredRef = useCallback((node) => {
+    if (node !== null) {
+      setWidth(node.getBoundingClientRect().width);
+    }
   }, []);
+
+  useEffect(() => {
+    if (!windowRef.current) return;
+    const resizeObserver = new ResizeObserver(() => {
+      // Do what you want to do when the size of the element changes
+      setWidth(windowRef.current.offsetWidth);
+    });
+    resizeObserver.observe(windowRef.current);
+    return () => resizeObserver.disconnect(); // clean up
+  }, []);
+
+  // useEffect(() => {
+  //   const updateParentWidth = () => {
+  //     if (windowRef.current) {
+  //       setWidth(windowRef.current.offsetWidth);
+  //       setHeight(windowRef.current.offsetHeight);
+  //     }
+  //   };
+  //   updateParentWidth();
+  //   window.addEventListener("resize", updateParentWidth);
+  //   return () => {
+  //     window.removeEventListener("resize", updateParentWidth);
+  //   };
+  // }, []);
 
   // Function to calculate the distance from a point to a line segment...used to select an edge!!!!
   const pointToLineDistance = (px, py, x1, y1, x2, y2) => {
@@ -195,6 +214,7 @@ const GraphComponent = (props, ref) => {
 
   // node  and edge hovering........................
   const handleNodeHover = (node) => {
+    setHoveredEdge(null);
     setHoveredNode(node);
   };
   const handleNodeUnhover = () => {
@@ -211,6 +231,53 @@ const GraphComponent = (props, ref) => {
 
   let clickTimer = null;
 
+  const handleMouseMove = (e) => {
+    if (
+      e.target &&
+      (e.target.getClassName() === "Text" ||
+        e.target.getClassName() === "Circle")
+    ) {
+      // Do nothing or handle text click separately
+      return;
+    }
+
+    const stage = stageRef.current;
+    const { x, y } = stage.getPointerPosition();
+
+    // now,,, edge can be selected if we click nereby....so implement this........
+
+    let minDistance = Number.MAX_VALUE; // Initialize with a very large value
+    let nearestEdge = null;
+
+    data.edges.forEach((edge) => {
+      const { start, end, weight } = edge;
+      const distance = pointToLineDistance(
+        x,
+        y,
+        start.x,
+        start.y,
+        end.x,
+        end.y
+      );
+      if (distance < minDistance) {
+        minDistance = distance;
+        nearestEdge = edge;
+      }
+    });
+
+    //if clicked nere an edge, select that edge, else, create a node!!!
+
+    if (nearestEdge && minDistance <= 1.0 * EDGECLICKRANGE) {
+      if (hoveredEdge == nearestEdge);
+      else {
+        setHoveredEdge(nearestEdge);
+        document.body.style.cursor = "pointer";
+      }
+    } else if (hoveredEdge !== null) {
+      document.body.style.cursor = "default";
+      setHoveredEdge(null);
+    }
+  };
   const handleCanvasClick = (e) => {
     if (clickTimer === null) {
       // This is a single click
@@ -399,6 +466,7 @@ const GraphComponent = (props, ref) => {
       props?.controlParams?.drag_node?.value === false
     )
       return;
+
     const newPosition = e.target.position();
     // Calculate the new position of the node
     const updatedX = newPosition.x;
@@ -522,9 +590,11 @@ const GraphComponent = (props, ref) => {
       ref={windowRef}
     >
       <Stage
+        // width={width} // small glitch
         width={window.innerWidth * 0.57}
         height={500}
         onClick={handleCanvasClick}
+        onMouseMove={handleMouseMove}
         ref={stageRef}
         // scaleX={Math.min(window.innerWidth / 970, 1)}
         // scaleY={Math.min(window.innerWidth / 900, 1)}
@@ -561,19 +631,19 @@ const GraphComponent = (props, ref) => {
                         edge.end.y + endOffsetY,
                       ]}
                       onMouseEnter={() => {
-                        document.body.style.cursor = "pointer";
-                        handleEdgeHover(edge);
+                        // document.body.style.cursor = "pointer";
+                        // handleEdgeHover(edge);
                       }}
                       onMouseLeave={() => {
-                        document.body.style.cursor = "default";
-                        handleEdgeUnhover();
+                        // document.body.style.cursor = "default";
+                        // handleEdgeUnhover();
                       }}
                       stroke={
-                        hoveredEdge === edge
-                          ? "#2bb557"
-                          : selectedEdge !== edge
+                        selectedEdge === edge
+                          ? "#ec3965"
+                          : hoveredEdge !== edge
                             ? "#879294"
-                            : "#ec3965"
+                            : "#2bb557"
                       }
                       strokeWidth={
                         selectedEdge !== edge && hoveredEdge !== edge ? 3 : 6
@@ -592,11 +662,11 @@ const GraphComponent = (props, ref) => {
                         y={arrowheadY}
                         rotation={angle * (180 / Math.PI) + 90}
                         fill={
-                          hoveredEdge === edge
-                            ? "#2bb557"
-                            : selectedEdge !== edge
+                          selectedEdge === edge
+                            ? "#ec3965"
+                            : hoveredEdge !== edge
                               ? "#879294"
-                              : "#ec3965"
+                              : "#2bb557"
                         }
                       />
                     )}
@@ -612,14 +682,14 @@ const GraphComponent = (props, ref) => {
                       y={(edge.start.y + edge.end.y) / 2}
                       text={edge.weight}
                       fontSize={25}
-                      strokeWidth={selectedEdge !== edge ? 3 : 3}
+                      strokeWidth={selectedEdge !== edge ? 5 : 3}
                       background="red"
                       fill={
-                        hoveredEdge === edge
-                          ? "#2bb557"
-                          : selectedEdge !== edge
+                        selectedEdge === edge
+                          ? "#ec3965"
+                          : hoveredEdge !== edge
                             ? "#879294"
-                            : "#ec3965"
+                            : "#2bb557"
                       }
                       width={45}
                       onClick={() => changeEdgeWeight(edge)}
@@ -639,18 +709,35 @@ const GraphComponent = (props, ref) => {
                     ? false
                     : true
                 }
-                onMouseEnter={() => handleNodeHover(node)}
-                onMouseLeave={handleNodeUnhover}
+                onMouseEnter={() => {
+                  document.body.style.cursor = "pointer";
+                  handleNodeHover(node);
+                }}
+                onMouseLeave={() => {
+                  document.body.style.cursor = "default";
+                  handleNodeUnhover();
+                }}
                 onDragMove={(e) => handleNodeDrag(index, e)}
                 onClick={() => handleNodeClick(node)}
+                onDragStart={() => setIsDragging(index)}
+                onDragEnd={() => {
+                  // handleNodeHover(node);
+                  setIsDragging(-1);
+                }}
               >
                 <Circle
-                  radius={hoveredNode === node ? RADIUS * 1.2 : RADIUS}
+                  radius={
+                    isDragging === index
+                      ? RADIUS * 1.2
+                      : hoveredNode === node
+                        ? 1.1 * RADIUS
+                        : RADIUS
+                  }
                   className={hoveredNode === node ? "node-hovered" : ""}
                   fill={
                     selectedNodes.includes(node)
                       ? "#ec3965"
-                      : hoveredNode === node
+                      : hoveredNode === node || isDragging === index
                         ? "#38bf27"
                         : "#a4a3a3"
                   }
@@ -675,6 +762,11 @@ const GraphComponent = (props, ref) => {
                         ? 0
                         : 0.8
                   }
+                  shadowOffsetX={isDragging === index ? 7 : 0}
+                  shadowOffsetY={isDragging === index ? 7 : 0}
+                  shadowColor="black"
+                  shadowBlur={isDragging === index ? 10 : 0}
+                  shadowOpacity={isDragging === index ? 0.6 : 0}
                 />
                 <Text
                   text={node.nodeIndex.toString()} // Display the node number
@@ -703,8 +795,8 @@ const GraphComponent = (props, ref) => {
         )}
       </Stage>
       {/* <div className="export-button-container">
-        <button onClick={exportGraphData} className="export-button"></button>
-      </div> */}
+          <button onClick={exportGraphData} className="export-button"></button>
+        </div> */}
 
       <Modal
         className="modal-container bu-nav-color"

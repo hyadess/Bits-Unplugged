@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import AuthController from "../../controller/authController";
 import { useSearchParams, createSearchParams } from "react-router-dom";
 import { CircularProgress, Switch } from "@mui/material";
-import Banner from "../../Components/Banner";
-import Layout1 from "../../Components/Layouts/Layout1";
-import { PasswordField } from "../../Components/InputFields";
+import Banner from "../../components/Banner";
+import Layout1 from "../../components/Layouts/Layout1";
+import { PasswordField } from "../../components/InputFields";
 import { setLoading } from "../../App";
 const authController = new AuthController();
 

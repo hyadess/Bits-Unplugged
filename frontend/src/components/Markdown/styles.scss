@@ -1,8 +1,7 @@
-.w-md-editor-preview
-{
-    p {
-        font-size:1.5rem;
-    }
+.w-md-editor-preview {
+  p {
+    font-size: 1.5rem;
+  }
 }
 
 body .w-md-editor-text-pre > code,
@@ -18,19 +17,17 @@ body .w-md-editor-text-input {
   }
 }
 
-
 body .w-md-editor-text {
   padding: 20px !important;
 }
-.w-md-editor-preview
-{
+.w-md-editor-preview {
   @apply bg-transparent;
   p {
     @apply bg-transparent;
   }
 }
-.w-md-editor{
-  background-color: #FBFBFB;
+.w-md-editor {
+  background-color: #fbfbfb;
   @apply text-black;
   @apply border-none;
 }
@@ -42,21 +39,24 @@ body .w-md-editor-text {
   }
 }
 
-.wmde-markdown, .wmde-markdown-color
-{
+.wmde-markdown,
+.wmde-markdown-color {
   @apply bg-transparent;
 }
 
-.w-md-editor-toolbar ul
-{
+.w-md-editor-toolbar ul {
   @apply pl-3;
   @apply flex;
   @apply flex-row;
-  @apply gap-2;
+  @apply gap-0;
+  @apply md:gap-2;
 }
 
-.w-md-editor-toolbar svg
-{
-  width: 15px;
-  height: 15px;
+.w-md-editor-toolbar svg {
+  // width: 15px;
+  // height: 15px;
+  @apply w-3;
+  @apply h-3;
+  @apply md:w-4;
+  @apply md:h-4;
 }

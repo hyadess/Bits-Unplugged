@@ -1,35 +1,6 @@
-import { FormControl } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { InputAdornment, TextField } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
-import { makeStyles } from "@mui/styles";
-import { inputLabelClasses } from "@mui/material/InputLabel";
-const useStyles = makeStyles((theme) => ({
-  root: {
-    font: "white",
-    "& .MuiFormLabel-root-MuiInputLabel-root": {
-      color: "white",
-    },
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: "#000000", // Change this to the desired border color
-      },
-      "&:hover fieldset": {
-        borderColor: "#ff479a", // Border color on hover
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#ff479a", // Border color on focus
-      },
-    },
-  },
-  multilineColor: {
-    color: "white",
-  },
-}));
-
 
 const SearchBar = ({ setSearchQuery, label, setSearch }) => {
-  const classes = useStyles();
   return (
     <div className="relative flex items-center w-full transition-all duration-300">
       <input

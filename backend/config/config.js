@@ -1,3 +1,7 @@
+const path = require("path");
+require("dotenv").config({
+  path: `.env${process.env.NODE_ENV ? "." + process.env.NODE_ENV : ""}`,
+});
 module.exports = {
   JWT_SECRET: process.env.JWT_SECRET || "kuddusmia",
   DB_USER: process.env.DB_USER || "postgres",

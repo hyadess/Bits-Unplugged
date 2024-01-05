@@ -83,7 +83,7 @@ class ProblemsRepository extends Repository {
     WHERE (U.user_id IS NULL OR U.is_solved = FALSE)
     AND P.is_live = TRUE;
     `;
-    const params = [user_id, series_id];
+    const params = [user_id];
     const result = await this.query(query, params);
     return result;
   };
@@ -101,7 +101,7 @@ class ProblemsRepository extends Repository {
     AND P.is_live = TRUE
     ORDER BY U.conseq_failed_attempt DESC;
     `;
-    const params = [user_id, series_id];
+    const params = [user_id];
     const result = await this.query(query, params);
     return result;
   };

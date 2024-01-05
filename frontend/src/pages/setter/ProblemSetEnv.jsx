@@ -177,51 +177,55 @@ const SolutionCheckerTab = ({
           setOutput={setOutput}
           setStdout={setStdout}
           checkSubmit={handleCheckSolution}
+          save={updateSolutionChecker}
         />
       ) : (
-        <CanvasContainer
-          id={canvasId}
-          input={checkerCanvas}
-          setInput={setCheckerCanvas}
-          ref={canvasRef}
-          mode="preview"
-          params={params}
-          setParams={setParams}
-          uiParams={uiParams}
-          setUiParams={setUiParams}
-          controlParams={controlParams}
-          setControlParams={setControlParams}
-        />
+        <>
+          <CanvasContainer
+            id={canvasId}
+            input={checkerCanvas}
+            setInput={setCheckerCanvas}
+            ref={canvasRef}
+            mode="preview"
+            params={params}
+            setParams={setParams}
+            uiParams={uiParams}
+            setUiParams={setUiParams}
+            controlParams={controlParams}
+            setControlParams={setControlParams}
+          />
+          <div
+            className="flex py-5"
+            style={{ justifyContent: "space-between", marginLeft: "auto" }}
+          >
+            <Button
+              variant="contained"
+              color="success"
+              size="large"
+              onClick={() => {
+                resetChecker();
+              }}
+              startIcon={
+                <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+              }
+            >
+              Reset
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                // updateCanvas();
+                updateSolutionChecker();
+              }}
+              size="large"
+              startIcon={<SaveIcon sx={{ fontSize: "2rem", color: "white" }} />}
+            >
+              Save
+            </Button>
+          </div>
+        </>
       )}
-      <div
-        className="flex py-5"
-        style={{ justifyContent: "space-between", marginLeft: "auto" }}
-      >
-        <Button
-          variant="contained"
-          color="success"
-          size="large"
-          onClick={() => {
-            resetChecker();
-          }}
-          startIcon={
-            <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-          }
-        >
-          Reset
-        </Button>
-        <Button
-          variant="contained"
-          onClick={() => {
-            // updateCanvas();
-            updateSolutionChecker();
-          }}
-          size="large"
-          startIcon={<SaveIcon sx={{ fontSize: "2rem", color: "white" }} />}
-        >
-          Save
-        </Button>
-      </div>
+
       <div className="bu-bg-title text-white p-5 rounded-md text-2xl font-bold">
         Test Solution Checker
       </div>

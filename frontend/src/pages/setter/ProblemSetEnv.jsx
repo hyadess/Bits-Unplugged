@@ -165,6 +165,7 @@ const SolutionCheckerTab = ({
         options={[
           { label: "code", value: 0 },
           { label: "canvas", value: 1 },
+          { label: "tester", value: 2 },
         ]}
       />
       {checkerType == 0 ? (
@@ -179,7 +180,7 @@ const SolutionCheckerTab = ({
           checkSubmit={handleCheckSolution}
           save={updateSolutionChecker}
         />
-      ) : (
+      ) : checkerType == 1 ? (
         <>
           <CanvasContainer
             id={canvasId}
@@ -224,46 +225,45 @@ const SolutionCheckerTab = ({
             </Button>
           </div>
         </>
+      ) : (
+        <>
+          <CanvasContainer
+            id={canvasId}
+            input={test}
+            setInput={setTest}
+            ref={testRef}
+            mode="preview"
+            params={params}
+            setParams={setParams}
+            uiParams={uiParams}
+            setUiParams={setUiParams}
+            controlParams={controlParams}
+            setControlParams={setControlParams}
+          />
+          <div className="flex flex-row justify-between py-5">
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => {
+                setTest(input);
+                // canvasRef.current.handleReset(); // Call this after reset
+              }}
+              startIcon={
+                <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+              }
+            >
+              Reset
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleCheckSolution}
+              endIcon={<Send sx={{ fontSize: "2rem", color: "white" }} />}
+            >
+              Submit
+            </Button>
+          </div>
+        </>
       )}
-
-      <div className="bu-bg-title text-white p-5 rounded-md text-2xl font-bold">
-        Test Solution Checker
-      </div>
-      <CanvasContainer
-        id={canvasId}
-        input={test}
-        setInput={setTest}
-        ref={testRef}
-        mode="preview"
-        params={params}
-        setParams={setParams}
-        uiParams={uiParams}
-        setUiParams={setUiParams}
-        controlParams={controlParams}
-        setControlParams={setControlParams}
-      />
-      <div className="flex flex-row justify-between py-5">
-        <Button
-          variant="contained"
-          color="success"
-          onClick={() => {
-            setTest(input);
-            // canvasRef.current.handleReset(); // Call this after reset
-          }}
-          startIcon={
-            <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-          }
-        >
-          Reset
-        </Button>
-        <Button
-          variant="contained"
-          onClick={handleCheckSolution}
-          endIcon={<Send sx={{ fontSize: "2rem", color: "white" }} />}
-        >
-          Submit
-        </Button>
-      </div>
     </>
   );
 };
@@ -490,32 +490,27 @@ export default function ProblemSetEnv() {
     <div>
       <div>
         <div className="mx-auto max-w-screen-2xl items-center py-4 sm:pt-16 md:grid md:grid-cols-2">
-          <div className="mt-4 flex flex-row items-center md:mt-0">
-            <h2 className="text-center text-5xl font-extrabold tracking-tight md:text-left ">
-              <span className="bu-text-title">
-                <div onClick={handleTextClick} style={{ cursor: "pointer" }}>
-                  {isTextEditable ? (
-                    <input
-                      className="title h-[3.5rem] rounded-lg border text-4xl outline-none focus:border-green-800 dark:focus:border-pink-600 !focus:ring-4 focus:ring-green-800 dark:focus:ring-pink-600 border-[#1C5B5F] dark:border-pink-800 dark:bg-gray-700"
-                      type="text"
-                      autoFocus
-                      value={title}
-                      onChange={handleTextChange}
-                      onClick={(e) => e.stopPropagation()} // Prevent the click event from propagating to the div
-                      onBlur={() => {
-                        updateTitle();
-                        handleTextClick();
-                      }}
-                    />
-                  ) : (
-                    title
-                  )}
-                </div>
-              </span>
-            </h2>
-            {/* <div className="bu-text-primary text-3xl bu-button-primary p-3 rounded-lg">
-              <FontAwesomeIcon icon={faSave} />
-            </div> */}
+          <div
+            className="mt-4 flex flex-row items-center md:mt-0 w-full text-center text-5xl font-extrabold tracking-tight md:text-left bu-text-title"
+            onClick={handleTextClick}
+            style={{ cursor: "pointer" }}
+          >
+            {isTextEditable ? (
+              <input
+                className="title h-[3.5rem] rounded-lg border text-4xl outline-none focus:border-green-800 dark:focus:border-pink-600 !focus:ring-4 focus:ring-green-800 dark:focus:ring-pink-600 border-[#1C5B5F] dark:border-pink-800 dark:bg-gray-700"
+                type="text"
+                autoFocus
+                value={title}
+                onChange={handleTextChange}
+                onClick={(e) => e.stopPropagation()} // Prevent the click event from propagating to the div
+                onBlur={() => {
+                  updateTitle();
+                  handleTextClick();
+                }}
+              />
+            ) : (
+              title
+            )}
           </div>
           <div className="flex flex-row justify-end">
             <Tooltip

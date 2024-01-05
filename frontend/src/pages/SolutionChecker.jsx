@@ -172,7 +172,7 @@ export default function SolutionChecker(props) {
           </div>
 
           <div
-            className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl"
+            className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
             onClick={handleCheckSolution}
           >
             <FontAwesomeIcon icon={faPlay} />

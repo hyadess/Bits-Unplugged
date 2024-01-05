@@ -20,6 +20,7 @@ class UserActivityController extends Controller {
     this.handleResponse(result, res);
 
   };
+  
 
 }
 

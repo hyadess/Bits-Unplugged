@@ -18,7 +18,7 @@ router.post("/signup", authController.signup);
 router.post("/change_pass", authMiddleware, (req, res) =>
   res.status(200).send()
 ); // dihan - change password from profile
-router.post("/forgot_pass", res.status(200).send()); // dihan - forgot password in login page
+router.post("/forgot_pass", (req, res) => res.status(200).send()); // dihan - forgot password in login page
 router.post("/reset_pass", (req, res) => res.status(200).send()); // dihan - reset password from the given link of forgot password
 router.post("/approve_setter/:id", authMiddleware, (req, res) =>
   res.status(200).send()

@@ -19,7 +19,7 @@ jobs:
         node-version: '14'
 
     - name: Install dependencies
-      run: cd backend && npm ci
+      run: cd backend && npm install
     
     - name: Build and start the backend
       run: |

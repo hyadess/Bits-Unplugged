@@ -18,6 +18,14 @@ jobs:
           
       - name: Build the Docker image
         run: docker-compose -f docker-compose.prod.yml build
-      
+        env:
+          DB_USER: env.DB_USER
+          DB_HOST: env.DB_HOST_DEV
+          DB_DB: env.DB_DB
+          DB_PASS: secrets.DB_PASS
+          DB_PORT: env.DB_PORT
+          JWT_SECRET: secrets.JWT_SECRET
+          ADMIN_PASS: secrets.ADMIN_PASS
+          
       - name: Run tests
-        run: docker run -e CI=true --env-file backend/.env.production mahirlabibdihan/bitsunplugged-app npm run test
+        run: docker run -e CI=true mahirlabibdihan/bitsunplugged-app npm run test

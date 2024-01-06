@@ -36,6 +36,7 @@ jobs:
             DB_PASS: secrets.DB_PASS
             DB_PORT: env.DB_PORT
             JWT_SECRET: secrets.JWT_SECRET
+            ADMIN_PASS: secrets.ADMIN_PASS
 
       - name: Run tests
         run: cd backend && npm run test

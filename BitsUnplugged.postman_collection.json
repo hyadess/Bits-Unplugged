@@ -25,7 +25,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/auth/login",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/auth/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -55,7 +55,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/auth/login",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/auth/login",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -135,7 +135,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/auth/refresh-token",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/auth/refresh-token",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -156,7 +156,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/auth/refresh-token",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/auth/refresh-token",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -237,7 +237,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/auth/signup",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/auth/signup",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -249,7 +249,7 @@
 								"signup"
 							]
 						},
-						"description": "## Description\n\nThis endpoint is used to sign up a new user. The request should be sent as an HTTP POST to [http://localhost:5000/api/auth/signup](http://localhost:5000/api/auth/signup) with a JSON payload in the raw request body.\n\n## Request\n\nThe payload should include the user's username, email, password, and type."
+						"description": "## Description\n\nThis endpoint is used to sign up a new user. The request should be sent as an HTTP POST to [https://bitsunplugged-dev.onrender.com/api/auth/signup](https://bitsunplugged-dev.onrender.com/api/auth/signup) with a JSON payload in the raw request body.\n\n## Request\n\nThe payload should include the user's username, email, password, and type."
 					},
 					"response": [
 						{
@@ -267,7 +267,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/auth/signup",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/auth/signup",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -338,7 +338,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/auth/approve_setter/3",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/auth/approve_setter/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -359,7 +359,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/auth/approve_setter/3",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/auth/approve_setter/3",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -422,7 +422,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/auth/forgot_pass/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/auth/forgot_pass/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -452,7 +452,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/auth/forgot_pass/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/auth/forgot_pass/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -515,7 +515,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/auth/reset_pass/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/auth/reset_pass/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -545,7 +545,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/auth/reset_pass/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/auth/reset_pass/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -618,7 +618,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/auth/change_pass/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/auth/change_pass/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -648,7 +648,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/auth/change_pass/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/auth/change_pass/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -712,7 +712,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/auth/delete_account/3",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/auth/delete_account/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -733,7 +733,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/auth/delete_account/3",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/auth/delete_account/3",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -814,7 +814,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/topic/6",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/topic/6",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -844,7 +844,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/topic/6",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/topic/6",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -924,7 +924,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/topic/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/topic/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -954,7 +954,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/topic/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/topic/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1034,7 +1034,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/topic/6",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/topic/6",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1064,7 +1064,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/topic/6",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/topic/6",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1144,7 +1144,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/topic/10",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/topic/10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1174,7 +1174,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/topic/10",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/topic/10",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1245,7 +1245,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/topic/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/topic/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1266,7 +1266,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/topic/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/topic/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1327,7 +1327,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/topic/live",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/topic/live",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1348,7 +1348,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/topic/live",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/topic/live",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1433,7 +1433,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/series/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/series/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1463,7 +1463,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/series/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/series/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1546,7 +1546,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/series/2",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/series/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1558,7 +1558,7 @@
 								"2"
 							]
 						},
-						"description": "This HTTP GET request is used to retrieve information about a specific series with the given ID. The response will include details such as series ID, topic ID, canvas ID, name, description, logo, and template associated with the series.\n\n### Request\n\nThe request does not include a request body as it is a GET request and the series ID is included in the URL path parameter.\n\n- [Endpoint:<code>http://localhost:5000/api/series/:series_id</code>](http://localhost:5000/api/series/:series)\n- Method: `GET`\n    \n\n### Response\n\nThe response will have a status code of 200 and will contain an series object, which represents a series with its associated details. The details include:\n\n- `series_id`: The unique identifier for the series.\n- `topic_id`: The identifier for the topic associated with the series.\n- `canvas_id`: The identifier for the canvas associated with the series.\n- `name`: The name of the series.\n- `description`: The description of the series.\n- `logo`: The URL for the logo associated with the series.\n- `template`: The template or code snippet associated with the series."
+						"description": "This HTTP GET request is used to retrieve information about a specific series with the given ID. The response will include details such as series ID, topic ID, canvas ID, name, description, logo, and template associated with the series.\n\n### Request\n\nThe request does not include a request body as it is a GET request and the series ID is included in the URL path parameter.\n\n- [Endpoint:<code>https://bitsunplugged-dev.onrender.com/api/series/:series_id</code>](https://bitsunplugged-dev.onrender.com/api/series/:series)\n- Method: `GET`\n    \n\n### Response\n\nThe response will have a status code of 200 and will contain an series object, which represents a series with its associated details. The details include:\n\n- `series_id`: The unique identifier for the series.\n- `topic_id`: The identifier for the topic associated with the series.\n- `canvas_id`: The identifier for the canvas associated with the series.\n- `name`: The name of the series.\n- `description`: The description of the series.\n- `logo`: The URL for the logo associated with the series.\n- `template`: The template or code snippet associated with the series."
 					},
 					"response": [
 						{
@@ -1576,7 +1576,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/series/1",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/series/1",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1656,7 +1656,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/series/2",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/series/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1686,7 +1686,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/series/2",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/series/2",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1757,7 +1757,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/series/3",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/series/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1778,7 +1778,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/series/3",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/series/3",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1849,7 +1849,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/series/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/series/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1861,7 +1861,7 @@
 								""
 							]
 						},
-						"description": "This endpoint makes an HTTP GET request to retrieve a list of series from the API. The request does not require a request body.\n\n### Request\n\nThe request does not include a request body as it is a GET request and the series ID is included in the URL path parameter.\n\n- [Endpoint:<code>http://localhost:5000/api/series/</code>](http://localhost:5000/api/series/:series)\n- Method: `GET`\n    \n\n### Response\n\nThe response will have a status code of 200 and will contain an array of objects, where each object represents a series with its associated details. The details include:\n\n- `series_id`: The unique identifier for the series.\n- `topic_id`: The identifier for the topic associated with the series.\n- `canvas_id`: The identifier for the canvas associated with the series.\n- `name`: The name of the series.\n- `description`: The description of the series.\n- `logo`: The URL for the logo associated with the series.\n- `template`: The template or code snippet associated with the series."
+						"description": "This endpoint makes an HTTP GET request to retrieve a list of series from the API. The request does not require a request body.\n\n### Request\n\nThe request does not include a request body as it is a GET request and the series ID is included in the URL path parameter.\n\n- [Endpoint:<code>https://bitsunplugged-dev.onrender.com/api/series/</code>](https://bitsunplugged-dev.onrender.com/api/series/:series)\n- Method: `GET`\n    \n\n### Response\n\nThe response will have a status code of 200 and will contain an array of objects, where each object represents a series with its associated details. The details include:\n\n- `series_id`: The unique identifier for the series.\n- `topic_id`: The identifier for the topic associated with the series.\n- `canvas_id`: The identifier for the canvas associated with the series.\n- `name`: The name of the series.\n- `description`: The description of the series.\n- `logo`: The URL for the logo associated with the series.\n- `template`: The template or code snippet associated with the series."
 					},
 					"response": [
 						{
@@ -1870,7 +1870,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/series/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/series/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1941,7 +1941,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/series/live",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/series/live",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1953,7 +1953,7 @@
 								"live"
 							]
 						},
-						"description": "This endpoint makes an HTTP GET request to retrieve a list of live series from the API. The request does not require a request body.\n\n### Request\n\nThe request does not include a request body as it is a GET request and the series ID is included in the URL path parameter.\n\n- [Endpoint:<code>http://localhost:5000/api/series/live</code>](http://localhost:5000/api/series/:series)\n    \n- Method: `GET`\n    \n\n### Response\n\nThe response will have a status code of 200 and will contain an array of objects, where each object represents a series with its associated details. The details include:\n\n- `series_id`: The unique identifier for the series.\n    \n- `topic_id`: The identifier for the topic associated with the series.\n    \n- `canvas_id`: The identifier for the canvas associated with the series.\n    \n- `name`: The name of the series.\n    \n- `description`: The description of the series.\n    \n- `logo`: The URL for the logo associated with the series.\n    \n- `template`: The template or code snippet associated with the series."
+						"description": "This endpoint makes an HTTP GET request to retrieve a list of live series from the API. The request does not require a request body.\n\n### Request\n\nThe request does not include a request body as it is a GET request and the series ID is included in the URL path parameter.\n\n- [Endpoint:<code>https://bitsunplugged-dev.onrender.com/api/series/live</code>](https://bitsunplugged-dev.onrender.com/api/series/:series)\n    \n- Method: `GET`\n    \n\n### Response\n\nThe response will have a status code of 200 and will contain an array of objects, where each object represents a series with its associated details. The details include:\n\n- `series_id`: The unique identifier for the series.\n    \n- `topic_id`: The identifier for the topic associated with the series.\n    \n- `canvas_id`: The identifier for the canvas associated with the series.\n    \n- `name`: The name of the series.\n    \n- `description`: The description of the series.\n    \n- `logo`: The URL for the logo associated with the series.\n    \n- `template`: The template or code snippet associated with the series."
 					},
 					"response": [
 						{
@@ -1962,7 +1962,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/series/live",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/series/live",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -2033,7 +2033,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/series/2/problems",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/series/2/problems",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2055,7 +2055,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/series/2/problems",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/series/2/problems",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -2132,7 +2132,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/problem/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2153,7 +2153,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/problem/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -2224,7 +2224,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/problem/submitted",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/submitted",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2245,7 +2245,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/problem/submitted",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/submitted",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -2316,7 +2316,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/problem/by_series/1",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/by_series/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2338,7 +2338,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/problem/by_series/1",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/by_series/1",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -2410,7 +2410,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/problem/by_series/unsolved/1",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/by_series/unsolved/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2433,7 +2433,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/problem/by_series/unsolved/1",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/by_series/unsolved/1",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -2506,7 +2506,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/problem/by_topic/2",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/by_topic/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2519,7 +2519,7 @@
 								"2"
 							]
 						},
-						"description": "This API endpoint makes an HTTP GET request to retrieve a list of problems based on a specific topic. The request should be made to [http://localhost:5000/api/problem/by_topic/2](http://localhost:5000/api/problem/by_topic/2).\n\nThe response will include a JSON array containing objects with information about each problem. Each object includes details such as problem ID, series ID, author ID, title, statement, canvas data, live status, last updated timestamp, checker code, parameters, UI parameters, control parameters, canvas ID, submit state ID, serial number, checker type, checker canvas, topic ID, name, description, and logo.\n\nThe response status for the last execution was 200."
+						"description": "This API endpoint makes an HTTP GET request to retrieve a list of problems based on a specific topic. The request should be made to [https://bitsunplugged-dev.onrender.com/api/problem/by_topic/2](https://bitsunplugged-dev.onrender.com/api/problem/by_topic/2).\n\nThe response will include a JSON array containing objects with information about each problem. Each object includes details such as problem ID, series ID, author ID, title, statement, canvas data, live status, last updated timestamp, checker code, parameters, UI parameters, control parameters, canvas ID, submit state ID, serial number, checker type, checker canvas, topic ID, name, description, and logo.\n\nThe response status for the last execution was 200."
 					},
 					"response": [
 						{
@@ -2528,7 +2528,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/problem/by_topic/2",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/by_topic/2",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -2609,7 +2609,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/problem/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2639,7 +2639,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/problem/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -2710,7 +2710,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/problem/74",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/74",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2731,7 +2731,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/problem/74",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/74",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -2802,7 +2802,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/problem/110",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/110",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2823,7 +2823,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/problem/110",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/110",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -2903,7 +2903,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/problem/68/title",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/68/title",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2934,7 +2934,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/problem/68/title",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/68/title",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -3015,7 +3015,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/problem/68/series",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/68/series",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3046,7 +3046,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/problem/68/series",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/68/series",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -3127,7 +3127,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/problem/68/serial",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/68/serial",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3158,7 +3158,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/problem/68/serial",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/68/serial",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -3239,7 +3239,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/problem/68/canvas",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/68/canvas",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3252,7 +3252,7 @@
 								"canvas"
 							]
 						},
-						"description": "This endpoint allows you to update the canvas for a specific problem using an HTTP PUT request. The request should be sent to [http://localhost:5000/api/problem/68/canvas](http://localhost:5000/api/problem/68/canvas).\n\n### Request\n\nThe request payload should be in raw format and include the following parameters:\n\n- canvas_id (numeric): The ID of the canvas.\n- canvas_data (object): An object containing data related to the canvas, such as the number of moves, disks, and pegs.\n- params (object): Additional parameters for customization, such as custom_disk and ordered.\n- control_params (object): Control parameters for the canvas.\n- ui_params (object): User interface parameters, including moves, n_disks, custom_disk, and undo.\n    \n\n### Response\n\nThe response to this request will have a status code of 200, and the body will be an empty array (\\[\\])."
+						"description": "This endpoint allows you to update the canvas for a specific problem using an HTTP PUT request. The request should be sent to [https://bitsunplugged-dev.onrender.com/api/problem/68/canvas](https://bitsunplugged-dev.onrender.com/api/problem/68/canvas).\n\n### Request\n\nThe request payload should be in raw format and include the following parameters:\n\n- canvas_id (numeric): The ID of the canvas.\n- canvas_data (object): An object containing data related to the canvas, such as the number of moves, disks, and pegs.\n- params (object): Additional parameters for customization, such as custom_disk and ordered.\n- control_params (object): Control parameters for the canvas.\n- ui_params (object): User interface parameters, including moves, n_disks, custom_disk, and undo.\n    \n\n### Response\n\nThe response to this request will have a status code of 200, and the body will be an empty array (\\[\\])."
 					},
 					"response": [
 						{
@@ -3270,7 +3270,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/problem/68/canvas",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/68/canvas",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -3351,7 +3351,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/problem/68/statement",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/68/statement",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3364,7 +3364,7 @@
 								"statement"
 							]
 						},
-						"description": "This endpoint allows you to update the statement for a specific problem using an HTTP PUT request. The request should be sent to [http://localhost:5000/api/problem/68/statement](http://localhost:5000/api/problem/68/statement).\n\n#### Request\n\n- The request body should be in raw format and include a JSON object with the \"statement\" key.\n    \n\n#### Response\n\n- The response will have a status code of 200 and an empty array as the data."
+						"description": "This endpoint allows you to update the statement for a specific problem using an HTTP PUT request. The request should be sent to [https://bitsunplugged-dev.onrender.com/api/problem/68/statement](https://bitsunplugged-dev.onrender.com/api/problem/68/statement).\n\n#### Request\n\n- The request body should be in raw format and include a JSON object with the \"statement\" key.\n    \n\n#### Response\n\n- The response will have a status code of 200 and an empty array as the data."
 					},
 					"response": [
 						{
@@ -3382,7 +3382,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/problem/68/statement",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/68/statement",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -3463,7 +3463,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/problem/68/solution_checker",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/68/solution_checker",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3494,7 +3494,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/problem/68/solution_checker",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/68/solution_checker",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -3563,7 +3563,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/problem/68/solution_checker",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/68/solution_checker",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -3635,7 +3635,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/problem/111/submit",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/111/submit",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3648,7 +3648,7 @@
 								"submit"
 							]
 						},
-						"description": "This API endpoint allows users to submit a problem . The HTTP POST request should be made to [http://localhost:5000/api/problem/:problem_id/submit](http://localhost:5000/api/problem/111/submit).\n\n### Request\n\nThe request body should be empty.\n\n### Response\n\n- Status: 200\n- Example: \\[\\]"
+						"description": "This API endpoint allows users to submit a problem . The HTTP POST request should be made to [https://bitsunplugged-dev.onrender.com/api/problem/:problem_id/submit](https://bitsunplugged-dev.onrender.com/api/problem/111/submit).\n\n### Request\n\nThe request body should be empty.\n\n### Response\n\n- Status: 200\n- Example: \\[\\]"
 					},
 					"response": [
 						{
@@ -3657,7 +3657,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/problem/111/submit",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/111/submit",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -3729,7 +3729,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/problem/111/publish",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/111/publish",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3751,7 +3751,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/problem/111/publish",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/111/publish",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -3823,7 +3823,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/problem/111/unpublish",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/111/unpublish",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3836,7 +3836,7 @@
 								"unpublish"
 							]
 						},
-						"description": "This endpoint makes an HTTP POST request to [http://localhost:5000/api/problem/111/unpublish](http://localhost:5000/api/problem/111/unpublish) in order to unpublish a specific problem.\n\n### Request\n\nThe request does not contain a request body.\n\n### Response\n\n- Status: 200\n- Example: \\[\\]"
+						"description": "This endpoint makes an HTTP POST request to [https://bitsunplugged-dev.onrender.com/api/problem/111/unpublish](https://bitsunplugged-dev.onrender.com/api/problem/111/unpublish) in order to unpublish a specific problem.\n\n### Request\n\nThe request does not contain a request body.\n\n### Response\n\n- Status: 200\n- Example: \\[\\]"
 					},
 					"response": [
 						{
@@ -3845,7 +3845,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/problem/111/unpublish",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/111/unpublish",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -3917,7 +3917,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/problem/unsolved/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/unsolved/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3939,7 +3939,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/problem/unsolved/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/unsolved/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -4011,7 +4011,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/problem/unsolved/attempted",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/unsolved/attempted",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -4024,7 +4024,7 @@
 								"attempted"
 							]
 						},
-						"description": "### Get Unsolved Attempted Problems\n\nThis endpoint retrieves a list of unsolved problems that have been attempted.\n\n#### Request\n\n- Method: GET\n- URL: `http://localhost:5000/api/problem/unsolved/attempted`\n- Payload: null\n    \n\n#### Response\n\n- Status: 200\n    \n- The response contains an array of problem objects with their respective attributes."
+						"description": "### Get Unsolved Attempted Problems\n\nThis endpoint retrieves a list of unsolved problems that have been attempted.\n\n#### Request\n\n- Method: GET\n- URL: `https://bitsunplugged-dev.onrender.com/api/problem/unsolved/attempted`\n- Payload: null\n    \n\n#### Response\n\n- Status: 200\n    \n- The response contains an array of problem objects with their respective attributes."
 					},
 					"response": [
 						{
@@ -4033,7 +4033,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/problem/unsolved/attempted",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/unsolved/attempted",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -4117,7 +4117,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/problem/recommendation/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/recommendation/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -4148,7 +4148,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/problem/recommendation/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/recommendation/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -4220,7 +4220,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/problem/68/bookmark",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/68/bookmark",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -4233,7 +4233,7 @@
 								"bookmark"
 							]
 						},
-						"description": "### Add Bookmark to Problem\n\nThis endpoint allows the user to add a bookmark to a specific problem.\n\n**HTTP Request**  \n`POST http://localhost:5000/api/problem/68/bookmark`\n\n**Response**\n\n- Status: 200\n- Body: null"
+						"description": "### Add Bookmark to Problem\n\nThis endpoint allows the user to add a bookmark to a specific problem.\n\n**HTTP Request**  \n`POST https://bitsunplugged-dev.onrender.com/api/problem/68/bookmark`\n\n**Response**\n\n- Status: 200\n- Body: null"
 					},
 					"response": [
 						{
@@ -4242,7 +4242,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/problem/68/bookmark",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/68/bookmark",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -4306,7 +4306,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/problem/rating",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/problem/rating",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -4326,7 +4326,7 @@
 								"method": "PUT",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/problem/rating",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/problem/rating",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -4403,7 +4403,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/canvas/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/canvas/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -4433,7 +4433,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/canvas/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/canvas/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -4504,7 +4504,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/canvas/2",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/canvas/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -4525,7 +4525,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/canvas/2",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/canvas/2",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -4605,7 +4605,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/canvas/6",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/canvas/6",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -4617,7 +4617,7 @@
 								"6"
 							]
 						},
-						"description": "This endpoint allows you to update the canvas with the specified ID. The request should be sent as an HTTP PUT to [http://localhost:5000/api/canvas/6](http://localhost:5000/api/canvas/6)\n\n### Request\n\nThere will be the updated info about the canvas as payload in the raw request body.\n\n### Response\n\n- Status: 200\n- Data: \\[\\]"
+						"description": "This endpoint allows you to update the canvas with the specified ID. The request should be sent as an HTTP PUT to [https://bitsunplugged-dev.onrender.com/api/canvas/6](https://bitsunplugged-dev.onrender.com/api/canvas/6)\n\n### Request\n\nThere will be the updated info about the canvas as payload in the raw request body.\n\n### Response\n\n- Status: 200\n- Data: \\[\\]"
 					},
 					"response": [
 						{
@@ -4635,7 +4635,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/canvas/6",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/canvas/6",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -4706,7 +4706,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/canvas/8",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/canvas/8",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -4718,7 +4718,7 @@
 								"8"
 							]
 						},
-						"description": "This endpoint sends an HTTP DELETE request to [http://localhost:5000/api/canvas/8](http://localhost:5000/api/canvas/8) to delete a specific canvas.\n\n### Request\n\nThe request does not include a request body.\n\n### Response\n\nThe endpoint returns a status code of 200 with an empty array as the response body."
+						"description": "This endpoint sends an HTTP DELETE request to [https://bitsunplugged-dev.onrender.com/api/canvas/8](https://bitsunplugged-dev.onrender.com/api/canvas/8) to delete a specific canvas.\n\n### Request\n\nThe request does not include a request body.\n\n### Response\n\nThe endpoint returns a status code of 200 with an empty array as the response body."
 					},
 					"response": [
 						{
@@ -4727,7 +4727,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/canvas/8",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/canvas/8",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -4798,7 +4798,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/canvas/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/canvas/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -4819,7 +4819,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/canvas/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/canvas/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -4890,7 +4890,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/canvas/live",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/canvas/live",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -4911,7 +4911,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/canvas/live",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/canvas/live",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -4999,7 +4999,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/profile",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/profile",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -5028,7 +5028,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/profile",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/profile",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -5107,7 +5107,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/profile",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/profile",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -5136,7 +5136,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/profile",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/profile",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -5215,7 +5215,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/profile",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/profile",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -5226,7 +5226,7 @@
 								"profile"
 							]
 						},
-						"description": "This endpoint allows you to update a user's profile. The HTTP PUT request should be made to [http://localhost:5000/api/profile](http://localhost:5000/api/profile).\n\n### Request Body\n\n- `user_id` (number) - The ID of the user.\n- `fullname` (string) - The full name of the user.\n- `username` (string) - The username of the user.\n- `image` (string) - The URL of the user's profile image.\n- `dob` (date) - The date of birth of the user.\n- `is_public` (boolean) - Indicates whether the user's profile is public or not.\n    \n\n### Response\n\nThe response for this request will have a status code of 200, indicating a successful update. The response body will be an empty array \\[\\]."
+						"description": "This endpoint allows you to update a user's profile. The HTTP PUT request should be made to [https://bitsunplugged-dev.onrender.com/api/profile](https://bitsunplugged-dev.onrender.com/api/profile).\n\n### Request Body\n\n- `user_id` (number) - The ID of the user.\n- `fullname` (string) - The full name of the user.\n- `username` (string) - The username of the user.\n- `image` (string) - The URL of the user's profile image.\n- `dob` (date) - The date of birth of the user.\n- `is_public` (boolean) - Indicates whether the user's profile is public or not.\n    \n\n### Response\n\nThe response for this request will have a status code of 200, indicating a successful update. The response body will be an empty array \\[\\]."
 					},
 					"response": [
 						{
@@ -5244,7 +5244,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/profile",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/profile",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -5323,7 +5323,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/profile/upload/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/profile/upload/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -5336,7 +5336,7 @@
 								""
 							]
 						},
-						"description": "This API endpoint allows users to upload a profile. The HTTP POST request should be sent to [http://localhost:5000/api/profile/upload/](http://localhost:5000/api/profile/upload/). The request should have a raw body with a JSON payload containing the \"path\" parameter specifying the path of the profile to be uploaded.\n\nUpon successful execution, the API returns a status code of 200 with a null response."
+						"description": "This API endpoint allows users to upload a profile. The HTTP POST request should be sent to [https://bitsunplugged-dev.onrender.com/api/profile/upload/](https://bitsunplugged-dev.onrender.com/api/profile/upload/). The request should have a raw body with a JSON payload containing the \"path\" parameter specifying the path of the profile to be uploaded.\n\nUpon successful execution, the API returns a status code of 200 with a null response."
 					},
 					"response": [
 						{
@@ -5354,7 +5354,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/profile/upload/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/profile/upload/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -5418,7 +5418,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/profile/users",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/profile/users",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -5439,7 +5439,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/profile/users",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/profile/users",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -5510,7 +5510,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/profile/setters",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/profile/setters",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -5531,7 +5531,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/profile/setters",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/profile/setters",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -5607,7 +5607,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/submission/30",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/submission/30",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -5619,7 +5619,7 @@
 								"30"
 							]
 						},
-						"description": "This endpoint makes an HTTP GET request to retrieve the users submission data for a specific problem ID.\n\n### Endpoint\n\n`GET http://localhost:5000/api/submission/:problem_id`\n\n### Request Body\n\nThe request does not contain a request body.\n\n### Response\n\nThe response contains submission data, where the object includes the following fields:\n\n- `submission_id` (number): The ID of the submission\n- `problem_id` (number): The ID of the problem\n- `user_id` (number): The ID of the user\n- `verdict` (string): The verdict of the submission\n- `time_stamp` (string): The timestamp of the submission\n- `json_data` (object): Additional JSON data related to the canvas."
+						"description": "This endpoint makes an HTTP GET request to retrieve the users submission data for a specific problem ID.\n\n### Endpoint\n\n`GET https://bitsunplugged-dev.onrender.com/api/submission/:problem_id`\n\n### Request Body\n\nThe request does not contain a request body.\n\n### Response\n\nThe response contains submission data, where the object includes the following fields:\n\n- `submission_id` (number): The ID of the submission\n- `problem_id` (number): The ID of the problem\n- `user_id` (number): The ID of the user\n- `verdict` (string): The verdict of the submission\n- `time_stamp` (string): The timestamp of the submission\n- `json_data` (object): Additional JSON data related to the canvas."
 					},
 					"response": [
 						{
@@ -5628,7 +5628,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/submission/30",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/submission/30",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -5699,7 +5699,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/submission/30/allUsers",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/submission/30/allUsers",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -5712,7 +5712,7 @@
 								"allUsers"
 							]
 						},
-						"description": "# Get All Users Submission Data\n\nThis endpoint retrieves the submission data for all users related to a specific problem ID.\n\n### Endpoint\n\n`GET http://localhost:5000/api/submission/:problem_id/allUsers`\n\n### Request Body\n\nThe request does not contain a request body.\n\n## Response\n\n### Status: 200\n\nThe response contains an array of submission data, where each object includes the following fields:\n\n- `submission_id` (number): The ID of the submission\n- `problem_id` (number): The ID of the problem\n- `user_id` (number): The ID of the user\n- `verdict` (string): The verdict of the submission\n- `time_stamp` (string): The timestamp of the submission\n- `json_data` (object): Additional JSON data related to the canvas."
+						"description": "# Get All Users Submission Data\n\nThis endpoint retrieves the submission data for all users related to a specific problem ID.\n\n### Endpoint\n\n`GET https://bitsunplugged-dev.onrender.com/api/submission/:problem_id/allUsers`\n\n### Request Body\n\nThe request does not contain a request body.\n\n## Response\n\n### Status: 200\n\nThe response contains an array of submission data, where each object includes the following fields:\n\n- `submission_id` (number): The ID of the submission\n- `problem_id` (number): The ID of the problem\n- `user_id` (number): The ID of the user\n- `verdict` (string): The verdict of the submission\n- `time_stamp` (string): The timestamp of the submission\n- `json_data` (object): Additional JSON data related to the canvas."
 					},
 					"response": [
 						{
@@ -5721,7 +5721,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/submission/30/allUsers",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/submission/30/allUsers",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -5802,7 +5802,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/submission/30/saveSubmit",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/submission/30/saveSubmit",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -5833,7 +5833,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/submission/30/saveSubmit",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/submission/30/saveSubmit",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -5905,7 +5905,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/submission/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/submission/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -5917,7 +5917,7 @@
 								""
 							]
 						},
-						"description": "### Get Submission Details\n\nThis endpoint retrieves the details of a submission.\n\n**Request**:\n\n- Method: GET\n- URL: `http://localhost:5000/api/submission/`\n    \n\n**Response**:\n\n- Status: 200\n    \n- The response contains an array of submission data, where each object includes the following fields:\n    \n    - `submission_id` (number): The ID of the submission\n        \n    - `problem_id` (number): The ID of the problem\n        \n    - `user_id` (number): The ID of the user\n        \n    - `verdict` (string): The verdict of the submission\n        \n    - `time_stamp` (string): The timestamp of the submission\n        \n    - `json_data` (object): Additional JSON data related to the canvas."
+						"description": "### Get Submission Details\n\nThis endpoint retrieves the details of a submission.\n\n**Request**:\n\n- Method: GET\n- URL: `https://bitsunplugged-dev.onrender.com/api/submission/`\n    \n\n**Response**:\n\n- Status: 200\n    \n- The response contains an array of submission data, where each object includes the following fields:\n    \n    - `submission_id` (number): The ID of the submission\n        \n    - `problem_id` (number): The ID of the problem\n        \n    - `user_id` (number): The ID of the user\n        \n    - `verdict` (string): The verdict of the submission\n        \n    - `time_stamp` (string): The timestamp of the submission\n        \n    - `json_data` (object): Additional JSON data related to the canvas."
 					},
 					"response": [
 						{
@@ -5926,7 +5926,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/submission/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/submission/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -6011,7 +6011,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/userActivity/30/successAttempt",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/userActivity/30/successAttempt",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -6041,7 +6041,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/userActivity/30/successAttempt",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/userActivity/30/successAttempt",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -6113,7 +6113,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/userActivity/30/failedAttempt",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/userActivity/30/failedAttempt",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -6134,7 +6134,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/userActivity/30/failedAttempt",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/userActivity/30/failedAttempt",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -6211,7 +6211,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/contest/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -6232,7 +6232,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/contest/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -6303,7 +6303,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/contest/published/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/published/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -6316,7 +6316,7 @@
 								""
 							]
 						},
-						"description": "This endpoint makes an HTTP GET request to retrieve a list of published contests. The request should be sent to [http://localhost:5000/api/contest/published/](http://localhost:5000/api/contest/published/).\n\nThe response will have a status code of 200, indicating a successful request. The response body will contain an array of objects, with each object representing a published contest. Each contest object will include the contest ID, title, description, start date, end date, status, and last updated timestamp."
+						"description": "This endpoint makes an HTTP GET request to retrieve a list of published contests. The request should be sent to [https://bitsunplugged-dev.onrender.com/api/contest/published/](https://bitsunplugged-dev.onrender.com/api/contest/published/).\n\nThe response will have a status code of 200, indicating a successful request. The response body will contain an array of objects, with each object representing a published contest. Each contest object will include the contest ID, title, description, start date, end date, status, and last updated timestamp."
 					},
 					"response": [
 						{
@@ -6325,7 +6325,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/contest/published/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/published/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -6397,7 +6397,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/contest/all/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/all/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -6419,7 +6419,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/contest/all/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/all/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -6491,7 +6491,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/contest/owned/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/owned/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -6513,7 +6513,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/contest/owned/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/owned/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -6585,7 +6585,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/contest/addContest/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/addContest/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -6598,7 +6598,7 @@
 								""
 							]
 						},
-						"description": "\nThis endpoint allows you to add a new contest. The request should be sent via an HTTP POST to the URL http://localhost:5000/api/contest/addContest/. The request body should contain the necessary data to create the contest. Upon successful execution, the response will have a status code of 200 and will include the ID of the newly created contest in the format [{\"contest_id\": 0}].\n"
+						"description": "\nThis endpoint allows you to add a new contest. The request should be sent via an HTTP POST to the URL https://bitsunplugged-dev.onrender.com/api/contest/addContest/. The request body should contain the necessary data to create the contest. Upon successful execution, the response will have a status code of 200 and will include the ID of the newly created contest in the format [{\"contest_id\": 0}].\n"
 					},
 					"response": [
 						{
@@ -6607,7 +6607,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/contest/addContest/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/addContest/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -6688,7 +6688,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/contest/3/updateTitle",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/updateTitle",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -6701,7 +6701,7 @@
 								"updateTitle"
 							]
 						},
-						"description": "This endpoint allows you to update the title of a contest using an HTTP PUT request. The request should be sent to [http://localhost:5000/api/contest/3/updateTitle](http://localhost:5000/api/contest/3/updateTitle) with a JSON payload in the raw request body.\n\n### Request Body\n\nThe payload should include the new title for the contest.\n\n### Response\n\nUpon a successful update, the endpoint returns a status code of 200 with an empty array as the response body."
+						"description": "This endpoint allows you to update the title of a contest using an HTTP PUT request. The request should be sent to [https://bitsunplugged-dev.onrender.com/api/contest/3/updateTitle](https://bitsunplugged-dev.onrender.com/api/contest/3/updateTitle) with a JSON payload in the raw request body.\n\n### Request Body\n\nThe payload should include the new title for the contest.\n\n### Response\n\nUpon a successful update, the endpoint returns a status code of 200 with an empty array as the response body."
 					},
 					"response": [
 						{
@@ -6719,7 +6719,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/contest/3/updateTitle",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/updateTitle",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -6800,7 +6800,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/contest/3/updateDescription/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/updateDescription/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -6814,7 +6814,7 @@
 								""
 							]
 						},
-						"description": "This endpoint is used to update the description of a contest with the ID 3. The HTTP PUT request should be made to [http://localhost:5000/api/contest/3/updateDescription/](http://localhost:5000/api/contest/3/updateDescription/). The request body should be in raw format and include a JSON object with the key \"description\" and the new description value.\n\n### Request Body\n\n- description (string, required): The new description for the contest.\n    \n\n### Response\n\n- Status: 200\n- Data: An empty array is returned upon successful execution."
+						"description": "This endpoint is used to update the description of a contest with the ID 3. The HTTP PUT request should be made to [https://bitsunplugged-dev.onrender.com/api/contest/3/updateDescription/](https://bitsunplugged-dev.onrender.com/api/contest/3/updateDescription/). The request body should be in raw format and include a JSON object with the key \"description\" and the new description value.\n\n### Request Body\n\n- description (string, required): The new description for the contest.\n    \n\n### Response\n\n- Status: 200\n- Data: An empty array is returned upon successful execution."
 					},
 					"response": [
 						{
@@ -6832,7 +6832,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/contest/3/updateDescription/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/updateDescription/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -6914,7 +6914,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/contest/3/addCollaborator/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/addCollaborator/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -6946,7 +6946,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/contest/3/addCollaborator/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/addCollaborator/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -7031,7 +7031,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/contest/3/showAllCollaborators/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/showAllCollaborators/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -7045,7 +7045,7 @@
 								""
 							]
 						},
-						"description": "This endpoint makes an HTTP GET request to retrieve a list of all collaborators for a specific contest.\n\n### Request\n\nThe request does not require any payload.\n\n- HTTP Method: GET\n- URL: [http://localhost:5000/api/contest/:contest_id/showAllCollaborators/](http://localhost:5000/api/contest/3/showAllCollaborators/)\n    \n\n### Response\n\nThe response will have a status code of 200 and will contain an array of objects, where each object represents a collaborator and includes the following properties:\n\n- contest_setter_id (number): The ID of the contest setter\n- contest_id (number): The ID of the contest\n- setter_id (number): The ID of the collaborator\n- role (string): The role of the collaborator in the contest"
+						"description": "This endpoint makes an HTTP GET request to retrieve a list of all collaborators for a specific contest.\n\n### Request\n\nThe request does not require any payload.\n\n- HTTP Method: GET\n- URL: [https://bitsunplugged-dev.onrender.com/api/contest/:contest_id/showAllCollaborators/](https://bitsunplugged-dev.onrender.com/api/contest/3/showAllCollaborators/)\n    \n\n### Response\n\nThe response will have a status code of 200 and will contain an array of objects, where each object represents a collaborator and includes the following properties:\n\n- contest_setter_id (number): The ID of the contest setter\n- contest_id (number): The ID of the contest\n- setter_id (number): The ID of the collaborator\n- role (string): The role of the collaborator in the contest"
 					},
 					"response": [
 						{
@@ -7063,7 +7063,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/contest/3/showAllCollaborators/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/showAllCollaborators/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -7145,7 +7145,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/contest/3/addProblem/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/addProblem/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -7177,7 +7177,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/contest/3/addProblem/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/addProblem/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -7259,7 +7259,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/contest/3/makeEligible/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/makeEligible/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -7273,7 +7273,7 @@
 								""
 							]
 						},
-						"description": "This HTTP PUT request is used to mark a contest as eligible. The request should be made to [http://localhost:5000/api/contest/3/makeEligible/](http://localhost:5000/api/contest/3/makeEligible/). The request body should contain a JSON object with the \"problem_id\" key. Upon successful execution, the API returns a status code of 200 and an empty array as the response.\n\n### Request Body\n\n- problem_id (string): The ID of the problem to be associated with the contest.\n    \n\n### Response\n\n- Status: 200\n- Data: An empty array"
+						"description": "This HTTP PUT request is used to mark a contest as eligible. The request should be made to [https://bitsunplugged-dev.onrender.com/api/contest/3/makeEligible/](https://bitsunplugged-dev.onrender.com/api/contest/3/makeEligible/). The request body should contain a JSON object with the \"problem_id\" key. Upon successful execution, the API returns a status code of 200 and an empty array as the response.\n\n### Request Body\n\n- problem_id (string): The ID of the problem to be associated with the contest.\n    \n\n### Response\n\n- Status: 200\n- Data: An empty array"
 					},
 					"response": [
 						{
@@ -7291,7 +7291,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/contest/3/makeEligible/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/makeEligible/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -7373,7 +7373,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/contest/3/makeNotEligible/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/makeNotEligible/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -7405,7 +7405,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/contest/3/makeNotEligible/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/makeNotEligible/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -7478,7 +7478,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/contest/3/publish/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/publish/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -7501,7 +7501,7 @@
 								"method": "PUT",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/contest/3/publish/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/publish/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -7574,7 +7574,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/contest/3/problems/setterview",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/problems/setterview",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -7588,7 +7588,7 @@
 								"setterview"
 							]
 						},
-						"description": "This HTTP GET request retrieves a list of problems for a specific contest, targeted at the endpoint [http://localhost:5000/api/contest/3/problems/setterview](http://localhost:5000/api/contest/3/problems/setterview).\n\nThe response will include a JSON array containing details of each problem, such as problem ID, series ID, author ID, title, statement, canvas data, live status, last updated timestamp, checker code, parameters, UI parameters, control parameters, canvas ID, submit state ID, serial number, checker type, checker canvas, and status."
+						"description": "This HTTP GET request retrieves a list of problems for a specific contest, targeted at the endpoint [https://bitsunplugged-dev.onrender.com/api/contest/3/problems/setterview](https://bitsunplugged-dev.onrender.com/api/contest/3/problems/setterview).\n\nThe response will include a JSON array containing details of each problem, such as problem ID, series ID, author ID, title, statement, canvas data, live status, last updated timestamp, checker code, parameters, UI parameters, control parameters, canvas ID, submit state ID, serial number, checker type, checker canvas, and status."
 					},
 					"response": [
 						{
@@ -7597,7 +7597,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/contest/3/problems/setterview",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/problems/setterview",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -7670,7 +7670,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/contest/3/problems/userview",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/problems/userview",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -7693,7 +7693,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/contest/3/problems/userview",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/problems/userview",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -7775,7 +7775,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/contest/1/addSubmission/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/1/addSubmission/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -7789,7 +7789,7 @@
 								""
 							]
 						},
-						"description": "\nThis API endpoint allows you to add a submission to the contest with ID 3. The HTTP POST request should be sent to http://localhost:5000/api/contest/3/addSubmission/. The request should include a JSON payload in the raw request body type with the key \"submission_id\" to specify the submission ID.\n\n### Request Body\n- submission_id (string, required): The ID of the submission to be added.\n\n### Response\nUpon successful execution, the API returns a status code of 200 and an empty array as the response body.\n"
+						"description": "\nThis API endpoint allows you to add a submission to the contest with ID 3. The HTTP POST request should be sent to https://bitsunplugged-dev.onrender.com/api/contest/3/addSubmission/. The request should include a JSON payload in the raw request body type with the key \"submission_id\" to specify the submission ID.\n\n### Request Body\n- submission_id (string, required): The ID of the submission to be added.\n\n### Response\nUpon successful execution, the API returns a status code of 200 and an empty array as the response body.\n"
 					},
 					"response": [
 						{
@@ -7807,7 +7807,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/contest/3/addSubmission/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/addSubmission/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -7880,7 +7880,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/contest/3/submissions/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/submissions/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -7903,7 +7903,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/contest/3/submissions/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/submissions/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -7988,7 +7988,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/contest/1/submissions/me/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/1/submissions/me/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -8003,7 +8003,7 @@
 								""
 							]
 						},
-						"description": "# Get Contest Submissions\n\nThis endpoint retrieves the submissions for the authenticated user in a specific contest.\n\n## Request\n\n### Endpoint\n\n`GET http://localhost:5000/api/contest/1/submissions/me/`\n\n## Response\n\n- Status: 200 OK\n    \n\nThe response will contain an array of submission objects, each containing the following attributes:\n\n- `participation_id` (integer): The ID of the participation.\n- `contest_id` (integer): The ID of the contest.\n- `problem_id` (integer): The ID of the problem.\n- `user_id` (integer): The ID of the user.\n- `submission_id` (integer): The ID of the submission.\n- `points` (null): The points earned for the submission.\n- `verdict` (string): The verdict of the submission.\n- `time_stamp` (string): The timestamp of the submission.\n- `json_data` (null): Additional JSON data related to the submission."
+						"description": "# Get Contest Submissions\n\nThis endpoint retrieves the submissions for the authenticated user in a specific contest.\n\n## Request\n\n### Endpoint\n\n`GET https://bitsunplugged-dev.onrender.com/api/contest/1/submissions/me/`\n\n## Response\n\n- Status: 200 OK\n    \n\nThe response will contain an array of submission objects, each containing the following attributes:\n\n- `participation_id` (integer): The ID of the participation.\n- `contest_id` (integer): The ID of the contest.\n- `problem_id` (integer): The ID of the problem.\n- `user_id` (integer): The ID of the user.\n- `submission_id` (integer): The ID of the submission.\n- `points` (null): The points earned for the submission.\n- `verdict` (string): The verdict of the submission.\n- `time_stamp` (string): The timestamp of the submission.\n- `json_data` (null): Additional JSON data related to the submission."
 					},
 					"response": [
 						{
@@ -8021,7 +8021,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/contest/1/submissions/me/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/1/submissions/me/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -8095,7 +8095,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/contest/3/start/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/start/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -8109,7 +8109,7 @@
 								""
 							]
 						},
-						"description": "This endpoint is used to start a contest with the ID 3. The HTTP PUT request should be made to [http://localhost:5000/api/contest/3/start/](http://localhost:5000/api/contest/3/start/).\n\nThe request does not require a request body, as indicated by the null payload.\n\nUpon a successful execution, the API returns a status code of 200 with an empty array \\[\\] as the response."
+						"description": "This endpoint is used to start a contest with the ID 3. The HTTP PUT request should be made to [https://bitsunplugged-dev.onrender.com/api/contest/3/start/](https://bitsunplugged-dev.onrender.com/api/contest/3/start/).\n\nThe request does not require a request body, as indicated by the null payload.\n\nUpon a successful execution, the API returns a status code of 200 with an empty array \\[\\] as the response."
 					},
 					"response": [
 						{
@@ -8118,7 +8118,7 @@
 								"method": "PUT",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/contest/3/start/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/start/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -8191,7 +8191,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/contest/3/end/",
+							"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/end/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -8214,7 +8214,7 @@
 								"method": "PUT",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:5000/api/contest/3/end/",
+									"raw": "https://bitsunplugged-dev.onrender.com/api/contest/3/end/",
 									"protocol": "http",
 									"host": [
 										"localhost"

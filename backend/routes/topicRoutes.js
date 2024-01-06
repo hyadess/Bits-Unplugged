@@ -5,6 +5,7 @@ const topicController = new TopicController();
 
 router.use(authMiddleware);
 router.get("/", topicController.getAllTopics);
+router.get("/live", topicController.getAllTopics); // pending
 router.post("/", topicController.addTopic); // add_new
 router.get("/:topic_id", topicController.getTopicById); // fetch
 router.put("/:topic_id", topicController.updateTopic); // edit

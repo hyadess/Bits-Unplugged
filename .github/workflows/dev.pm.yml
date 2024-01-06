@@ -52,4 +52,4 @@ jobs:
           -e BASE_URL=${BASE_URL} \
           -v ${{ github.workspace }}:/etc/newman \
           postman/newman:alpine \
-          run ${POSTMAN_COLLECTION_PATH}
+          run /etc/newman/"Bits Unplugged.postman_collection.json"

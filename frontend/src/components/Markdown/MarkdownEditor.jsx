@@ -15,7 +15,7 @@ const MarkdownEditor = ({ colorMode, text, setText }) => {
     return content.split("\n").length;
   };
   return (
-    <div data-color-mode={colorMode} className="mt-5">
+    <div data-color-mode={colorMode}>
       <div className="wmde-markdown-var"> </div>
       <MDEditor
         height={85 + 35 * calculateNumberOfLines(text) + text.length / 2}

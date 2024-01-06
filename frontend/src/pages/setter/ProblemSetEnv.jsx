@@ -16,12 +16,17 @@ import Confirmation from "../../components/Confirmation";
 
 import {
   faExpand,
+  faFloppyDisk,
   faSave,
   faTrashCan,
   faUpload,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SelectionField, SelectionField2 } from "../../components/InputFields";
+import {
+  SelectionField,
+  SelectionField2,
+  TextField,
+} from "../../components/InputFields";
 
 import CanvasController from "../../controller/canvasController";
 import { setLoading } from "../../App";
@@ -53,13 +58,6 @@ const CanvasDesignTab = ({
 }) => {
   return (
     <>
-      <SelectionField2
-        label="Choose Canvas"
-        onChange={handleCanvasChange}
-        id="canvas_id"
-        value={canvasId == null ? "" : canvasId}
-        options={canvasList}
-      />
       {canvasId && (
         <CanvasContainer
           id={canvasId}
@@ -76,36 +74,46 @@ const CanvasDesignTab = ({
         />
       )}
 
-      <div
-        className="flex py-5"
-        style={{ justifyContent: "space-between", marginLeft: "auto" }}
-      >
-        <Button
-          variant="contained"
-          color="success"
-          size="large"
-          onClick={() => {
-            reset();
-            // canvasRef.current.handleReset();
-          }}
-          startIcon={
-            <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-          }
+      {canvasId && (
+        <div
+          className="flex py-5"
+          style={{ justifyContent: "space-between", marginLeft: "auto" }}
         >
-          Reset
-        </Button>
-        <Button
-          variant="contained"
-          onClick={() => {
-            updateCanvas();
-            updateSolutionChecker();
-          }}
-          size="large"
-          startIcon={<SaveIcon sx={{ fontSize: "2rem", color: "white" }} />}
-        >
-          Save
-        </Button>
-      </div>
+          <Button
+            variant="contained"
+            color="success"
+            size="large"
+            onClick={() => {
+              reset();
+              // canvasRef.current.handleReset();
+            }}
+            startIcon={
+              <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+            }
+          >
+            Reset
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              updateCanvas();
+              updateSolutionChecker();
+            }}
+            size="large"
+            startIcon={<SaveIcon sx={{ fontSize: "2rem", color: "white" }} />}
+          >
+            Save
+          </Button>
+        </div>
+      )}
+
+      <SelectionField2
+        label="Choose Canvas"
+        onChange={handleCanvasChange}
+        id="canvas_id"
+        value={canvasId == null ? "" : canvasId}
+        options={canvasList}
+      />
     </>
   );
 };
@@ -158,16 +166,6 @@ const SolutionCheckerTab = ({
   const testRef = useRef();
   return (
     <>
-      <SelectionField
-        label="Choose Checker"
-        onChange={setCheckerType}
-        value={checkerType}
-        options={[
-          { label: "code", value: 0 },
-          { label: "canvas", value: 1 },
-          { label: "tester", value: 2 },
-        ]}
-      />
       {checkerType == 0 ? (
         <SolutionChecker
           code={code}
@@ -226,44 +224,17 @@ const SolutionCheckerTab = ({
           </div>
         </>
       ) : (
-        <>
-          <CanvasContainer
-            id={canvasId}
-            input={test}
-            setInput={setTest}
-            ref={testRef}
-            mode="preview"
-            params={params}
-            setParams={setParams}
-            uiParams={uiParams}
-            setUiParams={setUiParams}
-            controlParams={controlParams}
-            setControlParams={setControlParams}
-          />
-          <div className="flex flex-row justify-between py-5">
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => {
-                setTest(input);
-                // canvasRef.current.handleReset(); // Call this after reset
-              }}
-              startIcon={
-                <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-              }
-            >
-              Reset
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleCheckSolution}
-              endIcon={<Send sx={{ fontSize: "2rem", color: "white" }} />}
-            >
-              Submit
-            </Button>
-          </div>
-        </>
+        <></>
       )}
+      <SelectionField
+        label="Choose Checker"
+        onChange={setCheckerType}
+        value={checkerType}
+        options={[
+          { label: "code", value: 0 },
+          { label: "canvas", value: 1 },
+        ]}
+      />
     </>
   );
 };
@@ -274,6 +245,7 @@ export default function ProblemSetEnv() {
   const [uiParams, setUiParams] = useState({});
   const [checkerCanvas, setCheckerCanvas] = useState(null);
   const [controlParams, setControlParams] = useState({});
+  const [test, setTest] = useState(null);
   const navigator = useNavigate();
   const switchPath = (pathname) => {
     navigator(pathname);
@@ -334,7 +306,7 @@ export default function ProblemSetEnv() {
   const [canvasId, setCanvasId] = useState(null);
   const [title, setTitle] = useState("Title");
   const [isTextEditable, setIsTextEditable] = useState(false);
-
+  const testRef = useRef();
   const handleTextClick = () => {
     setIsTextEditable(!isTextEditable);
   };
@@ -352,7 +324,7 @@ export default function ProblemSetEnv() {
   const [backup, setBackup] = useState(null);
   const [input, setInput] = useState(null);
   const canvasRef = useRef();
-  const [activeComponent, setActiveComponent] = useState("statement");
+  const [activeComponent, setActiveComponent] = useState("Details");
   const [canvasList, setCanvasList] = useState([]);
   const [canvasFullList, setCanvasFullList] = useState([]);
   const [resetTrigger, setResetTrigger] = useState(false);
@@ -461,7 +433,20 @@ export default function ProblemSetEnv() {
       console.log(res);
     }
   };
-
+  const handleCheckSolution = async () => {
+    try {
+      const result = await problemController.checkSolution(
+        code,
+        checkerCanvas,
+        test
+      );
+      console.log(result);
+      setOutput(result.output);
+      setStdout(result.stdout);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const updateAll = async () => {
     // await updateTitle();
     // await updateStatement();
@@ -476,6 +461,10 @@ export default function ProblemSetEnv() {
   }, []);
 
   useEffect(() => {
+    setTest(JSON.parse(JSON.stringify(input)));
+  }, [input]);
+
+  useEffect(() => {
     console.log(prob_id);
     if (prob_id != undefined) {
       getProblem();
@@ -488,33 +477,15 @@ export default function ProblemSetEnv() {
 
   return (
     <div>
+      {/* <div className="fixed left-2 w-40 h-40 bg-black top-1/2 transform -translate-y-1/2"></div> */}
       <div>
-        <div className="mx-auto max-w-screen-2xl items-center py-4 sm:pt-16 md:grid md:grid-cols-2">
-          <div
-            className="mt-4 flex flex-row items-center md:mt-0 w-full text-center text-5xl font-extrabold tracking-tight md:text-left bu-text-title"
-            onClick={handleTextClick}
-            style={{ cursor: "pointer" }}
-          >
-            {isTextEditable ? (
-              <input
-                className="title h-[3.5rem] rounded-lg border text-4xl outline-none focus:border-green-800 dark:focus:border-pink-600 !focus:ring-4 focus:ring-green-800 dark:focus:ring-pink-600 border-[#1C5B5F] dark:border-pink-800 dark:bg-gray-700"
-                type="text"
-                autoFocus
-                value={title}
-                onChange={handleTextChange}
-                onClick={(e) => e.stopPropagation()} // Prevent the click event from propagating to the div
-                onBlur={() => {
-                  updateTitle();
-                  handleTextClick();
-                }}
-              />
-            ) : (
-              title
-            )}
+        <div className="mx-auto max-w-screen-2xl items-center py-4 pt-8 md:grid md:grid-cols-2">
+          <div className="flex flex-row items-center md:mt-0 w-full text-center text-5xl font-extrabold tracking-tight md:text-left bu-text-title">
+            {title.length == 0 ? "Untitled" : title}
           </div>
           <div className="flex flex-row justify-end">
             <Tooltip
-              title=<h1 className="text-lg text-white">Preview</h1>
+              title={<h1 className="text-lg text-white">Preview</h1>}
               placement="top"
               // TransitionComponent={Zoom}
               arrow
@@ -533,8 +504,8 @@ export default function ProblemSetEnv() {
                 </div>
               </IconButton>
             </Tooltip>
-            <Tooltip
-              title=<h1 className="text-lg text-white">Delete</h1>
+            {/* <Tooltip
+              title={<h1 className="text-lg text-white">Delete</h1>}
               placement="top"
               // TransitionComponent={Zoom}
               arrow
@@ -549,10 +520,10 @@ export default function ProblemSetEnv() {
                   <FontAwesomeIcon icon={faTrashCan} />
                 </div>
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
 
             <Tooltip
-              title=<h1 className="text-lg text-white">Save all</h1>
+              title={<h1 className="text-lg text-white">Save all</h1>}
               placement="top"
               // TransitionComponent={Zoom}
               arrow
@@ -576,7 +547,7 @@ export default function ProblemSetEnv() {
             </Tooltip>
 
             <Tooltip
-              title=<h1 className="text-lg text-white">Publish</h1>
+              title={<h1 className="text-lg text-white">Publish</h1>}
               placement="top"
               // TransitionComponent={Zoom}
               // enterDelay={500}
@@ -615,13 +586,45 @@ export default function ProblemSetEnv() {
         {/* Slow Transition */}
 
         {/* Faster transition */}
-        <div className={activeComponent === "statement" ? "block" : "hidden"}>
-          <ProblemStatement
-            statement={problemStatement}
-            setStatement={setProblemStatement}
-          />
+        <div
+          className={
+            "mt-5 flex flex-col gap-5 " +
+            (activeComponent === "Details" ? "block" : "hidden")
+          }
+        >
+          <div className="flex flex-col gap-2">
+            <div className="bu-text-primary text-2xl font-medium">Title</div>
+            <input
+              value={title}
+              type="text"
+              name="title"
+              className="border text-[140%] rounded-lg block w-full p-2.5 px-5 bu-input-primary"
+              placeholder="Example Problem Name"
+              required
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="bu-text-primary text-2xl font-medium">
+              Statement
+            </div>
+            <ProblemStatement
+              statement={problemStatement}
+              setStatement={setProblemStatement}
+            />
+            <button
+              className="bu-button-primary flex flex-row items-center justify-center gap-3 rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white focus:outline-none"
+              onClick={async () => {
+                await updateTitle();
+                await updateStatement();
+              }}
+            >
+              <FontAwesomeIcon icon={faFloppyDisk} size="sm" />
+              SAVE
+            </button>
+          </div>
         </div>
-        <div className={activeComponent === "canvas" ? "block" : "hidden"}>
+        <div className={activeComponent === "Canvas" ? "block" : "hidden"}>
           <CanvasDesignTab
             handleCanvasChange={handleCanvasChange}
             canvasId={canvasId}
@@ -640,7 +643,7 @@ export default function ProblemSetEnv() {
             updateSolutionChecker={updateSolutionChecker}
           />
         </div>
-        <div className={activeComponent === "solution" ? "block" : "hidden"}>
+        <div className={activeComponent === "Solution" ? "block" : "hidden"}>
           <SolutionCheckerTab
             checkerType={checkerType}
             setCheckerType={setCheckerType}
@@ -660,6 +663,43 @@ export default function ProblemSetEnv() {
             backup={backup}
             canvasRef={canvasRef}
           />
+        </div>
+        <div className={activeComponent === "Test" ? "block" : "hidden"}>
+          <CanvasContainer
+            id={canvasId}
+            input={test}
+            setInput={setTest}
+            ref={testRef}
+            mode="preview"
+            params={params}
+            setParams={setParams}
+            uiParams={uiParams}
+            setUiParams={setUiParams}
+            controlParams={controlParams}
+            setControlParams={setControlParams}
+          />
+          <div className="flex flex-row justify-between py-5">
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => {
+                setTest(input);
+                // canvasRef.current.handleReset(); // Call this after reset
+              }}
+              startIcon={
+                <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+              }
+            >
+              Reset
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleCheckSolution}
+              endIcon={<Send sx={{ fontSize: "2rem", color: "white" }} />}
+            >
+              Submit
+            </Button>
+          </div>
         </div>
       </div>
       <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} />

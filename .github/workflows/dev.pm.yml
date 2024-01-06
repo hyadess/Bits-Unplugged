@@ -34,7 +34,6 @@ jobs:
       POSTMAN_COLLECTION_PATH: '/etc/newman/BitsUnplugged.postman_collection.json'
       BASE_URL: 'https://bitsunplugged-dev.onrender.com'  # Update with your API's base URL
 
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -44,8 +43,8 @@ jobs:
         with:
           node-version: "16"
 
-      - name: Install dependencies
-        run: npm install
+      # - name: Install dependencies
+      #   run: npm install
 
       - name: Run Postman tests
         run: |

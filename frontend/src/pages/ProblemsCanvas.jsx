@@ -193,7 +193,11 @@ export default function ProblemsCanvas() {
                     borderRadius: "20px",
                   }}
                 >
-                  <MarkdownPreview colorMode={colorMode} text={statement} />
+                  <MarkdownPreview
+                    colorMode={colorMode}
+                    text={statement}
+                    customStyle={{ padding: "20px" }}
+                  />
                 </div>
               </div>
             </div>

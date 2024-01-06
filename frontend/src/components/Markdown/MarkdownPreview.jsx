@@ -11,7 +11,7 @@ import "katex/dist/katex.css";
 import { getCodeString } from "rehype-rewrite";
 import "./styles.scss";
 
-const MarkdownPreview = ({ colorMode, text }) => {
+const MarkdownPreview = ({ colorMode, text, customStyle }) => {
   const calculateNumberOfLines = (content) => {
     return content.split("\n").length;
   };
@@ -30,6 +30,7 @@ const MarkdownPreview = ({ colorMode, text }) => {
           paddingTop: "5px",
           // fontSize: "23px !important;",
           borderRadius: "20px",
+          ...customStyle, // Merge props.style here
         }}
         previewOptions={{
           components: {

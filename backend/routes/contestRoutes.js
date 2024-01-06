@@ -33,6 +33,28 @@ router.put("/:contest_id/makeNotEligible",contestController.makeProblemNotEligib
 
 router.post("/:contest_id/addSubmission",contestController.addSubmissionToContest);
 
+//new ones....
+
+router.delete("/:contest_id/deleteProblem",contestController.deleteProblem);
+router.delete("/:contest_id/delete",contestController.deleteContest);
+
+router.post("/:contest_id/participate/live",contestController.participateUpcomingContest);
+router.delete("/:contest_id/leave/live",contestController.leaveUpcomingContest);
+router.post("/:contest_id/participate/virtual",contestController.participateVirtualContest);
+router.delete("/:contest_id/leave/virtual",contestController.leaveVirtualContest);
+
+router.get("/live/me",contestController.showAllLiveContestByUser);
+router.get("/virtual/me",contestController.showAllVirtualContestByUser);
+
+router.get("/:contest_id/participants/live",contestController.showLiveParticipantList);
+router.get("/:contest_id/participants/virtual",contestController.showVirtualParticipantList);
+
+router.get("/:contest_id/clarifications",contestController.showAllClarifications);
+router.post("/:contest_id/clarifications/add",contestController.addClarification);
+
+
+
+
 
 
 

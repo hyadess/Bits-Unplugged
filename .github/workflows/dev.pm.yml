@@ -32,7 +32,7 @@ jobs:
 
     env:
       POSTMAN_COLLECTION_PATH: '/etc/newman/BitsUnplugged.postman_collection.json'
-      BASE_URL: 'http://localhost:5000'  # Update with your API's base URL
+      BASE_URL: 'https://bitsunplugged-dev.onrender.com'  # Update with your API's base URL
 
     steps:
     - name: Checkout repository

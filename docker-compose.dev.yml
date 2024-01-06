@@ -1,3 +1,4 @@
+# For Github
 version: "3"
 services:
   app:
@@ -7,16 +8,16 @@ services:
       args:
         - NODE_ENV=development
         - PORT=5000
-        - BASE_URL=https://bitsunplugged-dev.onrender.com/api
-      
 
-    # Used if run with docker-compose. Doesn't have any effect on build.
-    environment:
-      - NODE_ENV=production
-      - PORT=5000
-      - BASE_URL=https://bitsunplugged-dev.onrender.com/api
-    ports: 
-      - "5000:5000"
-    container_name: bitsunplugged-fullstack-dev
-    env_file:
-      - backend/.env.development
+        # Frontend
+        - REACT_APP_API_BASE_URL=http://localhost:5000/api
+        - VITE_APP_API_BASE_URL=http://localhost:5000/api
+
+        # Backend
+        - PORT=5000
+        - DB_USER=${DB_USER}
+        - DB_HOST=${DB_HOST}
+        - DB_DB=${DB_DB}
+        - DB_PASS=${DB_PASS}
+        - DB_PORT=${DB_PORT}
+        - JWT_SECRET=${JWT_SECRET}

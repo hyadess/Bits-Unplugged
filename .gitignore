@@ -4,3 +4,4 @@ build/
 bugs.txt
 config.js
 dist/
+.env*

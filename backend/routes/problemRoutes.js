@@ -40,5 +40,6 @@ router.post("/:problem_id/publish", problemController.publishProblem);
 router.post("/:problem_id/unpublish", problemController.unpublishProblem);
 
 router.post("/:problem_id/bookmark", (req, res) => res.status(200).send()); // dihan - Bookmark a problem
+router.put("/rating", (req, res) => res.status(200).send()); // dihan - Bookmark a problem
 module.exports = router;
  

@@ -6,50 +6,19 @@ on:
       - dihan
 
 jobs:
-  backend:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '14'
-
-    - name: Install dependencies
-      run: cd backend && npm install
-    
-    - name: Build and start the backend
-      run: |
-        npm start &
-        sleep 10      
-
   test:
-    needs: backend
     runs-on: ubuntu-latest
 
-    env:
-      POSTMAN_COLLECTION_PATH: '/etc/newman/BitsUnplugged.postman_collection.json'
-      BASE_URL: 'https://bitsunplugged-dev.onrender.com'  # Update with your API's base URL
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v1
+          
+      - name: Run API Tests
+        id: run-newman
+        uses: anthonyvscode/newman-action@v1
         with:
-          node-version: "16"
-
-      # - name: Install dependencies
-      #   run: npm install
-
-      - name: Run Postman tests
-        run: |
-          docker run \
-            -e BASE_URL=${BASE_URL} \
-            -v ${{ github.workspace }}:/etc/newman \
-            postman/newman:alpine \
-            run ${POSTMAN_COLLECTION_PATH}
+          collection: collection.json
+          reporters: cli
+          
+      - name: Output summary to console
+        run: echo ${{ steps.run-newman.outputs.summary }}

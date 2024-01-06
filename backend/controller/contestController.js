@@ -148,6 +148,104 @@ class ContestController extends Controller {
   };
 
 
+  //new ones...
+
+  deleteProblem = async (req, res) => {
+    let result = await contestRepository.deleteProblem(
+      req.params.contest_id,
+      req.body.problem_id
+    );
+    this.handleResponse(result, res);
+  };
+
+  deleteContest = async (req, res) => {
+    let result = await contestRepository.deleteContest(
+      req.params.contest_id
+    );
+    this.handleResponse(result, res);
+  };
+
+  leaveUpcomingContest = async (req, res) => {
+    let result = await contestRepository.leaveUpcomingContest(
+      req.body.user_id,
+      req.params.contest_id
+    );
+    this.handleResponse(result, res);
+  };
+  participateUpcomingContest = async (req, res) => {
+    let result = await contestRepository.participateUpcomingContest(
+      req.body.user_id,
+      req.params.contest_id
+    );
+    this.handleResponse(result, res);
+  };
+  participateVirtualContest = async (req, res) => {
+    let result = await contestRepository.participateVirtualContest(
+      req.body.user_id,
+      req.params.contest_id
+    );
+    this.handleResponse(result, res);
+  };
+  leaveVirtualContest = async (req, res) => {
+    let result = await contestRepository.leaveVirtualContest(
+      req.body.user_id,
+      req.params.contest_id
+    );
+    this.handleResponse(result, res);
+  };
+
+  showAllLiveContestByUser = async (req, res) => {
+    let result = await contestRepository.showAllLiveContestByUser(
+      req.body.user_id
+    );
+    this.handleResponse(result, res);
+  };
+  showAllVirtualContestByUser = async (req, res) => {
+    let result = await contestRepository.showAllVirtualContestByUser(
+      req.body.user_id
+    );
+    this.handleResponse(result, res);
+  };
+
+  showLiveParticipantList = async (req, res) => {
+    let result = await contestRepository.showLiveParticipantList(
+      req.params.contest_id
+    );
+    this.handleResponse(result, res);
+  };
+  showVirtualParticipantList = async (req, res) => {
+    let result = await contestRepository.showVirtualParticipantList(
+      req.params.contest_id
+    );
+    this.handleResponse(result, res);
+  };
+
+  addClarification = async (req, res) => {
+    let result = await contestRepository.addClarification(
+      req.params.contest_id,
+      req.body.title,
+      req.body.description
+    );
+    this.handleResponse(result, res);
+  };
+
+  showAllClarifications = async (req, res) => {
+    let result = await contestRepository.showAllClarifications(
+      req.params.contest_id
+    );
+    this.handleResponse(result, res);
+  };
+
+
+
+
+
+
+
+
+
+
+
   
   
 

@@ -45,7 +45,7 @@
     "vite-tsconfig-paths": "^4.2.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "vite",
     "build": "react-scripts build",
     "both": "concurrently \"npm run start\" \"nodemon ../backend/index.js\""
   },

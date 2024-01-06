@@ -291,11 +291,168 @@ class ContestRepository extends Repository {
         INSERT INTO Contestparticipation (contest_id, user_id, problem_id, submission_id, points)
         VALUES ($1, $2, $3, $4, $5);
         `;
-    const params = [contest_id, user_id, problem_id, submission_id, points];
-    console.log(contest_id, user_id);
-    const result = await this.query(query, params);
+        const params = [contest_id,user_id,problem_id,submission_id,points];
+        const result = await this.query(query, params);
 
-    return result;
-  };
+        return result;
+
+
+    };
+
+    //new ones...........
+
+    deleteProblem = async (contest_id,problem_id) =>{
+        const query1=`
+        DELETE FROM Contestparticipation
+        WHERE contest_id = $1, problem_id = $2; 
+        `;
+        const params1 = [contest_id,problem_id];
+        const result1 = await this.query(query1, params1);
+
+        const query=`
+        DELETE FROM Contestproblem
+        WHERE contest_id = $1, problem_id = $2;
+        `;
+        const result = await this.query(query, params1);
+
+        return result;
+    };
+
+
+
+    deleteContest = async (contest_id) =>{
+        const query=`
+        DELETE FROM Contest
+        WHERE contest_id = $1;
+        `;
+        const params = [contest_id];
+        const result = await this.query(query, params);
+
+        return result;
+    };
+
+
+    //*************************************ALL ABOUT CONTEST PARTICIPANT TABLE************************ */
+    // type 0 means live contest pariticipant, 1 means virtual 
+    participateUpcomingContest = async (user_id,contest_id) =>{
+        const query=`
+        INSERT INTO Contestparticipant (contest_id, participant_id, type)
+        VALUES ($1 ,$2, $3);
+        `;
+        const params = [contest_id,user_id,0];
+        const result = await this.query(query, params);
+
+        return result;
+    };
+    leaveUpcomingContest = async (user_id,contest_id) =>{
+        const query=`
+        DELETE FROM Contestparticipant
+        WHERE contest_id = $1 AND participant_id = $2 AND type = $3;
+        `;
+        const params = [contest_id,user_id,0];
+        const result = await this.query(query, params);
+
+        return result;
+    };
+
+    participateVirtualContest = async (user_id,contest_id) =>{
+        const query=`
+        INSERT INTO Contestparticipant (contest_id, participant_id, type)
+        VALUES ($1 ,$2, $3);
+        `;
+        const params = [contest_id,user_id,1];
+        const result = await this.query(query, params);
+
+        return result;
+    };
+    leaveVirtualContest = async (user_id,contest_id) =>{
+        const query=`
+        DELETE FROM Contestparticipant
+        WHERE contest_id = $1 AND participant_id = $2 AND type = $3;
+        `;
+        const params = [contest_id,user_id,1];
+        const result = await this.query(query, params);
+
+        return result;
+    };
+
+    showAllLiveContestByUser = async (user_id) => {
+        const query=`
+        SELECT C.*
+        FROM Contest C
+        JOIN Contestparticipant CP ON C.contest_id = CP.contest_id
+        WHERE CP.participant_id= $1 AND CP.type = $2;
+
+        `;
+        const params = [user_id,0];
+        const result = await this.query(query, params);
+
+        return result;
+    };
+    showAllVirtualContestByUser = async (user_id) => {
+        const query=`
+        SELECT C.*
+        FROM Contest C
+        JOIN Contestparticipant CP ON C.contest_id = CP.contest_id
+        WHERE CP.participant_id= $1 AND CP.type = $2;
+
+        `;
+        const params = [user_id,1];
+        const result = await this.query(query, params);
+
+        return result;
+    };
+
+    showLiveParticipantList = async (contest_id) =>{
+        const query=`
+        SELECT P.*
+        FROM Profile P
+        JOIN Contestparticipant CP ON P.user_id = CP.participant_id
+        WHERE CP.contest_id = $1 AND CP.type = $2;
+        `;
+        const params = [contest_id,0];
+        const result = await this.query(query, params);
+
+        return result;
+    };
+    showVirtualParticipantList = async (contest_id) =>{
+        const query=`
+        SELECT P.*
+        FROM Profile P
+        JOIN Contestparticipant CP ON P.user_id = CP.participant_id
+        WHERE CP.contest_id = $1 AND CP.type = $2;
+        `;
+        const params = [contest_id,1];
+        const result = await this.query(query, params);
+
+        return result;
+    };
+
+    //********************************ALL ABOUT CONTEST CLARIFICATION TABLE******************** */
+
+    addClarification = async (contest_id, title, description) => {
+        const query=`
+        INSERT INTO Contestclarification (contest_id, title, details, post_time)
+        VALUES ($1, $2, $3, $4)
+        RETURNING clarification_id;
+        `;
+        const params = [contest_id,title, description, Date.now()];
+        const result = await this.query(query, params);
+
+        return result;
+    };
+
+    showAllClarifications = async (contest_id) => {
+        const query=`
+        SELECT *
+        FROM Contestclarification
+        WHERE contest_id = $1;
+        `;
+        const params = [contest_id];
+        const result = await this.query(query, params);
+
+        return result;
+    };
+
 }
 module.exports=ContestRepository;

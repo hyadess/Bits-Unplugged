@@ -122,7 +122,7 @@ class ContestRepository extends Repository{
         `;
         const params = [Date.now()];
         const result = await this.query(query, params);
-        const contest_id = result.rows[0].contest_id;
+        const contest_id = result.data[0].contest_id;
 
         const query2=`
         INSERT INTO Contestsetter (contest_id, setter_id, role)

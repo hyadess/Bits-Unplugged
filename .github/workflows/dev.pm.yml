@@ -3,7 +3,7 @@ name: API Tests
 on:
   push:
     branches:
-      - main
+      - dihan
 
 jobs:
   backend:

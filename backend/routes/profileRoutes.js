@@ -7,4 +7,5 @@ router.use(authMiddleware);
 router.get("/", profileController.getProfile);
 router.post("/", profileController.setProfile);
 router.put("/", profileController.updateProfile);
+router.post("/upload", () => res.status(200)); // dihan - Upload profile picture
 module.exports = router;

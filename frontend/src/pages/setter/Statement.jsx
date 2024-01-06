@@ -59,13 +59,6 @@ function ProblemStatement(props) {
       />
 
       <MarkdownPreview colorMode={colorMode} text={props.statement} />
-      <button
-        className="bu-button-primary flex flex-row items-center justify-center gap-3 rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white focus:outline-none"
-        onClick={updateStatement}
-      >
-        <FontAwesomeIcon icon={faFloppyDisk} size="sm" />
-        SAVE
-      </button>
     </div>
   );
 }

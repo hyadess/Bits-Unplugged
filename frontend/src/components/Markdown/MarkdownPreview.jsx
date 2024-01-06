@@ -27,7 +27,7 @@ const MarkdownPreview = ({ colorMode, text }) => {
         value={text}
         style={{
           whiteSpace: "pre-wrap",
-          padding: "20px",
+          paddingTop: "5px",
           // fontSize: "23px !important;",
           borderRadius: "20px",
         }}

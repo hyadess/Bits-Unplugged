@@ -25,18 +25,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://bitsunplugged-dev.onrender.com/api/auth/login",
-							"protocol": "https",
-							"host": [
-								"bitsunplugged-dev.onrender.com"
-							],
-							"port": "443",
-							"path": [
-								"api",
-								"auth",
-								"login"
-							]
-						},
+              "raw": "https://bitsunplugged-dev.onrender.com/api/auth/logout",
+              "protocol": "https",
+              "host": ["bitsunplugged-dev.onrender.com"],
+              "port": "443",
+              "path": ["api", "auth", "logout"]
+            },
 						"description": "## Auth Login\n\nThis endpoint allows users to log in and obtain an access token for accessing protected resources.\n\n### Request Body\n\n- `email` (string): The email address of the user.\n- `pass` (string): The password of the user.\n- `type` (string): The type of authentication.\n    \n\n### Response\n\n- `access_token` (string): The token used to access protected resources.\n- `token_type` (string): The type of token.\n- `expires_in` (integer): The duration of the access token's validity.\n- `refresh_token` (string): The token used to obtain a new access token."
 					},
 					"response": [

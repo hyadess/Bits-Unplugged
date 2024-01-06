@@ -12,7 +12,7 @@ describe("POST /api/auth/login", () => {
       });
       expect(res.statusCode).toBe(200);
       expect(res.type).toEqual("application/json");
-      expect(res.body).toHaveProperty("token");
+      expect(res.body).toHaveProperty("access_token");
     });
   });
 

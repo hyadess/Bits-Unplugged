@@ -30,7 +30,7 @@ const SetterProblems = () => {
     const res = await problemController.getMyProblems();
     if (res.success) {
       setProblemList(res.data);
-      //   setLoading(false);
+      if (res.data.length == 0) setLoading(false);
     }
   };
   useEffect(() => {

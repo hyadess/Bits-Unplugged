@@ -52,8 +52,16 @@ class AuthController extends Controller {
       // console.log(ADMIN_PASS);
       if (bcrypt.compareSync(req.body.pass, ADMIN_PASS)) {
         return res.status(200).json({
-          success: true,
-          token: this.getToken(-1, req.body.email, ADMIN_PASS, req.body.type),
+          // success: true,
+          access_token: this.getToken(
+            -1,
+            req.body.email,
+            ADMIN_PASS,
+            req.body.type
+          ),
+          token_type: "bearer",
+          expires_in: 3600,
+          refresh_token: "new_refresh_token",
         });
       } else {
         return res.status(404).json({
@@ -78,13 +86,15 @@ class AuthController extends Controller {
     if (result.success && result.data.length > 0) {
       if (bcrypt.compareSync(req.body.pass, result.data[0].hashpass)) {
         return res.status(200).json({
-          success: true,
-          token: this.getToken(
+          access_token: this.getToken(
             result.data[0].auth_id,
             req.body.email,
             result.data[0].hashpass,
             req.body.type
           ),
+          token_type: "bearer",
+          expires_in: 3600,
+          refresh_token: "new_refresh_token",
         });
       } else {
         return res.status(404).json({

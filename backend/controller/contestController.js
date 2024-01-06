@@ -136,6 +136,7 @@ class ContestController extends Controller {
   };
 
   addSubmissionToContest = async (req, res) => {
+    console.log(req.body.user_id);
     let result = await contestRepository.addSubmissionToContest(
       req.body.problem_id,
       req.params.contest_id,

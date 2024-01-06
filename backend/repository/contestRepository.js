@@ -7,7 +7,16 @@ class ContestRepository extends Repository{
     //*************ABOUT CONTEST****************** */
     getAllContests = async () => {
         const query = `
-        SELECT * FROM Contest;
+        SELECT
+        C.*
+        STRING_AGG(CS.setter_id, ', ') AS setters,
+        STRING_AGG(CS.role, ', ') AS roles
+        FROM
+        Contest C
+        JOIN
+        Contestsetter CS ON C.contest_id = CS.contest_id
+        GROUP BY
+        C.contest_id;
         `;
         const params = [];
         const result = await this.query(query, params);

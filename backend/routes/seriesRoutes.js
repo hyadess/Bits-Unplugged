@@ -8,6 +8,7 @@ router.use(authMiddleware);
 router.get("/by_topic/:topic_id", seriesController.getSeriesByTopic);
 
 router.get("/", seriesController.getAllSeries);
+router.get("/live", seriesController.getAllSeries); // pending
 router.post("/", seriesController.addSeries);
 
 router.get("/:series_id", seriesController.getSeriesById);

@@ -29,7 +29,7 @@ class AuthApi extends Api {
       if (res.status === 200) {
         return {
           success: true,
-          token: res.data.token,
+          token: res.data.access_token,
         };
       }
     } catch (err) {

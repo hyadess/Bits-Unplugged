@@ -9,7 +9,7 @@ class ContestRepository extends Repository{
         const query = `
         SELECT
         C.*
-        STRING_AGG(CS.setter_id, ', ') AS setters,
+        STRING_AGG(CS.setter_id::text, ', ') AS setters,
         STRING_AGG(CS.role, ', ') AS roles
         FROM
         Contest C

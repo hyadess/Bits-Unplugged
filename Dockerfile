@@ -2,10 +2,18 @@
 
 FROM node:20 as client
 
+
 WORKDIR /app/frontend/
 COPY frontend/package*.json .
 RUN npm install --force --only=production
 COPY frontend/ .
+
+ARG REACT_APP_API_BASE_URL
+ENV REACT_APP_API_BASE_URL $REACT_APP_API_BASE_URL
+
+ARG VITE_APP_API_BASE_URL
+ENV VITE_APP_API_BASE_URL $VITE_APP_API_BASE_URL
+
 RUN npm run build
 
 # Setup the server

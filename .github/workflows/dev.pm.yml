@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      POSTMAN_COLLECTION_PATH: '/etc/newman/Bits Unplugged.postman_collection.json'
+      POSTMAN_COLLECTION_PATH: '/etc/newman/BitsUnplugged.postman_collection.json'
       BASE_URL: 'http://localhost:5000'  # Update with your API's base URL
 
     steps:
@@ -52,4 +52,4 @@ jobs:
           -e BASE_URL=${BASE_URL} \
           -v ${{ github.workspace }}:/etc/newman \
           postman/newman:alpine \
-          run /etc/newman/"Bits Unplugged.postman_collection.json"
+          run ${POSTMAN_COLLECTION_PATH}

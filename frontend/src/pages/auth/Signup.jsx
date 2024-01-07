@@ -71,6 +71,7 @@ const Signup = () => {
         setSearchParams(searchParams);
       }
     }
+    setLoading(false);
   }, [type]);
 
   const validatePassword = () => {

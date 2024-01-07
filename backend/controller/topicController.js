@@ -15,18 +15,33 @@ class TopicController extends Controller {
   };
   addTopic = async (req, res) => {
     let result = await topicRepository.addTopic(req.body);
-    this.handleResponse(result, res);
+    if (result.success) {
+      res.status(201).json(result.data);
+    } else {
+      res.status(500).json(result);
+    }
+    // this.handleResponse(result, res);
   };
   updateTopic = async (req, res) => {
     let result = await topicRepository.updateTopic(
       req.params.topic_id,
       req.body.topic
     );
-    this.handleResponse(result, res);
+    if (result.success) {
+      res.status(204).json();
+    } else {
+      res.status(500).json(result);
+    }
+    // this.handleResponse(result, res);
   };
   deleteTopic = async (req, res) => {
     let result = await topicRepository.deleteTopic(req.params.topic_id);
-    this.handleResponse(result, res);
+    if (result.success) {
+      res.status(204).json();
+    } else {
+      res.status(500).json(result);
+    }
+    // this.handleResponse(result, res);
   };
 }
 

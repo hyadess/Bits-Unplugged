@@ -23,12 +23,10 @@ export default class Api {
       const res = await axios.get(API_BASE_URL + url, {
         headers: { authorization: "Bearer " + token },
       });
-      if (res.status === 200) {
-        return {
-          success: true,
-          data: res.data,
-        };
-      }
+      return {
+        success: true,
+        data: res.data,
+      };
     } catch (err) {
       if (err.hasOwnProperty("response")) {
         return err.response.data;
@@ -54,13 +52,10 @@ export default class Api {
       const res = await axios.post(API_BASE_URL + url, body, {
         headers: { authorization: "Bearer " + token },
       });
-
-      if (res.status === 200) {
-        return {
-          success: true,
-          data: res.data,
-        };
-      }
+      return {
+        success: true,
+        data: res.data,
+      };
     } catch (err) {
       if (err.hasOwnProperty("response")) {
         return err.response.data;
@@ -85,12 +80,10 @@ export default class Api {
       const res = await axios.put(API_BASE_URL + url, body, {
         headers: { authorization: "Bearer " + token },
       });
-      if (res.status === 200) {
-        return {
-          success: true,
-          data: res.data,
-        };
-      }
+      return {
+        success: true,
+        data: res.data,
+      };
     } catch (err) {
       if (err.hasOwnProperty("response")) {
         return err.response.data;
@@ -114,12 +107,10 @@ export default class Api {
       const res = await axios.delete(API_BASE_URL + url, {
         headers: { authorization: "Bearer " + token },
       });
-      if (res.status === 200) {
-        return {
-          success: true,
-          data: res.data,
-        };
-      }
+      return {
+        success: true,
+        data: res.data,
+      };
     } catch (err) {
       if (err.hasOwnProperty("response")) {
         return err.response.data;

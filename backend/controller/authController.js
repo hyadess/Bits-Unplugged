@@ -5,6 +5,7 @@ const authRepository = new AuthRepository();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { ADMIN_PASS } = require("../config/config");
+const { serialize } = require("cookie");
 
 const ACCESS_TOKEN_EXPIRATION = 3600;
 const REFRESH_TOKEN_EXPIRATION = 86400;
@@ -154,6 +155,24 @@ class AuthController extends Controller {
       if (result.success) {
         if (result.data.length > 0) {
           if (bcrypt.compareSync(req.body.pass, result.data[0].hashpass)) {
+            const refreshToken = this.getRefreshToken(
+              result.data[0].auth_id,
+              req.body.email,
+              result.data[0].hashpass,
+              req.body.type
+            );
+            const serializedRefreshToken = serialize(
+              "refresh_token",
+              refreshToken,
+              {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "strict",
+                maxAge: REFRESH_TOKEN_EXPIRATION, // Making it a session cookie
+                path: "/",
+              }
+            );
+            res.setHeader("Set-Cookie", serializedRefreshToken);
             return res.status(200).json({
               access_token: this.getAccessToken(
                 result.data[0].auth_id,
@@ -163,12 +182,12 @@ class AuthController extends Controller {
               ),
               token_type: "bearer",
               expires_in: ACCESS_TOKEN_EXPIRATION,
-              refresh_token: this.getRefreshToken(
-                result.data[0].auth_id,
-                req.body.email,
-                result.data[0].hashpass,
-                req.body.type
-              ),
+              // refresh_token: this.getRefreshToken(
+              //   result.data[0].auth_id,
+              //   req.body.email,
+              //   result.data[0].hashpass,
+              //   req.body.type
+              // ),
             });
           } else {
             return res.status(401).json({

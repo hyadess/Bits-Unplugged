@@ -17,7 +17,6 @@ cron.schedule("*/14 * * * *", () => {
     });
 });
 
-app.use(cookieParser());
 
 // const fileUpload = require("express-fileupload");
 const appRoutes = require("./routes/appRoutes");
@@ -28,6 +27,7 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
+app.use(cookieParser());
 
 // app.use(cors());
 app.use(express.json());

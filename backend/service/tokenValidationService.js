@@ -9,8 +9,7 @@ async function tokenValidationMiddleware(req, res, next) {
   //   next();
   // }
 
-  // console.log(req.body);
-  console.log("Refresh:", req.cookies);
+
   const authHeader = req.headers.authorization;
   // console.log(req.headers.authorization);
   const token = authHeader && authHeader.split(" ")[1];
@@ -36,6 +35,8 @@ async function tokenValidationMiddleware(req, res, next) {
       ); //checking whether the current password is the same
       if (!isValid) {
         // refresh token
+        // console.log(req.body);
+        // console.log("Refresh:", req.cookies.refresh_token);
         return res.status(403).send({ error: "access denied" });
       }
 

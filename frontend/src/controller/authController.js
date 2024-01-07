@@ -4,6 +4,7 @@ import Controller from "./base";
 import { COOKIE_AGE } from "../index";
 import { showToast } from "../App";
 
+
 class AuthController extends Controller {
   authApi = new AuthApi();
   cookies = new Cookies();
@@ -27,23 +28,24 @@ class AuthController extends Controller {
 
       this.cookies.set("token", res.data.access_token, {
         path: "/",
-        maxAge: res.data.expire,
+        maxAge: res.data.expires_in,
       });
 
-      console.log(
-        import.meta?.env
-          ? import.meta.env.PROD
-          : process.env.NODE_ENV === "production"
-      );
-      this.cookies.set("refresh_token", res.data.refresh_token, {
-        path: "/",
-        maxAge: COOKIE_AGE,
-        httpOnly: true,
-        secure: import.meta?.env
-          ? import.meta.env.PROD
-          : process.env.NODE_ENV === "production",
-        sameSite: "Strict",
-      });
+      // console.log(
+      //   import.meta?.env
+      //     ? import.meta.env.PROD
+      //     : process.env.NODE_ENV === "production"
+      // );
+      // this.cookies.set("refresh_token", res.data.refresh_token, {
+      //   path: "/",
+      //   maxAge: COOKIE_AGE,
+      //   httpOnly: true,
+      //   // secure: import.meta?.env
+      //   //   ? import.meta.env.PROD
+      //   //   : process.env.NODE_ENV === "production",
+      //   secure: false,
+      //   sameSite: "None",
+      // });
 
       this.showSuccess("Logged in successfully", res);
     } else {
@@ -75,7 +77,7 @@ class AuthController extends Controller {
     } else {
       showToast(res.error, "error");
     }
-    
+
     return res;
   };
 }

@@ -23,11 +23,7 @@ class AuthRepository extends Repository {
     `;
     const params = [email, type];
     const result = await this.query(query, params);
-    if (result.success && result.data.length > 0) return result;
-    return {
-      success: false,
-      error: "Invalid credentials",
-    };
+    return result;
   };
   getUserByNameType = async (username, type) => {
     const query = `
@@ -39,11 +35,7 @@ class AuthRepository extends Repository {
     `;
     const params = [username, type];
     const result = await this.query(query, params);
-    if (result.success && result.data.length > 0) return result;
-    return {
-      success: false,
-      error: "Invalid credentials",
-    };
+    return result;
   };
   signup = async (data) => {
     const query = `
@@ -77,24 +69,6 @@ class AuthRepository extends Repository {
     return result;
   };
 
-  tokenValidity = async (id, email, pass, type) => {
-    var emailFormat =
-      /^[a-zA-Z0-9_.+]+(?<!^[0-9]*)@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-
-    let result;
-    if (email !== "" && email.match(emailFormat)) {
-      result = await this.getUserByEmailType(email, type);
-    } else {
-      result = await this.getUserByNameType(email, type);
-    }
-    // console.log(result);
-    if (result.success) {
-      if (result.data[0].auth_id == id && result.data[0].hashpass == pass) {
-        return true;
-      }
-    }
-    return false;
-  };
 }
 
 module.exports = AuthRepository;

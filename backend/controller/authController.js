@@ -6,12 +6,14 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { ADMIN_PASS } = require("../config/config");
 
-const tokenExpiryDuration = 86400;
+const ACCESS_TOKEN_EXPIRATION = 3600;
+const REFRESH_TOKEN_EXPIRATION = 86400;
 class AuthController extends Controller {
   constructor() {
     super();
   }
-  getToken = (id, email, pass, type) => {
+
+  getAccessToken = (id, email, pass, type) => {
     const token = jwt.sign(
       {
         id: id,
@@ -20,7 +22,21 @@ class AuthController extends Controller {
         type: type,
       },
       JWT_SECRET,
-      { expiresIn: `${tokenExpiryDuration}s` }
+      { expiresIn: `${ACCESS_TOKEN_EXPIRATION}s` }
+    );
+    return token;
+  };
+
+  getRefreshToken = (id, email, pass, type) => {
+    const token = jwt.sign(
+      {
+        id: id,
+        email: email,
+        pass: pass,
+        type: type,
+      },
+      JWT_SECRET,
+      { expiresIn: `${REFRESH_TOKEN_EXPIRATION}s` }
     );
     return token;
   };
@@ -53,6 +69,30 @@ class AuthController extends Controller {
     }
   };
 
+  tokenValidity = async (id, email, pass, type) => {
+    var emailFormat =
+      /^[a-zA-Z0-9_.+]+(?<!^[0-9]*)@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+
+    let result;
+    if (email !== "" && email.match(emailFormat)) {
+      result = await authRepository.getUserByEmailType(email, type);
+    } else {
+      result = await authRepository.getUserByNameType(email, type);
+    }
+
+    if (result.success && result.data.length > 0) {
+      if (result.data[0].auth_id == id && result.data[0].hashpass == pass) {
+        return true;
+      }
+    } else {
+      // return {
+      //   success: false,
+      //   error: "Invalid credentials",
+      // };
+      return false;
+    }
+  };
+
   login = async (req, res) => {
     try {
       var emailFormat =
@@ -61,15 +101,20 @@ class AuthController extends Controller {
       if (req.body.type == 2) {
         if (bcrypt.compareSync(req.body.pass, ADMIN_PASS)) {
           return res.status(200).json({
-            access_token: this.getToken(
+            access_token: this.getAccessToken(
               -1,
               req.body.email,
               ADMIN_PASS,
               req.body.type
             ),
             token_type: "bearer",
-            expires_in: 3600,
-            refresh_token: "new_refresh_token",
+            expires_in: ACCESS_TOKEN_EXPIRATION,
+            refresh_token: this.getRefreshToken(
+              -1,
+              req.body.email,
+              ADMIN_PASS,
+              req.body.type
+            ),
           });
         } else {
           return res.status(404).json({
@@ -95,15 +140,20 @@ class AuthController extends Controller {
         if (result.data.length > 0) {
           if (bcrypt.compareSync(req.body.pass, result.data[0].hashpass)) {
             return res.status(200).json({
-              access_token: this.getToken(
+              access_token: this.getAccessToken(
                 result.data[0].auth_id,
                 req.body.email,
                 result.data[0].hashpass,
                 req.body.type
               ),
               token_type: "bearer",
-              expires_in: 3600,
-              refresh_token: "new_refresh_token",
+              expires_in: ACCESS_TOKEN_EXPIRATION,
+              refresh_token: this.getRefreshToken(
+                result.data[0].auth_id,
+                req.body.email,
+                result.data[0].hashpass,
+                req.body.type
+              ),
             });
           } else {
             return res.status(401).json({

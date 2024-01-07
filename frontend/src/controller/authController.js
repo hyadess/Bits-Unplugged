@@ -52,7 +52,12 @@ class AuthController extends Controller {
    */
   signup = async (data) => {
     const res = await this.authApi.signup(data);
-    this.showSuccess("New account created", res);
+    if (res.success) {
+      this.showSuccess("New account created", res);
+    } else {
+      showToast(res.error, "error");
+    }
+    
     return res;
   };
 }

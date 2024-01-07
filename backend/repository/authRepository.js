@@ -47,25 +47,32 @@ class AuthRepository extends Repository {
   };
   signup = async (data) => {
     const query = `
-    INSERT INTO Profile (username,fullname)
+    INSERT INTO Profile (username, fullname)
     VALUES ($1, $2)
+    ON CONFLICT (username) DO NOTHING
     RETURNING user_id;
   `;
     const params = [data.username, data.fullname];
     const result = await this.query(query, params);
     if (result.success) {
-      const query2 = `
+      if (result.data.length == 1) {
+        const query2 = `
         INSERT INTO Auth (auth_id, email, hashpass, authtype)
         VALUES ($1,$2,$3,$4);
       `;
-      const params2 = [
-        result.data[0].user_id,
-        data.email,
-        data.hashPass,
-        data.type,
-      ];
-      const result2 = await this.query(query2, params2);
-      return result2;
+        const params2 = [
+          result.data[0].user_id,
+          data.email,
+          data.hashPass,
+          data.type,
+        ];
+        return await this.query(query2, params2);
+      } else {
+        return {
+          success: true,
+          error: "Username already exists",
+        };
+      }
     }
     return result;
   };

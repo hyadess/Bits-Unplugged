@@ -42,74 +42,87 @@ class AuthController extends Controller {
     req.body["hashPass"] = bcrypt.hashSync(req.body.pass, 10);
     let result = await authRepository.signup(req.body);
     if (result.success) {
-      res.status(200).json(result.data);
+      if (result.error) {
+        console.log(result.error);
+        res.status(409).json({ error: result.error });
+      } else {
+        res.status(201).json();
+      }
     } else {
-      res.status(409).json(result);
+      res.status(500).json({ error: "Internal Server Error" });
     }
-    // this.handleResponse(result, res);
   };
 
   login = async (req, res) => {
-    var emailFormat =
-      /^[a-zA-Z0-9_.+]+(?<!^[0-9]*)@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    try {
+      var emailFormat =
+        /^[a-zA-Z0-9_.+]+(?<!^[0-9]*)@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
-    if (req.body.type == 2) {
-      // console.log(ADMIN_PASS);
-      if (bcrypt.compareSync(req.body.pass, ADMIN_PASS)) {
-        return res.status(200).json({
-          // success: true,
-          access_token: this.getToken(
-            -1,
-            req.body.email,
-            ADMIN_PASS,
-            req.body.type
-          ),
-          token_type: "bearer",
-          expires_in: 3600,
-          refresh_token: "new_refresh_token",
-        });
-      } else {
-        return res.status(404).json({
-          success: false,
-          error: "Invalid credentials",
-        });
+      if (req.body.type == 2) {
+        if (bcrypt.compareSync(req.body.pass, ADMIN_PASS)) {
+          return res.status(200).json({
+            access_token: this.getToken(
+              -1,
+              req.body.email,
+              ADMIN_PASS,
+              req.body.type
+            ),
+            token_type: "bearer",
+            expires_in: 3600,
+            refresh_token: "new_refresh_token",
+          });
+        } else {
+          return res.status(404).json({
+            success: false,
+            error: "Invalid credentials",
+          });
+        }
       }
-    }
-    let result;
-    if (req.body.email !== "" && req.body.email.match(emailFormat)) {
-      result = await authRepository.getUserByEmailType(
-        req.body.email,
-        req.body.type
-      );
-    } else {
-      result = await authRepository.getUserByNameType(
-        req.body.email,
-        req.body.type
-      );
-    }
+      let result;
+      if (req.body.email !== "" && req.body.email.match(emailFormat)) {
+        result = await authRepository.getUserByEmailType(
+          req.body.email,
+          req.body.type
+        );
+      } else {
+        result = await authRepository.getUserByNameType(
+          req.body.email,
+          req.body.type
+        );
+      }
 
-    if (result.success && result.data.length > 0) {
-      if (bcrypt.compareSync(req.body.pass, result.data[0].hashpass)) {
-        return res.status(200).json({
-          access_token: this.getToken(
-            result.data[0].auth_id,
-            req.body.email,
-            result.data[0].hashpass,
-            req.body.type
-          ),
-          token_type: "bearer",
-          expires_in: 3600,
-          refresh_token: "new_refresh_token",
-        });
+      if (result.success) {
+        if (result.data.length > 0) {
+          if (bcrypt.compareSync(req.body.pass, result.data[0].hashpass)) {
+            return res.status(200).json({
+              access_token: this.getToken(
+                result.data[0].auth_id,
+                req.body.email,
+                result.data[0].hashpass,
+                req.body.type
+              ),
+              token_type: "bearer",
+              expires_in: 3600,
+              refresh_token: "new_refresh_token",
+            });
+          } else {
+            return res.status(401).json({
+              error: "Invalid credentials",
+            });
+          }
+        } else {
+          res
+            .status(404)
+            .json({ error: "User not found with the given email/user name" });
+        }
       } else {
-        return res.status(404).json({
-          success: false,
-          error: "Invalid credentials",
-        });
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
       }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
     }
-    // console.log(result);
-    res.status(404).json(result);
   };
 }
 

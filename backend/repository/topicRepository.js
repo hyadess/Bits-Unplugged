@@ -30,28 +30,30 @@ class TopicRepository extends Repository {
     `;
     const params = [data.name];
     const result = await this.query(query, params);
-    this.delete_redis("rediskey_" + "all_topics");
+    await this.delete_redis("rediskey_" + "all_topics");
     return result;
   };
   updateTopic = async (topic_id, data) => {
     const query = `
       UPDATE topic
       SET name = $2, description = $3, logo = $4
-      WHERE topic_id = $1;
+      WHERE topic_id = $1
+      RETURNING *;
     `;
     const params = [topic_id, data.name, data.description, data.logo];
     const result = await this.query(query, params);
-    this.delete_redis("rediskey_" + "all_topics");
+    await this.delete_redis("rediskey_" + "all_topics");
     return result;
   };
   deleteTopic = async (topic_id) => {
     const query = `
       DELETE FROM Topic
-      WHERE topic_id = $1;
+      WHERE topic_id = $1
+      RETURNING *;
     `;
     const params = [topic_id];
     const result = await this.query(query, params);
-    this.delete_redis("rediskey_" + "all_topics");
+    await this.delete_redis("rediskey_" + "all_topics");
     return result;
   };
 }

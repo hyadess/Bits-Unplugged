@@ -1,6 +1,8 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { API_BASE_URL } from "../index";
+
+axios.defaults.withCredentials = true;
 export default class Api {
   cookies = new Cookies();
   getToken = () => {
@@ -20,15 +22,17 @@ export default class Api {
     const token = this.getToken();
     // console.log("Profile Called" + token);
     try {
-      const res = await axios.get(API_BASE_URL + url, {
-        headers: { authorization: "Bearer " + token },
-      });
-      if (res.status === 200) {
-        return {
-          success: true,
-          data: res.data,
-        };
-      }
+      const res = await axios.get(
+        API_BASE_URL + url,
+        {
+          headers: { authorization: "Bearer " + token },
+        },
+        { withCredentials: true }
+      );
+      return {
+        success: true,
+        data: res.data,
+      };
     } catch (err) {
       if (err.hasOwnProperty("response")) {
         return err.response.data;
@@ -51,16 +55,18 @@ export default class Api {
     const token = this.getToken();
 
     try {
-      const res = await axios.post(API_BASE_URL + url, body, {
-        headers: { authorization: "Bearer " + token },
-      });
-
-      if (res.status === 200) {
-        return {
-          success: true,
-          data: res.data,
-        };
-      }
+      const res = await axios.post(
+        API_BASE_URL + url,
+        body,
+        {
+          headers: { authorization: "Bearer " + token },
+        },
+        { withCredentials: true }
+      );
+      return {
+        success: true,
+        data: res.data,
+      };
     } catch (err) {
       if (err.hasOwnProperty("response")) {
         return err.response.data;
@@ -84,13 +90,12 @@ export default class Api {
     try {
       const res = await axios.put(API_BASE_URL + url, body, {
         headers: { authorization: "Bearer " + token },
+        withCredentials: true,
       });
-      if (res.status === 200) {
-        return {
-          success: true,
-          data: res.data,
-        };
-      }
+      return {
+        success: true,
+        data: res.data,
+      };
     } catch (err) {
       if (err.hasOwnProperty("response")) {
         return err.response.data;
@@ -113,13 +118,12 @@ export default class Api {
     try {
       const res = await axios.delete(API_BASE_URL + url, {
         headers: { authorization: "Bearer " + token },
+        withCredentials: true,
       });
-      if (res.status === 200) {
-        return {
-          success: true,
-          data: res.data,
-        };
-      }
+      return {
+        success: true,
+        data: res.data,
+      };
     } catch (err) {
       if (err.hasOwnProperty("response")) {
         return err.response.data;

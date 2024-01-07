@@ -20,14 +20,31 @@ class AuthController extends Controller {
     const res = await this.authApi.login(data);
     console.log(res);
     if (res.success) {
-      this.cookies.set("token", res.token, {
-        path: "/",
-        maxAge: COOKIE_AGE,
-      });
       this.cookies.set("type", data.type, {
         path: "/",
         maxAge: COOKIE_AGE,
       });
+
+      this.cookies.set("token", res.data.access_token, {
+        path: "/",
+        maxAge: res.data.expire,
+      });
+
+      console.log(
+        import.meta?.env
+          ? import.meta.env.PROD
+          : process.env.NODE_ENV === "production"
+      );
+      this.cookies.set("refresh_token", res.data.refresh_token, {
+        path: "/",
+        maxAge: COOKIE_AGE,
+        httpOnly: true,
+        secure: import.meta?.env
+          ? import.meta.env.PROD
+          : process.env.NODE_ENV === "production",
+        sameSite: "Strict",
+      });
+
       this.showSuccess("Logged in successfully", res);
     } else {
       showToast(res.error, "error");
@@ -36,6 +53,7 @@ class AuthController extends Controller {
   };
 
   logout = async () => {
+    this.cookies.remove("refresh_token", { path: "/" });
     this.cookies.remove("token", { path: "/" });
     this.cookies.remove("type", { path: "/" });
     showToast("Logged out successfully");
@@ -52,7 +70,12 @@ class AuthController extends Controller {
    */
   signup = async (data) => {
     const res = await this.authApi.signup(data);
-    this.showSuccess("New account created", res);
+    if (res.success) {
+      this.showSuccess("New account created", res);
+    } else {
+      showToast(res.error, "error");
+    }
+    
     return res;
   };
 }

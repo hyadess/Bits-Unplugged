@@ -23,7 +23,9 @@ router.post("/reset_pass", (req, res) => res.status(200).send()); // dihan - res
 router.post("/approve_setter/:id", authMiddleware, (req, res) =>
   res.status(200).send()
 ); // dihan - Admin approval of problem setter registration
-router.delete("/delete_account/:id", authMiddleware, (req, res) =>
-  res.status(200).send()
+router.delete(
+  "/delete_account/:user_id",
+  authMiddleware,
+  authController.deleteAccount
 ); // dihan - Admin approval of problem setter registration
 module.exports = router;

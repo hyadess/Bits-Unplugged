@@ -8,7 +8,7 @@ class ContestRepository extends Repository{
     getAllContests = async () => {
         const query = `
         SELECT
-        C.*
+        C.*,
         STRING_AGG(CS.setter_id::text, ', ') AS setters,
         STRING_AGG(CS.role, ', ') AS roles
         FROM

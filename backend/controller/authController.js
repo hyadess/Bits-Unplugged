@@ -41,7 +41,12 @@ class AuthController extends Controller {
   signup = async (req, res) => {
     req.body["hashPass"] = bcrypt.hashSync(req.body.pass, 10);
     let result = await authRepository.signup(req.body);
-    this.handleResponse(result, res);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(409).json(result);
+    }
+    // this.handleResponse(result, res);
   };
 
   login = async (req, res) => {

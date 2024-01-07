@@ -26,7 +26,7 @@ class AuthApi extends Api {
       let res = await axios.post(API_BASE_URL + "/auth/login", data);
       return {
         success: true,
-        token: res.data.access_token,
+        data: res.data,
       };
     } catch (err) {
       if (err.hasOwnProperty("response")) {

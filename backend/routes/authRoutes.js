@@ -10,7 +10,6 @@ router.post("/refresh-token", (req, res) =>
     access_token: "new_access_token",
     token_type: "bearer",
     expires_in: 3600,
-    refresh_token: "new_refresh_token",
   })
 );
 router.post("/signup", authController.signup);

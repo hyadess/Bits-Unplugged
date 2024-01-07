@@ -22,13 +22,10 @@ export default class Api {
     const token = this.getToken();
     // console.log("Profile Called" + token);
     try {
-      const res = await axios.get(
-        API_BASE_URL + url,
-        {
-          headers: { authorization: "Bearer " + token },
-        },
-        { withCredentials: true }
-      );
+      const res = await axios.get(API_BASE_URL + url, {
+        headers: { authorization: "Bearer " + token },
+        withCredentials: true,
+      });
       return {
         success: true,
         data: res.data,
@@ -55,14 +52,10 @@ export default class Api {
     const token = this.getToken();
 
     try {
-      const res = await axios.post(
-        API_BASE_URL + url,
-        body,
-        {
-          headers: { authorization: "Bearer " + token },
-        },
-        { withCredentials: true }
-      );
+      const res = await axios.post(API_BASE_URL + url, body, {
+        headers: { authorization: "Bearer " + token },
+        withCredentials: true,
+      });
       return {
         success: true,
         data: res.data,

@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config/config");
-const AuthRepository = require("../repository/authRepository");
+const AuthController = require("../controller/authController");
 
-const authRepository = new AuthRepository();
+const authController = new AuthController();
 
 async function tokenValidationMiddleware(req, res, next) {
   // if (req.body.type == 2) {
@@ -26,7 +26,7 @@ async function tokenValidationMiddleware(req, res, next) {
       if (!("email" in data))
         return res.status(403).send({ error: "access denied" });
 
-      var isValid = await authRepository.tokenValidity(
+      var isValid = await authController.tokenValidity(
         data.id,
         data.email,
         data.pass,

@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from "react";
-
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-
 import Cookies from "universal-cookie";
-import CustomCard from "../../components/Cards/CustomCard";
-import CardContainer from "../../components/Containers/CardContainer";
 import Title from "../../components/Title";
-
 import TopicController from "../../controller/topicController";
-import Layout4 from "../../components/Layouts/Layout4";
-import AdminNavbar from "../../components/navbar/AdminNavbar";
 import { TextField, TextField2 } from "../../components/InputFields";
 import { setLoading } from "../../App";
 const topicController = new TopicController();
@@ -32,7 +24,7 @@ const AdminTopicEditor = () => {
     console.log(id);
     const res = await topicController.getTopicById(id);
     if (res.success) {
-      setTopic(res.data[0]);
+      setTopic(res.data);
       setLoading(false);
       console.log(res);
     }

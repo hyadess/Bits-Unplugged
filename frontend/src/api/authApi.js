@@ -6,11 +6,9 @@ class AuthApi extends Api {
   signup = async (data) => {
     try {
       let res = await axios.post(API_BASE_URL + "/auth/signup", data);
-      if (res.status === 200) {
-        return {
-          success: true,
-        };
-      }
+      return {
+        success: true,
+      };
     } catch (err) {
       if (err.hasOwnProperty("response")) {
         return err.response.data;
@@ -26,12 +24,10 @@ class AuthApi extends Api {
   login = async (data) => {
     try {
       let res = await axios.post(API_BASE_URL + "/auth/login", data);
-      if (res.status === 200) {
-        return {
-          success: true,
-          token: res.data.access_token,
-        };
-      }
+      return {
+        success: true,
+        token: res.data.access_token,
+      };
     } catch (err) {
       if (err.hasOwnProperty("response")) {
         return err.response.data;

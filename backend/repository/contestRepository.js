@@ -313,14 +313,14 @@ class ContestRepository extends Repository{
     deleteProblem = async (contest_id,problem_id) =>{
         const query1=`
         DELETE FROM Contestparticipation
-        WHERE contest_id = $1, problem_id = $2; 
+        WHERE contest_id = $1 AND problem_id = $2; 
         `;
         const params1 = [contest_id,problem_id];
         const result1 = await this.query(query1, params1);
 
         const query=`
         DELETE FROM Contestproblem
-        WHERE contest_id = $1, problem_id = $2;
+        WHERE contest_id = $1 AND problem_id = $2;
         `;
         const result = await this.query(query, params1);
 

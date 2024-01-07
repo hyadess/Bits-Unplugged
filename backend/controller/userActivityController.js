@@ -9,7 +9,11 @@ class UserActivityController extends Controller {
     let result = await userActivityRepository.updateOnFailedAttempt(
       req.body.user_id,req.params.problem_id
     );
-    this.handleResponse(result, res);
+    if (result.success) {
+      res.status(204).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
 
   };
   
@@ -17,7 +21,11 @@ class UserActivityController extends Controller {
     let result = await userActivityRepository.updateOnSuccessfulAttempt(
       req.body.user_id,req.params.problem_id
     );
-    this.handleResponse(result, res);
+    if (result.success) {
+      res.status(204).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
 
   };
 
@@ -25,29 +33,53 @@ class UserActivityController extends Controller {
   
   totalFailedAttempts = async (req, res) => {
     let result = await userActivityRepository.totalFailedAttempts();
-    this.handleResponse(result, res);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
   };
   totalSuccessfulAttempts = async (req, res) => {
     let result = await userActivityRepository.totalSuccessfulAttempts();
-    this.handleResponse(result, res);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
   };
 
   totalSolvedProblemsByUser = async (req, res) => {
     let result = await userActivityRepository.totalSolvedProblemsByUser(req.body.user_id);
-    this.handleResponse(result, res);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
   };
   totalFailedAttemptsByUser = async (req, res) => {
     let result = await userActivityRepository.totalFailedAttemptsByUser(req.body.user_id);
-    this.handleResponse(result, res);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
   };
   
   totalSuccessfulAttemptsBySeries = async (req, res) => {
     let result = await userActivityRepository.totalSuccessfulAttemptsBySeries(req.params.series_id);
-    this.handleResponse(result, res);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
   };
   totalFailedAttemptsBySeries = async (req, res) => {
     let result = await userActivityRepository.totalFailedAttemptsBySeries(req.params.series_id);
-    this.handleResponse(result, res);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
   };
 
 }

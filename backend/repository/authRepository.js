@@ -37,6 +37,16 @@ class AuthRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+  deleteAccount = async (user_id) => {
+    const query = `
+      DELETE FROM Profile
+      WHERE user_id = $1
+      RETURNING *;
+    `;
+    const params = [user_id];
+    const result = await this.query(query, params);
+    return result;
+  };
   signup = async (data) => {
     const query = `
     INSERT INTO Profile (username, fullname)
@@ -50,7 +60,8 @@ class AuthRepository extends Repository {
       if (result.data.length == 1) {
         const query2 = `
         INSERT INTO Auth (auth_id, email, hashpass, authtype)
-        VALUES ($1,$2,$3,$4);
+        VALUES ($1,$2,$3,$4)
+        RETURNING auth_id;
       `;
         const params2 = [
           result.data[0].user_id,
@@ -68,7 +79,6 @@ class AuthRepository extends Repository {
     }
     return result;
   };
-
 }
 
 module.exports = AuthRepository;

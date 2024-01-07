@@ -62,13 +62,28 @@ class AuthController extends Controller {
         console.log(result.error);
         res.status(409).json({ error: result.error });
       } else {
-        res.status(201).json();
+        res.status(201).json(result.data[0]);
       }
     } else {
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
 
+  deleteAccount = async (req, res) => {
+    let result = await authRepository.deleteAccount(req.params.user_id);
+    if (result.success) {
+      if (result.data.length > 0) {
+        // success
+        res.status(204).json();
+      } else {
+        // known error
+        res.status(404).json({ error: "No account with this id" });
+      }
+    } else {
+      // unexpected error
+      res.status(500).json(result);
+    }
+  };
   tokenValidity = async (id, email, pass, type) => {
     var emailFormat =
       /^[a-zA-Z0-9_.+]+(?<!^[0-9]*)@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;

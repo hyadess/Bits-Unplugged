@@ -52,7 +52,7 @@ const AdminTopics = () => {
   const getTopicId = async (name) => {
     const res = await topicController.addTopic(name);
     if (res.success) {
-      return res.data[0].topic_id;
+      return res.data.id;
     }
   };
 
@@ -88,7 +88,7 @@ const AdminTopics = () => {
               id={`Topic ${index + 1}`}
               name={topic.name}
               image={topic.logo}
-              path={`/admin/topics/${topic.topic_id}`}
+              path={`/admin/topics/${topic.id}`}
               action="View Topic"
             />
           ))}

@@ -61,9 +61,9 @@ const AdminSeriesEditor = () => {
   const getTopicList = async () => {
     const res = await topicController.getAllTopics();
     if (res.success) {
-      const newArray = res.data.map((item) => ({
-        value: item.topic_id,
-        label: item.name,
+      const newArray = res.data.map((topic) => ({
+        value: topic.id,
+        label: topic.name,
       }));
       setTopicList(newArray);
     }

@@ -7,30 +7,30 @@ class UserActivityController extends Controller {
   }
   updateOnFailedAttempt = async (req, res) => {
     let result = await userActivityRepository.updateOnFailedAttempt(
-      req.body.user_id,req.params.problem_id
+      req.user.user_id,
+      req.params.problem_id
     );
     if (result.success) {
       res.status(204).json(result.data);
     } else {
       res.status(404).json(result);
     }
-
   };
-  
+
   updateOnSuccessfulAttempt = async (req, res) => {
     let result = await userActivityRepository.updateOnSuccessfulAttempt(
-      req.body.user_id,req.params.problem_id
+      req.user.user_id,
+      req.params.problem_id
     );
     if (result.success) {
       res.status(204).json(result.data);
     } else {
       res.status(404).json(result);
     }
-
   };
 
   //new ones......
-  
+
   totalFailedAttempts = async (req, res) => {
     let result = await userActivityRepository.totalFailedAttempts();
     if (result.success) {
@@ -49,7 +49,9 @@ class UserActivityController extends Controller {
   };
 
   totalSolvedProblemsByUser = async (req, res) => {
-    let result = await userActivityRepository.totalSolvedProblemsByUser(req.body.user_id);
+    let result = await userActivityRepository.totalSolvedProblemsByUser(
+      req.user.user_id
+    );
     if (result.success) {
       res.status(200).json(result.data);
     } else {
@@ -57,24 +59,9 @@ class UserActivityController extends Controller {
     }
   };
   totalFailedAttemptsByUser = async (req, res) => {
-    let result = await userActivityRepository.totalFailedAttemptsByUser(req.body.user_id);
-    if (result.success) {
-      res.status(200).json(result.data);
-    } else {
-      res.status(404).json(result);
-    }
-  };
-  
-  totalSuccessfulAttemptsBySeries = async (req, res) => {
-    let result = await userActivityRepository.totalSuccessfulAttemptsBySeries(req.params.series_id);
-    if (result.success) {
-      res.status(200).json(result.data);
-    } else {
-      res.status(404).json(result);
-    }
-  };
-  totalFailedAttemptsBySeries = async (req, res) => {
-    let result = await userActivityRepository.totalFailedAttemptsBySeries(req.params.series_id);
+    let result = await userActivityRepository.totalFailedAttemptsByUser(
+      req.user.user_id
+    );
     if (result.success) {
       res.status(200).json(result.data);
     } else {
@@ -82,6 +69,26 @@ class UserActivityController extends Controller {
     }
   };
 
+  totalSuccessfulAttemptsBySeries = async (req, res) => {
+    let result = await userActivityRepository.totalSuccessfulAttemptsBySeries(
+      req.params.series_id
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+  totalFailedAttemptsBySeries = async (req, res) => {
+    let result = await userActivityRepository.totalFailedAttemptsBySeries(
+      req.params.series_id
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
 }
 
 module.exports = UserActivityController;

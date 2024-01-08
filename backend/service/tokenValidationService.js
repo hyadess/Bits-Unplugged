@@ -4,11 +4,13 @@ const AuthController = require("../controller/authController");
 
 const authController = new AuthController();
 
+// Replace this passport js
+// req.user = {iss,sub,role,admin,email}
+
 async function tokenValidationMiddleware(req, res, next) {
-  // if (req.body.type == 2) {
+  // if (req.user.type == 2) {
   //   next();
   // }
-
 
   const authHeader = req.headers.authorization;
   // console.log(req.headers.authorization);

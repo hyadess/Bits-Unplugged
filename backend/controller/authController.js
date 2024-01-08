@@ -15,15 +15,30 @@ class AuthController extends Controller {
   }
 
   getAccessToken = (id, email, pass, type) => {
+    // const token = jwt.sign(
+    //   {
+    //     iss: "https://bitsunplugged.onrender.com",
+    //     sub: id,
+    //     exp: ACCESS_TOKEN_EXPIRATION,
+    //     role: type,
+    //     admin: false,
+    //     email: email
+    //   },
+    //   JWT_SECRET,
+    //   { expiresIn: `${ACCESS_TOKEN_EXPIRATION}s` }
+    // );
     const token = jwt.sign(
       {
-        id: id,
+        user_id: id,
         email: email,
         pass: pass,
         type: type,
+        iss: "bitsunplugged.onrender.com",
       },
       JWT_SECRET,
-      { expiresIn: `${ACCESS_TOKEN_EXPIRATION}s` }
+      {
+        expiresIn: `${ACCESS_TOKEN_EXPIRATION}s`,
+      }
     );
     return token;
   };
@@ -31,10 +46,10 @@ class AuthController extends Controller {
   getRefreshToken = (id, email, pass, type) => {
     const token = jwt.sign(
       {
-        id: id,
+        user_id: id,
         email: email,
-        pass: pass,
         type: type,
+        iss: "bitsunplugged.onrender.com",
       },
       JWT_SECRET,
       { expiresIn: `${REFRESH_TOKEN_EXPIRATION}s` }
@@ -46,10 +61,12 @@ class AuthController extends Controller {
     const token = jwt.sign(
       {
         type: 2,
+        iss: "bitsunplugged.onrender.com",
+        admin: true,
       },
       JWT_SECRET
     );
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       token: token,
     });
@@ -186,7 +203,7 @@ class AuthController extends Controller {
               //   result.data[0].auth_id,
               //   req.body.email,
               //   result.data[0].hashpass,
-              //   req.body.type
+              //   req.user.type
               // ),
             });
           } else {

@@ -6,6 +6,7 @@ class TopicController extends Controller {
     super();
   }
   getAllTopics = async (req, res) => {
+    console.log(req.user);
     let result = await topicRepository.getAllTopics();
     this.handleResponse(result, res);
   };

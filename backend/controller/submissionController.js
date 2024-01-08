@@ -6,12 +6,11 @@ class SubmissionController extends Controller {
     super();
   }
   getAllSubmissionsByUserAndProblem = async (req, res) => {
-    
     let result = await submissionRepository.getAllSubmissionsByUserAndProblem(
-      req.body.user_id,req.params.problem_id
+      req.user.user_id,
+      req.params.problem_id
     );
     this.handleResponse(result, res);
-
   };
   getAllSubmissionsByProblem = async (req, res) => {
     let result = await submissionRepository.getAllSubmissionsByProblem(
@@ -21,14 +20,18 @@ class SubmissionController extends Controller {
   };
   getAllSubmissionsByUser = async (req, res) => {
     let result = await submissionRepository.getAllSubmissionsByUser(
-      req.body.user_id
+      req.user.user_id
     );
     this.handleResponse(result, res);
   };
   // getUnsolvedProblemList = async (req, res) => {};
   // getProblemStats = async (req, res) => {};
   submitSolution = async (req, res) => {
-    let result = await submissionRepository.submitSolution(req.body.user_id,req.params.problem_id, req.body);
+    let result = await submissionRepository.submitSolution(
+      req.user.user_id,
+      req.params.problem_id,
+      req.body
+    );
     this.handleResponse(result, res);
   };
 

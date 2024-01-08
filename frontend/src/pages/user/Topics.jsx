@@ -47,7 +47,7 @@ const Topics = () => {
                 id={`Topic ${index + 1}`}
                 name={topic.name}
                 image={topic.logo}
-                path={`/topics/${topic.topic_id}`}
+                path={`/topics/${topic.id}`}
                 action="View Series"
               />
             ))}

@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   Topic.init(
     {
-      // topic_id: DataTypes.INTEGER,
       name: DataTypes.STRING,
       description: DataTypes.STRING,
       logo: DataTypes.TEXT,

@@ -52,3 +52,7 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;
+
+// npx sequelize-cli model:generate --name Topic --attributes topic_id:integer,name:string,description:string logo:text --underscored
+// npx sequelize-cli seed:generate --name demo-topics
+// npx sequelize-cli db:seed:all

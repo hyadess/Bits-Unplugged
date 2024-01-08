@@ -1,12 +1,16 @@
-"use strict";
+'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Topics", {
+    await queryInterface.createTable("Series", {
+      // series?
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
+      topic_id: {
         type: Sequelize.INTEGER,
       },
       name: {
@@ -29,6 +33,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Topics");
-  },
+    await queryInterface.dropTable('Series');
+  }
 };

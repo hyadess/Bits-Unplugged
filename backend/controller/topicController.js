@@ -6,66 +6,64 @@ class TopicController extends Controller {
     super();
   }
   getAllTopics = async (req, res) => {
-    console.log(req.user);
-    let result = await topicRepository.getAllTopics();
-    this.handleResponse(result, res);
+    try {
+      let topics = await topicRepository.getAllTopics();
+      return res.status(200).send(topics);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
   };
   getTopicById = async (req, res) => {
-    let result = await topicRepository.getTopicById(req.params.topic_id);
-    if (result.success) {
-      if (result.data.length > 0) {
-        // success
-        res.status(200).json(result.data[0]);
-      } else {
-        // known error
-        res.status(404).json({ error: "No topic with this topic_id" });
+    try {
+      let topic = await topicRepository.getTopicById(req.params.topic_id);
+      if (!topic) {
+        return res.status(404).json({ error: "Topic not found" });
       }
-    } else {
-      // unexpected error
-      res.status(500).json(result);
+      return res.status(200).json(topic);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Internal server error" });
     }
   };
   addTopic = async (req, res) => {
-    let result = await topicRepository.addTopic(req.body);
-    if (result.success) {
-      // success
-      res.status(201).json(result.data);
-    } else {
-      // unexpected error
-      res.status(500).json(result);
+    try {
+      let newTopic = await topicRepository.addTopic(req.body);
+      return res
+        .status(201)
+        .json({ topic_id: newTopic.id, message: "Topic added successfully" });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Internal server error" });
     }
   };
   updateTopic = async (req, res) => {
-    let result = await topicRepository.updateTopic(
-      req.params.topic_id,
-      req.body.topic
-    );
-    if (result.success) {
-      if (result.data.length > 0) {
-        // success
-        res.status(204).json();
-      } else {
-        // known error
-        res.status(404).json({ error: "No topic with this topic_id" });
+    try {
+      const updatedTopic = await topicRepository.updateTopic(
+        req.params.topic_id,
+        req.body.topic
+      );
+      if (!updatedTopic) {
+        return res.status(404).json({ error: "Topic not found" });
       }
-    } else {
-      // unexpected error
-      res.status(500).json(result);
+      return res.status(200).json({ message: "Topic updated successfully" });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Internal server error" });
     }
   };
   deleteTopic = async (req, res) => {
-    let result = await topicRepository.deleteTopic(req.params.topic_id);
-    if (result.success) {
-      if (result.data.length > 0) {
-        // success
-        res.status(204).json();
-      } else {
-        // known error
-        res.status(404).json({ error: "No topic with this topic_id" });
+    try {
+      const deletedTopic = await topicRepository.deleteTopic(
+        req.params.topic_id
+      );
+      if (!deletedTopic) {
+        return res.status(404).json({ error: "Topic not found" });
       }
-    } else {
-      // unexpected error
-      res.status(500).json(result);
+      return res.status(200).json({ message: "Topic deleted successfully" });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Internal server error" });
     }
   };
 }

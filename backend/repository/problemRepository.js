@@ -43,8 +43,8 @@ class ProblemsRepository extends Repository {
       FROM Problem P
       JOIN Series S
       ON P.series_id = S.series_id
-      JOIN Topic T
-      ON S.topic_id = T.topic_id
+      JOIN Topics T
+      ON S.topic_id = T.id
       WHERE S.series_id = $1
       AND P.is_live = TRUE;
     `;
@@ -59,7 +59,7 @@ class ProblemsRepository extends Repository {
     T.name AS topic_name 
     FROM Problem P
     JOIN Series S ON P.series_id = S.series_id
-    JOIN Topic T ON S.topic_id = T.topic_id
+    JOIN Topics T ON S.topic_id = T.id
     LEFT JOIN Activity U ON P.problem_id = U.problem_id AND U.user_id = $1
     WHERE (U.user_id IS NULL OR U.is_solved = FALSE)
     AND P.is_live = TRUE
@@ -78,7 +78,7 @@ class ProblemsRepository extends Repository {
     T.name AS topic_name 
     FROM Problem P
     JOIN Series S ON P.series_id = S.series_id
-    JOIN Topic T ON S.topic_id = T.topic_id
+    JOIN Topics T ON S.topic_id = T.id
     LEFT JOIN Activity U ON P.problem_id = U.problem_id AND U.user_id = $1
     WHERE (U.user_id IS NULL OR U.is_solved = FALSE)
     AND P.is_live = TRUE;
@@ -95,7 +95,7 @@ class ProblemsRepository extends Repository {
     T.name AS topic_name 
     FROM Problem P
     JOIN Series S ON P.series_id = S.series_id
-    JOIN Topic T ON S.topic_id = T.topic_id
+    JOIN Topics T ON S.topic_id = T.id
     LEFT JOIN Activity U ON P.problem_id = U.problem_id AND U.user_id = $1
     WHERE (U.user_id IS NOT NULL AND U.is_solved = FALSE)
     AND P.is_live = TRUE
@@ -106,11 +106,10 @@ class ProblemsRepository extends Repository {
     return result;
   };
   //new for souvik.........................
-  getRecommendations =async (user_id)=>{
+  getRecommendations = async (user_id) => {
     //will change it later................................
     return await this.getAllUnsolvedAndAttemptedProblems(user_id);
-  }
-
+  };
 
   getProblemsByTopic = async (topic_id) => {
     const query = `
@@ -130,8 +129,8 @@ class ProblemsRepository extends Repository {
     FROM Problem P
     LEFT JOIN Series S
     ON P.series_id = S.series_id
-    LEFT JOIN Topic T
-    ON S.topic_id = T.topic_id
+    LEFT JOIN Topics T
+    ON S.topic_id = T.id
     LEFT JOIN Canvas C
     ON C.canvas_id = P.canvas_id
     WHERE problem_id = $1;
@@ -147,8 +146,8 @@ class ProblemsRepository extends Repository {
     FROM Problem P
     LEFT JOIN Series S
     ON P.series_id = S.series_id
-    LEFT JOIN Topic T
-    ON S.topic_id = T.topic_id
+    LEFT JOIN Topics T
+    ON S.topic_id = T.id
     LEFT JOIN State St
     ON St.state_id = P.submit_state_id
     WHERE problem_id = $1 AND is_live = true;

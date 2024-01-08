@@ -2,8 +2,10 @@ const router = require("express").Router();
 const authMiddleware = require("../service/tokenValidationService");
 const ProfileController = require("../controller/profileController");
 const profileController = new ProfileController();
-
-router.use(authMiddleware);
+const passport = require("passport");
+router.use(
+  passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
+);
 router.get("/", profileController.getProfile);
 router.post("/", profileController.setProfile);
 router.put("/", profileController.updateProfile);

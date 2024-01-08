@@ -2,18 +2,25 @@ const router = require("express").Router();
 const authMiddleware = require("../service/tokenValidationService");
 const ProblemController = require("../controller/problemController");
 const problemController = new ProblemController();
-
-router.use(authMiddleware);
-
+const passport = require("passport");
+router.use(
+  passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
+);
 // All
 router.get("/", problemController.getAllProblems);
 router.get("/submitted", problemController.getSubmittedProblems);
 router.get("/by_series/:series_id", problemController.getProblemsBySeries);
-router.get("/by_series/unsolved/:series_id", problemController.getUnsolvedProblemsBySeries);
+router.get(
+  "/by_series/unsolved/:series_id",
+  problemController.getUnsolvedProblemsBySeries
+);
 
-router.get("/unsolved",problemController.getAllUnsolvedProblems); //new for souvik
-router.get("/unsolved/attempted",problemController.getAllUnsolvedAndAttemptedProblems); //new for souvik..
-router.get("/recommendation",problemController.getRecommendations) // new for souvik.....
+router.get("/unsolved", problemController.getAllUnsolvedProblems); //new for souvik
+router.get(
+  "/unsolved/attempted",
+  problemController.getAllUnsolvedAndAttemptedProblems
+); //new for souvik..
+router.get("/recommendation", problemController.getRecommendations); // new for souvik.....
 
 router.get("/by_topic/:topic_id", problemController.getProblemsByTopic);
 // router.post("/:problem_id/rate", problemController.rateProblem); // later
@@ -25,8 +32,8 @@ router.get("/:problem_id", problemController.getProblemById);
 router.delete("/:problem_id", problemController.deleteProblem);
 
 router.put("/:problem_id/title", problemController.updateTitle);
-router.put("/:problem_id/series", problemController.updateSeries); 
-router.put("/:problem_id/serial", problemController.updateSerial); 
+router.put("/:problem_id/series", problemController.updateSeries);
+router.put("/:problem_id/serial", problemController.updateSerial);
 router.put("/:problem_id/canvas", problemController.updateCanvas);
 // router.put("/:problem_id/hints", problemController.updateHints); // later
 router.put("/:problem_id/statement", problemController.updateStatement);
@@ -42,4 +49,3 @@ router.post("/:problem_id/unpublish", problemController.unpublishProblem);
 router.post("/:problem_id/bookmark", (req, res) => res.status(200).send()); // dihan - Bookmark a problem
 router.put("/rating", (req, res) => res.status(200).send()); // dihan - Bookmark a problem
 module.exports = router;
- 

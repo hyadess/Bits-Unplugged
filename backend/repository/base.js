@@ -29,7 +29,7 @@ class Repository {
   // code to execute sql
   query = async (query, params) => {
     let result;
-    console.log(process.env.NODE_ENV, DB_HOST, process.env.DB_HOST);
+    // console.log(process.env.NODE_ENV, DB_HOST, process.env.DB_HOST);
     try {
       if (this.pool === undefined) {
         this.pool = new Pool({

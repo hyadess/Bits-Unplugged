@@ -2,9 +2,10 @@ const router = require("express").Router();
 const authMiddleware = require("../service/tokenValidationService");
 const SeriesController = require("../controller/seriesController");
 const seriesController = new SeriesController();
-
-router.use(authMiddleware);
-
+const passport = require("passport");
+router.use(
+  passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
+);
 router.get("/by_topic/:topic_id", seriesController.getSeriesByTopic);
 
 router.get("/", seriesController.getAllSeries);

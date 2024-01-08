@@ -15,7 +15,7 @@ class ProblemController extends Controller {
     this.handleResponse(result, res);
   };
   getMyProblems = async (req, res) => {
-    let result = await problemRepository.getMyProblems(req.body.user_id);
+    let result = await problemRepository.getMyProblems(req.user.user_id);
     this.handleResponse(result, res);
   };
 
@@ -27,7 +27,7 @@ class ProblemController extends Controller {
   };
   getUnsolvedProblemsBySeries = async (req, res) => {
     let result = await problemRepository.getUnsolvedProblemsBySeries(
-      req.body.user_id,
+      req.user.user_id,
       req.params.series_id
     );
     this.handleResponse(result, res);
@@ -36,26 +36,22 @@ class ProblemController extends Controller {
   //new for souvik......................
   getAllUnsolvedProblems = async (req, res) => {
     let result = await problemRepository.getAllUnsolvedProblems(
-      req.body.user_id
+      req.user.user_id
     );
     this.handleResponse(result, res);
   };
   //new for souvik......................
   getAllUnsolvedAndAttemptedProblems = async (req, res) => {
     let result = await problemRepository.getAllUnsolvedAndAttemptedProblems(
-      req.body.user_id
+      req.user.user_id
     );
     this.handleResponse(result, res);
   };
   //new for souvik......................
   getRecommendations = async (req, res) => {
-    let result = await problemRepository.getRecommendations(
-      req.body.user_id
-    );
+    let result = await problemRepository.getRecommendations(req.user.user_id);
     this.handleResponse(result, res);
   };
-
-
 
   getProblemsByTopic = async (req, res) => {
     let result = await problemRepository.getProblemsByTopic(
@@ -66,7 +62,7 @@ class ProblemController extends Controller {
 
   getProblemById = async (req, res) => {
     let result;
-    if (req.body.type == 0) {
+    if (req.user.type == 0) {
       result = await problemRepository.getPublishedProblemById(
         req.params.problem_id
       );
@@ -77,7 +73,7 @@ class ProblemController extends Controller {
   };
 
   addProblem = async (req, res) => {
-    let result = await problemRepository.addProblem(req.body.user_id, req.body);
+    let result = await problemRepository.addProblem(req.user.user_id, req.body);
     this.handleResponse(result, res);
   };
 

@@ -4,13 +4,15 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      "Topic",
+      "Topics",
       [
         {
-          topic_id: 1,
+          id: 1,
           name: "Recursion",
           description: null,
           logo: "https://i.pinimg.com/originals/a1/2b/a8/a12ba80f3701ef4e7014001e6c1869ac.gif",
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       ],
       {}
@@ -18,6 +20,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("Topic", null, {});
+    await queryInterface.bulkDelete("Topics", null, {});
   },
 };

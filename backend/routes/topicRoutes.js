@@ -13,6 +13,7 @@ router.get("/live", topicController.getAllTopics); // pending
 router.post("/", topicController.addTopic); // add_new
 router.get("/:topic_id", topicController.getTopicById); // fetch
 router.put("/:topic_id", topicController.updateTopic); // edit
+router.put("/:topic_id/live", (req,res)=>res.status(204).json()); // edit
 router.delete("/:topic_id", topicController.deleteTopic); // delete
 router.get("/invalid", () => {
   console.log("Failed");

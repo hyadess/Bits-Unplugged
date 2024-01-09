@@ -55,6 +55,7 @@ db.Sequelize = Sequelize;
 
 // db.sequelize.sync();
 // db.User.sync({ force: true });
+
 module.exports = db;
 
 // Create model Topic and relation topics

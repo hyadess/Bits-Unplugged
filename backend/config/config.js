@@ -18,15 +18,21 @@ module.exports = {
     database: process.env.DB_DB || "bitsunplugged2",
     port: process.env.DB_PORT || "5432",
     dialect: "postgres",
-    // logging: false, // Set to console.log to see the raw SQL queries
-    define: {
-      underscored: false,
-    },
   },
   test: {
-    // Add test environment configuration if needed
+    username: process.env.DB_USER || "postgres",
+    host: process.env.DB_HOST || "localhost",
+    password: process.env.DB_PASS || "root",
+    database: process.env.DB_DB || "bitsunplugged2",
+    port: process.env.DB_PORT || "5432",
+    dialect: "postgres",
   },
   production: {
-    // Add production environment configuration if needed
+    username: process.env.DB_USER || "postgres",
+    host: process.env.DB_HOST || "localhost",
+    password: process.env.DB_PASS || "root",
+    database: process.env.DB_DB || "bitsunplugged2",
+    port: process.env.DB_PORT || "5432",
+    dialect: "postgres",
   },
 };

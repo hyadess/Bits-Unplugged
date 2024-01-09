@@ -27,7 +27,7 @@ router.post(
   (req, res) => res.status(200).send()
 ); // dihan - Admin approval of problem setter registration
 router.delete(
-  "/delete_account/:user_id",
+  "/delete_account/:userId",
   passport.authenticate("jwt", { failureRedirect: "/invalid", session: false }),
   authController.deleteAccount
 ); // dihan - Admin approval of problem setter registration

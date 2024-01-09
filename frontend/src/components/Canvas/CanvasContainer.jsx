@@ -58,8 +58,8 @@ const CanvasContainer = (props, ref) => {
         setSelectedComponent(res.data[0].classname);
         seCanvasInfo(res.data[0].info);
         // setParams(res.data[0].params);
-        // setUiParams(res.data[0].ui_params);
-        // setControlParams(res.data[0].control_params);
+        // setUiParams(res.data[0].uiParams);
+        // setControlParams(res.data[0].controlParams);
         // setCanvas(res.data[0]);
       } else {
         setSelectedComponent(null);
@@ -96,7 +96,15 @@ const CanvasContainer = (props, ref) => {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   };
-
+  
+  function camelCaseToTitleCase(input) {
+    // Add space before the capital letter and then capitalize the first letter
+    return input
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
+      .replace(/^./, function (str) {
+        return str.toUpperCase();
+      });
+  }
   const OptionList = ({ params, setParams }) => {
     return (
       <div className="pt-2" style={{ minHeight: "1rem" }}>

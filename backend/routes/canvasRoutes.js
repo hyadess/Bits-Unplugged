@@ -9,8 +9,8 @@ router.use(
 router.get("/", canvasController.getAllCanvas);
 router.get("/live", canvasController.getAllCanvas); // pending
 router.post("/", canvasController.addCanvas);
-router.get("/:canvas_id", canvasController.getCanvasById);
-router.put("/:canvas_id", canvasController.updateCanvas);
-router.delete("/:canvas_id", canvasController.deleteCanvas);
+router.get("/:canvasId", canvasController.getCanvasById);
+router.put("/:canvasId", canvasController.updateCanvas);
+router.delete("/:canvasId", canvasController.deleteCanvas);
 
 module.exports = router;

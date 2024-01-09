@@ -16,7 +16,7 @@ import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
 const problemController = new ProblemController();
-const ProblemSetCard = ({ id, idx, name, deleteAction, is_live }) => {
+const ProblemSetCard = ({ id, idx, name, deleteAction, isLive }) => {
   const [open, setOpen] = useState(false);
   const navigator = useNavigate();
   const switchPath = (pathname) => {
@@ -62,7 +62,7 @@ const ProblemSetCard = ({ id, idx, name, deleteAction, is_live }) => {
           </div>
 
           <div className="w-1/3 flex items-center justify-center">
-            {is_live == 1 ? (
+            {isLive == 1 ? (
               <IconButton onClick={() => unpublishProblem()}>
                 <div className="flex items-center bu-text-primary">
                   <CheckCircleIcon sx={{ fontSize: "1.5rem" }} />

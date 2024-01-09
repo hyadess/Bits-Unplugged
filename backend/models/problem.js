@@ -11,13 +11,65 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Problem.hasOne(models.LiveProblem);
+      Problem.belongsTo(models.Setter);
+      Problem.belongsTo(models.Canvas);
+      Problem.belongsToMany(models.User, { through: models.Activity });
+      Problem.hasMany(models.Submission);
+      Problem.belongsToMany(models.Contest, { through: models.ContestProblem });
     }
   }
-  Problem.init({
-    title: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Problem',
-  });
+  Problem.init(
+    {
+      setterId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Setters",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      canvasId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Canvases",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      title: {
+        type: DataTypes.STRING,
+      },
+      statement: {
+        type: DataTypes.TEXT,
+      },
+      canvasData: {
+        type: DataTypes.JSON,
+      },
+      params: {
+        type: DataTypes.JSON,
+      },
+      uiParams: {
+        type: DataTypes.JSON,
+      },
+      controlParams: {
+        type: DataTypes.JSON,
+      },
+      checkerCode: {
+        type: DataTypes.TEXT,
+      },
+      checkerCanvas: {
+        type: DataTypes.JSON,
+      },
+    },
+    {
+      sequelize,
+      modelName: "Problem",
+    }
+  );
   return Problem;
 };

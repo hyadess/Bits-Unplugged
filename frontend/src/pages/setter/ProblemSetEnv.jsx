@@ -110,7 +110,7 @@ const CanvasDesignTab = ({
       <SelectionField2
         label="Choose Canvas"
         onChange={handleCanvasChange}
-        id="canvas_id"
+        id="canvasId"
         value={canvasId == null ? "" : canvasId}
         options={canvasList}
       />
@@ -240,7 +240,7 @@ const SolutionCheckerTab = ({
 };
 
 export default function ProblemSetEnv() {
-  const { prob_id } = useParams();
+  const { problemid } = useParams();
   const [params, setParams] = useState({});
   const [uiParams, setUiParams] = useState({});
   const [checkerCanvas, setCheckerCanvas] = useState(null);
@@ -273,24 +273,25 @@ export default function ProblemSetEnv() {
 
   const [checkerType, setCheckerType] = useState(0);
   const getProblem = async () => {
-    //console.log(prob_id)
-    const res = await problemController.getProblemById(prob_id);
+    //console.log(problemid)
+    const res = await problemController.getProblemById(problemid);
     if (res.success) {
       // Just a problem json
-      setInput(JSON.parse(JSON.stringify(res.data[0].canvas_data)));
-      setBackup(JSON.parse(JSON.stringify(res.data[0].canvas_data)));
-      setCheckerCanvas(JSON.parse(JSON.stringify(res.data[0].canvas_data)));
+      console.log("----", res.data[0].checkerCanvas);
+      setInput(JSON.parse(JSON.stringify(res.data[0].canvasData)));
+      setBackup(JSON.parse(JSON.stringify(res.data[0].canvasData)));
+      setCheckerCanvas(JSON.parse(JSON.stringify(res.data[0].canvasData)));
       setTitle(res.data[0].title);
       setProblemStatement(res.data[0].statement);
-      setCheckerType(res.data[0].checker_type ? res.data[0].checker_type : 0);
-      setCode(res.data[0].checker_code);
-      if (res.data[0].checker_canvas !== null)
-        setCheckerCanvas(res.data[0].checker_canvas);
-      setCanvasId(res.data[0].canvas_id);
-      setBackupId(res.data[0].canvas_id);
+      setCheckerType(1);
+      setCode(res.data[0].checkerCode);
+      if (res.data[0].checkerCanvas !== null)
+        setCheckerCanvas(res.data[0].checkerCanvas);
+      setCanvasId(res.data[0].canvasId);
+      setBackupId(res.data[0].canvasId);
       setParams(res.data[0].params);
-      setUiParams(res.data[0].ui_params);
-      setControlParams(res.data[0].control_params);
+      setUiParams(res.data[0].uiParams);
+      setControlParams(res.data[0].controlParams);
       setLoading(false);
     }
   };
@@ -332,13 +333,13 @@ export default function ProblemSetEnv() {
     const res = await canvasController.getAllCanvas();
     if (res.success) {
       setCanvasFullList(res.data);
-      const newArray = res.data.map((item) => ({
-        value: item.canvas_id,
-        label: item.name,
+      const newArray = res.data.map((canvas) => ({
+        value: canvas.id,
+        label: canvas.name,
       }));
 
       setCanvasList(newArray);
-      console.log(res);
+      console.log("=->", res);
     }
   };
 
@@ -354,18 +355,18 @@ export default function ProblemSetEnv() {
     setResetTrigger(!resetTrigger);
   };
 
-  const changeCanvas = (canvas_id) => {
-    setCanvasId(canvas_id);
+  const changeCanvas = (canvasId) => {
+    setCanvasId(canvasId);
     var res = canvasFullList.find((element) => {
-      return element.canvas_id == canvas_id;
+      return element.canvasId == canvasId;
     });
 
     if (res) {
       setCode(res.template);
       setInput(null);
       setParams(res.params);
-      setUiParams(res.ui_params);
-      setControlParams(res.control_params);
+      setUiParams(res.uiParams);
+      setControlParams(res.controlParams);
     }
   };
 
@@ -380,21 +381,21 @@ export default function ProblemSetEnv() {
   // }, [resetTrigger]);
 
   const deleteProblem = async () => {
-    const res = await problemController.deleteProblem(prob_id);
+    const res = await problemController.deleteProblem(problemid);
     if (res.success) {
       switchPath("/problemSet");
     }
   };
 
   const updateTitle = async () => {
-    const res = await problemController.updateTitle(prob_id, title);
+    const res = await problemController.updateTitle(problemid, title);
     if (res.success) {
       console.log(res);
     }
   };
   const updateStatement = async () => {
     const res = await problemController.updateStatement(
-      prob_id,
+      problemid,
       problemStatement
     );
     if (res.success) {
@@ -411,7 +412,7 @@ export default function ProblemSetEnv() {
 
     setBackup(JSON.parse(JSON.stringify(input)));
     const res = await problemController.updateCanvas(
-      prob_id,
+      problemid,
       canvasId,
       input,
       params,
@@ -425,7 +426,7 @@ export default function ProblemSetEnv() {
 
   const updateSolutionChecker = async () => {
     const res = await problemController.updateSolutionChecker(
-      prob_id,
+      problemid,
       checkerType == 0 ? code : checkerCanvas,
       checkerType
     );
@@ -453,7 +454,7 @@ export default function ProblemSetEnv() {
     // await updateCanvas();
     // await updateSolutionChecker();
     // Save all with a new api call
-    await problemController.submitProblem(prob_id); // Or sent through this
+    await problemController.submitProblem(problemid); // Or sent through this
   };
 
   useEffect(() => {
@@ -465,15 +466,15 @@ export default function ProblemSetEnv() {
   }, [input]);
 
   useEffect(() => {
-    console.log(prob_id);
-    if (prob_id != undefined) {
+    console.log(problemid);
+    if (problemid != undefined) {
       getProblem();
     }
 
     return () => {
       console.log("Leaving MyComponent");
     };
-  }, [prob_id]);
+  }, [problemid]);
 
   return (
     <div>
@@ -497,7 +498,7 @@ export default function ProblemSetEnv() {
                   className="bu-text-primary flex cursor-pointer items-center text-3xl"
                   onClick={() => {
                     setLoading(true);
-                    switchPath(`/problem/${prob_id}/preview`);
+                    switchPath(`/problem/${problemid}/preview`);
                   }}
                 >
                   <FontAwesomeIcon icon={faExpand} />

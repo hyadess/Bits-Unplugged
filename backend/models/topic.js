@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   Topic.init(
     {
       name: DataTypes.STRING,
-      description: DataTypes.STRING,
+      description: DataTypes.TEXT,
       logo: DataTypes.TEXT,
     },
     {

@@ -13,11 +13,34 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  ContestProblem.init({
-    status: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'ContestProblem',
-  });
+  ContestProblem.init(
+    {
+      contestId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Contests",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      problemId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Problems",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      status: DataTypes.STRING,
+      rating: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "ContestProblem",
+    }
+  );
   return ContestProblem;
 };

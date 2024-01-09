@@ -1,26 +1,34 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Series", {
-      // series?
+    await queryInterface.createTable("Participants", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      topic_id: {
+      contestId: {
         type: Sequelize.INTEGER,
+        references: {
+          model: "Contests",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
-      name: {
-        type: Sequelize.STRING,
+      userId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
-      description: {
-        type: Sequelize.STRING,
-      },
-      logo: {
-        type: Sequelize.TEXT,
+      type: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
@@ -33,6 +41,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Series');
-  }
+    await queryInterface.dropTable("Participants");
+  },
 };

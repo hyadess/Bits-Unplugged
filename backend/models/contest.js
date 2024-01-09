@@ -11,13 +11,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Contest.belongsToMany(models.Setter, { through: models.ContestSetter });
+      Contest.belongsToMany(models.Problem, { through: models.ContestProblem });
+      Contest.hasMany(models.Clarification);
     }
   }
-  Contest.init({
-    name: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Contest',
-  });
+  Contest.init(
+    {
+      title: DataTypes.STRING,
+      description: DataTypes.TEXT,
+      startDate: DataTypes.DATE,
+      endDate: DataTypes.DATE,
+      status: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "Contest",
+    }
+  );
   return Contest;
 };

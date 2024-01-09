@@ -1,489 +1,426 @@
 const Repository = require("./base");
 
-class ContestRepository extends Repository{
-    constructor() {
-        super();
-    }
-    //*************ABOUT CONTEST****************** */
-    getAllContests = async () => {
-        const query = `
+class ContestRepository extends Repository {
+  constructor() {
+    super();
+  }
+  //*************ABOUT CONTEST****************** */
+  getAllContests = async () => {
+    const query = `
         SELECT
-        C.*,
-        STRING_AGG(CS.setter_id::text, ', ') AS setters,
-        STRING_AGG(CS.role, ', ') AS roles
+        "C".*,
+        STRING_AGG("CS"."setterId"::text, ', ') AS "setters",
+        STRING_AGG("CS"."role", ', ') AS "roles"
         FROM
-        Contest C
+        "Contests" "C"
         JOIN
-        Contestsetter CS ON C.contest_id = CS.contest_id
+        "Contestsetter" "CS" ON "C"."contestId" = "CS"."contestId"
         GROUP BY
-        C.contest_id;
+        "C"."contestId";
         `;
-        const params = [];
-        const result = await this.query(query, params);
-        return result;
-    };
-    getAllPublishedContests = async () => {
-        const query = `
-        SELECT * FROM Contest WHERE status IN ('upcoming','running', 'completed');
+    const params = [];
+    const result = await this.query(query, params);
+    return result;
+  };
+  getAllPublishedContests = async () => {
+    const query = `
+        SELECT * FROM "Contests" WHERE "status" IN ('upcoming','running', 'completed');
         `;
-        const params = [];
-        const result = await this.query(query, params);
-        return result;
-    };
-    // will also be visible to collaborators
-    getMyContests = async (author_id) => {
-        const query = `
-        SELECT C.*, CS.role as role
-        FROM Contest C
-        JOIN Contestsetter CS ON C.contest_id = CS.contest_id
-        WHERE CS.setter_id = $1;
-
-        `;
-        const params = [author_id];
-        const result = await this.query(query, params);
-        return result;
-    };
-    // only contests where I am the OWNER
-    getMyOwnContests = async (author_id) => {
-        const query = `
-        SELECT C.*, CS.role as role
-        FROM Contest C
-        JOIN Contestsetter CS ON C.contest_id = CS.contest_id
-        WHERE CS.setter_id = $1 AND CS.role = 'owner';
+    const params = [];
+    const result = await this.query(query, params);
+    return result;
+  };
+  // will also be visible to collaborators
+  getMyContests = async (setterId) => {
+    const query = `
+        SELECT "C".*, "CS"."role" AS "role"
+        FROM "Contests" "C"
+        JOIN "Contestsetter" "CS" ON "C"."contestId" = "CS"."contestId"
+        WHERE "CS"."setterId" = $1;
 
         `;
-        const params = [author_id];
-        const result = await this.query(query, params);
-        return result;
-    };
+    const params = [setterId];
+    const result = await this.query(query, params);
+    return result;
+  };
+  // only contests where I am the OWNER
+  getMyOwnContests = async (setterId) => {
+    const query = `
+        SELECT "C".*, "CS"."role" AS "role"
+        FROM "Contests" "C"
+        JOIN "Contestsetter" "CS" ON "C"."contestId" = "CS"."contestId"
+        WHERE "CS"."setterId" = $1 AND "CS"."role" = 'owner';
 
-    //***********GETTING SUBMISSIONS***********************
-    getAllSubmissionsByContest =async (contest_id) =>{
-        const query = `
-        SELECT CP.*, S.*
-        FROM Contestparticipation CP
-        JOIN Submissions S ON CP.submission_id = S.submission_id
-        WHERE CP.contest_id = $1;
         `;
-        const params = [contest_id];
-        const result = await this.query(query, params);
-        return result;
+    const params = [setterId];
+    const result = await this.query(query, params);
+    return result;
+  };
 
-    };
-    getAllSubmissionsByUserAndContest =async (user_id,contest_id) =>{
-        const query = `
-        SELECT CP.*, S.*
-        FROM Contestparticipation CP
-        JOIN Submissions S ON CP.submission_id = S.submission_id
-        WHERE CP.contest_id = $2 AND CP.user_id = $1;
+  //***********GETTING SUBMISSIONS***********************
+  getAllSubmissionsByContest = async (contestId) => {
+    const query = `
+        SELECT "CP".*, "S".*
+        FROM "ContestSubmissions" "CP"
+        JOIN "Submissions" "S" ON "CP"."submissionId" = "S"."submissionId"
+        WHERE "CP"."contestId" = $1;
         `;
-        const params = [user_id,contest_id];
-        const result = await this.query(query, params);
-        return result;
-
-    };
-
-    //*************GETTING PROBLEMS*********************** */
-
-    // it is for participants but contest not ended....................
-    getAllContestProblemsByContest =async (contest_id) =>{
-        const query = `
-        SELECT P.*
-        FROM Problem P
-        JOIN Contestproblem CP ON P.problem_id = CP.problem_id
-        WHERE CP.contest_id = $1 AND CP.status = 'in_contest';        
+    const params = [contestId];
+    const result = await this.query(query, params);
+    return result;
+  };
+  getAllSubmissionsByUserAndContest = async (userId, contestId) => {
+    const query = `
+        SELECT "CP".*, "S".*
+        FROM "ContestSubmissions" "CP"
+        JOIN "Submissions" "S" ON "CP"."submissionId" = "S"."submissionId"
+        WHERE "CP"."contestId" = $2 AND "CP"."userId" = $1;
         `;
-        const params = [contest_id];
-        const result = await this.query(query, params);
-        return result;
+    const params = [userId, contestId];
+    const result = await this.query(query, params);
+    return result;
+  };
 
-    };
-    // it is for setters....................
-    getAllProblemsByContest =async (contest_id) =>{
-        const query = `
-        SELECT P.*,CP.status
-        FROM Problem P
-        JOIN Contestproblem CP ON P.problem_id = CP.problem_id
-        WHERE CP.contest_id = $1;        
+  //*************GETTING PROBLEMS*********************** */
+
+  // it is for participants but contest not ended....................
+  getAllContestProblemsByContest = async (contestId) => {
+    const query = `
+        SELECT "P".*
+        FROM "Problems" "P"
+        JOIN "Contestproblem" "CP" ON "P"."id" = "CP"."problemId"
+        WHERE "CP"."contestId" = $1 AND "CP"."status" = 'in_contest';        
         `;
-        const params = [contest_id];
-        const result = await this.query(query, params);
-        return result;
+    const params = [contestId];
+    const result = await this.query(query, params);
+    return result;
+  };
+  // it is for setters....................
+  getAllProblemsByContest = async (contestId) => {
+    const query = `
+        SELECT "P".*, "CP"."status"
+        FROM "Problems" "P"
+        JOIN "Contestproblem" "CP" ON "P"."id" = "CP"."problemId"
+        WHERE "CP"."contestId" = $1;        
+        `;
+    const params = [contestId];
+    const result = await this.query(query, params);
+    return result;
+  };
 
-    };
+  //*****************UPDATING CONTEST TABLE************* */
 
-    //*****************UPDATING CONTEST TABLE************* */
-
-    addContest = async (author_id) =>{
-        const query = `
-        INSERT INTO Contest (title, description, start_date, end_date, status, last_updated)
+  addContest = async (setterId) => {
+    const query = `
+        INSERT INTO "Contests" ("title", "description", "startDate", "endDate", "status", "updatedAt")
         VALUES (NULL, NULL, NULL, NULL, 'edit', $1)
-        RETURNING contest_id;          
+        RETURNING "contestId";          
         `;
-        const params = [Date.now()];
-        const result = await this.query(query, params);
-        const contest_id = result.data[0].contest_id;
+    const params = [Date.now()];
+    const result = await this.query(query, params);
+    const contestId = result.data[0].contestId;
 
-        const query2=`
-        INSERT INTO Contestsetter (contest_id, setter_id, role)
+    const query2 = `
+        INSERT INTO "Contestsetter" ("contestId", "setterId", "role")
         VALUES ($1, $2, 'owner');
         `;
-        const params2 = [contest_id,author_id];
-        const result2 = await this.query(query2, params2);
+    const params2 = [contestId, setterId];
+    const result2 = await this.query(query2, params2);
 
-        return result;
-    };
+    return result;
+  };
 
-    // updateContest only triggers when a change in contest setter or contest problem is done
-    updateContest =async (contest_id)=>{
-        const query=`
-        UPDATE Contest
-        SET last_updated = $2
-        WHERE contest_id = $1;
+  // updateContest only triggers when a change in contest setter or contest problem is done
+  updateContest = async (contestId) => {
+    const query = `
+        UPDATE "Contests"
+        SET "updatedAt" = $2
+        WHERE "contestId" = $1;
         `;
-        const params = [contest_id,Date.now()];
-        const result = await this.query(query, params);
+    const params = [contestId, Date.now()];
+    const result = await this.query(query, params);
 
-        return result;
-    };
+    return result;
+  };
 
-    updateTitle = async (contest_id, title) => {
-        const query = `
-        Update Contest
-        SET title = $2, last_updated = $3
-        WHERE contest_id = $1;
+  updateTitle = async (contestId, title) => {
+    const query = `
+        UPDATE "Contests"
+        SET "title" = $2, "updatedAt" = $3
+        WHERE "contestId" = $1;
         `;
-        const params = [contest_id, title, Date.now()];
-        const result = await this.query(query, params);
-        return result;
-    };
-    updateDescription = async (contest_id, description) => {
-        const query = `
-        Update Contest
-        SET description = $2, last_updated = $3
-        WHERE contest_id = $1;
+    const params = [contestId, title, Date.now()];
+    const result = await this.query(query, params);
+    return result;
+  };
+  updateDescription = async (contestId, description) => {
+    const query = `
+        UPDATE "Contests"
+        SET "description" = $2, "updatedAt" = $3
+        WHERE "contestId" = $1;
         `;
-        const params = [contest_id, description, Date.now()];
-        const result = await this.query(query, params);
-        return result;
-    };
+    const params = [contestId, description, Date.now()];
+    const result = await this.query(query, params);
+    return result;
+  };
 
-    // contest edit -> upcoming
-    publishContest = async (contest_id) =>{
-        const query = `
-        Update Contest
-        SET status = 'upcoming', last_updated = $2
-        WHERE contest_id = $1;
+  // contest edit -> upcoming
+  publishContest = async (contestId) => {
+    const query = `
+        UPDATE "Contests"
+        SET "status" = 'upcoming', "updatedAt" = $2
+        WHERE "contestId" = $1;
         `;
-        const params = [contest_id, Date.now()];
-        const result = await this.query(query, params);
-        return result;
-
-    };
-    // I am setting default duration 2 hr for now............
-    // upcoming -> running
-    startContest = async (contest_id) =>{
-        const currentTimestamp = Date.now();
-        const twoHoursLater = currentTimestamp + 2 * 60 * 60 * 1000; // 2 hours in milliseconds
-        const query = `
-        Update Contest
-        SET status = 'running', last_updated = $2 ,  start_date = $3, end_date = $4
-        WHERE contest_id = $1;
+    const params = [contestId, Date.now()];
+    const result = await this.query(query, params);
+    return result;
+  };
+  // I am setting default duration 2 hr for now............
+  // upcoming -> running
+  startContest = async (contestId) => {
+    const currentTimestamp = Date.now();
+    const twoHoursLater = currentTimestamp + 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+    const query = `
+        UPDATE "Contests"
+        SET "status" = 'running', "updatedAt" = $2 ,  "startDate" = $3, "endDate" = $4
+        WHERE "contestId" = $1;
         `;
-        const params = [contest_id, Date.now(),currentTimestamp,twoHoursLater];
-        const result = await this.query(query, params);
-        return result;
-
-    };
-    // running -> completed
-    endContest = async (contest_id) =>{
-
-        const query = `
-        Update Contest
-        SET status = 'completed', last_updated = $2 , end_date = $2
-        WHERE contest_id = $1;
+    const params = [contestId, Date.now(), currentTimestamp, twoHoursLater];
+    const result = await this.query(query, params);
+    return result;
+  };
+  // running -> completed
+  endContest = async (contestId) => {
+    const query = `
+        UPDATE "Contests"
+        SET "status" = 'completed', "updatedAt" = $2 , "endDate" = $2
+        WHERE "contestId" = $1;
         `;
-        const params = [contest_id, Date.now()];
-        const result = await this.query(query, params);
-        return result;
+    const params = [contestId, Date.now()];
+    const result = await this.query(query, params);
+    return result;
+  };
 
-    };
+  //***************UPDATING CONTEST SETTER TABLE**************** */
 
-    //***************UPDATING CONTEST SETTER TABLE**************** */
+  //collaborator should be an author............
 
-    //collaborator should be an author............
+  // getAllAvailableCollaborators = async() =>{
 
-    // getAllAvailableCollaborators = async() =>{
+  // };
 
-
-    // };
-
-    addCollaborator = async (contest_id, collaborator_id) =>{
-        const query=`
-        INSERT INTO Contestsetter (contest_id, setter_id, role)
+  addCollaborator = async (contestId, collaboratorId) => {
+    const query = `
+        INSERT INTO "Contestsetter" ("contestId", "setterId", "role")
         VALUES ($1, $2, 'collaborator');
         `;
-        const params = [contest_id,collaborator_id];
-        const result = await this.query(query, params);
+    const params = [contestId, collaboratorId];
+    const result = await this.query(query, params);
 
-        const hudai=await this.updateContest(contest_id);
+    const hudai = await this.updateContest(contestId);
 
-        return result;
+    return result;
+  };
 
-    };
-
-    showAllCollaborators = async (contest_id) =>{
-        const query=`
+  showAllCollaborators = async (contestId) => {
+    const query = `
         SELECT *
-        FROM Contestsetter
-        WHERE contest_id = $1 AND role = 'collaborator';
+        FROM "Contestsetter"
+        WHERE "contestId" = $1 AND "role" = 'collaborator';
         `;
-        const params = [contest_id];
-        const result = await this.query(query, params);
+    const params = [contestId];
+    const result = await this.query(query, params);
 
-        return result;
-    };
+    return result;
+  };
 
-    //*******************UPDATING CONTEST PROBLEM TABLE************** */
+  //*******************UPDATING CONTEST PROBLEM TABLE************** */
 
-    // assuming that this problem is already added ( using frontend call)
-    addProblemToContest = async (problem_id,contest_id) =>{
-        const query=`
-        INSERT INTO Contestproblem (contest_id, problem_id, status)
+  // assuming that this problem is already added ( using frontend call)
+  addProblemToContest = async (problemId, contestId) => {
+    const query = `
+        INSERT INTO "Contestproblem" ("contestId", "problemId", "status")
         VALUES ($1, $2, 'unpublished');        
         `;
-        const params = [contest_id,problem_id];
-        const result = await this.query(query, params);
+    const params = [contestId, problemId];
+    const result = await this.query(query, params);
 
-        const hudai=await this.updateContest(contest_id);
-        return result;
+    const hudai = await this.updateContest(contestId);
+    return result;
+  };
 
-
-    };
-
-    //unpublished -> in_contest
-    makeProblemEligible = async (problem_id,contest_id) =>{
-        const query=`
-        UPDATE Contestproblem
-        SET status = 'in_contest'
-        WHERE contest_id = $1 AND problem_id = $2;
+  //unpublished -> in_contest
+  makeProblemEligible = async (problemId, contestId) => {
+    const query = `
+        UPDATE "Contestproblem"
+        SET "status" = 'in_contest'
+        WHERE "contestId" = $1 AND "problemId" = $2;
         `;
-        const params = [contest_id,problem_id];
-        const result = await this.query(query, params);
+    const params = [contestId, problemId];
+    const result = await this.query(query, params);
 
-        const hudai=await this.updateContest(contest_id);
-        return result;
-
-
-    };
-    //in_contest -> unpublished
-    makeProblemNotEligible = async (problem_id,contest_id) =>{
-        const query=`
-        UPDATE Contestproblem
-        SET status = 'unpublished'
-        WHERE contest_id = $1 AND problem_id = $2;
+    const hudai = await this.updateContest(contestId);
+    return result;
+  };
+  //in_contest -> unpublished
+  makeProblemNotEligible = async (problemId, contestId) => {
+    const query = `
+        UPDATE "Contestproblem"
+        SET "status" = 'unpublished'
+        WHERE "contestId" = $1 AND "problemId" = $2;
         `;
-        const params = [contest_id,problem_id];
-        const result = await this.query(query, params);
+    const params = [contestId, problemId];
+    const result = await this.query(query, params);
 
-        const hudai=await this.updateContest(contest_id);
-        return result;
+    const hudai = await this.updateContest(contestId);
+    return result;
+  };
 
+  //**********************UPDATING CONTEST PARTICIPATION TABLE****************** */
 
-    };
-
-    //**********************UPDATING CONTEST PARTICIPATION TABLE****************** */
-
-    // assuming that this submission is added in submissions table.......
-    addSubmissionToContest = async (problem_id,contest_id,submission_id,user_id,points) =>{
-        const query=`
-        INSERT INTO Contestparticipation (contest_id, user_id, problem_id, submission_id, points)
+  // assuming that this submission is added in submissions table.......
+  addSubmissionToContest = async (
+    problemId,
+    contestId,
+    submissionId,
+    userId,
+    points
+  ) => {
+    const query = `
+        INSERT INTO "ContestSubmissions" ("contestId", "userId", "problemId", "submissionId", "points")
         VALUES ($1, $2, $3, $4, $5);
         `;
-        const params = [contest_id,user_id,problem_id,submission_id,points];
-        const result = await this.query(query, params);
+    const params = [contestId, userId, problemId, submissionId, points];
+    const result = await this.query(query, params);
 
-        return result;
+    return result;
+  };
 
+  //new ones...........
 
-    };
-
-    //new ones...........
-
-    deleteProblem = async (contest_id,problem_id) =>{
-        const query1=`
-        DELETE FROM Contestparticipation
-        WHERE contest_id = $1 AND problem_id = $2; 
+  deleteProblem = async (contestId, problemId) => {
+    const query1 = `
+        DELETE FROM "ContestSubmissions"
+        WHERE "contestId" = $1 AND "problemId" = $2; 
         `;
-        const params1 = [contest_id,problem_id];
-        const result1 = await this.query(query1, params1);
+    const params1 = [contestId, problemId];
+    const result1 = await this.query(query1, params1);
 
-        const query=`
-        DELETE FROM Contestproblem
-        WHERE contest_id = $1 AND problem_id = $2;
+    const query = `
+        DELETE FROM "Contestproblem"
+        WHERE "contestId" = $1 AND "problemId" = $2;
         `;
-        const result = await this.query(query, params1);
+    const result = await this.query(query, params1);
 
-        return result;
-    };
+    return result;
+  };
 
-
-
-    deleteContest = async (contest_id) =>{
-        const query=`
-        DELETE FROM Contest
-        WHERE contest_id = $1;
+  deleteContest = async (contestId) => {
+    const query = `
+        DELETE FROM "Contests"
+        WHERE "contestId" = $1;
         `;
-        const params = [contest_id];
-        const result = await this.query(query, params);
+    const params = [contestId];
+    const result = await this.query(query, params);
 
-        return result;
-    };
+    return result;
+  };
 
-
-    //*************************************ALL ABOUT CONTEST PARTICIPANT TABLE************************ */
-    // type 0 means live contest pariticipant, 1 means virtual 
-    participateUpcomingContest = async (user_id,contest_id) =>{
-        const query=`
-        INSERT INTO Contestparticipant (contest_id, participant_id, type)
+  //*************************************ALL ABOUT CONTEST PARTICIPANT TABLE************************ */
+  // type 0 means live contest pariticipant, 1 means virtual
+  participateUpcomingContest = async (userId, contestId) => {
+    const query = `
+        INSERT INTO "Participants" ("contestId", "participantId", "type")
         VALUES ($1 ,$2, $3);
         `;
-        const params = [contest_id,user_id,0];
-        const result = await this.query(query, params);
+    const params = [contestId, userId, 0];
+    const result = await this.query(query, params);
 
-        return result;
-    };
-    leaveUpcomingContest = async (user_id,contest_id) =>{
-        const query=`
-        DELETE FROM Contestparticipant
-        WHERE contest_id = $1 AND participant_id = $2 AND type = $3;
+    return result;
+  };
+  leaveUpcomingContest = async (userId, contestId) => {
+    const query = `
+        DELETE FROM "Participants"
+        WHERE "contestId" = $1 AND "participantId" = $2 AND "type" = $3;
         `;
-        const params = [contest_id,user_id,0];
-        const result = await this.query(query, params);
+    const params = [contestId, userId, 0];
+    const result = await this.query(query, params);
 
-        return result;
-    };
+    return result;
+  };
 
-    participateVirtualContest = async (user_id,contest_id) =>{
-        const query=`
-        INSERT INTO Contestparticipant (contest_id, participant_id, type)
+  participateVirtualContest = async (userId, contestId) => {
+    const query = `
+        INSERT INTO "Participants" ("contestId", "participantId", "type")
         VALUES ($1 ,$2, $3);
         `;
-        const params = [contest_id,user_id,1];
-        const result = await this.query(query, params);
-
-        return result;
-    };
-    leaveVirtualContest = async (user_id,contest_id) =>{
-        const query=`
-        DELETE FROM Contestparticipant
-        WHERE contest_id = $1 AND participant_id = $2 AND type = $3;
-        `;
-        const params = [contest_id,user_id,1];
-        const result = await this.query(query, params);
-
-        return result;
-    };
-
-    showAllLiveContestByUser = async (user_id) => {
-        const query=`
+    const params = [contestId, userId, 1];
+    const result = await this.query(query, params);
+    return result;
+  };
+  showAllVirtualContestByUser = async (userId) => {
+    const query = `
         SELECT C.*
-        FROM Contest C
-        JOIN Contestparticipant CP ON C.contest_id = CP.contest_id
-        WHERE CP.participant_id= $1 AND CP.type = $2;
+        FROM Contests C
+        JOIN Participants CP ON C.contestId = CP.contestId
+        WHERE CP.participantId= $1 AND CP.type = $2;
 
         `;
-        const params = [user_id,0];
-        const result = await this.query(query, params);
+    const params = [userId, 1];
+    const result = await this.query(query, params);
 
-        return result;
-    };
-    showAllVirtualContestByUser = async (user_id) => {
-        const query=`
-        SELECT C.*
-        FROM Contest C
-        JOIN Contestparticipant CP ON C.contest_id = CP.contest_id
-        WHERE CP.participant_id= $1 AND CP.type = $2;
+    return result;
+  };
 
-        `;
-        const params = [user_id,1];
-        const result = await this.query(query, params);
-
-        return result;
-    };
-
-    showLiveParticipantList = async (contest_id) =>{
-        const query=`
+  showLiveParticipantList = async (contestId) => {
+    const query = `
         SELECT P.*
         FROM Profile P
-        JOIN Contestparticipant CP ON P.user_id = CP.participant_id
-        WHERE CP.contest_id = $1 AND CP.type = $2;
+        JOIN Participants CP ON P.userId = CP.participantId
+        WHERE CP.contestId = $1 AND CP.type = $2;
         `;
-        const params = [contest_id,0];
-        const result = await this.query(query, params);
+    const params = [contestId, 0];
+    const result = await this.query(query, params);
 
-        return result;
-    };
-    showVirtualParticipantList = async (contest_id) =>{
-        const query=`
+    return result;
+  };
+  showVirtualParticipantList = async (contestId) => {
+    const query = `
         SELECT P.*
         FROM Profile P
-        JOIN Contestparticipant CP ON P.user_id = CP.participant_id
-        WHERE CP.contest_id = $1 AND CP.type = $2;
+        JOIN Participants CP ON P.userId = CP.participantId
+        WHERE CP.contestId = $1 AND CP.type = $2;
         `;
-        const params = [contest_id,1];
-        const result = await this.query(query, params);
+    const params = [contestId, 1];
+    const result = await this.query(query, params);
 
-        return result;
-    };
+    return result;
+  };
 
-    //********************************ALL ABOUT CONTEST CLARIFICATION TABLE******************** */
+  //********************************ALL ABOUT CONTEST CLARIFICATION TABLE******************** */
 
-    addClarification = async (contest_id, title, description) => {
-        const query=`
-        INSERT INTO Contestclarification (contest_id, title, details, post_time)
+  addClarification = async (contestId, title, description) => {
+    const query = `
+        INSERT INTO "Clarifications" ("contestId", "title", "details", "postTime")
         VALUES ($1, $2, $3, $4)
-        RETURNING clarification_id;
+        RETURNING "clarificationId";
         `;
-        const params = [contest_id,title, description, Date.now()];
-        const result = await this.query(query, params);
+    const params = [contestId, title, description, Date.now()];
+    const result = await this.query(query, params);
 
-        return result;
-    };
+    return result;
+  };
 
-    showAllClarifications = async (contest_id) => {
-        const query=`
+  showAllClarifications = async (contestId) => {
+    const query = `
         SELECT *
-        FROM Contestclarification
-        WHERE contest_id = $1;
+        FROM "Clarifications"
+        WHERE "contestId" = $1;
         `;
-        const params = [contest_id];
-        const result = await this.query(query, params);
+    const params = [contestId];
+    const result = await this.query(query, params);
 
-        return result;
-    };
-
-
-
-
-
-
-
-
-
-
-
-    
-
-    
-
-
-    
-
-
-
-   
-
-
+    return result;
+  };
 }
 module.exports=ContestRepository;

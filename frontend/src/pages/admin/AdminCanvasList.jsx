@@ -52,7 +52,7 @@ const AdminCanvasList = () => {
   const getCanvasId = async (name) => {
     const res = await canvasController.addCanvas(name);
     if (res.success) {
-      return res.data[0].canvas_id;
+      return res.data[0].id;
     }
   };
 
@@ -78,7 +78,7 @@ const AdminCanvasList = () => {
               id={`Canvas ${index + 1}`}
               name={canvas.name}
               image={canvas.logo}
-              path={`/admin/canvas/${canvas.canvas_id}`}
+              path={`/admin/canvas/${canvas.id}`}
               action="View Canvas"
             />
           ))}

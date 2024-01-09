@@ -252,7 +252,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/problem/:prob_id/edit"
+            path="/problem/:problemid/edit"
             element={
               <LayoutMain>
                 <ProblemSetEnv />

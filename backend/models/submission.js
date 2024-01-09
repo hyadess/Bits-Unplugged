@@ -11,13 +11,39 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Submission.belongsTo(models.User);
+      Submission.belongsTo(models.Problem);
+      Submission.hasOne(models.ContestSubmission);
     }
   }
-  Submission.init({
-    name: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Submission',
-  });
+  Submission.init(
+    {
+      problemId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Problems",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      userId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      verdict: DataTypes.STRING,
+      canvasData: DataTypes.JSON,
+    },
+    {
+      sequelize,
+      modelName: "Submission",
+    }
+  );
   return Submission;
 };

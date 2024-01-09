@@ -7,7 +7,7 @@ class ProfileController extends Controller {
   }
 
   getProfile = async (req, res) => {
-    let result = await profileRepository.getProfile(req.user.user_id);
+    let result = await profileRepository.getProfile(req.user.userId);
     this.handleResponse(result, res);
   };
 
@@ -19,7 +19,7 @@ class ProfileController extends Controller {
     const requestBody = JSON.stringify(req.body, null, 2); // The '2' parameter specifies the indentation level
 
     let result = await profileRepository.updateProfile(
-      req.user.user_id,
+      req.user.userId,
       req.body
     );
     this.handleResponse(result, res);

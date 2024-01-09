@@ -10,7 +10,7 @@ class CanvasController extends Controller {
     this.handleResponse(result, res);
   };
   getCanvasById = async (req, res) => {
-    let result = await canvasRepository.getCanvasById(req.params.canvas_id);
+    let result = await canvasRepository.getCanvasById(req.params.canvasId);
     this.handleResponse(result, res);
   };
   addCanvas = async (req, res) => {
@@ -19,13 +19,13 @@ class CanvasController extends Controller {
   };
   updateCanvas = async (req, res) => {
     let result = await canvasRepository.updateCanvas(
-      req.params.canvas_id,
+      req.params.canvasId,
       req.body.canvas
     );
     this.handleResponse(result, res);
   };
   deleteCanvas = async (req, res) => {
-    let result = await canvasRepository.deleteCanvas(req.params.canvas_id);
+    let result = await canvasRepository.deleteCanvas(req.params.canvasId);
     this.handleResponse(result, res);
   };
 }

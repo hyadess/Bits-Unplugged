@@ -7,20 +7,20 @@ class SubmissionController extends Controller {
   }
   getAllSubmissionsByUserAndProblem = async (req, res) => {
     let result = await submissionRepository.getAllSubmissionsByUserAndProblem(
-      req.user.user_id,
-      req.params.problem_id
+      req.user.userId,
+      req.params.problemId
     );
     this.handleResponse(result, res);
   };
   getAllSubmissionsByProblem = async (req, res) => {
     let result = await submissionRepository.getAllSubmissionsByProblem(
-      req.params.problem_id
+      req.params.problemId
     );
     this.handleResponse(result, res);
   };
   getAllSubmissionsByUser = async (req, res) => {
     let result = await submissionRepository.getAllSubmissionsByUser(
-      req.user.user_id
+      req.user.userId
     );
     this.handleResponse(result, res);
   };
@@ -28,8 +28,8 @@ class SubmissionController extends Controller {
   // getProblemStats = async (req, res) => {};
   submitSolution = async (req, res) => {
     let result = await submissionRepository.submitSolution(
-      req.user.user_id,
-      req.params.problem_id,
+      req.user.userId,
+      req.params.problemId,
       req.body
     );
     this.handleResponse(result, res);

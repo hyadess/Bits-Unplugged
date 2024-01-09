@@ -54,11 +54,11 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 // db.sequelize.sync();
-// db.User.sync({ force: true });
+// db.User.sync({ alter: true });
 
 module.exports = db;
 
 // Create model Topic and relation topics
-// models/topic.js and migrations/*****-create-topic.js: npx sequelize-cli model:generate --name Topic --attributes topic_id:integer,name:string,description:string logo:text
+// models/topic.js and migrations/*****-create-topic.js: npx sequelize-cli model:generate --name Topic --attributes topicId:integer,name:string,description:string logo:text
 // seeders/****-demo-topics.js: npx sequelize-cli seed:generate --name demo-topic
 // Insert to Database: npx sequelize-cli db:seed:all

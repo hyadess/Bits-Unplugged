@@ -18,6 +18,9 @@ module.exports = {
       image: {
         type: Sequelize.TEXT,
       },
+      role: {
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

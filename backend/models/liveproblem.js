@@ -11,13 +11,77 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      LiveProblem.belongsTo(models.Problem);
+      LiveProblem.belongsTo(models.Series);
+      LiveProblem.belongsTo(models.Canvas);
     }
   }
-  LiveProblem.init({
-    title: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'LiveProblem',
-  });
+  LiveProblem.init(
+    {
+      problemId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Problems",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      seriesId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Series",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
+      canvasId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Setters",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      title: {
+        type: DataTypes.STRING,
+      },
+      statement: {
+        type: DataTypes.TEXT,
+      },
+      serialNo: {
+        type: DataTypes.INTEGER,
+      },
+      isLive: {
+        type: DataTypes.BOOLEAN,
+      },
+      canvasData: {
+        type: DataTypes.JSON,
+      },
+      params: {
+        type: DataTypes.JSON,
+      },
+      uiParams: {
+        type: DataTypes.JSON,
+      },
+      controlParams: {
+        type: DataTypes.JSON,
+      },
+      checkerCode: {
+        type: DataTypes.TEXT,
+      },
+      checkerCanvas: {
+        type: DataTypes.TEXT,
+      },
+    },
+    {
+      sequelize,
+      modelName: "LiveProblem",
+    }
+  );
   return LiveProblem;
 };

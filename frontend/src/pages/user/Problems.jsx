@@ -24,12 +24,12 @@ export default function Problems() {
     {
       const res = await problemController.getProblemsBySeries(id);
       if (res.success) {
-        // Filter out objects with serial_no equal to 0
-        const filteredArray = res.data.filter((item) => item.serial_no !== 0);
+        // Filter out objects with serialNo equal to 0
+        const filteredArray = res.data.filter((item) => item.serialNo !== 0);
 
-        // Sort the remaining objects based on serial_no in ascending order
+        // Sort the remaining objects based on serialNo in ascending order
         const sortedArray = filteredArray.sort(
-          (a, b) => a.serial_no - b.serial_no,
+          (a, b) => a.serialNo - b.serialNo
         );
         setAllProblemList(sortedArray);
         setProblemList(sortedArray);
@@ -38,12 +38,12 @@ export default function Problems() {
     {
       const res = await problemController.getUnsolvedProblemsBySeries(id);
       if (res.success) {
-        // Filter out objects with serial_no equal to 0
-        const filteredArray = res.data.filter((item) => item.serial_no !== 0);
+        // Filter out objects with serialNo equal to 0
+        const filteredArray = res.data.filter((item) => item.serialNo !== 0);
 
-        // Sort the remaining objects based on serial_no in ascending order
+        // Sort the remaining objects based on serialNo in ascending order
         const sortedArray = filteredArray.sort(
-          (a, b) => a.serial_no - b.serial_no,
+          (a, b) => a.serialNo - b.serialNo
         );
         setUnsolvedProblemList(sortedArray);
       }
@@ -106,7 +106,7 @@ export default function Problems() {
                 id={`Problem ${index + 1}`}
                 name={problem.title}
                 image={problem.logo}
-                path={`/problem/${problem.problem_id}`}
+                path={`/problem/${problem.problemId}`}
                 action="Get Started"
               />
             ))}

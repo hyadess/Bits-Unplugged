@@ -13,7 +13,7 @@ class TopicController extends Controller {
   };
   getTopicById = async (req, res) => {
     this.handleRequest(res, async () => {
-      const topic = await topicRepository.getTopicById(req.params.topic_id);
+      const topic = await topicRepository.getTopicById(req.params.topicId);
       if (!topic) {
         res.status(404).json({ error: "Topic not found" });
       } else {
@@ -26,14 +26,14 @@ class TopicController extends Controller {
       const newTopic = await topicRepository.addTopic(req.body);
       res
         .status(201)
-        .json({ topic_id: newTopic.id, message: "Topic added successfully" });
+        .json({ topicId: newTopic.id, message: "Topic added successfully" });
     });
   };
 
   updateTopic = async (req, res) => {
     this.handleRequest(res, async () => {
       const updatedTopic = await topicRepository.updateTopic(
-        req.params.topic_id,
+        req.params.topicId,
         req.body.topic
       );
       if (!updatedTopic) {
@@ -47,7 +47,7 @@ class TopicController extends Controller {
   deleteTopic = async (req, res) => {
     this.handleRequest(res, async () => {
       const deletedTopic = await topicRepository.deleteTopic(
-        req.params.topic_id
+        req.params.topicId
       );
       if (!deletedTopic) {
         res.status(404).json({ error: "Topic not found" });

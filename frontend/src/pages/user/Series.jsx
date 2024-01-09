@@ -46,7 +46,7 @@ export default function Problems() {
                 id={`Series ${index + 1}`}
                 name={series.name}
                 image={series.logo}
-                path={`/series/${series.series_id}`}
+                path={`/series/${series.id}`}
                 action="View Problems"
               />
             ))}

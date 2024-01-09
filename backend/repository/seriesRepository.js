@@ -7,51 +7,53 @@ class SeriesRepository extends Repository {
 
   getAllSeries = async () => {
     const query = `
-    SELECT * FROM Series;
+      SELECT * FROM "Series";
     `;
     const params = [];
     const result = await this.query(query, params);
     return result;
   };
 
-  getSeriesByTopic = async (topic_id) => {
+  getSeriesByTopic = async (topicId) => {
     const query = `
-    SELECT * FROM Series
-    WHERE topic_id = $1;
+      SELECT * FROM "Series"
+      WHERE "topicId" = $1;
     `;
-    const params = [topic_id];
+    const params = [topicId];
     const result = await this.query(query, params);
     return result;
   };
-  getSeriesById = async (series_id) => {
+
+  getSeriesById = async (seriesId) => {
     const query = `
-      SELECT * FROM Series
-      WHERE series_id = $1;
+      SELECT * FROM "Series"
+      WHERE "id" = $1;
     `;
-    const params = [series_id];
+    const params = [seriesId];
     const result = await this.query(query, params);
     return result;
   };
+
   addSeries = async (data) => {
     const query = `
-      INSERT INTO Series (name)
+      INSERT INTO "Series" ("name")
       VALUES ($1)
-      RETURNING series_id;
+      RETURNING "id";
     `;
     const params = [data.name];
     const result = await this.query(query, params);
     return result;
   };
-  updateSeries = async (series_id, data) => {
-    // First Update to Canvas Table
+
+  updateSeries = async (seriesId, data) => {
     const query = `
-      UPDATE Series
-      SET topic_id = $2, name = $3, description = $4, logo = $5
-      WHERE series_id = $1;
+      UPDATE "Series"
+      SET "topicId" = $2, "name" = $3, "description" = $4, "logo" = $5
+      WHERE "id" = $1;
     `;
     const params = [
-      series_id,
-      data.topic_id,
+      seriesId,
+      data.topicId,
       data.name,
       data.description,
       data.logo,
@@ -59,43 +61,46 @@ class SeriesRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
-  deleteSeries = async (series_id) => {
+
+  deleteSeries = async (seriesId) => {
     const query = `
-      DELETE FROM Series
-      WHERE series_id = $1;
+      DELETE FROM "Series"
+      WHERE "id" = $1;
     `;
-    const params = [series_id];
+    const params = [seriesId];
     const result = await this.query(query, params);
     return result;
   };
 
-  getAllProblems = async (series_id) => {
+  getAllProblems = async (seriesId) => {
     const query = `
-      SELECT * FROM Problem
-      WHERE series_id = $1;
+      SELECT * FROM "Problems"
+      WHERE "id" = $1;
     `;
-    const params = [series_id];
+    const params = [seriesId];
     const result = await this.query(query, params);
     return result;
   };
 
-  // deleteProblemSerial = async (problem_id) => {
+  // Uncomment and implement these methods if needed
+  // deleteProblemSerial = async (problemId) => {
   //   const query = `
-  //   DELETE FROM Serial
-  //   WHERE problem_id = $1;
-  // `;
-  //   const params = [problem_id];
+  //     DELETE FROM "Serial"
+  //     WHERE "problemId" = $1;
+  //   `;
+  //   const params = [problemId];
   //   const result = await this.query(query, params);
   //   return result;
   // };
-  // setProblemSerial = async (problem_id, series_id, serial_no) => {
-  //   const result = await deleteProblemSerial(problem_id);
+
+  // setProblemSerial = async (problemId, seriesId, serialNo) => {
+  //   const result = await this.deleteProblemSerial(problemId);
   //   if (result.success) {
   //     const query2 = `
-  //     INSERT INTO Serial (problem_id, series_id, serial_no)
-  //     VALUES ($1, $2, $3);
-  //   `;
-  //     const params2 = [problem_id, series_id, serial_no];
+  //       INSERT INTO "Serial" ("problemId", "seriesId", "serialNo")
+  //       VALUES ($1, $2, $3);
+  //     `;
+  //     const params2 = [problemId, seriesId, serialNo];
   //     const result2 = await this.query(query2, params2);
   //     return result2;
   //   }

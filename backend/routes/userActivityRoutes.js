@@ -7,11 +7,11 @@ router.use(
   passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
 );
 router.post(
-  "/:problem_id/successAttempt",
+  "/:problemId/successAttempt",
   userActivityController.updateOnSuccessfulAttempt
 );
 router.post(
-  "/:problem_id/failedAttempt",
+  "/:problemId/failedAttempt",
   userActivityController.updateOnFailedAttempt
 );
 
@@ -22,11 +22,11 @@ router.get(
 );
 
 router.get(
-  "/stat/:series_id/fails",
+  "/stat/:seriesId/fails",
   userActivityController.totalFailedAttemptsBySeries
 );
 router.get(
-  "/stat/:series_id/successes",
+  "/stat/:seriesId/successes",
   userActivityController.totalSuccessfulAttemptsBySeries
 );
 

@@ -2,19 +2,16 @@ import UserActivityApi from "../api/userActivityApi";
 import Controller from "./base";
 import { showToast } from "../App";
 
-class UserActivityController extends Controller{
-    userActivityApi=new UserActivityApi();
-    updateOnSuccessfulAttempt = async (problem_id) => {
-        const res = await this.userActivityApi.updateOnSuccessfulAttempt(problem_id);
-        return res;
-    };
-    updateOnFailedAttempt = async (problem_id) => {
-        const res = await this.userActivityApi.updateOnFailedAttempt(problem_id);
-        return res;
-    };
-
-
-
+class UserActivityController extends Controller {
+  userActivityApi = new UserActivityApi();
+  updateOnSuccessfulAttempt = async (problemId) => {
+    const res = await this.userActivityApi.updateOnSuccessfulAttempt(problemId);
+    return res;
+  };
+  updateOnFailedAttempt = async (problemId) => {
+    const res = await this.userActivityApi.updateOnFailedAttempt(problemId);
+    return res;
+  };
 }
 
 export default UserActivityController;

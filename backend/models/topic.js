@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Topic.hasMany(models.Series);
     }
   }
   Topic.init(
@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Topic",
-      underscored: true,
     }
   );
   return Topic;

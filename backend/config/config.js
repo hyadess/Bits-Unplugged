@@ -18,7 +18,10 @@ module.exports = {
     database: process.env.DB_DB || "bitsunplugged",
     port: process.env.DB_PORT || "5432",
     dialect: "postgres",
-    logging: false, // Set to console.log to see the raw SQL queries
+    // logging: false, // Set to console.log to see the raw SQL queries
+    define: {
+      underscored: true,
+    },
   },
   test: {
     // Add test environment configuration if needed

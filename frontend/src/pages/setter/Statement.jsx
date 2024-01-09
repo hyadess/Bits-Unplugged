@@ -12,7 +12,7 @@ import MarkdownEditor from "../../components/Markdown/MarkdownEditor";
 import MarkdownPreview from "../../components/Markdown/MarkdownPreview";
 const problemController = new ProblemController();
 function ProblemStatement(props) {
-  const { prob_id } = useParams();
+  const { problemid } = useParams();
   // const [text, setText] = useState(props.problemStatement);
 
   // const handleProblemStatementChange = (event) => {
@@ -25,7 +25,7 @@ function ProblemStatement(props) {
 
   const updateStatement = async () => {
     const res = await problemController.updateStatement(
-      prob_id,
+      problemid,
       props.statement
     );
     if (res.success) {

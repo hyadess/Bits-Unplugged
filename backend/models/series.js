@@ -11,17 +11,29 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Series.belongsTo(models.Topic);
+      Series.hasMany(models.LiveProblem);
     }
   }
-  Series.init({
-    topic_id: DataTypes.INTEGER,
-    name: DataTypes.STRING,
-    description: DataTypes.STRING,
-    logo: DataTypes.TEXT
-  }, {
-    sequelize,
-    modelName: 'Series',
-    underscored: true,
-  });
+  Series.init(
+    {
+      topicId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Topics",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
+      name: DataTypes.STRING,
+      description: DataTypes.TEXT,
+      logo: DataTypes.TEXT,
+    },
+    {
+      sequelize,
+      modelName: "Series",
+    }
+  );
   return Series;
 };

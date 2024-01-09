@@ -11,14 +11,7 @@ import SubmissionController from "../../controller/submissionController";
 import EditIcon from "@mui/icons-material/Edit";
 import { setLoading } from "../../App";
 const submissionController = new SubmissionController();
-export default function SubmissionCard({
-  submission_id,
-  idx,
-  problem_name,
-  verdict,
-  path,
-
-}) {
+export default function SubmissionCard({ submissionId, idx, problem_name, verdict, path }) {
   useEffect(() => {
     setLoading(false);
   }, []);
@@ -39,19 +32,19 @@ export default function SubmissionCard({
         </h5>
         <h5
           class="text-2xl md:text-3xl pl-5 font-bold tracking-tight bu-text-title w-75% cursor-pointer"
-        //   onClick={() => {
-        //     setLoading(true);
-        //     switchPath(path);
-        //   }}
+          //   onClick={() => {
+          //     setLoading(true);
+          //     switchPath(path);
+          //   }}
         >
-          {problem_name}_{submission_id}
+          {problem_name}_{submissionId}
         </h5>
         <h1
           class="text-xl md:text-xl pl-5 font-bold tracking-tight bu-text-title w-75% cursor-pointer"
-        //   onClick={() => {
-        //     setLoading(true);
-        //     switchPath(path);
-        //   }}
+          //   onClick={() => {
+          //     setLoading(true);
+          //     switchPath(path);
+          //   }}
         >
           {verdict}
         </h1>

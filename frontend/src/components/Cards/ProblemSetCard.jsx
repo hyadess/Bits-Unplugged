@@ -22,7 +22,7 @@ const ProblemSetCard = ({
   idx,
   name,
   deleteAction,
-  is_live,
+  isLive,
   timestamp,
   canvas,
 }) => {
@@ -89,7 +89,7 @@ const ProblemSetCard = ({
             </div>
 
             <div className="w-1/3 flex items-center justify-center">
-              {is_live == 1 ? (
+              {isLive == 1 ? (
                 <IconButton onClick={() => unpublishProblem()}>
                   <div className="flex items-center bu-text-primary">
                     <CheckCircleIcon sx={{ fontSize: "1.5rem" }} />

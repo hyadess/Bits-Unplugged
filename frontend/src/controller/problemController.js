@@ -20,50 +20,50 @@ class ProblemController extends Controller {
     const res = await this.problemApi.getMyProblems();
     return res;
   };
-  getUnsolvedProblemsBySeries = async (series_id) => {
-    const res = await this.problemApi.getUnsolvedProblemsBySeries(series_id);
+  getUnsolvedProblemsBySeries = async (seriesId) => {
+    const res = await this.problemApi.getUnsolvedProblemsBySeries(seriesId);
     return res;
   };
-  getProblemsBySeries = async (series_id) => {
-    const res = await this.problemApi.getProblemsBySeries(series_id);
+  getProblemsBySeries = async (seriesId) => {
+    const res = await this.problemApi.getProblemsBySeries(seriesId);
     return res;
   };
-  getProblemById = async (problem_id) => {
-    const res = await this.problemApi.getProblemById(problem_id);
+  getProblemById = async (problemId) => {
+    const res = await this.problemApi.getProblemById(problemId);
     return res;
   };
   addProblem = async (title) => {
     const res = await this.problemApi.addProblem(title);
     return res;
   };
-  updateTitle = async (problem_id, title) => {
-    const res = await this.problemApi.updateTitle(problem_id, title);
+  updateTitle = async (problemId, title) => {
+    const res = await this.problemApi.updateTitle(problemId, title);
     return res;
   };
-  updateSeries = async (problem_id, series_id) => {
-    const res = await this.problemApi.updateSeries(problem_id, series_id);
+  updateSeries = async (problemId, seriesId) => {
+    const res = await this.problemApi.updateSeries(problemId, seriesId);
     return res;
   };
-  updateSerial = async (problem_id, serial_no) => {
-    const res = await this.problemApi.updateSerial(problem_id, serial_no);
+  updateSerial = async (problemId, serialNo) => {
+    const res = await this.problemApi.updateSerial(problemId, serialNo);
     return res;
   };
-  updateStatement = async (problem_id, statement) => {
-    const res = await this.problemApi.updateStatement(problem_id, statement);
+  updateStatement = async (problemId, statement) => {
+    const res = await this.problemApi.updateStatement(problemId, statement);
     return res;
   };
   updateCanvas = async (
-    problem_id,
-    canvas_id,
-    canvas_data,
+    problemId,
+    canvasId,
+    canvasData,
     params,
     uiParams,
     controlParams
   ) => {
     const res = await this.problemApi.updateCanvas(
-      problem_id,
-      canvas_id,
-      canvas_data,
+      problemId,
+      canvasId,
+      canvasData,
       params,
       uiParams,
       controlParams
@@ -71,24 +71,24 @@ class ProblemController extends Controller {
     return res;
   };
 
-  deleteProblem = async (problem_id) => {
-    const res = await this.problemApi.deleteProblem(problem_id);
+  deleteProblem = async (problemId) => {
+    const res = await this.problemApi.deleteProblem(problemId);
     return res;
   };
 
-  submitProblem = async (problem_id) => {
-    const res = await this.problemApi.submitProblem(problem_id);
+  submitProblem = async (problemId) => {
+    const res = await this.problemApi.submitProblem(problemId);
     return res;
   };
 
-  publishProblem = async (problem_id) => {
+  publishProblem = async (problemId) => {
     // Submitted by problem setter vs Live
-    const res = await this.problemApi.publishProblem(problem_id);
+    const res = await this.problemApi.publishProblem(problemId);
     return res;
   };
 
-  unpublishProblem = async (problem_id) => {
-    const res = await this.problemApi.unpublishProblem(problem_id);
+  unpublishProblem = async (problemId) => {
+    const res = await this.problemApi.unpublishProblem(problemId);
     return res;
   };
 
@@ -121,7 +121,7 @@ class ProblemController extends Controller {
       stdout: stdout,
     };
   };
-  checkSolution = async (checker_code, checker_canvas, input) => {
+  checkSolution = async (checkerCode, checkerCanvas, input) => {
     const stdout = [];
     const originalConsoleLog = console.log;
     console.log = function (...args) {
@@ -134,7 +134,7 @@ class ProblemController extends Controller {
     let output = "";
     try {
       const verdict = eval(
-        checker_code + "; solutionChecker(input,checker_canvas);"
+        checkerCode + "; solutionChecker(input,checkerCanvas);"
       );
       console.log = originalConsoleLog;
       if (verdict) {
@@ -156,14 +156,10 @@ class ProblemController extends Controller {
     };
   };
 
-  updateSolutionChecker = async (
-    problem_id,
-    solution_checker,
-    checker_type
-  ) => {
+  updateSolutionChecker = async (problemId, solutionChecker, checker_type) => {
     const res = await this.problemApi.updateSolutionChecker(
-      problem_id,
-      solution_checker,
+      problemId,
+      solutionChecker,
       checker_type
     );
     return res;
@@ -175,5 +171,5 @@ export default ProblemController;
  * Usage:
  * import ProblemController from "./controller/problemController";
  * const problemController = new ProblemController();
- * await problemController.getProblemsBySeries(series_id);
+ * await problemController.getProblemsBySeries(seriesId);
  */

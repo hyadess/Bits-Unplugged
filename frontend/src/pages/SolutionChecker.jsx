@@ -45,7 +45,7 @@ export default function SolutionChecker(props) {
   const ref2 = useRef(null);
   const [showStdOut, setShowStdOut] = useState(false);
   const navigator = useNavigate();
-  const { prob_id } = useParams();
+  const { problemid } = useParams();
   const switchPath = (pathname) => {
     navigator(pathname);
   };
@@ -105,9 +105,9 @@ export default function SolutionChecker(props) {
   };
 
   const submit = () => {
-    // console.log(prob_id);
+    // console.log(problemid);
     // handleCheckSolution();
-    // problemController.updateSolutionChecker(prob_id, ref.current.getValue(), 0);
+    // problemController.updateSolutionChecker(problemid, ref.current.getValue(), 0);
   };
 
   // const p =

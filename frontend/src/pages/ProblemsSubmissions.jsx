@@ -48,21 +48,19 @@ export default function ProblemsSubmissions() {
   };
 
   const getSubmissions = async () => {
-    const res = await submissionController.getAllSubmissionsByUserAndProblem(id);
+    const res =
+      await submissionController.getAllSubmissionsByUserAndProblem(id);
     if (res.success) {
-      // Filter out objects with serial_no equal to 0
-      const filteredArray = res.data.filter((item) => item.serial_no !== 0);
+      // Filter out objects with serialNo equal to 0
+      const filteredArray = res.data.filter((item) => item.serialNo !== 0);
       console.log(filteredArray);
-      // Sort the remaining objects based on serial_no in ascending order
-      const sortedArray = filteredArray.sort(
-        (a, b) => a.serial_no - b.serial_no
-      );
+      // Sort the remaining objects based on serialNo in ascending order
+      const sortedArray = filteredArray.sort((a, b) => a.serialNo - b.serialNo);
       setSubmissionList(sortedArray);
     }
   };
 
   return problem ? (
-
     <>
       <div class="flex flex-col py-4 max-w-screen-xl sm:pt-12 gap-3">
         <div class="mt-4 md:mt-0">
@@ -71,23 +69,21 @@ export default function ProblemsSubmissions() {
           </h2>
         </div>
         <span class="bu-text-subtitle text-xl">
-          {problem ? problem.topic_name + " > " + problem.series_name : ""}
+          {problem ? problem.topicName + " > " + problem.seriesName : ""}
         </span>
       </div>
       <TableContainer>
         {submissionList.map((submission, index) => (
           <SubmissionCard
             idx={index + 1}
-            submission_id={submission.submission_id}
+            submissionId={submission.submissionId}
             verdict={submission.verdict}
             problem_name={problem.title}
-            path={`/problem/${problem.problem_id}`}
-            
+            path={`/problem/${problem.problemId}`}
           />
         ))}
       </TableContainer>
     </>
-
   ) : (
     <></>
   );

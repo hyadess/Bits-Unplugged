@@ -1,0 +1,48 @@
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Activity extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
+  Activity.init(
+    {
+      userId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      problemId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Problems",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      conseqFailedAttempt: DataTypes.INTEGER,
+      isSolved: DataTypes.BOOLEAN,
+      lastSolveTimestamp: DataTypes.DATE,
+      lastSuccessfulSolveTimestamp: DataTypes.DATE,
+      totalFailedAttempt: DataTypes.DATE,
+    },
+    {
+      sequelize,
+      modelName: "Activity",
+    }
+  );
+  return Activity;
+};

@@ -237,7 +237,7 @@ const OptionList = ({ params, setCanvas, id }) => {
                     }));
                   }
                 }}
-                id="series_id"
+                id="seriesId"
                 value={params[key].type}
                 options={[
                   { value: "select", label: "Select" },
@@ -279,7 +279,7 @@ const OptionList = ({ params, setCanvas, id }) => {
                         },
                       }));
                     }}
-                    id="series_id"
+                    id="seriesId"
                     value={params[key].value}
                     options={params[key].list}
                   />
@@ -337,7 +337,7 @@ const OptionList = ({ params, setCanvas, id }) => {
                 type: e.target.value,
               }));
             }}
-            id="series_id"
+            id="seriesId"
             value={newOption.type}
             options={[
               { value: "select", label: "Select" },
@@ -495,17 +495,17 @@ const AdminCanvasEditor = () => {
           UI Params
         </div>
         <OptionList
-          params={canvas.ui_params}
+          params={canvas.uiParams}
           setCanvas={setCanvas}
-          id="ui_params"
+          id="uiParams"
         />
         <div className="bu-bg-title text-white p-5 rounded-md text-2xl font-bold">
           Control Params
         </div>
         <OptionList
-          params={canvas.control_params}
+          params={canvas.controlParams}
           setCanvas={setCanvas}
-          id="control_params"
+          id="controlParams"
         />
         <button
           className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-primary"

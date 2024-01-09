@@ -9,10 +9,10 @@ class TopicRepository extends Repository {
     const topics = await db.Topic.findAll();
     return topics;
   };
-  getTopicById = async (topic_id) => {
+  getTopicById = async (topicId) => {
     const topic = await db.Topic.findOne({
       where: {
-        id: topic_id,
+        id: topicId,
       },
     });
     return topic;
@@ -23,7 +23,7 @@ class TopicRepository extends Repository {
     });
     return newTopic;
   };
-  updateTopic = async (topic_id, data) => {
+  updateTopic = async (topicId, data) => {
     const [updatedRowsCount, [updatedTopic]] = await db.Topic.update(
       {
         name: data.name,
@@ -33,7 +33,7 @@ class TopicRepository extends Repository {
       {
         returning: true,
         where: {
-          id: topic_id,
+          id: topicId,
         },
       }
     );
@@ -42,10 +42,10 @@ class TopicRepository extends Repository {
     }
     return updatedTopic.get();
   };
-  deleteTopic = async (topic_id) => {
+  deleteTopic = async (topicId) => {
     const deletedTopic = await db.Topic.destroy({
       where: {
-        id: topic_id,
+        id: topicId,
       },
       returning: true,
     });

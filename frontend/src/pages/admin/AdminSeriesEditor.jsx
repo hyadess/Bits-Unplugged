@@ -73,8 +73,8 @@ const AdminSeriesEditor = () => {
     for (let i = 0; i < problemList.length - 1; i++) {
       for (let j = i + 1; j < problemList.length; j++) {
         if (
-          problemList[i].serial_no !== 0 &&
-          problemList[i].serial_no === problemList[j].serial_no
+          problemList[i].serialNo !== 0 &&
+          problemList[i].serialNo === problemList[j].serialNo
         ) {
           alert("Duplicate serial no.");
           return;
@@ -84,8 +84,8 @@ const AdminSeriesEditor = () => {
 
     for (let i = 0; i < problemList.length; i++) {
       await problemController.updateSerial(
-        problemList[i].problem_id,
-        problemList[i].serial_no
+        problemList[i].problemId,
+        problemList[i].serialNo
       );
     }
 
@@ -127,8 +127,8 @@ const AdminSeriesEditor = () => {
           <SelectionField2
             label="Topic"
             onChange={handleChange}
-            id="topic_id"
-            value={series.topic_id == null ? "" : series.topic_id}
+            id="topicId"
+            value={series.topicId == null ? "" : series.topicId}
             options={topicList}
           />
           <div className="bu-bg-title text-white p-5 rounded-md text-3xl font-bold">
@@ -146,7 +146,7 @@ const AdminSeriesEditor = () => {
                   </div>
                   <input
                     label="Serial No"
-                    value={problem.serial_no}
+                    value={problem.serialNo}
                     type="number"
                     className="bu-input-primary border sm:text-sm rounded-lg block p-2.5 text-center  placeholder-gray-400"
                     onChange={(e) => {
@@ -154,7 +154,7 @@ const AdminSeriesEditor = () => {
                         const newArray = [...prevArray];
                         newArray[index] = {
                           ...newArray[index],
-                          serial_no: e.target.value,
+                          serialNo: e.target.value,
                         };
                         return newArray;
                       });
@@ -165,7 +165,7 @@ const AdminSeriesEditor = () => {
                   id={`Problem ${index + 1}`}
                   name={problem.title}
                   image={problem.logo}
-                  path={`/admin/problems/${problem.problem_id}`}
+                  path={`/admin/problems/${problem.problemId}`}
                   action="Get Started"
                 /> */}
                 </div>

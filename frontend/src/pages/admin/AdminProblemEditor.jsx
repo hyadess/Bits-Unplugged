@@ -56,7 +56,7 @@ const AdminProblemEditor = () => {
       const newArray = [
         { value: "", label: "Unassigned" },
         ...res.data.map((item) => ({
-          value: item.series_id,
+          value: item.id,
           label: item.name,
         })),
       ];
@@ -67,14 +67,14 @@ const AdminProblemEditor = () => {
 
   const handleSave = async () => {
     {
-      const res = await problemController.updateSeries(id, problem.series_id);
+      const res = await problemController.updateSeries(id, problem.seriesId);
       if (res.success) {
         console.log(res);
       }
     }
 
     {
-      const res = (await problem.is_live)
+      const res = (await problem.isLive)
         ? problemController.publishProblem(id)
         : problemController.unpublishProblem(id);
       if (res.success) {
@@ -131,18 +131,18 @@ const AdminProblemEditor = () => {
           <SelectionField2
             label="Series"
             onChange={handleSeriesChange}
-            id="series_id"
-            value={problem.series_id == null ? "" : problem.series_id}
+            id="seriesId"
+            value={problem.seriesId == null ? "" : problem.seriesId}
             options={seriesList}
           />
           <div className="flex flex-row items-center">
             <h1 className="bu-text-primary">Live</h1>
             <Switch
-              checked={problem.is_live}
+              checked={problem.isLive}
               onChange={() => {
                 setProblem((prevJson) => ({
                   ...prevJson,
-                  is_live: !prevJson.is_live,
+                  isLive: !prevJson.isLive,
                 }));
               }}
             />

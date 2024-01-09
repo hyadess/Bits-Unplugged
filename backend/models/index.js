@@ -13,16 +13,18 @@ let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  // sequelize = new Sequelize(config.database, config.username, config.password, config);
   sequelize = new Sequelize(
-    process.env.DB_DB,
-    process.env.DB_USER,
-    process.env.DB_PASS,
-    {
-      host: process.env.DB_HOST,
-      dialect: "postgres",
-    }
+    config.database,
+    config.username,
+    config.password,
+    config
   );
+  // sequelize = new Sequelize(
+  //   process.env.DB_DB,
+  //   process.env.DB_USER,
+  //   process.env.DB_PASS,
+  //   conf
+  // );
 }
 
 fs.readdirSync(__dirname)
@@ -51,8 +53,12 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+// db.sequelize.sync();
+// db.User.sync({ alter: true });
+
 module.exports = db;
 
-// npx sequelize-cli model:generate --name Topic --attributes topic_id:integer,name:string,description:string logo:text --underscored
-// npx sequelize-cli seed:generate --name demo-topics
-// npx sequelize-cli db:seed:all
+// Create model Topic and relation topics
+// models/topic.js and migrations/*****-create-topic.js: npx sequelize-cli model:generate --name Topic --attributes topicId:integer,name:string,description:string logo:text
+// seeders/****-demo-topics.js: npx sequelize-cli seed:generate --name demo-topic
+// Insert to Database: npx sequelize-cli db:seed:all

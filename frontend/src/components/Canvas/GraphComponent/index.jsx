@@ -640,7 +640,7 @@ const GraphComponent = (props, ref) => {
   };
 
   const importGraphData = (newData) => {
-    if (newData !== null && newData.nodes !== null) {
+    if (newData?.nodes ?? false) {
       let maxIndex = findMaxKey(newData.nodes);
       // Assuming nodes is an array of objects with an 'index' property
       setNodeIndex(maxIndex + 1);
@@ -665,7 +665,7 @@ const GraphComponent = (props, ref) => {
         !(
           (props.mode === "edit" ||
             props?.controlParams?.delete_edge?.value === true) &&
-          data?.selectedEdges.length > 0
+          data?.selectedEdges?.length > 0
         ) &&
         !(
           (props.mode === "edit" ||
@@ -705,7 +705,7 @@ const GraphComponent = (props, ref) => {
         !(
           (props.mode === "edit" ||
             props?.controlParams?.delete_edge?.value === true) &&
-          data?.selectedEdges.length > 0
+          data?.selectedEdges?.length > 0
         ) &&
         !(
           (props.mode === "edit" ||
@@ -742,7 +742,7 @@ const GraphComponent = (props, ref) => {
         )}
       {(props.mode === "edit" ||
         props?.controlParams?.delete_edge?.value === true) &&
-        data?.selectedEdges.length > 0 && (
+        data?.selectedEdges?.length > 0 && (
           <IconButton
             sx={
               {
@@ -760,7 +760,7 @@ const GraphComponent = (props, ref) => {
         )}
       {(props.mode === "edit" ||
         props?.controlParams?.edit_weight?.value === true) &&
-        data?.selectedEdges.length === 1 && (
+        data?.selectedEdges?.length === 1 && (
           <div className="no-ring-input flex-center p-1">
             <FormControl fullWidth variant="outlined" size="small">
               <InputLabel
@@ -978,7 +978,7 @@ const GraphComponent = (props, ref) => {
           >
             {data && (
               <Layer>
-                {data.edges.map((edge, index) => {
+                {data.edges?.map((edge, index) => {
                   if (
                     data.nodes[edge.end] === undefined ||
                     data.nodes[edge.start] === undefined
@@ -1138,108 +1138,112 @@ const GraphComponent = (props, ref) => {
                     </React.Fragment>
                   );
                 })}
-                {Object.entries(data.nodes).map(([nodeKey, node]) => (
-                  <Group
-                    key={nodeKey}
-                    x={node.x}
-                    y={node.y}
-                    draggable={
-                      props.mode === "preview" &&
-                      props?.controlParams?.drag_node?.value === false
-                        ? false
-                        : true
-                    }
-                    onMouseEnter={() => {
-                      if (!addNodeMode && !addEdgeMode) {
-                        document.body.style.cursor = "pointer";
+                {data.nodes &&
+                  Object.entries(data.nodes).map(([nodeKey, node]) => (
+                    <Group
+                      key={nodeKey}
+                      x={node.x}
+                      y={node.y}
+                      draggable={
+                        props.mode === "preview" &&
+                        props?.controlParams?.drag_node?.value === false
+                          ? false
+                          : true
                       }
-                      handleNodeHover(nodeKey);
-                    }}
-                    onMouseLeave={() => {
-                      if (!addNodeMode && !addEdgeMode) {
-                        document.body.style.cursor = "default";
-                      }
-                      handleNodeUnhover();
-                    }}
-                    onDragMove={(e) => handleNodeDrag(nodeKey, e)}
-                    onClick={() => handleNodeClick(nodeKey)}
-                    onDragStart={() => {
-                      setIsDragging(nodeKey);
-                    }}
-                    onDragEnd={() => {
-                      setIsDragging(-1);
-                    }}
-                  >
-                    <Circle
-                      radius={
-                        // isDragging === nodeKey
-                        //   ? RADIUS * 1.2
-                        //   : hoveredNode === nodeKey
-                        //     ? 1.1 * RADIUS
-                        //     : RADIUS
-                        RADIUS
-                      }
-                      className={hoveredNode === nodeKey ? "node-hovered" : ""}
-                      fill={
-                        // selectedNodes.includes(nodeKey)
-                        //   ? "#ec3965"
-                        //   : hoveredNode === nodeKey || isDragging === nodeKey
-                        //     ? "#38bf27"
-                        //     : "#a4a3a3"
-                        colorMap[data.nodes[nodeKey].color]
-                      }
-                      // opacity={0.5}
-                      stroke={
-                        selectedNodes.includes(nodeKey)
-                          ? "#ec3965"
-                          : hoveredNode === nodeKey || isDragging === nodeKey
-                            ? "#38bf27"
-                            : "#a4a3a3"
-                      }
-                      strokeEnabled={true}
-                      strokeWidth={
-                        selectedNodes.includes(nodeKey)
-                          ? 6
-                          : hoveredNode === nodeKey || isDragging === nodeKey
-                            ? 5
-                            : 0
-                      }
-                      brightness={
-                        selectedNodes.includes(nodeKey)
-                          ? 0.5
-                          : hoveredNode === nodeKey || isDragging === nodeKey
-                            ? 0
-                            : 0.8
-                      }
-                      shadowOffsetX={isDragging === nodeKey ? 7 : 0}
-                      shadowOffsetY={isDragging === nodeKey ? 7 : 0}
-                      shadowColor="black"
-                      shadowBlur={isDragging === nodeKey ? 10 : 0}
-                      shadowOpacity={isDragging === nodeKey ? 0.6 : 0}
-                    />
-                    <Text
-                      text={data.nodes[nodeKey].label.toString()} // Display the node number
-                      align="center" // Center-align the text
-                      verticalAlign="middle" // Vertically align the text
-                      fontSize={30} // Set font size
-                      fill={
-                        selectedNodes.includes(nodeKey)
-                          ? "white"
-                          : hoveredNode === nodeKey
-                            ? "white"
-                            : "white"
-                      } // Set text color
-                      ref={(nodeTextRef) => {
-                        if (nodeTextRef) {
-                          const textWidth = nodeTextRef.getClientRect().width;
-                          const textHeight = nodeTextRef.getClientRect().height;
-                          nodeTextRef.offsetX(textWidth / 2);
-                          nodeTextRef.offsetY(textHeight / 2);
+                      onMouseEnter={() => {
+                        if (!addNodeMode && !addEdgeMode) {
+                          document.body.style.cursor = "pointer";
                         }
+                        handleNodeHover(nodeKey);
                       }}
-                    />
-                  </Group>
-                ))}
+                      onMouseLeave={() => {
+                        if (!addNodeMode && !addEdgeMode) {
+                          document.body.style.cursor = "default";
+                        }
+                        handleNodeUnhover();
+                      }}
+                      onDragMove={(e) => handleNodeDrag(nodeKey, e)}
+                      onClick={() => handleNodeClick(nodeKey)}
+                      onDragStart={() => {
+                        setIsDragging(nodeKey);
+                      }}
+                      onDragEnd={() => {
+                        setIsDragging(-1);
+                      }}
+                    >
+                      <Circle
+                        radius={
+                          // isDragging === nodeKey
+                          //   ? RADIUS * 1.2
+                          //   : hoveredNode === nodeKey
+                          //     ? 1.1 * RADIUS
+                          //     : RADIUS
+                          RADIUS
+                        }
+                        className={
+                          hoveredNode === nodeKey ? "node-hovered" : ""
+                        }
+                        fill={
+                          // selectedNodes.includes(nodeKey)
+                          //   ? "#ec3965"
+                          //   : hoveredNode === nodeKey || isDragging === nodeKey
+                          //     ? "#38bf27"
+                          //     : "#a4a3a3"
+                          colorMap[data.nodes[nodeKey].color]
+                        }
+                        // opacity={0.5}
+                        stroke={
+                          selectedNodes.includes(nodeKey)
+                            ? "#ec3965"
+                            : hoveredNode === nodeKey || isDragging === nodeKey
+                              ? "#38bf27"
+                              : "#a4a3a3"
+                        }
+                        strokeEnabled={true}
+                        strokeWidth={
+                          selectedNodes.includes(nodeKey)
+                            ? 6
+                            : hoveredNode === nodeKey || isDragging === nodeKey
+                              ? 5
+                              : 0
+                        }
+                        brightness={
+                          selectedNodes.includes(nodeKey)
+                            ? 0.5
+                            : hoveredNode === nodeKey || isDragging === nodeKey
+                              ? 0
+                              : 0.8
+                        }
+                        shadowOffsetX={isDragging === nodeKey ? 7 : 0}
+                        shadowOffsetY={isDragging === nodeKey ? 7 : 0}
+                        shadowColor="black"
+                        shadowBlur={isDragging === nodeKey ? 10 : 0}
+                        shadowOpacity={isDragging === nodeKey ? 0.6 : 0}
+                      />
+                      <Text
+                        text={data.nodes[nodeKey].label.toString()} // Display the node number
+                        align="center" // Center-align the text
+                        verticalAlign="middle" // Vertically align the text
+                        fontSize={30} // Set font size
+                        fill={
+                          selectedNodes.includes(nodeKey)
+                            ? "white"
+                            : hoveredNode === nodeKey
+                              ? "white"
+                              : "white"
+                        } // Set text color
+                        ref={(nodeTextRef) => {
+                          if (nodeTextRef) {
+                            const textWidth = nodeTextRef.getClientRect().width;
+                            const textHeight =
+                              nodeTextRef.getClientRect().height;
+                            nodeTextRef.offsetX(textWidth / 2);
+                            nodeTextRef.offsetY(textHeight / 2);
+                          }
+                        }}
+                      />
+                    </Group>
+                  ))}
               </Layer>
             )}
           </Stage>

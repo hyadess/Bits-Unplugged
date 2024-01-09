@@ -7,20 +7,20 @@ class SeriesController extends Controller {
     const res = await this.seriesApi.getAllSeries();
     return res;
   };
-  getSeriesByTopic = async (topic_id) => {
-    const res = await this.seriesApi.getSeriesByTopic(topic_id);
+  getSeriesByTopic = async (topicId) => {
+    const res = await this.seriesApi.getSeriesByTopic(topicId);
     return res;
   };
-  getSeriesById = async (series_id) => {
-    const res = await this.seriesApi.getSeriesById(series_id);
+  getSeriesById = async (seriesId) => {
+    const res = await this.seriesApi.getSeriesById(seriesId);
     return res;
   };
   updateSeries = async (id, data) => {
     const res = await this.seriesApi.updateSeries(id, data);
     return res;
   };
-  getAllProblems = async (series_id) => {
-    const res = await this.seriesApi.getAllProblems(series_id);
+  getAllProblems = async (seriesId) => {
+    const res = await this.seriesApi.getAllProblems(seriesId);
     return res;
   };
 

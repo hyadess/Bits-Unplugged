@@ -15,21 +15,9 @@ class AuthController extends Controller {
   }
 
   getAccessToken = (id, email, pass, type) => {
-    // const token = jwt.sign(
-    //   {
-    //     iss: "https://bitsunplugged.onrender.com",
-    //     sub: id,
-    //     exp: ACCESS_TOKEN_EXPIRATION,
-    //     role: type,
-    //     admin: false,
-    //     email: email
-    //   },
-    //   JWT_SECRET,
-    //   { expiresIn: `${ACCESS_TOKEN_EXPIRATION}s` }
-    // );
     const token = jwt.sign(
       {
-        user_id: id,
+        userId: id,
         email: email,
         pass: pass,
         type: type,
@@ -46,7 +34,7 @@ class AuthController extends Controller {
   getRefreshToken = (id, email, pass, type) => {
     const token = jwt.sign(
       {
-        user_id: id,
+        userId: id,
         email: email,
         type: type,
         iss: "bitsunplugged.onrender.com",
@@ -73,22 +61,22 @@ class AuthController extends Controller {
   };
 
   signup = async (req, res) => {
-    req.body["hashPass"] = bcrypt.hashSync(req.body.pass, 10);
-    let result = await authRepository.signup(req.body);
-    if (result.success) {
-      if (result.error) {
-        console.log(result.error);
-        res.status(409).json({ error: result.error });
+    try {
+      req.body["hashPass"] = bcrypt.hashSync(req.body.pass, 10);
+      let user = await authRepository.signup(req.body);
+      res.status(201).json();
+    } catch (err) {
+      console.log(err);
+      if (err.name === "SequelizeUniqueConstraintError") {
+        return res.status(409).json({ error: "Username already exists" });
       } else {
-        res.status(201).json(result.data[0]);
+        return res.status(500).json({ error: "Internal Server Error" });
       }
-    } else {
-      res.status(500).json({ error: "Internal Server Error" });
     }
   };
 
   deleteAccount = async (req, res) => {
-    let result = await authRepository.deleteAccount(req.params.user_id);
+    let result = await authRepository.deleteAccount(req.params.userId);
     if (result.success) {
       if (result.data.length > 0) {
         // success
@@ -114,7 +102,7 @@ class AuthController extends Controller {
     }
 
     if (result.success && result.data.length > 0) {
-      if (result.data[0].auth_id == id && result.data[0].hashpass == pass) {
+      if (result.data[0].userId == id && result.data[0].hashpass == pass) {
         return true;
       }
     } else {
@@ -156,69 +144,59 @@ class AuthController extends Controller {
           });
         }
       }
-      let result;
+
+      let credential;
       if (req.body.email !== "" && req.body.email.match(emailFormat)) {
-        result = await authRepository.getUserByEmailType(
+        credential = await authRepository.getUserByEmailType(
           req.body.email,
           req.body.type
         );
       } else {
-        result = await authRepository.getUserByNameType(
+        credential = await authRepository.getUserByNameType(
           req.body.email,
           req.body.type
         );
       }
 
-      if (result.success) {
-        if (result.data.length > 0) {
-          if (bcrypt.compareSync(req.body.pass, result.data[0].hashpass)) {
-            const refreshToken = this.getRefreshToken(
-              result.data[0].auth_id,
+      if (credential) {
+        if (bcrypt.compareSync(req.body.pass, credential.hashpass)) {
+          const refreshToken = this.getRefreshToken(
+            credential.userId,
+            req.body.email,
+            credential.hashpass,
+            req.body.type
+          );
+          const serializedRefreshToken = serialize(
+            "refresh_token",
+            refreshToken,
+            {
+              httpOnly: true,
+              secure: process.env.NODE_ENV === "production",
+              sameSite: "strict",
+              maxAge: REFRESH_TOKEN_EXPIRATION,
+              path: "/",
+            }
+          );
+          res.setHeader("Set-Cookie", serializedRefreshToken);
+          return res.status(200).json({
+            access_token: this.getAccessToken(
+              credential.userId,
               req.body.email,
-              result.data[0].hashpass,
+              credential.hashpass,
               req.body.type
-            );
-            const serializedRefreshToken = serialize(
-              "refresh_token",
-              refreshToken,
-              {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "strict",
-                maxAge: REFRESH_TOKEN_EXPIRATION, // Making it a session cookie
-                path: "/",
-              }
-            );
-            res.setHeader("Set-Cookie", serializedRefreshToken);
-            return res.status(200).json({
-              access_token: this.getAccessToken(
-                result.data[0].auth_id,
-                req.body.email,
-                result.data[0].hashpass,
-                req.body.type
-              ),
-              token_type: "bearer",
-              expires_in: ACCESS_TOKEN_EXPIRATION,
-              // refresh_token: this.getRefreshToken(
-              //   result.data[0].auth_id,
-              //   req.body.email,
-              //   result.data[0].hashpass,
-              //   req.user.type
-              // ),
-            });
-          } else {
-            return res.status(401).json({
-              error: "Invalid credentials",
-            });
-          }
+            ),
+            token_type: "bearer",
+            expires_in: ACCESS_TOKEN_EXPIRATION,
+          });
         } else {
-          res
-            .status(404)
-            .json({ error: "User not found with the given email/user name" });
+          return res.status(401).json({
+            error: "Invalid credentials",
+          });
         }
       } else {
-        console.error(error);
-        res.status(500).json({ error: "Internal Server Error" });
+        res
+          .status(404)
+          .json({ error: "User not found with the given email/user name" });
       }
     } catch (error) {
       console.error(error);

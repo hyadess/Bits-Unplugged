@@ -43,7 +43,7 @@ async function tokenValidationMiddleware(req, res, next) {
       }
 
       req.body["type"] = data.type;
-      req.body["user_id"] = data.id;
+      req.body["userId"] = data.id;
       req.body["email"] = data.email;
       req.body["pass"] = data.pass;
       next();

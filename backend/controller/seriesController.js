@@ -12,11 +12,11 @@ class SeriesController extends Controller {
   };
 
   getSeriesByTopic = async (req, res) => {
-    let result = await seriesRepository.getSeriesByTopic(req.params.topic_id);
+    let result = await seriesRepository.getSeriesByTopic(req.params.topicId);
     this.handleResponse(result, res);
   };
   getSeriesById = async (req, res) => {
-    let result = await seriesRepository.getSeriesById(req.params.series_id);
+    let result = await seriesRepository.getSeriesById(req.params.seriesId);
     this.handleResponse(result, res);
   };
   addSeries = async (req, res) => {
@@ -25,28 +25,28 @@ class SeriesController extends Controller {
   };
   updateSeries = async (req, res) => {
     let result = await seriesRepository.updateSeries(
-      req.params.series_id,
+      req.params.seriesId,
       req.body.series
     );
     this.handleResponse(result, res);
   };
   deleteSeries = async (req, res) => {
-    let result = await seriesRepository.deleteSeries(req.params.series_id);
+    let result = await seriesRepository.deleteSeries(req.params.seriesId);
     this.handleResponse(result, res);
   };
   getAllProblems = async (req, res) => {
-    let result = await seriesRepository.getAllProblems(req.params.series_id);
+    let result = await seriesRepository.getAllProblems(req.params.seriesId);
     this.handleResponse(result, res);
   };
   // assignSeries
   // deleteProblemSerial = async (req, res) => {
   //   let result = await seriesRepository.deleteProblemSerial(
-  //     req.params.problem_id
+  //     req.params.problemId
   //   );
   //   this.handleResponse(result, res);
   // };
   // setProblemSerial = async (req, res) => {
-  //   let result = await seriesRepository.setProblemSerial(req.params.problem_id,req.params.series_id,);
+  //   let result = await seriesRepository.setProblemSerial(req.params.problemId,req.params.seriesId,);
   //   this.handleResponse(result, res);
   // };
 }

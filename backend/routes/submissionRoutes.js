@@ -8,13 +8,13 @@ router.use(
   passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
 );
 router.get(
-  "/:problem_id",
+  "/:problemId",
   submissionController.getAllSubmissionsByUserAndProblem
 );
 router.get(
-  "/:problem_id/allUsers",
+  "/:problemId/allUsers",
   submissionController.getAllSubmissionsByProblem
 );
 router.get("/", submissionController.getAllSubmissionsByUser);
-router.post("/:problem_id/saveSubmit", submissionController.submitSolution);
+router.post("/:problemId/saveSubmit", submissionController.submitSolution);
 module.exports = router;

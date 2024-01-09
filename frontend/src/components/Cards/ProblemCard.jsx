@@ -11,14 +11,7 @@ import ProblemController from "../../controller/problemController";
 import EditIcon from "@mui/icons-material/Edit";
 import { setLoading } from "../../App";
 const problemController = new ProblemController();
-export default function ProblemCard({
-  id,
-  idx,
-  name,
-  path,
-  deleteAction,
-  is_live,
-}) {
+export default function ProblemCard({ id, idx, name, path, deleteAction, isLive }) {
   useEffect(() => {
     setLoading(false);
   }, []);

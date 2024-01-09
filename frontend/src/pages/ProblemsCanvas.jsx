@@ -68,16 +68,17 @@ export default function ProblemsCanvas() {
   const renderProblem = async () => {
     const result = await problemController.getProblemById(id);
     if (result.success) {
+      console.log(result.data[0]);
       setProblem(result.data[0]);
-      setInput(JSON.parse(JSON.stringify(result.data[0].canvas_data)));
-      setBackup(JSON.parse(JSON.stringify(result.data[0].canvas_data)));
-      setCanvasId(result.data[0].canvas_id);
+      setInput(JSON.parse(JSON.stringify(result.data[0].canvasData)));
+      setBackup(JSON.parse(JSON.stringify(result.data[0].canvasData)));
+      setCanvasId(result.data[0].canvasId);
       setStatement(result.data[0].statement);
       setParams(result.data[0].params);
-      setUiParams(result.data[0].ui_params);
-      setControlParams(result.data[0].control_params);
+      setUiParams(result.data[0].uiParams);
+      setControlParams(result.data[0].controlParams);
       setTitle(result.data[0].title);
-      if (result.data[0].canvas_id === null) setLoading(false);
+      if (result.data[0].canvasId === null) setLoading(false);
     }
   };
 
@@ -87,8 +88,8 @@ export default function ProblemsCanvas() {
     {
       setInput(JSON.parse(JSON.stringify(backup)));
       canvasRef.current !== undefined &&
-      canvasRef.current !== null &&
-      canvasRef.current.handleReset(JSON.parse(JSON.stringify(backup)));
+        canvasRef.current !== null &&
+        canvasRef.current.handleReset(JSON.parse(JSON.stringify(backup)));
       // setResetTrigger(!resetTrigger);
     }
   };
@@ -97,12 +98,12 @@ export default function ProblemsCanvas() {
   };
   const solutionSubmit = async (e) => {
     let res = await problemController.checkSolution(
-      problem.checker_code,
-      problem.checker_canvas,
+      problem.checkerCode,
+      problem.checkerCanvas,
       input
     );
     console.log("output " + res.output);
-    submissionController.submitSolution(input,res.output, id);
+    submissionController.submitSolution(input, res.output, id);
     if (res.output === "Accepted")
       userActivityController.updateOnSuccessfulAttempt(id);
     else userActivityController.updateOnFailedAttempt(id);
@@ -141,7 +142,7 @@ export default function ProblemsCanvas() {
                 </div>
                 <span className="bu-text-subtitle text-xl">
                   {problem
-                    ? problem.topic_name + " > " + problem.series_name
+                    ? problem.topicName + " > " + problem.seriesName
                     : ""}
                 </span>
               </div>

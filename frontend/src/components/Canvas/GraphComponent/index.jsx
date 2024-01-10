@@ -115,7 +115,7 @@ const GraphComponent = (props, ref) => {
       }
     });
 
-    console.log(sortedEdges);
+    //console.log(sortedEdges);
     setData((prevState) => ({
       ...prevState,
       selectedEdges: sortedEdges,
@@ -267,7 +267,7 @@ const GraphComponent = (props, ref) => {
     setHoveredNode(node);
   };
   const handleNodeUnhover = () => {
-    console.log("Mouse Unhover", hoveredNode);
+    //console.log("Mouse Unhover", hoveredNode);
     setHoveredNode(null);
   };
   const handleEdgeHover = (edge) => {
@@ -282,7 +282,7 @@ const GraphComponent = (props, ref) => {
   let clickTimer = null;
 
   const handleMouseMove = (e) => {
-    console.log("Move")
+    //console.log("Move")
     if (
       e.target &&
       (e.target.getClassName() === "Text" ||
@@ -337,7 +337,7 @@ const GraphComponent = (props, ref) => {
     }
   };
   const handleCanvasClick = (e) => {
-    console.log(e.target.getClassName());
+    //console.log(e.target.getClassName());
     if (clickTimer === null) {
       // This is a single click
       clickTimer = setTimeout(() => {
@@ -420,7 +420,7 @@ const GraphComponent = (props, ref) => {
           });
           setNodeIndex(nodeIndex + 1);
 
-          console.log({ ...data.nodes, [nodeIndex]: { x, y, nodeIndex } });
+          //console.log({ ...data.nodes, [nodeIndex]: { x, y, nodeIndex } });
         }
       }, 20);
     } else {
@@ -429,7 +429,7 @@ const GraphComponent = (props, ref) => {
       clickTimer = null;
       // Handle the double click logic here, if needed
     }
-    console.log(data.selectedEdges);
+    //console.log(data.selectedEdges);
   };
 
   const handleNodeClick = (nodeKey) => {
@@ -441,7 +441,7 @@ const GraphComponent = (props, ref) => {
       setSelectedNodes((prev) =>
         prev.filter((selectedNode) => selectedNode !== nodeKey)
       );
-      console.log("Double click");
+      //console.log("Double click");
       setSelectedEdges([]);
     } else if (
       (props.mode === "preview" &&
@@ -568,7 +568,7 @@ const GraphComponent = (props, ref) => {
   };
 
   const handleNodeDrag = (nodeKey, e) => {
-    console.log("Dragging");
+    //console.log("Dragging");
     if (
       props.mode === "preview" &&
       props?.previewOptions?.dragNode?.value === false

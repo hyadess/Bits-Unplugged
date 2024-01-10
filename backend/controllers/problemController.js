@@ -161,8 +161,16 @@ class ProblemController extends Controller {
   };
 
   deleteProblem = async (req, res) => {
-    let result = await problemRepository.deleteProblem(req.params.problemId);
-    this.handleResponse(result, res);
+    this.handleRequest(res, async () => {
+      const deletedProblem = await problemRepository.deleteProblem(
+        req.params.id
+      );
+      if (!deletedProblem) {
+        res.status(404).json({ error: "Problem not found" });
+      } else {
+        res.status(200).json({ message: "Problem deleted successfully" });
+      }
+    });
   };
 
   submitProblem = async (req, res) => {

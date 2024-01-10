@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasOne(models.Setter);
       User.hasOne(models.Credential, { foreignKey: "userId" });
-      User.belongsToMany(models.Problem, {
+      User.belongsToMany(models.ProblemVersion, {
         through: models.Activity,
         foreignKey: "userId",
       });

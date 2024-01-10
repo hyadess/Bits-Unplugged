@@ -21,7 +21,7 @@ module.exports = {
       },
       canvasId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        // allowNull: false,
         references: {
           model: "Canvases",
           key: "id",
@@ -34,6 +34,7 @@ module.exports = {
       },
       statement: {
         type: Sequelize.TEXT,
+        defaultValue: "",
       },
       canvasData: {
         type: Sequelize.JSON,

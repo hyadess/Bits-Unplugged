@@ -91,9 +91,8 @@ const CanvasDesignTab = ({
           </Button>
           <Button
             variant="contained"
-            onClick={() => {
-              updateCanvas();
-              updateSolutionChecker();
+            onClick={async () => {
+              await updateCanvas();
             }}
             size="large"
             startIcon={<SaveIcon sx={{ fontSize: "2rem", color: "white" }} />}
@@ -347,13 +346,14 @@ export default function ProblemSetEnv() {
 
   const changeCanvas = (canvasId) => {
     setCanvasId(canvasId);
-    var res = canvasFullList.find((element) => {
-      return element.canvasId == canvasId;
+    var res = canvasFullList.find((canvas) => {
+      return canvas.id == canvasId;
     });
 
     if (res) {
       setCode(res.template);
       setInput(null);
+      setCheckerCanvas(null);
       setEditOptions(res.editOptions);
       setPreviewOptions(res.previewOptions);
     }
@@ -393,12 +393,7 @@ export default function ProblemSetEnv() {
   };
 
   const updateCanvas = async () => {
-    if (
-      checkerCanvas == null ||
-      JSON.stringify(backup) === JSON.stringify(checkerCanvas)
-    )
-      setCheckerCanvas(JSON.parse(JSON.stringify(input)));
-
+    setCheckerCanvas(JSON.parse(JSON.stringify(input)));
     setBackup(JSON.parse(JSON.stringify(input)));
     const res = await problemController.updateCanvas(
       problemid,
@@ -407,12 +402,16 @@ export default function ProblemSetEnv() {
       editOptions,
       previewOptions
     );
+    await problemController.updateSolutionChecker(problemid, code, 0);
+    await problemController.updateSolutionChecker(problemid, checkerCanvas, 1);
     if (res.success) {
       console.log(res);
     }
   };
 
   const updateSolutionChecker = async () => {
+    if (checkerType == 0 && code == null) return;
+    if (checkerType == 1 && checkerCanvas == null) return;
     const res = await problemController.updateSolutionChecker(
       problemid,
       checkerType == 0 ? code : checkerCanvas,
@@ -652,43 +651,42 @@ export default function ProblemSetEnv() {
         </div>
         <div className={activeComponent === "Test" ? "block" : "hidden"}>
           {canvasId && (
-            <><CanvasContainer
-            canvasId={canvasId}
-            input={test}
-            setInput={setTest}
-            ref={testRef}
-            mode="preview"
-            editOptions={editOptions}
-            setEditOptions={setEditOptions}
-            previewOptions={previewOptions}
-            setPreviewOptions={setPreviewOptions}
-          />
-          <div className="flex flex-row justify-between py-5">
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => {
-              setTest(input);
-              // canvasRef.current.handleReset(); // Call this after reset
-            }}
-            startIcon={
-              <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-            }
-          >
-            Reset
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleCheckSolution}
-            endIcon={<Send sx={{ fontSize: "2rem", color: "white" }} />}
-          >
-            Submit
-          </Button>
-        </div>
+            <>
+              <CanvasContainer
+                canvasId={canvasId}
+                input={test}
+                setInput={setTest}
+                ref={testRef}
+                mode="preview"
+                editOptions={editOptions}
+                setEditOptions={setEditOptions}
+                previewOptions={previewOptions}
+                setPreviewOptions={setPreviewOptions}
+              />
+              <div className="flex flex-row justify-between py-5">
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => {
+                    setTest(input);
+                    // canvasRef.current.handleReset(); // Call this after reset
+                  }}
+                  startIcon={
+                    <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+                  }
+                >
+                  Reset
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleCheckSolution}
+                  endIcon={<Send sx={{ fontSize: "2rem", color: "white" }} />}
+                >
+                  Submit
+                </Button>
+              </div>
             </>
-            
           )}
-         
         </div>
       </div>
       <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} />

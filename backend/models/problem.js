@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         through: models.Activity,
         foreignKey: "problemId",
       });
-      Problem.hasMany(models.Submission, { foreignKey: "problemId" });
+      // Problem.hasMany(models.Submission, { foreignKey: "problemId" });
       Problem.belongsToMany(models.Contest, { through: models.ContestProblem });
     }
   }
@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       canvasId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        // allowNull: false,
         references: {
           model: "Canvases",
           key: "id",
@@ -58,6 +58,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       statement: {
         type: DataTypes.TEXT,
+        defaultValue: "",
       },
       canvasData: {
         type: DataTypes.JSON,

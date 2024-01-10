@@ -7,6 +7,7 @@ class AuthRepository extends Repository {
   }
 
   getUserByEmailType = async (email, role) => {
+    console.log(email);
     const credential = await db.Credential.findOne({
       where: {
         email,

@@ -176,7 +176,7 @@ class ProblemsRepository extends Repository {
     //   if (prob."submit_stateId" !== null) {
     //     const query = `
     //       UPDATE "LiveProblems"
-    //       SET "title" = $2, "statement" = $3, "canvasData" = $4, "checkerCode" = $5, "params" = $6, "uiParams" = $7, "controlParams" = $8, "updatedAt" = $9, "canvasId" = $10, "checkerCanvas" = $11
+    //       SET "title" = $2, "statement" = $3, "canvasData" = $4, "checkerCode" = $5, "params" = $6, "previewOptions" = $7, "previewOptions" = $8, "updatedAt" = $9, "canvasId" = $10, "checkerCanvas" = $11
     //       WHERE "stateId" = $1;
     //     `;
     //     const params = [
@@ -186,8 +186,8 @@ class ProblemsRepository extends Repository {
     //       prob."canvasData",
     //       prob."checkerCode",
     //       prob."params",
-    //       prob."uiParams",
-    //       prob."controlParams",
+    //       prob."previewOptions",
+    //       prob."previewOptions",
     //       Date.now(),
     //       prob."canvasId",
     //       prob."checkerCanvas",
@@ -207,7 +207,7 @@ class ProblemsRepository extends Repository {
     //     const query = `
     //       INSERT INTO "LiveProblems" ("title", "statement", "canvasData", ${
     //       prob."checkerType" == 0 ? "checkerCode" : "checkerCanvas"
-    //     }, "params", "uiParams", "controlParams", "updatedAt", "canvasId")
+    //     }, "params", "previewOptions", "previewOptions", "updatedAt", "canvasId")
     //       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
     //       RETURNING "stateId";
     //     `;
@@ -217,8 +217,8 @@ class ProblemsRepository extends Repository {
     //       prob."canvasData",
     //       prob."solutionChecker",
     //       prob."params",
-    //       prob."uiParams",
-    //       prob."controlParams",
+    //       prob."previewOptions",
+    //       prob."previewOptions",
     //       Date.now(),
     //       prob."canvasId",
     //     ];
@@ -285,23 +285,21 @@ class ProblemsRepository extends Repository {
     problemId,
     canvasId,
     canvasData,
-    design_params,
-    uiParams,
-    controlParams
+    editOptions,
+    previewOptions
   ) => {
     console.log("=>", canvasData);
     const query = `
     UPDATE "Problems"
-    SET "canvasId" = $2, "canvasData" = $3, "params" = $4, "uiParams" = $5, "controlParams" = $6, "updatedAt" = $7
+    SET "canvasId" = $2, "canvasData" = $3, "editOptions" = $4, "previewOptions" = $5, "updatedAt" = $6
     WHERE "problemId" = $1;
     `;
     const params = [
       problemId,
       canvasId,
       canvasData,
-      design_params,
-      uiParams,
-      controlParams,
+      editOptions,
+      previewOptions,
       Date.now(),
     ];
     const result = await this.query(query, params);

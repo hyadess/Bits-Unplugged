@@ -46,12 +46,10 @@ const CanvasDesignTab = ({
   input,
   setInput,
   canvasRef,
-  params,
-  setParams,
-  uiParams,
-  setUiParams,
-  controlParams,
-  setControlParams,
+  editOptions,
+  setEditOptions,
+  previewOptions,
+  setPreviewOptions,
   reset,
   updateCanvas,
   updateSolutionChecker,
@@ -65,12 +63,10 @@ const CanvasDesignTab = ({
           setInput={setInput}
           ref={canvasRef}
           mode="edit"
-          params={params}
-          setParams={setParams}
-          uiParams={uiParams}
-          setUiParams={setUiParams}
-          controlParams={controlParams}
-          setControlParams={setControlParams}
+          editOptions={editOptions}
+          setEditOptions={setEditOptions}
+          previewOptions={previewOptions}
+          setPreviewOptions={setPreviewOptions}
         />
       )}
 
@@ -126,12 +122,10 @@ const SolutionCheckerTab = ({
   canvasId,
   checkerCanvas,
   setCheckerCanvas,
-  params,
-  setParams,
-  setUiParams,
-  uiParams,
-  controlParams,
-  setControlParams,
+  editOptions,
+  setEditOptions,
+  previewOptions,
+  setPreviewOptions,
   updateSolutionChecker,
   backup,
 }) => {
@@ -186,12 +180,10 @@ const SolutionCheckerTab = ({
             setInput={setCheckerCanvas}
             ref={canvasRef}
             mode="preview"
-            params={params}
-            setParams={setParams}
-            uiParams={uiParams}
-            setUiParams={setUiParams}
-            controlParams={controlParams}
-            setControlParams={setControlParams}
+            editOptions={editOptions}
+            setEditOptions={setEditOptions}
+            previewOptions={previewOptions}
+            setPreviewOptions={setPreviewOptions}
           />
           <div
             className="flex py-5"
@@ -241,10 +233,9 @@ const SolutionCheckerTab = ({
 
 export default function ProblemSetEnv() {
   const { problemid } = useParams();
-  const [params, setParams] = useState({});
-  const [uiParams, setUiParams] = useState({});
+  const [editOptions, setEditOptions] = useState({});
+  const [previewOptions, setPreviewOptions] = useState({});
   const [checkerCanvas, setCheckerCanvas] = useState(null);
-  const [controlParams, setControlParams] = useState({});
   const [test, setTest] = useState(null);
   const navigator = useNavigate();
   const switchPath = (pathname) => {
@@ -289,9 +280,8 @@ export default function ProblemSetEnv() {
         setCheckerCanvas(res.data[0].checkerCanvas);
       setCanvasId(res.data[0].canvasId);
       setBackupId(res.data[0].canvasId);
-      setParams(res.data[0].params);
-      setUiParams(res.data[0].uiParams);
-      setControlParams(res.data[0].controlParams);
+      setEditOptions(res.data[0].editOptions);
+      setPreviewOptions(res.data[0].previewOptions);
       setLoading(false);
     }
   };
@@ -364,9 +354,8 @@ export default function ProblemSetEnv() {
     if (res) {
       setCode(res.template);
       setInput(null);
-      setParams(res.params);
-      setUiParams(res.uiParams);
-      setControlParams(res.controlParams);
+      setEditOptions(res.editOptions);
+      setPreviewOptions(res.previewOptions);
     }
   };
 
@@ -415,9 +404,8 @@ export default function ProblemSetEnv() {
       problemid,
       canvasId,
       input,
-      params,
-      uiParams,
-      controlParams
+      editOptions,
+      previewOptions
     );
     if (res.success) {
       console.log(res);
@@ -633,12 +621,10 @@ export default function ProblemSetEnv() {
             input={input}
             setInput={setInput}
             canvasRef={canvasRef}
-            params={params}
-            setParams={setParams}
-            uiParams={uiParams}
-            setUiParams={setUiParams}
-            controlParams={controlParams}
-            setControlParams={setControlParams}
+            editOptions={editOptions}
+            setEditOptions={setEditOptions}
+            previewOptions={previewOptions}
+            setPreviewOptions={setPreviewOptions}
             reset={reset}
             updateCanvas={updateCanvas}
             updateSolutionChecker={updateSolutionChecker}
@@ -654,12 +640,10 @@ export default function ProblemSetEnv() {
             canvasId={canvasId}
             checkerCanvas={checkerCanvas}
             setCheckerCanvas={setCheckerCanvas}
-            params={params}
-            setParams={setParams}
-            setUiParams={setUiParams}
-            uiParams={uiParams}
-            controlParams={controlParams}
-            setControlParams={setControlParams}
+            editOptions={editOptions}
+            setEditOptions={setEditOptions}
+            previewOptions={previewOptions}
+            setPreviewOptions={setPreviewOptions}
             updateSolutionChecker={updateSolutionChecker}
             backup={backup}
             canvasRef={canvasRef}
@@ -672,12 +656,10 @@ export default function ProblemSetEnv() {
             setInput={setTest}
             ref={testRef}
             mode="preview"
-            params={params}
-            setParams={setParams}
-            uiParams={uiParams}
-            setUiParams={setUiParams}
-            controlParams={controlParams}
-            setControlParams={setControlParams}
+            editOptions={editOptions}
+            setEditOptions={setEditOptions}
+            previewOptions={previewOptions}
+            setPreviewOptions={setPreviewOptions}
           />
           <div className="flex flex-row justify-between py-5">
             <Button

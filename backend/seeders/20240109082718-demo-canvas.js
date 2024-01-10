@@ -12,25 +12,25 @@ module.exports = {
           classname: "GraphComponent",
           info: "Click anywhere in the canvas to create nodes. Click on two nodes to create an edge between them. You can also drag nodes.",
           logo: "https://cdn0.iconfinder.com/data/icons/graph-4/100/graph1-512.png",
-          params: JSON.stringify({
-            variant: {
-              value: "simple_graph",
-              type: "select",
-              list: ["simple_graph", "tree"],
-            },
-            directed_edge: { value: false, type: "switch" },
-            weighted_edge: { value: true, type: "switch" },
+          editOptions: JSON.stringify({
+            // variant: {
+            //   value: "simple_graph",
+            //   type: "select",
+            //   list: ["simple_graph", "tree"],
+            // },
+            directedEdge: { value: false, type: "switch" },
+            weightedEdge: { value: true, type: "switch" },
           }),
-          controlParams: JSON.stringify({
-            add_node: { value: false, type: "switch" },
-            delete_node: { value: false, type: "switch" },
-            drag_node: { value: true, type: "switch" },
-            add_edge: { value: false, type: "switch" },
-            delete_edge: { value: true, type: "switch" },
-            edit_weight: { value: false, type: "switch" },
-            edit_color: { value: false, type: "switch" },
+          previewOptions: JSON.stringify({
+            addNode: { value: false, type: "switch" },
+            deleteNode: { value: false, type: "switch" },
+            dragNode: { value: true, type: "switch" },
+            addEdge: { value: false, type: "switch" },
+            deleteEdge: { value: true, type: "switch" },
+            editWeight: { value: false, type: "switch" },
+            editColor: { value: false, type: "switch" },
           }),
-          uiParams: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
           template:
             "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  const edges =  data.edges.map(edge => ({\n\t\tstart: edge.start.nodeIndex,\n\t\tend: edge.end.nodeIndex,\n\t\tweight: edge.weight\n\t}));\n\t\n  return false;\n}",
           createdAt: new Date(),
@@ -42,15 +42,15 @@ module.exports = {
           classname: "TowerOfHanoi",
           info: "Drag and drop top most stacks from one peg to another.\nYou can increase the number of disks direcly from the top left spinner.\nOr you can add disks of different sizes from the bottom spinner. Choose your disk of your preffered size and drag and drop in the pegs.\nAt most 10 disks can be in each peg.\nYou cannot put larger disks over smaller ones.",
           logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbAENY_duGomNEm95iTrLS6t6phHPiZ0pSAbgIwhXTOYCcIvfcj1z6QiSeM_PQblTkfoU&usqp=CAU",
-          params: JSON.stringify({
-            custom_disk: { value: true, type: "switch" },
+          editOptions: JSON.stringify({
+            customDisk: { value: true, type: "switch" },
             ordered: { value: true, type: "switch" },
           }),
-          controlParams: JSON.stringify({}),
-          uiParams: JSON.stringify({
+          previewOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({
             moves: { value: true, type: "switch" },
-            n_disks: { value: false, type: "switch" },
-            custom_disk: { value: false, type: "switch" },
+            nDisks: { value: false, type: "switch" },
+            customDisk: { value: false, type: "switch" },
             undo: { value: true, type: "switch" },
           }),
           template:

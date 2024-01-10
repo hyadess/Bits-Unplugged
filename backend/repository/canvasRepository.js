@@ -44,8 +44,8 @@ class CanvasRepository extends Repository {
         "info" = $4,
         "logo" = $5,
         "params" = $6,
-        "uiParams" = $7,
-        "controlParams" = $8,
+        "previewOptions" = $7,
+        "previewOptions" = $8,
         "template" = $9
       WHERE "id" = $1;
     `;
@@ -56,8 +56,8 @@ class CanvasRepository extends Repository {
       data.info,
       data.logo,
       data.params,
-      data.uiParams,
-      data.controlParams,
+      data.previewOptions,
+      data.previewOptions,
       data.template,
     ];
     const result = await this.query(query, params);

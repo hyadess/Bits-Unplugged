@@ -479,7 +479,7 @@ const TowerOfHanoi = (props, ref) => {
     let minDistance = Infinity;
 
     if (
-      (props.mode === "edit" || props.uiParams.custom_disk.value) &&
+      (props.mode === "edit" || props.previewOptions.customDisk.value) &&
       sourceY > 250
     ) {
       // Delete
@@ -839,17 +839,17 @@ const TowerOfHanoi = (props, ref) => {
       {data && (
         <>
           <div className="toh-header hbox">
-            {(props.mode === "edit" || props.uiParams.undo.value) && (
+            {(props.mode === "edit" || props.previewOptions.undo.value) && (
               <UndoRedoButton handleUndo={handleUndo} handleRedo={handleRedo} />
             )}
             <div className="flex-start flex min-h-[2.5rem] w-full flex-row items-center gap-5">
-              {(props.mode === "edit" || props.uiParams.n_disks.value) && (
+              {(props.mode === "edit" || props.previewOptions.nDisks.value) && (
                 <NumberOfDisksInput
                   data={data}
                   handleNumberOfDisksChange={handleNumberOfDisksChange}
                 />
               )}
-              {props.mode === "preview" && props.uiParams.moves.value && (
+              {props.mode === "preview" && props.previewOptions.moves.value && (
                 <Typography variant="h5" className="bu-text-primary m-0 p-0">
                   <b className="bu-text-primary">Moves: {data.numberOfMoves}</b>
                 </Typography>
@@ -867,7 +867,8 @@ const TowerOfHanoi = (props, ref) => {
               height={
                 Math.min(window.innerWidth / 800, 1) *
                 (280 +
-                  (props.mode === "edit" || props.uiParams.custom_disk.value
+                  (props.mode === "edit" ||
+                  props.previewOptions.customDisk.value
                     ? diskHeight * 1.2
                     : 0))
               }
@@ -886,7 +887,7 @@ const TowerOfHanoi = (props, ref) => {
                   draggableDisks={draggableDisks}
                 />
                 {(props.mode === "edit" ||
-                  props.uiParams.custom_disk.value) && (
+                  props.previewOptions.customDisk.value) && (
                   <CustomDisk
                     data={data}
                     extraDisk={extraDisk}

@@ -406,7 +406,7 @@ const GraphComponent = (props, ref) => {
         } else {
           if (
             (props.mode === "preview" &&
-              props?.controlParams?.add_node?.value === false) ||
+              props?.previewOptions?.addNode?.value === false) ||
             !addNodeMode
           )
             return;
@@ -445,7 +445,7 @@ const GraphComponent = (props, ref) => {
       setSelectedEdges([]);
     } else if (
       (props.mode === "preview" &&
-        props?.controlParams?.add_edge?.value === false) ||
+        props?.previewOptions?.addEdge?.value === false) ||
       addEdgeMode === false
     ) {
       setSelectedNodes([nodeKey]);
@@ -459,7 +459,7 @@ const GraphComponent = (props, ref) => {
       );
       if (!alreadyExists) {
         setSelectedNodes([...selectedNodes, nodeKey]);
-        if (props?.params?.weighted_edge?.value === true) {
+        if (props?.editOptions?.weightedEdge?.value === true) {
           openPrompt(); // need to take weight input...........
         } else {
           const edges = data.edges;
@@ -489,7 +489,7 @@ const GraphComponent = (props, ref) => {
     if (selectedNodes.length === 1) {
       if (
         props.mode === "preview" &&
-        props?.controlParams?.delete_node?.value === false
+        props?.previewOptions?.deleteNode?.value === false
       )
         return;
 
@@ -523,7 +523,7 @@ const GraphComponent = (props, ref) => {
     if (data.selectedEdges.length > 0) {
       if (
         props.mode === "preview" &&
-        props?.controlParams?.delete_edge?.value === false
+        props?.previewOptions?.deleteEdge?.value === false
       )
         return;
 
@@ -544,13 +544,13 @@ const GraphComponent = (props, ref) => {
 
     if (
       props.mode === "preview" &&
-      props?.params?.weighted_edge?.value === false
+      props?.editOptions?.weightedEdge?.value === false
     )
       return;
 
     if (
       props.mode === "preview" &&
-      props?.controlParams?.edit_weight?.value === false
+      props?.previewOptions?.editWeight?.value === false
     )
       return;
     // weight change prompt........................
@@ -563,15 +563,15 @@ const GraphComponent = (props, ref) => {
 
   const isDragAllowed = () => {
     return (
-      props.mode === "edit" || props?.controlParams?.drag_node?.value === true
+      props.mode === "edit" || props?.previewOptions?.dragNode?.value === true
     );
   };
-  
+
   const handleNodeDrag = (nodeKey, e) => {
     console.log("Dragging");
     if (
       props.mode === "preview" &&
-      props?.controlParams?.drag_node?.value === false
+      props?.previewOptions?.dragNode?.value === false
     )
       return;
 
@@ -630,7 +630,6 @@ const GraphComponent = (props, ref) => {
     });
   };
 
-  
   const findMaxKey = (myHashmap) => {
     const keys = Object.keys(myHashmap);
     if (keys.length === 0) {
@@ -661,15 +660,15 @@ const GraphComponent = (props, ref) => {
   const Header = () => (
     <div className="top-2 left-2 absolute flex flex-row gap-2 z-10">
       {(props.mode === "edit" ||
-        props?.controlParams?.add_node?.value === true) &&
+        props?.previewOptions?.addNode?.value === true) &&
         !(
           (props.mode === "edit" ||
-            props?.controlParams?.delete_edge?.value === true) &&
+            props?.previewOptions?.deleteEdge?.value === true) &&
           data?.selectedEdges?.length > 0
         ) &&
         !(
           (props.mode === "edit" ||
-            props?.controlParams?.delete_node?.value === true) &&
+            props?.previewOptions?.deleteNode?.value === true) &&
           selectedNodes.length > 0
         ) && (
           <Tooltip
@@ -701,15 +700,15 @@ const GraphComponent = (props, ref) => {
           </Tooltip>
         )}
       {(props.mode === "edit" ||
-        props?.controlParams?.add_edge?.value === true) &&
+        props?.previewOptions?.addEdge?.value === true) &&
         !(
           (props.mode === "edit" ||
-            props?.controlParams?.delete_edge?.value === true) &&
+            props?.previewOptions?.deleteEdge?.value === true) &&
           data?.selectedEdges?.length > 0
         ) &&
         !(
           (props.mode === "edit" ||
-            props?.controlParams?.delete_node?.value === true) &&
+            props?.previewOptions?.deleteNode?.value === true) &&
           selectedNodes.length > 0
         ) && (
           <Tooltip
@@ -741,7 +740,7 @@ const GraphComponent = (props, ref) => {
           </Tooltip>
         )}
       {(props.mode === "edit" ||
-        props?.controlParams?.delete_edge?.value === true) &&
+        props?.previewOptions?.deleteEdge?.value === true) &&
         data?.selectedEdges?.length > 0 && (
           <IconButton
             sx={
@@ -759,7 +758,7 @@ const GraphComponent = (props, ref) => {
           </IconButton>
         )}
       {(props.mode === "edit" ||
-        props?.controlParams?.edit_weight?.value === true) &&
+        props?.previewOptions?.editWeight?.value === true) &&
         data?.selectedEdges?.length === 1 && (
           <div className="no-ring-input flex-center p-1">
             <FormControl fullWidth variant="outlined" size="small">
@@ -799,7 +798,7 @@ const GraphComponent = (props, ref) => {
         )}
 
       {(props.mode === "edit" ||
-        props?.controlParams?.delete_node?.value === true) &&
+        props?.previewOptions?.deleteNode?.value === true) &&
         selectedNodes.length === 1 && (
           <IconButton
             sx={
@@ -845,7 +844,7 @@ const GraphComponent = (props, ref) => {
       )}
 
       {(props.mode === "edit" ||
-        props?.controlParams?.edit_color?.value === true) &&
+        props?.previewOptions?.editColor?.value === true) &&
         selectedNodes.length === 1 && (
           <div className="no-ring-input flex-center p-1">
             <FormControl fullWidth variant="outlined" size="small">
@@ -993,12 +992,12 @@ const GraphComponent = (props, ref) => {
                   const startOffsetY = Math.sin(angle) * RADIUS;
                   const endOffsetX =
                     Math.cos(angle + Math.PI) * RADIUS -
-                    (props?.params["directed_edge"]?.value
+                    (props?.editOptions["directedEdge"]?.value
                       ? 3 * Math.cos(angle)
                       : 0);
                   const endOffsetY =
                     Math.sin(angle + Math.PI) * RADIUS -
-                    (props?.params["directed_edge"]?.value
+                    (props?.editOptions["directedEdge"]?.value
                       ? 3 * Math.sin(angle)
                       : 0);
 
@@ -1033,9 +1032,9 @@ const GraphComponent = (props, ref) => {
                   return (
                     <React.Fragment key={index}>
                       <Group>
-                        {props.params === null ||
-                        !props.params["directed_edge"] ||
-                        props.params["directed_edge"].value === false ? (
+                        {props.editOptions === null ||
+                        !props.editOptions["directedEdge"] ||
+                        props.editOptions["directedEdge"].value === false ? (
                           <Line
                             key={index}
                             points={[
@@ -1090,7 +1089,7 @@ const GraphComponent = (props, ref) => {
                         )}
                       </Group>
 
-                      {props?.params?.weighted_edge?.value && (
+                      {props?.editOptions?.weightedEdge?.value && (
                         <Text
                           x={
                             weightOffsetX +
@@ -1146,7 +1145,7 @@ const GraphComponent = (props, ref) => {
                       y={node.y}
                       draggable={
                         props.mode === "preview" &&
-                        props?.controlParams?.drag_node?.value === false
+                        props?.previewOptions?.dragNode?.value === false
                           ? false
                           : true
                       }

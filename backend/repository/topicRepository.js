@@ -9,43 +9,34 @@ class TopicRepository extends Repository {
     const topics = await db.Topic.findAll();
     return topics;
   };
-  getTopicById = async (topicId) => {
+  getTopicById = async (id) => {
     const topic = await db.Topic.findOne({
       where: {
-        id: topicId,
+        id,
       },
     });
     return topic;
   };
-  addTopic = async (data) => {
-    const newTopic = await db.Topic.create({
-      name: data.name,
-    });
+  createTopic = async (data) => {
+    const newTopic = await db.Topic.create(data); // {name, description, logo}
     return newTopic;
   };
-  updateTopic = async (topicId, data) => {
-    const [updatedRowsCount, [updatedTopic]] = await db.Topic.update(
-      {
-        name: data.name,
-        description: data.description,
-        logo: data.logo,
+  updateTopic = async (id, data) => {
+    const [updatedRowsCount, [updatedTopic]] = await db.Topic.update(data, {
+      returning: true,
+      where: {
+        id,
       },
-      {
-        returning: true,
-        where: {
-          id: topicId,
-        },
-      }
-    );
+    });
     if (updatedRowsCount === 0) {
       return null;
     }
     return updatedTopic.get();
   };
-  deleteTopic = async (topicId) => {
+  deleteTopic = async (id) => {
     const deletedTopic = await db.Topic.destroy({
       where: {
-        id: topicId,
+        id,
       },
       returning: true,
     });

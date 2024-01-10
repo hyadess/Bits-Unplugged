@@ -38,13 +38,10 @@ module.exports = {
       canvasData: {
         type: Sequelize.JSON,
       },
-      params: {
+      editOptions: {
         type: Sequelize.JSON,
       },
-      uiParams: {
-        type: Sequelize.JSON,
-      },
-      controlParams: {
+      previewOptions: {
         type: Sequelize.JSON,
       },
       checkerCode: {

@@ -27,11 +27,13 @@ const CanvasContainer = (props, ref) => {
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [canvasInfo, seCanvasInfo] = useState(null);
   const [settings, setSettings] = useState(false);
-  const [params, setParams] = [props.params, props.setParams];
-  const [uiParams, setUiParams] = [props.uiParams, props.setUiParams];
-  const [controlParams, setControlParams] = [
-    props.controlParams,
-    props.setControlParams,
+  const [editOptions, setEditOptions] = [
+    props.editOptions,
+    props.setEditOptions,
+  ];
+  const [previewOptions, setPreviewOptions] = [
+    props.previewOptions,
+    props.setPreviewOptions,
   ];
   const [type, setType] = useState(-1);
   const [canvas, setCanvas] = useState(null);
@@ -57,16 +59,14 @@ const CanvasContainer = (props, ref) => {
       if (res.data.length == 1) {
         setSelectedComponent(res.data[0].classname);
         seCanvasInfo(res.data[0].info);
-        // setParams(res.data[0].params);
-        // setUiParams(res.data[0].uiParams);
-        // setControlParams(res.data[0].controlParams);
+        // setEditOptions(res.data[0].editOptions);
+        // setPreviewOptions(res.data[0].previewOptions);
         // setCanvas(res.data[0]);
       } else {
         setSelectedComponent(null);
         seCanvasInfo(null);
-        // setParams({});
-        // setUiParams({});
-        // setControlParams({});
+        // setEditOptions({});
+        // setPreviewOptions({});
         // setCanvas(null);
       }
     }
@@ -96,7 +96,7 @@ const CanvasContainer = (props, ref) => {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   };
-  
+
   function camelCaseToTitleCase(input) {
     // Add space before the capital letter and then capitalize the first letter
     return input
@@ -105,17 +105,17 @@ const CanvasContainer = (props, ref) => {
         return str.toUpperCase();
       });
   }
-  const OptionList = ({ params, setParams }) => {
+  const OptionList = ({ options, setOptions }) => {
     return (
       <div className="pt-2" style={{ minHeight: "1rem" }}>
-        {Object.keys(params).map((key, index) =>
-          params[key].type == "switch" ? (
+        {Object.keys(options).map((key, index) =>
+          options[key].type == "switch" ? (
             <div className="flex flex-row justify-between items-center">
-              <h1 className="text-white">{snakeCaseToTitleCase(key)}</h1>
+              <h1 className="text-white">{camelCaseToTitleCase(key)}</h1>
               <Switch
-                checked={params[key].value}
+                checked={options[key].value}
                 onChange={() => {
-                  setParams((prevJson) => ({
+                  setOptions((prevJson) => ({
                     ...prevJson,
                     [key]: {
                       ...prevJson[key],
@@ -125,17 +125,17 @@ const CanvasContainer = (props, ref) => {
                 }}
               />
             </div>
-          ) : params[key].type == "select" ? (
+          ) : options[key].type == "select" ? (
             <div className="flex flex-row justify-between items-center gap-5">
-              <h1 className="text-white">{snakeCaseToTitleCase(key)}</h1>
+              <h1 className="text-white">{camelCaseToTitleCase(key)}</h1>
               <Select
                 fullWidth
                 required
                 id="outlined-adornment"
-                value={params[key].value}
+                value={options[key].value}
                 size="small"
                 onChange={(e) =>
-                  setParams((prevJson) => ({
+                  setOptions((prevJson) => ({
                     ...prevJson,
                     [key]: {
                       ...prevJson[key],
@@ -162,7 +162,7 @@ const CanvasContainer = (props, ref) => {
                 }}
                 // // MenuProps={MenuProps}
               >
-                {params[key].list.map((value, index) => (
+                {options[key].list.map((value, index) => (
                   <MenuItem
                     key={value}
                     value={value}
@@ -196,21 +196,18 @@ const CanvasContainer = (props, ref) => {
           >
             {canvasMode === "preview" ? (
               <div className="flex flex-col">
-                <h1 className="text-white">Ui Parameters</h1>
-                <Divider sx={{ bgcolor: "white" }} />
-                <OptionList params={uiParams} setParams={setUiParams} />
-                <h1 className="text-white">Control Parameters</h1>
+                <h1 className="text-white">Preview Options</h1>
                 <Divider sx={{ bgcolor: "white" }} />
                 <OptionList
-                  params={controlParams}
-                  setParams={setControlParams}
+                  options={previewOptions}
+                  setOptions={setPreviewOptions}
                 />
               </div>
             ) : (
               <div className="flex flex-col">
-                <h1 className="text-white">Design Parameters</h1>
+                <h1 className="text-white">Edit Options</h1>
                 <Divider sx={{ bgcolor: "white" }} />
-                <OptionList params={params} setParams={setParams} />
+                <OptionList options={editOptions} setOptions={setEditOptions} />
               </div>
             )}
           </div>
@@ -231,9 +228,8 @@ const CanvasContainer = (props, ref) => {
           <DynamicComponent
             input={props.input}
             setInput={props.setInput}
-            params={params}
-            uiParams={uiParams}
-            controlParams={controlParams}
+            editOptions={editOptions}
+            previewOptions={previewOptions}
             ref={ref}
             mode={canvasMode}
           />

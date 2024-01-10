@@ -10,11 +10,11 @@ router.use(
 );
 router.get("/", topicController.getAllTopics);
 router.get("/live", topicController.getAllTopics); // pending
-router.post("/", topicController.addTopic); // add_new
-router.get("/:topicId", topicController.getTopicById); // fetch
-router.put("/:topicId", topicController.updateTopic); // edit
-router.put("/:topicId/live", (req,res)=>res.status(204).json()); // edit
-router.delete("/:topicId", topicController.deleteTopic); // delete
+router.post("/", topicController.createTopic); // add_new
+router.get("/:id", topicController.getTopicById); // fetch
+router.put("/:id", topicController.updateTopic); // edit
+router.put("/:id/live", (req,res)=>res.status(204).json()); // edit
+router.delete("/:id", topicController.deleteTopic); // delete
 router.get("/invalid", () => {
   console.log("Failed");
 }); // delete

@@ -193,6 +193,7 @@ module.exports = {
           addEdge: { value: false, type: "switch" },
           deleteEdge: { value: false, type: "switch" },
           editWeight: { value: false, type: "switch" },
+          editColor: { value: false, type: "switch" },
         }),
         checkerCanvas: JSON.stringify({
           edges: [
@@ -271,6 +272,7 @@ module.exports = {
           addEdge: { value: false, type: "switch" },
           deleteEdge: { value: false, type: "switch" },
           editWeight: { value: false, type: "switch" },
+          editColor: { value: false, type: "switch" },
         }),
         checkerCanvas: JSON.stringify({
           edges: [

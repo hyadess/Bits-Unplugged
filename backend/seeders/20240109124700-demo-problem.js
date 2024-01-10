@@ -183,6 +183,7 @@ module.exports = {
             addEdge: { value: false, type: "switch" },
             deleteEdge: { value: false, type: "switch" },
             editWeight: { value: false, type: "switch" },
+            editColor: { value: false, type: "switch" },
           }),
           checkerCanvas: JSON.stringify({
             edges: [
@@ -259,6 +260,7 @@ module.exports = {
             addEdge: { value: false, type: "switch" },
             deleteEdge: { value: false, type: "switch" },
             editWeight: { value: false, type: "switch" },
+            editColor: { value: false, type: "switch" },
           }),
           checkerCanvas: JSON.stringify({
             edges: [
@@ -384,6 +386,8 @@ module.exports = {
             dragNode: { value: false, type: "switch" },
             addEdge: { value: false, type: "switch" },
             deleteEdge: { value: true, type: "switch" },
+            editWeight: { value: false, type: "switch" },
+            editColor: { value: false, type: "switch" },
           }),
           checkerCanvas: null,
           createdAt: new Date(),
@@ -412,6 +416,8 @@ module.exports = {
             dragNode: { value: true, type: "switch" },
             addEdge: { value: true, type: "switch" },
             deleteEdge: { value: true, type: "switch" },
+            editWeight: { value: false, type: "switch" },
+            editColor: { value: false, type: "switch" },
           }),
           checkerCanvas: null,
           createdAt: new Date(),
@@ -497,6 +503,8 @@ module.exports = {
             dragNode: { value: false, type: "switch" },
             addEdge: { value: false, type: "switch" },
             deleteEdge: { value: true, type: "switch" },
+            editWeight: { value: false, type: "switch" },
+            editColor: { value: false, type: "switch" },
           }),
 
           checkerCanvas: JSON.stringify({
@@ -629,6 +637,7 @@ module.exports = {
             addEdge: { value: false, type: "switch" },
             deleteEdge: { value: false, type: "switch" },
             editWeight: { value: false, type: "switch" },
+            editColor: { value: false, type: "switch" },
           }),
           checkerCanvas: null,
           createdAt: new Date(),

@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("LiveProblems", {
+    await queryInterface.createTable("ProblemVersions", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -50,6 +50,9 @@ module.exports = {
       isLive: {
         type: Sequelize.BOOLEAN,
       },
+      approvalStatus: {
+        type: Sequelize.STRING,
+      },
       canvasData: {
         type: Sequelize.JSON,
       },
@@ -66,7 +69,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       checkerCanvas: {
-        type: Sequelize.TEXT,
+        type: Sequelize.JSON,
       },
       createdAt: {
         allowNull: false,
@@ -79,6 +82,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("LiveProblems");
+    await queryInterface.dropTable("ProblemVersions");
   },
 };

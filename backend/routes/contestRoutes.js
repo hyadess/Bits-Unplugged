@@ -46,7 +46,7 @@ router.get(
   contestController.showAllCollaborators
 );
 
-router.post("/:contestId/addProblem", contestController.addProblemToContest);
+router.post("/:contestId/createProblem", contestController.addProblemToContest);
 router.put("/:contestId/makeEligible", contestController.makeProblemEligible);
 router.put(
   "/:contestId/makeNotEligible",

@@ -10,7 +10,7 @@ const userActivityRoutes = require("./userActivityRoutes");
 const contestRoutes = require("./contestRoutes");
 const base = require("../repositories/base");
 
-require("../passport");
+require("../services/passport");
 
 router.get("/", async (req, res) => {
   const result = await new base().check();

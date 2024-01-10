@@ -66,16 +66,16 @@ export default function ProblemsCanvas() {
   const renderProblem = async () => {
     const result = await problemController.getProblemById(id);
     if (result.success) {
-      console.log(result.data[0]);
-      setProblem(result.data[0]);
-      setInput(JSON.parse(JSON.stringify(result.data[0].canvasData)));
-      setBackup(JSON.parse(JSON.stringify(result.data[0].canvasData)));
-      setCanvasId(result.data[0].canvasId);
-      setStatement(result.data[0].statement);
-      setEditOptions(result.data[0].editOptions);
-      setPreviewOptions(result.data[0].previewOptions);
-      setTitle(result.data[0].title);
-      if (result.data[0].canvasId === null) setLoading(false);
+      console.log(result.data);
+      setProblem(result.data);
+      setInput(JSON.parse(JSON.stringify(result.data.canvasData)));
+      setBackup(JSON.parse(JSON.stringify(result.data.canvasData)));
+      setCanvasId(result.data.canvasId);
+      setStatement(result.data.statement);
+      setEditOptions(result.data.editOptions);
+      setPreviewOptions(result.data.previewOptions);
+      setTitle(result.data.title);
+      if (result.data.canvasId === null) setLoading(false);
     }
   };
 

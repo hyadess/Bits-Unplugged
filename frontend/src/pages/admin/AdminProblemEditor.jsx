@@ -45,7 +45,7 @@ const AdminProblemEditor = () => {
     console.log(id);
     const res = await problemController.getProblemById(id);
     if (res.success) {
-      setProblem(res.data[0]);
+      setProblem(res.data);
       setLoading(false);
     }
   };
@@ -67,7 +67,10 @@ const AdminProblemEditor = () => {
 
   const handleSave = async () => {
     {
-      const res = await problemController.updateSeries(id, problem.seriesId);
+      const res = await problemController.updateSeries(
+        problem.id,
+        problem.seriesId
+      );
       if (res.success) {
         console.log(res);
       }
@@ -75,8 +78,8 @@ const AdminProblemEditor = () => {
 
     {
       const res = (await problem.isLive)
-        ? problemController.publishProblem(id)
-        : problemController.unpublishProblem(id);
+        ? problemController.publishProblem(problem.id)
+        : problemController.unpublishProblem(problem.id);
       if (res.success) {
         console.log(res);
       }

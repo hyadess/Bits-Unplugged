@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Setter.belongsTo(models.User);
-      Setter.hasMany(models.Problem);
+      Setter.belongsTo(models.User, { foreignKey: "userId" });
+      Setter.hasMany(models.Problem, { foreignKey: "setterId" });
       Setter.belongsToMany(models.Contest, { through: models.ContestSetter });
     }
   }

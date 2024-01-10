@@ -11,11 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Problem.hasOne(models.LiveProblem);
-      Problem.belongsTo(models.Setter);
-      Problem.belongsTo(models.Canvas);
-      Problem.belongsToMany(models.User, { through: models.Activity });
-      Problem.hasMany(models.Submission);
+      Problem.hasOne(models.ProblemVersion, { foreignKey: "problemId" });
+      Problem.belongsTo(models.Setter, { foreignKey: "setterId" });
+      Problem.belongsTo(models.Canvas, { foreignKey: "canvasId" });
+      Problem.belongsToMany(models.User, {
+        through: models.Activity,
+        foreignKey: "problemId",
+      });
+      Problem.hasMany(models.Submission, { foreignKey: "problemId" });
       Problem.belongsToMany(models.Contest, { through: models.ContestProblem });
     }
   }

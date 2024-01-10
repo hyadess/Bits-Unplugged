@@ -37,11 +37,17 @@ module.exports = (sequelize, DataTypes) => {
       isSolved: DataTypes.BOOLEAN,
       lastSolveTimestamp: DataTypes.DATE,
       lastSuccessfulSolveTimestamp: DataTypes.DATE,
-      totalFailedAttempt: DataTypes.DATE,
+      totalFailedAttempt: DataTypes.INTEGER,
     },
     {
       sequelize,
       modelName: "Activity",
+      indexes: [
+        {
+          fields: ["userId", "problemId"],
+          unique: true,
+        },
+      ],
     }
   );
   return Activity;

@@ -7,6 +7,14 @@ module.exports = {
       "Series",
       [
         {
+          topicId: 2,
+          name: "Tower Of Hanoi",
+          description: "",
+          logo: "/gifs/toh_light.gif",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
           // id: 1,
           topicId: 4,
           name: "Red Black",
@@ -66,14 +74,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
-        {
-          topicId: 2,
-          name: "Tower Of Hanoi",
-          description: "",
-          logo: "/gifs/toh_light.gif",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
+
         {
           topicId: 2,
           name: "N Queen",

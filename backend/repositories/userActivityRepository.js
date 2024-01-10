@@ -1,4 +1,5 @@
 const Repository = require("./base");
+const db = require("../models/index");
 
 class UserActivityRepository extends Repository {
   constructor() {
@@ -6,20 +7,49 @@ class UserActivityRepository extends Repository {
   }
 
   updateOnFailedAttempt = async (userId, problemId) => {
-    console.log("lets see" + problemId);
-    const query = `
-        INSERT INTO "Activities" ("userId", "problemId", "conseqFailedAttempt", "isSolved", "lastSolveTimestamp", "lastSuccessfulSolveTimestamp", "totalFailedAttempt")
-        VALUES ($1, $2, $3, $4, $5, NULL, $6)
-        ON CONFLICT ("userId", "problemId") DO UPDATE
-        SET
-        "conseqFailedAttempt" = "Activities"."conseqFailedAttempt" + 1,
-        "isSolved" = "Activities"."isSolved",
-        "totalFailedAttempt" = "Activities"."totalFailedAttempt" + 1,
-        "lastSolveTimestamp" = $5;
-        `;
-    const params = [userId, problemId, 1, false, Date.now(), 1];
-    const result = await this.query(query, params);
-    return result;
+    const activity = db.Activity.findOne({ where: { userId, problemId } }).then(
+      function (obj) {
+        // update
+        if (obj)
+          return obj.update({
+            userId: userId,
+            problemId: problemId,
+            conseqFailedAttempt: obj.conseqFailedAttempt + 1,
+            isSolved: false,
+            lastSolveTimestamp: Date.now(),
+            lastSuccessfulSolveTimestamp: null,
+            totalFailedAttempt: obj.totalFailedAttempt + 1,
+          });
+        // insert
+        return Model.create({
+          userId: userId,
+          problemId: problemId,
+          conseqFailedAttempt: 1,
+          isSolved: false,
+          lastSolveTimestamp: Date.now(),
+          lastSuccessfulSolveTimestamp: null,
+          totalFailedAttempt: 1,
+        });
+      }
+    );
+    return activity;
+    // return instance;
+    // console.log("Hi");
+    // const query = `
+    //     INSERT INTO "Activities" ("userId", "problemId", "conseqFailedAttempt", "isSolved", "lastSolveTimestamp", "lastSuccessfulSolveTimestamp", "totalFailedAttempt")
+    //     VALUES ($1, $2, $3, $4, $5, NULL, $6)
+    //     ON CONFLICT ("userId", "problemId") DO UPDATE
+    //     SET
+    //     "conseqFailedAttempt" = "Activities"."conseqFailedAttempt" + 1,
+    //     "isSolved" = "Activities"."isSolved",
+    //     "totalFailedAttempt" = "Activities"."totalFailedAttempt" + 1,
+    //     "lastSolveTimestamp" = $5
+    //     returning *;
+    //     `;
+    // const params = [userId, problemId, 1, false, null, 1];
+    // const result = await this.query(query, params);
+    // console.log(result.data);
+    // return result.data;
   };
 
   updateOnSuccessfulAttempt = async (userId, problemId) => {

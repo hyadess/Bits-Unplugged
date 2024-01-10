@@ -25,7 +25,9 @@ export default function Problems() {
       const res = await problemController.getProblemsBySeries(id);
       if (res.success) {
         // Filter out objects with serialNo equal to 0
-        const filteredArray = res.data.filter((item) => item.serialNo !== 0);
+        const filteredArray = res.data.filter(
+          (item) => item.serialNo !== 0 && item.serialNo !== null
+        );
 
         // Sort the remaining objects based on serialNo in ascending order
         const sortedArray = filteredArray.sort(

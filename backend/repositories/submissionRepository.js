@@ -1,4 +1,5 @@
 const Repository = require("./base");
+const db = require("../models/index");
 
 class SubmissionRepository extends Repository {
   constructor() {
@@ -42,14 +43,12 @@ class SubmissionRepository extends Repository {
   };
 
   submitSolution = async (userId, problemId, data) => {
-    const query = `
-          INSERT INTO "Submissions" ("verdict", "problemId", "userId", "canvasData")
-          VALUES ($1, $2, $3, $4)
-          RETURNING "id";
-          `;
-    const params = [data.verdict, problemId, userId, data.ansJson];
-    const result = await this.query(query, params);
-    return result;
+    return await db.Submission.create({
+      verdict: data.verdict,
+      problemId: problemId,
+      userId: userId,
+      canvasData: data.ansJson,
+    });
   };
 }
 

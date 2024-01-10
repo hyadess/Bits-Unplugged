@@ -50,7 +50,7 @@ const AdminSeries = () => {
   };
 
   const getSeriesId = async (name) => {
-    const res = await seriesController.addSeries(name);
+    const res = await seriesController.createSeries(name);
     if (res.success) {
       return res.data[0].id;
     }
@@ -78,7 +78,7 @@ const AdminSeries = () => {
               id={`Series ${index + 1}`}
               name={series.name}
               image={series.logo}
-              path={`/admin/series/${series.seriesId}`}
+              path={`/admin/series/${series.id}`}
               action="View Series"
             />
           ))}

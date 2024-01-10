@@ -398,7 +398,7 @@ const AdminCanvasEditor = () => {
   const getCanvas = async () => {
     const res = await canvasController.getCanvasById(id);
     if (res.success) {
-      setCanvas(res.data[0]);
+      setCanvas(res.data);
       setLoading(false);
     }
   };
@@ -443,6 +443,13 @@ const AdminCanvasEditor = () => {
           onChange={handleChange}
           value={canvas.name ?? ""}
           id="name"
+          required={false}
+        />
+        <TextArea2
+          label="Class Name"
+          onChange={handleChange}
+          value={canvas.classname ?? ""}
+          id="classname"
           required={false}
         />
         <TextArea2

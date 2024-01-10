@@ -58,7 +58,7 @@ const CanvasDesignTab = ({
     <>
       {canvasId && (
         <CanvasContainer
-          id={canvasId}
+          canvasId={canvasId}
           input={input}
           setInput={setInput}
           ref={canvasRef}
@@ -175,7 +175,7 @@ const SolutionCheckerTab = ({
       ) : checkerType == 1 ? (
         <>
           <CanvasContainer
-            id={canvasId}
+            canvasId={canvasId}
             input={checkerCanvas}
             setInput={setCheckerCanvas}
             ref={canvasRef}
@@ -651,7 +651,7 @@ export default function ProblemSetEnv() {
         </div>
         <div className={activeComponent === "Test" ? "block" : "hidden"}>
           <CanvasContainer
-            id={canvasId}
+            canvasId={canvasId}
             input={test}
             setInput={setTest}
             ref={testRef}

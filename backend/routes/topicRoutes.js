@@ -1,6 +1,7 @@
 const router = require("express").Router();
-const authMiddleware = require("../service/tokenValidationService");
-const TopicController = require("../controller/topicController");
+
+
+const TopicController = require("../controllers/topicController");
 const passport = require("passport");
 const topicController = new TopicController();
 
@@ -8,6 +9,7 @@ const topicController = new TopicController();
 router.use(
   passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
 );
+
 router.get("/", topicController.getAllTopics);
 router.get("/live", topicController.getAllTopics); // pending
 router.post("/", topicController.createTopic); // add_new

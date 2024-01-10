@@ -203,7 +203,7 @@ export default function ProblemsCanvas() {
           {canvasId && canvasRef && (
             <div className="flex w-full flex-col gap-5">
               <CanvasContainer
-                id={canvasId}
+                canvasId={canvasId}
                 input={input}
                 setInput={setInput}
                 mode={"preview"}

@@ -1,5 +1,5 @@
 const Controller = require("./base");
-const SubmissionRepository = require("../repository/submissionRepository");
+const SubmissionRepository = require("../repositories/submissionRepository");
 const submissionRepository = new SubmissionRepository();
 class SubmissionController extends Controller {
   constructor() {

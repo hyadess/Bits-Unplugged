@@ -50,7 +50,7 @@ const AdminCanvasList = () => {
   };
 
   const getCanvasId = async (name) => {
-    const res = await canvasController.addCanvas(name);
+    const res = await canvasController.createCanvas(name);
     if (res.success) {
       return res.data[0].id;
     }

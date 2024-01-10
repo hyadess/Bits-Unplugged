@@ -1,5 +1,5 @@
 const Controller = require("./base");
-const UserActivityRepository = require("../repository/userActivityRepository");
+const UserActivityRepository = require("../repositories/userActivityRepository");
 const userActivityRepository = new UserActivityRepository();
 class UserActivityController extends Controller {
   constructor() {

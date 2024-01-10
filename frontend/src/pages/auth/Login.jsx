@@ -70,6 +70,7 @@ const Login = () => {
         pass: password,
         type: type == "solver" ? 0 : 1,
       });
+      console.log(res);
       if (res.success) {
         setLoggingIn(true);
         type == "solver" ? navigate("/topics") : navigate("/problemSet");

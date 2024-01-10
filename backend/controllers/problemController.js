@@ -1,5 +1,5 @@
 const Controller = require("./base");
-const ProblemRepository = require("../repository/problemRepository");
+const ProblemRepository = require("../repositories/problemRepository");
 const problemRepository = new ProblemRepository();
 class ProblemController extends Controller {
   constructor() {

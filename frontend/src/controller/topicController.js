@@ -15,8 +15,8 @@ class TopicController extends Controller {
     const res = await this.topicApi.updateTopic(id, data);
     return res;
   };
-  addTopic = async (name) => {
-    const res = await this.topicApi.addTopic(name);
+  createTopic = async (name) => {
+    const res = await this.topicApi.createTopic(name);
     return res;
   };
 }

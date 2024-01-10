@@ -24,15 +24,19 @@ class AuthRepository extends Repository {
     return credential;
   };
 
-  deleteAccount = async (userId) => {
-    const query = `
-      DELETE FROM "Users"
-      WHERE "id" = $1
-      RETURNING *;
-    `;
-    const params = [userId];
-    const result = await this.query(query, params);
-    return result;
+  deleteAccount = async (id) => {
+    const deletedUser = await db.User.destroy({
+      where: {
+        id,
+      },
+      returning: true, // This option returns the deleted user
+    });
+
+    if (!deletedUser) {
+      return null; // Handle the case where the user does not exist or no rows were deleted
+    }
+
+    return deletedUser;
   };
 
   signup = async (data) => {

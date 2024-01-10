@@ -8,7 +8,7 @@ const profileRoutes = require("./profileRoutes");
 const submissionRoutes = require("./submissionRoutes");
 const userActivityRoutes = require("./userActivityRoutes");
 const contestRoutes = require("./contestRoutes");
-const base = require("../repository/base");
+const base = require("../repositories/base");
 
 require("../passport");
 

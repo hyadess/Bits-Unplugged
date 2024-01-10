@@ -1,5 +1,5 @@
 const Controller = require("./base");
-const ProfileRepository = require("../repository/profileRepository");
+const ProfileRepository = require("../repositories/profileRepository");
 const profileRepository = new ProfileRepository();
 class ProfileController extends Controller {
   constructor() {

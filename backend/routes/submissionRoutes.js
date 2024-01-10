@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const authMiddleware = require("../service/tokenValidationService");
-const SubmissionController = require("../controller/submissionController");
+const authMiddleware = require("../services/tokenValidationService");
+const SubmissionController = require("../controllers/submissionController");
 const submissionController = new SubmissionController();
 
 const passport = require("passport");

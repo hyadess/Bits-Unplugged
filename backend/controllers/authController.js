@@ -1,5 +1,5 @@
 const Controller = require("./base");
-const AuthRepository = require("../repository/authRepository");
+const AuthRepository = require("../repositories/authRepository");
 const { JWT_SECRET } = require("../config/config");
 const authRepository = new AuthRepository();
 const bcrypt = require("bcryptjs");
@@ -64,7 +64,7 @@ class AuthController extends Controller {
     try {
       req.body["hashPass"] = bcrypt.hashSync(req.body.pass, 10);
       let user = await authRepository.signup(req.body);
-      res.status(201).json();
+      res.status(201).json(user);
     } catch (err) {
       console.log(err);
       if (err.name === "SequelizeUniqueConstraintError") {
@@ -76,19 +76,15 @@ class AuthController extends Controller {
   };
 
   deleteAccount = async (req, res) => {
-    let result = await authRepository.deleteAccount(req.params.userId);
-    if (result.success) {
-      if (result.data.length > 0) {
-        // success
-        res.status(204).json();
+    this.handleRequest(res, async () => {
+      console.log(req.params);
+      const deletedUser = await authRepository.deleteAccount(req.params.id);
+      if (!deletedUser) {
+        res.status(404).json({ error: "Account not found" });
       } else {
-        // known error
-        res.status(404).json({ error: "No account with this id" });
+        res.status(200).json({ message: "Account deleted successfully" });
       }
-    } else {
-      // unexpected error
-      res.status(500).json(result);
-    }
+    });
   };
   tokenValidity = async (id, email, pass, type) => {
     var emailFormat =

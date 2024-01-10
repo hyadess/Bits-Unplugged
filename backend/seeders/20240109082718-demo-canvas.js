@@ -30,7 +30,6 @@ module.exports = {
             editWeight: { value: false, type: "switch" },
             editColor: { value: false, type: "switch" },
           }),
-          previewOptions: JSON.stringify({}),
           template:
             "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  const edges =  data.edges.map(edge => ({\n\t\tstart: edge.start.nodeIndex,\n\t\tend: edge.end.nodeIndex,\n\t\tweight: edge.weight\n\t}));\n\t\n  return false;\n}",
           createdAt: new Date(),
@@ -46,7 +45,6 @@ module.exports = {
             customDisk: { value: true, type: "switch" },
             ordered: { value: true, type: "switch" },
           }),
-          previewOptions: JSON.stringify({}),
           previewOptions: JSON.stringify({
             moves: { value: true, type: "switch" },
             nDisks: { value: false, type: "switch" },

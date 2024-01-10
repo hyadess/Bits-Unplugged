@@ -54,21 +54,20 @@ const CanvasContainer = (props, ref) => {
   // Fix this
   const getCanvas = async () => {
     console.log("Canvas changed");
-    const res = await canvasController.getCanvasById(props.id);
+    const res = await canvasController.getCanvasById(props.canvasId);
     if (res.success) {
-      if (res.data.length == 1) {
-        setSelectedComponent(res.data[0].classname);
-        seCanvasInfo(res.data[0].info);
-        // setEditOptions(res.data[0].editOptions);
-        // setPreviewOptions(res.data[0].previewOptions);
-        // setCanvas(res.data[0]);
-      } else {
-        setSelectedComponent(null);
-        seCanvasInfo(null);
-        // setEditOptions({});
-        // setPreviewOptions({});
-        // setCanvas(null);
-      }
+      console.log(res.data);
+      setSelectedComponent(res.data.classname);
+      seCanvasInfo(res.data.info);
+      // setEditOptions(res.data[0].editOptions);
+      // setPreviewOptions(res.data[0].previewOptions);
+      // setCanvas(res.data[0]);
+    } else {
+      setSelectedComponent(null);
+      seCanvasInfo(null);
+      // setEditOptions({});
+      // setPreviewOptions({});
+      // setCanvas(null);
     }
   };
 

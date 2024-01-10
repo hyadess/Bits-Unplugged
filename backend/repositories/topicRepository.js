@@ -10,11 +10,7 @@ class TopicRepository extends Repository {
     return topics;
   };
   getTopicById = async (id) => {
-    const topic = await db.Topic.findOne({
-      where: {
-        id,
-      },
-    });
+    const topic = await db.Topic.findByPk(id);
     return topic;
   };
   createTopic = async (data) => {
@@ -41,7 +37,7 @@ class TopicRepository extends Repository {
       returning: true,
     });
 
-    if (deletedTopic === 0) {
+    if (!deletedTopic) {
       return null;
     }
     return deletedTopic; // Return the deleted topic: Which is actually 1. Need a way around to find the row.

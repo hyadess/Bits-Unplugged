@@ -24,8 +24,8 @@ class SeriesController extends Controller {
     return res;
   };
 
-  addSeries = async (name) => {
-    const res = await this.seriesApi.addSeries(name);
+  createSeries = async (name) => {
+    const res = await this.seriesApi.createSeries(name);
     return res;
   };
 }

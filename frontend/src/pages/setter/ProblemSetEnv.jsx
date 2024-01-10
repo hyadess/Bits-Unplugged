@@ -336,7 +336,15 @@ export default function ProblemSetEnv() {
     setInput(JSON.parse(JSON.stringify(backup)));
     if (backupId !== canvasId) {
       setCanvasId(backupId);
-      changeCanvas(backupId);
+      var res = canvasFullList.find((canvas) => {
+        return canvas.id == canvasId;
+      });
+      if (res) {
+        setCode(res.template);
+        setCheckerCanvas(JSON.parse(JSON.stringify(backup)));
+        setEditOptions(res.editOptions);
+        setPreviewOptions(res.previewOptions);
+      }
     }
     canvasRef.current !== undefined &&
       canvasRef.current !== null &&

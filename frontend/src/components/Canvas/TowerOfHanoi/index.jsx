@@ -310,10 +310,15 @@ const TowerOfHanoi = (props, ref) => {
     });
   };
   const setNumberOfMoves = (n) => {
-    if (props.mode === "edit") return;
-    setData((prevData) => {
-      return { ...prevData, numberOfMoves: n };
-    });
+    if (props.mode === "edit") {
+      setData((prevData) => {
+        return { ...prevData, numberOfMoves: 0 };
+      });
+    } else {
+      setData((prevData) => {
+        return { ...prevData, numberOfMoves: n };
+      });
+    }
   };
 
   useImperativeHandle(ref, () => {
@@ -335,7 +340,7 @@ const TowerOfHanoi = (props, ref) => {
   };
 
   useEffect(() => {
-    console.log("=>", data);
+    console.log("DEBUG_LOG:", data);
   }, [data]);
 
   useEffect(() => {
@@ -432,6 +437,7 @@ const TowerOfHanoi = (props, ref) => {
     setDraggableDisks([
       initialPegs[0][initialPegs[0][initialPegs[0].length - 1]],
     ]);
+    console.log("Init:", data);
   };
   const calculateDiskWidth = (disk) => pegWidth - diskWidthFactor * disk;
 
@@ -820,6 +826,8 @@ const TowerOfHanoi = (props, ref) => {
     if (!isNaN(value) && value >= 1 && value <= 10) {
       setNumberOfDisks(value);
       initializePegs(value, data.numberOfPegs);
+      setHistory([]);
+      setCurrentHistory(-1);
     }
   };
 
@@ -832,6 +840,9 @@ const TowerOfHanoi = (props, ref) => {
 
   useEffect(() => {
     console.log("mode changed", props.mode);
+    if (props.mode === "edit") {
+      setNumberOfMoves(0);
+    }
   }, [props.mode]);
 
   return (

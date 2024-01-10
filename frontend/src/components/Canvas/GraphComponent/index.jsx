@@ -300,7 +300,7 @@ const GraphComponent = (props, ref) => {
     let minDistance = Number.MAX_VALUE; // Initialize with a very large value
     let nearestEdge = null;
 
-    data.edges.forEach((edge) => {
+    data?.edges?.forEach((edge) => {
       const { start, end, weight } = edge;
       if (data.nodes[end] === undefined || data.nodes[start] === undefined) {
         return;
@@ -358,7 +358,7 @@ const GraphComponent = (props, ref) => {
         let minDistance = Number.MAX_VALUE; // Initialize with a very large value
         let nearestEdge = null;
 
-        data.edges.forEach((edge) => {
+        data?.edges?.forEach((edge) => {
           const { start, end, weight } = edge;
           if (
             data.nodes[end] === undefined ||

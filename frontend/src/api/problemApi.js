@@ -82,5 +82,10 @@ class ProblemApi extends Api {
   unpublishProblem = async (problemId) => {
     return await this.post("/problem/" + problemId + "/unpublish", {});
   };
+  trackDuration = async (problemId, time) => {
+    return await this.put("/userActivity/" + problemId + "/track-duration", {
+      duration: time,
+    });
+  };
 }
 export default ProblemApi;

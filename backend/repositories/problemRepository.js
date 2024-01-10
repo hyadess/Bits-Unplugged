@@ -140,7 +140,22 @@ class ProblemsRepository extends Repository {
   };
 
   getPublishedProblemById = async (problemId) => {
-    return await db.ProblemVersion.findByPk(problemId);
+    const problem = await db.ProblemVersion.findByPk(problemId, {
+      include: [
+        {
+          model: db.Series,
+          as: "series",
+          include: [
+            {
+              model: db.Topic,
+              as: "topic",
+            },
+          ],
+        },
+      ],
+    });
+    // console.log(problem.Series);
+    return problem;
   };
 
   getSubmittedProblemById = async (problemId) => {

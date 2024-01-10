@@ -11,9 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Problem.hasOne(models.ProblemVersion, { foreignKey: "problemId" });
-      Problem.belongsTo(models.Setter, { foreignKey: "setterId" });
-      Problem.belongsTo(models.Canvas, { foreignKey: "canvasId" });
+      Problem.hasOne(models.ProblemVersion, {
+        foreignKey: "problemId",
+        as: "version",
+      });
+      Problem.belongsTo(models.Setter, {
+        foreignKey: "setterId",
+        as: "setter",
+      });
+      Problem.belongsTo(models.Canvas, {
+        foreignKey: "canvasId",
+        as: "canvas",
+      });
       Problem.belongsToMany(models.User, {
         through: models.Activity,
         foreignKey: "problemId",

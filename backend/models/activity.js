@@ -38,7 +38,8 @@ module.exports = (sequelize, DataTypes) => {
       lastSolveTimestamp: DataTypes.DATE,
       lastSuccessfulSolveTimestamp: DataTypes.DATE,
       totalFailedAttempt: DataTypes.INTEGER,
-    },
+      viewDuration: DataTypes.INTEGER,
+},
     {
       sequelize,
       modelName: "Activity",

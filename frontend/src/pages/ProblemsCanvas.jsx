@@ -111,13 +111,30 @@ export default function ProblemsCanvas() {
 
   const [colorMode, setColorMode] = useState(getColorModeFromLocalStorage());
 
+  const startTimeRef = useRef(null);
   useEffect(() => {
+    console.log("Start:", new Date());
+    startTimeRef.current = new Date();
+
     const handleStorageChange = (event) => {
       setColorMode(getColorModeFromLocalStorage);
     };
     window.addEventListener("storage", handleStorageChange);
+
     return () => {
       window.removeEventListener("storage", handleStorageChange);
+      console.log("End:", new Date(), startTimeRef.current);
+      if (startTimeRef.current) {
+        const endTime = new Date();
+        const durationInSeconds = Math.floor(
+          (endTime - startTimeRef.current) / 1000
+        );
+
+        console.log("Duration:", durationInSeconds);
+        // Send the duration to the backend
+        if (durationInSeconds > 3)
+          problemController.trackDuration(id, durationInSeconds);
+      }
     };
   }, []);
 
@@ -139,7 +156,9 @@ export default function ProblemsCanvas() {
                 </div>
                 <span className="bu-text-subtitle text-xl">
                   {problem
-                    ? problem.topicName + " > " + problem.seriesName
+                    ? problem?.series?.topic?.name +
+                      " > " +
+                      problem?.series?.name
                     : ""}
                 </span>
               </div>

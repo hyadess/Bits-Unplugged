@@ -10,8 +10,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       ProblemVersion.belongsTo(models.Problem, { foreignKey: "problemId" });
-      ProblemVersion.belongsTo(models.Series, { foreignKey: "seriesId" });
-      ProblemVersion.belongsTo(models.Canvas, { foreignKey: "canvasId" });
+      ProblemVersion.belongsTo(models.Series, {
+        foreignKey: "seriesId",
+        as: "series",
+      });
+      ProblemVersion.belongsTo(models.Canvas, {
+        foreignKey: "canvasId",
+        as: "canvas",
+      });
     }
   }
   ProblemVersion.init(

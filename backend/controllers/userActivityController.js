@@ -5,6 +5,19 @@ class UserActivityController extends Controller {
   constructor() {
     super();
   }
+
+  trackDuration = async (req, res) => {
+    this.handleRequest(res, async () => {
+      if (req.user.type != 0) res.status(204).json();
+      let activity = await userActivityRepository.trackDuration(
+        req.user.userId,
+        req.params.problemId,
+        req.body.duration
+      );
+      res.status(201).json(activity);
+    });
+  };
+
   updateOnFailedAttempt = async (req, res) => {
     this.handleRequest(res, async () => {
       let activity = await userActivityRepository.updateOnFailedAttempt(

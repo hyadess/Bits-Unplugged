@@ -36,4 +36,5 @@ router.get(
   userActivityController.totalSolvedProblemsByUser
 );
 
+router.put("/:problemId/track-duration", userActivityController.trackDuration);
 module.exports = router;

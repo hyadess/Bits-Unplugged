@@ -19,9 +19,7 @@ const SetterProblems = () => {
   const deleteAProblem = async (problemId) => {
     const res = await problemController.deleteProblem(problemId);
     if (res.success) {
-      setProblemList(
-        problemList.filter((problemList) => problemList.problemId !== problemId)
-      );
+      setProblemList(problemList.filter((problem) => problem.id !== problemId));
     }
   };
   const getProblemList = async () => {

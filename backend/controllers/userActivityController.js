@@ -29,15 +29,13 @@ class UserActivityController extends Controller {
   };
 
   updateOnSuccessfulAttempt = async (req, res) => {
-    let result = await userActivityRepository.updateOnSuccessfulAttempt(
-      req.user.userId,
-      req.params.problemId
-    );
-    if (result.success) {
-      res.status(204).json(result.data);
-    } else {
-      res.status(404).json(result);
-    }
+    this.handleRequest(res, async () => {
+      let activity = await userActivityRepository.updateOnSuccessfulAttempt(
+        req.user.userId,
+        req.params.problemId
+      );
+      res.status(201).json(activity);
+    });
   };
 
   //new ones......

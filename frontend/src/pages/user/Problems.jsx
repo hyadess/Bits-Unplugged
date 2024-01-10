@@ -108,7 +108,7 @@ export default function Problems() {
                 id={`Problem ${index + 1}`}
                 name={problem.title}
                 image={problem.logo}
-                path={`/problem/${problem.problemId}`}
+                path={`/problem/${problem.id}`}
                 action="Get Started"
               />
             ))}

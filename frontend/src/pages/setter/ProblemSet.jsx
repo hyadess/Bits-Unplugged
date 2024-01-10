@@ -27,7 +27,7 @@ const ProblemSet = () => {
   const getProblemId = async (title) => {
     const res = await problemController.createProblem(title);
     if (res.success) {
-      problemId = res.data[0].id;
+      problemId = res.data.id;
       // setLoading(false);
     }
   };

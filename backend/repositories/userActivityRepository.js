@@ -9,10 +9,13 @@ class UserActivityRepository extends Repository {
     const activity = db.Activity.findOne({ where: { userId, problemId } }).then(
       function (obj) {
         // update
-        if (obj)
+        if (obj) {
+          if (obj.isSolved) return;
+          console.log("Updated:", duration);
           return obj.update({
             viewDuration: obj.viewDuration + duration,
           });
+        }
         // insert
         return db.Activity.create({
           userId: userId,
@@ -34,8 +37,6 @@ class UserActivityRepository extends Repository {
         // update
         if (obj)
           return obj.update({
-            userId: userId,
-            problemId: problemId,
             conseqFailedAttempt: obj.conseqFailedAttempt + 1,
             isSolved: false,
             lastSolveTimestamp: Date.now(),
@@ -76,19 +77,29 @@ class UserActivityRepository extends Repository {
 
   updateOnSuccessfulAttempt = async (userId, problemId) => {
     //console.log("lets see"+problemId);
-    const query = `
-        INSERT INTO "Activities" ("userId", "problemId", "conseqFailedAttempt", "isSolved", "lastSolveTimestamp", "lastSuccessfulSolveTimestamp", "totalFailedAttempt")
-        VALUES ($1, $2, $3, $4, $5, $5, $6)
-        ON CONFLICT ("userId", "problemId") DO UPDATE
-        SET
-        "conseqFailedAttempt" = $3,
-        "isSolved" = $4,
-        "lastSuccessfulSolveTimestamp" = $5,
-        "lastSolveTimestamp" = $5;
-        `;
-    const params = [userId, problemId, 0, true, Date.now(), 0];
-    const result = await this.query(query, params);
-    return result;
+    const activity = db.Activity.findOne({ where: { userId, problemId } }).then(
+      function (obj) {
+        // update
+        if (obj)
+          return obj.update({
+            conseqFailedAttempt: 0,
+            isSolved: true,
+            lastSolveTimestamp: Date.now(),
+            lastSuccessfulSolveTimestamp: Date.now(),
+          });
+        // insert
+        return db.Activity.create({
+          userId: userId,
+          problemId: problemId,
+          conseqFailedAttempt: 0,
+          isSolved: true,
+          lastSolveTimestamp: Date.now(),
+          lastSuccessfulSolveTimestamp: Date.now(),
+          totalFailedAttempt: 0,
+        });
+      }
+    );
+    return activity;
   };
 
   //new ones...

@@ -93,6 +93,10 @@ export default function ProblemsCanvas() {
   const calculateNumberOfLines = (content) => {
     return content.split("\n").length;
   };
+
+  
+  const startTimeRef = useRef(null);
+
   const solutionSubmit = async (e) => {
     let res = await problemController.checkSolution(
       problem.checkerCode,
@@ -100,10 +104,19 @@ export default function ProblemsCanvas() {
       input
     );
     console.log("output " + res.output);
-    submissionController.submitSolution(input, res.output, id);
-    if (res.output === "Accepted")
-      userActivityController.updateOnSuccessfulAttempt(id);
-    else userActivityController.updateOnFailedAttempt(id);
+    await submissionController.submitSolution(input, res.output, id);
+    if (res.output === "Accepted") {
+      if (startTimeRef.current) {
+        const endTime = new Date();
+        const durationInSeconds = Math.floor(
+          (endTime - startTimeRef.current) / 1000
+        );
+        if (durationInSeconds > 3) {
+          await problemController.trackDuration(id, durationInSeconds);
+        }
+      }
+      await userActivityController.updateOnSuccessfulAttempt(id);
+    } else await userActivityController.updateOnFailedAttempt(id);
   };
   function getColorModeFromLocalStorage() {
     return localStorage.getItem("color-theme") || "light";
@@ -111,7 +124,6 @@ export default function ProblemsCanvas() {
 
   const [colorMode, setColorMode] = useState(getColorModeFromLocalStorage());
 
-  const startTimeRef = useRef(null);
   useEffect(() => {
     console.log("Start:", new Date());
     startTimeRef.current = new Date();

@@ -45,6 +45,7 @@ const AdminProblemEditor = () => {
     console.log(id);
     const res = await problemController.getProblemById(id);
     if (res.success) {
+      console.log(res.data);
       setProblem(res.data);
       setLoading(false);
     }

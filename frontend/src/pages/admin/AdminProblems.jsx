@@ -55,7 +55,7 @@ const AdminProblems = () => {
                 id={`Problem ${index + 1}`}
                 name={problem.title}
                 image={problem.logo}
-                path={`/admin/problems/${problem.problemId}`}
+                path={`/admin/problems/${problem.id}`}
                 action="Get Started"
               />
             ))}

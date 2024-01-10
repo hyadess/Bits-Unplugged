@@ -18,6 +18,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "canvasId",
         as: "canvas",
       });
+      ProblemVersion.hasMany(models.Submission, { foreignKey: "problemId" });
+
+      ProblemVersion.belongsToMany(models.User, {
+        through: models.Activity,
+        foreignKey: "problemId",
+      });
     }
   }
   ProblemVersion.init(
@@ -62,6 +68,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       isLive: {
         type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
       canvasData: {
         type: DataTypes.JSON,

@@ -43,7 +43,7 @@ export default function ProblemsSubmissions() {
   const renderProblem = async () => {
     const result = await problemController.getProblemById(id);
     if (result.success) {
-      setProblem(result.data[0]);
+      setProblem(result.data);
     }
   };
 
@@ -76,10 +76,10 @@ export default function ProblemsSubmissions() {
         {submissionList.map((submission, index) => (
           <SubmissionCard
             idx={index + 1}
-            submissionId={submission.submissionId}
+            submissionId={submission.id}
             verdict={submission.verdict}
             problem_name={problem.title}
-            path={`/problem/${problem.problemId}`}
+            path={`/problem/${problem.id}`}
           />
         ))}
       </TableContainer>

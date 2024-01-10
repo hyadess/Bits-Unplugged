@@ -19,13 +19,13 @@ class ProblemApi extends Api {
   getProblemById = async (problemId) => {
     return await this.get("/problem/" + problemId);
   };
-  addProblem = async (title) => {
+  createProblem = async (title) => {
     return await this.post("/problem/", {
       title: title,
     });
   };
   updateTitle = async (problemId, title) => {
-    return await this.put("/problem/" + problemId + "/title", {
+    return await this.put("/problem/" + problemId, {
       title: title,
     });
   };
@@ -40,7 +40,7 @@ class ProblemApi extends Api {
     });
   };
   updateStatement = async (problemId, statement) => {
-    return await this.put("/problem/" + problemId + "/statement", {
+    return await this.put("/problem/" + problemId, {
       statement: statement,
     });
   };
@@ -51,7 +51,7 @@ class ProblemApi extends Api {
     editOptions,
     previewOptions
   ) => {
-    return await this.put("/problem/" + problemId + "/canvas", {
+    return await this.put("/problem/" + problemId, {
       canvasId: canvasId,
       canvasData: canvasData,
       editOptions: editOptions,
@@ -59,10 +59,16 @@ class ProblemApi extends Api {
     });
   };
   updateSolutionChecker = async (problemId, solutionChecker, type) => {
-    return await this.put("/problem/" + problemId + "/solutionChecker", {
-      solutionChecker: solutionChecker,
-      checker_type: type,
-    });
+    return await this.put(
+      "/problem/" + problemId,
+      type == 0
+        ? {
+            checkerCode: solutionChecker,
+          }
+        : {
+            checkerCanvas: solutionChecker,
+          }
+    );
   };
   deleteProblem = async (problemId) => {
     return await this.delete("/problem/" + problemId);

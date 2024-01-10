@@ -84,7 +84,8 @@ const CanvasContainer = (props, ref) => {
 
   useEffect(() => {
     getCanvas();
-  }, [props.id]);
+  }, [props.canvasId]);
+
   useEffect(() => {
     setType(cookies.get("type"));
   }, []);
@@ -237,7 +238,7 @@ const CanvasContainer = (props, ref) => {
       {/* </Zoom> */}
       <SettingsMenu />
       <div
-        className="flex flex-row p-2 items-center"
+        className="flex flex-row p-2 py-3   items-center"
         style={{ position: "absolute", top: "0", right: "0" }}
       >
         {props.mode === "edit" && (

@@ -32,8 +32,8 @@ class ProblemController extends Controller {
     const res = await this.problemApi.getProblemById(problemId);
     return res;
   };
-  addProblem = async (title) => {
-    const res = await this.problemApi.addProblem(title);
+  createProblem = async (title) => {
+    const res = await this.problemApi.createProblem(title);
     return res;
   };
   updateTitle = async (problemId, title) => {

@@ -65,7 +65,7 @@ class SeriesController extends Controller {
     });
   };
   getAllProblems = async (req, res) => {
-    let result = await seriesRepository.getAllProblems(req.params.seriesId);
+    let result = await seriesRepository.getAllProblems(req.params.id);
     this.handleResponse(result, res);
   };
   // assignSeries

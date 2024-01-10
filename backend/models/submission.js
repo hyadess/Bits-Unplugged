@@ -11,9 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Submission.belongsTo(models.User);
-      Submission.belongsTo(models.Problem);
-      Submission.hasOne(models.ContestSubmission);
+      Submission.belongsTo(models.User, { foreignKey: "userId" });
+      Submission.belongsTo(models.Problem, { foreignKey: "problemId" });
+      Submission.hasOne(models.ContestSubmission, {
+        foreignKey: "submissionId",
+      });
     }
   }
   Submission.init(

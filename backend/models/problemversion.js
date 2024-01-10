@@ -1,9 +1,7 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class LiveProblem extends Model {
+  class ProblemVersion extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,12 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      LiveProblem.belongsTo(models.Problem);
-      LiveProblem.belongsTo(models.Series);
-      LiveProblem.belongsTo(models.Canvas);
+      ProblemVersion.belongsTo(models.Problem, { foreignKey: "problemId" });
+      ProblemVersion.belongsTo(models.Series, { foreignKey: "seriesId" });
+      ProblemVersion.belongsTo(models.Canvas, { foreignKey: "canvasId" });
     }
   }
-  LiveProblem.init(
+  ProblemVersion.init(
     {
       problemId: {
         type: DataTypes.INTEGER,
@@ -68,20 +66,20 @@ module.exports = (sequelize, DataTypes) => {
       previewOptions: {
         type: DataTypes.JSON,
       },
-      previewOptions: {
-        type: DataTypes.JSON,
-      },
       checkerCode: {
         type: DataTypes.TEXT,
       },
       checkerCanvas: {
-        type: DataTypes.TEXT,
+        type: DataTypes.JSON,
+      },
+      approvalStatus: {
+        type: DataTypes.STRING,
       },
     },
     {
       sequelize,
-      modelName: "LiveProblem",
+      modelName: "ProblemVersion",
     }
   );
-  return LiveProblem;
+  return ProblemVersion;
 };

@@ -7,12 +7,17 @@ class ProblemController extends Controller {
   }
 
   getAllProblems = async (req, res) => {
-    let result = await problemRepository.getAllProblems();
-    this.handleResponse(result, res);
+    this.handleRequest(res, async () => {
+      let problems = await problemRepository.getAllProblems();
+      res.status(200).send(problems);
+    });
   };
+
   getSubmittedProblems = async (req, res) => {
-    let result = await problemRepository.getSubmittedProblems();
-    this.handleResponse(result, res);
+    this.handleRequest(res, async () => {
+      let problems = await problemRepository.getSubmittedProblems();
+      res.status(200).send(problems);
+    });
   };
   getMyProblems = async (req, res) => {
     let result = await problemRepository.getMyProblems(req.user.userId);
@@ -59,20 +64,48 @@ class ProblemController extends Controller {
   };
 
   getProblemById = async (req, res) => {
-    let result;
-    if (req.user.type == 0) {
-      result = await problemRepository.getPublishedProblemById(
-        req.params.problemId
+    this.handleRequest(res, async () => {
+      let problem;
+      if (req.user.type == 0) {
+        problem = await problemRepository.getPublishedProblemById(
+          req.params.problemId
+        );
+      } else if (req.user.type == 1) {
+        problem = await problemRepository.getProblemById(req.params.problemId);
+      } else {
+        problem = await problemRepository.getSubmittedProblemById(
+          req.params.problemId
+        );
+      }
+      if (!problem) {
+        res.status(404).json({ error: "Problem not found" });
+      } else {
+        res.status(200).json(problem);
+      }
+    });
+  };
+  createProblem = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const newProblem = await problemRepository.createProblem(
+        req.user.userId,
+        req.body
       );
-    } else {
-      result = await problemRepository.getProblemById(req.params.problemId);
-    }
-    this.handleResponse(result, res);
+      res.status(201).json(newProblem);
+    });
   };
 
-  addProblem = async (req, res) => {
-    let result = await problemRepository.addProblem(req.user.userId, req.body);
-    this.handleResponse(result, res);
+  updateProblem = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const updatedProblem = await problemRepository.updateProblem(
+        req.params.id,
+        req.body
+      );
+      if (!updatedProblem) {
+        res.status(404).json({ error: "Problem not found" });
+      } else {
+        res.status(200).json(updatedProblem);
+      }
+    });
   };
 
   updateTitle = async (req, res) => {
@@ -133,14 +166,21 @@ class ProblemController extends Controller {
   };
 
   submitProblem = async (req, res) => {
-    let result = await problemRepository.submitProblem(req.params.problemId);
-    this.handleResponse(result, res);
+    this.handleRequest(res, async () => {
+      let problem = await problemRepository.submitProblem(req.params.problemId);
+      if (!problem) {
+        res.status(404).json({ error: "Problem not found" });
+      } else {
+        res.status(201).json(problem);
+      }
+    });
   };
 
   publishProblem = async (req, res) => {
     let result = await problemRepository.publishProblem(req.params.problemId);
     this.handleResponse(result, res);
   };
+
   unpublishProblem = async (req, res) => {
     let result = await problemRepository.unpublishProblem(req.params.problemId);
     this.handleResponse(result, res);

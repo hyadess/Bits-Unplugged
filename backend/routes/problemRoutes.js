@@ -26,10 +26,11 @@ router.get("/by_topic/:topicId", problemController.getProblemsByTopic);
 // router.post("/:problemId/rate", problemController.rateProblem); // later
 
 // Problem Setter
-router.post("/", problemController.addProblem);
+router.post("/", problemController.createProblem);
+router.put("/:id", problemController.updateProblem);
 router.get("/created", problemController.getMyProblems);
 router.get("/:problemId", problemController.getProblemById);
-router.delete("/:problemId", problemController.deleteProblem);
+router.delete("/:id", problemController.deleteProblem);
 
 router.put("/:problemId/title", problemController.updateTitle);
 router.put("/:problemId/series", problemController.updateSeries);

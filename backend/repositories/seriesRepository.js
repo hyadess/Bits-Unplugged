@@ -59,8 +59,13 @@ class SeriesRepository extends Repository {
 
   getAllProblems = async (seriesId) => {
     const query = `
-      SELECT * FROM "Problems"
-      WHERE "id" = $1;
+    SELECT * FROM "ProblemVersions"
+    WHERE ("problemId", "createdAt") IN (
+      SELECT "problemId", MAX("createdAt") as "latestCreatedAt"
+      FROM "ProblemVersions"
+      WHERE "seriesId" = $1
+      GROUP BY "problemId", "seriesId"
+    );
     `;
     const params = [seriesId];
     const result = await this.query(query, params);

@@ -268,20 +268,20 @@ export default function ProblemSetEnv() {
     const res = await problemController.getProblemById(problemid);
     if (res.success) {
       // Just a problem json
-      console.log("----", res.data[0].checkerCanvas);
-      setInput(JSON.parse(JSON.stringify(res.data[0].canvasData)));
-      setBackup(JSON.parse(JSON.stringify(res.data[0].canvasData)));
-      setCheckerCanvas(JSON.parse(JSON.stringify(res.data[0].canvasData)));
-      setTitle(res.data[0].title);
-      setProblemStatement(res.data[0].statement);
+      console.log("----", res.data.checkerCanvas);
+      setInput(JSON.parse(JSON.stringify(res.data.canvasData)));
+      setBackup(JSON.parse(JSON.stringify(res.data.canvasData)));
+      setCheckerCanvas(JSON.parse(JSON.stringify(res.data.canvasData)));
+      setTitle(res.data.title);
+      setProblemStatement(res.data.statement);
       setCheckerType(1);
-      setCode(res.data[0].checkerCode);
-      if (res.data[0].checkerCanvas !== null)
-        setCheckerCanvas(res.data[0].checkerCanvas);
-      setCanvasId(res.data[0].canvasId);
-      setBackupId(res.data[0].canvasId);
-      setEditOptions(res.data[0].editOptions);
-      setPreviewOptions(res.data[0].previewOptions);
+      setCode(res.data.checkerCode);
+      if (res.data.checkerCanvas !== null)
+        setCheckerCanvas(res.data.checkerCanvas);
+      setCanvasId(res.data.canvasId);
+      setBackupId(res.data.canvasId);
+      setEditOptions(res.data.editOptions);
+      setPreviewOptions(res.data.previewOptions);
       setLoading(false);
     }
   };
@@ -451,6 +451,7 @@ export default function ProblemSetEnv() {
 
   useEffect(() => {
     setTest(JSON.parse(JSON.stringify(input)));
+    console.log("test:", test);
   }, [input]);
 
   useEffect(() => {
@@ -650,7 +651,8 @@ export default function ProblemSetEnv() {
           />
         </div>
         <div className={activeComponent === "Test" ? "block" : "hidden"}>
-          <CanvasContainer
+          {canvasId && (
+            <><CanvasContainer
             canvasId={canvasId}
             input={test}
             setInput={setTest}
@@ -662,27 +664,31 @@ export default function ProblemSetEnv() {
             setPreviewOptions={setPreviewOptions}
           />
           <div className="flex flex-row justify-between py-5">
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => {
-                setTest(input);
-                // canvasRef.current.handleReset(); // Call this after reset
-              }}
-              startIcon={
-                <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-              }
-            >
-              Reset
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleCheckSolution}
-              endIcon={<Send sx={{ fontSize: "2rem", color: "white" }} />}
-            >
-              Submit
-            </Button>
-          </div>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => {
+              setTest(input);
+              // canvasRef.current.handleReset(); // Call this after reset
+            }}
+            startIcon={
+              <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+            }
+          >
+            Reset
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleCheckSolution}
+            endIcon={<Send sx={{ fontSize: "2rem", color: "white" }} />}
+          >
+            Submit
+          </Button>
+        </div>
+            </>
+            
+          )}
+         
         </div>
       </div>
       <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} />

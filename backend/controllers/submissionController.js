@@ -27,12 +27,14 @@ class SubmissionController extends Controller {
   // getUnsolvedProblemList = async (req, res) => {};
   // getProblemStats = async (req, res) => {};
   submitSolution = async (req, res) => {
-    let result = await submissionRepository.submitSolution(
-      req.user.userId,
-      req.params.problemId,
-      req.body
-    );
-    this.handleResponse(result, res);
+    this.handleRequest(res, async () => {
+      const submission = await submissionRepository.submitSolution(
+        req.user.userId,
+        req.params.problemId,
+        req.body
+      );
+      res.status(201).json(submission);
+    });
   };
 
   // checkSolution = async (req, res) => {};

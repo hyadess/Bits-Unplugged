@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Activity", {
+    await queryInterface.createTable("Activities", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -40,7 +40,7 @@ module.exports = {
         type: Sequelize.DATE,
       },
       totalFailedAttempt: {
-        type: Sequelize.DATE,
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
@@ -51,8 +51,13 @@ module.exports = {
         type: Sequelize.DATE,
       },
     });
+    await queryInterface.addConstraint("Activities", {
+      fields: ["userId", "problemId"],
+      type: "unique",
+      name: "Activities_userId_problemId_key",
+    });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Activity");
+    await queryInterface.dropTable("Activities");
   },
 };

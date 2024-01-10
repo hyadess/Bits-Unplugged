@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Canvas.hasMany(models.LiveProblem);
-      Canvas.hasMany(models.Problem);
+      Canvas.hasMany(models.ProblemVersion, { foreignKey: "canvasId" });
+      Canvas.hasMany(models.Problem, { foreignKey: "canvasId" });
     }
   }
   Canvas.init(

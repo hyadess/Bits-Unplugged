@@ -76,9 +76,7 @@ const ProblemSetCard = ({
         </div>
 
         <div className="flex justify-between items-end">
-          <div className="bu-text-subtitle">
-            {getTimeStamp(parseInt(timestamp, 10))}
-          </div>
+          <div className="bu-text-subtitle">{getTimeStamp(timestamp)}</div>
           <div className="flex flex-row ">
             <div className="w-1/3 flex items-center justify-center">
               <IconButton onClick={() => switchPath(`/problem/${id}/edit`)}>

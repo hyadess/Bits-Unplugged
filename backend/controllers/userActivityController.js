@@ -6,15 +6,13 @@ class UserActivityController extends Controller {
     super();
   }
   updateOnFailedAttempt = async (req, res) => {
-    let result = await userActivityRepository.updateOnFailedAttempt(
-      req.user.userId,
-      req.editOptions.problemId
-    );
-    if (result.success) {
-      res.status(204).json(result.data);
-    } else {
-      res.status(404).json(result);
-    }
+    this.handleRequest(res, async () => {
+      let activity = await userActivityRepository.updateOnFailedAttempt(
+        req.user.userId,
+        req.params.problemId
+      );
+      res.status(201).json(activity);
+    });
   };
 
   updateOnSuccessfulAttempt = async (req, res) => {

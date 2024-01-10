@@ -162,6 +162,11 @@ class ProblemController extends Controller {
     );
     return res;
   };
+
+  trackDuration = async (problemId, time) => {
+    const res = await this.problemApi.trackDuration(problemId, time);
+    return res;
+  };
 }
 export default ProblemController;
 

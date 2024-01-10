@@ -5,7 +5,29 @@ class UserActivityRepository extends Repository {
   constructor() {
     super();
   }
-
+  trackDuration = async (userId, problemId, duration) => {
+    const activity = db.Activity.findOne({ where: { userId, problemId } }).then(
+      function (obj) {
+        // update
+        if (obj)
+          return obj.update({
+            viewDuration: obj.viewDuration + duration,
+          });
+        // insert
+        return db.Activity.create({
+          userId: userId,
+          problemId: problemId,
+          viewDuration: duration,
+          conseqFailedAttempt: 0,
+          isSolved: false,
+          lastSolveTimestamp: null,
+          lastSuccessfulSolveTimestamp: null,
+          totalFailedAttempt: 0,
+        });
+      }
+    );
+    return activity;
+  };
   updateOnFailedAttempt = async (userId, problemId) => {
     const activity = db.Activity.findOne({ where: { userId, problemId } }).then(
       function (obj) {
@@ -21,7 +43,7 @@ class UserActivityRepository extends Repository {
             totalFailedAttempt: obj.totalFailedAttempt + 1,
           });
         // insert
-        return Model.create({
+        return db.Activity.create({
           userId: userId,
           problemId: problemId,
           conseqFailedAttempt: 1,

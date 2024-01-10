@@ -42,6 +42,9 @@ module.exports = {
       totalFailedAttempt: {
         type: Sequelize.INTEGER,
       },
+      viewDuration: {
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -300,7 +300,7 @@ const GraphComponent = (props, ref) => {
     let minDistance = Number.MAX_VALUE; // Initialize with a very large value
     let nearestEdge = null;
 
-    data.edges.forEach((edge) => {
+    data?.edges?.forEach((edge) => {
       const { start, end, weight } = edge;
       if (data.nodes[end] === undefined || data.nodes[start] === undefined) {
         return;
@@ -358,7 +358,7 @@ const GraphComponent = (props, ref) => {
         let minDistance = Number.MAX_VALUE; // Initialize with a very large value
         let nearestEdge = null;
 
-        data.edges.forEach((edge) => {
+        data?.edges?.forEach((edge) => {
           const { start, end, weight } = edge;
           if (
             data.nodes[end] === undefined ||
@@ -678,25 +678,26 @@ const GraphComponent = (props, ref) => {
             arrow
             size="large"
           >
-            <IconButton
-              sx={
-                {
-                  // fontSize: "2rem",
-                  // width: "50px",
-                  // height: "50px",
-                }
-              }
-              onClick={() => {
-                if (addNodeMode) document.body.style.cursor = "default";
-                else document.body.style.cursor = "crosshair";
-                if (!addNodeMode) setAddEdgeMode(false);
-                setAddNodeMode((prev) => !prev);
-              }}
-            >
-              <div className="flex items-center bu-text-primary cursor-pointer text-[1.8rem]">
-                <FontAwesomeIcon icon={faCirclePlus} />
-              </div>
-            </IconButton>
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem", 
+                }}
+                onClick={() => {
+                  if (addNodeMode) document.body.style.cursor = "default";
+                  else document.body.style.cursor = "crosshair";
+                  if (!addNodeMode) setAddEdgeMode(false);
+                  setAddNodeMode((prev) => !prev);
+                }}
+              >
+                <div className="flex items-center bu-text-primary cursor-pointer text-[1.8rem]">
+                  <FontAwesomeIcon icon={faCirclePlus} />
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">Node</div>
+            </div>
           </Tooltip>
         )}
       {(props.mode === "edit" ||
@@ -718,38 +719,37 @@ const GraphComponent = (props, ref) => {
             arrow
             size="large"
           >
-            <IconButton
-              sx={
-                {
-                  // fontSize: "2rem",
-                  // width: "50px",
-                  // height: "50px",
-                }
-              }
-              onClick={() => {
-                if (addEdgeMode) document.body.style.cursor = "default";
-                else document.body.style.cursor = "copy";
-                if (!addEdgeMode) setAddNodeMode(false);
-                setAddEdgeMode((prev) => !prev);
-              }}
-            >
-              <div className="flex items-center bu-text-primary cursor-pointer text-[1.8rem]">
-                <FontAwesomeIcon icon={faArrowsToCircle} />
-              </div>
-            </IconButton>
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem",
+                }}
+                onClick={() => {
+                  if (addEdgeMode) document.body.style.cursor = "default";
+                  else document.body.style.cursor = "copy";
+                  if (!addEdgeMode) setAddNodeMode(false);
+                  setAddEdgeMode((prev) => !prev);
+                }}
+              >
+                <div className="flex items-center bu-text-primary cursor-pointer text-[1.8rem]">
+                  <FontAwesomeIcon icon={faArrowsToCircle} />
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">Edge</div>
+            </div>
           </Tooltip>
         )}
       {(props.mode === "edit" ||
         props?.previewOptions?.deleteEdge?.value === true) &&
         data?.selectedEdges?.length > 0 && (
           <IconButton
-            sx={
-              {
-                // fontSize: "2rem",
-                // width: "50px",
-                // height: "50px",
-              }
-            }
+            sx={{
+              fontSize: "2rem",
+              width: "3rem",
+              height: "3rem",
+            }}
             onClick={() => deleteSelectedNodeOrEdge()}
           >
             <div className="flex items-center bu-text-primary cursor-pointer text-2xl">

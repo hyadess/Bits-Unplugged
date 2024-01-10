@@ -11,6 +11,7 @@ import {
   OutlinedInput,
   Select,
   Switch,
+  Tooltip,
   Zoom,
 } from "@mui/material";
 
@@ -18,7 +19,13 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import EyeIcon from "../Icons/EyeIcon";
 import { setLoading } from "../../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBroom } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBroom,
+  faEye,
+  faEyeSlash,
+  faUser,
+  faUserSecret,
+} from "@fortawesome/free-solid-svg-icons";
 const canvasController = new CanvasController();
 const cookies = new Cookies();
 
@@ -242,59 +249,121 @@ const CanvasContainer = (props, ref) => {
         style={{ position: "absolute", top: "0", right: "0" }}
       >
         {props.mode === "edit" && (
-          <Switch
-            checked={canvasMode === "preview"}
-            onChange={() => {
-              if (canvasMode === "edit") {
-                setCanvasMode("preview");
-              } else {
-                setCanvasMode("edit");
-              }
-            }}
-          />
+          <Tooltip
+            title={<h1 className="text-lg text-white">Canvas Mode</h1>}
+            placement="top"
+            arrow
+            size="large"
+          >
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem",
+                }}
+                onClick={() => {
+                  if (canvasMode === "edit") {
+                    setCanvasMode("preview");
+                  } else {
+                    setCanvasMode("edit");
+                  }
+                }}
+              >
+                <div className="flex items-center bu-text-primary text-3xl">
+                  {canvasMode === "edit" ? (
+                    <FontAwesomeIcon icon={faEyeSlash} />
+                  ) : (
+                    <FontAwesomeIcon icon={faEye} />
+                  )}
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">
+                {canvasMode === "edit" ? "Edit" : "Preview"}
+              </div>
+            </div>
+          </Tooltip>
         )}
 
         {props.mode === "edit" && (
-          <IconButton
-            sx={{
-              fontSize: "2rem",
-              // width: "50px",
-              // height: "50px",
-            }}
-            onClick={() => ref.current.handleReset(null)}
+          <Tooltip
+            title={<h1 className="text-lg text-white">Clear Canvas</h1>}
+            placement="top"
+            // TransitionComponent={Zoom}
+            arrow
+            size="large"
           >
-            <div className="flex items-center bu-text-primary text-3xl">
-              <FontAwesomeIcon icon={faBroom} />
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem",
+                }}
+                onClick={() => ref.current.handleReset(null)}
+              >
+                <div className="flex items-center bu-text-primary text-3xl">
+                  <FontAwesomeIcon icon={faBroom} />
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">Clear</div>
             </div>
-          </IconButton>
+          </Tooltip>
         )}
         {props.mode === "edit" && (
-          <IconButton
-            sx={{
-              fontSize: "2rem",
-              // width: "50px",
-              // height: "50px",
-            }}
-            onClick={() => setSettings(!settings)}
+          <Tooltip
+            title={
+              <h1 className="text-lg text-white">
+                {(canvasMode === "edit" ? "Edit" : "Preview") + " Options"}
+              </h1>
+            }
+            placement="top"
+            // TransitionComponent={Zoom}
+            arrow
+            size="large"
           >
-            <div className="flex items-center bu-text-primary">
-              <SettingsIcon sx={{ fontSize: "2rem" }} />
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem",
+                }}
+                onClick={() => setSettings(!settings)}
+              >
+                <div className="flex items-center bu-text-primary">
+                  <SettingsIcon sx={{ fontSize: "2rem" }} />
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">
+                Options
+              </div>
             </div>
-          </IconButton>
+          </Tooltip>
         )}
-
-        <IconButton
-          sx={{
-            fontSize: "2rem",
-            // width: "50px",
-            // height: "50px",
-          }}
-          onClick={() => alert(canvasInfo)}
+        <Tooltip
+          title={<h1 className="text-lg text-white">Canvas Info</h1>}
+          placement="top"
+          // TransitionComponent={Zoom}
+          arrow
+          size="large"
         >
-          <div className="flex items-center bu-text-primary">
-            <InfoIcon sx={{ fontSize: "2rem" }} />
+          <div className="flex flex-col items-center bu-text-primary font-bold">
+            <IconButton
+              sx={{
+                fontSize: "2rem",
+                width: "3rem",
+                height: "3rem",
+              }}
+              onClick={() => alert(canvasInfo)}
+            >
+              <div className="flex items-center bu-text-primary">
+                <InfoIcon sx={{ fontSize: "2rem" }} />
+              </div>
+            </IconButton>
+            <div className="transform translate-y-[-50%] text-sm">Info</div>
           </div>
-        </IconButton>
+        </Tooltip>
       </div>
     </div>
   );

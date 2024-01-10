@@ -69,7 +69,9 @@ export default function ProblemsSubmissions() {
           </h2>
         </div>
         <span class="bu-text-subtitle text-xl">
-          {problem ? problem.topicName + " > " + problem.seriesName : ""}
+          {problem
+            ? problem.series.topic.name + " > " + problem.series.name
+            : ""}
         </span>
       </div>
       <TableContainer>

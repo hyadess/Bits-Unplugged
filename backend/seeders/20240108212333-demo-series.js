@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
       "Series",
       [
@@ -11,6 +11,56 @@ module.exports = {
           name: "Tower Of Hanoi",
           description: "",
           logo: "/gifs/toh_light.gif",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          topicId: 1,
+          name: "Minimum Spanning Tree",
+          description: "",
+          logo: "https://blog-c7ff.kxcdn.com/blog/wp-content/uploads/2017/01/blog-10.jpg",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          topicId: 1,
+          name: "Shortest Path",
+          description: "",
+          logo: "https://www.get-digital-help.com/wp-content/uploads/2014/05/Find-shortest-path4.gif",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+
+        {
+          topicId: 1,
+          name: "Graph Coloring",
+          description: "",
+          logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Petersen_graph_3-coloring.svg/800px-Petersen_graph_3-coloring.svg.png",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+
+        {
+          topicId: 1,
+          name: "Planar Graph",
+          description: "",
+          logo: "https://miro.medium.com/v2/resize:fit:1400/1*Xo-W6UucD0e2gmOB5wescg.gif",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          topicId: 1,
+          name: "Isomorphism",
+          description: "",
+          logo: "https://images.squarespace-cdn.com/content/v1/52b30f7ae4b067ba989438d4/1419401410738-XTMSALY9255E01WH06Y1/image-asset.gif",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          topicId: 1,
+          name: "Bipartite Graph",
+          description: "",
+          logo: "https://miro.medium.com/v2/resize:fit:588/0*PWKRBToddj9I36q4.gif",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -83,60 +133,12 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
-        {
-          topicId: 1,
-          name: "Shortest Path",
-          description: "",
-          logo: "https://www.get-digital-help.com/wp-content/uploads/2014/05/Find-shortest-path4.gif",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          topicId: 1,
-          name: "Bipartite Graph",
-          description: "",
-          logo: "https://miro.medium.com/v2/resize:fit:588/0*PWKRBToddj9I36q4.gif",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          topicId: 1,
-          name: "Minimum Spanning Tree",
-          description: "",
-          logo: "https://blog-c7ff.kxcdn.com/blog/wp-content/uploads/2017/01/blog-10.jpg",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          topicId: 1,
-          name: "Graph Coloring",
-          description: "",
-          logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Petersen_graph_3-coloring.svg/800px-Petersen_graph_3-coloring.svg.png",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          topicId: 1,
-          name: "Planar Graph",
-          description: "",
-          logo: "https://miro.medium.com/v2/resize:fit:1400/1*Xo-W6UucD0e2gmOB5wescg.gif",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          topicId: 1,
-          name: "Isomorphism",
-          description: "",
-          logo: "https://images.squarespace-cdn.com/content/v1/52b30f7ae4b067ba989438d4/1419401410738-XTMSALY9255E01WH06Y1/image-asset.gif",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
       ],
       {}
     );
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete("Series", null, {});
-  }
+  },
 };

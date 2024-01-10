@@ -76,12 +76,16 @@ class ProblemController extends Controller {
 
   submitProblem = async (problemId) => {
     const res = await this.problemApi.submitProblem(problemId);
+    if (res.success) {
+      this.showSuccess("Problem submitted for approval", res);
+    }
     return res;
   };
 
   publishProblem = async (problemId) => {
     // Submitted by problem setter vs Live
     const res = await this.problemApi.publishProblem(problemId);
+
     return res;
   };
 

@@ -8,7 +8,7 @@ class UserActivityController extends Controller {
 
   trackDuration = async (req, res) => {
     this.handleRequest(res, async () => {
-      if (req.user.type != 0) res.status(204).json();
+      if (req.user.type !== 0) res.status(204).json();
       let activity = await userActivityRepository.trackDuration(
         req.user.userId,
         req.params.problemId,

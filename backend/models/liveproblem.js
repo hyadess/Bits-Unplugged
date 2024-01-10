@@ -62,13 +62,13 @@ module.exports = (sequelize, DataTypes) => {
       canvasData: {
         type: DataTypes.JSON,
       },
-      params: {
+      editOptions: {
         type: DataTypes.JSON,
       },
-      uiParams: {
+      previewOptions: {
         type: DataTypes.JSON,
       },
-      controlParams: {
+      previewOptions: {
         type: DataTypes.JSON,
       },
       checkerCode: {

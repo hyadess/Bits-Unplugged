@@ -45,7 +45,7 @@ const AdminSeriesEditor = () => {
     console.log(id);
     const res = await seriesController.getSeriesById(id);
     if (res.success) {
-      setSeries(res.data[0]);
+      setSeries(res.data);
       setLoading(false);
     }
   };

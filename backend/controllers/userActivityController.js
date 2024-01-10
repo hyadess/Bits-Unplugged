@@ -1,5 +1,5 @@
 const Controller = require("./base");
-const UserActivityRepository = require("../repository/userActivityRepository");
+const UserActivityRepository = require("../repositories/userActivityRepository");
 const userActivityRepository = new UserActivityRepository();
 class UserActivityController extends Controller {
   constructor() {
@@ -8,7 +8,7 @@ class UserActivityController extends Controller {
   updateOnFailedAttempt = async (req, res) => {
     let result = await userActivityRepository.updateOnFailedAttempt(
       req.user.userId,
-      req.params.problemId
+      req.editOptions.problemId
     );
     if (result.success) {
       res.status(204).json(result.data);

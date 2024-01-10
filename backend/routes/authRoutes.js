@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const authMiddleware = require("../service/tokenValidationService");
-const AuthController = require("../controller/authController");
+const authMiddleware = require("../services/tokenValidationService");
+const AuthController = require("../controllers/authController");
 const authController = new AuthController();
 const passport = require("passport");
 router.get("/", authController.getAdminToken);
@@ -27,8 +27,14 @@ router.post(
   (req, res) => res.status(200).send()
 ); // dihan - Admin approval of problem setter registration
 router.delete(
-  "/delete_account/:userId",
+  "/delete_account/:id",
   passport.authenticate("jwt", { failureRedirect: "/invalid", session: false }),
   authController.deleteAccount
 ); // dihan - Admin approval of problem setter registration
+
+router.post(
+  "/logout",
+  passport.authenticate("jwt", { failureRedirect: "/invalid", session: false }),
+  (req, res) => res.status(200).send()
+); 
 module.exports = router;

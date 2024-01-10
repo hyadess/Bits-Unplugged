@@ -48,16 +48,14 @@ class ProblemApi extends Api {
     problemId,
     canvasId,
     canvasData,
-    params,
-    uiParams,
-    controlParams
+    editOptions,
+    previewOptions
   ) => {
     return await this.put("/problem/" + problemId + "/canvas", {
       canvasId: canvasId,
       canvasData: canvasData,
-      params: params,
-      uiParams: uiParams,
-      controlParams: controlParams,
+      editOptions: editOptions,
+      previewOptions: previewOptions,
     });
   };
   updateSolutionChecker = async (problemId, solutionChecker, type) => {

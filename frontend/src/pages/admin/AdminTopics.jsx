@@ -50,7 +50,7 @@ const AdminTopics = () => {
   };
 
   const getTopicId = async (name) => {
-    const res = await topicController.addTopic(name);
+    const res = await topicController.createTopic(name);
     if (res.success) {
       return res.data.id;
     }

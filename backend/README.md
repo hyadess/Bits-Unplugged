@@ -57,6 +57,9 @@ Populate tables: `npx sequelize db:seed:all`
 Creating a migration file: `npx sequelize migration:create --name alter-user-image`
 Edit the file and migrate: `npx sequelize db:migrate --name *****-alter-user-image`
 
-### Changin table data
+### Changing table data
 Creating a migration file: `npx sequelize seed:generate --name add-problems`
 Edit the file and seed: `npx sequelize db:seed --seed *****-add-problems`
+
+### Updating remote
+--- sensitive ---

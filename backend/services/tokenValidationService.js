@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config/config");
-const AuthController = require("../controller/authController");
+const AuthController = require("../controllers/authController");
 
 const authController = new AuthController();
 

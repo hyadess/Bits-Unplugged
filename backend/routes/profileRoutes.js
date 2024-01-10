@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const authMiddleware = require("../service/tokenValidationService");
-const ProfileController = require("../controller/profileController");
+const authMiddleware = require("../services/tokenValidationService");
+const ProfileController = require("../controllers/profileController");
 const profileController = new ProfileController();
 const passport = require("passport");
 router.use(

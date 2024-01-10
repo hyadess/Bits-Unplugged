@@ -52,10 +52,8 @@ export default function ProblemsCanvas() {
   const [resetTrigger, setResetTrigger] = useState(false);
   const baseURL = "https";
   const canvasRef = useRef();
-  const [params, setParams] = useState({});
-  const [uiParams, setUiParams] = useState({});
-  const [controlParams, setControlParams] = useState({});
-
+  const [editOptions, setEditOptions] = useState({});
+  const [previewOptions, setPreviewOptions] = useState({});
   useEffect(() => {
     renderProblem();
     const cookies = new Cookies();
@@ -74,9 +72,8 @@ export default function ProblemsCanvas() {
       setBackup(JSON.parse(JSON.stringify(result.data[0].canvasData)));
       setCanvasId(result.data[0].canvasId);
       setStatement(result.data[0].statement);
-      setParams(result.data[0].params);
-      setUiParams(result.data[0].uiParams);
-      setControlParams(result.data[0].controlParams);
+      setEditOptions(result.data[0].editOptions);
+      setPreviewOptions(result.data[0].previewOptions);
       setTitle(result.data[0].title);
       if (result.data[0].canvasId === null) setLoading(false);
     }
@@ -206,17 +203,15 @@ export default function ProblemsCanvas() {
           {canvasId && canvasRef && (
             <div className="flex w-full flex-col gap-5">
               <CanvasContainer
-                id={canvasId}
+                canvasId={canvasId}
                 input={input}
                 setInput={setInput}
                 mode={"preview"}
                 ref={canvasRef}
-                params={params}
-                setParams={setParams}
-                uiParams={uiParams}
-                setUiParams={setUiParams}
-                controlParams={controlParams}
-                setControlParams={setControlParams}
+                editOptions={editOptions}
+                setEditOptions={setEditOptions}
+                previewOptions={previewOptions}
+                setPreviewOptions={setPreviewOptions}
               />
               <div className="flex flex-row justify-between">
                 <Button

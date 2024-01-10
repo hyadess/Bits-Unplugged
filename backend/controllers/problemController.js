@@ -1,5 +1,5 @@
 const Controller = require("./base");
-const ProblemRepository = require("../repository/problemRepository");
+const ProblemRepository = require("../repositories/problemRepository");
 const problemRepository = new ProblemRepository();
 class ProblemController extends Controller {
   constructor() {
@@ -96,8 +96,8 @@ class ProblemController extends Controller {
       req.body.canvasId,
       req.body.canvasData,
       req.body.params,
-      req.body.uiParams,
-      req.body.controlParams
+      req.body.previewOptions,
+      req.body.previewOptions
     );
     this.handleResponse(result, res);
   };

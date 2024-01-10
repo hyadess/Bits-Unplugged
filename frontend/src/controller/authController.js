@@ -31,22 +31,6 @@ class AuthController extends Controller {
         maxAge: res.data.expires_in,
       });
 
-      // console.log(
-      //   import.meta?.env
-      //     ? import.meta.env.PROD
-      //     : process.env.NODE_ENV === "production"
-      // );
-      // this.cookies.set("refresh_token", res.data.refresh_token, {
-      //   path: "/",
-      //   maxAge: COOKIE_AGE,
-      //   httpOnly: true,
-      //   // secure: import.meta?.env
-      //   //   ? import.meta.env.PROD
-      //   //   : process.env.NODE_ENV === "production",
-      //   secure: false,
-      //   sameSite: "None",
-      // });
-
       this.showSuccess("Logged in successfully", res);
     } else {
       showToast(res.error, "error");

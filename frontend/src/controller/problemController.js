@@ -57,16 +57,14 @@ class ProblemController extends Controller {
     canvasId,
     canvasData,
     params,
-    uiParams,
-    controlParams
+    previewOptions
   ) => {
     const res = await this.problemApi.updateCanvas(
       problemId,
       canvasId,
       canvasData,
       params,
-      uiParams,
-      controlParams
+      previewOptions
     );
     return res;
   };

@@ -21,13 +21,13 @@ module.exports = {
       logo: {
         type: Sequelize.TEXT,
       },
-      params: {
+      editOptions: {
         type: Sequelize.JSON,
       },
-      controlParams: {
+      previewOptions: {
         type: Sequelize.JSON,
       },
-      uiParams: {
+      previewOptions: {
         type: Sequelize.JSON,
       },
       template: {

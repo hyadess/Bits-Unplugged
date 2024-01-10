@@ -1,5 +1,5 @@
 const Controller = require("./base");
-const ContestRepository = require("../repository/contestRepository");
+const ContestRepository = require("../repositories/contestRepository");
 const contestRepository = new ContestRepository();
 class ContestController extends Controller {
   constructor() {

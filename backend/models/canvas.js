@@ -29,13 +29,13 @@ module.exports = (sequelize, DataTypes) => {
       logo: {
         type: DataTypes.TEXT,
       },
-      params: {
+      editOptions: {
         type: DataTypes.JSON,
       },
-      controlParams: {
+      previewOptions: {
         type: DataTypes.JSON,
       },
-      uiParams: {
+      previewOptions: {
         type: DataTypes.JSON,
       },
       template: {

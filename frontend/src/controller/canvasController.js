@@ -17,8 +17,8 @@ class CanvasController extends Controller {
     return res;
   };
 
-  addCanvas = async (name) => {
-    const res = await this.canvasApi.addCanvas(name);
+  createCanvas = async (name) => {
+    const res = await this.canvasApi.createCanvas(name);
     return res;
   };
 }

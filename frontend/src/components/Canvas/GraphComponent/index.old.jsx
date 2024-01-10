@@ -328,7 +328,7 @@ const GraphComponent = (props, ref) => {
         } else {
           if (
             props.mode === "preview" &&
-            props?.controlParams?.add_node?.value === false
+            props?.previewOptions?.addNode?.value === false
           )
             return;
           const newNode = { x, y, nodeIndex };
@@ -350,7 +350,7 @@ const GraphComponent = (props, ref) => {
       setSelectedNodes([node]);
     } else if (
       props.mode === "preview" &&
-      props?.controlParams?.add_edge?.value === false
+      props?.previewOptions?.addEdge?.value === false
     ) {
       setSelectedNodes([node]);
     } else if (selectedNodes.length === 1 && selectedNodes[0] !== node) {
@@ -366,8 +366,8 @@ const GraphComponent = (props, ref) => {
         setSelectedNodes([...selectedNodes, node]);
         if (
           props.params !== null &&
-          props.params["weighted_edge"] &&
-          props.params["weighted_edge"].value === true
+          props.params["weightedEdge"] &&
+          props.params["weightedEdge"].value === true
         )
           openPrompt(); // need to take weight input...........
         else {
@@ -404,7 +404,7 @@ const GraphComponent = (props, ref) => {
     if (selectedNodes.length === 1) {
       if (
         props.mode === "preview" &&
-        props?.controlParams?.delete_node?.value === false
+        props?.previewOptions?.deleteNode?.value === false
       )
         return;
       const nodeToDelete = selectedNodes[0];
@@ -430,7 +430,7 @@ const GraphComponent = (props, ref) => {
     if (selectedEdge != null) {
       if (
         props.mode === "preview" &&
-        props?.controlParams?.delete_edge?.value === false
+        props?.previewOptions?.deleteEdge?.value === false
       )
         return;
       const updatedEdges = data.edges.filter((edge) => edge !== selectedEdge);
@@ -441,8 +441,8 @@ const GraphComponent = (props, ref) => {
 
   const changeEdgeWeight = (edge) => {
     // no weight change for unweighted graphs.........
-    if (props.params === null || !props.params["weighted_edge"]) return;
-    if (userType === 1 && props.params["weighted_edge"].value === false) return;
+    if (props.params === null || !props.params["weightedEdge"]) return;
+    if (userType === 1 && props.params["weightedEdge"].value === false) return;
 
     // weight change prompt........................
     const newWeight = prompt("Enter new weight for the edge:", edge.weight);
@@ -463,7 +463,7 @@ const GraphComponent = (props, ref) => {
   const handleNodeDrag = (index, e) => {
     if (
       props.mode === "preview" &&
-      props?.controlParams?.drag_node?.value === false
+      props?.previewOptions?.dragNode?.value === false
     )
       return;
 
@@ -569,14 +569,14 @@ const GraphComponent = (props, ref) => {
   //   if (props.params != null) {
   //     setData((prevData) => ({
   //       ...prevData,
-  //       directed: props.params["directed_edge"]
-  //         ? props.params["directed_edge"].value
+  //       directed: props.params["directedEdge"]
+  //         ? props.params["directedEdge"].value
   //         : prevData.directed,
   //     }));
   //     setData((prevData) => ({
   //       ...prevData,
-  //       weighted: props.params["weighted_edge"]
-  //         ? props.params["weighted_edge"].value
+  //       weighted: props.params["weightedEdge"]
+  //         ? props.params["weightedEdge"].value
   //         : prevData.weighted,
   //     }));
   //   }
@@ -651,8 +651,8 @@ const GraphComponent = (props, ref) => {
                       // strokeWidth={Math.min(edge.weight / 5.0, 20)}
                     />
                     {props.params === null ||
-                    !props.params["directed_edge"] ||
-                    props.params["directed_edge"].value === false ? (
+                    !props.params["directedEdge"] ||
+                    props.params["directedEdge"].value === false ? (
                       <></>
                     ) : (
                       <RegularPolygon
@@ -673,8 +673,8 @@ const GraphComponent = (props, ref) => {
                   </Group>
 
                   {props.params === null ||
-                  !props.params["weighted_edge"] ||
-                  props.params["weighted_edge"].value === false ? (
+                  !props.params["weightedEdge"] ||
+                  props.params["weightedEdge"].value === false ? (
                     <></>
                   ) : (
                     <Text
@@ -705,7 +705,7 @@ const GraphComponent = (props, ref) => {
                 y={node.y}
                 draggable={
                   props.mode === "preview" &&
-                  props?.controlParams?.add_node?.value === false
+                  props?.previewOptions?.addNode?.value === false
                     ? false
                     : true
                 }

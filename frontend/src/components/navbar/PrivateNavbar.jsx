@@ -104,20 +104,20 @@ const PrivateNavbar = (props) => {
             <>
               <button
                 className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
-                  (type === 0 && location.pathname === "/topics") ||
-                  (type === 1 && location.pathname === "/problemSet")
+                  (type == 0 && location.pathname === "/topics") ||
+                  (type == 1 && location.pathname === "/problemSet")
                     ? "border-[#1C5B5F] dark:border-pink-500"
                     : "border-transparent"
                 }`}
                 data-tip="Home"
                 onClick={() => {
-                  if (type === 0) {
+                  if (type == 0) {
                     if (location.pathname !== "/topics") {
                       setLoading(true);
                       navigator("/topics");
                     }
                   }
-                  if (type === 1) {
+                  if (type == 1) {
                     if (location.pathname !== "/problemSet") {
                       setLoading(true);
                       navigator("/problemSet");
@@ -141,8 +141,8 @@ const PrivateNavbar = (props) => {
 
               <button
                 className={`icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info items-center justify-center border-b-4 ${
-                  (type === 0 && location.pathname === "/contests") ||
-                  (type === 1 && location.pathname === "/setter/contests")
+                  (type == 0 && location.pathname === "/contests") ||
+                  (type == 1 && location.pathname === "/setter/contests")
                     ? "border-[#1C5B5F] dark:border-pink-500"
                     : "border-transparent"
                 }`}
@@ -235,7 +235,7 @@ const PrivateNavbar = (props) => {
                 }
                 onClick={() => {
                   setLoading(true);
-                  type === 0
+                  type == 0
                     ? switchPath("/user/" + user.username)
                     : switchPath("/setter/" + user.username);
                 }}

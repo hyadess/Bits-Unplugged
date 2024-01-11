@@ -23,7 +23,7 @@ class Repository {
   }
 
   check = async () => {
-    const result = await this.query("SELECT * FROM profile LIMIT 1;", []);
+    const result = await this.query("SELECT version();", []);
     return result;
   };
   // code to execute sql

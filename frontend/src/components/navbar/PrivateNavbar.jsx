@@ -30,16 +30,16 @@ const PrivateNavbar = (props) => {
 
   const setProfile = async () => {
     const cookies = new Cookies();
-    const isLoggedIn = !!cookies.get("token");
+    const isLoggedIn = localStorage.hasOwnProperty("token");
     if (isLoggedIn) {
       const res = await profileController.getProfile();
       if (res.success) {
         setUser(res.data[0]);
       } else {
-        authController.logout();
-        switchPath("/login");
+        // authController.logout();
+        // switchPath("/login");
       }
-      setType(cookies.get("type"));
+      setType(localStorage.getItem("type"));
     }
   };
 
@@ -166,8 +166,9 @@ const PrivateNavbar = (props) => {
                 className="icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info items-center justify-center border-b-4 border-transparent"
                 style={{ alignItems: "center", justifyContent: "center" }}
                 data-tip="Marketplace"
-                onClick={() => {
-                  authController.logout();
+                onClick={async () => {
+                  setLoading(true);
+                  await authController.logout();
                   switchPath("/login");
                 }}
               >

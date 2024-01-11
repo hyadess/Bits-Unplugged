@@ -207,7 +207,7 @@ const GraphComponent = (props, ref) => {
   // at start..............
   useEffect(() => {
     const cookies = new Cookies();
-    setUserType(cookies.get("type"));
+    setUserType(localStorage.getItem("type"));
     importGraphData(props.input);
     setLoading(false);
   }, []);

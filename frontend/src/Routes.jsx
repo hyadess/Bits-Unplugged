@@ -49,22 +49,11 @@ import Contests from "./pages/user/Contests";
 import SetterContests from "./pages/setter/SetterContests";
 const cookies = new Cookies();
 
-const Private = () => {
-  const cookies = new Cookies();
-  const isLoggedIn = !!cookies.get("token");
-  return isLoggedIn ? (
-    <Layout2 nav={<PrivateNavbar />}>
-      <Outlet />
-    </Layout2>
-  ) : (
-    <Navigate to="/login" />
-  );
-};
 
 const ProblemSolver = () => {
   const cookies = new Cookies();
-  const isLoggedIn = !!cookies.get("token");
-  const type = cookies.get("type");
+  const isLoggedIn = localStorage.hasOwnProperty("token");
+  const type = localStorage.getItem("type");
   return isLoggedIn ? (
     type == 0 ? (
       <Layout2 nav={<PrivateNavbar />}>
@@ -80,8 +69,8 @@ const ProblemSolver = () => {
 
 const ProblemSetter = () => {
   const cookies = new Cookies();
-  const isLoggedIn = !!cookies.get("token");
-  const type = cookies.get("type");
+  const isLoggedIn = localStorage.hasOwnProperty("token");
+  const type = localStorage.getItem("type");
   return isLoggedIn ? (
     type == 1 ? (
       <Layout2 nav={<PrivateNavbar />}>
@@ -97,9 +86,9 @@ const ProblemSetter = () => {
 
 const Admin = () => {
   const cookies = new Cookies();
-  const isLoggedIn = !!cookies.get("token");
-  const type = cookies.get("type");
-  console.log(type);
+  const isLoggedIn = localStorage.hasOwnProperty("token");
+  const type = localStorage.getItem("type");
+  console.log("WHYYYYYYYYYYYYYYYYy");
   return isLoggedIn ? (
     type == 2 ? (
       <Layout2 nav={<AdminNavbar />}>
@@ -115,11 +104,20 @@ const Admin = () => {
 
 const Public = () => {
   const cookies = new Cookies();
-  const isLoggedIn = !!cookies.get("token");
-  const type = cookies.get("type");
-  return isLoggedIn ? (
+  const isLoggedIn = localStorage.hasOwnProperty("token");
+  const type = localStorage.getItem("type");
+
+  return localStorage.hasOwnProperty("token") ? (
     <Navigate
-      to={type === 0 ? "/topics" : type === 1 ? "/problemSet" : "/admin/topics"}
+      to={
+        localStorage.getItem("type") === 0
+          ? "/topics"
+          : localStorage.getItem("type") === 1
+            ? "/problemSet"
+            : localStorage.getItem("type") === 2
+              ? "/admin/topics"
+              : "/login"
+      }
     />
   ) : (
     <Outlet />
@@ -130,9 +128,9 @@ const AppRoutes = () => {
   const [type, setType] = useState(-1); // 0 - Solver, 1 - Setter, 2 - Guest
   // const navigator = useNavigate();
   useEffect(() => {
-    const isLoggedIn = !!cookies.get("token");
+    const isLoggedIn = localStorage.hasOwnProperty("token");
     if (isLoggedIn) {
-      setType(cookies.get("type"));
+      setType(localStorage.getItem("type"));
     } else {
       setType(2);
     }
@@ -410,19 +408,15 @@ const AppRoutes = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Route>
-        {type >= 0 && (
-          <Route
-            path="/"
-            element={
-              <Navigate
-                replace
-                to={
-                  type === 0 ? "/topics" : type === 1 ? "/problemSet" : "/home"
-                }
-              />
-            }
-          />
-        )}
+        <Route
+          path="/"
+          element={
+            <Navigate
+              replace
+              to={type === 0 ? "/topics" : type === 1 ? "/problemSet" : "/home"}
+            />
+          }
+        />
 
         <Route
           path="/home"

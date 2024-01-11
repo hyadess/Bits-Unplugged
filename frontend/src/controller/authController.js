@@ -9,6 +9,17 @@ class AuthController extends Controller {
   authApi = new AuthApi();
   cookies = new Cookies();
 
+  getType = async () => {
+    // const token = this.localStorage.getItem("token");
+    // try {
+    //   // Decode the JWT token
+    //   const decodedToken = jwtDecode(token);
+    //   // Access the decoded information
+    //   console.log("Decoded Token:", decodedToken);
+    // } catch (error) {
+    //   console.error("Error decoding token:", error.message);
+    // }
+  };
   /**
    *
    * @param {Object} data - An object containing email, pass, and type properties.
@@ -21,16 +32,8 @@ class AuthController extends Controller {
     const res = await this.authApi.login(data);
     console.log(res);
     if (res.success) {
-      this.cookies.set("type", data.type, {
-        path: "/",
-        maxAge: COOKIE_AGE,
-      });
-
-      this.cookies.set("token", res.data.access_token, {
-        path: "/",
-        maxAge: res.data.expires_in,
-      });
-
+      localStorage.setItem("type", data.type);
+      localStorage.setItem("token", res.data.access_token);
       this.showSuccess("Logged in successfully", res);
     } else {
       showToast(res.error, "error");
@@ -39,10 +42,12 @@ class AuthController extends Controller {
   };
 
   logout = async () => {
-    this.cookies.remove("refresh_token", { path: "/" });
-    this.cookies.remove("token", { path: "/" });
-    this.cookies.remove("type", { path: "/" });
-    showToast("Logged out successfully");
+    const res = await this.authApi.logout();
+    if (res.success) {
+      localStorage.removeItem("token");
+      // localStorage.removeItem("type");
+      showToast("Logged out successfully");
+    }
   };
 
   /**

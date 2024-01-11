@@ -38,7 +38,7 @@ const AdminProblems = () => {
 
   useEffect(() => {
     const cookies = new Cookies();
-    setType(cookies.get("type"));
+    setType(localStorage.getItem("type"));
     getProblemList();
   }, []);
   return (

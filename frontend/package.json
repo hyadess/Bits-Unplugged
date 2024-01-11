@@ -27,6 +27,8 @@
     "date-fns": "^3.0.6",
     "eslint-config-react-app": "^7.0.1",
     "flowbite": "^2.2.1",
+    "import": "^0.0.6",
+    "jwt-decode": "^4.0.0",
     "katex": "^0.16.9",
     "konva": "^9.2.0",
     "postcss": "^8.4.33",

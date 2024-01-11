@@ -49,13 +49,16 @@ const Login = () => {
   };
 
   useEffect(() => {
+    console.log(type);
     if (type == undefined) {
       searchParams.set("type", "solver");
       setSearchParams(searchParams);
+      localStorage.setItem("type", 0);
       setType("solver");
     } else {
       if (type !== searchParams.get("type")) {
         searchParams.set("type", type);
+        // localStorage.setItem("type", type);
         setSearchParams(searchParams);
       }
     }
@@ -110,9 +113,11 @@ const Login = () => {
                     onChange={() => {
                       if (checked) {
                         setChecked(false);
+                        localStorage.setItem("type", 0);
                         setType("solver");
                       } else {
                         setChecked(true);
+                        localStorage.setItem("type", 1);
                         setType("setter");
                       }
                     }}
@@ -189,9 +194,10 @@ const Login = () => {
                         />
                       </div>
                       <div className="ml-3 text-sm">
-                        <label 
-                        // for="remember"
-                         className="bu-text-subtitle">
+                        <label
+                          // for="remember"
+                          className="bu-text-subtitle"
+                        >
                           Remember me
                         </label>
                       </div>

@@ -12,13 +12,18 @@ const Home = () => {
   const navigator = useNavigate();
   useEffect(() => {
     const cookies = new Cookies();
-    const isLoggedIn = !!cookies.get("token");
-    const userType = cookies.get("type");
+    const isLoggedIn = localStorage.hasOwnProperty("token");
+    const userType = localStorage.getItem("type");
     // if (isLoggedIn) {
     //   navigator(userType === 0 ? "/topics" : "/problemSet");
     // }
-    setType(userType);
+    setType(userType || -1);
+    console.log("Type:", userType || -1);
   }, []);
+
+  useEffect(() => {
+    console.log("Type:", type);
+  }, [type]);
   return (
     <div>
       <div className="mx-auto flex h-screen max-w-screen-xl flex-col items-center gap-8 px-4 py-8 sm:py-16 md:flex-row lg:px-6 xl:gap-16">
@@ -58,12 +63,15 @@ const Home = () => {
 
           <div
             onClick={() => {
+              // console.log("type:", type === 2);
               setLoading(true);
               type === 2
                 ? navigator("/admin/topics")
                 : type === 1
                   ? navigator("/problemSet")
-                  : navigator("/topics");
+                  : type === 0
+                    ? navigator("/topics")
+                    : navigator("/login");
             }}
             className="bu-button-secondary bu-text-primary inline-flex cursor-pointer items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
           >

@@ -19,10 +19,10 @@ const Home = () => {
     // }
     setType(userType || -1);
     console.log("Type:", userType || -1);
-  }, []);
+  }, [localStorage]);
 
   useEffect(() => {
-    console.log("Type:", type);
+    console.log("New Type:", type);
   }, [type]);
   return (
     <div>
@@ -63,13 +63,12 @@ const Home = () => {
 
           <div
             onClick={() => {
-              // console.log("type:", type === 2);
               setLoading(true);
-              type === 2
+              type == 2
                 ? navigator("/admin/topics")
-                : type === 1
+                : type == 1
                   ? navigator("/problemSet")
-                  : type === 0
+                  : type == 0
                     ? navigator("/topics")
                     : navigator("/login");
             }}

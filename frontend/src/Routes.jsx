@@ -110,11 +110,11 @@ const Public = () => {
   return localStorage.hasOwnProperty("token") ? (
     <Navigate
       to={
-        localStorage.getItem("type") === 0
+        localStorage.getItem("type") == 0
           ? "/topics"
-          : localStorage.getItem("type") === 1
+          : localStorage.getItem("type") == 1
             ? "/problemSet"
-            : localStorage.getItem("type") === 2
+            : localStorage.getItem("type") == 2
               ? "/admin/topics"
               : "/login"
       }
@@ -130,11 +130,17 @@ const AppRoutes = () => {
   useEffect(() => {
     const isLoggedIn = localStorage.hasOwnProperty("token");
     if (isLoggedIn) {
+      console.log("setting type to " + localStorage.getItem("type"));
       setType(localStorage.getItem("type"));
     } else {
-      setType(2);
+      console.log("setting type to 0");
+      setType(0);
     }
-  }, []);
+  }, [localStorage]);
+
+  useEffect(() => {
+    console.log("routes:", type);
+  }, [type]);
   return (
     <Router>
       <Routes>
@@ -408,15 +414,25 @@ const AppRoutes = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Route>
-        <Route
-          path="/"
-          element={
-            <Navigate
-              replace
-              to={type === 0 ? "/topics" : type === 1 ? "/problemSet" : "/home"}
-            />
-          }
-        />
+        {type >= 0 && (
+          <Route
+            path="/"
+            element={
+              <Navigate
+                replace
+                to={
+                  type == 0
+                    ? "/topics"
+                    : type == 1
+                      ? "/problemSet"
+                      : type == 2
+                        ? "/admin/topics"
+                        : "/home"
+                }
+              />
+            }
+          />
+        )}
 
         <Route
           path="/home"

@@ -37,8 +37,9 @@ app.use(express.static(CLIENT_BUILD_PATH));
 
 // app.use(fileUpload());
 app.use("/api", appRoutes);
+
 app.get("/invalid", (req, res) => {
-  res.status(403).send({ error: "access denied" });
+  res.status(401).send({ error: "access denied" });
 });
 
 app.get("*", (req, res) => {

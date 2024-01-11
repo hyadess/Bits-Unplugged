@@ -94,7 +94,7 @@ const CanvasContainer = (props, ref) => {
   }, [props.canvasId]);
 
   useEffect(() => {
-    setType(cookies.get("type"));
+    setType(localStorage.getItem("type"));
   }, []);
 
   const snakeCaseToTitleCase = (input) => {
@@ -245,7 +245,7 @@ const CanvasContainer = (props, ref) => {
       {/* </Zoom> */}
       <SettingsMenu />
       <div
-        className="flex flex-row p-2 py-3   items-center"
+        className="flex flex-row p-2 items-center"
         style={{ position: "absolute", top: "0", right: "0" }}
       >
         {props.mode === "edit" && (

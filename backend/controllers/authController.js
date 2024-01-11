@@ -110,6 +110,19 @@ class AuthController extends Controller {
     }
   };
 
+  refreshToken = async (req, res) => {
+    console.log("refresing");
+    return res.status(200).json({
+      access_token: this.getAccessToken(
+        req.body.userId,
+        req.body.email,
+        req.body.hashpass,
+        req.body.type
+      ),
+      token_type: "bearer",
+      expires_in: ACCESS_TOKEN_EXPIRATION,
+    });
+  };
   login = async (req, res) => {
     try {
       var emailFormat =
@@ -117,6 +130,24 @@ class AuthController extends Controller {
 
       if (req.body.type == 2) {
         if (bcrypt.compareSync(req.body.pass, ADMIN_PASS)) {
+          const refreshToken = this.getRefreshToken(
+            -1,
+            req.body.email,
+            ADMIN_PASS,
+            req.body.type
+          );
+          const serializedRefreshToken = serialize(
+            "refresh_token",
+            refreshToken,
+            {
+              httpOnly: true,
+              secure: process.env.NODE_ENV === "production",
+              sameSite: "strict",
+              maxAge: REFRESH_TOKEN_EXPIRATION,
+              path: "/",
+            }
+          );
+          res.setHeader("Set-Cookie", serializedRefreshToken);
           return res.status(200).json({
             access_token: this.getAccessToken(
               -1,
@@ -126,12 +157,6 @@ class AuthController extends Controller {
             ),
             token_type: "bearer",
             expires_in: ACCESS_TOKEN_EXPIRATION,
-            refresh_token: this.getRefreshToken(
-              -1,
-              req.body.email,
-              ADMIN_PASS,
-              req.body.type
-            ),
           });
         } else {
           return res.status(404).json({

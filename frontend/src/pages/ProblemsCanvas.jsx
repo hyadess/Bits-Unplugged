@@ -57,9 +57,9 @@ export default function ProblemsCanvas() {
   useEffect(() => {
     renderProblem();
     const cookies = new Cookies();
-    const isLoggedIn = !!cookies.get("token");
+    const isLoggedIn = localStorage.hasOwnProperty("token");
     if (isLoggedIn) {
-      setType(cookies.get("type"));
+      setType(localStorage.getItem("type"));
     }
   }, []);
 

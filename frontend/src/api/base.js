@@ -1,14 +1,56 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { API_BASE_URL } from "../index";
+const cookies = new Cookies();
 
 axios.defaults.withCredentials = true;
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+axios.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // If the error status is 401 and there is no originalRequest._retry flag,
+    // it means the token has expired and we need to refresh it
+    console.log("Retry:", originalRequest);
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const res = await axios.post(API_BASE_URL + "/auth/refresh-token");
+        // const { token, type } = response.data;
+        const token = res.data.access_token;
+        // console.log("yeeeeeeeeeeeeeeeeeee", response.data);
+        localStorage.setItem("token", res.data.access_token);
+        // localStorage.setItem("type", type);
+
+        // Retry the original request with the new token
+        originalRequest.headers.Authorization = `Bearer ${token}`;
+        return axios(originalRequest);
+      } catch (error) {
+        // Handle refresh token error or redirect to login
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 export default class Api {
-  cookies = new Cookies();
   getToken = () => {
     // const token =
     //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoyLCJpYXQiOjE2OTM0MjQ2MzN9.y_2W8PFdUYlbQ316GtufzsuN_tlVRwsmZwbPKzbyifc";
-    const token = this.cookies.get("token");
+    const token = localStorage.getItem("token");
     return token;
   };
 
@@ -22,10 +64,7 @@ export default class Api {
     const token = this.getToken();
     // console.log("Profile Called" + token);
     try {
-      const res = await axios.get(API_BASE_URL + url, {
-        headers: { authorization: "Bearer " + token },
-        withCredentials: true,
-      });
+      const res = await axios.get(API_BASE_URL + url);
       return {
         success: true,
         data: res.data,
@@ -52,10 +91,7 @@ export default class Api {
     const token = this.getToken();
 
     try {
-      const res = await axios.post(API_BASE_URL + url, body, {
-        headers: { authorization: "Bearer " + token },
-        withCredentials: true,
-      });
+      const res = await axios.post(API_BASE_URL + url, body);
       return {
         success: true,
         data: res.data,
@@ -81,10 +117,7 @@ export default class Api {
   put = async (url, body) => {
     const token = this.getToken();
     try {
-      const res = await axios.put(API_BASE_URL + url, body, {
-        headers: { authorization: "Bearer " + token },
-        withCredentials: true,
-      });
+      const res = await axios.put(API_BASE_URL + url, body);
       return {
         success: true,
         data: res.data,
@@ -109,10 +142,7 @@ export default class Api {
   delete = async (url) => {
     const token = this.getToken();
     try {
-      const res = await axios.delete(API_BASE_URL + url, {
-        headers: { authorization: "Bearer " + token },
-        withCredentials: true,
-      });
+      const res = await axios.delete(API_BASE_URL + url);
       return {
         success: true,
         data: res.data,

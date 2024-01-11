@@ -10,7 +10,6 @@ opts.issuer = "bitsunplugged.onrender.com";
 
 passport.use(
   new JWTStrategy(opts, async (payload, done) => {
-    // console.log(payload);
     try {
       done(null, payload);
     } catch (error) {

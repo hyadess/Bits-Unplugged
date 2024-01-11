@@ -89,7 +89,7 @@ const AdminProblemEditor = () => {
 
   useEffect(() => {
     const cookies = new Cookies();
-    setType(cookies.get("type"));
+    setType(localStorage.getItem("type"));
     getProblem();
     getSeriesList();
   }, []);

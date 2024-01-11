@@ -33,11 +33,12 @@ const PrivateNavbar = (props) => {
     const isLoggedIn = localStorage.hasOwnProperty("token");
     setType(localStorage.getItem("type"));
     if (isLoggedIn) {
-      while (true) {
+      // while (true)
+      {
         const res = await profileController.getProfile();
         if (res.success) {
           setUser(res.data[0]);
-          break;
+          // break;
         } else {
           // authController.logout();
           // switchPath("/login");

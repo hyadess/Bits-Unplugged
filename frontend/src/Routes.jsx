@@ -398,6 +398,15 @@ const AppRoutes = () => {
             }
           />
         </Route>
+
+        {/* <Route
+          path="/user/:username"
+          element={
+            <LayoutMain>
+              <Profile />
+            </LayoutMain>
+          }
+        /> */}
         {/* 
         <Route element={<Private />}>
           <Route

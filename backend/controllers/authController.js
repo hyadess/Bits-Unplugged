@@ -36,6 +36,7 @@ class AuthController extends Controller {
       {
         userId: id,
         email: email,
+        pass: pass,
         type: type,
         iss: "bitsunplugged.onrender.com",
       },
@@ -90,15 +91,15 @@ class AuthController extends Controller {
     var emailFormat =
       /^[a-zA-Z0-9_.+]+(?<!^[0-9]*)@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
-    let result;
+    let user;
     if (email !== "" && email.match(emailFormat)) {
-      result = await authRepository.getUserByEmailType(email, type);
+      user = await authRepository.getUserByEmailType(email, type);
     } else {
-      result = await authRepository.getUserByNameType(email, type);
+      user = await authRepository.getUserByNameType(email, type);
     }
 
-    if (result.success && result.data.length > 0) {
-      if (result.data[0].userId == id && result.data[0].hashpass == pass) {
+    if (user) {
+      if (user.userId == id && user.hashpass == pass) {
         return true;
       }
     } else {
@@ -110,18 +111,71 @@ class AuthController extends Controller {
     }
   };
 
+  // refreshToken = async (req, res) => {
+  //   console.log("refresing");
+  //   return res.status(200).json({
+  //     access_token: this.getAccessToken(
+  //       req.body.userId,
+  //       req.body.email,
+  //       req.body.hashpass,
+  //       req.body.type
+  //     ),
+  //     token_type: "bearer",
+  //     expires_in: ACCESS_TOKEN_EXPIRATION,
+  //   });
+  // };
+
   refreshToken = async (req, res) => {
-    console.log("refresing");
-    return res.status(200).json({
-      access_token: this.getAccessToken(
-        req.body.userId,
-        req.body.email,
-        req.body.hashpass,
-        req.body.type
-      ),
-      token_type: "bearer",
-      expires_in: ACCESS_TOKEN_EXPIRATION,
-    });
+    // need testing
+    console.log(req.cookies);
+    const refresh_token = req.cookies.refresh_token;
+    if (refresh_token) {
+      jwt.verify(refresh_token, JWT_SECRET, async (err, data) => {
+        if (err) {
+          const expiredCookie = `refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;`;
+          res.setHeader("Set-Cookie", expiredCookie);
+          return res.status(403).send({ error: "invalid refresh token" });
+        } else if ("type" in data && data.type == "2") {
+          res.status(200).json({
+            access_token: this.getAccessToken(
+              -1,
+              data.email,
+              ADMIN_PASS,
+              data.type
+            ),
+            token_type: "bearer",
+            expires_in: ACCESS_TOKEN_EXPIRATION,
+          });
+        } else {
+          // check if user exists in database
+          console.log(data);
+          var isValid = await this.tokenValidity(
+            data.userId,
+            data.email,
+            data.pass,
+            data.type
+          ); //checking whether the current password is the same
+          if (!isValid) {
+            // check by logging as user. Then delete that user.
+            const expiredCookie = `refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;`;
+            res.setHeader("Set-Cookie", expiredCookie);
+            return res.status(403).send({ error: "invalid refresh token" });
+          }
+          return res.status(200).json({
+            access_token: this.getAccessToken(
+              data.userId,
+              data.email,
+              data.pass,
+              data.type
+            ),
+            token_type: "bearer",
+            expires_in: ACCESS_TOKEN_EXPIRATION,
+          });
+        }
+      });
+    } else {
+      return res.status(403).send({ error: "invalid refresh token" });
+    }
   };
   login = async (req, res) => {
     try {
@@ -187,6 +241,7 @@ class AuthController extends Controller {
             credential.hashpass,
             req.body.type
           );
+          console.log("Refresh", refreshToken);
           const serializedRefreshToken = serialize(
             "refresh_token",
             refreshToken,

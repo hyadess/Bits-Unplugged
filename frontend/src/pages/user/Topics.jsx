@@ -34,7 +34,7 @@ const Topics = () => {
       {topicList.length && (
         <>
           <Title
-            title={`Problem ${type === 0 ? "Solving" : "Setting"}`}
+            title={`Problem ${type == 0 ? "Solving" : "Setting"}`}
             sub_title={`${
               type == 0 ? "Solve" : "Set"
             } problems for particular series right

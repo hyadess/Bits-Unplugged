@@ -31,15 +31,18 @@ const PrivateNavbar = (props) => {
   const setProfile = async () => {
     const cookies = new Cookies();
     const isLoggedIn = localStorage.hasOwnProperty("token");
+    setType(localStorage.getItem("type"));
     if (isLoggedIn) {
-      const res = await profileController.getProfile();
-      if (res.success) {
-        setUser(res.data[0]);
-      } else {
-        // authController.logout();
-        // switchPath("/login");
+      while (true) {
+        const res = await profileController.getProfile();
+        if (res.success) {
+          setUser(res.data[0]);
+          break;
+        } else {
+          // authController.logout();
+          // switchPath("/login");
+        }
       }
-      setType(localStorage.getItem("type"));
     }
   };
 
@@ -76,7 +79,7 @@ const PrivateNavbar = (props) => {
     } else {
       setDarkMode(false);
     }
-  }, []);
+  }, [localStorage]);
 
   return (
     <>

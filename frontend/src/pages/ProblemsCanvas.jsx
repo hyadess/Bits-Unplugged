@@ -174,7 +174,7 @@ export default function ProblemsCanvas() {
                     : ""}
                 </span>
               </div>
-              {type !== 0 ? (
+              {type != 0 ? (
                 <div className="flex items-center">
                   <button
                     className="bu-button-primary rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white"

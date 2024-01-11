@@ -45,7 +45,7 @@ class AuthController extends Controller {
     const res = await this.authApi.logout();
     if (res.success) {
       localStorage.removeItem("token");
-      // localStorage.removeItem("type");
+      localStorage.removeItem("type");
       showToast("Logged out successfully");
     }
   };

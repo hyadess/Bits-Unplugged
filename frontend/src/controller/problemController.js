@@ -123,7 +123,12 @@ class ProblemController extends Controller {
       stdout: stdout,
     };
   };
-  checkSolution = async (checkerCode, checkerCanvas, input) => {
+  checkSolution = async (
+    checkerCode,
+    checkerCanvas,
+    canvasData,
+    activityData
+  ) => {
     const stdout = [];
     const originalConsoleLog = console.log;
     console.log = function (...args) {
@@ -136,7 +141,8 @@ class ProblemController extends Controller {
     let output = "";
     try {
       const verdict = eval(
-        checkerCode + "; solutionChecker(input,checkerCanvas);"
+        checkerCode +
+          "; solutionChecker(canvasData,checkerCanvas,activityData);"
       );
       console.log = originalConsoleLog;
       if (verdict) {

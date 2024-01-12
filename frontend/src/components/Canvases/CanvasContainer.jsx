@@ -31,7 +31,7 @@ const cookies = new Cookies();
 
 const CanvasContainer = (props, ref) => {
   const [DynamicComponent, setDynamicComponent] = useState(null);
-  const [selectedComponent, setSelectedComponent] = useState(null);
+  const [componentPath, setComponentPath] = useState(null);
   const [canvasInfo, seCanvasInfo] = useState(null);
   const [settings, setSettings] = useState(false);
   const [editOptions, setEditOptions] = [
@@ -42,9 +42,9 @@ const CanvasContainer = (props, ref) => {
     props.previewOptions,
     props.setPreviewOptions,
   ];
-  const [type, setType] = useState(-1);
-  const [canvas, setCanvas] = useState(null);
-  const [canvasMode, setCanvasMode] = useState(props.mode);
+  // const [type, setType] = useState(-1);
+  // const [canvas, setCanvas] = useState(null);
+  const [canvasContainerMode, setCanvasContainerMode] = useState(props.mode);
   const loadComponent = async (name) => {
     try {
       const module = await import(/* @vite-ignore */ `./${name}`);
@@ -56,7 +56,7 @@ const CanvasContainer = (props, ref) => {
   };
 
   useEffect(() => {
-    setCanvasMode(props.mode);
+    setCanvasContainerMode(props.mode);
   }, [props.mode]);
   // Fix this
   const getCanvas = async () => {
@@ -64,13 +64,19 @@ const CanvasContainer = (props, ref) => {
     const res = await canvasController.getCanvasById(props.canvasId);
     if (res.success) {
       console.log(res.data);
-      setSelectedComponent(res.data.classname);
+      // canvas = res.data
+      // canvas.classname
+      // canvas.info
+      // problem.previewOptions
+      // problem.editOptions
+
+      setComponentPath(res.data.classname);
       seCanvasInfo(res.data.info);
       // setEditOptions(res.data[0].editOptions);
       // setPreviewOptions(res.data[0].previewOptions);
       // setCanvas(res.data[0]);
     } else {
-      setSelectedComponent(null);
+      setComponentPath(null);
       seCanvasInfo(null);
       // setEditOptions({});
       // setPreviewOptions({});
@@ -79,23 +85,23 @@ const CanvasContainer = (props, ref) => {
   };
 
   useEffect(() => {
-    if (selectedComponent) {
+    if (componentPath) {
       console.log("Setting Dynamic Component");
-      loadComponent(selectedComponent).then((component) => {
+      loadComponent(componentPath).then((component) => {
         if (component) {
           setDynamicComponent(() => component);
         }
       });
     }
-  }, [selectedComponent]);
+  }, [componentPath]);
 
   useEffect(() => {
     getCanvas();
   }, [props.canvasId]);
 
-  useEffect(() => {
-    setType(localStorage.getItem("type"));
-  }, []);
+  // useEffect(() => {
+  //   setType(localStorage.getItem("type"));
+  // }, []);
 
   const snakeCaseToTitleCase = (input) => {
     return input
@@ -201,7 +207,7 @@ const CanvasContainer = (props, ref) => {
               backgroundColor: "rgba(17, 24, 39, 0.9)",
             }}
           >
-            {canvasMode === "preview" ? (
+            {canvasContainerMode === "preview" ? (
               <div className="flex flex-col">
                 <h1 className="text-white">Preview Options</h1>
                 <Divider sx={{ bgcolor: "white" }} />
@@ -235,10 +241,12 @@ const CanvasContainer = (props, ref) => {
           <DynamicComponent
             input={props.input}
             setInput={props.setInput}
+            activityData={props.activityData}
+            setActivityData={props.setActivityData}
             editOptions={editOptions}
             previewOptions={previewOptions}
             ref={ref}
-            mode={canvasMode}
+            mode={canvasContainerMode}
           />
         )}
       </div>
@@ -263,15 +271,15 @@ const CanvasContainer = (props, ref) => {
                   height: "3rem",
                 }}
                 onClick={() => {
-                  if (canvasMode === "edit") {
-                    setCanvasMode("preview");
+                  if (canvasContainerMode === "edit") {
+                    setCanvasContainerMode("preview");
                   } else {
-                    setCanvasMode("edit");
+                    setCanvasContainerMode("edit");
                   }
                 }}
               >
                 <div className="flex items-center bu-text-primary text-3xl">
-                  {canvasMode === "edit" ? (
+                  {canvasContainerMode === "edit" ? (
                     <FontAwesomeIcon icon={faEyeSlash} />
                   ) : (
                     <FontAwesomeIcon icon={faEye} />
@@ -279,7 +287,7 @@ const CanvasContainer = (props, ref) => {
                 </div>
               </IconButton>
               <div className="transform translate-y-[-50%] text-sm">
-                {canvasMode === "edit" ? "Edit" : "Preview"}
+                {canvasContainerMode === "edit" ? "Edit" : "Preview"}
               </div>
             </div>
           </Tooltip>
@@ -314,7 +322,8 @@ const CanvasContainer = (props, ref) => {
           <Tooltip
             title={
               <h1 className="text-lg text-white">
-                {(canvasMode === "edit" ? "Edit" : "Preview") + " Options"}
+                {(canvasContainerMode === "edit" ? "Edit" : "Preview") +
+                  " Options"}
               </h1>
             }
             placement="top"

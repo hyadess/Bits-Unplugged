@@ -35,9 +35,6 @@ module.exports = (sequelize, DataTypes) => {
       previewOptions: {
         type: DataTypes.JSON,
       },
-      previewOptions: {
-        type: DataTypes.JSON,
-      },
       template: {
         type: DataTypes.TEXT,
       },

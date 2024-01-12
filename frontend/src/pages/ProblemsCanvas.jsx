@@ -47,6 +47,7 @@ export default function ProblemsCanvas() {
   const [title, setTitle] = useState("");
   const [statement, setStatement] = useState("");
   const [data, setData] = useState();
+  const [activityData, setActivityData] = useState({});
   const [canvas, setCanvas] = useState(null);
   const [type, setType] = useState(-1);
   const [resetTrigger, setResetTrigger] = useState(false);
@@ -94,14 +95,14 @@ export default function ProblemsCanvas() {
     return content.split("\n").length;
   };
 
-  
   const startTimeRef = useRef(null);
 
   const solutionSubmit = async (e) => {
     let res = await problemController.checkSolution(
       problem.checkerCode,
       problem.checkerCanvas,
-      input
+      input,
+      activityData
     );
     console.log("output " + res.output);
     await submissionController.submitSolution(input, res.output, id);
@@ -243,6 +244,8 @@ export default function ProblemsCanvas() {
                 setEditOptions={setEditOptions}
                 previewOptions={previewOptions}
                 setPreviewOptions={setPreviewOptions}
+                activityData={activityData}
+                setActivityData={setActivityData}
               />
               <div className="flex flex-row justify-between">
                 <Button

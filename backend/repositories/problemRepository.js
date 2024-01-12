@@ -136,7 +136,14 @@ class ProblemsRepository extends Repository {
   };
 
   getProblemById = async (problemId) => {
-    return await db.Problem.findByPk(problemId);
+    return await db.Problem.findByPk(problemId, {
+      include: [
+        {
+          model: db.Canvas,
+          as: "canvas",
+        },
+      ],
+    });
   };
 
   getPublishedProblemById = async (problemId) => {
@@ -152,7 +159,15 @@ class ProblemsRepository extends Repository {
             },
           ],
         },
+        {
+          model: db.Canvas,
+          attributes: ["id", "name", "classname", "info"],
+          as: "canvas",
+        },
       ],
+      where: {
+        isLive: true, // Specify the condition to filter by isLive
+      },
     });
     // console.log(problem.Series);
     return problem;
@@ -170,6 +185,11 @@ class ProblemsRepository extends Repository {
               as: "topic",
             },
           ],
+        },
+        {
+          model: db.Canvas,
+          attributes: ["id", "name", "classname", "info"],
+          as: "canvas",
         },
       ],
     });

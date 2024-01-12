@@ -22,9 +22,9 @@ module.exports = {
         defaultValue:
           "https://preview.redd.it/tried-to-make-the-discord-clyde-logo-more-similar-to-the-v0-g2bha52fh9v91.png?auto=webp&s=f74e8a7068998d18b22fa3bbb3e62ee9975204d3",
       },
-      role: {
-        type: Sequelize.INTEGER,
-      },
+      // role: {
+      //   type: Sequelize.INTEGER,
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

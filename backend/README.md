@@ -9,41 +9,61 @@ POST /auth/signup
 ## topic
 
 GET /topic/
+GET /topic/:id
+GET /topic/:id/series
 POST /topic/
-GET /topic/:topicId
-PUT /topic/:topicId
-DELETE /topic/:topicId
+PUT /topic/:id
+DELETE /topic/:id
 
 ## series
 
+GET /series/
+GET /series/:id
+GET /series/:id/problems
+
+- `GET /series/:id/problems?solved=false `
+
+POST /series/
+PUT /series/:id
+DELETE /series/:id
+
 ## canvas
+
+GET /canvas/
+GET /canvas/:id
+POST /canvas/
+PUT /canvas/:id
+DELETE /canvas/:id
 
 ## problem
 
-GET /problem/by_topic/:topicId
-GET /problem/by_series/:seriesId
+GET /problems -> Setter: My Problems, Admin: Submitted Problems
 
-GET /problem/
-POST /problem/
-GET /problem/:problemId
-PUT /problem/:problemId
-DELETE /problem/:problemId
+- `GET /problems?recommended=true`
+- `GET /problems?solved=false`
 
-POST /problem/:problemId/rate
-GET /problem/:problemId/rating
-GET /problem/:problemId/avg_rating
-POST /problem/:problemId/publish
+POST /problems/
+GET /problems/:id
+GET /problems/:id/submissions -> Don't allow to users
+    - `GET /problems/:id/submissions?user=2`
+
+PUT /problems/:id -> Setter: Edit problem, Admin: Edit Live Problem
+
+POST /problems/:id/submit -> User: Submit Solution, Setter: Submit for approval
+POST /problems/:id/approve
+
+DELETE /problems/:id
 
 ## Submissions
 
-GET /submissions
-GET /submissions/:problemId
-GET /submissions/my_stats/:problemId
+GET /submissions/:user_id -> User: All submissions
+
+<!-- GET /submissions/my_stats/:problemId
 GET /submissions/all_stats/:problemId
 ****
 POST /submissions/submit/:problemId
 POST /submissions/rate_me/:problemId
-GET /submissions/unsolved
+GET /submissions/unsolved -->
 
 ## Sequelize
 
@@ -63,3 +83,10 @@ Edit the file and seed: `npx sequelize db:seed --seed *****-add-problems`
 
 ### Updating remote
 --- sensitive ---
+
+
+### Repository Pattern
+CREATE - Returns created row on success, otherwise null.
+READ - Returns selected rows.
+UPDATE - Returns updated row on success, otherwise null.
+DELETED - Returns deleted row on success, otherwise null.

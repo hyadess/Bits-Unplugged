@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import CustomCard from "../../components/Cards/CustomCard";
-import CardContainer from "../../components/Containers/CardContainer";
+import CardContainer from "../../containers/CardContainer";
 import Cookies from "universal-cookie";
 import Title from "../../components/Title";
 import TopicCard from "../../components/Cards/TopicCard";
-import AdminNavbar from "../../components/navbar/AdminNavbar";
+import AdminNavbar from "../../components/Navbars/AdminNavbar";
 import Layout4 from "../../components/Layouts/Layout4";
 import Modal from "../../components/Modal";
 import TopicController from "../../controller/topicController";

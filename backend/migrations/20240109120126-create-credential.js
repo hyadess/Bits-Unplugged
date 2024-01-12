@@ -10,6 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       userId: {
+        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: "Users",
@@ -19,10 +20,16 @@ module.exports = {
         onDelete: "CASCADE",
       },
       email: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       hashpass: {
+        allowNull: false,
         type: Sequelize.STRING,
+      },
+      role: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
@@ -33,8 +40,16 @@ module.exports = {
         type: Sequelize.DATE,
       },
     });
+
+    await queryInterface.addConstraint("Credentials", {
+      fields: ["email", "role"],
+      type: "unique",
+      name: "Credentials_userId_role_key",
+    });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable("Credentials");
   },
 };
+
+// multiple same role with same email bug

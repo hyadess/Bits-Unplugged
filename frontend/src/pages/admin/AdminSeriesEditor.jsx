@@ -8,7 +8,7 @@ import Cookies from "universal-cookie";
 import Title from "../../components/Title";
 
 import Layout4 from "../../components/Layouts/Layout4";
-import AdminNavbar from "../../components/navbar/AdminNavbar";
+import AdminNavbar from "../../components/Navbars/AdminNavbar";
 import {
   SelectionField2,
   TextField,

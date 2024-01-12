@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Credential extends Model {
     /**
@@ -22,11 +20,13 @@ module.exports = (sequelize, DataTypes) => {
           model: "Users",
           key: "id",
         },
+
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      email: DataTypes.STRING,
+      email: { type: DataTypes.STRING, unique: "Credentials_userId_role_key" },
       hashpass: DataTypes.STRING,
+      role: { type: DataTypes.INTEGER, unique: "Credentials_userId_role_key" },
     },
     {
       sequelize,

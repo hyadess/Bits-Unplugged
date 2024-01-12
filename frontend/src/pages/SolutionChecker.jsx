@@ -5,7 +5,7 @@ import ProblemController from "../controller/problemController";
 import { showToast } from "../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPlay } from "@fortawesome/free-solid-svg-icons";
-import monaco_theme from "../components/themes/my_theme.json";
+import monaco_theme from "../themes/my_theme.json";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 // import Confirmation from "../../components/Confirmation";

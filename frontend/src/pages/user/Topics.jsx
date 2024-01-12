@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import TopicController from "../../controller/topicController";
 import CustomCard from "../../components/Cards/CustomCard";
-import CardContainer from "../../components/Containers/CardContainer";
+import CardContainer from "../../containers/CardContainer";
 import Cookies from "universal-cookie";
 import Title from "../../components/Title";
 import TopicCard from "../../components/Cards/TopicCard";

@@ -127,27 +127,34 @@ const SolutionCheckerTab = ({
   setPreviewOptions,
   updateSolutionChecker,
   backup,
+  handleCheckSolution,
+  stdout,
+  output,
+  setOutput,
+  setStdout,
 }) => {
-  const [output, setOutput] = useState("");
-  const [stdout, setStdout] = useState([]);
-  const [test, setTest] = useState(null);
-  const handleCheckSolution = async () => {
-    try {
-      const result = await problemController.checkSolution(
-        code,
-        checkerCanvas,
-        test
-      );
-      console.log(result);
-      setOutput(result.output);
-      setStdout(result.stdout);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    setTest(JSON.parse(JSON.stringify(input)));
-  }, [input]);
+  // const [output, setOutput] = useState("");
+  // const [stdout, setStdout] = useState([]);
+  // const [test, setTest] = useState(null);
+  // const handleCheckSolution = async () => {
+  //   console.log("Run COde");
+  //   try {
+  //     const result = await problemController.checkSolution(
+  //       code,
+  //       checkerCanvas,
+  //       test,
+  //       testActivity
+  //     );
+  //     console.log(result);
+  //     setOutput(result.output);
+  //     setStdout(result.stdout);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   setTest(JSON.parse(JSON.stringify(input)));
+  // }, [input]);
 
   const resetChecker = () => {
     setCheckerCanvas(JSON.parse(JSON.stringify(input)));
@@ -231,17 +238,62 @@ const SolutionCheckerTab = ({
 };
 
 export default function ProblemSetEnv() {
-  const { problemid } = useParams();
-  const [editOptions, setEditOptions] = useState({});
-  const [previewOptions, setPreviewOptions] = useState({});
-  const [checkerCanvas, setCheckerCanvas] = useState(null);
-  const [test, setTest] = useState(null);
+  // const backup = useRef(null);
+  // const [problem,setProblem] = useState();
+  // const [options,setOptions] = useState({edit:{},preview:{}})
+  // const [checker,setChecker] = useState({canvas:{},code:""})
+  // const [canvasList,setCanvasList] = useState([])
+  // const canvasRef = useRef(); -> Send where reset button is
+
+  // Things needed to compare solution
+  // canvasdata.drawingData
+  // canvasdata.additionalData
+  // answer.drawingData
+  // canvasdata.additionalData
+  const { problemid } = useParams(); // problem.id
+  const [editOptions, setEditOptions] = useState({}); // options.preview
+  const [previewOptions, setPreviewOptions] = useState({}); // options.preview
+
+  const [checkerCanvas, setCheckerCanvas] = useState(null); // checker.canvas
+  const [code, setCode] = useState(""); // checker.code
+
+  const testRef = useRef();
+  const [test, setTest] = useState(null); // Temporary canvas data. Not connected to database.
+  const [testActivity, setTestActivity] = useState({});
+
+  const [isFormDirty, setFormDirty] = useState(false); // pending
+  const [output, setOutput] = useState(""); // useless
+  const [stdout, setStdout] = useState([]); // useless
+
+  const [backupId, setBackupId] = useState(null); // backup.id
+  const [canvasId, setCanvasId] = useState(null); // problem.canvasdata.canvasId
+  //
+  const [title, setTitle] = useState("Title"); // problem.title
+  // const [isTextEditable, setIsTextEditable] = useState(false);
+
+  const [problemStatement, setProblemStatement] = useState(" "); // Replace with your actual problem statement
+
+  // Function to handle changes in the textarea
+
+  const [open, setOpen] = useState(false); // decouple
+
+  const [backup, setBackup] = useState(null);
+  const [input, setInput] = useState(null); // problem.canvasdata.drawingData
+  const canvasRef = useRef();
+
+  const [activeComponent, setActiveComponent] = useState("Details"); // not related to database
+
+  // try to make the 2 list one
+  const [canvasList, setCanvasList] = useState([]);
+  const [canvasFullList, setCanvasFullList] = useState([]);
+  // const [resetTrigger, setResetTrigger] = useState(false);
+  const [checkerType, setCheckerType] = useState(0); // send to solution checker tab
+
   const navigator = useNavigate();
   const switchPath = (pathname) => {
     navigator(pathname);
   };
 
-  const [isFormDirty, setFormDirty] = useState(false);
   // Block navigating elsewhere when data has been entered into the input
 
   useEffect(() => {
@@ -261,7 +313,6 @@ export default function ProblemSetEnv() {
     };
   }, [isFormDirty]);
 
-  const [checkerType, setCheckerType] = useState(0);
   const getProblem = async () => {
     //console.log(problemid)
     const res = await problemController.getProblemById(problemid);
@@ -285,39 +336,13 @@ export default function ProblemSetEnv() {
     }
   };
 
-  const [output, setOutput] = useState("");
-  const [stdout, setStdout] = useState([]);
+  // const handleTextClick = () => {
+  //   setIsTextEditable(!isTextEditable);
+  // };
+  // const handleTextChange = (event) => {
+  //   setTitle(event.target.value);
+  // };
 
-  // useBeforeUnload((e) => {
-  //   console.log("Route changed");
-  // });
-  //title.......................
-  const [backupId, setBackupId] = useState(null);
-  const [canvasId, setCanvasId] = useState(null);
-  const [title, setTitle] = useState("Title");
-  const [isTextEditable, setIsTextEditable] = useState(false);
-  const testRef = useRef();
-  const handleTextClick = () => {
-    setIsTextEditable(!isTextEditable);
-  };
-  const handleTextChange = (event) => {
-    setTitle(event.target.value);
-  };
-
-  //statement.......................
-  const [problemStatement, setProblemStatement] = useState(" "); // Replace with your actual problem statement
-
-  // Function to handle changes in the textarea
-
-  const [open, setOpen] = useState(false);
-  const [code, setCode] = useState("");
-  const [backup, setBackup] = useState(null);
-  const [input, setInput] = useState(null);
-  const canvasRef = useRef();
-  const [activeComponent, setActiveComponent] = useState("Details");
-  const [canvasList, setCanvasList] = useState([]);
-  const [canvasFullList, setCanvasFullList] = useState([]);
-  const [resetTrigger, setResetTrigger] = useState(false);
   const getCanvasList = async () => {
     const res = await canvasController.getAllCanvas();
     if (res.success) {
@@ -349,7 +374,7 @@ export default function ProblemSetEnv() {
     canvasRef.current !== undefined &&
       canvasRef.current !== null &&
       canvasRef.current.handleReset(JSON.parse(JSON.stringify(backup)));
-    setResetTrigger(!resetTrigger);
+    // setResetTrigger(!resetTrigger);
   };
 
   const changeCanvas = (canvasId) => {
@@ -430,11 +455,13 @@ export default function ProblemSetEnv() {
     }
   };
   const handleCheckSolution = async () => {
+    console.log("Run COde");
     try {
       const result = await problemController.checkSolution(
         code,
         checkerCanvas,
-        test
+        test,
+        testActivity
       );
       console.log(result);
       setOutput(result.output);
@@ -458,6 +485,7 @@ export default function ProblemSetEnv() {
 
   useEffect(() => {
     setTest(JSON.parse(JSON.stringify(input)));
+    testRef?.current?.handleReset(JSON.parse(JSON.stringify(input)));
     console.log("test:", test);
   }, [input]);
 
@@ -655,6 +683,11 @@ export default function ProblemSetEnv() {
             updateSolutionChecker={updateSolutionChecker}
             backup={backup}
             canvasRef={canvasRef}
+            handleCheckSolution={handleCheckSolution}
+            stdout={stdout}
+            output={output}
+            setOutput={setOutput}
+            setStdout={setStdout}
           />
         </div>
         <div className={activeComponent === "Test" ? "block" : "hidden"}>
@@ -664,6 +697,8 @@ export default function ProblemSetEnv() {
                 canvasId={canvasId}
                 input={test}
                 setInput={setTest}
+                activityData={testActivity}
+                setActivityData={setTestActivity}
                 ref={testRef}
                 mode="preview"
                 editOptions={editOptions}
@@ -676,8 +711,10 @@ export default function ProblemSetEnv() {
                   variant="contained"
                   color="success"
                   onClick={() => {
-                    setTest(input);
-                    // canvasRef.current.handleReset(); // Call this after reset
+                    setTest(JSON.parse(JSON.stringify(input)));
+                    testRef.current.handleReset(
+                      JSON.parse(JSON.stringify(input))
+                    ); // Call this after reset
                   }}
                   startIcon={
                     <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />

@@ -83,10 +83,10 @@ module.exports = {
           statement:
             "Move the 4 disks from left to right peg in minimum possible moves.",
           canvasData: JSON.stringify({
-            numberOfMoves: 0,
-            numberOfDisks: 4,
-            numberOfPegs: 3,
-            pegs: [[0, 1, 2, 3], [], []],
+            numberOfMoves: 0, // additionData
+            numberOfDisks: 4, // can be calculated from pegs
+            numberOfPegs: 3, // useless
+            pegs: [[0, 1, 2, 3], [], []], // additionalData
           }),
           checkerCode:
             "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.numberOfMoves == 15 && data.pegs[2].length == 4;\n}\n",

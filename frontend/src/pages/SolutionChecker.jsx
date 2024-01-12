@@ -65,6 +65,7 @@ export default function SolutionChecker(props) {
   };
 
   const handleCheckSolution = async () => {
+    console.log("Run");
     await props.checkSubmit();
   };
 

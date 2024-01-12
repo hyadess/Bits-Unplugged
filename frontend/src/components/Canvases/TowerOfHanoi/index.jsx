@@ -88,7 +88,7 @@ const UndoRedoButton = ({ handleUndo, handleRedo }) => {
     </div>
   );
 };
-const NumberOfDisksInput = ({ data, handleNumberOfDisksChange }) => (
+const NumberOfDisksInput = ({ numberOfDisks, handleNumberOfDisksChange }) => (
   <div className="no-ring-input w-20%">
     <FormControl fullWidth variant="outlined">
       <InputLabel htmlFor="outlined-adornment" className="bu-text-primary">
@@ -105,7 +105,7 @@ const NumberOfDisksInput = ({ data, handleNumberOfDisksChange }) => (
         id="outlined-adornment"
         className="outlined-input bu-text-primary"
         type="number"
-        value={data.numberOfDisks}
+        value={numberOfDisks}
         onChange={handleNumberOfDisksChange}
         label={"Number of Disks"}
         size="small"
@@ -212,7 +212,7 @@ const CustomDisk = ({
   return (
     <>
       <Line
-        points={[0, 260, 20 + pegWidth * data.numberOfPegs, 260]}
+        points={[0, 260, 20 + pegWidth * 3, 260]}
         stroke={"rgb(236, 72, 153)"}
         strokeWidth={1}
       />
@@ -278,7 +278,10 @@ const CustomDisk = ({
 const TowerOfHanoi = (props, ref) => {
   const [data, setData] = [props.input, props.setInput];
   // const setData = props.setInput;
-
+  const [activityData, setActivityData] = [
+    props.activityData,
+    props.setActivityData,
+  ];
   const [draggableDisks, setDraggableDisks] = useState([]);
   const [hoveredPeg, setHoveredPeg] = useState(null);
   const [isProblemSetting, setIsProblemSetting] = useState(
@@ -294,11 +297,12 @@ const TowerOfHanoi = (props, ref) => {
   const [history, setHistory] = useState([]);
   const [currentHistory, setCurrentHistory] = useState(-1);
 
-  const setNumberOfDisks = (n) => {
-    setData((prevData) => {
-      return { ...prevData, numberOfDisks: n };
-    });
-  };
+  const [numberOfDisks, setNumberOfDisks] = useState(null);
+  // const setNumberOfDisks = (n) => {
+  //   setData((prevData) => {
+  //     return { ...prevData, numberOfDisks: n };
+  //   });
+  // };
   const setNumberOfPegs = (n) => {
     setData((prevData) => {
       return { ...prevData, numberOfPegs: n };
@@ -310,14 +314,16 @@ const TowerOfHanoi = (props, ref) => {
     });
   };
   const setNumberOfMoves = (n) => {
-    if (props.mode === "edit") {
-      setData((prevData) => {
-        return { ...prevData, numberOfMoves: 0 };
-      });
-    } else {
-      setData((prevData) => {
-        return { ...prevData, numberOfMoves: n };
-      });
+    if (activityData !== undefined) {
+      if (props.mode === "edit") {
+        setActivityData((prevData) => {
+          return { ...prevData, numberOfMoves: 0 };
+        });
+      } else {
+        setActivityData((prevData) => {
+          return { ...prevData, numberOfMoves: n };
+        });
+      }
     }
   };
 
@@ -330,6 +336,7 @@ const TowerOfHanoi = (props, ref) => {
 
   const handleReset = (resetData) => {
     if (resetData != null && resetData.pegs != null) {
+      console.log("handleReset:", resetData);
       importData(resetData);
     } else {
       setNumberOfDisks(3);
@@ -349,7 +356,9 @@ const TowerOfHanoi = (props, ref) => {
   const importData = (newData) => {
     if (newData != null && newData.pegs != null) {
       const list = newData.pegs.map((peg) => peg[peg.length - 1]);
+      setNumberOfMoves(0);
       setDraggableDisks(list);
+      setNumberOfDisks(newData.pegs.flat(1).length);
       console.log("List:", list);
     } else {
       setNumberOfDisks(3);
@@ -515,7 +524,7 @@ const TowerOfHanoi = (props, ref) => {
       setDraggableDisks(updatedDraggable);
       setExtraDisk(diskValue % 10);
       if (sourcePegIndex !== -1) {
-        setNumberOfDisks(data.numberOfDisks - 1);
+        setNumberOfDisks((prev) => prev - 1);
       }
       e.target.to({
         x:
@@ -592,10 +601,10 @@ const TowerOfHanoi = (props, ref) => {
             updatedPegs[nearestPegIndex].indexOf(diskValue);
           setPegs(updatedPegs);
           setDraggableDisks(updatedDraggable);
-          setNumberOfMoves(data.numberOfMoves + 1);
+          setNumberOfMoves(activityData?.numberOfMoves + 1);
           setExtraDisk(-1);
           console.log("Increase Disks");
-          setNumberOfDisks(data.numberOfDisks + 1);
+          setNumberOfDisks((prev) => prev + 1);
           e.target.to({
             x:
               (pegWidth + sep) * nearestPegIndex +
@@ -677,7 +686,7 @@ const TowerOfHanoi = (props, ref) => {
 
         setPegs(updatedPegs);
         setDraggableDisks(updatedDraggable);
-        setNumberOfMoves(data.numberOfMoves + 1);
+        setNumberOfMoves(activityData?.numberOfMoves + 1);
       } else {
         const diskIndexInPeg = data.pegs[sourcePegIndex].indexOf(diskValue);
         setPegs([...data.pegs]);
@@ -743,7 +752,7 @@ const TowerOfHanoi = (props, ref) => {
 
       setPegs(updatedPegs);
       setDraggableDisks(updatedDraggable);
-      setNumberOfMoves(data.numberOfMoves + dir);
+      setNumberOfMoves(activityData?.numberOfMoves + dir);
     } else if (sourcePegIndex !== -1) {
       const updatedDraggable = [...draggableDisks];
       const updatedPegs = [...data.pegs];
@@ -762,7 +771,7 @@ const TowerOfHanoi = (props, ref) => {
       setDraggableDisks(updatedDraggable);
       setExtraDisk(diskValue % 10);
       if (sourcePegIndex !== -1) {
-        setNumberOfDisks(data.numberOfDisks - 1);
+        setNumberOfDisks((prev) => prev - 1);
       }
     } else {
       const updatedDraggable = [...draggableDisks];
@@ -788,9 +797,9 @@ const TowerOfHanoi = (props, ref) => {
       // const diskIndexInPeg = updatedPegs[nearestPegIndex].indexOf(diskValue);
       setPegs(updatedPegs);
       setDraggableDisks(updatedDraggable);
-      setNumberOfMoves(data.numberOfMoves + dir);
+      setNumberOfMoves(activityData?.numberOfMoves + dir);
       // setExtraDisk(-1);
-      setNumberOfDisks(data.numberOfDisks + 1);
+      setNumberOfDisks((prev) => prev + 1);
       // e.target.to({
       //   x:
       //     (pegWidth + sep) * nearestPegIndex +
@@ -857,15 +866,16 @@ const TowerOfHanoi = (props, ref) => {
               {(props.mode === "edit" ||
                 props.previewOptions?.nDisks?.value) && (
                 <NumberOfDisksInput
-                  data={data}
+                  numberOfDisks={numberOfDisks}
                   handleNumberOfDisksChange={handleNumberOfDisksChange}
                 />
               )}
               {props.mode === "preview" &&
-                props.previewOptions?.moves?.value && (
+                props.previewOptions?.moves?.value &&
+                activityData && (
                   <Typography variant="h5" className="bu-text-primary m-0 p-0">
                     <b className="bu-text-primary">
-                      Moves: {data.numberOfMoves}
+                      Moves: {activityData?.numberOfMoves}
                     </b>
                   </Typography>
                 )}

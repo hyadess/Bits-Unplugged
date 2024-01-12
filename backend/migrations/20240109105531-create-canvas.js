@@ -27,9 +27,6 @@ module.exports = {
       previewOptions: {
         type: Sequelize.JSON,
       },
-      previewOptions: {
-        type: Sequelize.JSON,
-      },
       template: {
         type: Sequelize.TEXT,
       },

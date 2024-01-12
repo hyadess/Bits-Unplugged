@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import CanvasContainer from "../components/Canvas/CanvasContainer";
+import CanvasContainer from "../components/Canvases/CanvasContainer";
 import ProblemController from "../controller/problemController";
 import SubmissionController from "../controller/submissionController";
 import UserActivityController from "../controller/userActivityController";

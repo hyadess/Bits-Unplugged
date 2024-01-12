@@ -12,6 +12,7 @@ module.exports = {
           email: "mahirlabibdihan@gmail.com",
           hashpass:
             "$2a$10$kK3WAxrbCLl0qHjswaujb.MYnkqRUeLLO0Pck80QFhc47FLnLWKOK",
+          role: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -21,6 +22,7 @@ module.exports = {
           email: "mahirlabibdihan@gmail.com",
           hashpass:
             "$2a$10$kK3WAxrbCLl0qHjswaujb.MYnkqRUeLLO0Pck80QFhc47FLnLWKOK",
+          role: 0,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -30,6 +32,7 @@ module.exports = {
           email: "sayemshahadsoummo@gmail.com",
           hashpass:
             "$2a$10$kK3WAxrbCLl0qHjswaujb.MYnkqRUeLLO0Pck80QFhc47FLnLWKOK",
+          role: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -39,6 +42,7 @@ module.exports = {
           email: "sayemshahadsoummo@gmail.com",
           hashpass:
             "$2a$10$kK3WAxrbCLl0qHjswaujb.MYnkqRUeLLO0Pck80QFhc47FLnLWKOK",
+          role: 0,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -48,6 +52,7 @@ module.exports = {
           email: "souvik7701@gmail.com",
           hashpass:
             "$2a$10$kK3WAxrbCLl0qHjswaujb.MYnkqRUeLLO0Pck80QFhc47FLnLWKOK",
+          role: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -57,6 +62,18 @@ module.exports = {
           email: "souvik7701@gmail.com",
           hashpass:
             "$2a$10$kK3WAxrbCLl0qHjswaujb.MYnkqRUeLLO0Pck80QFhc47FLnLWKOK",
+          role: 0,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          // id: 6,
+          userId: 7,
+          // email: "admin@bitsunplugged.onrender.com",
+          email: "mahirlabibdihan@gmail.com",
+          hashpass:
+            "$2a$10$yGG7Td2huTYO8YUlbRQKb.lJ6aNCYuhkMivF/yAxygtnF81MoHcTK",
+          role: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
         },

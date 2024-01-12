@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, useBeforeUnload } from "react-router-dom";
-import CanvasContainer from "../../components/Canvas/CanvasContainer";
+import CanvasContainer from "../../components/Canvases/CanvasContainer";
 import SolutionChecker from "../SolutionChecker";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -9,7 +9,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Zoom from "@mui/material/Zoom";
 import ProblemController from "../../controller/problemController";
 import ProbSetTab from "../../components/ProbSetTab";
-import ProblemStatement from "./Statement";
+import ProblemStatement from "../../components/Statement";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import Confirmation from "../../components/Confirmation";

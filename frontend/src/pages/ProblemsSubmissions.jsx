@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import TableContainer from "../components/Containers/TableContainer";
+import TableContainer from "../containers/TableContainer";
 import SubmissionController from "../controller/submissionController";
 import ProblemController from "../controller/problemController";
 import SubmissionCard from "../components/Cards/SubmissionCard";

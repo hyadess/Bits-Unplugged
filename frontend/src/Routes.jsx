@@ -15,13 +15,13 @@ import Signup from "./pages/auth/Signup";
 import ProblemsCanvas from "./pages/ProblemsCanvas";
 import Topics from "./pages/user/Topics";
 import Series from "./pages/user/Series";
-import ProblemSet from "./pages/setter/ProblemSet";
-import GraphComponent from "./components/Canvas/GraphComponent";
-import CanvasContainer from "./components/Canvas/CanvasContainer";
+import SetterProblems from "./pages/setter/SetterProblems";
+import GraphComponent from "./components/Canvases/GraphComponent";
+import CanvasContainer from "./components/Canvases/CanvasContainer";
 
 import ProblemSetEnv from "./pages/setter/ProblemSetEnv";
 import SolutionChecker from "./pages/SolutionChecker";
-import PublicNavbar from "./components/navbar/PublicNavbar";
+import PublicNavbar from "./components/Navbars/PublicNavbar";
 import Layout2 from "./components/Layouts/Layout2";
 import AdminLogin from "./pages/auth/AdminLogin";
 import AdminHome from "./pages/admin/AdminHome";
@@ -36,8 +36,8 @@ import AdminCanvasEditor from "./pages/admin/AdminCanvasEditor";
 import AdminContests from "./pages/admin/AdminContests";
 import AdminSetters from "./pages/admin/AdminSetters";
 
-import PrivateNavbar from "./components/navbar/PrivateNavbar";
-import AdminNavbar from "./components/navbar/AdminNavbar";
+import PrivateNavbar from "./components/Navbars/PrivateNavbar";
+import AdminNavbar from "./components/Navbars/AdminNavbar";
 import LayoutMain from "./components/Layouts/LayoutMain";
 
 import Navbar from "./components/Navbar";
@@ -48,7 +48,6 @@ import Profile from "./pages/user/Profille";
 import Contests from "./pages/user/Contests";
 import SetterContests from "./pages/setter/SetterContests";
 const cookies = new Cookies();
-
 
 const ProblemSolver = () => {
   const cookies = new Cookies();
@@ -267,7 +266,7 @@ const AppRoutes = () => {
             path="/problemSet"
             element={
               <LayoutMain>
-                <ProblemSet />
+                <SetterProblems />
               </LayoutMain>
             }
           />

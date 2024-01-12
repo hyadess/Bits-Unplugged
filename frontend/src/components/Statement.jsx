@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Latex from "react-latex";
-import ProblemController from "../../controller/problemController";
+import ProblemController from "../controller/problemController";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import MDEditor from "@uiw/react-md-editor";
 import katex from "katex";
 import "katex/dist/katex.css";
 import { getCodeString } from "rehype-rewrite";
-import MarkdownEditor from "../../components/Markdown/MarkdownEditor";
-import MarkdownPreview from "../../components/Markdown/MarkdownPreview";
+import MarkdownEditor from "./Markdown/MarkdownEditor";
+import MarkdownPreview from "./Markdown/MarkdownPreview";
 const problemController = new ProblemController();
 function ProblemStatement(props) {
   const { problemid } = useParams();

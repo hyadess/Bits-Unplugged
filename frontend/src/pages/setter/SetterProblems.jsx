@@ -1,22 +1,27 @@
-import React, { useState, useEffect } from "react";
+import SetterProblemsView from "../../views/SetterProblems";
+import React, { useState, useEffect, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import ProblemSetCard from "../../components/Cards/ProblemSetCard";
 import ProblemController from "../../controller/problemController";
 import TopicController from "../../controller/topicController";
-import TableContainer from "../../components/Containers/TableContainer";
+import TableContainer from "../../containers/TableContainer";
 import CancelIcon from "@mui/icons-material/Cancel";
 
 import Title from "../../components/Title";
 import AddIcon from "@mui/icons-material/Add";
 import { setLoading } from "../../App";
-import CardContainer from "../../components/Containers/CardContainer";
-
 const problemController = new ProblemController();
 const topicController = new TopicController();
 
 const SetterProblems = () => {
+  const navigator = useNavigate();
+  const switchPath = (pathname) => {
+    navigator(pathname);
+  };
   const [problemList, setProblemList] = useState([]);
-  const deleteAProblem = async (problemId) => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const deleteProblem = async (problemId) => {
     const res = await problemController.deleteProblem(problemId);
     if (res.success) {
       setProblemList(problemList.filter((problem) => problem.id !== problemId));
@@ -25,31 +30,46 @@ const SetterProblems = () => {
   const getProblemList = async () => {
     const res = await problemController.getMyProblems();
     if (res.success) {
-      setProblemList(res.data);
+      setProblemList(res.data.sort((a, b) => a.id - b.id));
       if (res.data.length == 0) setLoading(false);
     }
   };
+
+  const getProblemId = async (title) => {
+    const res = await problemController.createProblem(title);
+    if (res.success) {
+      return res.data.id;
+    }
+  };
+
+  const createProblem = async (title) => {
+    setLoading(true);
+    closeModal();
+    const problemId = await getProblemId(title);
+    switchPath(`/problem/${problemId}/edit`);
+  };
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
   useEffect(() => {
     getProblemList();
   }, []);
 
   return (
-    <CardContainer col={2}>
-      {problemList
-        .sort((a, b) => a.id - b.id)
-        .map((prob, index) => (
-          <ProblemSetCard
-            key={index}
-            idx={index + 1}
-            id={prob.id}
-            name={prob.title}
-            deleteAction={deleteAProblem}
-            isLive={prob.isLive}
-            timestamp={prob.updatedAt}
-            canvas={prob.canvasName}
-          />
-        ))}
-    </CardContainer>
+    <SetterProblemsView
+      openModal={openModal}
+      closeModal={closeModal}
+      deleteProblem={deleteProblem}
+      createProblem={createProblem}
+      problemList={problemList}
+      modalIsOpen={modalIsOpen}
+    />
   );
 };
 

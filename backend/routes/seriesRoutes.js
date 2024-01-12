@@ -10,12 +10,13 @@ router.use(
 router.get("/by_topic/:topicId", seriesController.getSeriesByTopic);
 
 router.get("/", seriesController.getAllSeries);
-router.get("/live", seriesController.getAllSeries); // pending
 router.post("/", seriesController.createSeries);
-
 router.get("/:id", seriesController.getSeriesById);
 router.put("/:id", seriesController.updateSeries);
-router.put("/:id/live", (req, res) => res.status(204).json()); // edit
 router.delete("/:id", seriesController.deleteSeries);
-router.get("/:id/problems", seriesController.getAllProblems);
+
+// router.get("/live", seriesController.getAllSeries); // pending
+// router.put("/:id/live", (req, res) => res.status(204).json()); // edit
+
+router.get("/:id/problems", seriesController.getAllProblems); // transfer to problem
 module.exports = router;

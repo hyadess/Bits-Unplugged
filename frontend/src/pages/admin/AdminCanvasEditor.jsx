@@ -4,13 +4,13 @@ import axios from "axios";
 import Editor from "@monaco-editor/react";
 import Cookies from "universal-cookie";
 import CustomCard from "../../components/Cards/CustomCard";
-import CardContainer from "../../components/Containers/CardContainer";
+import CardContainer from "../../containers/CardContainer";
 
 import Title from "../../components/Title";
 import AddIcon from "@mui/icons-material/Add";
 
 import Layout4 from "../../components/Layouts/Layout4";
-import AdminNavbar from "../../components/navbar/AdminNavbar";
+import AdminNavbar from "../../components/Navbars/AdminNavbar";
 import {
   SelectionField,
   SelectionField2,

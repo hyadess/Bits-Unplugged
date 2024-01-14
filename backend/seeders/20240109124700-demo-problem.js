@@ -28,7 +28,7 @@ module.exports = {
             pegs: [[0, 1, 2], [], []],
           }),
           checkerCode:
-            "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.pegs[2].length === 3;\n}\n",
+            "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas) && userActivity.numberOfMoves == 7;\n}\n",
           editOptions: JSON.stringify({
             customDisk: { value: true, type: "switch" },
             ordered: { value: true, type: "switch" },

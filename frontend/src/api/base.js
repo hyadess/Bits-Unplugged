@@ -41,9 +41,9 @@ axios.interceptors.response.use(
         console.log("Redirect to login");
         localStorage.removeItem("token");
         localStorage.removeItem("type");
-        window.location.href = "/login";
+        window.location.href = "/login?type=solver";
       }
-    } 
+    }
     return Promise.reject(error);
   }
 );

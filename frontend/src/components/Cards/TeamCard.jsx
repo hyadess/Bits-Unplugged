@@ -20,7 +20,17 @@ const TeamCard = ({ name, image, position, detail }) => {
   return (
     <div className="items-center rounded shadow flex flex-col  w-75% h-full md:w-64 bu-card-secondary">
       <a href="#">
-        <ImageLoader className="w-full rounded" src={image} alt="Loading..." />
+        <ImageLoader
+          className="w-full rounded"
+          style={{
+            // width: "15rem",
+            // height: "14rem",
+            objectFit: "cover",
+            aspectRatio: "1/1",
+          }}
+          src={image}
+          alt="Loading..."
+        />
       </a>
       <div className="p-5 h-full w-full flex flex-col items-center justify-between">
         <h3 className="text-l md:text-xl text-center font-bold tracking-tight bu-text-primary">

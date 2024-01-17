@@ -29,8 +29,8 @@ router.put("/:problemId/serial", problemController.updateSerial);
 
 
 router.post("/:problemId/submit", problemController.submitProblem);
-router.post("/:problemId/publish", problemController.publishProblem);
-router.post("/:problemId/unpublish", problemController.unpublishProblem);
+// router.post("/:problemId/publish", problemController.publishProblem);
+// router.post("/:problemId/unpublish", problemController.unpublishProblem);
 
 router.post("/:problemId/bookmark", (req, res) => res.status(200).send()); // dihan - Bookmark a problem
 router.put("/rating", (req, res) => res.status(200).send()); // dihan - Bookmark a problem

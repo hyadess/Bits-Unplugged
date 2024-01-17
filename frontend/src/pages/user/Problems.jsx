@@ -23,6 +23,7 @@ export default function Problems() {
     // if (listType === "all")
     {
       const res = await problemController.getProblemsBySeries(id);
+      console.log(res);
       if (res.success) {
         // Filter out objects with serialNo equal to 0
         const filteredArray = res.data.filter(
@@ -35,21 +36,31 @@ export default function Problems() {
         );
         setAllProblemList(sortedArray);
         setProblemList(sortedArray);
-      }
-    }
-    {
-      const res = await problemController.getUnsolvedProblemsBySeries(id);
-      if (res.success) {
-        // Filter out objects with serialNo equal to 0
-        const filteredArray = res.data.filter((item) => item.serialNo !== 0);
 
-        // Sort the remaining objects based on serialNo in ascending order
-        const sortedArray = filteredArray.sort(
-          (a, b) => a.serialNo - b.serialNo
-        );
-        setUnsolvedProblemList(sortedArray);
+        const unsolvedProblems = sortedArray.filter((problem) => {
+          return (
+            problem.activities &&
+            problem.activities.length > 0 &&
+            problem.activities[0].isSolved === false
+          );
+        });
+        setUnsolvedProblemList(unsolvedProblems);
       }
     }
+    // {
+    //   // filter all the problems that has activities.length>0 and activities[0].isSolved = false
+    //   const res = await problemController.getUnsolvedProblemsBySeries(id);
+    //   if (res.success) {
+    //     // Filter out objects with serialNo equal to 0
+    //     const filteredArray = res.data.filter((item) => item.serialNo !== 0);
+
+    //     // Sort the remaining objects based on serialNo in ascending order
+    //     const sortedArray = filteredArray.sort(
+    //       (a, b) => a.serialNo - b.serialNo
+    //     );
+    //     setUnsolvedProblemList(sortedArray);
+    //   }
+    // }
   };
 
   useEffect(() => {

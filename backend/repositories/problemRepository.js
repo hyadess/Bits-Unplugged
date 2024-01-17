@@ -36,17 +36,18 @@ class ProblemsRepository extends Repository {
   };
 
   getMyProblems = async (setterId) => {
-    const query = `
-    SELECT P.*, C.name as "canvasName" 
-    FROM "Problems" P
-    LEFT JOIN "Canvases" C
-    ON P."canvasId" = C.id
-    WHERE "setterId" = $1;
-    `;
-    const params = [setterId];
-    const result = await this.query(query, params);
-    console.log(result);
-    return result;
+    const problems = await db.Problem.findAll({
+      include: [
+        {
+          model: db.Canvas,
+          as: "canvas",
+        },
+      ],
+      where: {
+        setterId: setterId,
+      },
+    });
+    return problems;
   };
 
   getProblemsBySeries = async (seriesId) => {
@@ -122,18 +123,18 @@ class ProblemsRepository extends Repository {
     return await this.getAllUnsolvedAndAttemptedProblems(userId);
   };
 
-  getProblemsByTopic = async (topicId) => {
-    const query = `
-    SELECT * 
-    FROM "Problems" P
-    JOIN "Series" A
-    ON P."seriesId" = A."seriesId"
-    WHERE A."topicId" = $1;
-    `;
-    const params = [topicId];
-    const result = await this.query(query, params);
-    return result;
-  };
+  // getProblemsByTopic = async (topicId) => {
+  //   const query = `
+  //   SELECT *
+  //   FROM "Problems" P
+  //   JOIN "Series" A
+  //   ON P."seriesId" = A."seriesId"
+  //   WHERE A."topicId" = $1;
+  //   `;
+  //   const params = [topicId];
+  //   const result = await this.query(query, params);
+  //   return result;
+  // };
 
   getProblemById = async (problemId) => {
     return await db.Problem.findByPk(problemId, {

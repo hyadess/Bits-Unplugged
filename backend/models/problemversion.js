@@ -19,11 +19,15 @@ module.exports = (sequelize, DataTypes) => {
         as: "canvas",
       });
       ProblemVersion.hasMany(models.Submission, { foreignKey: "problemId" });
-
-      ProblemVersion.belongsToMany(models.User, {
-        through: models.Activity,
+      ProblemVersion.hasMany(models.Activity, {
         foreignKey: "problemId",
+        as: "activities",
       });
+      // ProblemVersion.belongsToMany(models.User, {
+      //   through: models.Activity,
+      //   foreignKey: "problemId",
+      //   as: "users",
+      // });
     }
   }
   ProblemVersion.init(

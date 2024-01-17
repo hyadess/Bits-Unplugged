@@ -28,7 +28,7 @@ const AdminProblems = () => {
   const baseURL = "https";
 
   const getProblemList = async () => {
-    const res = await problemController.getSubmittedProblems();
+    const res = await problemController.getAllProblems();
     if (res.success) {
       setProblemList(res.data);
       setLoading(false);

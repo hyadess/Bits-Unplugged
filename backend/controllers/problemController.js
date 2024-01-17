@@ -8,35 +8,40 @@ class ProblemController extends Controller {
 
   getAllProblems = async (req, res) => {
     this.handleRequest(res, async () => {
-      let problems = await problemRepository.getAllProblems();
+      let problems =
+        req.user.type === 0
+          ? undefined
+          : req.user.type === 1
+          ? await problemRepository.getMyProblems(req.user.userId)
+          : await problemRepository.getSubmittedProblems();
       res.status(200).send(problems);
     });
   };
 
-  getSubmittedProblems = async (req, res) => {
-    this.handleRequest(res, async () => {
-      let problems = await problemRepository.getSubmittedProblems();
-      res.status(200).send(problems);
-    });
-  };
-  getMyProblems = async (req, res) => {
-    let result = await problemRepository.getMyProblems(req.user.userId);
-    this.handleResponse(result, res);
-  };
+  // getSubmittedProblems = async (req, res) => {
+  //   this.handleRequest(res, async () => {
+  //     let problems = await problemRepository.getSubmittedProblems();
+  //     res.status(200).send(problems);
+  //   });
+  // };
+  // getMyProblems = async (req, res) => {
+  //   let result = await problemRepository.getMyProblems(req.user.userId);
+  //   this.handleResponse(result, res);
+  // };
 
-  getProblemsBySeries = async (req, res) => {
-    let result = await problemRepository.getProblemsBySeries(
-      req.params.seriesId
-    );
-    this.handleResponse(result, res);
-  };
-  getUnsolvedProblemsBySeries = async (req, res) => {
-    let result = await problemRepository.getUnsolvedProblemsBySeries(
-      req.user.userId,
-      req.params.seriesId
-    );
-    this.handleResponse(result, res);
-  };
+  // getProblemsBySeries = async (req, res) => {
+  //   let result = await problemRepository.getProblemsBySeries(
+  //     req.params.seriesId
+  //   );
+  //   this.handleResponse(result, res);
+  // };
+  // getUnsolvedProblemsBySeries = async (req, res) => {
+  //   let result = await problemRepository.getUnsolvedProblemsBySeries(
+  //     req.user.userId,
+  //     req.params.seriesId
+  //   );
+  //   this.handleResponse(result, res);
+  // };
 
   //new for souvik......................
   getAllUnsolvedProblems = async (req, res) => {
@@ -58,25 +63,19 @@ class ProblemController extends Controller {
     this.handleResponse(result, res);
   };
 
-  getProblemsByTopic = async (req, res) => {
-    let result = await problemRepository.getProblemsByTopic(req.params.topicId);
-    this.handleResponse(result, res);
-  };
+  // getProblemsByTopic = async (req, res) => {
+  //   let result = await problemRepository.getProblemsByTopic(req.params.topicId);
+  //   this.handleResponse(result, res);
+  // };
 
   getProblemById = async (req, res) => {
     this.handleRequest(res, async () => {
-      let problem;
-      if (req.user.type == 0) {
-        problem = await problemRepository.getPublishedProblemById(
-          req.params.problemId
-        );
-      } else if (req.user.type == 1) {
-        problem = await problemRepository.getProblemById(req.params.problemId);
-      } else {
-        problem = await problemRepository.getSubmittedProblemById(
-          req.params.problemId
-        );
-      }
+      let problem =
+        req.user.type == 0
+          ? await problemRepository.getPublishedProblemById(req.params.id)
+          : req.user.type == 1
+          ? await problemRepository.getProblemById(req.params.id)
+          : await problemRepository.getSubmittedProblemById(req.params.id);
       if (!problem) {
         res.status(404).json({ error: "Problem not found" });
       } else {
@@ -108,32 +107,32 @@ class ProblemController extends Controller {
     });
   };
 
-  updateTitle = async (req, res) => {
-    let result = await problemRepository.updateTitle(
-      req.params.problemId,
-      req.body.title
-    );
-    this.handleResponse(result, res);
-  };
-  updateStatement = async (req, res) => {
-    let result = await problemRepository.updateStatement(
-      req.params.problemId,
-      req.body.statement
-    );
-    this.handleResponse(result, res);
-  };
+  // updateTitle = async (req, res) => {
+  //   let result = await problemRepository.updateTitle(
+  //     req.params.problemId,
+  //     req.body.title
+  //   );
+  //   this.handleResponse(result, res);
+  // };
+  // updateStatement = async (req, res) => {
+  //   let result = await problemRepository.updateStatement(
+  //     req.params.problemId,
+  //     req.body.statement
+  //   );
+  //   this.handleResponse(result, res);
+  // };
 
-  updateCanvas = async (req, res) => {
-    let result = await problemRepository.updateCanvas(
-      req.params.problemId,
-      req.body.canvasId,
-      req.body.canvasData,
-      req.body.params,
-      req.body.previewOptions,
-      req.body.previewOptions
-    );
-    this.handleResponse(result, res);
-  };
+  // updateCanvas = async (req, res) => {
+  //   let result = await problemRepository.updateCanvas(
+  //     req.params.problemId,
+  //     req.body.canvasId,
+  //     req.body.canvasData,
+  //     req.body.params,
+  //     req.body.previewOptions,
+  //     req.body.previewOptions
+  //   );
+  //   this.handleResponse(result, res);
+  // };
 
   updateSeries = async (req, res) => {
     let result = await problemRepository.updateSeries(
@@ -151,14 +150,14 @@ class ProblemController extends Controller {
     this.handleResponse(result, res);
   };
 
-  updateSolutionChecker = async (req, res) => {
-    let result = await problemRepository.updateSolutionChecker(
-      req.params.problemId,
-      req.body.solutionChecker,
-      req.body.checker_type
-    );
-    this.handleResponse(result, res);
-  };
+  // updateSolutionChecker = async (req, res) => {
+  //   let result = await problemRepository.updateSolutionChecker(
+  //     req.params.problemId,
+  //     req.body.solutionChecker,
+  //     req.body.checker_type
+  //   );
+  //   this.handleResponse(result, res);
+  // };
 
   deleteProblem = async (req, res) => {
     this.handleRequest(res, async () => {

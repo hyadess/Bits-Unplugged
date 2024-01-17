@@ -15,7 +15,10 @@ class AuthService extends Service {
   getAccessToken = (payload) => {
     const token = jwt.sign(
       {
-        ...payload,
+        userId: payload.userId,
+        email: payload.email,
+        pass: payload.pass,
+        type: payload.type,
         iss: "bitsunplugged.onrender.com",
       },
       JWT_SECRET,
@@ -29,7 +32,10 @@ class AuthService extends Service {
   getRefreshToken = (payload) => {
     const token = jwt.sign(
       {
-        ...payload,
+        userId: payload.userId,
+        email: payload.email,
+        pass: payload.pass,
+        type: payload.type,
         iss: "bitsunplugged.onrender.com",
       },
       JWT_SECRET,
@@ -71,6 +77,7 @@ class AuthService extends Service {
         data.type
       );
     }
+    console.log("ID PASS:", credential);
     return credential;
   };
 
@@ -78,7 +85,7 @@ class AuthService extends Service {
     const user = await this.getIdPass(data);
 
     if (user) {
-      if (user.userId == id && user.hashpass == pass) {
+      if (user.userId == data.userId && user.hashpass == data.pass) {
         return true;
       }
     } else {
@@ -87,18 +94,28 @@ class AuthService extends Service {
   };
 
   getNewAccessToken = async (refreshToken) => {
+    const { promisify } = require("util");
+    const verifyTokenAsync = promisify(jwt.verify);
+    
     if (refreshToken) {
-      jwt.verify(refreshToken, JWT_SECRET, async (err, payload) => {
-        if (!err) {
-          var isValid = await this.tokenValidity(payload); //checking whether the current password is the same
-          if (isValid) {
-            return {
-              success: true,
-              accessToken: this.getAccessToken(payload),
-            };
-          }
+      try {
+        const payload = await verifyTokenAsync(refreshToken, JWT_SECRET);
+        var isValid = await this.tokenValidity(payload); //checking whether the current password is the same
+        if (isValid) {
+          return {
+            success: true,
+            accessToken: this.getAccessToken(payload),
+          };
         }
-      });
+      } catch (err) {
+        // Handle verification errors
+        console.error(err);
+        // Return appropriate response or throw an error
+        return {
+          success: false,
+          message: "Refresh token verification failed",
+        };
+      }
     }
     return { success: false };
   };

@@ -1,6 +1,6 @@
 const Repository = require("./base");
 const db = require("../models/index");
-
+const { Op } = require("sequelize");
 class SeriesRepository extends Repository {
   constructor() {
     super();
@@ -57,19 +57,53 @@ class SeriesRepository extends Repository {
     return deletedSeries;
   };
 
-  getAllProblems = async (seriesId) => {
-    const query = `
-    SELECT * FROM "ProblemVersions"
-    WHERE ("problemId", "createdAt") IN (
-      SELECT "problemId", MAX("createdAt") as "latestCreatedAt"
-      FROM "ProblemVersions"
-      WHERE "seriesId" = $1
-      GROUP BY "problemId", "seriesId"
+  // isSolve = false -> requirement = true
+  getAllProblems = async (userId, seriesId, filter) => {
+    const latestProblemVersions = await db.ProblemVersion.findAll({
+      attributes: [
+        "problemId",
+        [
+          db.sequelize.fn("MAX", db.sequelize.col("createdAt")),
+          "latestCreatedAt",
+        ],
+      ],
+      where: {
+        seriesId: seriesId,
+      },
+      group: ["problemId", "seriesId"],
+      raw: true, // To get plain objects instead of Sequelize instances
+    });
+
+    const latestProblemIds = latestProblemVersions.map(
+      (version) => version.problemId
     );
-    `;
-    const params = [seriesId];
-    const result = await this.query(query, params);
-    return result;
+    const latestProblemVersionsQuery = await db.ProblemVersion.findAll({
+      where: {
+        problemId: {
+          [Op.in]: latestProblemIds,
+        },
+        createdAt: latestProblemVersions.map(
+          (version) => version.latestCreatedAt
+        ),
+        "$activities.userId$": { [Op.or]: [userId, null] },
+        ...(filter.isSolved !== null && {
+          "$activities.isSolved$": filter.isSolved,
+        }),
+        ...(filter.isLive !== null && {
+          isLive: filter.isLive,
+        }),
+      },
+      include: [
+        {
+          model: db.Activity,
+          foreignKey: "problemId",
+          as: "activities",
+        },
+      ],
+    });
+
+    // console.log(latestProblemVersionsQuery);
+    return latestProblemVersionsQuery;
   };
 
   // Uncomment and implement these methods if needed

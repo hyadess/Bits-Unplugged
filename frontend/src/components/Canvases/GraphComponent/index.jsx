@@ -992,12 +992,12 @@ const GraphComponent = (props, ref) => {
                   const startOffsetY = Math.sin(angle) * RADIUS;
                   const endOffsetX =
                     Math.cos(angle + Math.PI) * RADIUS -
-                    (props?.editOptions["directedEdge"]?.value
+                    (props?.editOptions?.directedEdge?.value
                       ? 3 * Math.cos(angle)
                       : 0);
                   const endOffsetY =
                     Math.sin(angle + Math.PI) * RADIUS -
-                    (props?.editOptions["directedEdge"]?.value
+                    (props?.editOptions?.directedEdge?.value
                       ? 3 * Math.sin(angle)
                       : 0);
 
@@ -1032,9 +1032,7 @@ const GraphComponent = (props, ref) => {
                   return (
                     <React.Fragment key={index}>
                       <Group>
-                        {props.editOptions === null ||
-                        !props.editOptions["directedEdge"] ||
-                        props.editOptions["directedEdge"].value === false ? (
+                        {props.editOptions?.directedEdge?.value === false ? (
                           <Line
                             key={index}
                             points={[

@@ -76,10 +76,7 @@ const TowerOfHanoiView = ({
           <div className={`toh-canvas vbox flex-center`}>
             <Stage
               x={20}
-              width={
-                Math.min(window.innerWidth / 900, 1) *
-                (60 + pegWidth * data.numberOfPegs)
-              }
+              width={Math.min(window.innerWidth / 900, 1) * (60 + pegWidth * 3)}
               height={
                 Math.min(window.innerWidth / 800, 1) *
                 (280 +
@@ -680,7 +677,7 @@ const TowerOfHanoi = (props, ref) => {
     const value = parseInt(event.target.value, 10);
     if (!isNaN(value) && value >= 1 && value <= 10) {
       setNumberOfDisks(value);
-      initializePegs(value, data.numberOfPegs);
+      initializePegs(value, 3);
       setHistory([]);
       setCurrentHistory(-1);
     }

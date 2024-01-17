@@ -85,10 +85,7 @@ const AdminSeriesEditor = () => {
     }
 
     for (let i = 0; i < problemList.length; i++) {
-      await problemController.updateSerial(
-        problemList[i].problemId,
-        problemList[i].serialNo
-      );
+      await problemController.updateSerial(problemList[i].problemId, i);
     }
 
     const res = await seriesController.updateSeries(id, series);

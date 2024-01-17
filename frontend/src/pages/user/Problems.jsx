@@ -26,14 +26,12 @@ export default function Problems() {
       console.log(res);
       if (res.success) {
         // Filter out objects with serialNo equal to 0
-        const filteredArray = res.data.filter(
-          (item) => item.serialNo !== 0 && item.serialNo !== null
-        );
+        // const filteredArray = res.data.filter(
+        //   (item) => item.serialNo !== 0 && item.serialNo !== null
+        // );
 
         // Sort the remaining objects based on serialNo in ascending order
-        const sortedArray = filteredArray.sort(
-          (a, b) => a.serialNo - b.serialNo
-        );
+        const sortedArray = res.data.sort((a, b) => a.serialNo - b.serialNo);
         setAllProblemList(sortedArray);
         setProblemList(sortedArray);
 

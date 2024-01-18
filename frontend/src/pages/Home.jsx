@@ -48,7 +48,7 @@ const Home = () => {
         <div className="mt-4 md:mt-0">
           <h2 className="bu-text-primary mb-4 text-center text-4xl font-extrabold tracking-tight md:text-left">
             {" "}
-            A platform for learning{" "}
+            A platform for exploring{" "}
             <span className="bu-text-title text-5xl">
               Computer Science
             </span>{" "}
@@ -56,8 +56,8 @@ const Home = () => {
           </h2>
 
           <p className="bu-text-subtitle mb-6 text-center  font-light md:text-left md:text-lg">
-            Bits unplugged is a platform for students to learn complex CS
-            concepts without needing to write a single line of code through an
+            Bits unplugged is a platform for students to solve CS problems
+            without needing to write a single line of code through an
             interactive medium
           </p>
 

@@ -21,7 +21,7 @@ const CustomDisk = ({
       />
       <KonvaButton
         text="<"
-        x={pegWidth - 15}
+        x={pegWidth - 20}
         y={270}
         onClick={() =>
           extraDisk > -1 ? setExtraDisk((prev) => prev - 1) : setExtraDisk(9)

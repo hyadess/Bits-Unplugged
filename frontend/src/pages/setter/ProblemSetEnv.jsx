@@ -514,11 +514,11 @@ export default function ProblemSetEnv() {
     getCanvasList();
   }, []);
 
-  useEffect(() => {
-    setTest(JSON.parse(JSON.stringify(input)));
-    testRef?.current?.handleReset(JSON.parse(JSON.stringify(input)));
-    // console.log("test:", test);
-  }, [input]);
+  // useEffect(() => {
+  //   setTest(JSON.parse(JSON.stringify(input)));
+  //   testRef?.current?.handleReset(JSON.parse(JSON.stringify(input)));
+  //   // console.log("test:", test);
+  // }, [input]);
 
   useEffect(() => {
     // console.log(problemid);
@@ -636,7 +636,16 @@ export default function ProblemSetEnv() {
           </div>
         </div>
       </div>
-      <ProbSetTab activeTab={activeComponent} click={setActiveComponent} />
+      <ProbSetTab
+        activeTab={activeComponent}
+        click={(tab) => {
+          if (tab === "Test" && activeComponent !== "Test") {
+            setTest(JSON.parse(JSON.stringify(input)));
+            testRef?.current?.handleReset(JSON.parse(JSON.stringify(input)));
+          }
+          setActiveComponent(tab);
+        }}
+      />
 
       <div className="component-container relative">
         {/* Slow Transition */}

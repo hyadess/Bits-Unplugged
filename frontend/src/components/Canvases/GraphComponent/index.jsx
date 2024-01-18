@@ -683,7 +683,7 @@ const GraphComponent = (props, ref) => {
                 sx={{
                   fontSize: "2rem",
                   width: "3rem",
-                  height: "3rem", 
+                  height: "3rem",
                 }}
                 onClick={() => {
                   if (addNodeMode) document.body.style.cursor = "default";

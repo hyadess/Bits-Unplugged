@@ -46,6 +46,7 @@ module.exports = {
       },
       serialNo: {
         type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       isLive: {
         type: Sequelize.BOOLEAN,

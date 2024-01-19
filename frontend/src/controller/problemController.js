@@ -36,36 +36,8 @@ class ProblemController extends Controller {
     const res = await this.problemApi.createProblem(title);
     return res;
   };
-  updateTitle = async (problemId, title) => {
-    const res = await this.problemApi.updateTitle(problemId, title);
-    return res;
-  };
-  updateSeries = async (problemId, seriesId) => {
-    const res = await this.problemApi.updateSeries(problemId, seriesId);
-    return res;
-  };
-  updateSerial = async (problemId, serialNo) => {
-    const res = await this.problemApi.updateSerial(problemId, serialNo);
-    return res;
-  };
-  updateStatement = async (problemId, statement) => {
-    const res = await this.problemApi.updateStatement(problemId, statement);
-    return res;
-  };
-  updateCanvas = async (
-    problemId,
-    canvasId,
-    canvasData,
-    params,
-    previewOptions
-  ) => {
-    const res = await this.problemApi.updateCanvas(
-      problemId,
-      canvasId,
-      canvasData,
-      params,
-      previewOptions
-    );
+  updateProblem = async (problemId, data) => {
+    const res = await this.problemApi.updateProblem(problemId, data);
     return res;
   };
 
@@ -82,47 +54,6 @@ class ProblemController extends Controller {
     return res;
   };
 
-  publishProblem = async (problemId) => {
-    // Submitted by problem setter vs Live
-    const res = await this.problemApi.publishProblem(problemId);
-
-    return res;
-  };
-
-  unpublishProblem = async (problemId) => {
-    const res = await this.problemApi.unpublishProblem(problemId);
-    return res;
-  };
-
-  checkWithCode = async (code, input) => {
-    const stdout = [];
-    const originalConsoleLog = console.log;
-    console.log = function (...args) {
-      stdout.push(args.join(" "));
-    };
-
-    let output = "";
-    try {
-      const verdict = eval(code + "; solutionChecker(input);");
-      console.log = originalConsoleLog;
-      if (verdict) {
-        output = "Accepted";
-        showToast(output, "success");
-      } else {
-        output = "Wrong answer";
-        showToast(output, "error");
-      }
-    } catch (error) {
-      console.log = originalConsoleLog;
-      output = error.message;
-      showToast(output, "error");
-    }
-
-    return {
-      output: output,
-      stdout: stdout,
-    };
-  };
   checkSolution = async (
     checkerCode,
     checkerCanvas,
@@ -163,16 +94,6 @@ class ProblemController extends Controller {
       stdout: stdout,
     };
   };
-
-  updateSolutionChecker = async (problemId, solutionChecker, checker_type) => {
-    const res = await this.problemApi.updateSolutionChecker(
-      problemId,
-      solutionChecker,
-      checker_type
-    );
-    return res;
-  };
-
   trackDuration = async (problemId, time) => {
     const res = await this.problemApi.trackDuration(problemId, time);
     return res;

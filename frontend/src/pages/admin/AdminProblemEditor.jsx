@@ -67,23 +67,9 @@ const AdminProblemEditor = () => {
   };
 
   const handleSave = async () => {
-    {
-      const res = await problemController.updateSeries(
-        problem.id,
-        problem.seriesId
-      );
-      if (res.success) {
-        console.log(res);
-      }
-    }
-
-    {
-      const res = (await problem.isLive)
-        ? problemController.publishProblem(problem.id)
-        : problemController.unpublishProblem(problem.id);
-      if (res.success) {
-        console.log(res);
-      }
+    const res = await problemController.updateProblem(problem.id, problem);
+    if (res.success) {
+      console.log(res);
     }
   };
 

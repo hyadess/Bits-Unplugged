@@ -100,10 +100,28 @@ class SeriesRepository extends Repository {
           as: "activities",
         },
       ],
+      order: [
+        ["serialNo", "DESC"], // Change 'ASC' to 'DESC' if you want descending order
+      ],
     });
 
-    // console.log(latestProblemVersionsQuery);
+    console.log(latestProblemVersionsQuery);
     return latestProblemVersionsQuery;
+  };
+
+  updateSerial = async (data) => {
+    for (const item of data) {
+      const { problemId, serialNo } = item;
+      const recordToUpdate = await db.ProblemVersion.update(
+        {
+          serialNo,
+        },
+        {
+          returning: true,
+          where: { id: problemId },
+        }
+      );
+    }
   };
 
   // Uncomment and implement these methods if needed

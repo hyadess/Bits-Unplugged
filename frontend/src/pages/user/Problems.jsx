@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ProblemController from "../../controller/problemController";
 
@@ -16,9 +16,11 @@ export default function Problems() {
   const { id } = useParams();
   const [listType, setListType] = useState("all");
   const [problemList, setProblemList] = useState([]);
-  const [allProblemList, setAllProblemList] = useState([]);
-  const [unsolvedProblemList, setUnsolvedProblemList] = useState([]);
+  // const [allProblemList, setAllProblemList] = useState([]);
+  // const [unsolvedProblemList, setUnsolvedProblemList] = useState([]);
 
+  const allProblemList = useRef([]);
+  const unsolvedProblemList = useRef([]);
   const getProblemList = async () => {
     // if (listType === "all")
     {
@@ -31,18 +33,18 @@ export default function Problems() {
         // );
 
         // Sort the remaining objects based on serialNo in ascending order
-        const sortedArray = res.data.sort((a, b) => a.serialNo - b.serialNo);
-        setAllProblemList(sortedArray);
-        setProblemList(sortedArray);
+        // const sortedArray = res.data.sort((a, b) => a.serialNo - b.serialNo);
+        allProblemList.current = res.data;
+        setProblemList(res.data);
 
-        const unsolvedProblems = sortedArray.filter((problem) => {
+        const unsolvedProblems = res.data.filter((problem) => {
           return (
             problem.activities &&
             problem.activities.length > 0 &&
             problem.activities[0].isSolved === false
           );
         });
-        setUnsolvedProblemList(unsolvedProblems);
+        unsolvedProblemList.current = unsolvedProblems;
       }
     }
     // {
@@ -80,10 +82,10 @@ export default function Problems() {
             onChange={() => {
               if (listType === "all") {
                 setListType("unsolved");
-                setProblemList(unsolvedProblemList);
+                setProblemList(unsolvedProblemList.current);
               } else {
                 setListType("all");
-                setProblemList(allProblemList);
+                setProblemList(allProblemList.current);
               }
             }}
             className={`${

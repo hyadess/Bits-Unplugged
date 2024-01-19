@@ -72,22 +72,26 @@ const AdminSeriesEditor = () => {
   };
 
   const handleSave = async () => {
-    for (let i = 0; i < problemList.length - 1; i++) {
-      for (let j = i + 1; j < problemList.length; j++) {
-        if (
-          problemList[i].serialNo !== 0 &&
-          problemList[i].serialNo === problemList[j].serialNo
-        ) {
-          alert("Duplicate serial no.");
-          return;
-        }
-      }
-    }
+    // for (let i = 0; i < problemList.length - 1; i++) {
+    //   for (let j = i + 1; j < problemList.length; j++) {
+    //     if (
+    //       problemList[i].serialNo !== 0 &&
+    //       problemList[i].serialNo === problemList[j].serialNo
+    //     ) {
+    //       alert("Duplicate serial no.");
+    //       return;
+    //     }
+    //   }
+    // }
 
+    const serials = [];
     for (let i = 0; i < problemList.length; i++) {
-      await problemController.updateSerial(problemList[i].problemId, i);
+      serials.push({
+        problemId: problemList[i].id,
+        serialNo: problemList.length - i,
+      });
     }
-
+    await seriesController.updateSerial(id, serials);
     const res = await seriesController.updateSeries(id, series);
     if (res.success) {
       console.log(res);

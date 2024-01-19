@@ -78,6 +78,13 @@ class SeriesController extends Controller {
       res.status(200).send(problems);
     });
   };
+
+  updateSerial = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const problems = await seriesRepository.updateSerial(req.body);
+      res.status(200).send({ message: "Serial updated successfully" });
+    });
+  };
   // assignSeries
   // deleteProblemSerial = async (req, res) => {
   //   let result = await seriesRepository.deleteProblemSerial(

@@ -65,10 +65,13 @@ class ProblemController extends Controller {
 
   updateProblem = async (req, res) => {
     this.handleRequest(res, async () => {
-      const updatedProblem = await problemRepository.updateProblem(
-        req.params.id,
-        req.body
-      );
+      const updatedProblem =
+        req.user.type === 1
+          ? await problemRepository.updateProblem(req.params.id, req.body)
+          : await problemRepository.updateProblemVersion(
+              req.params.id,
+              req.body
+            );
       if (!updatedProblem) {
         res.status(404).json({ error: "Problem not found" });
       } else {
@@ -108,7 +111,7 @@ class ProblemController extends Controller {
 
   submitProblem = async (req, res) => {
     this.handleRequest(res, async () => {
-      let problem = await problemRepository.submitProblem(req.params.problemId);
+      let problem = await problemRepository.submitProblem(req.params.id);
       if (!problem) {
         res.status(404).json({ error: "Problem not found" });
       } else {

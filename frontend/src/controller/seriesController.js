@@ -19,6 +19,10 @@ class SeriesController extends Controller {
     const res = await this.seriesApi.updateSeries(id, data);
     return res;
   };
+  updateSerial = async (id, data) => {
+    const res = await this.seriesApi.updateSerial(id, data);
+    return res;
+  };
   getAllProblems = async (seriesId) => {
     const res = await this.seriesApi.getAllProblems(seriesId);
     return res;

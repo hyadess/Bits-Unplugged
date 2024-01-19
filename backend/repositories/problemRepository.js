@@ -50,40 +50,6 @@ class ProblemsRepository extends Repository {
     return problems;
   };
 
-  getProblemsBySeries = async (seriesId) => {
-    const query = `
-      SELECT LP.*, S.name as "seriesName", T.name as "topicName" 
-      FROM "ProblemVersions" LP
-      JOIN "Series" S
-      ON LP."seriesId" = S.id
-      JOIN "Topics" T
-      ON S."topicId" = T.id
-      WHERE S.id = $1
-      AND LP."isLive" = TRUE;
-    `;
-    const params = [seriesId];
-    const result = await this.query(query, params);
-    return result;
-  };
-
-  getUnsolvedProblemsBySeries = async (userId, seriesId) => {
-    const query = `
-    SELECT LP.*, 
-    S.name AS "seriesName", 
-    T.name AS "topicName" 
-    FROM "ProblemVersions" LP
-    JOIN "Series" S ON LP."seriesId" = S.id
-    JOIN "Topics" T ON S."topicId" = T.id
-    LEFT JOIN "Activities" U ON LP."problemId" = U."problemId" AND U."userId" = $1
-    WHERE (U."userId" IS NULL OR U."isSolved" = FALSE)
-    AND LP."isLive" = TRUE
-    AND S.id = $2;
-    `;
-    const params = [userId, seriesId];
-    const result = await this.query(query, params);
-    return result;
-  };
-
   getAllUnsolvedProblems = async (userId) => {
     const query = `
     SELECT LP.*, 
@@ -237,53 +203,6 @@ class ProblemsRepository extends Repository {
     return result;
   };
 
-  updateTitle = async (problemId, title) => {
-    const query = `
-    UPDATE "Problems"
-    SET "title" = $2, "updatedAt" = $3
-    WHERE "id" = $1;
-    `;
-    const params = [problemId, title, Date.now()];
-    const result = await this.query(query, params);
-    return result;
-  };
-
-  updateStatement = async (problemId, statement) => {
-    const query = `
-    UPDATE "Problems"
-    SET "statement" = $2, "updatedAt" = $3
-    WHERE "id" = $1;
-    `;
-    const params = [problemId, statement, Date.now()];
-    const result = await this.query(query, params);
-    return result;
-  };
-
-  updateCanvas = async (
-    problemId,
-    canvasId,
-    canvasData,
-    editOptions,
-    previewOptions
-  ) => {
-    console.log("=>", canvasData);
-    const query = `
-    UPDATE "Problems"
-    SET "canvasId" = $2, "canvasData" = $3, "editOptions" = $4, "previewOptions" = $5, "updatedAt" = $6
-    WHERE "id" = $1;
-    `;
-    const params = [
-      problemId,
-      canvasId,
-      canvasData,
-      editOptions,
-      previewOptions,
-      Date.now(),
-    ];
-    const result = await this.query(query, params);
-    return result;
-  };
-
   updateSeries = async (problemId, seriesId) => {
     const query = `
     UPDATE "ProblemVersions"
@@ -291,30 +210,6 @@ class ProblemsRepository extends Repository {
     WHERE "id" = $1;
     `;
     const params = [problemId, seriesId];
-    const result = await this.query(query, params);
-    return result;
-  };
-
-  updateSerial = async (problemId, serialNo) => {
-    const query = `
-    UPDATE "ProblemVersions"
-    SET "serialNo" = $2
-    WHERE "problemId" = $1;
-    `;
-    const params = [problemId, serialNo];
-    const result = await this.query(query, params);
-    return result;
-  };
-
-  updateSolutionChecker = async (problemId, solutionChecker, checkerType) => {
-    const query = `
-    UPDATE "Problems"
-    SET ${
-      checkerType == 0 ? '"checkerCode"' : '"checkerCanvas"'
-    } = $2, "updatedAt" = $3
-    WHERE "id" = $1;
-    `;
-    const params = [problemId, solutionChecker, Date.now()];
     const result = await this.query(query, params);
     return result;
   };
@@ -330,6 +225,23 @@ class ProblemsRepository extends Repository {
         id,
       },
     });
+    if (updatedRowsCount === 0) {
+      return null;
+    }
+    return updatedProblem.get();
+  };
+
+  updateProblemVersion = async (id, data) => {
+    console.log(data);
+    const [updatedRowsCount, [updatedProblem]] = await db.ProblemVersion.update(
+      data,
+      {
+        returning: true,
+        where: {
+          id,
+        },
+      }
+    );
     if (updatedRowsCount === 0) {
       return null;
     }

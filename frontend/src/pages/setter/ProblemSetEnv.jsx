@@ -122,6 +122,8 @@ const SolutionCheckerTab = ({
   checkerCanvas,
   setCheckerCanvas,
   previewOptions,
+
+  editOptions,
   updateSolutionChecker,
   handleCheckSolution,
 }) => {
@@ -168,6 +170,7 @@ const SolutionCheckerTab = ({
             ref={canvasRef}
             mode="preview"
             previewOptions={previewOptions}
+            editOptions={editOptions}
           />
           <div
             className="flex py-5"
@@ -223,6 +226,7 @@ const TestTab = ({
   setTestActivity,
   previewOptions,
   handleCheckSolution,
+  editOptions,
   input,
 }) => {
   const testRef = useRef();
@@ -239,6 +243,7 @@ const TestTab = ({
           ref={testRef}
           mode="preview"
           previewOptions={previewOptions}
+          editOptions={editOptions}
         />
         <div className="flex flex-row justify-between py-5">
           <Button
@@ -268,7 +273,7 @@ const TestTab = ({
 };
 export default function ProblemSetEnv() {
   // title, statement, input, options, checker, test
-  // const backup = useRef(null);
+  const backupProblem = useRef(null);
   // const [problem,setProblem] = useState({});
   // const [canvas,setCanvas] = useState({});
   // const [activity,setActivity] = useState({});
@@ -351,6 +356,8 @@ export default function ProblemSetEnv() {
     if (res.success) {
       // Just a problem json
       // console.log("----", res.data.checkerCanvas);
+      backupProblem.current = JSON.parse(JSON.stringify(res.data));
+
       setInput(JSON.parse(JSON.stringify(res.data.canvasData)));
       setBackup(JSON.parse(JSON.stringify(res.data.canvasData)));
       setCheckerCanvas(JSON.parse(JSON.stringify(res.data.canvasData)));
@@ -390,7 +397,9 @@ export default function ProblemSetEnv() {
   };
 
   const reset = async () => {
-    setInput(JSON.parse(JSON.stringify(backup)));
+    setInput(backupProblem?.current?.canvasData);
+    setEditOptions(backupProblem?.current?.editOptions);
+    setPreviewOptions(backupProblem?.current?.previewOptions);
     if (backupId !== canvasId) {
       setCanvasId(backupId);
       var res = canvasFullList.find((canvas) => {
@@ -717,6 +726,7 @@ export default function ProblemSetEnv() {
             checkerCanvas={checkerCanvas}
             setCheckerCanvas={setCheckerCanvas}
             previewOptions={previewOptions}
+            editOptions={editOptions}
             updateSolutionChecker={updateSolutionChecker}
             backup={backup}
             canvasRef={canvasRef}
@@ -731,6 +741,7 @@ export default function ProblemSetEnv() {
             testActivity={testActivity}
             setTestActivity={setTestActivity}
             previewOptions={previewOptions}
+            editOptions={editOptions}
             handleCheckSolution={handleCheckSolution}
             input={input}
           />

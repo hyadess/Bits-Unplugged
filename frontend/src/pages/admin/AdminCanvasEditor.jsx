@@ -20,6 +20,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
 import { canvasApi } from "../../api";
+import { Switch } from "@mui/material";
 
 // const snakeCaseToTitleCase = (input) => {
 //   return input

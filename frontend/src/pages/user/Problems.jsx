@@ -9,6 +9,7 @@ import { setLoading } from "../../App";
 // import { Switch } from "@mui/material";
 // import { useState } from 'react'
 import { Switch } from "@headlessui/react";
+import { problemApi } from "../../api";
 
 const problemController = new ProblemController();
 
@@ -22,45 +23,21 @@ export default function Problems() {
   const allProblemList = useRef([]);
   const unsolvedProblemList = useRef([]);
   const getProblemList = async () => {
-    // if (listType === "all")
-    {
-      const res = await problemController.getProblemsBySeries(id);
-      console.log(res);
-      if (res.success) {
-        // Filter out objects with serialNo equal to 0
-        // const filteredArray = res.data.filter(
-        //   (item) => item.serialNo !== 0 && item.serialNo !== null
-        // );
+    const res = await problemApi.getProblemsBySeries(id);
+    console.log(res);
+    if (res.success) {
+      allProblemList.current = res.data;
+      setProblemList(res.data);
 
-        // Sort the remaining objects based on serialNo in ascending order
-        // const sortedArray = res.data.sort((a, b) => a.serialNo - b.serialNo);
-        allProblemList.current = res.data;
-        setProblemList(res.data);
-
-        const unsolvedProblems = res.data.filter((problem) => {
-          return (
-            problem.activities &&
-            problem.activities.length > 0 &&
-            problem.activities[0].isSolved === false
-          );
-        });
-        unsolvedProblemList.current = unsolvedProblems;
-      }
+      const unsolvedProblems = res.data.filter((problem) => {
+        return (
+          problem.activities &&
+          problem.activities.length > 0 &&
+          problem.activities[0].isSolved === false
+        );
+      });
+      unsolvedProblemList.current = unsolvedProblems;
     }
-    // {
-    //   // filter all the problems that has activities.length>0 and activities[0].isSolved = false
-    //   const res = await problemController.getUnsolvedProblemsBySeries(id);
-    //   if (res.success) {
-    //     // Filter out objects with serialNo equal to 0
-    //     const filteredArray = res.data.filter((item) => item.serialNo !== 0);
-
-    //     // Sort the remaining objects based on serialNo in ascending order
-    //     const sortedArray = filteredArray.sort(
-    //       (a, b) => a.serialNo - b.serialNo
-    //     );
-    //     setUnsolvedProblemList(sortedArray);
-    //   }
-    // }
   };
 
   useEffect(() => {

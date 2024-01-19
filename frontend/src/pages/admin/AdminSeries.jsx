@@ -12,6 +12,7 @@ import Layout4 from "../../components/Layouts/Layout4";
 import AddIcon from "@mui/icons-material/Add";
 import SeriesController from "../../controller/seriesController";
 import Modal from "../../components/Modal";
+import { seriesApi } from "../../api";
 const seriesController = new SeriesController();
 
 const AdminSeries = () => {
@@ -25,7 +26,7 @@ const AdminSeries = () => {
   const [seriesList, setSeriesList] = useState([]);
 
   const getSeriesList = async () => {
-    const res = await seriesController.getAllSeries();
+    const res = await seriesApi.getAllSeries();
     if (res.success) {
       setSeriesList(res.data);
       setLoading(false);
@@ -50,7 +51,7 @@ const AdminSeries = () => {
   };
 
   const getSeriesId = async (name) => {
-    const res = await seriesController.createSeries(name);
+    const res = await seriesApi.createSeries(name);
     if (res.success) {
       return res.data[0].id;
     }

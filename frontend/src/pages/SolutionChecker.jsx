@@ -105,16 +105,6 @@ export default function SolutionChecker(props) {
     props.setCode(ref.current.getValue());
   };
 
-  const submit = () => {
-    // console.log(problemid);
-    // handleCheckSolution();
-    // problemController.updateSolutionChecker(problemid, ref.current.getValue(), 0);
-  };
-
-  // const p =
-  //   props.output == "" ? null : (
-  //     <div className="out-display">{props.output}</div>
-  //   );
   return (
     stringed && (
       <div>

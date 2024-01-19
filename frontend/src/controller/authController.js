@@ -4,7 +4,6 @@ import Controller from "./base";
 import { COOKIE_AGE } from "../index";
 import { showToast } from "../App";
 
-
 class AuthController extends Controller {
   authApi = new AuthApi();
   cookies = new Cookies();

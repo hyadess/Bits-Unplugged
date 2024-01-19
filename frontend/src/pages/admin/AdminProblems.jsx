@@ -13,6 +13,7 @@ import ProblemCard from "../../components/Cards/ProblemCard";
 import TableContainer from "../../containers/TableContainer";
 
 import ProblemController from "../../controller/problemController";
+import { problemApi } from "../../api";
 const problemController = new ProblemController();
 
 const AdminProblems = () => {
@@ -28,7 +29,7 @@ const AdminProblems = () => {
   const baseURL = "https";
 
   const getProblemList = async () => {
-    const res = await problemController.getAllProblems();
+    const res = await problemApi.getAllProblems();
     if (res.success) {
       setProblemList(res.data);
       setLoading(false);

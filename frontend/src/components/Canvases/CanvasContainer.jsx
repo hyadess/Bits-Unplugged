@@ -26,6 +26,7 @@ import {
   faUser,
   faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
+import { canvasApi } from "../../api";
 const canvasController = new CanvasController();
 const cookies = new Cookies();
 
@@ -61,7 +62,7 @@ const CanvasContainer = (props, ref) => {
   // Fix this
   const getCanvas = async () => {
     console.log("Canvas changed");
-    const res = await canvasController.getCanvasById(props.canvasId);
+    const res = await canvasApi.getCanvasById(props.canvasId);
     if (res.success) {
       console.log(res.data);
       // canvas = res.data

@@ -12,6 +12,7 @@ import Layout4 from "../../components/Layouts/Layout4";
 import AddIcon from "@mui/icons-material/Add";
 import CanvasController from "../../controller/canvasController";
 import Modal from "../../components/Modal";
+import { canvasApi } from "../../api";
 const canvasController = new CanvasController();
 
 const AdminCanvasList = () => {
@@ -25,7 +26,7 @@ const AdminCanvasList = () => {
   const [canvasList, setCanvasList] = useState([]);
 
   const getCanvasList = async () => {
-    const res = await canvasController.getAllCanvas();
+    const res = await canvasApi.getAllCanvas();
     if (res.success) {
       setCanvasList(res.data);
       setLoading(false);
@@ -50,7 +51,7 @@ const AdminCanvasList = () => {
   };
 
   const getCanvasId = async (name) => {
-    const res = await canvasController.createCanvas(name);
+    const res = await canvasApi.createCanvas(name);
     if (res.success) {
       return res.data[0].id;
     }

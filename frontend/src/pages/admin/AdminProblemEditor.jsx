@@ -19,6 +19,7 @@ import { Switch } from "@mui/material";
 import { setLoading } from "../../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpand } from "@fortawesome/free-solid-svg-icons";
+import { problemApi, seriesApi } from "../../api";
 const problemController = new ProblemController();
 const topicController = new TopicController();
 const seriesController = new SeriesController();
@@ -43,7 +44,7 @@ const AdminProblemEditor = () => {
   };
   const getProblem = async () => {
     console.log(id);
-    const res = await problemController.getProblemById(id);
+    const res = await problemApi.getProblemById(id);
     if (res.success) {
       console.log(res.data);
       setProblem(res.data);
@@ -52,7 +53,7 @@ const AdminProblemEditor = () => {
   };
 
   const getSeriesList = async () => {
-    const res = await seriesController.getAllSeries();
+    const res = await seriesApi.getAllSeries();
     if (res.success) {
       const newArray = [
         { value: "", label: "Unassigned" },
@@ -67,7 +68,7 @@ const AdminProblemEditor = () => {
   };
 
   const handleSave = async () => {
-    const res = await problemController.updateProblem(problem.id, problem);
+    const res = await problemApi.updateProblem(problem.id, problem);
     if (res.success) {
       console.log(res);
     }

@@ -23,6 +23,7 @@ import { IconButton, TableContainer } from "@mui/material";
 import ProblemCard from "../../components/Cards/ProblemCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { seriesApi, topicApi } from "../../api";
 
 const topicController = new TopicController();
 const problemController = new ProblemController();
@@ -45,7 +46,7 @@ const AdminSeriesEditor = () => {
 
   const getSeries = async () => {
     console.log(id);
-    const res = await seriesController.getSeriesById(id);
+    const res = await seriesApi.getSeriesById(id);
     if (res.success) {
       setSeries(res.data);
       setLoading(false);
@@ -53,7 +54,7 @@ const AdminSeriesEditor = () => {
   };
 
   const getProblemList = async () => {
-    const res = await seriesController.getAllProblems(id);
+    const res = await seriesApi.getAllProblems(id);
     if (res.success) {
       setProblemList(res.data);
       console.log(res.data);
@@ -61,7 +62,7 @@ const AdminSeriesEditor = () => {
   };
 
   const getTopicList = async () => {
-    const res = await topicController.getAllTopics();
+    const res = await topicApi.getAllTopics();
     if (res.success) {
       const newArray = res.data.map((topic) => ({
         value: topic.id,
@@ -91,8 +92,8 @@ const AdminSeriesEditor = () => {
         serialNo: problemList.length - i,
       });
     }
-    await seriesController.updateSerial(id, serials);
-    const res = await seriesController.updateSeries(id, series);
+    await seriesApi.updateSerial(id, serials);
+    const res = await seriesApi.updateSeries(id, series);
     if (res.success) {
       console.log(res);
     }

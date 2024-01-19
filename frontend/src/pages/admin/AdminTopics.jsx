@@ -12,6 +12,7 @@ import Layout4 from "../../components/Layouts/Layout4";
 import Modal from "../../components/Modal";
 import TopicController from "../../controller/topicController";
 import AddIcon from "@mui/icons-material/Add";
+import { topicApi } from "../../api";
 const topicController = new TopicController();
 
 const AdminTopics = () => {
@@ -25,7 +26,7 @@ const AdminTopics = () => {
   const [topicList, setTopicList] = useState([]);
 
   const getTopicList = async () => {
-    const res = await topicController.getAllTopics();
+    const res = await topicApi.getAllTopics();
     if (res.success) {
       setTopicList(res.data);
       setLoading(false);
@@ -39,7 +40,6 @@ const AdminTopics = () => {
     getTopicList();
   }, []);
 
-  
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const openModal = () => {
@@ -50,7 +50,7 @@ const AdminTopics = () => {
   };
 
   const getTopicId = async (name) => {
-    const res = await topicController.createTopic(name);
+    const res = await topicApi.createTopic(name);
     if (res.success) {
       return res.data.id;
     }

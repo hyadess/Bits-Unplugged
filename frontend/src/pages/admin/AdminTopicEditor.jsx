@@ -5,6 +5,7 @@ import Title from "../../components/Title";
 import TopicController from "../../controller/topicController";
 import { TextField, TextField2 } from "../../components/InputFields";
 import { setLoading } from "../../App";
+import { topicApi } from "../../api";
 const topicController = new TopicController();
 
 const AdminTopicEditor = () => {
@@ -22,7 +23,7 @@ const AdminTopicEditor = () => {
   };
   const getTopic = async () => {
     console.log(id);
-    const res = await topicController.getTopicById(id);
+    const res = await topicApi.getTopicById(id);
     if (res.success) {
       setTopic(res.data);
       setLoading(false);
@@ -31,7 +32,7 @@ const AdminTopicEditor = () => {
   };
 
   const handleSave = async () => {
-    const res = await topicController.updateTopic(id, topic);
+    const res = await topicApi.updateTopic(id, topic);
     if (res.success) {
       console.log(res);
     }

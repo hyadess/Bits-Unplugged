@@ -10,8 +10,16 @@ import { Button, IconButton } from "@mui/material";
 import ProblemController from "../../controller/problemController";
 import EditIcon from "@mui/icons-material/Edit";
 import { setLoading } from "../../App";
+import { problemApi } from "../../api";
 const problemController = new ProblemController();
-export default function ProblemCard({ id, idx, name, path, deleteAction, isLive }) {
+export default function ProblemCard({
+  id,
+  idx,
+  name,
+  path,
+  deleteAction,
+  isLive,
+}) {
   useEffect(() => {
     setLoading(false);
   }, []);
@@ -21,10 +29,10 @@ export default function ProblemCard({ id, idx, name, path, deleteAction, isLive 
   };
 
   const publishProblem = async () => {
-    await problemController.publishProblem(id);
+    await problemApi.publishProblem(id);
   };
   const unpublishProblem = async () => {
-    await problemController.unpublishProblem(id);
+    await problemApi.unpublishProblem(id);
   };
   return (
     <div className="items-center w-full">

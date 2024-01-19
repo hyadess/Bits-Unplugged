@@ -4,6 +4,7 @@ import ProblemStatement from "../../../components/Statement";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CanvasController from "../../../controller/canvasController";
+import { problemApi } from "../../../api";
 const problemController = new ProblemController();
 const canvasController = new CanvasController();
 
@@ -37,7 +38,7 @@ const DetailsTab = ({
         <button
           className="bu-button-primary flex flex-row items-center justify-center gap-3 rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white focus:outline-none"
           onClick={async () => {
-            await problemController.updateProblem(problemid, {
+            await problemApi.updateProblem(problemid, {
               title: title,
               statement: problemStatement,
             });

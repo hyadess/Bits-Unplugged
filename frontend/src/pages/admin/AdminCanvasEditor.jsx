@@ -26,6 +26,7 @@ import { Divider, MenuItem, Select, Switch } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
+import { canvasApi } from "../../api";
 
 const topicController = new TopicController();
 
@@ -396,7 +397,7 @@ const AdminCanvasEditor = () => {
     setCanvas({ ...canvas, [prop]: event.target.value });
   };
   const getCanvas = async () => {
-    const res = await canvasController.getCanvasById(id);
+    const res = await canvasApi.getCanvasById(id);
     if (res.success) {
       setCanvas(res.data);
       setLoading(false);
@@ -404,7 +405,7 @@ const AdminCanvasEditor = () => {
   };
 
   const handleSave = async () => {
-    const res = await canvasController.updateCanvas(id, canvas);
+    const res = await canvasApi.updateCanvas(id, canvas);
     if (res.success) {
       console.log(res);
     }

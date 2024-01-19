@@ -1,22 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ProblemController from "../controller/problemController";
-import SubmissionController from "../controller/submissionController";
-import UserActivityController from "../controller/userActivityController";
-import Cookies from "universal-cookie";
 import { setLoading } from "../App";
 import ProblemsCanvasView from "../views/ProblemsCanvas";
-//<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
+import { problemApi, submissionApi, userActivityApi } from "../api";
 const problemController = new ProblemController();
-const submissionController = new SubmissionController();
-const userActivityController = new UserActivityController();
-
 export default function ProblemsCanvas() {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
   const [backup, setBackup] = useState(null);
@@ -24,18 +13,13 @@ export default function ProblemsCanvas() {
   const [canvasId, setCanvasId] = useState(null);
   const [title, setTitle] = useState("");
   const [statement, setStatement] = useState("");
-  const [data, setData] = useState();
   const [activityData, setActivityData] = useState({});
-  const [canvas, setCanvas] = useState(null);
   const [type, setType] = useState(-1);
-  const [resetTrigger, setResetTrigger] = useState(false);
-  const baseURL = "https";
   const canvasRef = useRef();
   const [editOptions, setEditOptions] = useState({});
   const [previewOptions, setPreviewOptions] = useState({});
   useEffect(() => {
     renderProblem();
-    const cookies = new Cookies();
     const isLoggedIn = localStorage.hasOwnProperty("token");
     if (isLoggedIn) {
       setType(localStorage.getItem("type"));
@@ -43,7 +27,7 @@ export default function ProblemsCanvas() {
   }, []);
 
   const renderProblem = async () => {
-    const result = await problemController.getProblemById(id);
+    const result = await problemApi.getProblemById(id);
     if (result.success) {
       console.log(result.data);
       setProblem(result.data);
@@ -63,10 +47,6 @@ export default function ProblemsCanvas() {
     canvasRef?.current?.handleReset(JSON.parse(JSON.stringify(backup)));
   };
 
-  const calculateNumberOfLines = (content) => {
-    return content.split("\n").length;
-  };
-
   const startTimeRef = useRef(null);
 
   const solutionSubmit = async (e) => {
@@ -77,7 +57,7 @@ export default function ProblemsCanvas() {
       activityData
     );
     console.log("output " + res.output);
-    await submissionController.submitSolution(input, res.output, id);
+    await submissionApi.submitSolution(input, res.output, id);
     if (res.output === "Accepted") {
       if (startTimeRef.current) {
         const endTime = new Date();
@@ -85,11 +65,11 @@ export default function ProblemsCanvas() {
           (endTime - startTimeRef.current) / 1000
         );
         if (durationInSeconds > 3) {
-          await problemController.trackDuration(id, durationInSeconds);
+          await problemApi.trackDuration(id, durationInSeconds);
         }
       }
-      await userActivityController.updateOnSuccessfulAttempt(id);
-    } else await userActivityController.updateOnFailedAttempt(id);
+      await userActivityApi.updateOnSuccessfulAttempt(id);
+    } else await userActivityApi.updateOnFailedAttempt(id);
   };
   function getColorModeFromLocalStorage() {
     return localStorage.getItem("color-theme") || "light";
@@ -118,15 +98,10 @@ export default function ProblemsCanvas() {
         console.log("Duration:", durationInSeconds);
         // Send the duration to the backend
         if (durationInSeconds > 3)
-          problemController.trackDuration(id, durationInSeconds);
+          problemApi.trackDuration(id, durationInSeconds);
       }
     };
   }, []);
-
-  useEffect(() => {}, [backup]);
-  useEffect(() => {
-    canvasRef.current !== undefined && canvasRef.current.handleReset();
-  }, [resetTrigger]);
 
   return (
     <ProblemsCanvasView

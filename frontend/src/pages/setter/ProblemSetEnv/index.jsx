@@ -4,6 +4,7 @@ import ProblemController from "../../../controller/problemController";
 import CanvasController from "../../../controller/canvasController";
 import { setLoading } from "../../../App";
 import ProblemSettingView from "./ProblemSettingView";
+import { canvasApi, problemApi } from "../../../api";
 const problemController = new ProblemController();
 const canvasController = new CanvasController();
 
@@ -75,7 +76,7 @@ export default function ProblemSetEnv() {
   };
   const getProblem = async () => {
     //// console.log(problemid)
-    const res = await problemController.getProblemById(problemid);
+    const res = await problemApi.getProblemById(problemid);
     if (res.success) {
       backupProblem.current = res.data;
       init(backupProblem.current);
@@ -83,7 +84,7 @@ export default function ProblemSetEnv() {
   };
 
   const getCanvasList = async () => {
-    const res = await canvasController.getAllCanvas();
+    const res = await canvasApi.getAllCanvas();
     if (res.success) {
       setCanvasFullList(res.data);
       const newArray = res.data.map((canvas) => ({
@@ -150,7 +151,7 @@ export default function ProblemSetEnv() {
   };
 
   const deleteProblem = async () => {
-    const res = await problemController.deleteProblem(problemid);
+    const res = await problemApi.deleteProblem(problemid);
     if (res.success) {
       switchPath("/problemSet");
     }
@@ -159,7 +160,7 @@ export default function ProblemSetEnv() {
   const updateCanvas = async () => {
     setCheckerCanvas(deepCopy(input));
     backupProblem.current.canvasData = input;
-    const res = await problemController.updateProblem(problemid, {
+    const res = await problemApi.updateProblem(problemid, {
       canvasId,
       canvasData: input,
       editOptions,
@@ -175,7 +176,7 @@ export default function ProblemSetEnv() {
   const updateSolutionChecker = async () => {
     if (checkerType == 0 && code == null) return;
     if (checkerType == 1 && checkerCanvas == null) return;
-    const res = await problemController.updateProblem(problemid, {
+    const res = await problemApi.updateProblem(problemid, {
       ...(checkerType == 0 && {
         checkerCode: code,
       }),
@@ -207,7 +208,7 @@ export default function ProblemSetEnv() {
       }
     };
   const saveAll = async () => {
-    await problemController.updateProblem(problemid, {
+    await problemApi.updateProblem(problemid, {
       title: title,
       statement: problemStatement,
     });

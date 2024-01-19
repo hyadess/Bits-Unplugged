@@ -15,6 +15,7 @@ import {
   faBuromobelexperte,
   faTrello,
 } from "@fortawesome/free-brands-svg-icons";
+import { profileApi } from "../../api";
 const authController = new AuthController();
 const profileController = new ProfileController();
 const PrivateNavbar = (props) => {
@@ -29,20 +30,16 @@ const PrivateNavbar = (props) => {
   };
 
   const setProfile = async () => {
-    const cookies = new Cookies();
     const isLoggedIn = localStorage.hasOwnProperty("token");
     setType(localStorage.getItem("type"));
     if (isLoggedIn) {
-      // while (true)
-      {
-        const res = await profileController.getProfile();
-        if (res.success) {
-          setUser(res.data[0]);
-          // break;
-        } else {
-          // authController.logout();
-          // switchPath("/login");
-        }
+      const res = await profileApi.getProfile();
+      if (res.success) {
+        setUser(res.data[0]);
+        // break;
+      } else {
+        // authController.logout();
+        // switchPath("/login");
       }
     }
   };

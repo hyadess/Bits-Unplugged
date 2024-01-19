@@ -8,6 +8,7 @@ import Cookies from "universal-cookie";
 import Title from "../../components/Title";
 import TopicCard from "../../components/Cards/TopicCard";
 import { setLoading } from "../../App";
+import { topicApi } from "../../api";
 const topicController = new TopicController();
 
 const Topics = () => {
@@ -16,7 +17,7 @@ const Topics = () => {
   const [topicList, setTopicList] = useState([]);
 
   const getTopicList = async () => {
-    const res = await topicController.getAllTopics();
+    const res = await topicApi.getAllTopics();
     if (res.success) {
       setTopicList(res.data);
       console.log(res);

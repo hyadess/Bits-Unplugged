@@ -5,47 +5,6 @@ import { showToast } from "../App";
 class ProblemController extends Controller {
   problemApi = new ProblemApi();
 
-  /**
-   * For Problem Setter
-   */
-  getAllProblems = async () => {
-    const res = await this.problemApi.getAllProblems();
-    return res;
-  };
-  getSubmittedProblems = async () => {
-    const res = await this.problemApi.getSubmittedProblems();
-    return res;
-  };
-  getMyProblems = async () => {
-    const res = await this.problemApi.getMyProblems();
-    return res;
-  };
-  getUnsolvedProblemsBySeries = async (seriesId) => {
-    const res = await this.problemApi.getUnsolvedProblemsBySeries(seriesId);
-    return res;
-  };
-  getProblemsBySeries = async (seriesId) => {
-    const res = await this.problemApi.getProblemsBySeries(seriesId);
-    return res;
-  };
-  getProblemById = async (problemId) => {
-    const res = await this.problemApi.getProblemById(problemId);
-    return res;
-  };
-  createProblem = async (title) => {
-    const res = await this.problemApi.createProblem(title);
-    return res;
-  };
-  updateProblem = async (problemId, data) => {
-    const res = await this.problemApi.updateProblem(problemId, data);
-    return res;
-  };
-
-  deleteProblem = async (problemId) => {
-    const res = await this.problemApi.deleteProblem(problemId);
-    return res;
-  };
-
   submitProblem = async (problemId) => {
     const res = await this.problemApi.submitProblem(problemId);
     if (res.success) {
@@ -93,10 +52,6 @@ class ProblemController extends Controller {
       output: output,
       stdout: stdout,
     };
-  };
-  trackDuration = async (problemId, time) => {
-    const res = await this.problemApi.trackDuration(problemId, time);
-    return res;
   };
 }
 export default ProblemController;

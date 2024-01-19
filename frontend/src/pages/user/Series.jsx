@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from "react";
-
-import { useNavigate, useParams } from "react-router-dom";
-import SeriesController from "../../controller/seriesController";
-import Cookies from "universal-cookie";
+import { useParams } from "react-router-dom";
 import CustomCard from "../../components/Cards/CustomCard";
 import CardContainer from "../../containers/CardContainer";
 import Title from "../../components/Title";
-import { setLoading } from "../../App";
-const seriesController = new SeriesController();
+import { seriesApi } from "../../api";
 
 export default function Problems() {
   const [type, setType] = useState(-1);
   const { id } = useParams();
   const [seriesList, setSeriesList] = useState([]);
   const getSeriesList = async () => {
-    const res = await seriesController.getSeriesByTopic(id);
+    const res = await seriesApi.getSeriesByTopic(id);
     if (res.success) {
       setSeriesList(res.data);
       // setLoading(false);
@@ -22,9 +18,7 @@ export default function Problems() {
   };
 
   useEffect(() => {
-    const cookies = new Cookies();
     setType(localStorage.getItem("type"));
-
     getSeriesList();
   }, []);
   return (

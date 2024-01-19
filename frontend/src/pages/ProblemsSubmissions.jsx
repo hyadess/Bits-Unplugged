@@ -16,6 +16,7 @@ import Title from "../components/Title";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../App";
+import { problemApi, submissionApi } from "../api";
 
 const submissionController = new SubmissionController();
 const problemController = new ProblemController();
@@ -33,7 +34,6 @@ export default function ProblemsSubmissions() {
       getSubmissions();
       setLoading(false);
     }
-    const cookies = new Cookies();
     const isLoggedIn = localStorage.hasOwnProperty("token");
     if (isLoggedIn) {
       setType(localStorage.getItem("type"));
@@ -41,15 +41,14 @@ export default function ProblemsSubmissions() {
   }, []);
 
   const renderProblem = async () => {
-    const result = await problemController.getProblemById(id);
+    const result = await problemApi.getProblemById(id);
     if (result.success) {
       setProblem(result.data);
     }
   };
 
   const getSubmissions = async () => {
-    const res =
-      await submissionController.getAllSubmissionsByUserAndProblem(id);
+    const res = await submissionApi.getAllSubmissionsByUserAndProblem(id);
     if (res.success) {
       // Filter out objects with serialNo equal to 0
       const filteredArray = res.data.filter((item) => item.serialNo !== 0);

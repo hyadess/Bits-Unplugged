@@ -9,9 +9,10 @@ import { setLoading } from "../../App";
 import { faTrello } from "@fortawesome/free-brands-svg-icons";
 import { profileApi } from "../../api";
 import AuthService from "../../services/authService";
+import GlobalContext from "../../store/GlobalContext";
 const PrivateNavbar = (props) => {
   const [user, setUser] = useState(null);
-  const [type, setType] = useState(-1);
+  const { type, setType } = useContext(GlobalContext);
   const [search, setSearch] = useState(false);
   const [tab, setTab] = useState(0);
   const location = useLocation();
@@ -19,7 +20,6 @@ const PrivateNavbar = (props) => {
 
   const setProfile = async () => {
     const isLoggedIn = localStorage.hasOwnProperty("token");
-    setType(localStorage.getItem("type"));
     if (isLoggedIn) {
       const res = await profileApi.getProfile();
       if (res.success) {
@@ -157,6 +157,7 @@ const PrivateNavbar = (props) => {
                 onClick={async () => {
                   setLoading(true);
                   await AuthService.logout();
+                  setType(0);
                   navigate("/login");
                 }}
               >

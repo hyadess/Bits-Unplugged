@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Editor from "@monaco-editor/react";
@@ -21,6 +21,7 @@ import { faAdd, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
 import { canvasApi } from "../../api";
 import { Switch } from "@mui/material";
+import GlobalContext from "../../store/GlobalContext";
 
 // const snakeCaseToTitleCase = (input) => {
 //   return input
@@ -370,10 +371,8 @@ const OptionList = ({ options, setCanvas, id }) => {
 };
 
 const AdminCanvasEditor = () => {
-  const navigate = useNavigate();
   const ref = useRef(null);
   const editorRef = useRef(null);
-  const [type, setType] = useState(-1);
   const { id } = useParams();
   const [canvas, setCanvas] = useState([]);
 
@@ -399,8 +398,6 @@ const AdminCanvasEditor = () => {
   };
 
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(localStorage.getItem("type"));
     getCanvas();
 
     // Attach resize event listener

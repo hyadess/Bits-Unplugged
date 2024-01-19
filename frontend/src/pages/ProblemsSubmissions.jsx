@@ -36,33 +36,31 @@ export default function ProblemsSubmissions() {
     }
   };
 
-  return problem ? (
-    <>
-      <div class="flex flex-col py-4 max-w-screen-xl sm:pt-12 gap-3">
-        <div class="mt-4 md:mt-0">
-          <h2 class="text-left text-5xl tracking-tight font-extrabold ">
-            <span class="bu-text-title">{problem.title}</span>
-          </h2>
+  return (
+    problem && (
+      <>
+        <div class="flex flex-col py-4 max-w-screen-xl sm:pt-12 gap-3">
+          <div class="mt-4 md:mt-0">
+            <h2 class="text-left text-5xl tracking-tight font-extrabold ">
+              <span class="bu-text-title">{problem.title}</span>
+            </h2>
+          </div>
+          <span class="bu-text-subtitle text-xl">
+            {problem && problem.series.topic.name + " > " + problem.series.name}
+          </span>
         </div>
-        <span class="bu-text-subtitle text-xl">
-          {problem
-            ? problem.series.topic.name + " > " + problem.series.name
-            : ""}
-        </span>
-      </div>
-      <TableContainer>
-        {submissionList.map((submission, index) => (
-          <SubmissionCard
-            idx={index + 1}
-            submissionId={submission.id}
-            verdict={submission.verdict}
-            problem_name={problem.title}
-            path={`/problem/${problem.id}`}
-          />
-        ))}
-      </TableContainer>
-    </>
-  ) : (
-    <></>
+        <TableContainer>
+          {submissionList.map((submission, index) => (
+            <SubmissionCard
+              idx={index + 1}
+              submissionId={submission.id}
+              verdict={submission.verdict}
+              problem_name={problem.title}
+              path={`/problem/${problem.id}`}
+            />
+          ))}
+        </TableContainer>
+      </>
+    )
   );
 }

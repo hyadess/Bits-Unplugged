@@ -8,7 +8,6 @@ import AddIcon from "@mui/icons-material/Add";
 import Modal from "../../components/Modal";
 import { seriesApi } from "../../api";
 const AdminSeries = () => {
-  const [type, setType] = useState(-1);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [seriesList, setSeriesList] = useState([]);
@@ -23,8 +22,6 @@ const AdminSeries = () => {
   };
 
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(localStorage.getItem("type"));
     getSeriesList();
   }, []);
 

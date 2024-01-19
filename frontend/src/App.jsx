@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import AppRoutes from "./Routes";
+import GlobalContext from "./store/GlobalContext";
 
 export const showToast = (message, type) => {
   console.log(message, type);
@@ -24,8 +25,10 @@ export const showMessage = (message, res) => {
 
 var setLoading;
 const App = () => {
+  const { setType } = useContext(GlobalContext);
   const [loading, setL] = useState(true);
   useEffect(() => {
+    setType(localStorage.getItem("type"));
     if (
       localStorage.getItem("color-theme") === "dark" ||
       (!("color-theme" in localStorage) &&

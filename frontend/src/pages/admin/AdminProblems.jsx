@@ -6,13 +6,8 @@ import ProblemCard from "../../components/Cards/ProblemCard";
 import TableContainer from "../../containers/TableContainer";
 import { problemApi } from "../../api";
 const AdminProblems = () => {
-  const [type, setType] = useState(-1);
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState();
   const [problemList, setProblemList] = useState([]);
-  const baseURL = "https";
-
   const getProblemList = async () => {
     const res = await problemApi.getAllProblems();
     if (res.success) {
@@ -23,8 +18,6 @@ const AdminProblems = () => {
   };
 
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(localStorage.getItem("type"));
     getProblemList();
   }, []);
   return (

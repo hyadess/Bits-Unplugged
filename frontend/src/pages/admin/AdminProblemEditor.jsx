@@ -10,7 +10,6 @@ import { faExpand } from "@fortawesome/free-solid-svg-icons";
 import { problemApi, seriesApi } from "../../api";
 const AdminProblemEditor = () => {
   const navigate = useNavigate();
-  const [type, setType] = useState(-1);
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
   const [seriesList, setSeriesList] = useState([]);
@@ -56,8 +55,6 @@ const AdminProblemEditor = () => {
   };
 
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(localStorage.getItem("type"));
     getProblem();
     getSeriesList();
   }, []);

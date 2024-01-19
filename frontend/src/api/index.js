@@ -5,7 +5,9 @@ import SeriesApi from "./seriesApi";
 import SubmissionApi from "./submissionApi";
 import TopicApi from "./topicApi";
 import UserActivityApi from "./userActivityApi";
+import AuthApi from "./authApi";
 
+export const authApi = new AuthApi();
 export const canvasApi = new CanvasApi();
 export const topicApi = new TopicApi();
 export const seriesApi = new SeriesApi();

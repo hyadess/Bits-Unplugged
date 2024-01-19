@@ -38,8 +38,7 @@ const CanvasContainer = (props, ref) => {
     props.previewOptions,
     props.setPreviewOptions,
   ];
-  // const [type, setType] = useState(-1);
-  // const [canvas, setCanvas] = useState(null);
+
   const [canvasContainerMode, setCanvasContainerMode] = useState(props.mode);
   const loadComponent = async (name) => {
     try {
@@ -94,10 +93,6 @@ const CanvasContainer = (props, ref) => {
   useEffect(() => {
     getCanvas();
   }, [props.canvasId]);
-
-  // useEffect(() => {
-  //   setType(localStorage.getItem("type"));
-  // }, []);
 
   const snakeCaseToTitleCase = (input) => {
     return input

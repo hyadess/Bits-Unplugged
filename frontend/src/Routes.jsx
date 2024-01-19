@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -47,6 +47,7 @@ import SetterProfile from "./pages/setter/SetterProfile";
 import Profile from "./pages/user/Profille";
 import Contests from "./pages/user/Contests";
 import SetterContests from "./pages/setter/SetterContests";
+import GlobalContext from "./store/GlobalContext";
 const cookies = new Cookies();
 
 const ProblemSolver = () => {
@@ -124,21 +125,8 @@ const Public = () => {
 };
 
 const AppRoutes = () => {
-  const [type, setType] = useState(-1); // 0 - Solver, 1 - Setter, 2 - Guest
-  useEffect(() => {
-    const isLoggedIn = localStorage.hasOwnProperty("token");
-    if (isLoggedIn) {
-      console.log("setting type to " + localStorage.getItem("type"));
-      setType(localStorage.getItem("type"));
-    } else {
-      console.log("setting type to 0");
-      setType(0);
-    }
-  }, [localStorage]);
+  const { type } = useContext(GlobalContext); // 0 - Solver, 1 - Setter, 2 - Guest
 
-  useEffect(() => {
-    console.log("routes:", type);
-  }, [type]);
   return (
     <Router>
       <Routes>

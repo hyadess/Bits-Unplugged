@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { CircularProgress, Switch } from "@mui/material";
@@ -7,6 +7,7 @@ import Banner from "../../components/Banner";
 import Layout1 from "../../components/Layouts/Layout1";
 import { setLoading } from "../../App";
 import AuthService from "../../services/authService";
+import GlobalContext from "../../store/GlobalContext";
 const InputField = (props) => {
   return (
     <div>
@@ -42,7 +43,6 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
   const [showValidationMessage, setShowValidationMessage] = useState(false);
   const [validationMessage, setValidationMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);

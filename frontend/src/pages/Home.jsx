@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Footer from "../components/Footer";
 import TeamCard from "../components/Cards/TeamCard";
 import { useNavigate } from "react-router-dom";
@@ -6,24 +6,11 @@ import Cookies from "universal-cookie";
 import Banner from "../components/Banner";
 import ImageLoader from "../components/ImageLoader";
 import { setLoading } from "../App";
+import GlobalContext from "../store/GlobalContext";
 
 const Home = () => {
-  const [type, setType] = useState(-1);
+  const { type } = useContext(GlobalContext);
   const navigate = useNavigate();
-  useEffect(() => {
-    const cookies = new Cookies();
-    const isLoggedIn = localStorage.hasOwnProperty("token");
-    const userType = localStorage.getItem("type");
-    // if (isLoggedIn) {
-    //   navigate(userType === 0 ? "/topics" : "/problemSet");
-    // }
-    setType(userType || -1);
-    console.log("Type:", userType || -1);
-  }, [localStorage]);
-
-  useEffect(() => {
-    console.log("New Type:", type);
-  }, [type]);
   return (
     <div>
       <div className="mx-auto flex h-screen max-w-screen-xl flex-col items-center gap-8 px-4 py-8 sm:py-16 md:flex-row lg:px-6 xl:gap-16">

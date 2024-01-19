@@ -7,12 +7,8 @@ import { setLoading } from "../../App";
 import { topicApi } from "../../api";
 
 const AdminTopicEditor = () => {
-  const navigate = useNavigate();
-  const [type, setType] = useState(-1);
   const { id } = useParams();
-
   const [topic, setTopic] = useState(null);
-
   const handleChange = (prop) => (event) => {
     setTopic({ ...topic, [prop]: event.target.value });
   };
@@ -33,8 +29,6 @@ const AdminTopicEditor = () => {
     }
   };
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(localStorage.getItem("type"));
     getTopic();
   }, []);
   return (

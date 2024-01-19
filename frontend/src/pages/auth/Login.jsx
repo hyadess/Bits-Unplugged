@@ -6,6 +6,7 @@ import Banner from "../../components/Banner";
 import Layout1 from "../../components/Layouts/Layout1";
 import { setLoading } from "../../App";
 import AuthService from "../../services/authService";
+import GlobalContext from "../../store/GlobalContext";
 const InputField = (props) => {
   return (
     <div>
@@ -33,7 +34,9 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggingIn, setLoggingIn] = useState(false);
+  const globalCtx = useContext(GlobalContext);
   const [type, setType] = useState(searchParams.get("type"));
+
   const [checked, setChecked] = useState(type === "setter" ? true : false);
   const navigate = useNavigate();
 
@@ -74,6 +77,7 @@ const Login = () => {
       console.log(res);
       if (res.success) {
         setLoggingIn(true);
+        globalCtx.setType(type == "solver" ? 0 : 1);
         type == "solver" ? navigate("/topics") : navigate("/problemSet");
       } else {
         setLoading(false);

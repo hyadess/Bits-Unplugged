@@ -109,15 +109,13 @@ const Canvas = forwardRef(
       activityData,
       setActivityData,
       editOptions,
-      setEditOptions,
       previewOptions,
-      setPreviewOptions,
       onReset,
       onSubmit,
     },
     ref
   ) => {
-    useEffect(() => console.log(canvasId, ref));
+    // useEffect(() => console.log(canvasId, ref));
     return (
       canvasId &&
       ref && (
@@ -129,9 +127,7 @@ const Canvas = forwardRef(
             mode={"preview"}
             ref={ref}
             editOptions={editOptions}
-            setEditOptions={setEditOptions}
             previewOptions={previewOptions}
-            setPreviewOptions={setPreviewOptions}
             activityData={activityData}
             setActivityData={setActivityData}
           />
@@ -169,18 +165,12 @@ const ProblemsCanvasView = (
     problem,
     onSubmit,
     onReset,
-    statement,
-    canvasId,
-    input,
-    setInput,
     activityData,
     setActivityData,
-    editOptions,
-    setEditOptions,
-    previewOptions,
-    setPreviewOptions,
     colorMode,
     type,
+    input,
+    setInput,
   },
   ref
 ) => {
@@ -190,17 +180,15 @@ const ProblemsCanvasView = (
         <>
           <div>
             <Header id={id} problem={problem} type={type} />
-            <Statement statement={statement} colorMode={colorMode} />
+            <Statement statement={problem.statement} colorMode={colorMode} />
           </div>
           <Canvas
             ref={ref}
-            canvasId={canvasId}
+            canvasId={problem.canvasId}
             input={input}
             setInput={setInput}
-            editOptions={editOptions}
-            setEditOptions={setEditOptions}
-            previewOptions={previewOptions}
-            setPreviewOptions={setPreviewOptions}
+            editOptions={problem.editOptions}
+            previewOptions={problem.previewOptions}
             activityData={activityData}
             setActivityData={setActivityData}
             onSubmit={onSubmit}

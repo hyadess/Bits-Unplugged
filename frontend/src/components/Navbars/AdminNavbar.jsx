@@ -4,8 +4,10 @@ import Logo from "../Logo";
 import { setLoading } from "../../App";
 import AdminNavButton from "./AdminNavButton";
 import AuthService from "../../services/authService";
+import GlobalContext from "../../store/GlobalContext";
 
 const AdminNavbar = () => {
+  const { setType } = useContext(GlobalContext);
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(null);
 
@@ -58,9 +60,10 @@ const AdminNavbar = () => {
           <button
             className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info border-b-4 border-transparent items-center justify-center"
             data-tip="Home"
-            onClick={() => {
+            onClick={async () => {
               setLoading(true);
-              AuthService.logout();
+              await AuthService.logout();
+              setType(0);
               navigate("/admin/login");
             }}
           >

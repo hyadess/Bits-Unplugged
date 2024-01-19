@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomCard from "../../components/Cards/CustomCard";
 import CardContainer from "../../containers/CardContainer";
-import Cookies from "universal-cookie";
 import Title from "../../components/Title";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "../../components/Modal";
 import { canvasApi } from "../../api";
 const AdminCanvasList = () => {
-  const [type, setType] = useState(-1);
   const navigate = useNavigate();
-
   const [loading, setLoading] = useState(false);
   const [canvasList, setCanvasList] = useState([]);
 
@@ -24,8 +21,6 @@ const AdminCanvasList = () => {
   };
 
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(localStorage.getItem("type"));
     getCanvasList();
   }, []);
 

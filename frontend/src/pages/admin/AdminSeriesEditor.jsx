@@ -15,8 +15,6 @@ import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { seriesApi, topicApi } from "../../api";
 
 const AdminSeriesEditor = () => {
-  const navigate = useNavigate();
-  const [type, setType] = useState(-1);
   const { id } = useParams();
   const [series, setSeries] = useState(null);
   const [topicList, setTopicList] = useState([]);
@@ -81,8 +79,6 @@ const AdminSeriesEditor = () => {
     }
   };
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(localStorage.getItem("type"));
     getSeries();
     getProblemList();
     getTopicList();

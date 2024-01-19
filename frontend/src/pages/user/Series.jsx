@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import CustomCard from "../../components/Cards/CustomCard";
 import CardContainer from "../../containers/CardContainer";
 import Title from "../../components/Title";
 import { seriesApi } from "../../api";
+import GlobalContext from "../../store/GlobalContext";
 
 export default function Problems() {
-  const [type, setType] = useState(-1);
   const { id } = useParams();
+  const { type } = useContext(GlobalContext);
   const [seriesList, setSeriesList] = useState([]);
   const getSeriesList = async () => {
     const res = await seriesApi.getSeriesByTopic(id);
@@ -18,7 +19,6 @@ export default function Problems() {
   };
 
   useEffect(() => {
-    setType(localStorage.getItem("type"));
     getSeriesList();
   }, []);
   return (

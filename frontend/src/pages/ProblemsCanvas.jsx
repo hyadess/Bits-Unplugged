@@ -1,46 +1,35 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { setLoading } from "../App";
 import ProblemsCanvasView from "../views/ProblemsCanvas";
 import { problemApi, submissionApi, userActivityApi } from "../api";
 import SubmissionService from "../services/submissionService";
+import GlobalContext from "../store/GlobalContext";
 export default function ProblemsCanvas() {
+  const { type } = useContext(GlobalContext);
   const { id } = useParams();
+  const backup = useRef(null);
   const [problem, setProblem] = useState(null);
-  const [backup, setBackup] = useState(null);
-  const [input, setInput] = useState(null);
-  const [canvasId, setCanvasId] = useState(null);
-  const [statement, setStatement] = useState("");
+  const [canvasData, setCanvasData] = useState(null);
   const [activityData, setActivityData] = useState({});
-  const [type, setType] = useState(-1);
   const canvasRef = useRef();
-  const [editOptions, setEditOptions] = useState({});
-  const [previewOptions, setPreviewOptions] = useState({});
+
   useEffect(() => {
     renderProblem();
-    const isLoggedIn = localStorage.hasOwnProperty("token");
-    if (isLoggedIn) {
-      setType(localStorage.getItem("type"));
-    }
   }, []);
 
   const renderProblem = async () => {
     const result = await problemApi.getProblemById(id);
     if (result.success) {
-      console.log(result.data);
+      backup.current = result.data.canvasData;
       setProblem(result.data);
-      setInput(JSON.parse(JSON.stringify(result.data.canvasData)));
-      setBackup(JSON.parse(JSON.stringify(result.data.canvasData)));
-      setCanvasId(result.data.canvasId);
-      setStatement(result.data.statement);
-      setEditOptions(result.data.editOptions);
-      setPreviewOptions(result.data.previewOptions);
+      setCanvasData(JSON.parse(JSON.stringify(result.data.canvasData)));
       if (result.data.canvasId === null) setLoading(false);
     }
   };
 
   const reset = async () => {
-    setInput(JSON.parse(JSON.stringify(backup)));
+    setCanvasData(JSON.parse(JSON.stringify(backup.current)));
     canvasRef?.current?.handleReset(JSON.parse(JSON.stringify(backup)));
   };
 
@@ -50,11 +39,11 @@ export default function ProblemsCanvas() {
     let res = await SubmissionService.checkSolution(
       problem.checkerCode,
       problem.checkerCanvas,
-      input,
+      canvasData,
       activityData
     );
     console.log("output " + res.output);
-    await submissionApi.submitSolution(input, res.output, id);
+    await submissionApi.submitSolution(problem.canvasData, res.output, id);
     if (res.output === "Accepted") {
       if (startTimeRef.current) {
         const endTime = new Date();
@@ -104,15 +93,9 @@ export default function ProblemsCanvas() {
     <ProblemsCanvasView
       problem={problem}
       id={id}
-      statement={statement}
-      canvasId={canvasId}
-      input={input}
-      setInput={setInput}
+      input={canvasData}
+      setInput={setCanvasData}
       ref={canvasRef}
-      editOptions={editOptions}
-      setEditOptions={setEditOptions}
-      previewOptions={previewOptions}
-      setPreviewOptions={setPreviewOptions}
       activityData={activityData}
       setActivityData={setActivityData}
       onSubmit={solutionSubmit}

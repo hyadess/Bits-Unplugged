@@ -1,5 +1,5 @@
 import { showToast, showSuccess, showMessage } from "../App";
-
+import { authApi } from "../api";
 const AuthService = {
   /**
    *
@@ -10,7 +10,7 @@ const AuthService = {
    * @returns {Object} Either { success: true } or { success: false, error: string }
    */
   login: async (data) => {
-    const res = await this.authApi.login(data);
+    const res = await authApi.login(data);
     console.log(res);
     if (res.success) {
       localStorage.setItem("type", data.type);
@@ -22,7 +22,7 @@ const AuthService = {
     return res;
   },
   logout: async () => {
-    const res = await this.authApi.logout();
+    const res = await authApi.logout();
     if (res.success) {
       localStorage.removeItem("token");
       localStorage.removeItem("type");
@@ -39,7 +39,7 @@ const AuthService = {
    * @returns {Object} Either { success: true } or { success: false, error: string }
    */
   signup: async (data) => {
-    const res = await this.authApi.signup(data);
+    const res = await authApi.signup(data);
     if (res.success) {
       showSuccess("New account created", res);
     } else {

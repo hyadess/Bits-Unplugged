@@ -8,12 +8,9 @@ import Modal from "../../components/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import { topicApi } from "../../api";
 const AdminTopics = () => {
-  const [type, setType] = useState(-1);
   const navigate = useNavigate();
-
   const [loading, setLoading] = useState(false);
   const [topicList, setTopicList] = useState([]);
-
   const getTopicList = async () => {
     const res = await topicApi.getAllTopics();
     if (res.success) {
@@ -24,7 +21,6 @@ const AdminTopics = () => {
   };
 
   useEffect(() => {
-    setType(localStorage.getItem("type"));
     getTopicList();
   }, []);
 

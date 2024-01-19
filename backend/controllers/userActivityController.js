@@ -14,7 +14,7 @@ class UserActivityController extends Controller {
         req.params.problemId,
         req.body.duration
       );
-      res.status(201).json(activity);
+      // res.status(201).json(activity); // not needed
     });
   };
 

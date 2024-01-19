@@ -18,7 +18,6 @@ class ProblemController extends Controller {
     });
   };
 
-
   //new for souvik......................
   getAllUnsolvedProblems = async (req, res) => {
     let result = await problemRepository.getAllUnsolvedProblems(

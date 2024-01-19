@@ -11,9 +11,6 @@ import CanvasDesignTab from "./CanvasDesignTab";
 import DetailsTab from "./DetailsTab";
 import Header from "./Header";
 
-const problemController = new ProblemController();
-const canvasController = new CanvasController();
-
 const ProblemSettingView = ({
   title,
   setTitle,

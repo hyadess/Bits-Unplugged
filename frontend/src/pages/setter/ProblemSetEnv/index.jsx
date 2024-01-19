@@ -187,20 +187,25 @@ export default function ProblemSetEnv() {
       // console.log(res);
     }
   };
-  const handleCheckSolution = async () => {
-    // console.log("Run COde");
-    try {
-      const result = await problemController.checkSolution(
-        code,
-        checkerCanvas,
-        test,
-        testActivity
-      );
-      return result;
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const handleCheckSolution = async () =>
+    // checkerCode,
+    // checkerCanvas,
+    // userCanvas,
+    // userActivity
+    {
+      // console.log("Run COde");
+      try {
+        const result = await problemController.checkSolution(
+          code,
+          checkerCanvas,
+          test,
+          testActivity
+        );
+        return result;
+      } catch (error) {
+        console.error(error);
+      }
+    };
   const saveAll = async () => {
     await problemController.updateProblem(problemid, {
       title: title,

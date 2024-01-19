@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, useBeforeUnload } from "react-router-dom";
-import ProblemController from "../../../controller/problemController";
 import ProbSetTab from "../../../components/ProbSetTab";
 import Confirmation from "../../../components/Confirmation";
-import CanvasController from "../../../controller/canvasController";
-import { setLoading } from "../../../App";
 import TestTab from "./TestTab";
 import SolutionCheckerTab from "./SolutionCheckerTab";
 import CanvasDesignTab from "./CanvasDesignTab";

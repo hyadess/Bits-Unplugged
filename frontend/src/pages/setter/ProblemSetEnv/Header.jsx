@@ -1,19 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import Tooltip from "@mui/material/Tooltip";
-import ProblemController from "../../../controller/problemController";
 import { faExpand, faSave, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { setLoading } from "../../../App";
 import { IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-const problemController = new ProblemController();
 
 const Header = ({ title, problemid, updateAll, saveAll }) => {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-
+  const navigate = useNavigate();
   return (
     <div className="mx-auto max-w-screen-2xl items-center py-4 pt-8 md:grid md:grid-cols-2">
       <div className="flex flex-row items-center md:mt-0 w-full text-center text-5xl font-extrabold tracking-tight md:text-left bu-text-title">
@@ -33,7 +27,7 @@ const Header = ({ title, problemid, updateAll, saveAll }) => {
               className="bu-text-primary flex cursor-pointer items-center text-3xl"
               onClick={() => {
                 setLoading(true);
-                switchPath(`/problem/${problemid}/preview`);
+                navigate(`/problem/${problemid}/preview`);
               }}
             >
               <FontAwesomeIcon icon={faExpand} />

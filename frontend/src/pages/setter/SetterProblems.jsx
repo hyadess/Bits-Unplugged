@@ -1,24 +1,10 @@
 import SetterProblemsView from "../../views/SetterProblems";
 import React, { useState, useEffect, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
-import ProblemSetCard from "../../components/Cards/ProblemSetCard";
-import ProblemController from "../../controller/problemController";
-import TopicController from "../../controller/topicController";
-import TableContainer from "../../containers/TableContainer";
-import CancelIcon from "@mui/icons-material/Cancel";
-
-import Title from "../../components/Title";
-import AddIcon from "@mui/icons-material/Add";
 import { setLoading } from "../../App";
 import { problemApi } from "../../api";
-const problemController = new ProblemController();
-const topicController = new TopicController();
-
 const SetterProblems = () => {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
+  const navigate = useNavigate();
   const [problemList, setProblemList] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -49,7 +35,7 @@ const SetterProblems = () => {
     setLoading(true);
     closeModal();
     const problemId = await getProblemId(title);
-    switchPath(`/problem/${problemId}/edit`);
+    navigate(`/problem/${problemId}/edit`);
   };
 
   const openModal = () => {

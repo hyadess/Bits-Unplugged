@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ProblemController from "../controller/problemController";
 import { setLoading } from "../App";
 import ProblemsCanvasView from "../views/ProblemsCanvas";
 import { problemApi, submissionApi, userActivityApi } from "../api";
-const problemController = new ProblemController();
+import SubmissionService from "../services/submissionService";
 export default function ProblemsCanvas() {
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
@@ -48,7 +47,7 @@ export default function ProblemsCanvas() {
   const startTimeRef = useRef(null);
 
   const solutionSubmit = async (e) => {
-    let res = await problemController.checkSolution(
+    let res = await SubmissionService.checkSolution(
       problem.checkerCode,
       problem.checkerCanvas,
       input,

@@ -15,10 +15,7 @@ import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { seriesApi, topicApi } from "../../api";
 
 const AdminSeriesEditor = () => {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
+  const navigate = useNavigate();
   const [type, setType] = useState(-1);
   const { id } = useParams();
   const [series, setSeries] = useState(null);

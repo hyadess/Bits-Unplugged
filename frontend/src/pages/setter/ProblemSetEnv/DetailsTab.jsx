@@ -1,13 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import ProblemController from "../../../controller/problemController";
 import ProblemStatement from "../../../components/Statement";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import CanvasController from "../../../controller/canvasController";
 import { problemApi } from "../../../api";
-const problemController = new ProblemController();
-const canvasController = new CanvasController();
-
 const DetailsTab = ({
   title,
   setTitle,

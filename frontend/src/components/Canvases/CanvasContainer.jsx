@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef, forwardRef } from "react";
 import { Route, useParams } from "react-router-dom";
-import CanvasController from "../../controller/canvasController";
-import Cookies from "universal-cookie";
 import InfoIcon from "@mui/icons-material/Info";
 import {
   Button,
@@ -27,9 +25,6 @@ import {
   faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 import { canvasApi } from "../../api";
-const canvasController = new CanvasController();
-const cookies = new Cookies();
-
 const CanvasContainer = (props, ref) => {
   const [DynamicComponent, setDynamicComponent] = useState(null);
   const [componentPath, setComponentPath] = useState(null);

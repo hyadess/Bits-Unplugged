@@ -9,13 +9,13 @@ import { setLoading } from "../App";
 
 const Home = () => {
   const [type, setType] = useState(-1);
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   useEffect(() => {
     const cookies = new Cookies();
     const isLoggedIn = localStorage.hasOwnProperty("token");
     const userType = localStorage.getItem("type");
     // if (isLoggedIn) {
-    //   navigator(userType === 0 ? "/topics" : "/problemSet");
+    //   navigate(userType === 0 ? "/topics" : "/problemSet");
     // }
     setType(userType || -1);
     console.log("Type:", userType || -1);
@@ -65,12 +65,12 @@ const Home = () => {
             onClick={() => {
               setLoading(true);
               type == 2
-                ? navigator("/admin/topics")
+                ? navigate("/admin/topics")
                 : type == 1
-                  ? navigator("/problemSet")
+                  ? navigate("/problemSet")
                   : type == 0
-                    ? navigator("/topics")
-                    : navigator("/login");
+                    ? navigate("/topics")
+                    : navigate("/login");
             }}
             className="bu-button-secondary bu-text-primary inline-flex cursor-pointer items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
           >

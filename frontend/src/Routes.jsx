@@ -125,7 +125,6 @@ const Public = () => {
 
 const AppRoutes = () => {
   const [type, setType] = useState(-1); // 0 - Solver, 1 - Setter, 2 - Guest
-  // const navigator = useNavigate();
   useEffect(() => {
     const isLoggedIn = localStorage.hasOwnProperty("token");
     if (isLoggedIn) {

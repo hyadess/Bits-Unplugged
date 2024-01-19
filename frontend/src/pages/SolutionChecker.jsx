@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAsyncError, useNavigate, useParams } from "react-router-dom";
 import Editor, { loader, useMonaco } from "@monaco-editor/react";
-import ProblemController from "../controller/problemController";
-import { showToast } from "../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPlay } from "@fortawesome/free-solid-svg-icons";
 import monaco_theme from "../themes/my_theme.json";
@@ -34,8 +32,6 @@ const defineEditorTheme = (monaco) => {
 const setEditorTheme = (editor, monaco) => {
   monaco.editor.setTheme("light-theme");
 };
-const problemController = new ProblemController();
-//<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 export default function SolutionChecker(props) {
   // const monaco_editor = useMonaco();
   const editorRef = useRef(null);
@@ -44,11 +40,9 @@ export default function SolutionChecker(props) {
   const ref = useRef(null);
   const ref2 = useRef(null);
   const [showStdOut, setShowStdOut] = useState(false);
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const { problemid } = useParams();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
+
   const [editorHeight, setEditorHeight] = useState(window.innerWidth / 3);
 
   // useEffect(() => {

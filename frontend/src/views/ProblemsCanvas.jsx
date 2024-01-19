@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useRef, forwardRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import CanvasContainer from "../components/Canvases/CanvasContainer";
-import ProblemController from "../controller/problemController";
-import SubmissionController from "../controller/submissionController";
-import UserActivityController from "../controller/userActivityController";
-
 import { Button } from "@mui/material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
@@ -43,7 +39,7 @@ const Title = ({ problem }) => {
 };
 
 const Header = ({ id, problem, type }) => {
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   return (
     <div className="flex flex-row justify-between">
       <Title problem={problem} />
@@ -53,7 +49,7 @@ const Header = ({ id, problem, type }) => {
             className="bu-button-primary rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white"
             onClick={() => {
               setLoading(true);
-              navigator(
+              navigate(
                 type == 2 ? `/admin/problems/${id}` : `/problem/${id}/edit`
               );
             }}
@@ -71,7 +67,7 @@ const Header = ({ id, problem, type }) => {
             onClick={() => {
               setLoading(true);
               console.log(problem);
-              navigator(`/submission/${id}`);
+              navigate(`/submission/${id}`);
             }}
           >
             <div className="flex flex-row items-center gap-4">SUBMISSIONS</div>

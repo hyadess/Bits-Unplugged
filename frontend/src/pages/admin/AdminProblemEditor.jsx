@@ -9,10 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpand } from "@fortawesome/free-solid-svg-icons";
 import { problemApi, seriesApi } from "../../api";
 const AdminProblemEditor = () => {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
+  const navigate = useNavigate();
   const [type, setType] = useState(-1);
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
@@ -74,7 +71,7 @@ const AdminProblemEditor = () => {
               className="font-medium rounded-lg text-lg px-7 py-3.5 text-center flex flex-row gap-4 items-center bu-button bg-teal-300 hover:bg-teal-400 active:ring-teal-300 dark:bg-green-600 dark:hover:bg-green-700 dark:active:ring-green-600"
               onClick={() => {
                 setLoading(true);
-                switchPath(`/admin/problems/${id}/preview`);
+                navigate(`/admin/problems/${id}/preview`);
               }}
               // onClick={() => setOpen(true)}
             >

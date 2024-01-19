@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, useBeforeUnload } from "react-router-dom";
-import ProblemController from "../../../controller/problemController";
-import CanvasController from "../../../controller/canvasController";
-import { setLoading } from "../../../App";
+import { setLoading, showSuccess } from "../../../App";
 import ProblemSettingView from "./ProblemSettingView";
 import { canvasApi, problemApi } from "../../../api";
-const problemController = new ProblemController();
-const canvasController = new CanvasController();
+import SubmissionService from "../../../services/submissionService";
 
 export default function ProblemSetEnv() {
   // title, statement, input, options, checker, test
@@ -55,11 +52,7 @@ export default function ProblemSetEnv() {
   // const [resetTrigger, setResetTrigger] = useState(false);
   const [checkerType, setCheckerType] = useState(0); // send to solution checker tab
 
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-
+  const navigate = useNavigate();
   const init = (problem) => {
     setProblem(deepCopy(problem));
     setInput(deepCopy(problem.canvasData));
@@ -153,7 +146,7 @@ export default function ProblemSetEnv() {
   const deleteProblem = async () => {
     const res = await problemApi.deleteProblem(problemid);
     if (res.success) {
-      switchPath("/problemSet");
+      navigate("/problemSet");
     }
   };
 
@@ -196,7 +189,7 @@ export default function ProblemSetEnv() {
     {
       // console.log("Run COde");
       try {
-        const result = await problemController.checkSolution(
+        const result = await SubmissionService.checkSolution(
           code,
           checkerCanvas,
           test,
@@ -217,7 +210,10 @@ export default function ProblemSetEnv() {
   };
   const updateAll = async () => {
     // Save all with a new api call
-    await problemController.submitProblem(problemid); // Or send through this
+    const res = await problemApi.submitProblem(problemid); // Or send through this
+    if (res.success) {
+      showSuccess("Problem submitted for approval", res);
+    }
   };
 
   // Block navigating elsewhere when data has been entered into the input

@@ -9,10 +9,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { topicApi } from "../../api";
 const AdminTopics = () => {
   const [type, setType] = useState(-1);
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [topicList, setTopicList] = useState([]);
@@ -54,7 +51,7 @@ const AdminTopics = () => {
       setLoading(true);
       closeModal();
       const topicId = await getTopicId(inputValue);
-      switchPath(`/admin/topics/${topicId}`);
+      navigate(`/admin/topics/${topicId}`);
     }
   };
 

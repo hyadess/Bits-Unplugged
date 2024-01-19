@@ -7,10 +7,7 @@ import { setLoading } from "../../App";
 import { topicApi } from "../../api";
 
 const AdminTopicEditor = () => {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
+  const navigate = useNavigate();
   const [type, setType] = useState(-1);
   const { id } = useParams();
 

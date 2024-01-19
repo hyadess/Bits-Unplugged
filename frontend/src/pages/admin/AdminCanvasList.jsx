@@ -9,10 +9,7 @@ import Modal from "../../components/Modal";
 import { canvasApi } from "../../api";
 const AdminCanvasList = () => {
   const [type, setType] = useState(-1);
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [canvasList, setCanvasList] = useState([]);
@@ -55,7 +52,7 @@ const AdminCanvasList = () => {
       setLoading(true);
       closeModal();
       const canvasId = await getCanvasId(inputValue);
-      switchPath(`/admin/canvas/${canvasId}`);
+      navigate(`/admin/canvas/${canvasId}`);
     }
   };
 

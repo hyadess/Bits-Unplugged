@@ -1,13 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthController from "../../controller/authController";
 import { useSearchParams, createSearchParams } from "react-router-dom";
 import { CircularProgress, Switch } from "@mui/material";
 import Banner from "../../components/Banner";
 import Layout1 from "../../components/Layouts/Layout1";
 import { setLoading } from "../../App";
-const authController = new AuthController();
-
+import AuthService from "../../services/authService";
 const InputField = (props) => {
   return (
     <div>
@@ -68,7 +66,7 @@ const Login = () => {
   const handleSubmit = async () => {
     if (!loggingIn) {
       setLoading(true);
-      const res = await authController.login({
+      const res = await AuthService.login({
         email: email,
         pass: password,
         type: type == "solver" ? 0 : 1,

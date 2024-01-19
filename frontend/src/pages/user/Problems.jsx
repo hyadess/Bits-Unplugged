@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ProblemController from "../../controller/problemController";
-
 import ProblemCard from "../../components/Cards/ProblemCard";
 import TableContainer from "../../containers/TableContainer";
 import Title from "../../components/Title";

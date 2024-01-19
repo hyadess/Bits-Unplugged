@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthController from "../../controller/authController";
 import { toast } from "react-toastify";
 import { CircularProgress, Switch } from "@mui/material";
 import { useSearchParams, createSearchParams } from "react-router-dom";
 import Banner from "../../components/Banner";
 import Layout1 from "../../components/Layouts/Layout1";
 import { setLoading } from "../../App";
-const authController = new AuthController();
-
+import AuthService from "../../services/authService";
 const InputField = (props) => {
   return (
     <div>
@@ -121,7 +119,7 @@ const Signup = () => {
         password,
         confirmPassword
       );
-      const res = await authController.signup({
+      const res = await AuthService.signup({
         fullname: fullName,
         username: userName,
         dob: dateOfBirth,

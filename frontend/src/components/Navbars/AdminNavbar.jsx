@@ -1,17 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../Logo";
-import AuthController from "../../controller/authController";
 import { setLoading } from "../../App";
 import AdminNavButton from "./AdminNavButton";
-const authController = new AuthController();
+import AuthService from "../../services/authService";
 
 const AdminNavbar = () => {
-  const navigator = useNavigate();
-  const location = useLocation();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
+  const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(null);
 
   const toggleDarkMode = () => {
@@ -46,7 +41,7 @@ const AdminNavbar = () => {
           className="p-5 pl-0"
           onClick={() => {
             setLoading(true);
-            switchPath("/home");
+            navigate("/home");
           }}
         >
           <Logo />
@@ -65,8 +60,8 @@ const AdminNavbar = () => {
             data-tip="Home"
             onClick={() => {
               setLoading(true);
-              authController.logout();
-              switchPath("/admin/login");
+              AuthService.logout();
+              navigate("/admin/login");
             }}
           >
             <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">

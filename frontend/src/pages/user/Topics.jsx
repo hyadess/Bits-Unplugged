@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import TopicController from "../../controller/topicController";
 import CustomCard from "../../components/Cards/CustomCard";
 import CardContainer from "../../containers/CardContainer";
 import Cookies from "universal-cookie";
@@ -9,8 +7,6 @@ import Title from "../../components/Title";
 import TopicCard from "../../components/Cards/TopicCard";
 import { setLoading } from "../../App";
 import { topicApi } from "../../api";
-const topicController = new TopicController();
-
 const Topics = () => {
   const [type, setType] = useState(-1);
 

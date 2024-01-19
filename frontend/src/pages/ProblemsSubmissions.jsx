@@ -1,42 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import TableContainer from "../containers/TableContainer";
-import SubmissionController from "../controller/submissionController";
-import ProblemController from "../controller/problemController";
 import SubmissionCard from "../components/Cards/SubmissionCard";
-import { Button } from "@mui/material";
-import RotateLeftIcon from "@mui/icons-material/RotateLeft";
-import SaveIcon from "@mui/icons-material/Save";
-import SendIcon from "@mui/icons-material/Send";
-
-import Cookies from "universal-cookie";
-import Latex from "react-latex";
-import EditIcon from "@mui/icons-material/Edit";
-import Title from "../components/Title";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../App";
 import { problemApi, submissionApi } from "../api";
-
-const submissionController = new SubmissionController();
-const problemController = new ProblemController();
-
 export default function ProblemsSubmissions() {
-  const navigator = useNavigate();
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
   const [submissionList, setSubmissionList] = useState([]);
-  const [type, setType] = useState(-1);
 
   useEffect(() => {
     if (id !== undefined) {
       renderProblem();
       getSubmissions();
       setLoading(false);
-    }
-    const isLoggedIn = localStorage.hasOwnProperty("token");
-    if (isLoggedIn) {
-      setType(localStorage.getItem("type"));
     }
   }, []);
 

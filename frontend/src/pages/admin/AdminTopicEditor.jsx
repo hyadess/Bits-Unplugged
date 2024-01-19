@@ -2,11 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "universal-cookie";
 import Title from "../../components/Title";
-import TopicController from "../../controller/topicController";
-import { TextField, TextField2 } from "../../components/InputFields";
+import { TextField2 } from "../../components/InputFields";
 import { setLoading } from "../../App";
 import { topicApi } from "../../api";
-const topicController = new TopicController();
 
 const AdminTopicEditor = () => {
   const navigator = useNavigate();

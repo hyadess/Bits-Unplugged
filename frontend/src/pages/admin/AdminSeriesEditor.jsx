@@ -7,27 +7,12 @@ import Cookies from "universal-cookie";
 
 import Title from "../../components/Title";
 
-import Layout4 from "../../components/Layouts/Layout4";
-import AdminNavbar from "../../components/Navbars/AdminNavbar";
-import {
-  SelectionField2,
-  TextField,
-  TextField2,
-} from "../../components/InputFields";
-
-import TopicController from "../../controller/topicController";
-import ProblemController from "../../controller/problemController";
-import SeriesController from "../../controller/seriesController";
+import { SelectionField2, TextField2 } from "../../components/InputFields";
 import { setLoading } from "../../App";
-import { IconButton, TableContainer } from "@mui/material";
-import ProblemCard from "../../components/Cards/ProblemCard";
+import { IconButton } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { seriesApi, topicApi } from "../../api";
-
-const topicController = new TopicController();
-const problemController = new ProblemController();
-const seriesController = new SeriesController();
 
 const AdminSeriesEditor = () => {
   const navigator = useNavigate();

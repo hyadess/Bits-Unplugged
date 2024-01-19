@@ -11,7 +11,6 @@ export default function ProblemsCanvas() {
   const [backup, setBackup] = useState(null);
   const [input, setInput] = useState(null);
   const [canvasId, setCanvasId] = useState(null);
-  const [title, setTitle] = useState("");
   const [statement, setStatement] = useState("");
   const [activityData, setActivityData] = useState({});
   const [type, setType] = useState(-1);
@@ -37,7 +36,6 @@ export default function ProblemsCanvas() {
       setStatement(result.data.statement);
       setEditOptions(result.data.editOptions);
       setPreviewOptions(result.data.previewOptions);
-      setTitle(result.data.title);
       if (result.data.canvasId === null) setLoading(false);
     }
   };

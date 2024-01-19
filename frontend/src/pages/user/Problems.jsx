@@ -11,15 +11,10 @@ import { setLoading } from "../../App";
 import { Switch } from "@headlessui/react";
 import { problemApi } from "../../api";
 
-const problemController = new ProblemController();
-
 export default function Problems() {
   const { id } = useParams();
   const [listType, setListType] = useState("all");
   const [problemList, setProblemList] = useState([]);
-  // const [allProblemList, setAllProblemList] = useState([]);
-  // const [unsolvedProblemList, setUnsolvedProblemList] = useState([]);
-
   const allProblemList = useRef([]);
   const unsolvedProblemList = useRef([]);
   const getProblemList = async () => {

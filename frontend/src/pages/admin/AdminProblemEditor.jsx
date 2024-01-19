@@ -1,29 +1,13 @@
 import React, { useState, useEffect } from "react";
-
 import { useNavigate, useParams } from "react-router-dom";
-
 import Cookies from "universal-cookie";
 import Title from "../../components/Title";
-
-import {
-  SelectionField2,
-  TextField,
-  TextField2,
-} from "../../components/InputFields";
-
-import TopicController from "../../controller/topicController";
-
-import SeriesController from "../../controller/seriesController";
-import ProblemController from "../../controller/problemController";
+import { SelectionField2 } from "../../components/InputFields";
 import { Switch } from "@mui/material";
 import { setLoading } from "../../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpand } from "@fortawesome/free-solid-svg-icons";
 import { problemApi, seriesApi } from "../../api";
-const problemController = new ProblemController();
-const topicController = new TopicController();
-const seriesController = new SeriesController();
-
 const AdminProblemEditor = () => {
   const navigator = useNavigate();
   const switchPath = (pathname) => {

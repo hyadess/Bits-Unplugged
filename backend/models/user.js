@@ -11,10 +11,12 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasOne(models.Setter);
       User.hasOne(models.Credential, { foreignKey: "userId" });
-      User.belongsToMany(models.ProblemVersion, {
-        through: models.Activity,
-        foreignKey: "userId",
-      });
+      // User.belongsToMany(models.ProblemVersion, {
+      //   through: models.Activity,
+      //   foreignKey: "userId",
+      //   as: "problems",
+      // });
+      User.hasMany(models.Activity, { foreignKey: "userId" });
       User.hasMany(models.Submission, { foreignKey: "userId" });
     }
   }

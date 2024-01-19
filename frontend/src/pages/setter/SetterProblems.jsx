@@ -28,10 +28,12 @@ const SetterProblems = () => {
     }
   };
   const getProblemList = async () => {
-    const res = await problemController.getMyProblems();
+    const res = await problemController.getAllProblems();
     if (res.success) {
-      setProblemList(res.data.sort((a, b) => a.id - b.id));
-      if (res.data.length == 0) setLoading(false);
+      // console.log(res.data);
+      if (res.data.length > 0)
+        setProblemList(res.data.sort((a, b) => a.id - b.id));
+      else setLoading(false);
     }
   };
 

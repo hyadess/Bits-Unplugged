@@ -32,7 +32,7 @@ const SetterProblemsView = ({
             deleteAction={deleteProblem}
             isLive={prob.isLive}
             timestamp={prob.updatedAt}
-            canvas={prob.canvasName}
+            canvas={prob.canvas.name}
           />
         ))}
       </CardContainer>

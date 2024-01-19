@@ -19,8 +19,10 @@ import TopicController from "../../controller/topicController";
 import ProblemController from "../../controller/problemController";
 import SeriesController from "../../controller/seriesController";
 import { setLoading } from "../../App";
-import { TableContainer } from "@mui/material";
+import { IconButton, TableContainer } from "@mui/material";
 import ProblemCard from "../../components/Cards/ProblemCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 
 const topicController = new TopicController();
 const problemController = new ProblemController();
@@ -83,10 +85,7 @@ const AdminSeriesEditor = () => {
     }
 
     for (let i = 0; i < problemList.length; i++) {
-      await problemController.updateSerial(
-        problemList[i].problemId,
-        problemList[i].serialNo
-      );
+      await problemController.updateSerial(problemList[i].problemId, i);
     }
 
     const res = await seriesController.updateSeries(id, series);
@@ -136,15 +135,73 @@ const AdminSeriesEditor = () => {
           </div>
           <div className="flex flex-col gap-2">
             {problemList &&
-              problemList.map((problem, index) => (
-                <div
-                  className="flex flex-row items-center gap-5 justify-between"
-                  key={index}
-                >
-                  <div className="bu-text-primary text-2xl">
-                    {problem.title}
-                  </div>
-                  <input
+              problemList
+                // .sort((a, b) => a.serialNo - b.serialNo)
+                .map((problem, index) => (
+                  <div
+                    className="flex flex-row items-center gap-5 justify-between"
+                    key={index}
+                  >
+                    <div className="flex flex-row gap-5">
+                      <div className="bu-text-primary text-2xl">
+                        {index + 1}
+                      </div>
+                      <div className="bu-text-primary text-2xl">
+                        {problem.title}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-0 bu-text-primary cursor-pointer items-center justify-center">
+                      <IconButton
+                        sx={{
+                          fontSize: "2rem",
+                          width: "3rem",
+                          height: "3rem",
+                        }}
+                        onClick={() =>
+                          setProblemList((prevArray) => {
+                            const newArray = [...prevArray];
+                            if (index > 0)
+                              [newArray[index], newArray[index - 1]] = [
+                                newArray[index - 1],
+                                newArray[index],
+                              ];
+                            return newArray;
+                          })
+                        }
+                      >
+                        <div className="flex items-center bu-text-primary cursor-pointer">
+                          <FontAwesomeIcon icon={faCaretUp} />
+                        </div>
+                      </IconButton>
+                      <IconButton
+                        sx={{
+                          fontSize: "2rem",
+                          width: "3rem",
+                          height: "3rem",
+                        }}
+                        onClick={() =>
+                          setProblemList((prevArray) => {
+                            const newArray = [...prevArray];
+                            if (index < problemList.length - 1) {
+                              console.log(newArray);
+                              [newArray[index], newArray[index + 1]] = [
+                                newArray[index + 1],
+                                newArray[index],
+                              ];
+                              console.log(newArray);
+                            }
+
+                            return newArray;
+                          })
+                        }
+                      >
+                        <div className="flex items-center bu-text-primary cursor-pointer">
+                          <FontAwesomeIcon icon={faCaretDown} />
+                        </div>
+                      </IconButton>
+                    </div>
+                    {/* <input
                     label="Serial No"
                     value={problem.serialNo}
                     type="number"
@@ -159,8 +216,9 @@ const AdminSeriesEditor = () => {
                         return newArray;
                       });
                     }}
-                  />
-                  {/* <ProblemCard
+                  /> */}
+
+                    {/* <ProblemCard
                   idx={index + 1}
                   id={`Problem ${index + 1}`}
                   name={problem.title}
@@ -168,8 +226,8 @@ const AdminSeriesEditor = () => {
                   path={`/admin/problems/${problem.problemId}`}
                   action="Get Started"
                 /> */}
-                </div>
-              ))}
+                  </div>
+                ))}
           </div>
           <button
             className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-primary mt-5"

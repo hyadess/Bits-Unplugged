@@ -48,7 +48,7 @@ const Home = () => {
         <div className="mt-4 md:mt-0">
           <h2 className="bu-text-primary mb-4 text-center text-4xl font-extrabold tracking-tight md:text-left">
             {" "}
-            A platform for learning{" "}
+            A platform for exploring{" "}
             <span className="bu-text-title text-5xl">
               Computer Science
             </span>{" "}
@@ -56,8 +56,8 @@ const Home = () => {
           </h2>
 
           <p className="bu-text-subtitle mb-6 text-center  font-light md:text-left md:text-lg">
-            Bits unplugged is a platform for students to learn complex CS
-            concepts without needing to write a single line of code through an
+            Bits unplugged is a platform for students to solve CS problems
+            without needing to write a single line of code through an
             interactive medium
           </p>
 
@@ -108,19 +108,19 @@ const Home = () => {
               name="Sayem Shahad Soummo"
               position="1905064"
               detail="Frontend Developer"
-              image="https://i.pinimg.com/736x/ec/9d/ac/ec9dac50ce3b1faa401a3ad7ea1711de.jpg"
+              image="https://scontent.fdac19-1.fna.fbcdn.net/v/t1.6435-9/89262909_729184384280492_2611776918436970496_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=dd63ad&_nc_eui2=AeGbsVBatE9_94rhLSNjV6JzzUJTCWVFGxvNQlMJZUUbG2JTTmGJUoz-LXLp7DNJMrS6JCY-VJys9Ez5XGwMekxu&_nc_ohc=C3zdgLTy6O0AX89SFEG&_nc_ht=scontent.fdac19-1.fna&oh=00_AfCWqj737v-mchEXDJMEqwcr4XovFVgWSeb-cUx5is-nog&oe=65CFC7D8"
             />
             <TeamCard
               name="Mahir Labib Dihan"
               position="1905072"
               detail="Devops"
-              image="https://i.pinimg.com/564x/7c/0b/89/7c0b8922957831dc3ef513b08157de73.jpg"
+              image="https://scontent.fdac19-1.fna.fbcdn.net/v/t39.30808-6/342405302_162812986420549_8137144512048864097_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeEUQVHrF_0obxtjOtPX8RXQxgMQYlgi39jGAxBiWCLf2PF-cQqTJSxB-cRURaoTbHPJ77YDLobgf14QduyLG-Ax&_nc_ohc=hKFk19oTtvcAX97cKiZ&_nc_ht=scontent.fdac19-1.fna&oh=00_AfCUsDhY88TrbGK6QLiCp4VHy9g_wnEXwgJbLrjQXA4I_Q&oe=65AE2B20"
             />
             <TeamCard
               name="Souvik Ghosh"
               position="1905073"
               detail="Backend Developer"
-              image="https://openseauserdata.com/files/1d823e6999a056302a4415abf07f2c10.jpg"
+              image="https://scontent.fdac19-1.fna.fbcdn.net/v/t39.30808-6/271758037_1540772279631394_6944096475676658530_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeHmGOR-xrf1HKJskCja7ArKYViqE0OGSfVhWKoTQ4ZJ9XjZSonEhT4VRRN-ryf9LmBm7KdE7VDk6SzdNdrH24vw&_nc_ohc=C9YMiZ-ZHSkAX81GbW1&_nc_oc=AQlaPEYfU3-l_-VW0i9iMqRr-abUhnAhaXa_ysPFyoJhP-B5PRgSrcy-GEbTp8d0a4w&_nc_ht=scontent.fdac19-1.fna&oh=00_AfDMuy8A8jZ7I8hSw00r-MMfJZbt1VAAXNFRVYyQ5coywg&oe=65ADF420"
             />
           </div>
         </div>

@@ -23,10 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "canvasId",
         as: "canvas",
       });
-      Problem.belongsToMany(models.User, {
-        through: models.Activity,
-        foreignKey: "problemId",
-      });
+      // Problem.belongsToMany(models.Activity, {
+      //   foreignKey: "problemId",
+      //   as: "activity",
+      // });
       // Problem.hasMany(models.Submission, { foreignKey: "problemId" });
       Problem.belongsToMany(models.Contest, { through: models.ContestProblem });
     }

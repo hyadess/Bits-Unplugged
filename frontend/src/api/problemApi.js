@@ -5,16 +5,18 @@ class ProblemApi extends Api {
     return await this.get("/problem");
   };
   getSubmittedProblems = async () => {
-    return await this.get("/problem/submitted");
+    return await this.get("/problem");
   };
   getMyProblems = async () => {
     return await this.get("/problem/created");
   };
   getProblemsBySeries = async (seriesId) => {
-    return await this.get("/problem/by_series/" + seriesId);
+    return await this.get("/series/" + seriesId + "/problems");
   };
   getUnsolvedProblemsBySeries = async (seriesId) => {
-    return await this.get("/problem/by_series/unsolved/" + seriesId);
+    return await this.get("/series/" + seriesId + "/problems", {
+      solved: false,
+    });
   };
   getProblemById = async (problemId) => {
     return await this.get("/problem/" + problemId);

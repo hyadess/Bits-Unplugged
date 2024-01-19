@@ -4,22 +4,20 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { Stage, Layer, Rect, Label, Text, Tag, Line, Group } from "react-konva";
+import { Stage, Layer } from "react-konva";
 
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Cookies from "universal-cookie";
 
-import UndoIcon from "@mui/icons-material/Undo";
-import RedoIcon from "@mui/icons-material/Redo";
-import IconButton from "@mui/material/IconButton";
-// import { NumberField } from "../InputFields/inputField";
 import "./styles.scss";
 import { setLoading } from "../../../App";
-// import "bootstrap/dist/css/bootstrap.min.css";
+
+import CustomDisk from "./CustomDisk";
+import UndoRedoButton from "./UndoRedoButton";
+import NumberOfDisksInput from "./NumberOfDisksInput";
+import PegElements from "./PegElements";
+import DiskElements from "./DiskElements";
 
 const cookie = new Cookies();
 const pegWidth = 200;
@@ -27,252 +25,97 @@ const diskHeight = 20;
 const diskWidthFactor = 18;
 const baseY = 220;
 const sep = 10;
-const colors = [
-  "maroon",
-  "darkslategrey",
-  "green",
-  "gold",
-  "orange",
-  "lightsalmon",
-  "aquamarine",
-  "cyan",
-  "cadetblue",
-  "darkkhaki",
-];
 
-const KonvaButton = (props) => {
-  return (
-    <Label onClick={props.onClick} x={props.x} y={props.y}>
-      <Tag
-        fill="black"
-        lineJoin="round"
-        // shadowColor="black"
-        // shadowBlur={10}
-        // shadowOffset={10}
-        shadowOpacity={0.5}
-        cornerRadius={10}
-      ></Tag>
-      <Text
-        text={props.text}
-        fontSize={18}
-        fill="white"
-        padding={5}
-        fontFamily="Calibri"
-      />
-    </Label>
-  );
-};
-const UndoRedoButton = ({ handleUndo, handleRedo }) => {
-  return (
-    <div className="absolute bottom-0 left-0 flex flex-row px-2">
-      <IconButton
-        sx={{
-          fontSize: "2rem",
-        }}
-        onClick={() => handleUndo()}
-      >
-        <div className="flex items-center bu-text-primary">
-          <UndoIcon sx={{ fontSize: "2rem" }} />
-        </div>
-      </IconButton>
-      <IconButton
-        sx={{
-          fontSize: "2rem",
-        }}
-        onClick={() => handleRedo()}
-      >
-        <div className="flex items-center bu-text-primary">
-          <RedoIcon sx={{ fontSize: "2rem" }} />
-        </div>
-      </IconButton>
-    </div>
-  );
-};
-const NumberOfDisksInput = ({ numberOfDisks, handleNumberOfDisksChange }) => (
-  <div className="no-ring-input w-20%">
-    <FormControl fullWidth variant="outlined">
-      <InputLabel htmlFor="outlined-adornment" className="bu-text-primary">
-        Number of Disks
-      </InputLabel>
-      <OutlinedInput
-        required
-        placeholder="# of disks"
-        inputProps={{
-          step: 1,
-          min: 1,
-          max: 10,
-        }}
-        id="outlined-adornment"
-        className="outlined-input bu-text-primary"
-        type="number"
-        value={numberOfDisks}
-        onChange={handleNumberOfDisksChange}
-        label={"Number of Disks"}
-        size="small"
-      />
-    </FormControl>
-  </div>
-);
-const PegElements = ({ data, hoveredPeg }) =>
-  data?.pegs?.map((peg, index) => {
-    return (
-      <Group key={index}>
-        <Rect
-          // key={index}
-          x={pegWidth / 2 + pegWidth * index - 5 + index * sep}
-          y={25}
-          width={10}
-          height={baseY}
-          fill="black"
-          shadowBlur={hoveredPeg === index ? 20 : 0}
-          shadowOpacity={hoveredPeg === index ? 0.6 : 0}
-          shadowOffsetX={0}
-          shadowOffsetY={0}
-          cornerRadius={[5, 5, 5, 5]}
-        />
-        <Rect
-          // key={data.numberOfPegs + index}
-          x={pegWidth * index + index * sep}
-          y={baseY + 20}
-          width={pegWidth}
-          height={10}
-          fill="black"
-          shadowBlur={hoveredPeg === index ? 20 : 0}
-          shadowOpacity={hoveredPeg === index ? 0.6 : 0}
-          shadowOffsetX={0}
-          shadowOffsetY={0}
-          cornerRadius={[5, 5, 5, 5]}
-        />
-      </Group>
-    );
-  });
-const DiskElements = ({
+const TowerOfHanoiView = ({
   data,
+  activityData,
+  previewOptions,
+  mode,
+  handleUndo,
+  handleRedo,
+  numberOfDisks,
+  handleNumberOfDisksChange,
+  handleDiskDrag,
+  hoveredPeg,
   handleDiskDragStart,
   handleDiskDragEnd,
   handleDiskHover,
   handleDiskUnhover,
-  calculateDiskWidth,
   draggableDisks,
-}) =>
-  data?.pegs?.flat().map((disk, index) => {
-    const pegIndex = data.pegs.findIndex((peg) => peg.includes(disk));
-    const diskIndexInPeg = data.pegs[pegIndex].indexOf(disk);
-    const x =
-      pegWidth * pegIndex +
-      pegWidth / 2 -
-      calculateDiskWidth(disk % 10) / 2 +
-      pegIndex * sep;
-    const y = baseY - diskIndexInPeg * diskHeight;
-
-    // console.log("New Render", x, y);
-    return (
-      <Rect
-        onMouseEnter={(e) => {
-          document.body.style.cursor = "pointer";
-          handleDiskHover(e);
-        }}
-        onMouseLeave={(e) => {
-          document.body.style.cursor = "default";
-          handleDiskUnhover(e);
-        }}
-        key={disk}
-        x={x}
-        y={y}
-        width={calculateDiskWidth(disk % 10)}
-        height={diskHeight}
-        fill={colors[disk % 10]}
-        draggable={draggableDisks.includes(disk)}
-        onDragStart={(e) => handleDiskDragStart(e, index)}
-        onDragEnd={(e) => handleDiskDragEnd(e, pegIndex)}
-        shadowColor="black"
-        shadowBlur={10}
-        shadowOpacity={0.6}
-        shadowOffsetX={0}
-        shadowOffsetY={0}
-        disk={disk}
-        pegIndex={pegIndex}
-        strokeEnabled={true}
-        opacity={0.95}
-        cornerRadius={[10, 10, 10, 10]}
-      />
-    );
-  });
-
-const CustomDisk = ({
-  data,
+  calculateDiskWidth,
   extraDisk,
   setExtraDisk,
-  handleDiskDragStart,
-  handleDiskDragEnd,
-  handleDiskHover,
-  handleDiskUnhover,
-  calculateDiskWidth,
 }) => {
   return (
-    <>
-      <Line
-        points={[0, 260, 20 + pegWidth * 3, 260]}
-        stroke={"rgb(236, 72, 153)"}
-        strokeWidth={1}
-      />
-      <KonvaButton
-        text="<"
-        x={pegWidth - 15}
-        y={270}
-        onClick={() =>
-          extraDisk > -1 ? setExtraDisk((prev) => prev - 1) : setExtraDisk(9)
-        }
-      />
-      {extraDisk !== -1 ? (
-        <Rect
-          onMouseEnter={(e) => {
-            document.body.style.cursor = "pointer";
-            handleDiskHover(e);
-          }}
-          onMouseLeave={(e) => {
-            document.body.style.cursor = "default";
-            handleDiskUnhover(e);
-          }}
-          key={-1}
-          x={
-            pegWidth * 1 +
-            pegWidth / 2 -
-            calculateDiskWidth(extraDisk) / 2 +
-            1 * sep
-          }
-          y={275}
-          width={calculateDiskWidth(extraDisk)}
-          height={diskHeight}
-          fill={colors[extraDisk]}
-          draggable={true}
-          onDragStart={(e) => handleDiskDragStart(e, -1)}
-          onDragEnd={(e) => handleDiskDragEnd(e, -1)}
-          shadowColor="black"
-          shadowBlur={10}
-          shadowOpacity={0.6}
-          shadowOffsetX={0}
-          shadowOffsetY={0}
-          disk={extraDisk}
-          pegIndex={-1}
-          isExtra={true}
-          strokeEnabled={true}
-          opacity={0.9}
-          cornerRadius={[10, 10, 10, 10]}
-        />
-      ) : (
-        <></>
+    <div className="tower-of-hanoi vbox">
+      {data && (
+        <>
+          <div className="toh-header hbox">
+            {(mode === "edit" || previewOptions?.undo?.value) && (
+              <UndoRedoButton handleUndo={handleUndo} handleRedo={handleRedo} />
+            )}
+            <div className="flex-start flex min-h-[2.5rem] w-full flex-row items-center gap-5">
+              {(mode === "edit" || previewOptions?.nDisks?.value) && (
+                <NumberOfDisksInput
+                  numberOfDisks={numberOfDisks}
+                  handleNumberOfDisksChange={handleNumberOfDisksChange}
+                />
+              )}
+              {mode === "preview" &&
+                previewOptions?.moves?.value &&
+                activityData && (
+                  <Typography variant="h5" className="bu-text-primary m-0 p-0">
+                    <b className="bu-text-primary">
+                      Moves: {activityData?.numberOfMoves}
+                    </b>
+                  </Typography>
+                )}
+            </div>
+          </div>
+          <Divider sx={{ bgcolor: "rgb(236, 72, 153)" }} />
+          <div className={`toh-canvas vbox flex-center`}>
+            <Stage
+              x={20}
+              width={Math.min(window.innerWidth / 900, 1) * (60 + pegWidth * 3)}
+              height={
+                Math.min(window.innerWidth / 800, 1) *
+                (280 +
+                  (mode === "edit" || previewOptions?.customDisk?.value
+                    ? diskHeight * 1.2
+                    : 0))
+              }
+              scaleX={Math.min(window.innerWidth / 970, 1)}
+              scaleY={Math.min(window.innerWidth / 900, 1)}
+            >
+              <Layer onDragMove={(e) => handleDiskDrag(e)}>
+                <PegElements data={data} hoveredPeg={hoveredPeg} />
+                <DiskElements
+                  data={data}
+                  handleDiskDragStart={handleDiskDragStart}
+                  handleDiskDragEnd={handleDiskDragEnd}
+                  handleDiskHover={handleDiskHover}
+                  handleDiskUnhover={handleDiskUnhover}
+                  calculateDiskWidth={calculateDiskWidth}
+                  draggableDisks={draggableDisks}
+                />
+                {(mode === "edit" || previewOptions?.customDisk?.value) && (
+                  <CustomDisk
+                    data={data}
+                    extraDisk={extraDisk}
+                    setExtraDisk={setExtraDisk}
+                    handleDiskDragStart={handleDiskDragStart}
+                    handleDiskDragEnd={handleDiskDragEnd}
+                    handleDiskHover={handleDiskHover}
+                    handleDiskUnhover={handleDiskUnhover}
+                    calculateDiskWidth={calculateDiskWidth}
+                  />
+                )}
+              </Layer>
+            </Stage>
+          </div>
+        </>
       )}
-
-      <KonvaButton
-        text=">"
-        x={2 * pegWidth + 15}
-        y={270}
-        onClick={() =>
-          extraDisk < 9 ? setExtraDisk(extraDisk + 1) : setExtraDisk(-1)
-        }
-      />
-    </>
+    </div>
   );
 };
 const TowerOfHanoi = (props, ref) => {
@@ -336,7 +179,7 @@ const TowerOfHanoi = (props, ref) => {
 
   const handleReset = (resetData) => {
     if (resetData != null && resetData.pegs != null) {
-      console.log("handleReset:", resetData);
+      // console.log("handleReset:", resetData);
       importData(resetData);
     } else {
       setNumberOfDisks(3);
@@ -346,12 +189,12 @@ const TowerOfHanoi = (props, ref) => {
     setCurrentHistory(-1);
   };
 
-  useEffect(() => {
-    console.log("DEBUG_LOG:", data);
-  }, [data]);
+  // useEffect(() => {
+  //   // console.log("DEBUG_LOG:", data);
+  // }, [data]);
 
   useEffect(() => {
-    console.log(history);
+    // console.log(history);
   }, [history]);
   const importData = (newData) => {
     if (newData != null && newData.pegs != null) {
@@ -359,7 +202,7 @@ const TowerOfHanoi = (props, ref) => {
       setNumberOfMoves(0);
       setDraggableDisks(list);
       setNumberOfDisks(newData.pegs.flat(1).length);
-      console.log("List:", list);
+      // console.log("List:", list);
     } else {
       setNumberOfDisks(3);
       setNumberOfPegs(3);
@@ -446,7 +289,7 @@ const TowerOfHanoi = (props, ref) => {
     setDraggableDisks([
       initialPegs[0][initialPegs[0][initialPegs[0].length - 1]],
     ]);
-    console.log("Init:", data);
+    // console.log("Init:", data);
   };
   const calculateDiskWidth = (disk) => pegWidth - diskWidthFactor * disk;
 
@@ -591,7 +434,7 @@ const TowerOfHanoi = (props, ref) => {
             if (index2 !== -1) {
               updatedDraggable.splice(index2, 1);
             } else {
-              console.log("Not found");
+              // console.log("Not found");
             }
           }
 
@@ -603,7 +446,7 @@ const TowerOfHanoi = (props, ref) => {
           setDraggableDisks(updatedDraggable);
           setNumberOfMoves(activityData?.numberOfMoves + 1);
           setExtraDisk(-1);
-          console.log("Increase Disks");
+          // console.log("Increase Disks");
           setNumberOfDisks((prev) => prev + 1);
           e.target.to({
             x:
@@ -634,7 +477,7 @@ const TowerOfHanoi = (props, ref) => {
         data.pegs[nearestPegIndex].length < 10
       ) {
         // Transfer
-        console.log("History:", history);
+        // console.log("History:", history);
         if (currentHistory < history.length - 1) {
           setHistory((prevArray) => [
             ...prevArray.slice(0, currentHistory + 1),
@@ -665,7 +508,7 @@ const TowerOfHanoi = (props, ref) => {
           if (index2 !== -1) {
             updatedDraggable.splice(index2, 1);
           } else {
-            console.log("Not found");
+            // console.log("Not found");
           }
         }
 
@@ -731,7 +574,7 @@ const TowerOfHanoi = (props, ref) => {
         if (index2 !== -1) {
           updatedDraggable.splice(index2, 1);
         } else {
-          console.log("Not found");
+          // console.log("Not found");
         }
       }
 
@@ -788,7 +631,7 @@ const TowerOfHanoi = (props, ref) => {
         if (index2 !== -1) {
           updatedDraggable.splice(index2, 1);
         } else {
-          console.log("Not found");
+          // console.log("Not found");
         }
       }
 
@@ -834,7 +677,7 @@ const TowerOfHanoi = (props, ref) => {
     const value = parseInt(event.target.value, 10);
     if (!isNaN(value) && value >= 1 && value <= 10) {
       setNumberOfDisks(value);
-      initializePegs(value, data.numberOfPegs);
+      initializePegs(value, 3);
       setHistory([]);
       setCurrentHistory(-1);
     }
@@ -848,88 +691,33 @@ const TowerOfHanoi = (props, ref) => {
   // };
 
   useEffect(() => {
-    console.log("mode changed", props.mode);
+    // console.log("mode changed", props.mode);
     if (props.mode === "edit") {
       setNumberOfMoves(0);
     }
   }, [props.mode]);
 
   return (
-    <div className="tower-of-hanoi vbox">
-      {data && (
-        <>
-          <div className="toh-header hbox">
-            {(props.mode === "edit" || props.previewOptions?.undo?.value) && (
-              <UndoRedoButton handleUndo={handleUndo} handleRedo={handleRedo} />
-            )}
-            <div className="flex-start flex min-h-[2.5rem] w-full flex-row items-center gap-5">
-              {(props.mode === "edit" ||
-                props.previewOptions?.nDisks?.value) && (
-                <NumberOfDisksInput
-                  numberOfDisks={numberOfDisks}
-                  handleNumberOfDisksChange={handleNumberOfDisksChange}
-                />
-              )}
-              {props.mode === "preview" &&
-                props.previewOptions?.moves?.value &&
-                activityData && (
-                  <Typography variant="h5" className="bu-text-primary m-0 p-0">
-                    <b className="bu-text-primary">
-                      Moves: {activityData?.numberOfMoves}
-                    </b>
-                  </Typography>
-                )}
-            </div>
-          </div>
-          <Divider sx={{ bgcolor: "rgb(236, 72, 153)" }} />
-          <div className={`toh-canvas vbox flex-center`}>
-            <Stage
-              x={20}
-              width={
-                Math.min(window.innerWidth / 900, 1) *
-                (60 + pegWidth * data.numberOfPegs)
-              }
-              height={
-                Math.min(window.innerWidth / 800, 1) *
-                (280 +
-                  (props.mode === "edit" ||
-                  props.previewOptions?.customDisk?.value
-                    ? diskHeight * 1.2
-                    : 0))
-              }
-              scaleX={Math.min(window.innerWidth / 970, 1)}
-              scaleY={Math.min(window.innerWidth / 900, 1)}
-            >
-              <Layer onDragMove={(e) => handleDiskDrag(e)}>
-                <PegElements data={data} hoveredPeg={hoveredPeg} />
-                <DiskElements
-                  data={data}
-                  handleDiskDragStart={handleDiskDragStart}
-                  handleDiskDragEnd={handleDiskDragEnd}
-                  handleDiskHover={handleDiskHover}
-                  handleDiskUnhover={handleDiskUnhover}
-                  calculateDiskWidth={calculateDiskWidth}
-                  draggableDisks={draggableDisks}
-                />
-                {(props.mode === "edit" ||
-                  props.previewOptions?.customDisk?.value) && (
-                  <CustomDisk
-                    data={data}
-                    extraDisk={extraDisk}
-                    setExtraDisk={setExtraDisk}
-                    handleDiskDragStart={handleDiskDragStart}
-                    handleDiskDragEnd={handleDiskDragEnd}
-                    handleDiskHover={handleDiskHover}
-                    handleDiskUnhover={handleDiskUnhover}
-                    calculateDiskWidth={calculateDiskWidth}
-                  />
-                )}
-              </Layer>
-            </Stage>
-          </div>
-        </>
-      )}
-    </div>
+    <TowerOfHanoiView
+      data={data}
+      activityData={activityData}
+      previewOptions={props.previewOptions}
+      mode={props.mode}
+      handleUndo={handleUndo}
+      handleRedo={handleRedo}
+      numberOfDisks={numberOfDisks}
+      handleNumberOfDisksChange={handleNumberOfDisksChange}
+      handleDiskDrag={handleDiskDrag}
+      hoveredPeg={hoveredPeg}
+      handleDiskDragStart={handleDiskDragStart}
+      handleDiskDragEnd={handleDiskDragEnd}
+      handleDiskHover={handleDiskHover}
+      handleDiskUnhover={handleDiskUnhover}
+      draggableDisks={draggableDisks}
+      calculateDiskWidth={calculateDiskWidth}
+      extraDisk={extraDisk}
+      setExtraDisk={setExtraDisk}
+    />
   );
 };
 

@@ -121,37 +121,20 @@ const SolutionCheckerTab = ({
   canvasId,
   checkerCanvas,
   setCheckerCanvas,
-  editOptions,
-  setEditOptions,
   previewOptions,
-  setPreviewOptions,
+
+  editOptions,
   updateSolutionChecker,
-  backup,
   handleCheckSolution,
-  stdout,
-  output,
-  setOutput,
-  setStdout,
 }) => {
-  // const [output, setOutput] = useState("");
-  // const [stdout, setStdout] = useState([]);
+  const [output, setOutput] = useState("");
+  const [stdout, setStdout] = useState([]);
   // const [test, setTest] = useState(null);
-  // const handleCheckSolution = async () => {
-  //   console.log("Run COde");
-  //   try {
-  //     const result = await problemController.checkSolution(
-  //       code,
-  //       checkerCanvas,
-  //       test,
-  //       testActivity
-  //     );
-  //     console.log(result);
-  //     setOutput(result.output);
-  //     setStdout(result.stdout);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const onSubmit = async () => {
+    const result = await handleCheckSolution();
+    setOutput(result.output);
+    setStdout(result.stdout);
+  };
   // useEffect(() => {
   //   setTest(JSON.parse(JSON.stringify(input)));
   // }, [input]);
@@ -163,7 +146,7 @@ const SolutionCheckerTab = ({
       canvasRef.current.handleReset(JSON.parse(JSON.stringify(input)));
   };
   const canvasRef = useRef();
-  const testRef = useRef();
+
   return (
     <>
       {checkerType == 0 ? (
@@ -175,7 +158,7 @@ const SolutionCheckerTab = ({
           output={output}
           setOutput={setOutput}
           setStdout={setStdout}
-          checkSubmit={handleCheckSolution}
+          checkSubmit={onSubmit}
           save={updateSolutionChecker}
         />
       ) : checkerType == 1 ? (
@@ -186,10 +169,8 @@ const SolutionCheckerTab = ({
             setInput={setCheckerCanvas}
             ref={canvasRef}
             mode="preview"
-            editOptions={editOptions}
-            setEditOptions={setEditOptions}
             previewOptions={previewOptions}
-            setPreviewOptions={setPreviewOptions}
+            editOptions={editOptions}
           />
           <div
             className="flex py-5"
@@ -237,12 +218,68 @@ const SolutionCheckerTab = ({
   );
 };
 
+const TestTab = ({
+  canvasId,
+  test,
+  setTest,
+  testActivity,
+  setTestActivity,
+  previewOptions,
+  handleCheckSolution,
+  editOptions,
+  input,
+}) => {
+  const testRef = useRef();
+  return (
+    canvasId &&
+    testRef && (
+      <>
+        <CanvasContainer
+          canvasId={canvasId}
+          input={test}
+          setInput={setTest}
+          activityData={testActivity}
+          setActivityData={setTestActivity}
+          ref={testRef}
+          mode="preview"
+          previewOptions={previewOptions}
+          editOptions={editOptions}
+        />
+        <div className="flex flex-row justify-between py-5">
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => {
+              setTest(JSON.parse(JSON.stringify(input)));
+              testRef.current.handleReset(JSON.parse(JSON.stringify(input))); // Call this after reset
+            }}
+            startIcon={
+              <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+            }
+          >
+            Reset
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleCheckSolution}
+            endIcon={<Send sx={{ fontSize: "2rem", color: "white" }} />}
+          >
+            Submit
+          </Button>
+        </div>
+      </>
+    )
+  );
+};
 export default function ProblemSetEnv() {
-  // const backup = useRef(null);
-  // const [problem,setProblem] = useState();
-  // const [options,setOptions] = useState({edit:{},preview:{}})
-  // const [checker,setChecker] = useState({canvas:{},code:""})
-  // const [canvasList,setCanvasList] = useState([])
+  // title, statement, input, options, checker, test
+  const backupProblem = useRef(null);
+  // const [problem,setProblem] = useState({});
+  // const [canvas,setCanvas] = useState({});
+  // const [activity,setActivity] = useState({});
+  // const [options,setOptions] = useState({edit:{},preview:{}});
+  // const [checker,setChecker] = useState({canvas:{},code:""});
+  // const [canvasList,setCanvasList] = useState([]);
   // const canvasRef = useRef(); -> Send where reset button is
 
   // Things needed to compare solution
@@ -262,8 +299,8 @@ export default function ProblemSetEnv() {
   const [testActivity, setTestActivity] = useState({});
 
   const [isFormDirty, setFormDirty] = useState(false); // pending
-  const [output, setOutput] = useState(""); // useless
-  const [stdout, setStdout] = useState([]); // useless
+  // const [output, setOutput] = useState(""); // useless
+  // const [stdout, setStdout] = useState([]); // useless
 
   const [backupId, setBackupId] = useState(null); // backup.id
   const [canvasId, setCanvasId] = useState(null); // problem.canvasdata.canvasId
@@ -314,11 +351,13 @@ export default function ProblemSetEnv() {
   }, [isFormDirty]);
 
   const getProblem = async () => {
-    //console.log(problemid)
+    //// console.log(problemid)
     const res = await problemController.getProblemById(problemid);
     if (res.success) {
       // Just a problem json
-      console.log("----", res.data.checkerCanvas);
+      // console.log("----", res.data.checkerCanvas);
+      backupProblem.current = JSON.parse(JSON.stringify(res.data));
+
       setInput(JSON.parse(JSON.stringify(res.data.canvasData)));
       setBackup(JSON.parse(JSON.stringify(res.data.canvasData)));
       setCheckerCanvas(JSON.parse(JSON.stringify(res.data.canvasData)));
@@ -353,12 +392,14 @@ export default function ProblemSetEnv() {
       }));
 
       setCanvasList(newArray);
-      console.log("=->", res);
+      // console.log("=->", res);
     }
   };
 
   const reset = async () => {
-    setInput(JSON.parse(JSON.stringify(backup)));
+    setInput(backupProblem?.current?.canvasData);
+    setEditOptions(backupProblem?.current?.editOptions);
+    setPreviewOptions(backupProblem?.current?.previewOptions);
     if (backupId !== canvasId) {
       setCanvasId(backupId);
       var res = canvasFullList.find((canvas) => {
@@ -371,9 +412,7 @@ export default function ProblemSetEnv() {
         setPreviewOptions(res.previewOptions);
       }
     }
-    canvasRef.current !== undefined &&
-      canvasRef.current !== null &&
-      canvasRef.current.handleReset(JSON.parse(JSON.stringify(backup)));
+    canvasRef?.current?.handleReset(JSON.parse(JSON.stringify(backup)));
     // setResetTrigger(!resetTrigger);
   };
 
@@ -412,7 +451,7 @@ export default function ProblemSetEnv() {
   const updateTitle = async () => {
     const res = await problemController.updateTitle(problemid, title);
     if (res.success) {
-      console.log(res);
+      // console.log(res);
     }
   };
   const updateStatement = async () => {
@@ -421,7 +460,7 @@ export default function ProblemSetEnv() {
       problemStatement
     );
     if (res.success) {
-      console.log(res);
+      // console.log(res);
     }
   };
 
@@ -438,7 +477,7 @@ export default function ProblemSetEnv() {
     await problemController.updateSolutionChecker(problemid, code, 0);
     await problemController.updateSolutionChecker(problemid, checkerCanvas, 1);
     if (res.success) {
-      console.log(res);
+      // console.log(res);
     }
   };
 
@@ -451,11 +490,11 @@ export default function ProblemSetEnv() {
       checkerType
     );
     if (res.success) {
-      console.log(res);
+      // console.log(res);
     }
   };
   const handleCheckSolution = async () => {
-    console.log("Run COde");
+    // console.log("Run COde");
     try {
       const result = await problemController.checkSolution(
         code,
@@ -463,9 +502,10 @@ export default function ProblemSetEnv() {
         test,
         testActivity
       );
-      console.log(result);
-      setOutput(result.output);
-      setStdout(result.stdout);
+      // // console.log(result);
+      // setOutput(result.output);
+      // setStdout(result.stdout);
+      return result;
     } catch (error) {
       console.error(error);
     }
@@ -483,20 +523,20 @@ export default function ProblemSetEnv() {
     getCanvasList();
   }, []);
 
-  useEffect(() => {
-    setTest(JSON.parse(JSON.stringify(input)));
-    testRef?.current?.handleReset(JSON.parse(JSON.stringify(input)));
-    console.log("test:", test);
-  }, [input]);
+  // useEffect(() => {
+  //   setTest(JSON.parse(JSON.stringify(input)));
+  //   testRef?.current?.handleReset(JSON.parse(JSON.stringify(input)));
+  //   // console.log("test:", test);
+  // }, [input]);
 
   useEffect(() => {
-    console.log(problemid);
+    // console.log(problemid);
     if (problemid != undefined) {
       getProblem();
     }
 
     return () => {
-      console.log("Leaving MyComponent");
+      // console.log("Leaving MyComponent");
     };
   }, [problemid]);
 
@@ -605,7 +645,16 @@ export default function ProblemSetEnv() {
           </div>
         </div>
       </div>
-      <ProbSetTab activeTab={activeComponent} click={setActiveComponent} />
+      <ProbSetTab
+        activeTab={activeComponent}
+        click={(tab) => {
+          if (tab === "Test" && activeComponent !== "Test") {
+            setTest(JSON.parse(JSON.stringify(input)));
+            testRef?.current?.handleReset(JSON.parse(JSON.stringify(input)));
+          }
+          setActiveComponent(tab);
+        }}
+      />
 
       <div className="component-container relative">
         {/* Slow Transition */}
@@ -676,62 +725,26 @@ export default function ProblemSetEnv() {
             canvasId={canvasId}
             checkerCanvas={checkerCanvas}
             setCheckerCanvas={setCheckerCanvas}
-            editOptions={editOptions}
-            setEditOptions={setEditOptions}
             previewOptions={previewOptions}
-            setPreviewOptions={setPreviewOptions}
+            editOptions={editOptions}
             updateSolutionChecker={updateSolutionChecker}
             backup={backup}
             canvasRef={canvasRef}
             handleCheckSolution={handleCheckSolution}
-            stdout={stdout}
-            output={output}
-            setOutput={setOutput}
-            setStdout={setStdout}
           />
         </div>
         <div className={activeComponent === "Test" ? "block" : "hidden"}>
-          {canvasId && (
-            <>
-              <CanvasContainer
-                canvasId={canvasId}
-                input={test}
-                setInput={setTest}
-                activityData={testActivity}
-                setActivityData={setTestActivity}
-                ref={testRef}
-                mode="preview"
-                editOptions={editOptions}
-                setEditOptions={setEditOptions}
-                previewOptions={previewOptions}
-                setPreviewOptions={setPreviewOptions}
-              />
-              <div className="flex flex-row justify-between py-5">
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={() => {
-                    setTest(JSON.parse(JSON.stringify(input)));
-                    testRef.current.handleReset(
-                      JSON.parse(JSON.stringify(input))
-                    ); // Call this after reset
-                  }}
-                  startIcon={
-                    <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-                  }
-                >
-                  Reset
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={handleCheckSolution}
-                  endIcon={<Send sx={{ fontSize: "2rem", color: "white" }} />}
-                >
-                  Submit
-                </Button>
-              </div>
-            </>
-          )}
+          <TestTab
+            canvasId={canvasId}
+            test={test}
+            setTest={setTest}
+            testActivity={testActivity}
+            setTestActivity={setTestActivity}
+            previewOptions={previewOptions}
+            editOptions={editOptions}
+            handleCheckSolution={handleCheckSolution}
+            input={input}
+          />
         </div>
       </div>
       <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} />

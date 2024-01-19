@@ -44,7 +44,10 @@ class AuthController extends Controller {
   };
 
   refreshToken = async (req, res) => {
-    const result = authService.getNewAccessToken(req.cookies.refresh_token);
+    const result = await authService.getNewAccessToken(
+      req.cookies.refresh_token
+    );
+    console.log(result);
     if (result.success) {
       return res.status(200).json({
         access_token: result.accessToken,

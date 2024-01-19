@@ -61,12 +61,12 @@ export default class Api {
    * @param {String} url
    * @returns {Object} Either { success: true, data: string } or { success: false, error: string }
    */
-  get = async (url) => {
+  get = async (url, query) => {
     console.log(API_BASE_URL);
     const token = this.getToken();
     // console.log("Profile Called" + token);
     try {
-      const res = await axios.get(API_BASE_URL + url);
+      const res = await axios.get(API_BASE_URL + url, { params: query });
       return {
         success: true,
         data: res.data,

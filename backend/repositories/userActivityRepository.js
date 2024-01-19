@@ -22,7 +22,7 @@ class UserActivityRepository extends Repository {
           problemId: problemId,
           viewDuration: duration,
           conseqFailedAttempt: 0,
-          isSolved: false,
+          isSolved: null,
           lastSolveTimestamp: null,
           lastSuccessfulSolveTimestamp: null,
           totalFailedAttempt: 0,

@@ -22,13 +22,10 @@ module.exports = {
           statement:
             "Move the 3 disks from left peg to right peg. You can use the middle peg to temporarily keep the disks.",
           canvasData: JSON.stringify({
-            numberOfMoves: 0,
-            numberOfDisks: 3,
-            numberOfPegs: 3,
             pegs: [[0, 1, 2], [], []],
           }),
           checkerCode:
-            "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas) && userActivity.numberOfMoves == 7;\n}\n",
+            "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
           editOptions: JSON.stringify({
             customDisk: { value: true, type: "switch" },
             ordered: { value: true, type: "switch" },
@@ -50,9 +47,6 @@ module.exports = {
           statement:
             "You already how to move 3 disks from one peg to another. But can you do it in minimum possible moves?",
           canvasData: JSON.stringify({
-            numberOfMoves: 0,
-            numberOfDisks: 3,
-            numberOfPegs: 3,
             pegs: [[0, 1, 2], [], []],
           }),
           editOptions: JSON.stringify({
@@ -66,11 +60,8 @@ module.exports = {
             undo: { value: true, type: "switch" },
           }),
           checkerCode:
-            "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.numberOfMoves == 7 && data.pegs[2].length==3;\n}\n",
+            "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas) && userActivity.numberOfMoves == 7;\n}\n",
           checkerCanvas: JSON.stringify({
-            numberOfMoves: 7,
-            numberOfDisks: 3,
-            numberOfPegs: 3,
             pegs: [[], [], [0, 1, 2]],
           }),
           createdAt: new Date(),
@@ -83,9 +74,6 @@ module.exports = {
           statement:
             "Move the 4 disks from left to right peg in minimum possible moves.",
           canvasData: JSON.stringify({
-            numberOfMoves: 0, // additionData
-            numberOfDisks: 4, // can be calculated from pegs
-            numberOfPegs: 3, // useless
             pegs: [[0, 1, 2, 3], [], []], // additionalData
           }),
           checkerCode:
@@ -101,9 +89,6 @@ module.exports = {
             undo: { value: true, type: "switch" },
           }),
           checkerCanvas: JSON.stringify({
-            numberOfMoves: 15,
-            numberOfDisks: 4,
-            numberOfPegs: 3,
             pegs: [[], [], [0, 1, 2, 3]],
           }),
           createdAt: new Date(),
@@ -116,9 +101,6 @@ module.exports = {
           title: "Double TOH",
           statement: "Move the disks from left peg to right peg.",
           canvasData: JSON.stringify({
-            numberOfMoves: 0,
-            numberOfDisks: 10,
-            numberOfPegs: 3,
             pegs: [[0, 10, 2, 12, 4, 14, 6, 16, 8, 18], [], []],
           }),
           editOptions: JSON.stringify({
@@ -134,9 +116,6 @@ module.exports = {
           checkerCode:
             "function solutionChecker(data) {\n  return data.numberOfMoves === 2 * (2 ** (data.numberOfDisks/2) - 1);\n}",
           checkerCanvas: JSON.stringify({
-            numberOfMoves: 62,
-            numberOfDisks: 10,
-            numberOfPegs: 3,
             pegs: [[], [], [10, 0, 2, 12, 4, 14, 6, 16, 8, 18]],
           }),
           createdAt: new Date(),

@@ -1,48 +1,32 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import AuthController from "../../controller/authController";
 import { Avatar, InputAdornment, Typography } from "@mui/material";
-import LogoutIcon from "@mui/icons-material/Logout";
-import Cookies from "universal-cookie";
-import ProfileController from "../../controller/profileController";
 import Logo from "../Logo";
-import Banner from "../Banner";
 import SearchBar from "../InputFields/SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
-import {
-  faBuromobelexperte,
-  faTrello,
-} from "@fortawesome/free-brands-svg-icons";
-const authController = new AuthController();
-const profileController = new ProfileController();
+import { faTrello } from "@fortawesome/free-brands-svg-icons";
+import { profileApi } from "../../api";
+import AuthService from "../../services/authService";
+import GlobalContext from "../../store/GlobalContext";
 const PrivateNavbar = (props) => {
   const [user, setUser] = useState(null);
-  const [type, setType] = useState(-1);
+  const { type, setType } = useContext(GlobalContext);
   const [search, setSearch] = useState(false);
   const [tab, setTab] = useState(0);
   const location = useLocation();
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
+  const navigate = useNavigate();
 
   const setProfile = async () => {
-    const cookies = new Cookies();
     const isLoggedIn = localStorage.hasOwnProperty("token");
-    setType(localStorage.getItem("type"));
     if (isLoggedIn) {
-      // while (true)
-      {
-        const res = await profileController.getProfile();
-        if (res.success) {
-          setUser(res.data[0]);
-          // break;
-        } else {
-          // authController.logout();
-          // switchPath("/login");
-        }
+      const res = await profileApi.getProfile();
+      if (res.success) {
+        setUser(res.data[0]);
+        // break;
+      } else {
+        // navigate("/login");
       }
     }
   };
@@ -93,7 +77,7 @@ const PrivateNavbar = (props) => {
               }`}
               onClick={() => {
                 setLoading(true);
-                navigator("/home");
+                navigate("/home");
               }}
             >
               <Logo width={180} height={45} />
@@ -115,13 +99,13 @@ const PrivateNavbar = (props) => {
                   if (type == 0) {
                     if (location.pathname !== "/topics") {
                       setLoading(true);
-                      navigator("/topics");
+                      navigate("/topics");
                     }
                   }
                   if (type == 1) {
                     if (location.pathname !== "/problemSet") {
                       setLoading(true);
-                      navigator("/problemSet");
+                      navigate("/problemSet");
                     }
                   }
                 }}
@@ -150,7 +134,7 @@ const PrivateNavbar = (props) => {
                 data-tip="Marketplace"
                 onClick={() => {
                   setLoading(true);
-                  switchPath((type == 1 ? "setter" : "") + "/contests");
+                  navigate((type == 1 ? "setter" : "") + "/contests");
                 }}
               >
                 <div
@@ -172,8 +156,9 @@ const PrivateNavbar = (props) => {
                 data-tip="Marketplace"
                 onClick={async () => {
                   setLoading(true);
-                  await authController.logout();
-                  switchPath("/login");
+                  await AuthService.logout();
+                  setType(0);
+                  navigate("/login");
                 }}
               >
                 <div className="text-xs md:text-lg md:font-bold flex flex-row gap-3 items-center bu-text-primary-hover ">
@@ -188,7 +173,7 @@ const PrivateNavbar = (props) => {
               className="hidden md:flex flex-col w-70 h-20 md:tooltip md:tooltip-right md:tooltip-info w-7/12 md:w-8/12 justify-center items-center"
               data-tip="Marketplace"
               onClick={() => {
-                switchPath("/profile/" + user.username);
+                navigate("/profile/" + user.username);
               }}
             >
               <div className="text-xs md:text-lg md:font-bold bu-text-primary-hover">
@@ -237,8 +222,8 @@ const PrivateNavbar = (props) => {
                 onClick={() => {
                   setLoading(true);
                   type == 0
-                    ? switchPath("/user/" + user.username)
-                    : switchPath("/setter/" + user.username);
+                    ? navigate("/user/" + user.username)
+                    : navigate("/setter/" + user.username);
                 }}
               />
             </div>

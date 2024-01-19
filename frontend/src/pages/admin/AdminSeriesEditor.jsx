@@ -7,33 +7,14 @@ import Cookies from "universal-cookie";
 
 import Title from "../../components/Title";
 
-import Layout4 from "../../components/Layouts/Layout4";
-import AdminNavbar from "../../components/Navbars/AdminNavbar";
-import {
-  SelectionField2,
-  TextField,
-  TextField2,
-} from "../../components/InputFields";
-
-import TopicController from "../../controller/topicController";
-import ProblemController from "../../controller/problemController";
-import SeriesController from "../../controller/seriesController";
+import { SelectionField2, TextField2 } from "../../components/InputFields";
 import { setLoading } from "../../App";
-import { IconButton, TableContainer } from "@mui/material";
-import ProblemCard from "../../components/Cards/ProblemCard";
+import { IconButton } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
-
-const topicController = new TopicController();
-const problemController = new ProblemController();
-const seriesController = new SeriesController();
+import { seriesApi, topicApi } from "../../api";
 
 const AdminSeriesEditor = () => {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-  const [type, setType] = useState(-1);
   const { id } = useParams();
   const [series, setSeries] = useState(null);
   const [topicList, setTopicList] = useState([]);
@@ -45,7 +26,7 @@ const AdminSeriesEditor = () => {
 
   const getSeries = async () => {
     console.log(id);
-    const res = await seriesController.getSeriesById(id);
+    const res = await seriesApi.getSeriesById(id);
     if (res.success) {
       setSeries(res.data);
       setLoading(false);
@@ -53,7 +34,7 @@ const AdminSeriesEditor = () => {
   };
 
   const getProblemList = async () => {
-    const res = await seriesController.getAllProblems(id);
+    const res = await seriesApi.getAllProblems(id);
     if (res.success) {
       setProblemList(res.data);
       console.log(res.data);
@@ -61,7 +42,7 @@ const AdminSeriesEditor = () => {
   };
 
   const getTopicList = async () => {
-    const res = await topicController.getAllTopics();
+    const res = await topicApi.getAllTopics();
     if (res.success) {
       const newArray = res.data.map((topic) => ({
         value: topic.id,
@@ -72,30 +53,32 @@ const AdminSeriesEditor = () => {
   };
 
   const handleSave = async () => {
-    for (let i = 0; i < problemList.length - 1; i++) {
-      for (let j = i + 1; j < problemList.length; j++) {
-        if (
-          problemList[i].serialNo !== 0 &&
-          problemList[i].serialNo === problemList[j].serialNo
-        ) {
-          alert("Duplicate serial no.");
-          return;
-        }
-      }
-    }
+    // for (let i = 0; i < problemList.length - 1; i++) {
+    //   for (let j = i + 1; j < problemList.length; j++) {
+    //     if (
+    //       problemList[i].serialNo !== 0 &&
+    //       problemList[i].serialNo === problemList[j].serialNo
+    //     ) {
+    //       alert("Duplicate serial no.");
+    //       return;
+    //     }
+    //   }
+    // }
 
+    const serials = [];
     for (let i = 0; i < problemList.length; i++) {
-      await problemController.updateSerial(problemList[i].problemId, i);
+      serials.push({
+        problemId: problemList[i].id,
+        serialNo: problemList.length - i,
+      });
     }
-
-    const res = await seriesController.updateSeries(id, series);
+    await seriesApi.updateSerial(id, serials);
+    const res = await seriesApi.updateSeries(id, series);
     if (res.success) {
       console.log(res);
     }
   };
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(localStorage.getItem("type"));
     getSeries();
     getProblemList();
     getTopicList();

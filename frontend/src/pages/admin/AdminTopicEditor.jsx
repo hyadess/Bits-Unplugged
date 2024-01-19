@@ -2,27 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "universal-cookie";
 import Title from "../../components/Title";
-import TopicController from "../../controller/topicController";
-import { TextField, TextField2 } from "../../components/InputFields";
+import { TextField2 } from "../../components/InputFields";
 import { setLoading } from "../../App";
-const topicController = new TopicController();
+import { topicApi } from "../../api";
 
 const AdminTopicEditor = () => {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-  const [type, setType] = useState(-1);
   const { id } = useParams();
-
   const [topic, setTopic] = useState(null);
-
   const handleChange = (prop) => (event) => {
     setTopic({ ...topic, [prop]: event.target.value });
   };
   const getTopic = async () => {
     console.log(id);
-    const res = await topicController.getTopicById(id);
+    const res = await topicApi.getTopicById(id);
     if (res.success) {
       setTopic(res.data);
       setLoading(false);
@@ -31,14 +23,12 @@ const AdminTopicEditor = () => {
   };
 
   const handleSave = async () => {
-    const res = await topicController.updateTopic(id, topic);
+    const res = await topicApi.updateTopic(id, topic);
     if (res.success) {
       console.log(res);
     }
   };
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(localStorage.getItem("type"));
     getTopic();
   }, []);
   return (

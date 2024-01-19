@@ -1,32 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import TopicController from "../../controller/topicController";
+import React, { useState, useEffect, useContext } from "react";
 import CustomCard from "../../components/Cards/CustomCard";
 import CardContainer from "../../containers/CardContainer";
-import Cookies from "universal-cookie";
 import Title from "../../components/Title";
-import TopicCard from "../../components/Cards/TopicCard";
-import { setLoading } from "../../App";
-const topicController = new TopicController();
-
+import { topicApi } from "../../api";
+import GlobalContext from "../../store/GlobalContext";
 const Topics = () => {
-  const [type, setType] = useState(-1);
-
+  const { type } = useContext(GlobalContext);
   const [topicList, setTopicList] = useState([]);
-
   const getTopicList = async () => {
-    const res = await topicController.getAllTopics();
+    const res = await topicApi.getAllTopics();
     if (res.success) {
       setTopicList(res.data);
       console.log(res);
-      // setLoading(false);
     }
   };
 
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(localStorage.getItem("type"));
     getTopicList();
   }, []);
   return (

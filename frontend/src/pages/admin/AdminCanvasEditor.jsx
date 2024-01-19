@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Editor from "@monaco-editor/react";
@@ -9,27 +9,19 @@ import CardContainer from "../../containers/CardContainer";
 import Title from "../../components/Title";
 import AddIcon from "@mui/icons-material/Add";
 
-import Layout4 from "../../components/Layouts/Layout4";
-import AdminNavbar from "../../components/Navbars/AdminNavbar";
 import {
-  SelectionField,
   SelectionField2,
   TextArea2,
   TextField,
   TextField2,
 } from "../../components/InputFields";
 
-import TopicController from "../../controller/topicController";
-
-import CanvasController from "../../controller/canvasController";
-import { Divider, MenuItem, Select, Switch } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
-
-const topicController = new TopicController();
-
-const canvasController = new CanvasController();
+import { canvasApi } from "../../api";
+import { Switch } from "@mui/material";
+import GlobalContext from "../../store/GlobalContext";
 
 // const snakeCaseToTitleCase = (input) => {
 //   return input
@@ -379,13 +371,8 @@ const OptionList = ({ options, setCanvas, id }) => {
 };
 
 const AdminCanvasEditor = () => {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
   const ref = useRef(null);
   const editorRef = useRef(null);
-  const [type, setType] = useState(-1);
   const { id } = useParams();
   const [canvas, setCanvas] = useState([]);
 
@@ -396,7 +383,7 @@ const AdminCanvasEditor = () => {
     setCanvas({ ...canvas, [prop]: event.target.value });
   };
   const getCanvas = async () => {
-    const res = await canvasController.getCanvasById(id);
+    const res = await canvasApi.getCanvasById(id);
     if (res.success) {
       setCanvas(res.data);
       setLoading(false);
@@ -404,15 +391,13 @@ const AdminCanvasEditor = () => {
   };
 
   const handleSave = async () => {
-    const res = await canvasController.updateCanvas(id, canvas);
+    const res = await canvasApi.updateCanvas(id, canvas);
     if (res.success) {
       console.log(res);
     }
   };
 
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(localStorage.getItem("type"));
     getCanvas();
 
     // Attach resize event listener

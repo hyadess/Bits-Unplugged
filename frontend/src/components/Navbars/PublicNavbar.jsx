@@ -1,21 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import AuthController from "../../controller/authController";
-import { Avatar, InputAdornment, Typography } from "@mui/material";
-import LogoutIcon from "@mui/icons-material/Logout";
-import Cookies from "universal-cookie";
-import ProfileController from "../../controller/profileController";
 import Logo from "../Logo";
-import Banner from "../Banner";
 import { setLoading } from "../../App";
-const authController = new AuthController();
-const profileController = new ProfileController();
 const PublicNavbar = (props) => {
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
   const [darkMode, setDarkMode] = useState(null);
 
   const toggleDarkMode = () => {
@@ -52,7 +41,7 @@ const PublicNavbar = (props) => {
           onClick={() => {
             if (location.pathname !== "/home") {
               setLoading(true);
-              switchPath("/home");
+              navigate("/home");
             }
           }}
         >
@@ -66,7 +55,7 @@ const PublicNavbar = (props) => {
             style={{ alignItems: "center", justifyContent: "center" }}
             data-tip="Home"
             onClick={() => {
-              switchPath("/home");
+              navigate("/home");
             }}
           >
             <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
@@ -79,7 +68,7 @@ const PublicNavbar = (props) => {
             className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
             style={{ alignItems: "center", justifyContent: "center" }}
             data-tip="Home"
-            onClick={() => switchPath("/home")}
+            onClick={() => navigate("/home")}
           >
             <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
               About Us
@@ -90,7 +79,7 @@ const PublicNavbar = (props) => {
             className="icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
             style={{ alignItems: "center", justifyContent: "center" }}
             data-tip="Marketplace"
-            onClick={() => switchPath("/home")}
+            onClick={() => navigate("/home")}
           >
             <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
               Features
@@ -101,7 +90,7 @@ const PublicNavbar = (props) => {
             className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
             style={{ alignItems: "center", justifyContent: "center" }}
             data-tip="Home"
-            onClick={() => switchPath("/login")}
+            onClick={() => navigate("/login")}
           >
             <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
               Login

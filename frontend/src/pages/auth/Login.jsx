@@ -1,13 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthController from "../../controller/authController";
 import { useSearchParams, createSearchParams } from "react-router-dom";
 import { CircularProgress, Switch } from "@mui/material";
 import Banner from "../../components/Banner";
 import Layout1 from "../../components/Layouts/Layout1";
 import { setLoading } from "../../App";
-const authController = new AuthController();
-
+import AuthService from "../../services/authService";
+import GlobalContext from "../../store/GlobalContext";
 const InputField = (props) => {
   return (
     <div>
@@ -35,7 +34,9 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggingIn, setLoggingIn] = useState(false);
+  const globalCtx = useContext(GlobalContext);
   const [type, setType] = useState(searchParams.get("type"));
+
   const [checked, setChecked] = useState(type === "setter" ? true : false);
   const navigate = useNavigate();
 
@@ -68,7 +69,7 @@ const Login = () => {
   const handleSubmit = async () => {
     if (!loggingIn) {
       setLoading(true);
-      const res = await authController.login({
+      const res = await AuthService.login({
         email: email,
         pass: password,
         type: type == "solver" ? 0 : 1,
@@ -76,6 +77,7 @@ const Login = () => {
       console.log(res);
       if (res.success) {
         setLoggingIn(true);
+        globalCtx.setType(type == "solver" ? 0 : 1);
         type == "solver" ? navigate("/topics") : navigate("/problemSet");
       } else {
         setLoading(false);

@@ -2,11 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Title from "../../components/Title";
 export default function Profile() {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-
+  const navigate = useNavigate();
   useEffect(() => {
     //getData()
   }, []);

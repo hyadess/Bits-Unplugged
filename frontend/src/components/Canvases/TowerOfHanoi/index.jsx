@@ -55,12 +55,13 @@ const TowerOfHanoiView = ({
               <UndoRedoButton handleUndo={handleUndo} handleRedo={handleRedo} />
             )}
             <div className="flex-start flex min-h-[2.5rem] w-full flex-row items-center gap-5">
-              {(mode === "edit" || previewOptions?.nDisks?.value) && (
-                <NumberOfDisksInput
-                  numberOfDisks={numberOfDisks}
-                  handleNumberOfDisksChange={handleNumberOfDisksChange}
-                />
-              )}
+              {(mode === "edit" || previewOptions?.nDisks?.value) &&
+                numberOfDisks && (
+                  <NumberOfDisksInput
+                    numberOfDisks={numberOfDisks}
+                    handleNumberOfDisksChange={handleNumberOfDisksChange}
+                  />
+                )}
               {mode === "preview" &&
                 previewOptions?.moves?.value &&
                 activityData && (
@@ -202,7 +203,7 @@ const TowerOfHanoi = (props, ref) => {
       setNumberOfMoves(0);
       setDraggableDisks(list);
       setNumberOfDisks(newData.pegs.flat(1).length);
-      // console.log("List:", list);
+      // console.log("RESEEEEEEEEEEET");
     } else {
       setNumberOfDisks(3);
       setNumberOfPegs(3);

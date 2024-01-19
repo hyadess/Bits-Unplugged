@@ -77,6 +77,8 @@ class SeriesRepository extends Repository {
     const latestProblemIds = latestProblemVersions.map(
       (version) => version.problemId
     );
+
+    console.log(latestProblemVersions);
     const latestProblemVersionsQuery = await db.ProblemVersion.findAll({
       where: {
         problemId: {
@@ -85,7 +87,6 @@ class SeriesRepository extends Repository {
         createdAt: latestProblemVersions.map(
           (version) => version.latestCreatedAt
         ),
-        "$activities.userId$": { [Op.or]: [userId, null] },
         ...(filter.isSolved !== null && {
           "$activities.isSolved$": filter.isSolved,
         }),
@@ -98,12 +99,32 @@ class SeriesRepository extends Repository {
           model: db.Activity,
           foreignKey: "problemId",
           as: "activities",
+          where: { userId }, // Add your specific userId filter here
+          required: false,
         },
+      ],
+      order: [
+        ["serialNo", "DESC"], // Change 'ASC' to 'DESC' if you want descending order
       ],
     });
 
-    // console.log(latestProblemVersionsQuery);
+    console.log(latestProblemVersionsQuery[1]);
     return latestProblemVersionsQuery;
+  };
+
+  updateSerial = async (data) => {
+    for (const item of data) {
+      const { problemId, serialNo } = item;
+      const recordToUpdate = await db.ProblemVersion.update(
+        {
+          serialNo,
+        },
+        {
+          returning: true,
+          where: { id: problemId },
+        }
+      );
+    }
   };
 
   // Uncomment and implement these methods if needed

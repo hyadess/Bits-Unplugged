@@ -1,9 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import Latex from "react-latex";
-import ProblemController from "../../controller/problemController";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import MDEditor from "@uiw/react-md-editor";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import katex from "katex";

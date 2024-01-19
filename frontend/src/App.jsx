@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import AppRoutes from "./Routes";
+import GlobalContext from "./store/GlobalContext";
 
-const showToast = (message, type) => {
+export const showToast = (message, type) => {
   console.log(message, type);
   if (type === "success") toast.success(message, {});
   else if (type === "error") toast.error(message, {});
@@ -11,11 +12,23 @@ const showToast = (message, type) => {
     toast.dark(message, {});
   }
 };
+export const showSuccess = (message, res) => {
+  if (res === undefined) showToast("Couldn't connect to server", "error");
+  else if (res.success) showToast(message, "success");
+  else showToast(res.error, "error");
+};
+export const showMessage = (message, res) => {
+  if (res === undefined) showToast("Couldn't connect to server", "error");
+  else if (res.success) showToast(message);
+  else showToast(res.error, "error");
+};
 
 var setLoading;
 const App = () => {
+  const { setType } = useContext(GlobalContext);
   const [loading, setL] = useState(true);
   useEffect(() => {
+    setType(localStorage.getItem("type"));
     if (
       localStorage.getItem("color-theme") === "dark" ||
       (!("color-theme" in localStorage) &&
@@ -61,4 +74,4 @@ const App = () => {
 };
 
 export default App;
-export { showToast, setLoading };
+export { setLoading };

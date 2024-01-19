@@ -19,4 +19,5 @@ router.delete("/:id", seriesController.deleteSeries);
 // router.put("/:id/live", (req, res) => res.status(204).json()); // edit
 
 router.get("/:id/problems", seriesController.getAllProblems); // transfer to problem
+router.put("/:id/problems/serial", seriesController.updateSerial);
 module.exports = router;

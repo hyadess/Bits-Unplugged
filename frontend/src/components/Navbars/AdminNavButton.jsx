@@ -1,16 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Logo from "../Logo";
-import AuthController from "../../controller/authController";
 import { setLoading } from "../../App";
-const authController = new AuthController();
-
 const AdminNavButton = ({ label, path }) => {
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
   return (
     <button
       className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info items-center justify-center border-b-4 ${
@@ -22,7 +15,7 @@ const AdminNavButton = ({ label, path }) => {
       onClick={() => {
         if (location.pathname !== path) {
           setLoading(true);
-          switchPath(path);
+          navigate(path);
         }
       }}
     >

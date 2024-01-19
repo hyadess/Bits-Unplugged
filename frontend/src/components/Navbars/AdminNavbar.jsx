@@ -1,17 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../Logo";
-import AuthController from "../../controller/authController";
 import { setLoading } from "../../App";
 import AdminNavButton from "./AdminNavButton";
-const authController = new AuthController();
+import AuthService from "../../services/authService";
+import GlobalContext from "../../store/GlobalContext";
 
 const AdminNavbar = () => {
-  const navigator = useNavigate();
-  const location = useLocation();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
+  const { setType } = useContext(GlobalContext);
+  const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(null);
 
   const toggleDarkMode = () => {
@@ -46,7 +43,7 @@ const AdminNavbar = () => {
           className="p-5 pl-0"
           onClick={() => {
             setLoading(true);
-            switchPath("/home");
+            navigate("/home");
           }}
         >
           <Logo />
@@ -63,10 +60,11 @@ const AdminNavbar = () => {
           <button
             className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info border-b-4 border-transparent items-center justify-center"
             data-tip="Home"
-            onClick={() => {
+            onClick={async () => {
               setLoading(true);
-              authController.logout();
-              switchPath("/admin/login");
+              await AuthService.logout();
+              setType(0);
+              navigate("/admin/login");
             }}
           >
             <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">

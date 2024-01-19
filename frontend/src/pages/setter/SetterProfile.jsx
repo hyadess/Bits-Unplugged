@@ -3,11 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Title from "../../components/Title";
 export default function SetterProfile() {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState();
   const baseURL = "https";

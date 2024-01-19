@@ -1,31 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
 import CustomCard from "../../components/Cards/CustomCard";
 import CardContainer from "../../containers/CardContainer";
-import Cookies from "universal-cookie";
 import Title from "../../components/Title";
-import TopicCard from "../../components/Cards/TopicCard";
-import AdminNavbar from "../../components/Navbars/AdminNavbar";
-import Layout4 from "../../components/Layouts/Layout4";
 import AddIcon from "@mui/icons-material/Add";
-import CanvasController from "../../controller/canvasController";
 import Modal from "../../components/Modal";
-const canvasController = new CanvasController();
-
+import { canvasApi } from "../../api";
 const AdminCanvasList = () => {
-  const [type, setType] = useState(-1);
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [canvasList, setCanvasList] = useState([]);
 
   const getCanvasList = async () => {
-    const res = await canvasController.getAllCanvas();
+    const res = await canvasApi.getAllCanvas();
     if (res.success) {
       setCanvasList(res.data);
       setLoading(false);
@@ -34,8 +21,6 @@ const AdminCanvasList = () => {
   };
 
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(localStorage.getItem("type"));
     getCanvasList();
   }, []);
 
@@ -50,7 +35,7 @@ const AdminCanvasList = () => {
   };
 
   const getCanvasId = async (name) => {
-    const res = await canvasController.createCanvas(name);
+    const res = await canvasApi.createCanvas(name);
     if (res.success) {
       return res.data[0].id;
     }
@@ -62,7 +47,7 @@ const AdminCanvasList = () => {
       setLoading(true);
       closeModal();
       const canvasId = await getCanvasId(inputValue);
-      switchPath(`/admin/canvas/${canvasId}`);
+      navigate(`/admin/canvas/${canvasId}`);
     }
   };
 

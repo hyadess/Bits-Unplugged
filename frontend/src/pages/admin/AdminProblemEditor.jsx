@@ -1,34 +1,15 @@
 import React, { useState, useEffect } from "react";
-
 import { useNavigate, useParams } from "react-router-dom";
-
 import Cookies from "universal-cookie";
 import Title from "../../components/Title";
-
-import {
-  SelectionField2,
-  TextField,
-  TextField2,
-} from "../../components/InputFields";
-
-import TopicController from "../../controller/topicController";
-
-import SeriesController from "../../controller/seriesController";
-import ProblemController from "../../controller/problemController";
+import { SelectionField2 } from "../../components/InputFields";
 import { Switch } from "@mui/material";
 import { setLoading } from "../../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpand } from "@fortawesome/free-solid-svg-icons";
-const problemController = new ProblemController();
-const topicController = new TopicController();
-const seriesController = new SeriesController();
-
+import { problemApi, seriesApi } from "../../api";
 const AdminProblemEditor = () => {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-  const [type, setType] = useState(-1);
+  const navigate = useNavigate();
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
   const [seriesList, setSeriesList] = useState([]);
@@ -43,7 +24,7 @@ const AdminProblemEditor = () => {
   };
   const getProblem = async () => {
     console.log(id);
-    const res = await problemController.getProblemById(id);
+    const res = await problemApi.getProblemById(id);
     if (res.success) {
       console.log(res.data);
       setProblem(res.data);
@@ -52,7 +33,7 @@ const AdminProblemEditor = () => {
   };
 
   const getSeriesList = async () => {
-    const res = await seriesController.getAllSeries();
+    const res = await seriesApi.getAllSeries();
     if (res.success) {
       const newArray = [
         { value: "", label: "Unassigned" },
@@ -67,29 +48,13 @@ const AdminProblemEditor = () => {
   };
 
   const handleSave = async () => {
-    {
-      const res = await problemController.updateSeries(
-        problem.id,
-        problem.seriesId
-      );
-      if (res.success) {
-        console.log(res);
-      }
-    }
-
-    {
-      const res = (await problem.isLive)
-        ? problemController.publishProblem(problem.id)
-        : problemController.unpublishProblem(problem.id);
-      if (res.success) {
-        console.log(res);
-      }
+    const res = await problemApi.updateProblem(problem.id, problem);
+    if (res.success) {
+      console.log(res);
     }
   };
 
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(localStorage.getItem("type"));
     getProblem();
     getSeriesList();
   }, []);
@@ -103,7 +68,7 @@ const AdminProblemEditor = () => {
               className="font-medium rounded-lg text-lg px-7 py-3.5 text-center flex flex-row gap-4 items-center bu-button bg-teal-300 hover:bg-teal-400 active:ring-teal-300 dark:bg-green-600 dark:hover:bg-green-700 dark:active:ring-green-600"
               onClick={() => {
                 setLoading(true);
-                switchPath(`/admin/problems/${id}/preview`);
+                navigate(`/admin/problems/${id}/preview`);
               }}
               // onClick={() => setOpen(true)}
             >

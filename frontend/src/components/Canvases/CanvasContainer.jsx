@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef, forwardRef } from "react";
 import { Route, useParams } from "react-router-dom";
-import CanvasController from "../../controller/canvasController";
-import Cookies from "universal-cookie";
 import InfoIcon from "@mui/icons-material/Info";
 import {
   Button,
@@ -26,9 +24,7 @@ import {
   faUser,
   faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
-const canvasController = new CanvasController();
-const cookies = new Cookies();
-
+import { canvasApi } from "../../api";
 const CanvasContainer = (props, ref) => {
   const [DynamicComponent, setDynamicComponent] = useState(null);
   const [componentPath, setComponentPath] = useState(null);
@@ -42,8 +38,7 @@ const CanvasContainer = (props, ref) => {
     props.previewOptions,
     props.setPreviewOptions,
   ];
-  // const [type, setType] = useState(-1);
-  // const [canvas, setCanvas] = useState(null);
+
   const [canvasContainerMode, setCanvasContainerMode] = useState(props.mode);
   const loadComponent = async (name) => {
     try {
@@ -61,7 +56,7 @@ const CanvasContainer = (props, ref) => {
   // Fix this
   const getCanvas = async () => {
     console.log("Canvas changed");
-    const res = await canvasController.getCanvasById(props.canvasId);
+    const res = await canvasApi.getCanvasById(props.canvasId);
     if (res.success) {
       console.log(res.data);
       // canvas = res.data
@@ -98,10 +93,6 @@ const CanvasContainer = (props, ref) => {
   useEffect(() => {
     getCanvas();
   }, [props.canvasId]);
-
-  // useEffect(() => {
-  //   setType(localStorage.getItem("type"));
-  // }, []);
 
   const snakeCaseToTitleCase = (input) => {
     return input

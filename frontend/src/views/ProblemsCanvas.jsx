@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useRef, forwardRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import CanvasContainer from "../components/Canvases/CanvasContainer";
-import ProblemController from "../controller/problemController";
-import SubmissionController from "../controller/submissionController";
-import UserActivityController from "../controller/userActivityController";
-
 import { Button } from "@mui/material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
@@ -43,7 +39,7 @@ const Title = ({ problem }) => {
 };
 
 const Header = ({ id, problem, type }) => {
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   return (
     <div className="flex flex-row justify-between">
       <Title problem={problem} />
@@ -53,7 +49,7 @@ const Header = ({ id, problem, type }) => {
             className="bu-button-primary rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white"
             onClick={() => {
               setLoading(true);
-              navigator(
+              navigate(
                 type == 2 ? `/admin/problems/${id}` : `/problem/${id}/edit`
               );
             }}
@@ -71,7 +67,7 @@ const Header = ({ id, problem, type }) => {
             onClick={() => {
               setLoading(true);
               console.log(problem);
-              navigator(`/submission/${id}`);
+              navigate(`/submission/${id}`);
             }}
           >
             <div className="flex flex-row items-center gap-4">SUBMISSIONS</div>
@@ -113,15 +109,13 @@ const Canvas = forwardRef(
       activityData,
       setActivityData,
       editOptions,
-      setEditOptions,
       previewOptions,
-      setPreviewOptions,
       onReset,
       onSubmit,
     },
     ref
   ) => {
-    useEffect(() => console.log(canvasId, ref));
+    // useEffect(() => console.log(canvasId, ref));
     return (
       canvasId &&
       ref && (
@@ -133,9 +127,7 @@ const Canvas = forwardRef(
             mode={"preview"}
             ref={ref}
             editOptions={editOptions}
-            setEditOptions={setEditOptions}
             previewOptions={previewOptions}
-            setPreviewOptions={setPreviewOptions}
             activityData={activityData}
             setActivityData={setActivityData}
           />
@@ -173,18 +165,12 @@ const ProblemsCanvasView = (
     problem,
     onSubmit,
     onReset,
-    statement,
-    canvasId,
-    input,
-    setInput,
     activityData,
     setActivityData,
-    editOptions,
-    setEditOptions,
-    previewOptions,
-    setPreviewOptions,
     colorMode,
     type,
+    input,
+    setInput,
   },
   ref
 ) => {
@@ -194,17 +180,15 @@ const ProblemsCanvasView = (
         <>
           <div>
             <Header id={id} problem={problem} type={type} />
-            <Statement statement={statement} colorMode={colorMode} />
+            <Statement statement={problem.statement} colorMode={colorMode} />
           </div>
           <Canvas
             ref={ref}
-            canvasId={canvasId}
+            canvasId={problem.canvasId}
             input={input}
             setInput={setInput}
-            editOptions={editOptions}
-            setEditOptions={setEditOptions}
-            previewOptions={previewOptions}
-            setPreviewOptions={setPreviewOptions}
+            editOptions={problem.editOptions}
+            previewOptions={problem.previewOptions}
             activityData={activityData}
             setActivityData={setActivityData}
             onSubmit={onSubmit}

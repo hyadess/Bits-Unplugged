@@ -1,14 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthController from "../../controller/authController";
 import { useSearchParams, createSearchParams } from "react-router-dom";
-import { CircularProgress, Switch } from "@mui/material";
 import Banner from "../../components/Banner";
 import Layout1 from "../../components/Layouts/Layout1";
 import { PasswordField } from "../../components/InputFields";
 import { setLoading } from "../../App";
-const authController = new AuthController();
-
+import AuthService from "../../services/authService";
+import GlobalContext from "../../store/GlobalContext";
 const InputField = (props) => {
   return (
     <div>
@@ -38,17 +36,19 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loggingIn, setLoggingIn] = useState(false);
   const navigate = useNavigate();
+  const { setType } = useContext(GlobalContext);
 
   const handleSubmit = async () => {
     if (!loggingIn) {
       setLoading(true);
-      const res = await authController.login({
+      const res = await AuthService.login({
         email: email,
         pass: password,
         type: 2,
       });
       if (res.success) {
         setLoggingIn(true);
+        setType(2);
         navigate("/admin/topics");
       } else {
         setLoading(false);

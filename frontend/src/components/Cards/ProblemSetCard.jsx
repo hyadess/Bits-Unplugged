@@ -1,40 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Label } from "react-konva";
 import { useNavigate } from "react-router-dom";
-import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
-
 import "../ProbSetTab";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Button, IconButton } from "@mui/material";
-import ProblemController from "../../controller/problemController";
-import EditIcon from "@mui/icons-material/Edit";
 import Confirmation from "../Confirmation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTag, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
-import { getTimeStamp } from "../../utils/DateUtil";
-const problemController = new ProblemController();
+import { getTimeStamp } from "../../services/dateUtil";
 const ProblemSetCard = ({
   id,
   idx,
   name,
   deleteAction,
-  is_live,
+  isLive,
   timestamp,
   canvas,
 }) => {
   const [open, setOpen] = useState(false);
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-
+  const navigate = useNavigate();
   useEffect(() => {
     setLoading(false);
-
     console.log(parseInt(timestamp, 10)); // Convert the string to a number
     const date = new Date(parseInt(timestamp, 10));
     console.log(canvas);
@@ -60,7 +48,7 @@ const ProblemSetCard = ({
           className="flex flex-col cursor-pointer"
           onClick={() => {
             setLoading(true);
-            switchPath(`/problem/${id}/preview`);
+            navigate(`/problem/${id}/preview`);
           }}
         >
           <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title w-75% cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
@@ -76,12 +64,10 @@ const ProblemSetCard = ({
         </div>
 
         <div className="flex justify-between items-end">
-          <div className="bu-text-subtitle">
-            {getTimeStamp(parseInt(timestamp, 10))}
-          </div>
+          <div className="bu-text-subtitle">{getTimeStamp(timestamp)}</div>
           <div className="flex flex-row ">
             <div className="w-1/3 flex items-center justify-center">
-              <IconButton onClick={() => switchPath(`/problem/${id}/edit`)}>
+              <IconButton onClick={() => navigate(`/problem/${id}/edit`)}>
                 <div className="flex items-center bu-text-primary">
                   <FontAwesomeIcon icon={faPenToSquare} size="sm" />
                 </div>
@@ -89,7 +75,7 @@ const ProblemSetCard = ({
             </div>
 
             <div className="w-1/3 flex items-center justify-center">
-              {is_live == 1 ? (
+              {isLive == 1 ? (
                 <IconButton onClick={() => unpublishProblem()}>
                   <div className="flex items-center bu-text-primary">
                     <CheckCircleIcon sx={{ fontSize: "1.5rem" }} />

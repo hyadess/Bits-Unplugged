@@ -1,31 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
 import CustomCard from "../../components/Cards/CustomCard";
-import CardContainer from "../../components/Containers/CardContainer";
+import CardContainer from "../../containers/CardContainer";
 import Cookies from "universal-cookie";
 import Title from "../../components/Title";
-import TopicCard from "../../components/Cards/TopicCard";
-import AdminNavbar from "../../components/navbar/AdminNavbar";
-import Layout4 from "../../components/Layouts/Layout4";
 import Modal from "../../components/Modal";
-import TopicController from "../../controller/topicController";
 import AddIcon from "@mui/icons-material/Add";
-const topicController = new TopicController();
-
+import { topicApi } from "../../api";
 const AdminTopics = () => {
-  const [type, setType] = useState(-1);
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [topicList, setTopicList] = useState([]);
-
   const getTopicList = async () => {
-    const res = await topicController.getAllTopics();
+    const res = await topicApi.getAllTopics();
     if (res.success) {
       setTopicList(res.data);
       setLoading(false);
@@ -34,12 +21,9 @@ const AdminTopics = () => {
   };
 
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(cookies.get("type"));
     getTopicList();
   }, []);
 
-  
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const openModal = () => {
@@ -50,9 +34,9 @@ const AdminTopics = () => {
   };
 
   const getTopicId = async (name) => {
-    const res = await topicController.addTopic(name);
+    const res = await topicApi.createTopic(name);
     if (res.success) {
-      return res.data[0].topic_id;
+      return res.data.id;
     }
   };
 
@@ -63,7 +47,7 @@ const AdminTopics = () => {
       setLoading(true);
       closeModal();
       const topicId = await getTopicId(inputValue);
-      switchPath(`/admin/topics/${topicId}`);
+      navigate(`/admin/topics/${topicId}`);
     }
   };
 
@@ -88,7 +72,7 @@ const AdminTopics = () => {
               id={`Topic ${index + 1}`}
               name={topic.name}
               image={topic.logo}
-              path={`/admin/topics/${topic.topic_id}`}
+              path={`/admin/topics/${topic.id}`}
               action="View Topic"
             />
           ))}

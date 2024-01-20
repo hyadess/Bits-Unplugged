@@ -1,12 +1,20 @@
 const router = require("express").Router();
-const authMiddleware = require("../service/tokenValidationService");
-const SubmissionController = require("../controller/submissionController");
+const authMiddleware = require("../services/tokenValidationService");
+const SubmissionController = require("../controllers/submissionController");
 const submissionController = new SubmissionController();
 
-router.use(authMiddleware);
-
-router.get("/:problem_id", submissionController.getAllSubmissionsByUserAndProblem); 
-router.get("/:problem_id/allUsers", submissionController.getAllSubmissionsByProblem);
+const passport = require("passport");
+router.use(
+  passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
+);
+router.get(
+  "/:problemId",
+  submissionController.getAllSubmissionsByUserAndProblem
+);
+router.get(
+  "/:problemId/allUsers",
+  submissionController.getAllSubmissionsByProblem
+);
 router.get("/", submissionController.getAllSubmissionsByUser);
-router.post("/:problem_id/saveSubmit",submissionController.submitSolution);
+router.post("/:problemId/saveSubmit", submissionController.submitSolution);
 module.exports = router;

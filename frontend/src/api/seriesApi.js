@@ -4,21 +4,22 @@ class SeriesApi extends Api {
   getAllSeries = async () => {
     return await this.get("/series");
   };
-  getSeriesByTopic = async (topic_id) => {
-    return await this.get("/series/by_topic/" + topic_id);
+  getSeriesByTopic = async (topicId) => {
+    return await this.get("/series/by_topic/" + topicId);
   };
-  getSeriesById = async (series_id) => {
-    return await this.get("/series/" + series_id);
+  getSeriesById = async (seriesId) => {
+    return await this.get("/series/" + seriesId);
   };
   updateSeries = async (id, data) => {
-    return await this.put("/series/" + id, {
-      series: data,
-    });
+    return await this.put("/series/" + id, data);
   };
-  getAllProblems = async (series_id) => {
-    return await this.get("/series/" + series_id + "/problems");
+  updateSerial = async (id, data) => {
+    return await this.put("/series/" + id + "/problems/serial", data);
   };
-  addSeries = async (name) => {
+  getAllProblems = async (seriesId) => {
+    return await this.get("/series/" + seriesId + "/problems");
+  };
+  createSeries = async (name) => {
     return await this.post("/series/", { name: name });
   };
 }

@@ -1,31 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
 import CustomCard from "../../components/Cards/CustomCard";
-import CardContainer from "../../components/Containers/CardContainer";
+import CardContainer from "../../containers/CardContainer";
 import Cookies from "universal-cookie";
 import Title from "../../components/Title";
-import TopicCard from "../../components/Cards/TopicCard";
-import AdminNavbar from "../../components/navbar/AdminNavbar";
-import Layout4 from "../../components/Layouts/Layout4";
 import AddIcon from "@mui/icons-material/Add";
-import SeriesController from "../../controller/seriesController";
 import Modal from "../../components/Modal";
-const seriesController = new SeriesController();
-
+import { seriesApi } from "../../api";
 const AdminSeries = () => {
-  const [type, setType] = useState(-1);
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [seriesList, setSeriesList] = useState([]);
 
   const getSeriesList = async () => {
-    const res = await seriesController.getAllSeries();
+    const res = await seriesApi.getAllSeries();
     if (res.success) {
       setSeriesList(res.data);
       setLoading(false);
@@ -34,8 +22,6 @@ const AdminSeries = () => {
   };
 
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(cookies.get("type"));
     getSeriesList();
   }, []);
 
@@ -50,9 +36,9 @@ const AdminSeries = () => {
   };
 
   const getSeriesId = async (name) => {
-    const res = await seriesController.addSeries(name);
+    const res = await seriesApi.createSeries(name);
     if (res.success) {
-      return res.data[0].series_id;
+      return res.data[0].id;
     }
   };
 
@@ -62,7 +48,7 @@ const AdminSeries = () => {
       setLoading(true);
       closeModal();
       const seriesId = await getSeriesId(inputValue);
-      switchPath(`/admin/series/${seriesId}`);
+      navigate(`/admin/series/${seriesId}`);
     }
   };
 
@@ -78,7 +64,7 @@ const AdminSeries = () => {
               id={`Series ${index + 1}`}
               name={series.name}
               image={series.logo}
-              path={`/admin/series/${series.series_id}`}
+              path={`/admin/series/${series.id}`}
               action="View Series"
             />
           ))}

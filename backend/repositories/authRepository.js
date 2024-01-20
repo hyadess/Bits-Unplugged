@@ -1,0 +1,79 @@
+const Repository = require("./base");
+const db = require("../models/index");
+
+class AuthRepository extends Repository {
+  constructor() {
+    super();
+  }
+
+  getUserByEmailType = async (email, role) => {
+    console.log(email);
+    const credential = await db.Credential.findOne({
+      where: {
+        email,
+        role,
+      },
+      include: [{ model: db.User, required: true }],
+    });
+    return credential;
+  };
+
+  getUserByNameType = async (username, role) => {
+    const credential = await db.Credential.findOne({
+      where: {
+        role,
+      },
+      include: [{ model: db.User, required: true, where: { username } }],
+    });
+    return credential;
+  };
+
+  deleteAccount = async (id) => {
+    const user = await db.User.findByPk(id);
+    if (user) {
+      await db.User.destroy({
+        where: {
+          id,
+        },
+      });
+      return user;
+    }
+    return null;
+  };
+
+  signup = async (data) => {
+    console.log(data);
+    let transaction;
+    try {
+      transaction = await db.sequelize.transaction();
+      const user = await db.User.create(
+        {
+          username: data.username,
+          fullname: data.fullname,
+        },
+        { transaction }
+      );
+      await db.Credential.create(
+        {
+          userId: user.id,
+          email: data.email,
+          hashpass: data.hashPass,
+          role: data.type,
+        },
+        { transaction }
+      );
+      await transaction.commit();
+      return user;
+    } catch (err) {
+      // If an error occurs, rollback the transaction
+      if (transaction) await transaction.rollback();
+      if (err.name === "SequelizeUniqueConstraintError") {
+        return null;
+      }
+      // Handle the error or rethrow it
+      throw err;
+    }
+  };
+}
+
+module.exports = AuthRepository;

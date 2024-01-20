@@ -1,14 +1,24 @@
 const router = require("express").Router();
-const authMiddleware = require("../service/tokenValidationService");
-const TopicController = require("../controller/topicController");
+const {
+  requiresAdmin,
+} = require("../middlewares/authMiddleware");
+
+const TopicController = require("../controllers/topicController");
+const passport = require("passport");
 const topicController = new TopicController();
 
-router.use(authMiddleware);
+// router.use(authMiddleware);
+router.use(
+  passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
+);
+
 router.get("/", topicController.getAllTopics);
-router.get("/live", topicController.getAllTopics); // pending
-router.post("/", topicController.addTopic); // add_new
-router.get("/:topic_id", topicController.getTopicById); // fetch
-router.put("/:topic_id", topicController.updateTopic); // edit
-router.delete("/:topic_id", topicController.deleteTopic); // delete
+router.post("/", requiresAdmin, topicController.createTopic); // add_new
+router.get("/:id", topicController.getTopicById); // fetch
+router.put("/:id", requiresAdmin, topicController.updateTopic); // edit
+router.delete("/:id", requiresAdmin, topicController.deleteTopic); // delete
+
+// router.get("/live", topicController.getAllTopics); // pending
+// router.put("/:id/live", (req, res) => res.status(204).json()); // edit
 
 module.exports = router;

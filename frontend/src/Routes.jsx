@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
   Outlet,
-  useNavigate,
 } from "react-router-dom";
-import Cookies from "universal-cookie";
 import Home from "./pages/Home";
 import Problems from "./pages/user/Problems";
 import Login from "./pages/auth/Login";
@@ -15,13 +13,9 @@ import Signup from "./pages/auth/Signup";
 import ProblemsCanvas from "./pages/ProblemsCanvas";
 import Topics from "./pages/user/Topics";
 import Series from "./pages/user/Series";
-import ProblemSet from "./pages/setter/ProblemSet";
-import GraphComponent from "./components/Canvas/GraphComponent";
-import CanvasContainer from "./components/Canvas/CanvasContainer";
-
+import SetterProblems from "./pages/setter/SetterProblems";
 import ProblemSetEnv from "./pages/setter/ProblemSetEnv";
-import SolutionChecker from "./pages/SolutionChecker";
-import PublicNavbar from "./components/navbar/PublicNavbar";
+import PublicNavbar from "./components/Navbars/PublicNavbar";
 import Layout2 from "./components/Layouts/Layout2";
 import AdminLogin from "./pages/auth/AdminLogin";
 import AdminHome from "./pages/admin/AdminHome";
@@ -35,36 +29,18 @@ import AdminCanvasList from "./pages/admin/AdminCanvasList";
 import AdminCanvasEditor from "./pages/admin/AdminCanvasEditor";
 import AdminContests from "./pages/admin/AdminContests";
 import AdminSetters from "./pages/admin/AdminSetters";
-
-import PrivateNavbar from "./components/navbar/PrivateNavbar";
-import AdminNavbar from "./components/navbar/AdminNavbar";
+import PrivateNavbar from "./components/Navbars/PrivateNavbar";
+import AdminNavbar from "./components/Navbars/AdminNavbar";
 import LayoutMain from "./components/Layouts/LayoutMain";
-
-import Navbar from "./components/Navbar";
-
 import ProblemsSubmissions from "./pages/ProblemsSubmissions";
 import SetterProfile from "./pages/setter/SetterProfile";
-import Profile from "./pages/user/Profille";
+import Profile from "./pages/user/Profile";
 import Contests from "./pages/user/Contests";
 import SetterContests from "./pages/setter/SetterContests";
-const cookies = new Cookies();
-
-const Private = () => {
-  const cookies = new Cookies();
-  const isLoggedIn = !!cookies.get("token");
-  return isLoggedIn ? (
-    <Layout2 nav={<PrivateNavbar />}>
-      <Outlet />
-    </Layout2>
-  ) : (
-    <Navigate to="/login" />
-  );
-};
-
+import GlobalContext from "./store/GlobalContext";
 const ProblemSolver = () => {
-  const cookies = new Cookies();
-  const isLoggedIn = !!cookies.get("token");
-  const type = cookies.get("type");
+  const isLoggedIn = localStorage.hasOwnProperty("token");
+  const type = localStorage.getItem("type");
   return isLoggedIn ? (
     type == 0 ? (
       <Layout2 nav={<PrivateNavbar />}>
@@ -79,9 +55,8 @@ const ProblemSolver = () => {
 };
 
 const ProblemSetter = () => {
-  const cookies = new Cookies();
-  const isLoggedIn = !!cookies.get("token");
-  const type = cookies.get("type");
+  const isLoggedIn = localStorage.hasOwnProperty("token");
+  const type = localStorage.getItem("type");
   return isLoggedIn ? (
     type == 1 ? (
       <Layout2 nav={<PrivateNavbar />}>
@@ -96,10 +71,8 @@ const ProblemSetter = () => {
 };
 
 const Admin = () => {
-  const cookies = new Cookies();
-  const isLoggedIn = !!cookies.get("token");
-  const type = cookies.get("type");
-  console.log(type);
+  const isLoggedIn = localStorage.hasOwnProperty("token");
+  const type = localStorage.getItem("type");
   return isLoggedIn ? (
     type == 2 ? (
       <Layout2 nav={<AdminNavbar />}>
@@ -114,12 +87,17 @@ const Admin = () => {
 };
 
 const Public = () => {
-  const cookies = new Cookies();
-  const isLoggedIn = !!cookies.get("token");
-  const type = cookies.get("type");
-  return isLoggedIn ? (
+  return localStorage.hasOwnProperty("token") ? (
     <Navigate
-      to={type === 0 ? "/topics" : type === 1 ? "/problemSet" : "/admin/topics"}
+      to={
+        localStorage.getItem("type") == 0
+          ? "/topics"
+          : localStorage.getItem("type") == 1
+          ? "/problemSet"
+          : localStorage.getItem("type") == 2
+          ? "/admin/topics"
+          : "/login"
+      }
     />
   ) : (
     <Outlet />
@@ -127,16 +105,8 @@ const Public = () => {
 };
 
 const AppRoutes = () => {
-  const [type, setType] = useState(-1); // 0 - Solver, 1 - Setter, 2 - Guest
-  // const navigator = useNavigate();
-  useEffect(() => {
-    const isLoggedIn = !!cookies.get("token");
-    if (isLoggedIn) {
-      setType(cookies.get("type"));
-    } else {
-      setType(2);
-    }
-  }, []);
+  const { type } = useContext(GlobalContext); // 0 - Solver, 1 - Setter, 2 - Guest
+
   return (
     <Router>
       <Routes>
@@ -252,7 +222,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/problem/:prob_id/edit"
+            path="/problem/:problemid/edit"
             element={
               <LayoutMain>
                 <ProblemSetEnv />
@@ -263,7 +233,7 @@ const AppRoutes = () => {
             path="/problemSet"
             element={
               <LayoutMain>
-                <ProblemSet />
+                <SetterProblems />
               </LayoutMain>
             }
           />
@@ -394,6 +364,15 @@ const AppRoutes = () => {
             }
           />
         </Route>
+
+        {/* <Route
+          path="/user/:username"
+          element={
+            <LayoutMain>
+              <Profile />
+            </LayoutMain>
+          }
+        /> */}
         {/* 
         <Route element={<Private />}>
           <Route
@@ -417,7 +396,13 @@ const AppRoutes = () => {
               <Navigate
                 replace
                 to={
-                  type === 0 ? "/topics" : type === 1 ? "/problemSet" : "/home"
+                  type == 0
+                    ? "/topics"
+                    : type == 1
+                    ? "/problemSet"
+                    : type == 2
+                    ? "/admin/topics"
+                    : "/home"
                 }
               />
             }

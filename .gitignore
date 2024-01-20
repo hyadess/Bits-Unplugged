@@ -2,6 +2,5 @@ node_modules/
 build/
 .vscode/
 bugs.txt
-config.js
 dist/
 .env*

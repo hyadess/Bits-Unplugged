@@ -1,34 +1,15 @@
 import React, { useState, useEffect } from "react";
-
 import { useNavigate, useParams } from "react-router-dom";
-
 import Cookies from "universal-cookie";
 import Title from "../../components/Title";
-
-import {
-  SelectionField2,
-  TextField,
-  TextField2,
-} from "../../components/InputFields";
-
-import TopicController from "../../controller/topicController";
-
-import SeriesController from "../../controller/seriesController";
-import ProblemController from "../../controller/problemController";
+import { SelectionField2 } from "../../components/InputFields";
 import { Switch } from "@mui/material";
 import { setLoading } from "../../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpand } from "@fortawesome/free-solid-svg-icons";
-const problemController = new ProblemController();
-const topicController = new TopicController();
-const seriesController = new SeriesController();
-
+import { problemApi, seriesApi } from "../../api";
 const AdminProblemEditor = () => {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-  const [type, setType] = useState(-1);
+  const navigate = useNavigate();
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
   const [seriesList, setSeriesList] = useState([]);
@@ -43,20 +24,21 @@ const AdminProblemEditor = () => {
   };
   const getProblem = async () => {
     console.log(id);
-    const res = await problemController.getProblemById(id);
+    const res = await problemApi.getProblemById(id);
     if (res.success) {
-      setProblem(res.data[0]);
+      console.log(res.data);
+      setProblem(res.data);
       setLoading(false);
     }
   };
 
   const getSeriesList = async () => {
-    const res = await seriesController.getAllSeries();
+    const res = await seriesApi.getAllSeries();
     if (res.success) {
       const newArray = [
         { value: "", label: "Unassigned" },
         ...res.data.map((item) => ({
-          value: item.series_id,
+          value: item.id,
           label: item.name,
         })),
       ];
@@ -66,26 +48,13 @@ const AdminProblemEditor = () => {
   };
 
   const handleSave = async () => {
-    {
-      const res = await problemController.updateSeries(id, problem.series_id);
-      if (res.success) {
-        console.log(res);
-      }
-    }
-
-    {
-      const res = (await problem.is_live)
-        ? problemController.publishProblem(id)
-        : problemController.unpublishProblem(id);
-      if (res.success) {
-        console.log(res);
-      }
+    const res = await problemApi.updateProblem(problem.id, problem);
+    if (res.success) {
+      console.log(res);
     }
   };
 
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(cookies.get("type"));
     getProblem();
     getSeriesList();
   }, []);
@@ -99,7 +68,7 @@ const AdminProblemEditor = () => {
               className="font-medium rounded-lg text-lg px-7 py-3.5 text-center flex flex-row gap-4 items-center bu-button bg-teal-300 hover:bg-teal-400 active:ring-teal-300 dark:bg-green-600 dark:hover:bg-green-700 dark:active:ring-green-600"
               onClick={() => {
                 setLoading(true);
-                switchPath(`/admin/problems/${id}/preview`);
+                navigate(`/admin/problems/${id}/preview`);
               }}
               // onClick={() => setOpen(true)}
             >
@@ -131,18 +100,18 @@ const AdminProblemEditor = () => {
           <SelectionField2
             label="Series"
             onChange={handleSeriesChange}
-            id="series_id"
-            value={problem.series_id == null ? "" : problem.series_id}
+            id="seriesId"
+            value={problem.seriesId == null ? "" : problem.seriesId}
             options={seriesList}
           />
           <div className="flex flex-row items-center">
             <h1 className="bu-text-primary">Live</h1>
             <Switch
-              checked={problem.is_live}
+              checked={problem.isLive}
               onChange={() => {
                 setProblem((prevJson) => ({
                   ...prevJson,
-                  is_live: !prevJson.is_live,
+                  isLive: !prevJson.isLive,
                 }));
               }}
             />

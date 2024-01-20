@@ -1,59 +1,64 @@
-import React, { useState, useEffect } from "react";
+import SetterProblemsView from "../../views/SetterProblems";
+import React, { useState, useEffect, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
-import ProblemSetCard from "../../components/Cards/ProblemSetCard";
-import ProblemController from "../../controller/problemController";
-import TopicController from "../../controller/topicController";
-import TableContainer from "../../components/Containers/TableContainer";
-import CancelIcon from "@mui/icons-material/Cancel";
-
-import Title from "../../components/Title";
-import AddIcon from "@mui/icons-material/Add";
 import { setLoading } from "../../App";
-import CardContainer from "../../components/Containers/CardContainer";
-
-const problemController = new ProblemController();
-const topicController = new TopicController();
-
+import { problemApi } from "../../api";
 const SetterProblems = () => {
+  const navigate = useNavigate();
   const [problemList, setProblemList] = useState([]);
-  const deleteAProblem = async (problem_id) => {
-    const res = await problemController.deleteProblem(problem_id);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const deleteProblem = async (problemId) => {
+    const res = await problemApi.deleteProblem(problemId);
     if (res.success) {
-      setProblemList(
-        problemList.filter(
-          (problemList) => problemList.problem_id !== problem_id
-        )
-      );
+      setProblemList(problemList.filter((problem) => problem.id !== problemId));
     }
   };
   const getProblemList = async () => {
-    const res = await problemController.getMyProblems();
+    const res = await problemApi.getAllProblems();
     if (res.success) {
-      setProblemList(res.data);
-      if (res.data.length == 0) setLoading(false);
+      // console.log(res.data);
+      if (res.data.length > 0)
+        setProblemList(res.data.sort((a, b) => a.id - b.id));
+      else setLoading(false);
     }
   };
+
+  const getProblemId = async (title) => {
+    const res = await problemApi.createProblem(title);
+    if (res.success) {
+      return res.data.id;
+    }
+  };
+
+  const createProblem = async (title) => {
+    setLoading(true);
+    closeModal();
+    const problemId = await getProblemId(title);
+    navigate(`/problem/${problemId}/edit`);
+  };
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
   useEffect(() => {
     getProblemList();
   }, []);
 
   return (
-    <CardContainer col={2}>
-      {problemList
-        .sort((a, b) => a.problem_id - b.problem_id)
-        .map((prob, index) => (
-          <ProblemSetCard
-            key={index}
-            idx={index + 1}
-            id={prob.problem_id}
-            name={prob.title}
-            deleteAction={deleteAProblem}
-            is_live={prob.is_live}
-            timestamp={prob.last_updated}
-            canvas={prob.canvas_name}
-          />
-        ))}
-    </CardContainer>
+    <SetterProblemsView
+      openModal={openModal}
+      closeModal={closeModal}
+      deleteProblem={deleteProblem}
+      createProblem={createProblem}
+      problemList={problemList}
+      modalIsOpen={modalIsOpen}
+    />
   );
 };
 

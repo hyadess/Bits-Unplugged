@@ -4,6 +4,7 @@ const path = require("path");
 const cors = require("cors");
 const cron = require("node-cron");
 const https = require("https");
+const passport = require("passport");
 const cookieParser = require("cookie-parser");
 cron.schedule("*/14 * * * *", () => {
   let host = process.env.BASE_URL;
@@ -17,8 +18,6 @@ cron.schedule("*/14 * * * *", () => {
     });
 });
 
-app.use(cookieParser());
-
 // const fileUpload = require("express-fileupload");
 const appRoutes = require("./routes/appRoutes");
 const CLIENT_BUILD_PATH = path.join(__dirname, "../frontend/build");
@@ -28,6 +27,7 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
+app.use(cookieParser());
 
 // app.use(cors());
 app.use(express.json());
@@ -36,13 +36,14 @@ app.use(express.static(CLIENT_BUILD_PATH));
 // Use cookie-parser middleware
 
 // app.use(fileUpload());
-
-
-
 app.use("/api", appRoutes);
 
-app.get("*", (request, response) => {
-  response.sendFile(path.join(CLIENT_BUILD_PATH, "index.html"));
+app.get("/invalid", (req, res) => {
+  res.status(401).send({ error: "access denied" });
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(CLIENT_BUILD_PATH, "index.html"));
 });
 
 module.exports = { app };

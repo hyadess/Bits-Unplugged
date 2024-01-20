@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAsyncError, useNavigate, useParams } from "react-router-dom";
 import Editor, { loader, useMonaco } from "@monaco-editor/react";
-import ProblemController from "../controller/problemController";
-import { showToast } from "../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPlay } from "@fortawesome/free-solid-svg-icons";
-import monaco_theme from "../components/themes/my_theme.json";
+import monaco_theme from "../themes/my_theme.json";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 // import Confirmation from "../../components/Confirmation";
@@ -34,8 +32,6 @@ const defineEditorTheme = (monaco) => {
 const setEditorTheme = (editor, monaco) => {
   monaco.editor.setTheme("light-theme");
 };
-const problemController = new ProblemController();
-//<ReactTypingEffect speed={0.5} eraseSpeed={1} cursor={"_"} text={[""]}></ReactTypingEffect>
 export default function SolutionChecker(props) {
   // const monaco_editor = useMonaco();
   const editorRef = useRef(null);
@@ -44,16 +40,10 @@ export default function SolutionChecker(props) {
   const ref = useRef(null);
   const ref2 = useRef(null);
   const [showStdOut, setShowStdOut] = useState(false);
-  const navigator = useNavigate();
-  const { prob_id } = useParams();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-  const [editorHeight, setEditorHeight] = useState(window.innerWidth / 3);
+  const navigate = useNavigate();
+  const { problemid } = useParams();
 
-  // useEffect(() => {
-  //   monaco_editor.editor.defineTheme("light-theme", monaco_theme);
-  // }, [monaco_editor]);
+  const [editorHeight, setEditorHeight] = useState(window.innerWidth / 3);
 
   const handleResize = () => {
     if (editorRef.current) {
@@ -65,6 +55,7 @@ export default function SolutionChecker(props) {
   };
 
   const handleCheckSolution = async () => {
+    console.log("Run");
     await props.checkSubmit();
   };
 
@@ -104,16 +95,6 @@ export default function SolutionChecker(props) {
     props.setCode(ref.current.getValue());
   };
 
-  const submit = () => {
-    // console.log(prob_id);
-    // handleCheckSolution();
-    // problemController.updateSolutionChecker(prob_id, ref.current.getValue(), 0);
-  };
-
-  // const p =
-  //   props.output == "" ? null : (
-  //     <div className="out-display">{props.output}</div>
-  //   );
   return (
     stringed && (
       <div>

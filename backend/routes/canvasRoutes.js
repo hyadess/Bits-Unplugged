@@ -1,15 +1,17 @@
 const router = require("express").Router();
-const authMiddleware = require("../service/tokenValidationService");
-const CanvasController = require("../controller/canvasController");
+const authMiddleware = require("../services/tokenValidationService");
+const CanvasController = require("../controllers/canvasController");
 const canvasController = new CanvasController();
+const passport = require("passport");
+router.use(
+  passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
+);
 
-router.use(authMiddleware);
+router.get("/", canvasController.getAllCanvases);
+router.post("/", canvasController.createCanvas);
+router.get("/:id", canvasController.getCanvasById);
+router.put("/:id", canvasController.updateCanvas);
+router.delete("/:id", canvasController.deleteCanvas);
 
-router.get("/", canvasController.getAllCanvas);
-router.get("/live", canvasController.getAllCanvas); // pending
-router.post("/", canvasController.addCanvas);
-router.get("/:canvas_id", canvasController.getCanvasById);
-router.put("/:canvas_id", canvasController.updateCanvas);
-router.delete("/:canvas_id", canvasController.deleteCanvas);
-
+// router.get("/live", canvasController.getAllCanvases); // pending
 module.exports = router;

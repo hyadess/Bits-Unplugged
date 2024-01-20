@@ -1,52 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ProblemController from "../../controller/problemController";
-
 import ProblemCard from "../../components/Cards/ProblemCard";
-import TableContainer from "../../components/Containers/TableContainer";
+import TableContainer from "../../containers/TableContainer";
 import Title from "../../components/Title";
 import { setLoading } from "../../App";
 // import { Switch } from "@mui/material";
 // import { useState } from 'react'
 import { Switch } from "@headlessui/react";
-
-const problemController = new ProblemController();
+import { problemApi } from "../../api";
 
 export default function Problems() {
   const { id } = useParams();
   const [listType, setListType] = useState("all");
   const [problemList, setProblemList] = useState([]);
-  const [allProblemList, setAllProblemList] = useState([]);
-  const [unsolvedProblemList, setUnsolvedProblemList] = useState([]);
-
+  const allProblemList = useRef([]);
+  const unsolvedProblemList = useRef([]);
   const getProblemList = async () => {
-    // if (listType === "all")
-    {
-      const res = await problemController.getProblemsBySeries(id);
-      if (res.success) {
-        // Filter out objects with serial_no equal to 0
-        const filteredArray = res.data.filter((item) => item.serial_no !== 0);
+    const res = await problemApi.getProblemsBySeries(id);
+    console.log(res);
+    if (res.success) {
+      allProblemList.current = res.data;
+      setProblemList(res.data);
 
-        // Sort the remaining objects based on serial_no in ascending order
-        const sortedArray = filteredArray.sort(
-          (a, b) => a.serial_no - b.serial_no,
+      const unsolvedProblems = res.data.filter((problem) => {
+        return (
+          problem.activities &&
+          problem.activities.length > 0 &&
+          problem.activities[0].isSolved === false
         );
-        setAllProblemList(sortedArray);
-        setProblemList(sortedArray);
-      }
-    }
-    {
-      const res = await problemController.getUnsolvedProblemsBySeries(id);
-      if (res.success) {
-        // Filter out objects with serial_no equal to 0
-        const filteredArray = res.data.filter((item) => item.serial_no !== 0);
-
-        // Sort the remaining objects based on serial_no in ascending order
-        const sortedArray = filteredArray.sort(
-          (a, b) => a.serial_no - b.serial_no,
-        );
-        setUnsolvedProblemList(sortedArray);
-      }
+      });
+      unsolvedProblemList.current = unsolvedProblems;
     }
   };
 
@@ -69,10 +52,10 @@ export default function Problems() {
             onChange={() => {
               if (listType === "all") {
                 setListType("unsolved");
-                setProblemList(unsolvedProblemList);
+                setProblemList(unsolvedProblemList.current);
               } else {
                 setListType("all");
-                setProblemList(allProblemList);
+                setProblemList(allProblemList.current);
               }
             }}
             className={`${
@@ -106,7 +89,7 @@ export default function Problems() {
                 id={`Problem ${index + 1}`}
                 name={problem.title}
                 image={problem.logo}
-                path={`/problem/${problem.problem_id}`}
+                path={`/problem/${problem.id}`}
                 action="Get Started"
               />
             ))}

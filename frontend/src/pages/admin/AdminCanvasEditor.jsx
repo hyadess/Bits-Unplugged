@@ -1,42 +1,34 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Editor from "@monaco-editor/react";
 import Cookies from "universal-cookie";
 import CustomCard from "../../components/Cards/CustomCard";
-import CardContainer from "../../components/Containers/CardContainer";
+import CardContainer from "../../containers/CardContainer";
 
 import Title from "../../components/Title";
 import AddIcon from "@mui/icons-material/Add";
 
-import Layout4 from "../../components/Layouts/Layout4";
-import AdminNavbar from "../../components/navbar/AdminNavbar";
 import {
-  SelectionField,
   SelectionField2,
   TextArea2,
   TextField,
   TextField2,
 } from "../../components/InputFields";
 
-import TopicController from "../../controller/topicController";
-
-import CanvasController from "../../controller/canvasController";
-import { Divider, MenuItem, Select, Switch } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
+import { canvasApi } from "../../api";
+import { Switch } from "@mui/material";
+import GlobalContext from "../../store/GlobalContext";
 
-const topicController = new TopicController();
-
-const canvasController = new CanvasController();
-
-const snakeCaseToTitleCase = (input) => {
-  return input
-    .split("_")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};
+// const snakeCaseToTitleCase = (input) => {
+//   return input
+//     .split("_")
+//     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+//     .join(" ");
+// };
 
 const CustomSelectionField = (props) => {
   return (
@@ -68,24 +60,24 @@ const CustomSelectionField = (props) => {
   );
 };
 
-const ChoiceList = ({ params, setCanvas, id, property }) => {
+const ChoiceList = ({ options, setCanvas, id, property }) => {
   const [newChoice, setNewChoice] = useState();
 
   const handleDelete = (idx) => {
-    if (params[property].list[idx] == params[property].value) {
-      params[property].value = "";
+    if (options[property].list[idx] == options[property].value) {
+      options[property].value = "";
     }
-    params[property].list.splice(idx, 1);
+    options[property].list.splice(idx, 1);
     setCanvas((prevJson) => ({
       ...prevJson,
       [id]: {
         ...prevJson[id],
-        [property]: params[property],
+        [property]: options[property],
       },
     }));
   };
   const handleCreate = () => {
-    params[property].list.push(newChoice);
+    options[property].list.push(newChoice);
     setNewChoice("");
     setCanvas((prevJson) => ({
       ...prevJson,
@@ -93,7 +85,7 @@ const ChoiceList = ({ params, setCanvas, id, property }) => {
         ...prevJson[id],
         [property]: {
           ...prevJson[id][property],
-          list: params[property].list,
+          list: options[property].list,
         },
       },
     }));
@@ -105,21 +97,21 @@ const ChoiceList = ({ params, setCanvas, id, property }) => {
           {"Selection Field Choices"}
         </label>
         <hr className="bu-horizontal-bar" />
-        {params &&
-          params[property].list.map((choice, index) => (
+        {options &&
+          options[property].list.map((choice, index) => (
             <>
               <div className="grid grid-cols-2 items-center gap-5">
                 <TextField2
                   label={"Choice " + (index + 1)}
                   onChange={(prop) => (e) => {
-                    params[property].list[index] = e.target.value;
+                    options[property].list[index] = e.target.value;
                     setCanvas((prevJson) => ({
                       ...prevJson,
                       [id]: {
                         ...prevJson[id],
                         [property]: {
                           ...prevJson[id][property],
-                          list: params[property].list,
+                          list: options[property].list,
                         },
                       },
                     }));
@@ -162,7 +154,7 @@ const ChoiceList = ({ params, setCanvas, id, property }) => {
   );
 };
 
-const OptionList = ({ params, setCanvas, id }) => {
+const OptionList = ({ options, setCanvas, id }) => {
   const [newOption, setNewOption] = useState({
     option: "",
     type: "",
@@ -173,14 +165,14 @@ const OptionList = ({ params, setCanvas, id }) => {
       className="pt-2 flex flex-col gap-5 mb-5"
       style={{ minHeight: "1rem" }}
     >
-      {params &&
-        Object.keys(params).map((key, index) => (
+      {options &&
+        Object.keys(options).map((key, index) => (
           <div className="flex flex-col gap-5" key={index}>
             <div className="grid grid-cols-4 items-center gap-5">
               <TextField2
                 label="Option"
                 onChange={(prop) => (e) => {
-                  var keyOrder = Object.keys(params);
+                  var keyOrder = Object.keys(options);
 
                   const prevValue = key;
 
@@ -188,9 +180,9 @@ const OptionList = ({ params, setCanvas, id }) => {
                   keyOrder.forEach((key2) => {
                     console.log(key2, prevValue);
                     if (key2 === prevValue) {
-                      updatedJson[e.target.value] = params[key2];
+                      updatedJson[e.target.value] = options[key2];
                     } else {
-                      updatedJson[key2] = params[key2];
+                      updatedJson[key2] = options[key2];
                     }
                   });
 
@@ -207,7 +199,7 @@ const OptionList = ({ params, setCanvas, id }) => {
                 label="Type"
                 onChange={(prop) => (e) => {
                   if (
-                    params[key].type !== "select" &&
+                    options[key].type !== "select" &&
                     e.target.value === "select"
                   ) {
                     setCanvas((prevJson) => ({
@@ -222,7 +214,7 @@ const OptionList = ({ params, setCanvas, id }) => {
                       },
                     }));
                   } else if (
-                    params[key].type !== "switch" &&
+                    options[key].type !== "switch" &&
                     e.target.value == "switch"
                   ) {
                     setCanvas((prevJson) => ({
@@ -237,18 +229,18 @@ const OptionList = ({ params, setCanvas, id }) => {
                     }));
                   }
                 }}
-                id="series_id"
-                value={params[key].type}
+                id="seriesId"
+                value={options[key].type}
                 options={[
                   { value: "select", label: "Select" },
                   { value: "switch", label: "Switch" },
                 ]}
               />
-              {params[key].type == "switch" ? (
+              {options[key].type == "switch" ? (
                 <div className="flex flex-col">
                   <label className="bu-text-primary">{"Default"}</label>
                   <Switch
-                    checked={params[key].value}
+                    checked={options[key].value}
                     onChange={() => {
                       setCanvas((prevJson) => ({
                         ...prevJson,
@@ -263,7 +255,7 @@ const OptionList = ({ params, setCanvas, id }) => {
                     }}
                   />
                 </div>
-              ) : params[key].type == "select" ? (
+              ) : options[key].type == "select" ? (
                 <div className="flex flex-col justify-between items-center gap-5 w-full">
                   <CustomSelectionField
                     label={"Default"}
@@ -279,9 +271,9 @@ const OptionList = ({ params, setCanvas, id }) => {
                         },
                       }));
                     }}
-                    id="series_id"
-                    value={params[key].value}
-                    options={params[key].list}
+                    id="seriesId"
+                    value={options[key].value}
+                    options={options[key].list}
                   />
                 </div>
               ) : (
@@ -290,10 +282,10 @@ const OptionList = ({ params, setCanvas, id }) => {
               <button
                 className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-delete flex flex-row gap-4 items-center mt-7 justify-center"
                 onClick={() => {
-                  delete params[key];
+                  delete options[key];
                   setCanvas((prevJson) => ({
                     ...prevJson,
-                    [id]: params,
+                    [id]: options,
                   }));
                 }}
               >
@@ -301,9 +293,9 @@ const OptionList = ({ params, setCanvas, id }) => {
                 DELETE
               </button>
             </div>
-            {params[key].type == "select" ? (
+            {options[key].type == "select" ? (
               <ChoiceList
-                params={params}
+                options={options}
                 setCanvas={setCanvas}
                 id={id}
                 property={key}
@@ -337,7 +329,7 @@ const OptionList = ({ params, setCanvas, id }) => {
                 type: e.target.value,
               }));
             }}
-            id="series_id"
+            id="seriesId"
             value={newOption.type}
             options={[
               { value: "select", label: "Select" },
@@ -349,9 +341,9 @@ const OptionList = ({ params, setCanvas, id }) => {
             onClick={() => {
               if (newOption.option !== "" && newOption.type !== "") {
                 if (newOption.type === "switch") {
-                  params[newOption.option] = { value: false, type: "switch" };
+                  options[newOption.option] = { value: false, type: "switch" };
                 } else {
-                  params[newOption.option] = {
+                  options[newOption.option] = {
                     value: "",
                     type: "select",
                     list: [],
@@ -359,7 +351,7 @@ const OptionList = ({ params, setCanvas, id }) => {
                 }
                 setCanvas((prevJson) => ({
                   ...prevJson,
-                  [id]: params,
+                  [id]: options,
                 }));
                 setNewOption({
                   option: "",
@@ -379,13 +371,8 @@ const OptionList = ({ params, setCanvas, id }) => {
 };
 
 const AdminCanvasEditor = () => {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
   const ref = useRef(null);
   const editorRef = useRef(null);
-  const [type, setType] = useState(-1);
   const { id } = useParams();
   const [canvas, setCanvas] = useState([]);
 
@@ -396,23 +383,21 @@ const AdminCanvasEditor = () => {
     setCanvas({ ...canvas, [prop]: event.target.value });
   };
   const getCanvas = async () => {
-    const res = await canvasController.getCanvasById(id);
+    const res = await canvasApi.getCanvasById(id);
     if (res.success) {
-      setCanvas(res.data[0]);
+      setCanvas(res.data);
       setLoading(false);
     }
   };
 
   const handleSave = async () => {
-    const res = await canvasController.updateCanvas(id, canvas);
+    const res = await canvasApi.updateCanvas(id, canvas);
     if (res.success) {
       console.log(res);
     }
   };
 
   useEffect(() => {
-    const cookies = new Cookies();
-    setType(cookies.get("type"));
     getCanvas();
 
     // Attach resize event listener
@@ -443,6 +428,13 @@ const AdminCanvasEditor = () => {
           onChange={handleChange}
           value={canvas.name ?? ""}
           id="name"
+          required={false}
+        />
+        <TextArea2
+          label="Class Name"
+          onChange={handleChange}
+          value={canvas.classname ?? ""}
+          id="classname"
           required={false}
         />
         <TextArea2
@@ -488,25 +480,22 @@ const AdminCanvasEditor = () => {
           />
         </div>
         <div className="bu-bg-title text-white p-5 rounded-md text-2xl font-bold">
-          Design Params
-        </div>
-        <OptionList params={canvas.params} setCanvas={setCanvas} id="params" />
-        <div className="bu-bg-title text-white p-5 rounded-md text-2xl font-bold">
-          UI Params
+          Edit Options
         </div>
         <OptionList
-          params={canvas.ui_params}
+          options={canvas.editOptions}
           setCanvas={setCanvas}
-          id="ui_params"
+          id="editOptions"
         />
         <div className="bu-bg-title text-white p-5 rounded-md text-2xl font-bold">
-          Control Params
+          Preview Options
         </div>
         <OptionList
-          params={canvas.control_params}
+          options={canvas.previewOptions}
           setCanvas={setCanvas}
-          id="control_params"
+          id="previewOptions"
         />
+
         <button
           className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-primary"
           onClick={handleSave}

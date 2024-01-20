@@ -1,20 +1,40 @@
 const router = require("express").Router();
-const authMiddleware = require("../service/tokenValidationService");
-const UserActivityController = require("../controller/userActivityController");
+const authMiddleware = require("../services/tokenValidationService");
+const UserActivityController = require("../controllers/userActivityController");
 const userActivityController = new UserActivityController();
+const passport = require("passport");
+router.use(
+  passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
+);
+router.post(
+  "/:problemId/successAttempt",
+  userActivityController.updateOnSuccessfulAttempt
+);
+router.post(
+  "/:problemId/failedAttempt",
+  userActivityController.updateOnFailedAttempt
+);
 
-router.use(authMiddleware);
+router.get("/stat/seriesFails", userActivityController.totalFailedAttempts);
+router.get(
+  "/stat/seriesSuccesses",
+  userActivityController.totalSuccessfulAttempts
+);
 
-router.post("/:problem_id/successAttempt", userActivityController.updateOnSuccessfulAttempt); 
-router.post("/:problem_id/failedAttempt", userActivityController.updateOnFailedAttempt);
+router.get(
+  "/stat/:seriesId/fails",
+  userActivityController.totalFailedAttemptsBySeries
+);
+router.get(
+  "/stat/:seriesId/successes",
+  userActivityController.totalSuccessfulAttemptsBySeries
+);
 
-router.get("/stat/seriesFails",userActivityController.totalFailedAttempts);
-router.get("/stat/seriesSuccesses",userActivityController.totalSuccessfulAttempts);
+router.get("/stat/fails/me", userActivityController.totalFailedAttemptsByUser);
+router.get(
+  "/stat/successes/me",
+  userActivityController.totalSolvedProblemsByUser
+);
 
-router.get("/stat/:series_id/fails",userActivityController.totalFailedAttemptsBySeries);
-router.get("/stat/:series_id/successes",userActivityController.totalSuccessfulAttemptsBySeries);
-
-router.get("/stat/fails/me",userActivityController.totalFailedAttemptsByUser);
-router.get("/stat/successes/me",userActivityController.totalSolvedProblemsByUser);
-
+router.put("/:problemId/track-duration", userActivityController.trackDuration);
 module.exports = router;

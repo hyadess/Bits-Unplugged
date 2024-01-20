@@ -3,11 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Zoom } from "@mui/material";
 import ImageLoader from "../ImageLoader";
 const TopicCard = ({ id, name, image, path, action }) => {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-
+  const navigate = useNavigate();
   return (
     <Zoom in={true}>
       <div className="flex flex-col items-center h-full md:px-0">
@@ -21,7 +17,7 @@ const TopicCard = ({ id, name, image, path, action }) => {
             </h5>
             <div className="w-full flex items-center justify-center cursor-pointer">
               <div
-                onClick={() => switchPath(path)}
+                onClick={() => navigate(path)}
                 className="inline-flex my-8 items-center  font-medium rounded-lg text-sm px-5 py-2.5 text-center bu-button-secondary"
               >
                 <h5 className="text-lg text-center font-bold tracking-tight bu-text-primary">

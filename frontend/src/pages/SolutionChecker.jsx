@@ -45,10 +45,6 @@ export default function SolutionChecker(props) {
 
   const [editorHeight, setEditorHeight] = useState(window.innerWidth / 3);
 
-  // useEffect(() => {
-  //   monaco_editor.editor.defineTheme("light-theme", monaco_theme);
-  // }, [monaco_editor]);
-
   const handleResize = () => {
     if (editorRef.current) {
       editorRef.current.layout(); // Trigger Monaco Editor layout update on resize

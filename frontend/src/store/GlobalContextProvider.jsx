@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import GlobalContext from "./GlobalContext";
 const GlobalContextProvider = (props) => {
   const [pendingUpdate, setPendingUpdate] = useState(false);
@@ -22,4 +22,5 @@ const GlobalContextProvider = (props) => {
   );
 };
 
+export const useGlobalContext = () => useContext(GlobalContext);
 export default GlobalContextProvider;

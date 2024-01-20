@@ -2,14 +2,60 @@ import React from "react";
 import Tooltip from "@mui/material/Tooltip";
 import { faExpand, faSave, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { setLoading } from "../../../App";
+import { setLoading, showSuccess } from "../../../App";
 import { IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useProblemContext } from "./Model";
+import { problemApi } from "../../../api";
 
-const Header = ({ updateAll, saveAll }) => {
+const Header = ({ backupProblem }) => {
   const navigate = useNavigate();
-  const { state: problem } = useProblemContext();
+  const { state: problem, dispatch } = useProblemContext();
+  const deepCopy = (obj) => {
+    return JSON.parse(JSON.stringify(obj));
+  };
+
+  const updateCanvas = async () => {
+    dispatch({
+      type: "UPDATE_CHECKER_CANVAS",
+      payload: deepCopy(problem.canvasData),
+    });
+    backupProblem.current.canvasData = problem.canvasData;
+    const res = await problemApi.updateProblem(problem.id, {
+      canvasId: problem.canvasId,
+      canvasData: problem.canvasData,
+      editOptions: problem.editOptions,
+      previewOptions: problem.previewOptions,
+      checkerCode: problem.checkerCode,
+      checkerCanvas: problem.checkerCanvas,
+    });
+    if (res.success) {
+      // console.log(res);
+    }
+  };
+
+  // const updateAll = async (data) => {
+  const saveAll = async () => {
+    await problemApi.updateProblem(problem.id, {
+      title: problem.title,
+      statement: problem.statement,
+    });
+    await updateCanvas(); // solutionChecker
+    await problemApi.updateProblem(problem.id, {
+      checkerCode: problem.checkerCode,
+      checkerCanvas: problem.checkerCanvas,
+    });
+  };
+
+  // const updateAll = async (problemid) => {
+  const updateAll = async () => {
+    // Save all with a new api call
+    const res = await problemApi.submitProblem(problem.id); // Or send through this
+    if (res.success) {
+      showSuccess("Problem submitted for approval", res);
+    }
+  };
+
   return (
     <div className="mx-auto max-w-screen-2xl items-center py-4 pt-8 md:grid md:grid-cols-2">
       <div className="flex flex-row items-center md:mt-0 w-full text-center text-5xl font-extrabold tracking-tight md:text-left bu-text-title">

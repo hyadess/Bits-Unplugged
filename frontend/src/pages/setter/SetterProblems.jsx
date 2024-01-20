@@ -16,6 +16,7 @@ const SetterProblems = () => {
   };
   const getProblemList = async () => {
     const res = await problemApi.getAllProblems();
+    console.log(res.data);
     if (res.success) {
       // console.log(res.data);
       if (res.data.length > 0)

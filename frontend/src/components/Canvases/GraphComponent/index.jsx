@@ -86,18 +86,21 @@ const GraphComponent = (props, ref) => {
   //custom sets................................................................................................
 
   const setNodes = (nodes) => {
-    setData((prevData) => ({
-      ...prevData,
+    setData({
       nodes: nodes,
-    }));
+    });
   };
   const setEdges = (edges) => {
-    setData((prevData) => ({
-      ...prevData,
+    setData({
       edges: edges,
-    }));
+    });
   };
-
+  const setSelectedEdges = (edges) => {
+    console.log(edges);
+    setData({
+      selectedEdges: edges,
+    });
+  };
   const updateSelectedEdges = (newSelectedEdges) => {
     const sortedEdges = [...newSelectedEdges].sort((a, b) => {
       // Convert x and y to integers
@@ -116,17 +119,7 @@ const GraphComponent = (props, ref) => {
     });
 
     //console.log(sortedEdges);
-    setData((prevState) => ({
-      ...prevState,
-      selectedEdges: sortedEdges,
-    }));
-  };
-
-  const setSelectedEdges = (edges) => {
-    setData((prevData) => ({
-      ...prevData,
-      selectedEdges: edges,
-    }));
+    setSelectedEdges(sortedEdges);
   };
 
   //...........................................................................................................
@@ -399,7 +392,7 @@ const GraphComponent = (props, ref) => {
             updateSelectedEdges([...data.selectedEdges, nearestEdge]);
             setSelectedNodes([]);
           }
-        } else if (data.selectedEdges.length > 0) {
+        } else if (data?.selectedEdges?.length > 0) {
           setSelectedEdges([]);
         } else if (selectedNodes.length > 0) {
           setSelectedNodes([]);
@@ -436,6 +429,7 @@ const GraphComponent = (props, ref) => {
     if (selectedNodes.length === 0) {
       setSelectedNodes([nodeKey]);
       setSelectedEdges([]);
+      console.log("DDDDDDDDDDDDDDDDDDd");
     } else if (selectedNodes.includes(nodeKey)) {
       // If the clicked node is already selected, unselect it
       setSelectedNodes((prev) =>

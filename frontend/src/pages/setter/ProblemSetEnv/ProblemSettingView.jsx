@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ProbSetTab from "../../../components/ProbSetTab";
 import Confirmation from "../../../components/Confirmation";
 import TestTab from "./TestTab";
@@ -7,50 +7,37 @@ import CanvasDesignTab from "./CanvasDesignTab";
 import DetailsTab from "./DetailsTab";
 import Header from "./Header";
 import { useProblemContext } from "./Model";
+import { problemApi } from "../../../api";
+import { useNavigate } from "react-router-dom";
 
-const ProblemSettingView = ({
-  handleCanvasChange,
-  saveAll,
-  updateAll,
-  setTest,
-  input,
-  setInput,
-  testRef,
-  canvasRef,
-  canvasList,
-  editOptions,
-  setEditOptions,
-  previewOptions,
-  setPreviewOptions,
-  reset,
-  updateCanvas,
-  updateSolutionChecker,
-  checkerType,
-  setCheckerType,
-  checkerCanvas,
-  setCheckerCanvas,
-  handleCheckSolution,
-  testActivity,
-  setTestActivity,
-  open,
-  setOpen,
-  deleteProblem,
-  test,
-}) => {
+const ProblemSettingView = ({ backupProblem }) => {
+  const [open, setOpen] = useState(false); // decouple
+  const navigate = useNavigate();
+  const { state: problem, dispatch } = useProblemContext();
   const [activeComponent, setActiveComponent] = useState("Details"); // not related to database
   const deepCopy = (obj) => {
     return JSON.parse(JSON.stringify(obj));
   };
+  const testRef = useRef();
+  const deleteProblem = async () => {
+    const res = await problemApi.deleteProblem(problem.id);
+    if (res.success) {
+      navigate("/problemSet");
+    }
+  };
 
   return (
     <div>
-      <Header saveAll={saveAll} updateAll={updateAll} />
+      <Header backupProblem={backupProblem} />
       <ProbSetTab
         activeTab={activeComponent}
         click={(tab) => {
           if (tab === "Test" && activeComponent !== "Test") {
-            setTest(deepCopy(input));
-            testRef?.current?.handleReset(deepCopy(input));
+            dispatch({
+              type: "UPDATE_TEST_CANVAS",
+              payload: deepCopy(problem.canvasData),
+            });
+            testRef?.current?.handleReset(deepCopy(problem.canvasData));
           }
           setActiveComponent(tab);
         }}
@@ -66,42 +53,13 @@ const ProblemSettingView = ({
           <DetailsTab />
         </div>
         <div className={activeComponent === "Canvas" ? "block" : "hidden"}>
-          <CanvasDesignTab
-            handleCanvasChange={handleCanvasChange}
-            canvasList={canvasList}
-            input={input}
-            setInput={setInput}
-            canvasRef={canvasRef}
-            editOptions={editOptions}
-            setEditOptions={setEditOptions}
-            previewOptions={previewOptions}
-            setPreviewOptions={setPreviewOptions}
-            reset={reset}
-            updateCanvas={updateCanvas}
-            updateSolutionChecker={updateSolutionChecker}
-          />
+          <CanvasDesignTab backupProblem={backupProblem} />
         </div>
         <div className={activeComponent === "Solution" ? "block" : "hidden"}>
-          <SolutionCheckerTab
-            checkerType={checkerType}
-            setCheckerType={setCheckerType}
-            input={input}
-            checkerCanvas={checkerCanvas}
-            setCheckerCanvas={setCheckerCanvas}
-            updateSolutionChecker={updateSolutionChecker}
-            canvasRef={canvasRef}
-            handleCheckSolution={handleCheckSolution}
-          />
+          <SolutionCheckerTab />
         </div>
         <div className={activeComponent === "Test" ? "block" : "hidden"}>
-          <TestTab
-            test={test}
-            setTest={setTest}
-            testActivity={testActivity}
-            setTestActivity={setTestActivity}
-            handleCheckSolution={handleCheckSolution}
-            input={input}
-          />
+          <TestTab testRef={testRef} />
         </div>
       </div>
       <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} />

@@ -1,3 +1,4 @@
+import { contestApi } from "../../api";
 const SetterContests = () => {
   return (
     <>

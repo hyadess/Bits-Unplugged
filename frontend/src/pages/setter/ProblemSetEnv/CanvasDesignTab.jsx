@@ -4,9 +4,9 @@ import Button from "@mui/material/Button";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import { SelectionField2 } from "../../../components/InputFields";
+import { useProblemContext } from "./Model";
 const CanvasDesignTab = ({
   handleCanvasChange,
-  canvasId,
   canvasList,
   input,
   setInput,
@@ -17,13 +17,13 @@ const CanvasDesignTab = ({
   setPreviewOptions,
   reset,
   updateCanvas,
-  updateSolutionChecker,
 }) => {
+  const { state: problem } = useProblemContext();
   return (
     <>
-      {canvasId && (
+      {problem.canvasId && (
         <CanvasContainer
-          canvasId={canvasId}
+          canvasId={problem.canvasId}
           input={input}
           setInput={setInput}
           ref={canvasRef}
@@ -35,7 +35,7 @@ const CanvasDesignTab = ({
         />
       )}
 
-      {canvasId && (
+      {problem.canvasId && (
         <div
           className="flex py-5"
           style={{ justifyContent: "space-between", marginLeft: "auto" }}
@@ -71,7 +71,7 @@ const CanvasDesignTab = ({
         label="Choose Canvas"
         onChange={handleCanvasChange}
         id="canvasId"
-        value={canvasId == null ? "" : canvasId}
+        value={problem.canvasId == null ? "" : problem.canvasId}
         options={canvasList}
       />
     </>

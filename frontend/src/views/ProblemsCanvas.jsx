@@ -1,26 +1,14 @@
-import React, { useState, useEffect, useRef, forwardRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { forwardRef } from "react";
+import { useNavigate } from "react-router-dom";
 import CanvasContainer from "../components/Canvases/CanvasContainer";
 import { Button } from "@mui/material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
-import SaveIcon from "@mui/icons-material/Save";
 import SendIcon from "@mui/icons-material/Send";
-import Cookies from "universal-cookie";
-import Latex from "react-latex";
-import EditIcon from "@mui/icons-material/Edit";
-// import Title from "../components/Title";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../App";
-import MDEditor from "@uiw/react-md-editor";
-import MarkdownEditor from "@uiw/react-markdown-editor";
-import katex from "katex";
 import "katex/dist/katex.css";
-import { getCodeString } from "rehype-rewrite";
-
 import MarkdownPreview from "../components/Markdown/MarkdownPreview";
-// import ProblemsCanvasView from "../views/ProblemsCanvas";
-
 const Title = ({ problem }) => {
   return (
     <div className="flex max-w-screen-xl flex-col gap-3 py-4 sm:pt-12">

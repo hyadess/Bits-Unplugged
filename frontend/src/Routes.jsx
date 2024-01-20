@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
   Outlet,
-  useNavigate,
 } from "react-router-dom";
-import Cookies from "universal-cookie";
 import Home from "./pages/Home";
 import Problems from "./pages/user/Problems";
 import Login from "./pages/auth/Login";
@@ -16,11 +14,7 @@ import ProblemsCanvas from "./pages/ProblemsCanvas";
 import Topics from "./pages/user/Topics";
 import Series from "./pages/user/Series";
 import SetterProblems from "./pages/setter/SetterProblems";
-import GraphComponent from "./components/Canvases/GraphComponent";
-import CanvasContainer from "./components/Canvases/CanvasContainer";
-
 import ProblemSetEnv from "./pages/setter/ProblemSetEnv";
-import SolutionChecker from "./pages/SolutionChecker";
 import PublicNavbar from "./components/Navbars/PublicNavbar";
 import Layout2 from "./components/Layouts/Layout2";
 import AdminLogin from "./pages/auth/AdminLogin";
@@ -35,23 +29,16 @@ import AdminCanvasList from "./pages/admin/AdminCanvasList";
 import AdminCanvasEditor from "./pages/admin/AdminCanvasEditor";
 import AdminContests from "./pages/admin/AdminContests";
 import AdminSetters from "./pages/admin/AdminSetters";
-
 import PrivateNavbar from "./components/Navbars/PrivateNavbar";
 import AdminNavbar from "./components/Navbars/AdminNavbar";
 import LayoutMain from "./components/Layouts/LayoutMain";
-
-import Navbar from "./components/Navbar";
-
 import ProblemsSubmissions from "./pages/ProblemsSubmissions";
 import SetterProfile from "./pages/setter/SetterProfile";
-import Profile from "./pages/user/Profille";
+import Profile from "./pages/user/Profile";
 import Contests from "./pages/user/Contests";
 import SetterContests from "./pages/setter/SetterContests";
 import GlobalContext from "./store/GlobalContext";
-const cookies = new Cookies();
-
 const ProblemSolver = () => {
-  const cookies = new Cookies();
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
   return isLoggedIn ? (
@@ -68,7 +55,6 @@ const ProblemSolver = () => {
 };
 
 const ProblemSetter = () => {
-  const cookies = new Cookies();
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
   return isLoggedIn ? (
@@ -85,10 +71,8 @@ const ProblemSetter = () => {
 };
 
 const Admin = () => {
-  const cookies = new Cookies();
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
-  console.log("WHYYYYYYYYYYYYYYYYy");
   return isLoggedIn ? (
     type == 2 ? (
       <Layout2 nav={<AdminNavbar />}>
@@ -103,20 +87,16 @@ const Admin = () => {
 };
 
 const Public = () => {
-  const cookies = new Cookies();
-  const isLoggedIn = localStorage.hasOwnProperty("token");
-  const type = localStorage.getItem("type");
-
   return localStorage.hasOwnProperty("token") ? (
     <Navigate
       to={
         localStorage.getItem("type") == 0
           ? "/topics"
           : localStorage.getItem("type") == 1
-            ? "/problemSet"
-            : localStorage.getItem("type") == 2
-              ? "/admin/topics"
-              : "/login"
+          ? "/problemSet"
+          : localStorage.getItem("type") == 2
+          ? "/admin/topics"
+          : "/login"
       }
     />
   ) : (
@@ -419,10 +399,10 @@ const AppRoutes = () => {
                   type == 0
                     ? "/topics"
                     : type == 1
-                      ? "/problemSet"
-                      : type == 2
-                        ? "/admin/topics"
-                        : "/home"
+                    ? "/problemSet"
+                    : type == 2
+                    ? "/admin/topics"
+                    : "/home"
                 }
               />
             }

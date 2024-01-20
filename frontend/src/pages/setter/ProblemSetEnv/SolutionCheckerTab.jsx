@@ -5,20 +5,17 @@ import Button from "@mui/material/Button";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import { SelectionField } from "../../../components/InputFields";
+import { useProblemContext } from "./Model";
 const SolutionCheckerTab = ({
   checkerType,
   setCheckerType,
-  code,
-  setCode,
   input,
-  canvasId,
   checkerCanvas,
   setCheckerCanvas,
-  previewOptions,
-  editOptions,
   updateSolutionChecker,
   handleCheckSolution,
 }) => {
+  const { state: problem, dispatch } = useProblemContext();
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
   // const [test, setTest] = useState(null);
@@ -27,9 +24,6 @@ const SolutionCheckerTab = ({
     setOutput(result.output);
     setStdout(result.stdout);
   };
-  // useEffect(() => {
-  //   setTest(JSON.parse(JSON.stringify(input)));
-  // }, [input]);
 
   const resetChecker = () => {
     setCheckerCanvas(JSON.parse(JSON.stringify(input)));
@@ -43,8 +37,10 @@ const SolutionCheckerTab = ({
     <>
       {checkerType == 0 ? (
         <SolutionChecker
-          code={code}
-          setCode={setCode}
+          code={problem.checkerCode}
+          setCode={(code) =>
+            dispatch({ type: "UPDATE_CHECKER_CODE", payload: code })
+          }
           input={input}
           stdout={stdout}
           output={output}
@@ -56,13 +52,13 @@ const SolutionCheckerTab = ({
       ) : checkerType == 1 ? (
         <>
           <CanvasContainer
-            canvasId={canvasId}
+            canvasId={problem.canvasId}
             input={checkerCanvas}
             setInput={setCheckerCanvas}
             ref={canvasRef}
             mode="preview"
-            previewOptions={previewOptions}
-            editOptions={editOptions}
+            previewOptions={problem.previewOptions}
+            editOptions={problem.editOptions}
           />
           <div
             className="flex py-5"

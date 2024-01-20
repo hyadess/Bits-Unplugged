@@ -3,9 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import "katex/dist/katex.css";
 import MarkdownEditor from "./Markdown/MarkdownEditor";
 import MarkdownPreview from "./Markdown/MarkdownPreview";
+import { useProblemContext } from "../pages/setter/ProblemSetEnv/Model";
 
-function ProblemStatement(props) {
+function ProblemStatement() {
   const { problemid } = useParams();
+  const { state, dispatch } = useProblemContext();
   // const [text, setText] = useState(props.problemStatement);
 
   // const handleProblemStatementChange = (event) => {
@@ -37,11 +39,13 @@ function ProblemStatement(props) {
 
       <MarkdownEditor
         colorMode={colorMode}
-        text={props.statement}
-        setText={props.setStatement}
+        text={state.statement ?? ""}
+        setText={(value) => {
+          dispatch({ type: "UPDATE_STATEMENT", payload: value });
+        }}
       />
 
-      <MarkdownPreview colorMode={colorMode} text={props.statement} />
+      <MarkdownPreview colorMode={colorMode} text={state.statement ?? ""} />
     </div>
   );
 }

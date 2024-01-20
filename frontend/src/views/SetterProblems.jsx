@@ -1,6 +1,5 @@
 import CustomModal from "../components/Modal/CustomModal";
 import Title from "../components/Title";
-import AddIcon from "@mui/icons-material/Add";
 import ProblemSetCard from "../components/Cards/ProblemSetCard";
 import CardContainer from "../containers/CardContainer";
 import ProblemAddButton from "../components/Buttons/ProblemAddButton";

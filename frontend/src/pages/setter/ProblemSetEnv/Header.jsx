@@ -5,19 +5,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { setLoading } from "../../../App";
 import { IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useProblemContext } from "./Model";
 
-const Header = ({ title, problemid, updateAll, saveAll }) => {
+const Header = ({ updateAll, saveAll }) => {
   const navigate = useNavigate();
+  const { state: problem } = useProblemContext();
   return (
     <div className="mx-auto max-w-screen-2xl items-center py-4 pt-8 md:grid md:grid-cols-2">
       <div className="flex flex-row items-center md:mt-0 w-full text-center text-5xl font-extrabold tracking-tight md:text-left bu-text-title">
-        {title.length == 0 ? "Untitled" : title}
+        {problem?.title?.length == 0 ? "Untitled" : problem.title}
       </div>
       <div className="flex flex-row justify-end">
         <Tooltip
           title={<h1 className="text-lg text-white">Preview</h1>}
           placement="top"
-          // TransitionComponent={Zoom}
           arrow
           size="large"
         >
@@ -27,7 +28,7 @@ const Header = ({ title, problemid, updateAll, saveAll }) => {
               className="bu-text-primary flex cursor-pointer items-center text-3xl"
               onClick={() => {
                 setLoading(true);
-                navigate(`/problem/${problemid}/preview`);
+                navigate(`/problem/${problem.id}/preview`);
               }}
             >
               <FontAwesomeIcon icon={faExpand} />
@@ -55,7 +56,6 @@ const Header = ({ title, problemid, updateAll, saveAll }) => {
         <Tooltip
           title={<h1 className="text-lg text-white">Save all</h1>}
           placement="top"
-          // TransitionComponent={Zoom}
           arrow
           size="large"
         >

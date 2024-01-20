@@ -7,14 +7,9 @@ import SolutionCheckerTab from "./SolutionCheckerTab";
 import CanvasDesignTab from "./CanvasDesignTab";
 import DetailsTab from "./DetailsTab";
 import Header from "./Header";
+import { useProblemContext } from "./Model";
 
 const ProblemSettingView = ({
-  title,
-  setTitle,
-  problemStatement,
-  setProblemStatement,
-  canvasId,
-  problemid,
   handleCanvasChange,
   saveAll,
   updateAll,
@@ -33,8 +28,6 @@ const ProblemSettingView = ({
   updateSolutionChecker,
   checkerType,
   setCheckerType,
-  code,
-  setCode,
   checkerCanvas,
   setCheckerCanvas,
   handleCheckSolution,
@@ -49,14 +42,10 @@ const ProblemSettingView = ({
   const deepCopy = (obj) => {
     return JSON.parse(JSON.stringify(obj));
   };
+
   return (
     <div>
-      <Header
-        title={title}
-        problemid={problemid}
-        saveAll={saveAll}
-        updateAll={updateAll}
-      />
+      <Header saveAll={saveAll} updateAll={updateAll} />
       <ProbSetTab
         activeTab={activeComponent}
         click={(tab) => {
@@ -75,18 +64,11 @@ const ProblemSettingView = ({
             (activeComponent === "Details" ? "block" : "hidden")
           }
         >
-          <DetailsTab
-            title={title}
-            setTitle={setTitle}
-            problemStatement={problemStatement}
-            setProblemStatement={setProblemStatement}
-            problemid={problemid}
-          />
+          <DetailsTab />
         </div>
         <div className={activeComponent === "Canvas" ? "block" : "hidden"}>
           <CanvasDesignTab
             handleCanvasChange={handleCanvasChange}
-            canvasId={canvasId}
             canvasList={canvasList}
             input={input}
             setInput={setInput}
@@ -104,14 +86,9 @@ const ProblemSettingView = ({
           <SolutionCheckerTab
             checkerType={checkerType}
             setCheckerType={setCheckerType}
-            code={code}
-            setCode={setCode}
             input={input}
-            canvasId={canvasId}
             checkerCanvas={checkerCanvas}
             setCheckerCanvas={setCheckerCanvas}
-            previewOptions={previewOptions}
-            editOptions={editOptions}
             updateSolutionChecker={updateSolutionChecker}
             canvasRef={canvasRef}
             handleCheckSolution={handleCheckSolution}
@@ -119,13 +96,10 @@ const ProblemSettingView = ({
         </div>
         <div className={activeComponent === "Test" ? "block" : "hidden"}>
           <TestTab
-            canvasId={canvasId}
             test={test}
             setTest={setTest}
             testActivity={testActivity}
             setTestActivity={setTestActivity}
-            previewOptions={previewOptions}
-            editOptions={editOptions}
             handleCheckSolution={handleCheckSolution}
             input={input}
           />

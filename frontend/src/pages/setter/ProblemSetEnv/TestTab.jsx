@@ -1,29 +1,33 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import CanvasContainer from "../../../components/Canvases/CanvasContainer";
 import Button from "@mui/material/Button";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import Send from "@mui/icons-material/Send";
-import { useProblemContext } from "./Model";
-const TestTab = ({
-  test,
-  setTest,
-  testActivity,
-  setTestActivity,
-  handleCheckSolution,
-  input,
-}) => {
+import { useProblemContext } from "../../../store/ProblemContextProvider";
+import SubmissionService from "../../../services/submissionService";
+const TestTab = ({ testRef }) => {
   const { state: problem, dispatch } = useProblemContext();
-  const testRef = useRef();
+
   return (
     problem.canvasId &&
     testRef && (
       <>
         <CanvasContainer
           canvasId={problem.canvasId}
-          input={test}
-          setInput={setTest}
-          activityData={testActivity}
-          setActivityData={setTestActivity}
+          input={problem.test}
+          setInput={(data) => {
+            dispatch({
+              type: "UPDATE_TEST_CANVAS",
+              payload: { ...data },
+            });
+          }}
+          activityData={problem.testActivity}
+          setActivityData={(data) => {
+            dispatch({
+              type: "UPDATE_TEST_ACTIVITY",
+              payload: { ...data },
+            });
+          }}
           ref={testRef}
           mode="preview"
           previewOptions={problem.previewOptions}
@@ -34,9 +38,13 @@ const TestTab = ({
             variant="contained"
             color="success"
             onClick={() => {
-              setTest(JSON.parse(JSON.stringify(input)));
-
-              testRef.current.handleReset(JSON.parse(JSON.stringify(input))); // Call this after reset
+              dispatch({
+                type: "UPDATE_TEST_CANVAS",
+                payload: JSON.parse(JSON.stringify(problem.canvasData)),
+              });
+              testRef.current.handleReset(
+                JSON.parse(JSON.stringify(problem.canvasData))
+              ); // Call this after reset
             }}
             startIcon={
               <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
@@ -46,7 +54,14 @@ const TestTab = ({
           </Button>
           <Button
             variant="contained"
-            onClick={handleCheckSolution}
+            onClick={() =>
+              SubmissionService.checkSolution(
+                problem.checkerCode,
+                problem.checkerCanvas,
+                problem.test,
+                problem.testActivity
+              )
+            }
             endIcon={<Send sx={{ fontSize: "2rem", color: "white" }} />}
           >
             Submit

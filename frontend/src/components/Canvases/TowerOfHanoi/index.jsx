@@ -67,7 +67,7 @@ const TowerOfHanoiView = ({
                 activityData && (
                   <Typography variant="h5" className="bu-text-primary m-0 p-0">
                     <b className="bu-text-primary">
-                      Moves: {activityData?.numberOfMoves}
+                      Moves: {activityData?.numberOfMoves ?? 0}
                     </b>
                   </Typography>
                 )}
@@ -119,7 +119,11 @@ const TowerOfHanoiView = ({
     </div>
   );
 };
+
+// Design, Solution, Test canvas
 const TowerOfHanoi = (props, ref) => {
+  // const { state: problem, dispatch } = useProblemContext();
+  // const data = problem.canvasData;
   const [data, setData] = [props.input, props.setInput];
   // const setData = props.setInput;
   const [activityData, setActivityData] = [
@@ -148,25 +152,23 @@ const TowerOfHanoi = (props, ref) => {
   //   });
   // };
   const setNumberOfPegs = (n) => {
-    setData((prevData) => {
-      return { ...prevData, numberOfPegs: n };
-    });
+    // setData((prevData) => {
+    //   return { ...prevData, numberOfPegs: n };
+    // });
   };
   const setPegs = (p) => {
-    setData((prevData) => {
-      return { ...prevData, pegs: p };
-    });
+    // dispatch((prevData) => ({
+    //   type: "UPDATE_CANVAS",
+    //   payload: { ...prevData.canvasData, pegs: p },
+    // }));
+    setData({ pegs: p });
   };
   const setNumberOfMoves = (n) => {
     if (activityData !== undefined) {
       if (props.mode === "edit") {
-        setActivityData((prevData) => {
-          return { ...prevData, numberOfMoves: 0 };
-        });
+        setActivityData({ numberOfMoves: 0 });
       } else {
-        setActivityData((prevData) => {
-          return { ...prevData, numberOfMoves: n };
-        });
+        setActivityData({ numberOfMoves: n });
       }
     }
   };

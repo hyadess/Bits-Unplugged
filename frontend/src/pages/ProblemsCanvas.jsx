@@ -5,31 +5,49 @@ import ProblemsCanvasView from "../views/ProblemsCanvas";
 import { problemApi, submissionApi, userActivityApi } from "../api";
 import SubmissionService from "../services/submissionService";
 import GlobalContext from "../store/GlobalContext";
-export default function ProblemsCanvas() {
+import ProblemContextProvider, {
+  useProblemContext,
+} from "../store/ProblemContextProvider";
+function ProblemsCanvasController() {
   const { type } = useContext(GlobalContext);
   const { id } = useParams();
   const backup = useRef(null);
-  const [problem, setProblem] = useState(null);
-  const [canvasData, setCanvasData] = useState(null);
-  const [activityData, setActivityData] = useState({});
+  // const [problem, setProblem] = useState(null);
+  // const [canvasData, setCanvasData] = useState(null);
+  // const [activityData, setActivityData] = useState({});
   const canvasRef = useRef();
+
+  const { state: problem, dispatch } = useProblemContext();
 
   useEffect(() => {
     renderProblem();
   }, []);
-
+  const deepCopy = (obj) => {
+    return JSON.parse(JSON.stringify(obj));
+  };
   const renderProblem = async () => {
-    const result = await problemApi.getProblemById(id);
-    if (result.success) {
-      backup.current = result.data.canvasData;
-      setProblem(result.data);
-      setCanvasData(JSON.parse(JSON.stringify(result.data.canvasData)));
-      if (result.data.canvasId === null) setLoading(false);
+    const res = await problemApi.getProblemById(id);
+    if (res.success) {
+      backup.current = res.data.canvasData;
+      dispatch({
+        type: "SET_INITIAL_STATE",
+        payload: JSON.parse(
+          JSON.stringify({
+            ...res.data,
+            activityData: {},
+          })
+        ),
+      });
+      // setCanvasData(JSON.parse(JSON.stringify(result.data.canvasData)));
+      if (res.data.canvasId === null) setLoading(false);
     }
   };
 
   const reset = async () => {
-    setCanvasData(JSON.parse(JSON.stringify(backup.current)));
+    dispatch({
+      type: "UPDATE_CANVAS",
+      payload: deepCopy(backup.current),
+    });
     canvasRef?.current?.handleReset(JSON.parse(JSON.stringify(backup)));
   };
 
@@ -39,8 +57,8 @@ export default function ProblemsCanvas() {
     let res = await SubmissionService.checkSolution(
       problem.checkerCode,
       problem.checkerCanvas,
-      canvasData,
-      activityData
+      problem.canvasData,
+      problem.activityData
     );
     console.log("output " + res.output);
     await submissionApi.submitSolution(problem.canvasData, res.output, id);
@@ -91,13 +109,7 @@ export default function ProblemsCanvas() {
 
   return (
     <ProblemsCanvasView
-      problem={problem}
-      id={id}
-      input={canvasData}
-      setInput={setCanvasData}
       ref={canvasRef}
-      activityData={activityData}
-      setActivityData={setActivityData}
       onSubmit={solutionSubmit}
       onReset={reset}
       type={type}
@@ -105,3 +117,13 @@ export default function ProblemsCanvas() {
     />
   );
 }
+
+const ProblemSetEnv = () => {
+  return (
+    <ProblemContextProvider>
+      <ProblemsCanvasController />
+    </ProblemContextProvider>
+  );
+};
+
+export default ProblemSetEnv;

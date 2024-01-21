@@ -11,6 +11,8 @@ import { Button, IconButton } from "@mui/material";
 import EyeIcon from "../components/Icons/EyeIcon";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import SubmissionService from "../services/submissionService";
+import { useProblemContext } from "../store/ProblemContextProvider";
 // loader.init().then((monaco) => {
 //   // fetch("../Components/themes/Monokai.json")
 //   //   .then((data) => data.json())
@@ -34,6 +36,7 @@ const setEditorTheme = (editor, monaco) => {
 };
 export default function SolutionChecker(props) {
   // const monaco_editor = useMonaco();
+  const { state: problem, dispatch } = useProblemContext();
   const editorRef = useRef(null);
   const inputRef = useRef(null);
   const [stringed, setStringed] = useState(null);
@@ -55,19 +58,15 @@ export default function SolutionChecker(props) {
   };
 
   const handleCheckSolution = async () => {
-    console.log("Run");
-    await props.checkSubmit();
+    await SubmissionService.checkSolution(
+      problem.checkerCode,
+      problem.checkerCanvas,
+      problem.test,
+      problem.testActivity
+    );
   };
 
   useEffect(() => {
-    const jsonData = JSON.stringify(props.input ? props.input : {}, null, 2);
-    setStringed(jsonData);
-  }, [props.input]);
-
-  useEffect(() => {
-    const jsonData = JSON.stringify(props.input ? props.input : {}, null, 2);
-    setStringed(jsonData);
-
     // Attach resize event listener
     window.addEventListener("resize", handleResize);
 
@@ -96,78 +95,76 @@ export default function SolutionChecker(props) {
   };
 
   return (
-    stringed && (
-      <div>
-        <div className="flex flex-col gap-0 md:gap-0 w-full bg-[#1F2531] mt-4 h-128">
+    <div>
+      <div className="flex flex-col gap-0 md:gap-0 w-full bg-[#1F2531] mt-4 h-128">
+        <div
+          className={
+            "w-full bg-[#1F2531] " +
+            (props.stdout.length > 0 && showStdOut ? "h-2/3" : "h-full")
+          }
+        >
+          <Editor
+            // ref={editorRef}
+            height="100%" // Set the height to 100% of its parent div
+            className={
+              "box-border border-4 border-solid border-gray-600 border-spacing-4"
+            }
+            language="javascript"
+            theme="light-theme"
+            value={props.code}
+            onMount={editorMount}
+            beforeMount={defineEditorTheme}
+            onChange={codeChanged}
+            options={{
+              inlineSuggest: true,
+              fontSize: "13px",
+              formatOnType: true,
+              autoClosingBrackets: true,
+              minimap: { enabled: false },
+              tabSize: 2,
+              // automaticLayout: true,
+            }}
+          />
+        </div>
+
+        {props.stdout.length > 0 && showStdOut && (
           <div
             className={
-              "w-full bg-[#1F2531] " +
-              (props.stdout.length > 0 && showStdOut ? "h-2/3" : "h-full")
+              "w-full h-1/3 m-0 text-left p-5 bg-[#1F2531] text-md text-white  break-all overflow-scroll  box-border border-4 border-solid border-gray-600 border-spacing-4 whitespace-pre border-t-0"
             }
           >
-            <Editor
-              // ref={editorRef}
-              height="100%" // Set the height to 100% of its parent div
-              className={
-                "box-border border-4 border-solid border-gray-600 border-spacing-4"
-              }
-              language="javascript"
-              theme="light-theme"
-              value={props.code}
-              onMount={editorMount}
-              beforeMount={defineEditorTheme}
-              onChange={codeChanged}
-              options={{
-                inlineSuggest: true,
-                fontSize: "13px",
-                formatOnType: true,
-                autoClosingBrackets: true,
-                minimap: { enabled: false },
-                tabSize: 2,
-                // automaticLayout: true,
-              }}
-            />
+            {props.stdout}
           </div>
+        )}
+      </div>
 
-          {props.stdout.length > 0 && showStdOut && (
-            <div
-              className={
-                "w-full h-1/3 m-0 text-left p-5 bg-[#1F2531] text-md text-white  break-all overflow-scroll  box-border border-4 border-solid border-gray-600 border-spacing-4 whitespace-pre border-t-0"
-              }
-            >
-              {props.stdout}
-            </div>
-          )}
+      <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
+        <div
+          className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
+          onClick={() => {
+            if (showStdOut) setShowStdOut(false);
+            else if (props.stdout.length > 0) setShowStdOut(true);
+            // setShowStdOut((prev) => !prev);
+          }}
+        >
+          {showStdOut ? <Visibility /> : <VisibilityOff />}
         </div>
 
-        <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
-          <div
-            className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
-            onClick={() => {
-              if (showStdOut) setShowStdOut(false);
-              else if (props.stdout.length > 0) setShowStdOut(true);
-              // setShowStdOut((prev) => !prev);
-            }}
-          >
-            {showStdOut ? <Visibility /> : <VisibilityOff />}
-          </div>
-
-          <div
-            className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
-            onClick={handleCheckSolution}
-          >
-            <FontAwesomeIcon icon={faPlay} />
-            {/* RUN */}
-          </div>
-          <div
-            className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
-            onClick={async () => await props.save()}
-          >
-            {/* SAVE */}
-            <SaveIcon />
-          </div>
+        <div
+          className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
+          onClick={handleCheckSolution}
+        >
+          <FontAwesomeIcon icon={faPlay} />
+          {/* RUN */}
+        </div>
+        <div
+          className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
+          onClick={async () => await props.save()}
+        >
+          {/* SAVE */}
+          <SaveIcon />
         </div>
       </div>
-    )
+    </div>
   );
 }

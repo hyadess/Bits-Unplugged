@@ -119,13 +119,7 @@ const CanvasContainer = (props, ref) => {
               <Switch
                 checked={options[key].value}
                 onChange={() => {
-                  setOptions((prevJson) => ({
-                    ...prevJson,
-                    [key]: {
-                      ...prevJson[key],
-                      value: !prevJson[key].value, // Toggle the value or set a new value as needed
-                    },
-                  }));
+                  setOptions({ key: key, value: !options[key].value });
                 }}
               />
             </div>
@@ -138,15 +132,9 @@ const CanvasContainer = (props, ref) => {
                 id="outlined-adornment"
                 value={options[key].value}
                 size="small"
-                onChange={(e) =>
-                  setOptions((prevJson) => ({
-                    ...prevJson,
-                    [key]: {
-                      ...prevJson[key],
-                      value: e.target.value, // Toggle the value or set a new value as needed
-                    },
-                  }))
-                }
+                onChange={(e) => {
+                  setOptions({ key: key, value: e.target.value });
+                }}
                 // input={<OutlinedInput label={props.label} />}
                 // MenuProps={MenuProps}
                 sx={{

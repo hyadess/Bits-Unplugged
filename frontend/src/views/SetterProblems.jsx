@@ -3,6 +3,7 @@ import Title from "../components/Title";
 import ProblemSetCard from "../components/Cards/ProblemSetCard";
 import CardContainer from "../containers/CardContainer";
 import ProblemAddButton from "../components/Buttons/ProblemAddButton";
+import { useEffect } from "react";
 
 const SetterProblemsView = ({
   problemList,
@@ -12,6 +13,9 @@ const SetterProblemsView = ({
   createProblem,
   modalIsOpen,
 }) => {
+  useEffect(() => {
+    console.log(problemList);
+  });
   return (
     <div>
       <Title
@@ -31,7 +35,7 @@ const SetterProblemsView = ({
             deleteAction={deleteProblem}
             isLive={prob.isLive}
             timestamp={prob.updatedAt}
-            canvas={prob.canvas.name}
+            canvas={prob.canvas?.name}
           />
         ))}
       </CardContainer>

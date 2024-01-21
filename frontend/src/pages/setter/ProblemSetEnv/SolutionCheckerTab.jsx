@@ -5,33 +5,53 @@ import Button from "@mui/material/Button";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import { SelectionField } from "../../../components/InputFields";
-import { useProblemContext } from "./Model";
-const SolutionCheckerTab = ({
-  checkerType,
-  setCheckerType,
-  input,
-  checkerCanvas,
-  setCheckerCanvas,
-  updateSolutionChecker,
-  handleCheckSolution,
-}) => {
+import { useProblemContext } from "../../../store/ProblemContextProvider";
+import { problemApi } from "../../../api";
+import SubmissionService from "../../../services/submissionService";
+const SolutionCheckerTab = () => {
   const { state: problem, dispatch } = useProblemContext();
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
+  const [checkerType, setCheckerType] = useState(1);
   // const [test, setTest] = useState(null);
   const onSubmit = async () => {
-    const result = await handleCheckSolution();
+    const result = await SubmissionService.checkSolution(
+      problem.checkerCode,
+      problem.checkerCanvas,
+      problem.test,
+      problem.testActivity
+    );
     setOutput(result.output);
     setStdout(result.stdout);
   };
 
-  const resetChecker = () => {
-    setCheckerCanvas(JSON.parse(JSON.stringify(input)));
-    canvasRef.current !== undefined &&
-      canvasRef.current !== null &&
-      canvasRef.current.handleReset(JSON.parse(JSON.stringify(input)));
+  const updateSolutionChecker = async () => {
+    if (checkerType == 0 && problem.checkerCode == null) return;
+    if (checkerType == 1 && problem.checkerCanvas == null) return;
+    const res = await problemApi.updateProblem(problem.id, {
+      ...(checkerType == 0 && {
+        checkerCode: problem.checkerCode,
+      }),
+      ...(checkerType == 1 && {
+        checkerCanvas: problem.checkerCanvas,
+      }),
+    });
+    if (res.success) {
+      // console.log(res);
+    }
   };
+
   const canvasRef = useRef();
+
+  const resetChecker = () => {
+    dispatch({
+      type: "UPDATE_CHECKER_CANVAS",
+      payload: JSON.parse(JSON.stringify(problem.canvasData)),
+    });
+    canvasRef?.current?.handleReset(
+      JSON.parse(JSON.stringify(problem.canvasData))
+    );
+  };
 
   return (
     <>
@@ -41,7 +61,6 @@ const SolutionCheckerTab = ({
           setCode={(code) =>
             dispatch({ type: "UPDATE_CHECKER_CODE", payload: code })
           }
-          input={input}
           stdout={stdout}
           output={output}
           setOutput={setOutput}
@@ -53,8 +72,13 @@ const SolutionCheckerTab = ({
         <>
           <CanvasContainer
             canvasId={problem.canvasId}
-            input={checkerCanvas}
-            setInput={setCheckerCanvas}
+            input={problem.checkerCanvas}
+            setInput={(data) => {
+              dispatch({
+                type: "UPDATE_CHECKER_CANVAS",
+                payload: { ...data },
+              });
+            }}
             ref={canvasRef}
             mode="preview"
             previewOptions={problem.previewOptions}
@@ -80,7 +104,6 @@ const SolutionCheckerTab = ({
             <Button
               variant="contained"
               onClick={() => {
-                // updateCanvas();
                 updateSolutionChecker();
               }}
               size="large"

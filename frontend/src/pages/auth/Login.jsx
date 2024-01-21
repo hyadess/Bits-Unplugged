@@ -7,6 +7,7 @@ import Layout1 from "../../components/Layouts/Layout1";
 import { setLoading } from "../../App";
 import AuthService from "../../services/authService";
 import GlobalContext from "../../store/GlobalContext";
+import { PasswordField } from "../../components/InputFields";
 const InputField = (props) => {
   return (
     <div>
@@ -149,41 +150,16 @@ const Login = () => {
                     onChange={setEmail}
                     value={email}
                   />
-
-                  {/* <div>
-                    <label
-                      for="email"
-                      className="block mb-2 text-sm font-medium bu-text-primary"
-                    >
-                      Username/Email Address
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-pink-600 focus:border-pink-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="name@company.com"
-                      required=""
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div> */}
-                  <div>
-                    <label
-                      // for="password"
-                      className="block mb-2 text-sm font-medium bu-text-primary"
-                    >
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      name="password"
-                      id="password"
-                      placeholder="••••••••"
-                      className="border sm:text-sm rounded-lg  block w-full p-2.5  placeholder-gray-400 bu-input-primary"
-                      required=""
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
+                  <PasswordField
+                    label="Password"
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="••••••••"
+                    required={true}
+                    setValue={setPassword}
+                    value={password}
+                  />
                   <div className="flex items-center justify-between">
                     <div className="flex items-start">
                       <div className="flex items-center h-5">

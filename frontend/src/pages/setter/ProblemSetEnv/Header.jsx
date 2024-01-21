@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { setLoading, showSuccess } from "../../../App";
 import { IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useProblemContext } from "./Model";
+import { useProblemContext } from "../../../store/ProblemContextProvider";
 import { problemApi } from "../../../api";
 
 const Header = ({ backupProblem }) => {

@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import { SelectionField } from "../../../components/InputFields";
-import { useProblemContext } from "./Model";
+import { useProblemContext } from "../../../store/ProblemContextProvider";
 import { problemApi } from "../../../api";
 import SubmissionService from "../../../services/submissionService";
 const SolutionCheckerTab = () => {

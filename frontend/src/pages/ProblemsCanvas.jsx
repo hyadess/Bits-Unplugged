@@ -7,7 +7,7 @@ import SubmissionService from "../services/submissionService";
 import GlobalContext from "../store/GlobalContext";
 import ProblemContextProvider, {
   useProblemContext,
-} from "./setter/ProblemSetEnv/Model";
+} from "../store/ProblemContextProvider";
 function ProblemsCanvasController() {
   const { type } = useContext(GlobalContext);
   const { id } = useParams();

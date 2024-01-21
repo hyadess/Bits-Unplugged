@@ -8,6 +8,7 @@ import Layout1 from "../../components/Layouts/Layout1";
 import { setLoading } from "../../App";
 import AuthService from "../../services/authService";
 import GlobalContext from "../../store/GlobalContext";
+import { PasswordField } from "../../components/InputFields";
 const InputField = (props) => {
   return (
     <div>
@@ -72,21 +73,23 @@ const Signup = () => {
     setLoading(false);
   }, [type]);
 
-  const validatePassword = () => {
+  const validatePassword = (password) => {
+    console.log(password, password.length);
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!password) {
-      setShowValidationMessage(false);
-      return false;
+    if (!password || !password.length) {
+      // setShowValidationMessage(false);
+      console.log("PASSED");
+      return true;
     }
     if (passwordRegex.test(password)) {
-      setShowValidationMessage(false);
+      // setShowValidationMessage(false);
       return true;
     } else {
-      setShowValidationMessage(true);
-      setValidationMessage(
-        "Password must contain at least one lowercase letter, one uppercase letter, one digit, one special character, and be at least 8 characters long."
-      );
+      // setShowValidationMessage(true);
+      // setValidationMessage(
+      //   "Password must contain at least one lowercase letter, one uppercase letter, one digit, one special character, and be at least 8 characters long."
+      // );
       return false;
     }
   };
@@ -296,53 +299,34 @@ const Signup = () => {
                 /> */}
 
               <div>
-                <label
-                  // for="password"
-                  className="block mb-2 text-sm font-medium bu-text-primary"
-                >
-                  Password
-                </label>
-                <div className="input-container">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    id="password"
-                    placeholder="••••••••"
-                    className="border sm:text-sm rounded-lg  block w-full p-2.5  placeholder-gray-400 bu-input-primary"
-                    required={true}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onInput={validatePassword}
-                  />
-                  <button
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="block mb-2 text-sm font-medium  bu-text-primary"
-                  >
-                    {showPassword ? "Hide" : "Show"}
-                  </button>
-                </div>
-                {showValidationMessage && (
+                <PasswordField
+                  label="Password"
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="••••••••"
+                  required={true}
+                  setValue={setPassword}
+                  value={password}
+                />
+                {!validatePassword(password) && (
                   <span className="block mb-2 text-sm font-medium  text-red-500">
-                    {validationMessage}
+                    Password must contain at least one lowercase letter, one
+                    uppercase letter, one digit, one special character, and be
+                    at least 8 characters long.
                   </span>
                 )}
               </div>
-              <div>
-                <label
-                  // for="confirmpassword"
-                  className="block mb-2 text-sm font-medium bu-text-primary"
-                >
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  name="confirmpassword"
-                  id="confirmpassword"
-                  placeholder="••••••••"
-                  className="border sm:text-sm rounded-lg  block w-full p-2.5  placeholder-gray-400 bu-input-primary"
-                  required={true}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </div>
+              <PasswordField
+                label="Confirm Password"
+                type="password"
+                name="confirmpassword"
+                id="confirmpassword"
+                placeholder="••••••••"
+                required={true}
+                setValue={setConfirmPassword}
+                value={confirmPassword}
+              />
               {!signingUp && (
                 <button
                   // type="submit"

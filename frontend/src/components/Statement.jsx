@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import "katex/dist/katex.css";
 import MarkdownEditor from "./Markdown/MarkdownEditor";
 import MarkdownPreview from "./Markdown/MarkdownPreview";
-import { useProblemContext } from "../pages/setter/ProblemSetEnv/Model";
+import { useProblemContext } from "../store/ProblemContextProvider";
 
 function ProblemStatement() {
   const { problemid } = useParams();

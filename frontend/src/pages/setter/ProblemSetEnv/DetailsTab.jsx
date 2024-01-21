@@ -3,7 +3,7 @@ import ProblemStatement from "../../../components/Statement";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { problemApi } from "../../../api";
-import { useProblemContext } from "./Model";
+import { useProblemContext } from "../../../store/ProblemContextProvider";
 const DetailsTab = () => {
   const { state: problem, dispatch } = useProblemContext();
   return (

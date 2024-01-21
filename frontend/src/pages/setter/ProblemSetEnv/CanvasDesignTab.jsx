@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import { SelectionField2 } from "../../../components/InputFields";
-import { useProblemContext } from "./Model";
+import { useProblemContext } from "../../../store/ProblemContextProvider";
 import { canvasApi, problemApi } from "../../../api";
 const CanvasDesignTab = ({ backupProblem }) => {
   const [canvasList, setCanvasList] = useState([]);

@@ -3,7 +3,7 @@ import CanvasContainer from "../../../components/Canvases/CanvasContainer";
 import Button from "@mui/material/Button";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import Send from "@mui/icons-material/Send";
-import { useProblemContext } from "./Model";
+import { useProblemContext } from "../../../store/ProblemContextProvider";
 import SubmissionService from "../../../services/submissionService";
 const TestTab = ({ testRef }) => {
   const { state: problem, dispatch } = useProblemContext();

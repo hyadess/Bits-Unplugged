@@ -9,7 +9,7 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../App";
 import "katex/dist/katex.css";
 import MarkdownPreview from "../components/Markdown/MarkdownPreview";
-import { useProblemContext } from "../pages/setter/ProblemSetEnv/Model";
+import { useProblemContext } from "../store/ProblemContextProvider";
 const Title = ({ problem }) => {
   return (
     <div className="flex max-w-screen-xl flex-col gap-3 py-4 sm:pt-12">

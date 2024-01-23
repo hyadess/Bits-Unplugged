@@ -25,10 +25,10 @@ export default function SubmissionCard({
         </h5>
         <h5
           class="text-2xl md:text-3xl pl-5 font-bold tracking-tight bu-text-title w-75% cursor-pointer"
-          //   onClick={() => {
-          //     setLoading(true);
-          //     navigate(path);
-          //   }}
+          // onClick={() => {
+          //   setLoading(true);
+          //   navigate(path);
+          // }}
         >
           {problem_name}_{submissionId}
         </h5>

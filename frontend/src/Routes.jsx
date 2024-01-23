@@ -93,10 +93,10 @@ const Public = () => {
         localStorage.getItem("type") == 0
           ? "/topics"
           : localStorage.getItem("type") == 1
-          ? "/problemSet"
-          : localStorage.getItem("type") == 2
-          ? "/admin/topics"
-          : "/login"
+            ? "/problemSet"
+            : localStorage.getItem("type") == 2
+              ? "/admin/topics"
+              : "/login"
       }
     />
   ) : (
@@ -178,7 +178,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/admin/canvas"
+            path="/admin/canvases"
             element={
               <LayoutMain>
                 <AdminCanvasList />
@@ -186,7 +186,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/admin/canvas/:id"
+            path="/admin/canvases/:id"
             element={
               <LayoutMain>
                 <AdminCanvasEditor />
@@ -214,7 +214,7 @@ const AppRoutes = () => {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route element={<ProblemSetter />}>
           <Route
-            path="/problem/:id/preview"
+            path="/problems/:id/preview"
             element={
               <LayoutMain>
                 <ProblemsCanvas />
@@ -222,7 +222,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/problem/:problemid/edit"
+            path="/problems/:problemid/edit"
             element={
               <LayoutMain>
                 <ProblemSetEnv />
@@ -257,7 +257,7 @@ const AppRoutes = () => {
         </Route>
         <Route element={<ProblemSolver />}>
           <Route
-            path="/problem/:id"
+            path="/problems/:id"
             element={
               <LayoutMain>
                 <ProblemsCanvas />
@@ -265,7 +265,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/submission/:id"
+            path="/submissions/:id"
             element={
               <LayoutMain>
                 <ProblemsSubmissions />
@@ -399,10 +399,10 @@ const AppRoutes = () => {
                   type == 0
                     ? "/topics"
                     : type == 1
-                    ? "/problemSet"
-                    : type == 2
-                    ? "/admin/topics"
-                    : "/home"
+                      ? "/problemSet"
+                      : type == 2
+                        ? "/admin/topics"
+                        : "/home"
                 }
               />
             }

@@ -145,7 +145,7 @@ const Login = () => {
                     type="text"
                     name="email"
                     id="email"
-                    placeholder="email"
+                    placeholder="example@gmail.com"
                     required={true}
                     onChange={setEmail}
                     value={email}

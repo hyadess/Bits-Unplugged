@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useAsyncError, useNavigate, useParams } from "react-router-dom";
-import Editor, { loader, useMonaco } from "@monaco-editor/react";
+import { useNavigate, useParams } from "react-router-dom";
+import Editor from "@monaco-editor/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import monaco_theme from "../themes/my_theme.json";
-import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SaveIcon from "@mui/icons-material/Save";
-// import Confirmation from "../../components/Confirmation";
-import { Button, IconButton } from "@mui/material";
-import EyeIcon from "../components/Icons/EyeIcon";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import SubmissionService from "../services/submissionService";
@@ -45,7 +41,8 @@ export default function SolutionChecker(props) {
   const [showStdOut, setShowStdOut] = useState(false);
   const navigate = useNavigate();
   const { problemid } = useParams();
-
+  const [output, setOutput] = useState("");
+  const [stdout, setStdout] = useState([]);
   const [editorHeight, setEditorHeight] = useState(window.innerWidth / 3);
 
   const handleResize = () => {
@@ -58,12 +55,19 @@ export default function SolutionChecker(props) {
   };
 
   const handleCheckSolution = async () => {
-    await SubmissionService.checkSolution(
+    console.log(problem.test);
+    const result = await SubmissionService.checkSolution(
       problem.checkerCode,
       problem.checkerCanvas,
       problem.test,
       problem.testActivity
     );
+    setOutput(result.output);
+    setStdout(result.stdout);
+
+    if (!showStdOut && result.stdout.length > 0) {
+      setShowStdOut(true);
+    }
   };
 
   useEffect(() => {
@@ -74,12 +78,6 @@ export default function SolutionChecker(props) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    // console.log("--->", props.stdout.length == 0);
-    if (!showStdOut && props.stdout.length > 0) {
-      setShowStdOut(true);
-    }
-  }, [props.stdout]);
   const editorMount = (editor, monaco) => {
     ref.current = editor;
     monaco.editor.setTheme("light-theme");
@@ -100,7 +98,7 @@ export default function SolutionChecker(props) {
         <div
           className={
             "w-full bg-[#1F2531] " +
-            (props.stdout.length > 0 && showStdOut ? "h-2/3" : "h-full")
+            (stdout.length > 0 && showStdOut ? "h-2/3" : "h-full")
           }
         >
           <Editor
@@ -127,13 +125,13 @@ export default function SolutionChecker(props) {
           />
         </div>
 
-        {props.stdout.length > 0 && showStdOut && (
+        {stdout.length > 0 && showStdOut && (
           <div
             className={
               "w-full h-1/3 m-0 text-left p-5 bg-[#1F2531] text-md text-white  break-all overflow-scroll  box-border border-4 border-solid border-gray-600 border-spacing-4 whitespace-pre border-t-0"
             }
           >
-            {props.stdout}
+            {stdout}
           </div>
         )}
       </div>
@@ -143,7 +141,7 @@ export default function SolutionChecker(props) {
           className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
           onClick={() => {
             if (showStdOut) setShowStdOut(false);
-            else if (props.stdout.length > 0) setShowStdOut(true);
+            else if (stdout.length > 0) setShowStdOut(true);
             // setShowStdOut((prev) => !prev);
           }}
         >

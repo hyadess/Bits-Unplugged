@@ -25,7 +25,7 @@ module.exports = {
             pegs: [[0, 1, 2], [], []],
           }),
           checkerCode:
-            "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+            "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
           editOptions: JSON.stringify({
             customDisk: { value: true, type: "switch" },
             ordered: { value: true, type: "switch" },
@@ -36,9 +36,9 @@ module.exports = {
             customDisk: { value: false, type: "switch" },
             undo: { value: true, type: "switch" },
           }),
-          checkerCanvas: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          checkerCanvas: JSON.stringify({
+            pegs: [[], [], [0, 1, 2]],
+          }),
         },
         {
           setterId: 1,
@@ -64,8 +64,6 @@ module.exports = {
           checkerCanvas: JSON.stringify({
             pegs: [[], [], [0, 1, 2]],
           }),
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           setterId: 1,
@@ -77,7 +75,7 @@ module.exports = {
             pegs: [[0, 1, 2, 3], [], []], // additionalData
           }),
           checkerCode:
-            "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  return data.numberOfMoves == 15 && data.pegs[2].length == 4;\n}\n",
+            "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas) && userActivity.numberOfMoves == 15;\n}\n",
           editOptions: JSON.stringify({
             customDisk: { value: true, type: "switch" },
             ordered: { value: true, type: "switch" },
@@ -91,8 +89,6 @@ module.exports = {
           checkerCanvas: JSON.stringify({
             pegs: [[], [], [0, 1, 2, 3]],
           }),
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           // id: 36,
@@ -114,12 +110,10 @@ module.exports = {
             undo: { value: true, type: "switch" },
           }),
           checkerCode:
-            "function solutionChecker(data) {\n  return data.numberOfMoves === 2 * (2 ** (data.numberOfDisks/2) - 1);\n}",
+            "\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas) && userActivity.numberOfMoves == 62;\n}\n",
           checkerCanvas: JSON.stringify({
             pegs: [[], [], [10, 0, 2, 12, 4, 14, 6, 16, 8, 18]],
           }),
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           setterId: 1,
@@ -147,11 +141,6 @@ module.exports = {
           }),
           checkerCode: `/**\n * @param {Object} data (user_data/solution_data) - An object containing nodes and edges properties.\n * @param {Array} data.nodes - HashMap of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end, weight properties.\n * @param {Array} data.selectedEdges - Array of selectedEdges. Where each edge is an object with start, end, weight properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(user_data, solution_data) {\n  return JSON.stringify(user_data) === JSON.stringify(solution_data);\n}\n`,
           editOptions: JSON.stringify({
-            // variant: {
-            //   value: "simple_graph",
-            //   type: "select",
-            //   list: ["simple_graph", "tree"],
-            // },
             directedEdge: { value: false, type: "switch" },
             weightedEdge: { value: true, type: "switch" },
           }),
@@ -187,15 +176,12 @@ module.exports = {
               { start: "4", end: "3", weight: "3" },
             ],
           }),
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           setterId: 1,
           canvasId: 1,
           title: "Road Construction 2",
           statement: "Similar to version 1.",
-
           canvasData: JSON.stringify({
             edges: [
               { start: "0", end: "1", weight: "3" },
@@ -222,7 +208,7 @@ module.exports = {
             },
             selectedEdges: [],
           }),
-          checkerCode: `/**\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction createGraph(edges) {\n  const graph = new Map();\n  for (const edge of edges) {\n    const { start, end, weight } = edge;\n\n    if (!graph.has(start)) {\n      graph.set(start, []);\n    }\n\n    if (!graph.has(end)) {\n      graph.set(end, []);\n    }\n\n    graph.get(start).push({ value: end, weight: parseInt(weight) });\n    graph.get(end).push({ value: start, weight: parseInt(weight) });\n  }\n  return graph;\n}\nfunction getCost(graph) {\n  // Step 3: Implement DFS to check if the graph is disconnected\n  function isDisconnected() {\n    const visited = new Set();\n    const nodes = [...graph.keys()];\n\n    function dfs(node) {\n      visited.add(node);\n      for (const neighbor of graph.get(node)) {\n        if (!visited.has(neighbor.value)) {\n          dfs(neighbor.value);\n        }\n      }\n    }\n    dfs(nodes[0]); // Start DFS from the first node\n    return visited.size !== nodes.length;\n  }\n\n  const disconnected = isDisconnected();\n\n  // Step 4: Calculate the sum of edge weights\n  function sumEdgeWeights() {\n    let sum = 0;\n    for (const edges of graph.values()) {\n      for (const edge of edges) {\n        sum += edge.weight;\n      }\n    }\n    return sum / 2;\n  }\n\n  if (disconnected) return -1;\n\n  const edgeWeightSum = sumEdgeWeights();\n  return edgeWeightSum;\n}\nfunction solutionChecker(user_data, solution_data) {\n  const user_graph = createGraph(user_data.selectedEdges);\n  const setter_graph = createGraph(solution_data.selectedEdges);\n\n  if (Object.keys(user_graph).length !== Object.keys(setter_graph).length)\n    return false;\n  const user_cost = getCost(user_graph);\n  const setter_cost = getCost(setter_graph);\n  console.log(user_cost);\n  if (user_cost !== -1 && user_cost === setter_cost) {\n    return true;\n  } else {\n    return false;\n  }\n}\n`,
+          checkerCode: `/**\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction createGraph(edges) {\n  const graph = new Map();\n  for (const edge of edges) {\n    const { start, end, weight } = edge;\n\n    if (!graph.has(start)) {\n      graph.set(start, []);\n    }\n\n    if (!graph.has(end)) {\n      graph.set(end, []);\n    }\n\n    graph.get(start).push({ value: end, weight: parseInt(weight) });\n    graph.get(end).push({ value: start, weight: parseInt(weight) });\n  }\n  return graph;\n}\nfunction getCost(graph) {\n  // Step 3: Implement DFS to check if the graph is disconnected\n  function isDisconnected() {\n    const visited = new Set();\n    const nodes = [...graph.keys()];\n\n    function dfs(node) {\n      visited.add(node);\n      for (const neighbor of graph.get(node)) {\n        if (!visited.has(neighbor.value)) {\n          dfs(neighbor.value);\n        }\n      }\n    }\n    dfs(nodes[0]); // Start DFS from the first node\n    return visited.size !== nodes.length;\n  }\n\n  const disconnected = isDisconnected();\n\n  // Step 4: Calculate the sum of edge weights\n  function sumEdgeWeights() {\n    let sum = 0;\n    for (const edges of graph.values()) {\n      for (const edge of edges) {\n        sum += edge.weight;\n      }\n    }\n    return sum / 2;\n  }\n\n  if (disconnected) return -1;\n\n  const edgeWeightSum = sumEdgeWeights();\n  return edgeWeightSum;\n}\nfunction solutionChecker(user_data, solution_data) {\n  const user_graph = createGraph(user_data.selectedEdges);\n  const setter_graph = createGraph(solution_data.selectedEdges);\n\n  if (Array.from(user_graph.keys()).length !== Array.from(setter_graph.keys()).length)\n    return false;\n  const user_cost = getCost(user_graph);\n  const setter_cost = getCost(setter_graph);\n  console.log(user_cost);\n  if (user_cost !== -1 && user_cost === setter_cost) {\n    return true;\n  } else {\n    return false;\n  }\n}\n`,
           editOptions: JSON.stringify({
             // variant: {
             //   value: "simple_graph",
@@ -275,8 +261,6 @@ module.exports = {
               { start: "5", end: "2", weight: "5" },
             ],
           }),
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           setterId: 1,
@@ -318,7 +302,7 @@ module.exports = {
             createdAt: new Date(),
             updatedAt: new Date(),
           }),
-          checkerCode: `/**\r\n *\r\n * @param {Object} data - An object containing nodes and edges properties.\r\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\r\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\r\n * @returns {boolean} True if the solution is valid, otherwise false.\r\n */\r\nfunction solutionChecker(data) {\r\n  // const edges =  data.edges.map(edge => ({\r\n\t// \tstart: edge.start.nodeIndex,\r\n\t// \tend: edge.end.nodeIndex,\r\n\t// \tweight: edge.weight\r\n  // }));\r\n  \r\n\r\n  const allEdgesHaveDifferentColors = data.edges.every(\r\n    edge => data.nodes[edge.start].color !== data.nodes[edge.end].color && data.nodes[edge.end].color !== "Default"); \r\n\r\n  const uniqueColorsSet = new Set();\r\n  data.edges.forEach(edge => {\r\n    uniqueColorsSet.add(data.nodes[edge.start].color);\r\n    uniqueColorsSet.add(data.nodes[edge.end].color);\r\n  });\r\n\r\n  const numberOfUniqueColors = uniqueColorsSet.size;\r\n\r\n  return allEdgesHaveDifferentColors && numberOfUniqueColors == 3;\r\n}`,
+          checkerCode: `/**\r\n *\r\n * @param {Object} data - An object containing nodes and edges properties.\r\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\r\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\r\n * @returns {boolean} True if the solution is valid, otherwise false.\r\n */\r\nfunction solutionChecker(data) {\r\n  // const edges =  data.edges.map(edge => ({\r\n\t// \tstart: edge.start,\r\n\t// \tend: edge.end,\r\n\t// \tweight: edge.weight\r\n  // }));\r\n  \r\n\r\n  const allEdgesHaveDifferentColors = data.edges.every(\r\n    edge => data.nodes[edge.start].color !== data.nodes[edge.end].color && data.nodes[edge.end].color !== "Default"); \r\n\r\n  const uniqueColorsSet = new Set();\r\n  data.edges.forEach(edge => {\r\n    uniqueColorsSet.add(data.nodes[edge.start].color);\r\n    uniqueColorsSet.add(data.nodes[edge.end].color);\r\n  });\r\n\r\n  const numberOfUniqueColors = uniqueColorsSet.size;\r\n\r\n  return allEdgesHaveDifferentColors && numberOfUniqueColors == 3;\r\n}`,
 
           editOptions: JSON.stringify({
             // variant: {
@@ -339,8 +323,6 @@ module.exports = {
             editColor: { value: true, type: "switch" },
           }),
           checkerCanvas: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           setterId: 1,
@@ -349,7 +331,7 @@ module.exports = {
           canvasData: null,
           statement:
             "Remove minimum possible edges, such that the graph is a bipartite graph.",
-          checkerCode: `/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  const edges =  data.edges.map(edge => ({\n\t\tstart: edge.start.nodeIndex,\n\t\tend: edge.end.nodeIndex,\n\t\tweight: edge.weight\n\t}));\n\t\n  return false;\n}`,
+          checkerCode: `/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  const edges =  data.edges.map(edge => ({\n\t\tstart: edge.start,\n\t\tend: edge.end,\n\t\tweight: edge.weight\n\t}));\n\t\n  return false;\n}`,
           editOptions: JSON.stringify({
             // variant: {
             //   value: "simple_graph",
@@ -369,17 +351,41 @@ module.exports = {
             editColor: { value: false, type: "switch" },
           }),
           checkerCanvas: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           setterId: 1,
           canvasId: 1,
           title: "Rearrange",
-          canvasData: null,
+          canvasData: JSON.stringify({
+            edges: [
+              { start: "0", end: "1", weight: "0" },
+              { start: "1", end: "3", weight: "0" },
+              { start: "3", end: "2", weight: "0" },
+              { start: "2", end: "0", weight: "0" },
+              { start: "4", end: "5", weight: "0" },
+              { start: "5", end: "7", weight: "0" },
+              { start: "7", end: "6", weight: "0" },
+              { start: "6", end: "4", weight: "0" },
+              { start: "1", end: "5", weight: "0" },
+              { start: "4", end: "0", weight: "0" },
+              { start: "2", end: "6", weight: "0" },
+              { start: "3", end: "7", weight: "0" },
+            ],
+            nodes: {
+              0: { x: 281, y: 30, label: 0, color: "Default" },
+              1: { x: 610, y: 32, label: 1, color: "Default" },
+              2: { x: 278, y: 276, label: 2, color: "Default" },
+              3: { x: 615, y: 278, label: 3, color: "Default" },
+              4: { x: 444, y: 156, label: 4, color: "Default" },
+              5: { x: 796, y: 156, label: 5, color: "Default" },
+              6: { x: 448, y: 447, label: 6, color: "Default" },
+              7: { x: 812, y: 449, label: 7, color: "Default" },
+            },
+            selectedEdges: [],
+          }),
           statement:
             "Drag the nodes to make the graph a plane graph. In a plane graph there is no crossing edges.",
-          checkerCode: `/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction isIntersecting(a, b, c, d) {\n    // Returns true if line segment (a, b) intersects with line segment (c, d)\n    function ccw(a, b, c) {\n        return (c.y - a.y) * (b.x - a.x) > (b.y - a.y) * (c.x - a.x);\n    }\n\n    return (\n        ccw(a, c, d) !== ccw(b, c, d) &&\n        ccw(a, b, c) !== ccw(a, b, d)\n    );\n}\n\n\nfunction hasCommonNode(edgeA, edgeB) {\n    return (\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.end) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.end)\n    );\n}\n\nfunction solutionChecker(data) {\n    const nodes = data.nodes;\n    const edges = data.edges;\n\n    for (let i = 0; i < edges.length; i++) {\n        const edgeA = edges[i];\n        \n        const startA = nodes[edgeA.start.nodeIndex];\n        const endA = nodes[edgeA.end.nodeIndex];\n\n        for (let j = i + 1; j < edges.length; j++) {\n            const edgeB = edges[j];\n\n            const startB = nodes[edgeB.start.nodeIndex];\n            const endB = nodes[edgeB.end.nodeIndex];\n\n            if (\n                isIntersecting(startA, endA, startB, endB) &&\n                !hasCommonNode(edgeA, edgeB)\n            ) {\n                // console.log(startA.x,startA.y,  startB.x, startB.y, endA.x, endA.y, endB.x, endB.y)\n                return false;\n            }\n        }\n    }\n\n    // No intersections found, it's a plane graph\n    return true;\n}`,
+          checkerCode: `/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction isIntersecting(a, b, c, d) {\n    // Returns true if line segment (a, b) intersects with line segment (c, d)\n    function ccw(a, b, c) {\n        return (c.y - a.y) * (b.x - a.x) > (b.y - a.y) * (c.x - a.x);\n    }\n\n    return (\n        ccw(a, c, d) !== ccw(b, c, d) &&\n        ccw(a, b, c) !== ccw(a, b, d)\n    );\n}\n\n\nfunction hasCommonNode(edgeA, edgeB) {\n    return (\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.end) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.end)\n    );\n}\n\nfunction solutionChecker(data) {\n    const nodes = data.nodes;\n    const edges = data.edges;\n\n    for (let i = 0; i < edges.length; i++) {\n        const edgeA = edges[i];\n        \n        const startA = nodes[edgeA.start];\n        const endA = nodes[edgeA.end];\n\n        for (let j = i + 1; j < edges.length; j++) {\n            const edgeB = edges[j];\n\n            const startB = nodes[edgeB.start];\n            const endB = nodes[edgeB.end];\n\n            if (\n                isIntersecting(startA, endA, startB, endB) &&\n                !hasCommonNode(edgeA, edgeB)\n            ) {\n                // console.log(startA.x,startA.y,  startB.x, startB.y, endA.x, endA.y, endB.x, endB.y)\n                return false;\n            }\n        }\n    }\n\n    // No intersections found, it's a plane graph\n    return true;\n}`,
           editOptions: JSON.stringify({
             // variant: {
             //   value: "simple_graph",
@@ -399,8 +405,6 @@ module.exports = {
             editColor: { value: false, type: "switch" },
           }),
           checkerCanvas: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           setterId: 1,
@@ -466,7 +470,7 @@ module.exports = {
             },
             selectedEdges: [],
           }),
-          checkerCode: `/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(data) {\n  const edges =  data.edges.map(edge => ({\n\t\tstart: edge.start.nodeIndex,\n\t\tend: edge.end.nodeIndex,\n\t\tweight: edge.weight\n\t}));\n\t\n  return false;\n}`,
+          checkerCode: `/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(user_data, solution_data) {\n  return JSON.stringify(user_data) === JSON.stringify(solution_data);\n}\n`,
           editOptions: JSON.stringify({
             // variant: {
             //   value: "simple_graph",
@@ -549,8 +553,6 @@ module.exports = {
               { start: "4", end: "6", weight: "2" },
             ],
           }),
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           setterId: 1,
@@ -619,8 +621,6 @@ module.exports = {
             editColor: { value: false, type: "switch" },
           }),
           checkerCanvas: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
       ],
       {}

@@ -1,5 +1,7 @@
 const Controller = require("./base");
 const ProblemRepository = require("../repositories/problemRepository");
+const { submissionRepository } = require("../repositories");
+
 const problemRepository = new ProblemRepository();
 class ProblemController extends Controller {
   constructor() {
@@ -128,6 +130,24 @@ class ProblemController extends Controller {
   unpublishProblem = async (req, res) => {
     let result = await problemRepository.unpublishProblem(req.params.problemId);
     this.handleResponse(result, res);
+  };
+
+  getSubmissions = async (req, res) => {
+    console.log("here");
+    this.handleRequest(res, async () => {
+      let submissions =
+        req.user.type === 1
+          ? undefined
+          : req.user.type === 0
+          ? await submissionRepository.getAllSubmissionsByUserAndProblem(
+              req.user.userId,
+              req.params.id
+            )
+          : await submissionRepository.getAllSubmissionsByProblem(
+              req.params.id
+            );
+      res.status(200).send(submissions);
+    });
   };
 
   // takeNthHint = async (req, res) => {};

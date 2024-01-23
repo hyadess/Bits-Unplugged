@@ -42,7 +42,7 @@ const Header = ({ type }) => {
               navigate(
                 type == 2
                   ? `/admin/problems/${problem.id}`
-                  : `/problem/${problem.id}/edit`
+                  : `/problems/${problem.id}/edit`
               );
             }}
           >

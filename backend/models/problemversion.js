@@ -18,7 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "canvasId",
         as: "canvas",
       });
-      ProblemVersion.hasMany(models.Submission, { foreignKey: "problemId" });
+      ProblemVersion.hasMany(models.Submission, {
+        as: "submissions",
+        foreignKey: "problemId",
+      });
       ProblemVersion.hasMany(models.Activity, {
         foreignKey: "problemId",
         as: "activities",

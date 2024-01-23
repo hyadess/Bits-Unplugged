@@ -74,7 +74,7 @@ const Header = ({ backupProblem }) => {
               className="bu-text-primary flex cursor-pointer items-center text-3xl"
               onClick={() => {
                 setLoading(true);
-                navigate(`/problem/${problem.id}/preview`);
+                navigate(`/problems/${problem.id}/preview`);
               }}
             >
               <FontAwesomeIcon icon={faExpand} />

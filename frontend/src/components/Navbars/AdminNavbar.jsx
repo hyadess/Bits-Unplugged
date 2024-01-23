@@ -53,7 +53,7 @@ const AdminNavbar = () => {
         <>
           <AdminNavButton path="/admin/topics" label="Topics" />
           <AdminNavButton path="/admin/series" label="Series" />
-          <AdminNavButton path="/admin/canvas" label="Canvas" />
+          <AdminNavButton path="/admin/canvases" label="Canvases" />
           <AdminNavButton path="/admin/problems" label="Problems" />
           <AdminNavButton path="/admin/contests" label="Contests" />
           <AdminNavButton path="/admin/setters" label="Setters" />

@@ -42,7 +42,7 @@ const ProblemSetCard = ({ id, idx, name, deleteAction, isLive }) => {
           className="text-2xl md:text-3xl pl-5 font-bold tracking-tight bu-text-title w-75% cursor-pointer"
           onClick={() => {
             setLoading(true);
-            navigate(`/problem/${id}/preview`);
+            navigate(`/problems/${id}/preview`);
           }}
         >
           {name}
@@ -50,7 +50,7 @@ const ProblemSetCard = ({ id, idx, name, deleteAction, isLive }) => {
 
         <div className="w-30% md:w-15% flex flex-row justify-end">
           <div className="w-1/3 flex items-center justify-center">
-            <IconButton onClick={() => navigate(`/problem/${id}/edit`)}>
+            <IconButton onClick={() => navigate(`/problems/${id}/edit`)}>
               <div className="flex items-center bu-text-primary">
                 <FontAwesomeIcon icon={faPenToSquare} size="sm" />
               </div>

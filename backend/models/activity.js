@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Activity extends Model {
     /**
@@ -36,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       problemId: {
         type: DataTypes.INTEGER,
         references: {
-          model: "Problems",
+          model: "ProblemVersions",
           key: "id",
         },
         unique: "Activities_userId_problemId_key",

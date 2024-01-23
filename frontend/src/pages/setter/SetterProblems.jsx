@@ -36,7 +36,7 @@ const SetterProblems = () => {
     setLoading(true);
     closeModal();
     const problemId = await getProblemId(title);
-    navigate(`/problem/${problemId}/edit`);
+    navigate(`/problems/${problemId}/edit`);
   };
 
   const openModal = () => {

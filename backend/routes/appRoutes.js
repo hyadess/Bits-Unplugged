@@ -22,13 +22,13 @@ router.get("/", async (req, res) => {
 });
 
 router.use("/auth", authRoutes);
-router.use("/topic", topicRoutes);
+router.use("/topics", topicRoutes);
 router.use("/series", seriesRoutes);
-router.use("/problem", problemRoutes);
-router.use("/canvas", canvasRoutes);
+router.use("/problems", problemRoutes);
+router.use("/canvases", canvasRoutes);
 router.use("/profile", profileRoutes);
-router.use("/submission", submissionRoutes);
+router.use("/submissions", submissionRoutes);
 router.use("/userActivity", userActivityRoutes);
-router.use("/contest", contestRoutes);
+router.use("/contests", contestRoutes);
 
 module.exports = router;

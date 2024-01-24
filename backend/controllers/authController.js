@@ -47,6 +47,27 @@ class AuthController extends Controller {
     }
   };
 
+  getSetterRequests = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const requests = await authRepository.getSetterRequests();
+      res.status(200).send(requests);
+    });
+  };
+
+  approveSetter = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const approved = await authService.approveSetter(
+        req.params.id,
+        req.headers.origin
+      );
+      if (!approved) {
+        res.status(404).json({ error: "User not found" });
+      } else {
+        res.status(200).json({ message: "User approved successfully" });
+      }
+    });
+  };
+
   deleteAccount = async (req, res) => {
     this.handleRequest(res, async () => {
       console.log(req.params);

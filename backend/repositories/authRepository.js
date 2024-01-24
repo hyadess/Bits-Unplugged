@@ -68,6 +68,49 @@ class AuthRepository extends Repository {
     return emailToken;
   };
 
+  getSetterRequests = async () => {
+    const requests = await db.User.findAll({
+      include: [
+        { model: db.Setter, required: true, where: { isApproved: false } },
+      ],
+    });
+    return requests;
+  };
+
+  isApproved = async (id) => {
+    const setter = await db.Setter.findOne({
+      where: {
+        userId: id,
+      },
+    });
+    if (setter) {
+      return setter.isApproved;
+    }
+    return false;
+  };
+
+  approveSetter = async (id) => {
+    const setter = await db.Setter.findOne({
+      where: {
+        userId: id,
+      },
+      include: [
+        {
+          model: db.User,
+          required: true,
+          as: "user",
+          include: [{ model: db.Credential, required: true, as: "credential" }],
+        },
+      ],
+    });
+    if (setter) {
+      setter.isApproved = true;
+      await setter.save();
+      return setter;
+    }
+    return setter;
+  };
+
   signup = async (data, token) => {
     console.log(data);
     let transaction;
@@ -89,6 +132,14 @@ class AuthRepository extends Repository {
         },
         { transaction }
       );
+      if (data.type == 1) {
+        await db.Setter.create(
+          {
+            userId: user.id,
+          },
+          { transaction }
+        );
+      }
 
       await transaction.commit();
 

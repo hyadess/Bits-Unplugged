@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Setter extends Model {
     /**
@@ -11,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Setter.belongsTo(models.User, { foreignKey: "userId" });
+      Setter.belongsTo(models.User, { foreignKey: "userId", as: "user" });
       Setter.hasMany(models.Problem, { foreignKey: "setterId" });
       Setter.belongsToMany(models.Contest, { through: models.ContestSetter });
     }
@@ -27,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      isApproved: DataTypes.BOOLEAN,
+      isApproved: { type: DataTypes.BOOLEAN, defaultValue: false },
     },
     {
       sequelize,

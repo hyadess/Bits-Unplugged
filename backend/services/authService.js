@@ -53,29 +53,53 @@ class AuthService extends Service {
     if (!user) {
       return { success: false };
     }
-    console.log({
-      userId: user.userId,
-      email: data.email,
-      pass: user.hashpass,
-      type: data.type,
-    });
-    const token = this.getAccessToken(
-      {
-        userId: user.userId,
-        email: data.email,
-        pass: user.hashpass,
-        type: data.type,
-      },
-      JWT_SECRET
-    );
-    await authRepository.saveEmailToken(user.userId, token);
-    sendMail(
-      data.email,
-      "Email Verification",
-      `Please verify your email: ${url}/verify-email?type=${data.type}&token=${token}`
-    );
-    console.log("Email sent");
+
+    if (data.type == 0) {
+      const token = this.getAccessToken(
+        {
+          userId: user.userId,
+          email: data.email,
+          pass: user.hashpass,
+          type: data.type,
+        },
+        JWT_SECRET
+      );
+      await authRepository.saveEmailToken(user.userId, token);
+      sendMail(
+        data.email,
+        "Email Verification",
+        `Please verify your email: ${url}/verify-email?type=${data.type}&token=${token}`
+      );
+      console.log("Email sent");
+    }
+    // else if(data.type == 1){
+    //   await
+    // }
     return { success: true, user };
+  };
+
+  approveSetter = async (id, url) => {
+    const setter = await authRepository.approveSetter(id);
+    if (setter) {
+      const token = this.getAccessToken(
+        {
+          userId: setter.userId,
+          email: setter.user.credential.email,
+          pass: setter.user.credential.hashpass,
+          type: 1,
+        },
+        JWT_SECRET
+      );
+      await authRepository.saveEmailToken(setter.userId, token);
+      sendMail(
+        setter.user.credential.email,
+        "Email Verification",
+        `Please verify your email: ${url}/verify-email?type=1&token=${token}`
+      );
+      console.log("Email sent");
+      return { success: true };
+    }
+    return { success: false };
   };
 
   verifyEmail = async (token) => {
@@ -169,9 +193,10 @@ class AuthService extends Service {
   login = async (data) => {
     const credential = await this.getIdPass(data);
     if (credential) {
-      const res = await authRepository.getEmailToken(credential.userId);
-      console.log(res);
-      if (!res) {
+      const token = await authRepository.getEmailToken(credential.userId);
+      const isAppr = await authRepository.isApproved(credential.userId);
+
+      if (!token && (data.type !== 1 || isAppr)) {
         if (bcrypt.compareSync(data.pass, credential.hashpass)) {
           return {
             success: true,

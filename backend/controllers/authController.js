@@ -96,7 +96,7 @@ class AuthController extends Controller {
           access_token: result.accessToken,
         });
       } else {
-        return res.status(401).json({
+        return res.status(403).json({
           error: "Invalid credentials",
         });
       }

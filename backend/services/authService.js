@@ -169,24 +169,31 @@ class AuthService extends Service {
   login = async (data) => {
     const credential = await this.getIdPass(data);
     if (credential) {
-      if (bcrypt.compareSync(data.pass, credential.hashpass)) {
-        return {
-          success: true,
-          refreshToken: this.getRefreshToken({
-            userId: credential.userId,
-            email: data.email,
-            pass: credential.hashpass,
-            type: data.type,
-          }),
-          accessToken: this.getAccessToken({
-            userId: credential.userId,
-            email: data.email,
-            pass: credential.hashpass,
-            type: data.type,
-          }),
-        };
+      const res = await authRepository.getEmailToken(credential.userId);
+      console.log(res);
+      if (!res) {
+        if (bcrypt.compareSync(data.pass, credential.hashpass)) {
+          return {
+            success: true,
+            refreshToken: this.getRefreshToken({
+              userId: credential.userId,
+              email: data.email,
+              pass: credential.hashpass,
+              type: data.type,
+            }),
+            accessToken: this.getAccessToken({
+              userId: credential.userId,
+              email: data.email,
+              pass: credential.hashpass,
+              type: data.type,
+            }),
+          };
+        }
       }
-      // password doesn't match
+      return {
+        success: false,
+        message: "Email not verified",
+      };
     }
     return {
       success: false,

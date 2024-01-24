@@ -21,6 +21,7 @@
     "newman": "^6.1.0",
     "node-cache": "^5.1.2",
     "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.8",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.11.3",

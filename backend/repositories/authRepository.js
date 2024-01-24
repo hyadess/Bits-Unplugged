@@ -51,13 +51,11 @@ class AuthRepository extends Repository {
   };
 
   getEmailToken = async (userId) => {
-    console.log("> ", userId);
     const emailToken = await db.EmailVerification.findOne({
       where: {
         userId,
       },
     });
-    // console.log(emailToken);
     return emailToken;
   };
 

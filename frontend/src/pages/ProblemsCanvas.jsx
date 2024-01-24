@@ -73,7 +73,9 @@ function ProblemsCanvasController() {
         }
       }
       await userActivityApi.updateOnSuccessfulAttempt(id);
-    } else await userActivityApi.updateOnFailedAttempt(id);
+    } else {
+      await userActivityApi.updateOnFailedAttempt(id);
+    }
   };
   function getColorModeFromLocalStorage() {
     return localStorage.getItem("color-theme") || "light";

@@ -48,7 +48,7 @@ const ProblemSetCard = ({
           className="flex flex-col cursor-pointer"
           onClick={() => {
             setLoading(true);
-            navigate(`/problem/${id}/preview`);
+            navigate(`/problems/${id}/preview`);
           }}
         >
           <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title w-75% cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
@@ -67,7 +67,7 @@ const ProblemSetCard = ({
           <div className="bu-text-subtitle">{getTimeStamp(timestamp)}</div>
           <div className="flex flex-row ">
             <div className="w-1/3 flex items-center justify-center">
-              <IconButton onClick={() => navigate(`/problem/${id}/edit`)}>
+              <IconButton onClick={() => navigate(`/problems/${id}/edit`)}>
                 <div className="flex items-center bu-text-primary">
                   <FontAwesomeIcon icon={faPenToSquare} size="sm" />
                 </div>

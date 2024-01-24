@@ -6,7 +6,7 @@ const NumberOfDisksInput = ({ numberOfDisks, handleNumberOfDisksChange }) => {
     console.log("Disks:", numberOfDisks);
   });
   return (
-    <div className="no-ring-input w-20%">
+    <div className="no-ring-input w-20%" size="small">
       <FormControl fullWidth variant="outlined">
         <InputLabel htmlFor="outlined-adornment" className="bu-text-primary">
           Number of Disks

@@ -47,7 +47,7 @@ const AdminCanvasList = () => {
       setLoading(true);
       closeModal();
       const canvasId = await getCanvasId(inputValue);
-      navigate(`/admin/canvas/${canvasId}`);
+      navigate(`/admin/canvases/${canvasId}`);
     }
   };
 
@@ -63,7 +63,7 @@ const AdminCanvasList = () => {
               id={`Canvas ${index + 1}`}
               name={canvas.name}
               image={canvas.logo}
-              path={`/admin/canvas/${canvas.id}`}
+              path={`/admin/canvases/${canvas.id}`}
               action="View Canvas"
             />
           ))}

@@ -2,16 +2,16 @@ import Api from "./base";
 
 class CanvasApi extends Api {
   getAllCanvas = async () => {
-    return await this.get("/canvas");
+    return await this.get("/canvases");
   };
   getCanvasById = async (id) => {
-    return await this.get("/canvas/" + id);
+    return await this.get("/canvases/" + id);
   };
   updateCanvas = async (id, data) => {
-    return await this.put("/canvas/" + id, data);
+    return await this.put("/canvases/" + id, data);
   };
   createCanvas = async (name) => {
-    return await this.post("/canvas/", { name: name });
+    return await this.post("/canvases/", { name: name });
   };
 }
 export default CanvasApi;

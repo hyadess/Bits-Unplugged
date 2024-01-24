@@ -21,7 +21,7 @@ module.exports = {
       problemId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Problems",
+          model: "ProblemVersions",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -48,10 +48,12 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: new Date(),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: new Date(),
       },
     });
     await queryInterface.addConstraint("Activities", {

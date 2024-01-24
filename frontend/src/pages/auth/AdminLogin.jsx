@@ -7,6 +7,8 @@ import { PasswordField } from "../../components/InputFields";
 import { setLoading } from "../../App";
 import AuthService from "../../services/authService";
 import GlobalContext from "../../store/GlobalContext";
+import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
+import EyeIcon from "../../components/Icons/EyeIcon";
 const InputField = (props) => {
   return (
     <div>
@@ -26,6 +28,118 @@ const InputField = (props) => {
         required={props.required}
         onChange={(e) => props.onChange(e.target.value)}
       />
+    </div>
+  );
+};
+
+const MuiTextField = (props) => {
+  return (
+    <div className="no-ring-input">
+      <FormControl fullWidth variant="outlined" size="small">
+        <InputLabel
+          htmlFor="outlined-adornment"
+          className="bu-text-primary"
+          sx={{
+            "&.Mui-focused": {
+              color: "#000000 !important",
+              fontWeight: "bold",
+            },
+          }}
+        >
+          {props.label}
+        </InputLabel>
+        <OutlinedInput
+          required
+          placeholder={props.placeholder}
+          id="outlined-adornment"
+          className="outlined-input bu-text-primary"
+          type="text"
+          value={props.value}
+          onChange={props.onChange}
+          label={props.label}
+          size="small"
+          fullWidth
+          sx={{
+            // color: "white",
+            ".MuiOutlinedInput-notchedOutline": {
+              borderColor: "#1c5b5f",
+              borderRadius: ".4rem",
+            },
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#1c5b5f",
+              borderWidth: ".2rem",
+              borderRadius: ".4rem",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#1c5b5f",
+            },
+            "&.Mui-focused": {
+              color: "#000000 !important",
+            },
+          }}
+        />
+      </FormControl>
+    </div>
+  );
+};
+
+const MuiPasswordField = (props) => {
+  const [showPassword, setShowPassword] = useState(false);
+  return (
+    <div className="no-ring-input">
+      <FormControl fullWidth variant="outlined" size="small">
+        <InputLabel
+          htmlFor="outlined-adornment"
+          className="bu-text-primary"
+          sx={{
+            "&.Mui-focused": {
+              color: "#000000 !important",
+              fontWeight: "bold",
+            },
+          }}
+        >
+          {props.label}
+        </InputLabel>
+        <OutlinedInput
+          required
+          placeholder={props.placeholder}
+          id="outlined-adornment"
+          className="outlined-input bu-text-primary"
+          type={showPassword ? "text" : "password"}
+          value={props.value}
+          onChange={props.onChange}
+          label={props.label}
+          size="small"
+          fullWidth
+          sx={{
+            // color: "white",
+            ".MuiOutlinedInput-notchedOutline": {
+              borderColor: "#1c5b5f",
+              borderRadius: ".4rem",
+            },
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#1c5b5f",
+              borderWidth: ".2rem",
+              borderRadius: ".4rem",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#1c5b5f",
+            },
+            "&.Mui-focused": {
+              color: "#000000 !important",
+            },
+          }}
+          endAdornment={
+            <div className="bu-text-primary">
+              <EyeIcon
+                isVisible={props.value.length > 0}
+                showPassword={showPassword}
+                setShowPassword={setShowPassword}
+              />
+            </div>
+          }
+        />
+      </FormControl>
     </div>
   );
 };
@@ -79,51 +193,18 @@ const AdminLogin = () => {
                   Sign in to your account
                 </h1>
                 <div className="space-y-4 md:space-y-6">
-                  <InputField
+                  <MuiTextField
                     label="Username/Email Address"
-                    type="text"
-                    name="email"
-                    id="email"
-                    placeholder="email"
-                    required={true}
-                    onChange={setEmail}
+                    placeholder="example@gmail.com"
+                    onChange={(e) => setEmail(e.target.value)}
                     value={email}
                   />
-
-                  <PasswordField
+                  <MuiPasswordField
                     label="Password"
-                    type="password"
-                    name="password"
-                    id="password"
                     placeholder="••••••••"
-                    required={true}
-                    setValue={setPassword}
+                    onChange={(e) => setPassword(e.target.value)}
                     value={password}
-                    // showPassword={showPassword}
-                    // setShowPassword={setShowPassword}
                   />
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-start">
-                      <div className="flex items-center h-5">
-                        <input
-                          id="remember"
-                          aria-describedby="remember"
-                          type="checkbox"
-                          className="w-4 h-4 border rounded "
-                          required=""
-                        />
-                      </div>
-                      <div className="ml-3 text-sm">
-                        <label
-                          // for="remember"
-                          className="bu-text-subtitle"
-                        >
-                          Remember me
-                        </label>
-                      </div>
-                    </div>
-                  </div>
                   {!loggingIn && (
                     <button
                       type="submit"

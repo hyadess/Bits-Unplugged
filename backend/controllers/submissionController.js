@@ -6,11 +6,14 @@ class SubmissionController extends Controller {
     super();
   }
   getAllSubmissionsByUserAndProblem = async (req, res) => {
-    let result = await submissionRepository.getAllSubmissionsByUserAndProblem(
-      req.user.userId,
-      req.params.problemId
-    );
-    this.handleResponse(result, res);
+    this.handleRequest(res, async () => {
+      const submissions =
+        await submissionRepository.getAllSubmissionsByUserAndProblem(
+          req.user.userId,
+          req.params.problemId
+        );
+      res.status(200).send(submissions);
+    });
   };
   getAllSubmissionsByProblem = async (req, res) => {
     let result = await submissionRepository.getAllSubmissionsByProblem(

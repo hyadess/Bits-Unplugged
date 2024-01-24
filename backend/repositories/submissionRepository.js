@@ -7,14 +7,29 @@ class SubmissionRepository extends Repository {
   }
 
   getAllSubmissionsByUserAndProblem = async (userId, problemId) => {
-    //console.log("lets see"+problemId);
-    const query = `
-        SELECT * 
-        FROM "Submissions" S
-        WHERE S."userId" = $1 AND S."problemId" = $2;
-        `;
-    const params = [userId, problemId];
-    const result = await this.query(query, params);
+    const result = await db.ProblemVersion.findOne({
+      include: [
+        {
+          model: db.Submission,
+          as: "submissions",
+          required: false,
+          where: { userId },
+        },
+        {
+          model: db.Series,
+          as: "series",
+          include: [
+            {
+              model: db.Topic,
+              as: "topic",
+            },
+          ],
+        },
+      ],
+      where: {
+        problemId,
+      },
+    });
     return result;
   };
 

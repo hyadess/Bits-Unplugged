@@ -11,6 +11,7 @@ const {
 router.post("/login", authController.login);
 router.post("/refresh", authController.refreshToken);
 router.post("/signup", authController.signup);
+router.post("/verify-email", authController.verifyEmail);
 
 router.post("/change-pass", authenticateJWT, (req, res) =>
   res.status(200).send()
@@ -31,5 +32,5 @@ router.post("/logout", authenticateJWT, (req, res) => {
   const expiredCookie = `refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;`;
   res.setHeader("Set-Cookie", expiredCookie);
   res.status(200).send();
-}); 
+});
 module.exports = router;

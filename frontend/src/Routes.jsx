@@ -38,6 +38,7 @@ import Profile from "./pages/user/Profile";
 import Contests from "./pages/user/Contests";
 import SetterContests from "./pages/setter/SetterContests";
 import GlobalContext from "./store/GlobalContext";
+import EmailVerification from "./pages/auth/EmailVerification";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -388,6 +389,7 @@ const AppRoutes = () => {
         <Route element={<Public />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/verify-email" element={<EmailVerification />} />
         </Route>
         {type >= 0 && (
           <Route

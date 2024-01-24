@@ -258,7 +258,7 @@ const CanvasContainer = (props, ref) => {
                 }}
               >
                 <div className="flex items-center bu-text-primary text-3xl">
-                  {canvasContainerMode === "edit" ? (
+                  {canvasContainerMode !== "edit" ? (
                     <FontAwesomeIcon icon={faEyeSlash} />
                   ) : (
                     <FontAwesomeIcon icon={faEye} />

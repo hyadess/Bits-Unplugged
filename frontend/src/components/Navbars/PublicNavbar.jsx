@@ -2,10 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../Logo";
 import { setLoading } from "../../App";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHouse,
+  faList,
+  faPeopleGroup,
+  faRightToBracket,
+} from "@fortawesome/free-solid-svg-icons";
 const PublicNavbar = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [darkMode, setDarkMode] = useState(null);
+  const [tab, setTab] = useState(0);
 
   const toggleDarkMode = () => {
     setDarkMode((prevDarkMode) => !prevDarkMode);
@@ -51,48 +59,102 @@ const PublicNavbar = (props) => {
       <div className="flex md:justify-center w-full md:w-3/5">
         <>
           <button
-            className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
-            style={{ alignItems: "center", justifyContent: "center" }}
+            className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
+              location.pathname === "/home"
+                ? "border-[#1C5B5F] dark:border-pink-500"
+                : "border-transparent"
+            }`}
             data-tip="Home"
             onClick={() => {
-              navigate("/home");
+              if (location.pathname !== "/home") {
+                setLoading(true);
+                navigate("/home");
+              }
             }}
           >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
+            <div
+              className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
+                location.pathname === "/home"
+                  ? "bu-text-title"
+                  : "bu-text-primary-hover"
+              }`}
+            >
+              <FontAwesomeIcon icon={faHouse} />
               Home
             </div>
             <div className="divider hidden md:flex "></div>
           </button>
 
           <button
-            className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
-            style={{ alignItems: "center", justifyContent: "center" }}
+            className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
+              location.pathname === "/about"
+                ? "border-[#1C5B5F] dark:border-pink-500"
+                : "border-transparent"
+            }`}
             data-tip="Home"
-            onClick={() => navigate("/home")}
+            onClick={() => {
+              if (location.pathname !== "/home") {
+                setLoading(true);
+                navigate("/home");
+              }
+            }}
           >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
-              About Us
+            <div
+              className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
+                location.pathname === "/about"
+                  ? "bu-text-title"
+                  : "bu-text-primary-hover"
+              }`}
+            >
+              <FontAwesomeIcon icon={faPeopleGroup} />
+              About us
             </div>
             <div className="divider hidden md:flex "></div>
           </button>
           <button
-            className="icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
-            style={{ alignItems: "center", justifyContent: "center" }}
-            data-tip="Marketplace"
-            onClick={() => navigate("/home")}
+            className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
+              location.pathname === "/features"
+                ? "border-[#1C5B5F] dark:border-pink-500"
+                : "border-transparent"
+            }`}
+            data-tip="Home"
+            onClick={() => {
+              if (location.pathname !== "/home") {
+                setLoading(true);
+                navigate("/home");
+              }
+            }}
           >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
+            <div
+              className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
+                location.pathname === "/features"
+                  ? "bu-text-title"
+                  : "bu-text-primary-hover"
+              }`}
+            >
+              <FontAwesomeIcon icon={faList} />
               Features
             </div>
+            <div className="divider hidden md:flex "></div>
           </button>
 
           <button
-            className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info "
-            style={{ alignItems: "center", justifyContent: "center" }}
+            className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
+              location.pathname === "/login"
+                ? "border-[#1C5B5F] dark:border-pink-500"
+                : "border-transparent"
+            }`}
             data-tip="Home"
             onClick={() => navigate("/login")}
           >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
+            <div
+              className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
+                location.pathname === "/login"
+                  ? "bu-text-title"
+                  : "bu-text-primary-hover"
+              }`}
+            >
+              <FontAwesomeIcon icon={faRightToBracket} />
               Login
             </div>
             <div className="divider hidden md:flex "></div>

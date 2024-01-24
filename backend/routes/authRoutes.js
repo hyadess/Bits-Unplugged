@@ -19,8 +19,11 @@ router.post("/change-pass", authenticateJWT, (req, res) =>
 ); // dihan - change password from profile
 router.post("/forgot-pass", (req, res) => res.status(200).send()); // dihan - forgot password in login page
 router.post("/reset-pass", (req, res) => res.status(200).send()); // dihan - reset password from the given link of forgot password
-router.post("/approve-setter/:id", authenticateJWT, requiresAdmin, (req, res) =>
-  res.status(200).send()
+router.post(
+  "/approve-setter/:id",
+  authenticateJWT,
+  requiresAdmin,
+  authController.approveSetter
 ); // dihan - Admin approval of problem setter registration
 router.get(
   "/setter-requests",

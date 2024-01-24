@@ -10,7 +10,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.hasOne(models.Setter, { foreignKey: "userId" });
-      User.hasOne(models.Credential, { foreignKey: "userId" });
+      User.hasOne(models.Credential, {
+        foreignKey: "userId",
+        as: "credential",
+      });
       // User.belongsToMany(models.ProblemVersion, {
       //   through: models.Activity,
       //   foreignKey: "userId",

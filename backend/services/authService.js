@@ -78,6 +78,30 @@ class AuthService extends Service {
     return { success: true, user };
   };
 
+  approveSetter = async (id, url) => {
+    const setter = await authRepository.approveSetter(id);
+    if (setter) {
+      const token = this.getAccessToken(
+        {
+          userId: setter.userId,
+          email: setter.user.credential.email,
+          pass: setter.user.credential.hashpass,
+          type: 1,
+        },
+        JWT_SECRET
+      );
+      await authRepository.saveEmailToken(setter.userId, token);
+      sendMail(
+        setter.user.credential.email,
+        "Email Verification",
+        `Please verify your email: ${url}/verify-email?type=1&token=${token}`
+      );
+      console.log("Email sent");
+      return { success: true };
+    }
+    return { success: false };
+  };
+
   verifyEmail = async (token) => {
     try {
       const payload = await verifyTokenAsync(token, JWT_SECRET);

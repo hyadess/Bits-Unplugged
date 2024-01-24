@@ -76,6 +76,29 @@ class AuthRepository extends Repository {
     });
     return requests;
   };
+
+  approveSetter = async (id) => {
+    const setter = await db.Setter.findOne({
+      where: {
+        userId: id,
+      },
+      include: [
+        {
+          model: db.User,
+          required: true,
+          as: "user",
+          include: [{ model: db.Credential, required: true, as: "credential" }],
+        },
+      ],
+    });
+    if (setter) {
+      setter.isApproved = true;
+      await setter.save();
+      return setter;
+    }
+    return setter;
+  };
+
   signup = async (data, token) => {
     console.log(data);
     let transaction;

@@ -77,6 +77,18 @@ class AuthRepository extends Repository {
     return requests;
   };
 
+  isApproved = async (id) => {
+    const setter = await db.Setter.findOne({
+      where: {
+        userId: id,
+      },
+    });
+    if (setter) {
+      return setter.isApproved;
+    }
+    return false;
+  };
+
   approveSetter = async (id) => {
     const setter = await db.Setter.findOne({
       where: {

@@ -193,9 +193,10 @@ class AuthService extends Service {
   login = async (data) => {
     const credential = await this.getIdPass(data);
     if (credential) {
-      const res = await authRepository.getEmailToken(credential.userId);
-      console.log(res);
-      if (!res) {
+      const token = await authRepository.getEmailToken(credential.userId);
+      const isAppr = await authRepository.isApproved(credential.userId);
+
+      if (!token && (data.type !== 1 || isAppr)) {
         if (bcrypt.compareSync(data.pass, credential.hashpass)) {
           return {
             success: true,

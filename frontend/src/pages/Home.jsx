@@ -14,7 +14,7 @@ const Home = () => {
   }, []);
   return (
     <div>
-      <div className="mx-auto flex h-screen max-w-screen-xl flex-col items-center gap-8 px-4 py-8 sm:py-16 md:flex-row lg:px-6 xl:gap-16">
+      <div className="mx-auto flex h-screen max-w-screen-xl flex-col items-center gap-8 px-4 py-8 sm:py-16 md:flex-row  md:justify-end lg:px-6 xl:gap-16">
         {/* <img
             className="w-full dark:hidden"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
@@ -35,11 +35,8 @@ const Home = () => {
 
         <div className="mt-4 md:mt-0">
           <h2 className="bu-text-primary mb-4 text-center text-4xl font-extrabold tracking-tight md:text-left">
-            {" "}
             A platform for exploring{" "}
-            <span className="bu-text-title text-5xl">
-              Computer Science
-            </span>{" "}
+            <span className="bu-text-title text-5xl">Computer Science</span>{" "}
             without coding{" "}
           </h2>
 

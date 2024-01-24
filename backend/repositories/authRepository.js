@@ -1,5 +1,6 @@
 const Repository = require("./base");
 const db = require("../models/index");
+const sendMail = require("../services/email");
 
 class AuthRepository extends Repository {
   constructor() {
@@ -41,7 +42,33 @@ class AuthRepository extends Repository {
     return null;
   };
 
-  signup = async (data) => {
+  saveEmailToken = async (userId, token) => {
+    const emailToken = await db.EmailVerification.create({
+      userId,
+      token,
+    });
+    return emailToken;
+  };
+
+  getEmailToken = async (userId) => {
+    const emailToken = await db.EmailVerification.findOne({
+      where: {
+        userId,
+      },
+    });
+    return emailToken;
+  };
+
+  deleteEmailToken = async (id) => {
+    const emailToken = await db.EmailVerification.destroy({
+      where: {
+        id,
+      },
+    });
+    return emailToken;
+  };
+
+  signup = async (data, token) => {
     console.log(data);
     let transaction;
     try {
@@ -53,7 +80,7 @@ class AuthRepository extends Repository {
         },
         { transaction }
       );
-      await db.Credential.create(
+      const cred = await db.Credential.create(
         {
           userId: user.id,
           email: data.email,
@@ -62,8 +89,10 @@ class AuthRepository extends Repository {
         },
         { transaction }
       );
+
       await transaction.commit();
-      return user;
+
+      return cred;
     } catch (err) {
       // If an error occurs, rollback the transaction
       if (transaction) await transaction.rollback();

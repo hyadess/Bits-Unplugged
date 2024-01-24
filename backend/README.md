@@ -8,12 +8,12 @@ POST /auth/signup
 
 ## topic
 
-GET /topic/
-GET /topic/:id
-GET /topic/:id/series
-POST /topic/
-PUT /topic/:id
-DELETE /topic/:id
+GET /topics/
+GET /topics/:id
+GET /topics/:id/series
+POST /topics/
+PUT /topics/:id
+DELETE /topics/:id
 
 ## series
 
@@ -29,11 +29,11 @@ DELETE /series/:id
 
 ## canvas
 
-GET /canvas/
-GET /canvas/:id
-POST /canvas/
-PUT /canvas/:id
-DELETE /canvas/:id
+GET /canvases/
+GET /canvases/:id
+POST /canvases/
+PUT /canvases/:id
+DELETE /canvases/:id
 
 ## problem
 
@@ -44,8 +44,7 @@ GET /problems -> Setter: My Problems, Admin: Submitted Problems
 
 POST /problems/
 GET /problems/:id
-GET /problems/:id/submissions -> Don't allow to users
-    - `GET /problems/:id/submissions?user=2`
+GET /problems/:id/submissions -> Don't allow to users - `GET /problems/:id/submissions?user=2`
 
 PUT /problems/:id -> Setter: Edit problem, Admin: Edit Live Problem
 
@@ -68,24 +67,28 @@ GET /submissions/unsolved -->
 ## Sequelize
 
 ### Initial Setup
+
 Drop database: `npx sequelize db:drop`
 Create database: `npx sequelize db:create`
 Create schema: `npx sequelize db:migrate`
 Populate tables: `npx sequelize db:seed:all`
 
 ### Changing schema
+
 Creating a migration file: `npx sequelize migration:create --name alter-user-image`
 Edit the file and migrate: `npx sequelize db:migrate --name *****-alter-user-image`
 
 ### Changing table data
+
 Creating a migration file: `npx sequelize seed:generate --name add-problems`
 Edit the file and seed: `npx sequelize db:seed --seed *****-add-problems`
 
 ### Updating remote
+
 --- sensitive ---
 
-
 ### Repository Pattern
+
 CREATE - Returns created row on success, otherwise null.
 READ - Returns selected rows.
 UPDATE - Returns updated row on success, otherwise null.

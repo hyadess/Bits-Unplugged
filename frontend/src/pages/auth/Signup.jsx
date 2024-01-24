@@ -105,7 +105,7 @@ const Signup = () => {
       password,
       confirmPassword
     );
-    if (!validatePassword()) {
+    if (!validatePassword(password)) {
       toast.error("Too weak password", {});
       return;
     } else if (!matchPassword()) {

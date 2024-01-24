@@ -21,6 +21,24 @@ class AuthApi extends Api {
     }
   };
 
+  verifyEmail = async (data) => {
+    try {
+      let res = await axios.post(API_BASE_URL + "/auth/verify-email", data);
+      console.log("Passed");
+      return {
+        success: true,
+      };
+    } catch (err) {
+      if (err.hasOwnProperty("response")) {
+        return err.response.data;
+      } else {
+        return {
+          success: false,
+          error: "Can't connect to server",
+        };
+      }
+    }
+  };
   login = async (data) => {
     try {
       let res = await axios.post(API_BASE_URL + "/auth/login", data);

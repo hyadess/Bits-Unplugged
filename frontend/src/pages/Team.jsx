@@ -25,13 +25,13 @@ const Team = () => {
             name="Mahir Labib Dihan"
             position="1905072"
             detail="Devops"
-            image="https://scontent.fdac19-1.fna.fbcdn.net/v/t39.30808-6/342405302_162812986420549_8137144512048864097_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeEUQVHrF_0obxtjOtPX8RXQxgMQYlgi39jGAxBiWCLf2PF-cQqTJSxB-cRURaoTbHPJ77YDLobgf14QduyLG-Ax&_nc_ohc=hKFk19oTtvcAX97cKiZ&_nc_ht=scontent.fdac19-1.fna&oh=00_AfCUsDhY88TrbGK6QLiCp4VHy9g_wnEXwgJbLrjQXA4I_Q&oe=65AE2B20"
+            image="https://scontent.fdac19-1.fna.fbcdn.net/v/t39.30808-6/342405302_162812986420549_8137144512048864097_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeEUQVHrF_0obxtjOtPX8RXQxgMQYlgi39jGAxBiWCLf2PF-cQqTJSxB-cRURaoTbHPJ77YDLobgf14QduyLG-Ax&_nc_ohc=H9gvcg9B59AAX-NmnWQ&_nc_ht=scontent.fdac19-1.fna&oh=00_AfCPQmT8r0ox8eV5ZzmdSQXn2IEOKPLAlfbHCeDjo4Ge5A&oe=65B61420"
           />
           <TeamCard
             name="Souvik Ghosh"
             position="1905073"
             detail="Backend Developer"
-            image="https://scontent.fdac19-1.fna.fbcdn.net/v/t39.30808-6/271758037_1540772279631394_6944096475676658530_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeHmGOR-xrf1HKJskCja7ArKYViqE0OGSfVhWKoTQ4ZJ9XjZSonEhT4VRRN-ryf9LmBm7KdE7VDk6SzdNdrH24vw&_nc_ohc=C9YMiZ-ZHSkAX81GbW1&_nc_oc=AQlaPEYfU3-l_-VW0i9iMqRr-abUhnAhaXa_ysPFyoJhP-B5PRgSrcy-GEbTp8d0a4w&_nc_ht=scontent.fdac19-1.fna&oh=00_AfDMuy8A8jZ7I8hSw00r-MMfJZbt1VAAXNFRVYyQ5coywg&oe=65ADF420"
+            image="https://scontent.fdac19-1.fna.fbcdn.net/v/t39.30808-6/271758037_1540772279631394_6944096475676658530_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeHmGOR-xrf1HKJskCja7ArKYViqE0OGSfVhWKoTQ4ZJ9XjZSonEhT4VRRN-ryf9LmBm7KdE7VDk6SzdNdrH24vw&_nc_ohc=E58V7Wmkp0IAX-ho1tH&_nc_oc=AQmvs9o9yOA_oB5RD0YJn216lRKUYtIzPzSz3zLky9w6qklOKlts5pPHuphx062AcLo&_nc_ht=scontent.fdac19-1.fna&oh=00_AfD0SVsbC7aIvlRJEP3grP67lmPsX4j2t2IXay639wd6gw&oe=65B5DD20"
           />
         </div>
       </div>

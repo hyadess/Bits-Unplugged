@@ -7,6 +7,7 @@ const {
   requiresAdmin,
   authenticateJWT,
 } = require("../middlewares/authMiddleware");
+const { profileController } = require("../controllers");
 
 router.post("/login", authController.login);
 router.post("/refresh", authController.refreshToken);
@@ -20,6 +21,12 @@ router.post("/forgot-pass", (req, res) => res.status(200).send()); // dihan - fo
 router.post("/reset-pass", (req, res) => res.status(200).send()); // dihan - reset password from the given link of forgot password
 router.post("/approve-setter/:id", authenticateJWT, requiresAdmin, (req, res) =>
   res.status(200).send()
+); // dihan - Admin approval of problem setter registration
+router.get(
+  "/setter-requests",
+  authenticateJWT,
+  requiresAdmin,
+  authController.getSetterRequests
 ); // dihan - Admin approval of problem setter registration
 router.delete(
   "/delete-account/:id",

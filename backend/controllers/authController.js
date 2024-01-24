@@ -47,6 +47,13 @@ class AuthController extends Controller {
     }
   };
 
+  getSetterRequests = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const requests = await authRepository.getSetterRequests();
+      res.status(200).send(requests);
+    });
+  };
+
   deleteAccount = async (req, res) => {
     this.handleRequest(res, async () => {
       console.log(req.params);

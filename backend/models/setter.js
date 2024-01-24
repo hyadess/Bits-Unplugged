@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Setter extends Model {
     /**
@@ -27,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      isApproved: DataTypes.BOOLEAN,
+      isApproved: { type: DataTypes.BOOLEAN, defaultValue: false },
     },
     {
       sequelize,

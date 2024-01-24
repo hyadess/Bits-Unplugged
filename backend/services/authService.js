@@ -53,28 +53,28 @@ class AuthService extends Service {
     if (!user) {
       return { success: false };
     }
-    console.log({
-      userId: user.userId,
-      email: data.email,
-      pass: user.hashpass,
-      type: data.type,
-    });
-    const token = this.getAccessToken(
-      {
-        userId: user.userId,
-        email: data.email,
-        pass: user.hashpass,
-        type: data.type,
-      },
-      JWT_SECRET
-    );
-    await authRepository.saveEmailToken(user.userId, token);
-    sendMail(
-      data.email,
-      "Email Verification",
-      `Please verify your email: ${url}/verify-email?type=${data.type}&token=${token}`
-    );
-    console.log("Email sent");
+
+    if (data.type == 0) {
+      const token = this.getAccessToken(
+        {
+          userId: user.userId,
+          email: data.email,
+          pass: user.hashpass,
+          type: data.type,
+        },
+        JWT_SECRET
+      );
+      await authRepository.saveEmailToken(user.userId, token);
+      sendMail(
+        data.email,
+        "Email Verification",
+        `Please verify your email: ${url}/verify-email?type=${data.type}&token=${token}`
+      );
+      console.log("Email sent");
+    }
+    // else if(data.type == 1){
+    //   await
+    // }
     return { success: true, user };
   };
 

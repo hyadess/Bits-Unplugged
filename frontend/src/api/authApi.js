@@ -76,5 +76,24 @@ class AuthApi extends Api {
       }
     }
   };
+
+  getSetterRequests = async () => {
+    try {
+      let res = await axios.get(API_BASE_URL + "/auth/setter-requests");
+      return {
+        success: true,
+        data: res.data,
+      };
+    } catch (err) {
+      if (err.hasOwnProperty("response")) {
+        return err.response.data;
+      } else {
+        return {
+          success: false,
+          error: "Can't connect to server",
+        };
+      }
+    }
+  };
 }
 export default AuthApi;

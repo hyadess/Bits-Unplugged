@@ -68,6 +68,14 @@ class AuthRepository extends Repository {
     return emailToken;
   };
 
+  getSetterRequests = async () => {
+    const requests = await db.User.findAll({
+      include: [
+        { model: db.Setter, required: true, where: { isApproved: false } },
+      ],
+    });
+    return requests;
+  };
   signup = async (data, token) => {
     console.log(data);
     let transaction;
@@ -89,6 +97,14 @@ class AuthRepository extends Repository {
         },
         { transaction }
       );
+      if (data.type == 1) {
+        await db.Setter.create(
+          {
+            userId: user.id,
+          },
+          { transaction }
+        );
+      }
 
       await transaction.commit();
 

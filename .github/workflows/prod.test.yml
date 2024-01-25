@@ -9,23 +9,32 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    env:
+      JWT_SECRET: kuddusmia
+      DB_USER: postgres
+      DB_PASS: "#include<D1h@n.h>"
+      DB_HOST: db.iprmlpqzxsyxpfjmrakl.supabase.co
+      DB_PORT: 5432
+      DB_DB: bitsunplugged
+      PORT: 5000
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Install dependencies
         run: sudo apt install docker-compose
-          
+
       - name: Build the Docker image
         run: docker-compose -f docker-compose.prod.yml build
         env:
-          DB_USER: env.DB_USER
-          DB_HOST: env.DB_HOST_DEV
-          DB_DB: env.DB_DB
-          DB_PASS: secrets.DB_PASS
-          DB_PORT: env.DB_PORT
-          JWT_SECRET: secrets.JWT_SECRET
-          ADMIN_PASS: secrets.ADMIN_PASS
-          
+          DB_USER: ${{ env.DB_USER }}
+          DB_HOST: ${{ env.DB_HOST }}
+          DB_DB: ${{ env.DB_DB }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_PORT: ${{ env.DB_PORT }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          ADMIN_PASS: ${{ secrets.ADMIN_PASS }}
+
       - name: Run tests
         run: docker run -e CI=true mahirlabibdihan/bitsunplugged-app npm run test

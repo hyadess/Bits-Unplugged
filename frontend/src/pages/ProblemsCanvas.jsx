@@ -68,7 +68,7 @@ function ProblemsCanvasController() {
         const durationInSeconds = Math.floor(
           (endTime - startTimeRef.current) / 1000
         );
-        if (durationInSeconds > 3) {
+        if (durationInSeconds > 3 && type == 0) {
           await problemApi.trackDuration(id, durationInSeconds);
         }
       }
@@ -103,7 +103,7 @@ function ProblemsCanvasController() {
 
         console.log("Duration:", durationInSeconds);
         // Send the duration to the backend
-        if (durationInSeconds > 3)
+        if (durationInSeconds > 3 && type == 0)
           problemApi.trackDuration(id, durationInSeconds);
       }
     };

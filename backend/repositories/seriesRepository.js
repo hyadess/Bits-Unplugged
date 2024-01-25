@@ -78,7 +78,7 @@ class SeriesRepository extends Repository {
       (version) => version.problemId
     );
 
-    console.log(latestProblemVersions);
+    // console.log(latestProblemVersions);
     const latestProblemVersionsQuery = await db.ProblemVersion.findAll({
       where: {
         problemId: {
@@ -101,6 +101,20 @@ class SeriesRepository extends Repository {
           as: "activities",
           where: { userId }, // Add your specific userId filter here
           required: false,
+        },
+        {
+          model: db.Series,
+          foreignKey: "seriesId",
+          as: "series",
+          required: true,
+          include: [
+            {
+              model: db.Topic,
+              foreignKey: "topicId",
+              as: "topic",
+              required: true,
+            },
+          ],
         },
       ],
       order: [

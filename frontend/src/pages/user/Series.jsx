@@ -26,13 +26,15 @@ export default function Problems() {
       {seriesList.length && (
         <>
           <Title
-            title={`Problem ${type == 0 ? "Solving" : "Setting"}`}
+            title={`Select a Series`}
             sub_title={`${
               type == 0 ? "Solve" : "Set"
             } problems for particular series right
         on our site`}
           />
-
+          {/* <div className="rounded w-full my-5 bg-[#AADFCF] flex flex-col p-5">
+            <div className="bu-text-primary text-5xl font-medium">Tree</div>
+          </div> */}
           <CardContainer col={3}>
             {seriesList.map((series, index) => (
               <CustomCard

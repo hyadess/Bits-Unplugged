@@ -37,13 +37,14 @@ const Header = ({ backupProblem }) => {
   // const updateAll = async (data) => {
   const saveAll = async () => {
     await updateCanvas(); // solutionChecker
-    await problemApi.updateProblem(problem.id, {
+    const result = await problemApi.updateProblem(problem.id, {
       title: problem.title,
       statement: problem.statement,
       checkerCode: problem.checkerCode,
       checkerCanvas: problem.checkerCanvas,
     });
-    showSuccess("Problem saved", problem);
+    // showSuccess("Problem saved", problem);
+    showSuccess("Problem saved successfully", result);
   };
 
   // const updateAll = async (problemid) => {

@@ -6,6 +6,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { SelectionField2 } from "../../../components/InputFields";
 import { useProblemContext } from "../../../store/ProblemContextProvider";
 import { canvasApi, problemApi } from "../../../api";
+import { showSuccess } from "../../../App";
 const CanvasDesignTab = ({ backupProblem }) => {
   const [canvasList, setCanvasList] = useState([]);
   const [canvasFullList, setCanvasFullList] = useState([]);
@@ -30,6 +31,7 @@ const CanvasDesignTab = ({ backupProblem }) => {
     });
     if (res.success) {
       // console.log(res);
+      showSuccess("Canvas saved successfully", res);
     }
   };
 

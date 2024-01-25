@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Setter extends Model {
+  class EmailVerification extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,12 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Setter.belongsTo(models.User, { foreignKey: "userId", as: "user" });
-      Setter.hasMany(models.Problem, { foreignKey: "setterId" });
-      Setter.belongsToMany(models.Contest, { through: models.ContestSetter });
+      EmailVerification.belongsTo(models.User, { foreignKey: "userId" });
     }
   }
-  Setter.init(
+  EmailVerification.init(
     {
       userId: {
         type: DataTypes.INTEGER,
@@ -25,12 +23,16 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      isApproved: { type: DataTypes.BOOLEAN, defaultValue: false },
+      token: DataTypes.TEXT,
+      isVerified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       sequelize,
-      modelName: "Setter",
+      modelName: "EmailVerification",
     }
   );
-  return Setter;
+  return EmailVerification;
 };

@@ -4,6 +4,9 @@ const { JWT_SECRET } = require("../config/config");
 const authRepository = new AuthRepository();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const sendMail = require("./email");
+const { promisify } = require("util");
+const verifyTokenAsync = promisify(jwt.verify);
 
 const ACCESS_TOKEN_EXPIRATION = 3600;
 const REFRESH_TOKEN_EXPIRATION = 86400;
@@ -44,10 +47,80 @@ class AuthService extends Service {
     return token;
   };
 
-  signup = async (data) => {
-    req.body["hashPass"] = bcrypt.hashSync(data.pass, 10);
+  signup = async (data, url) => {
+    data["hashPass"] = bcrypt.hashSync(data.pass, 10);
     let user = await authRepository.signup(data);
+    if (!user) {
+      return { success: false };
+    }
+
+    if (data.type == 0) {
+      const token = this.getAccessToken(
+        {
+          userId: user.userId,
+          email: data.email,
+          pass: user.hashpass,
+          type: data.type,
+        },
+        JWT_SECRET
+      );
+      await authRepository.saveEmailToken(user.userId, token);
+      sendMail(
+        data.email,
+        "Email Verification",
+        `Please verify your email: ${url}/verify-email?type=${data.type}&token=${token}`
+      );
+      console.log("Email sent");
+    }
+    // else if(data.type == 1){
+    //   await
+    // }
     return { success: true, user };
+  };
+
+  approveSetter = async (id, url) => {
+    const setter = await authRepository.approveSetter(id);
+    if (setter) {
+      const token = this.getAccessToken(
+        {
+          userId: setter.userId,
+          email: setter.user.credential.email,
+          pass: setter.user.credential.hashpass,
+          type: 1,
+        },
+        JWT_SECRET
+      );
+      await authRepository.saveEmailToken(setter.userId, token);
+      sendMail(
+        setter.user.credential.email,
+        "Email Verification",
+        `Please verify your email: ${url}/verify-email?type=1&token=${token}`
+      );
+      console.log("Email sent");
+      return { success: true };
+    }
+    return { success: false };
+  };
+
+  verifyEmail = async (token) => {
+    try {
+      const payload = await verifyTokenAsync(token, JWT_SECRET);
+      var isValid = await this.tokenValidity(payload); //checking whether the current password is the same
+      console.log(payload);
+      if (isValid) {
+        const res = await authRepository.getEmailToken(payload.userId);
+        if (res.token === token) {
+          await authRepository.deleteEmailToken(res.id);
+          return { success: true };
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      return {
+        success: false,
+      };
+    }
+    return { success: false };
   };
 
   deleteAccount = async (id) => {
@@ -77,7 +150,7 @@ class AuthService extends Service {
         data.type
       );
     }
-    console.log("ID PASS:", credential);
+    // console.log("ID PASS:", credential);
     return credential;
   };
 
@@ -94,9 +167,6 @@ class AuthService extends Service {
   };
 
   getNewAccessToken = async (refreshToken) => {
-    const { promisify } = require("util");
-    const verifyTokenAsync = promisify(jwt.verify);
-    
     if (refreshToken) {
       try {
         const payload = await verifyTokenAsync(refreshToken, JWT_SECRET);
@@ -123,24 +193,32 @@ class AuthService extends Service {
   login = async (data) => {
     const credential = await this.getIdPass(data);
     if (credential) {
-      if (bcrypt.compareSync(data.pass, credential.hashpass)) {
-        return {
-          success: true,
-          refreshToken: this.getRefreshToken({
-            userId: credential.userId,
-            email: data.email,
-            pass: credential.hashpass,
-            type: data.type,
-          }),
-          accessToken: this.getAccessToken({
-            userId: credential.userId,
-            email: data.email,
-            pass: credential.hashpass,
-            type: data.type,
-          }),
-        };
+      const token = await authRepository.getEmailToken(credential.userId);
+      const isAppr = await authRepository.isApproved(credential.userId);
+
+      if (!token && (data.type !== 1 || isAppr)) {
+        if (bcrypt.compareSync(data.pass, credential.hashpass)) {
+          return {
+            success: true,
+            refreshToken: this.getRefreshToken({
+              userId: credential.userId,
+              email: data.email,
+              pass: credential.hashpass,
+              type: data.type,
+            }),
+            accessToken: this.getAccessToken({
+              userId: credential.userId,
+              email: data.email,
+              pass: credential.hashpass,
+              type: data.type,
+            }),
+          };
+        }
       }
-      // password doesn't match
+      return {
+        success: false,
+        message: "Email not verified",
+      };
     }
     return {
       success: false,

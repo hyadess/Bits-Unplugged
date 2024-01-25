@@ -21,6 +21,24 @@ class AuthApi extends Api {
     }
   };
 
+  verifyEmail = async (data) => {
+    try {
+      let res = await axios.post(API_BASE_URL + "/auth/verify-email", data);
+      console.log("Passed");
+      return {
+        success: true,
+      };
+    } catch (err) {
+      if (err.hasOwnProperty("response")) {
+        return err.response.data;
+      } else {
+        return {
+          success: false,
+          error: "Can't connect to server",
+        };
+      }
+    }
+  };
   login = async (data) => {
     try {
       let res = await axios.post(API_BASE_URL + "/auth/login", data);
@@ -43,6 +61,44 @@ class AuthApi extends Api {
   logout = async (data) => {
     try {
       let res = await axios.post(API_BASE_URL + "/auth/logout");
+      return {
+        success: true,
+        data: res.data,
+      };
+    } catch (err) {
+      if (err.hasOwnProperty("response")) {
+        return err.response.data;
+      } else {
+        return {
+          success: false,
+          error: "Can't connect to server",
+        };
+      }
+    }
+  };
+
+  getSetterRequests = async () => {
+    try {
+      let res = await axios.get(API_BASE_URL + "/auth/setter-requests");
+      return {
+        success: true,
+        data: res.data,
+      };
+    } catch (err) {
+      if (err.hasOwnProperty("response")) {
+        return err.response.data;
+      } else {
+        return {
+          success: false,
+          error: "Can't connect to server",
+        };
+      }
+    }
+  };
+
+  approveSetter = async (id) => {
+    try {
+      let res = await axios.post(API_BASE_URL + "/auth/approve-setter/" + id);
       return {
         success: true,
         data: res.data,

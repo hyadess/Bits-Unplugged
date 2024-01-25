@@ -7,18 +7,29 @@ const {
   requiresAdmin,
   authenticateJWT,
 } = require("../middlewares/authMiddleware");
+const { profileController } = require("../controllers");
 
 router.post("/login", authController.login);
 router.post("/refresh", authController.refreshToken);
 router.post("/signup", authController.signup);
+router.post("/verify-email", authController.verifyEmail);
 
 router.post("/change-pass", authenticateJWT, (req, res) =>
   res.status(200).send()
 ); // dihan - change password from profile
 router.post("/forgot-pass", (req, res) => res.status(200).send()); // dihan - forgot password in login page
 router.post("/reset-pass", (req, res) => res.status(200).send()); // dihan - reset password from the given link of forgot password
-router.post("/approve-setter/:id", authenticateJWT, requiresAdmin, (req, res) =>
-  res.status(200).send()
+router.post(
+  "/approve-setter/:id",
+  authenticateJWT,
+  requiresAdmin,
+  authController.approveSetter
+); // dihan - Admin approval of problem setter registration
+router.get(
+  "/setter-requests",
+  authenticateJWT,
+  requiresAdmin,
+  authController.getSetterRequests
 ); // dihan - Admin approval of problem setter registration
 router.delete(
   "/delete-account/:id",
@@ -31,5 +42,5 @@ router.post("/logout", authenticateJWT, (req, res) => {
   const expiredCookie = `refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;`;
   res.setHeader("Set-Cookie", expiredCookie);
   res.status(200).send();
-}); 
+});
 module.exports = router;

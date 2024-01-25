@@ -64,7 +64,7 @@ const AdminNavbar = () => {
               setLoading(true);
               await AuthService.logout();
               setType(0);
-              navigate("/admin/login");
+              navigate("/login");
             }}
           >
             <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">

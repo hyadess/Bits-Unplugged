@@ -31,6 +31,17 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Credential",
+      // hooks: {
+      //   afterCreate: async (credential, options) => {
+      //     if (credential.role === 1) {
+      //       // Assuming Setter is your other model
+      //       // You need to import it at the top of the file
+      //       await sequelize.models.Setter.create({
+      //         userId: credential.userId,
+      //       });
+      //     }
+      //   },
+      // },
     }
   );
   return Credential;

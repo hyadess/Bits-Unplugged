@@ -6,6 +6,7 @@ const passport = require("passport");
 router.use(
   passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
 );
+
 router.get("/", profileController.getProfile);
 router.post("/", profileController.setProfile);
 router.put("/", profileController.updateProfile);

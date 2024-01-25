@@ -8,6 +8,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const { serialize } = require("cookie");
+const sendMail = require("../services/email");
 
 const ACCESS_TOKEN_EXPIRATION = 3600;
 const REFRESH_TOKEN_EXPIRATION = 86400;
@@ -18,10 +19,9 @@ class AuthController extends Controller {
 
   signup = async (req, res) => {
     try {
-      req.body["hashPass"] = bcrypt.hashSync(req.body.pass, 10);
-      let user = await authRepository.signup(req.body);
-      if (user) {
-        res.status(201).json(user);
+      let result = await authService.signup(req.body, req.headers.origin);
+      if (result.success) {
+        res.status(201).json(result.user);
       } else {
         return res.status(409).json({ error: "Username/Email already exists" });
       }
@@ -29,6 +29,43 @@ class AuthController extends Controller {
       console.log(err);
       return res.status(500).json({ error: "Internal Server Error" });
     }
+  };
+
+  verifyEmail = async (req, res) => {
+    try {
+      const result = await authService.verifyEmail(req.body.token);
+      console.log(result);
+      if (result.success) {
+        return res.status(200).json({ message: "Email verified successfully" });
+      } else {
+        console.log("Invalid token");
+        return res.status(403).json({ error: "Invalid token" });
+      }
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
+
+  getSetterRequests = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const requests = await authRepository.getSetterRequests();
+      res.status(200).send(requests);
+    });
+  };
+
+  approveSetter = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const approved = await authService.approveSetter(
+        req.params.id,
+        req.headers.origin
+      );
+      if (!approved) {
+        res.status(404).json({ error: "User not found" });
+      } else {
+        res.status(200).json({ message: "User approved successfully" });
+      }
+    });
   };
 
   deleteAccount = async (req, res) => {
@@ -80,7 +117,7 @@ class AuthController extends Controller {
           access_token: result.accessToken,
         });
       } else {
-        return res.status(401).json({
+        return res.status(403).json({
           error: "Invalid credentials",
         });
       }

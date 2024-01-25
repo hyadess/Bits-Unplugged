@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -16,7 +16,9 @@ import Series from "./pages/user/Series";
 import SetterProblems from "./pages/setter/SetterProblems";
 import ProblemSetEnv from "./pages/setter/ProblemSetEnv";
 import PublicNavbar from "./components/Navbars/PublicNavbar";
+import SolverProfileTab from "./components/SolverProfileTab";
 import Layout2 from "./components/Layouts/Layout2";
+import Layout3 from "./components/Layouts/Layout3";
 import AdminLogin from "./pages/auth/AdminLogin";
 import AdminHome from "./pages/admin/AdminHome";
 import AdminTopics from "./pages/admin/AdminTopics";
@@ -24,6 +26,7 @@ import AdminSeries from "./pages/admin/AdminSeries";
 import AdminProblems from "./pages/admin/AdminProblems";
 import AdminTopicEditor from "./pages/admin/AdminTopicEditor";
 import AdminSeriesEditor from "./pages/admin/AdminSeriesEditor";
+import ProfileSubmissions from "./pages/user/ProfileSubmissions";
 import AdminProblemEditor from "./pages/admin/AdminProblemEditor";
 import AdminCanvasList from "./pages/admin/AdminCanvasList";
 import AdminCanvasEditor from "./pages/admin/AdminCanvasEditor";
@@ -52,6 +55,18 @@ const ProblemSolver = () => {
     )
   ) : (
     <Navigate to="/login?type=solver" />
+  );
+};
+
+const SolverProfile = () => {
+  const [activeTab, setActiveTab] = useState("Details");
+  const click = (tab) => {
+    setActiveTab(tab);
+  };
+  return (
+    <LayoutMain left={<SolverProfileTab activeTab={activeTab} click={click} />}>
+      {activeTab == "Details" ? <Profile /> : <ProfileSubmissions />}
+    </LayoutMain>
   );
 };
 
@@ -356,14 +371,7 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
-          <Route
-            path="/user/:username"
-            element={
-              <LayoutMain>
-                <Profile />
-              </LayoutMain>
-            }
-          />
+          <Route path="/user/:username" element={<SolverProfile />} />
         </Route>
 
         {/* <Route

@@ -1,9 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import Latex from "react-latex";
-import ProblemController from "../../controller/problemController";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import MDEditor from "@uiw/react-md-editor";
 
 import katex from "katex";
@@ -15,7 +10,7 @@ const MarkdownEditor = ({ colorMode, text, setText }) => {
     return content.split("\n").length;
   };
   return (
-    <div data-color-mode={colorMode} className="mt-5">
+    <div data-color-mode={colorMode}>
       <div className="wmde-markdown-var"> </div>
       <MDEditor
         height={85 + 35 * calculateNumberOfLines(text) + text.length / 2}

@@ -18,12 +18,20 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-    
+          
       - name: Install dependencies
         run: sudo apt install docker-compose
           
       - name: Build the Docker image
         run: docker-compose -f docker-compose.dev.yml build
+        env:
+          DB_USER: env.DB_USER
+          DB_HOST: env.DB_HOST_DEV
+          DB_DB: env.DB_DB
+          DB_PASS: secrets.DB_PASS
+          DB_PORT: env.DB_PORT
+          JWT_SECRET: secrets.JWT_SECRET
+          ADMIN_PASS: secrets.ADMIN_PASS
       
       - name: Push to Docker Hub
         run: docker push mahirlabibdihan/bitsunplugged-dev:latest

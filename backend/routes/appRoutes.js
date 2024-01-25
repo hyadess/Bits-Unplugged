@@ -5,9 +5,13 @@ const topicRoutes = require("./topicRoutes");
 const seriesRoutes = require("./seriesRoutes");
 const canvasRoutes = require("./canvasRoutes");
 const profileRoutes = require("./profileRoutes");
-const submissionRoutes=require("./submissionRoutes");
-const userActivityRoutes=require("./userActivityRoutes");
-const base = require("../repository/base");
+const submissionRoutes = require("./submissionRoutes");
+const userActivityRoutes = require("./userActivityRoutes");
+const contestRoutes = require("./contestRoutes");
+const base = require("../repositories/base");
+
+require("../services/passport");
+
 router.get("/", async (req, res) => {
   const result = await new base().check();
   if (result.success) {
@@ -18,12 +22,13 @@ router.get("/", async (req, res) => {
 });
 
 router.use("/auth", authRoutes);
-router.use("/topic", topicRoutes);
+router.use("/topics", topicRoutes);
 router.use("/series", seriesRoutes);
-router.use("/problem", problemRoutes);
-router.use("/canvas", canvasRoutes);
+router.use("/problems", problemRoutes);
+router.use("/canvases", canvasRoutes);
 router.use("/profile", profileRoutes);
-router.use("/submission",submissionRoutes);
-router.use("/userActivity",userActivityRoutes);
+router.use("/submissions", submissionRoutes);
+router.use("/userActivity", userActivityRoutes);
+router.use("/contests", contestRoutes);
 
 module.exports = router;

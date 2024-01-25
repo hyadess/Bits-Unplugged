@@ -1,9 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import Latex from "react-latex";
-import ProblemController from "../../controller/problemController";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import MDEditor from "@uiw/react-md-editor";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import katex from "katex";
@@ -11,7 +6,7 @@ import "katex/dist/katex.css";
 import { getCodeString } from "rehype-rewrite";
 import "./styles.scss";
 
-const MarkdownPreview = ({ colorMode, text }) => {
+const MarkdownPreview = ({ colorMode, text, customStyle }) => {
   const calculateNumberOfLines = (content) => {
     return content.split("\n").length;
   };
@@ -27,9 +22,10 @@ const MarkdownPreview = ({ colorMode, text }) => {
         value={text}
         style={{
           whiteSpace: "pre-wrap",
-          padding: "20px",
+          paddingTop: "5px",
           // fontSize: "23px !important;",
           borderRadius: "20px",
+          ...customStyle, // Merge props.style here
         }}
         previewOptions={{
           components: {

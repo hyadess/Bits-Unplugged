@@ -2,81 +2,43 @@ import Api from "./base";
 
 class ProblemApi extends Api {
   getAllProblems = async () => {
-    return await this.get("/problem");
+    return await this.get("/problems");
   };
   getSubmittedProblems = async () => {
-    return await this.get("/problem/submitted");
+    return await this.get("/problems");
   };
   getMyProblems = async () => {
-    return await this.get("/problem/created");
+    return await this.get("/problems/created");
   };
-  getProblemsBySeries = async (series_id) => {
-    return await this.get("/problem/by_series/" + series_id);
+  getProblemsBySeries = async (seriesId) => {
+    return await this.get("/series/" + seriesId + "/problems");
   };
-  getUnsolvedProblemsBySeries = async (series_id) => {
-    return await this.get("/problem/by_series/unsolved/" + series_id);
+  getUnsolvedProblemsBySeries = async (seriesId) => {
+    return await this.get("/series/" + seriesId + "/problems", {
+      solved: false,
+    });
   };
-  getProblemById = async (problem_id) => {
-    return await this.get("/problem/" + problem_id);
+  getProblemById = async (problemId) => {
+    return await this.get("/problems/" + problemId);
   };
-  addProblem = async (title) => {
-    return await this.post("/problem/", {
+  createProblem = async (title) => {
+    return await this.post("/problems/", {
       title: title,
     });
   };
-  updateTitle = async (problem_id, title) => {
-    return await this.put("/problem/" + problem_id + "/title", {
-      title: title,
+  updateProblem = async (problemId, data) => {
+    return await this.put("/problems/" + problemId, data);
+  };
+  deleteProblem = async (problemId) => {
+    return await this.delete("/problems/" + problemId);
+  };
+  submitProblem = async (problemId) => {
+    return await this.post("/problems/" + problemId + "/submit", {});
+  };
+  trackDuration = async (problemId, time) => {
+    return await this.put("/userActivity/" + problemId + "/track-duration", {
+      duration: time,
     });
-  };
-  updateSeries = async (problem_id, series_id) => {
-    return await this.put("/problem/" + problem_id + "/series", {
-      series_id: series_id,
-    });
-  };
-  updateSerial = async (problem_id, serial_no) => {
-    return await this.put("/problem/" + problem_id + "/serial", {
-      serial_no: serial_no,
-    });
-  };
-  updateStatement = async (problem_id, statement) => {
-    return await this.put("/problem/" + problem_id + "/statement", {
-      statement: statement,
-    });
-  };
-  updateCanvas = async (
-    problem_id,
-    canvas_id,
-    canvas_data,
-    params,
-    uiParams,
-    controlParams
-  ) => {
-    return await this.put("/problem/" + problem_id + "/canvas", {
-      canvas_id: canvas_id,
-      canvas_data: canvas_data,
-      params: params,
-      ui_params: uiParams,
-      control_params: controlParams,
-    });
-  };
-  updateSolutionChecker = async (problem_id, solution_checker, type) => {
-    return await this.put("/problem/" + problem_id + "/solution_checker", {
-      solution_checker: solution_checker,
-      checker_type: type,
-    });
-  };
-  deleteProblem = async (problem_id) => {
-    return await this.delete("/problem/" + problem_id);
-  };
-  publishProblem = async (problem_id) => {
-    return await this.post("/problem/" + problem_id + "/publish", {});
-  };
-  submitProblem = async (problem_id) => {
-    return await this.post("/problem/" + problem_id + "/submit", {});
-  };
-  unpublishProblem = async (problem_id) => {
-    return await this.post("/problem/" + problem_id + "/unpublish", {});
   };
 }
 export default ProblemApi;

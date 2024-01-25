@@ -1,70 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
   Outlet,
-  useNavigate,
 } from "react-router-dom";
-import Cookies from "universal-cookie";
-import Home from "./Pages/Home";
-import Problems from "./Pages/user/Problems";
-import Login from "./Pages/auth/Login";
-import Signup from "./Pages/auth/Signup";
-import ProblemsCanvas from "./Pages/ProblemsCanvas";
-import Topics from "./Pages/user/Topics";
-import Series from "./Pages/user/Series";
-import ProblemSet from "./Pages/setter/ProblemSet";
-import GraphComponent from "./components/Canvas/GraphComponent";
-import CanvasContainer from "./components/Canvas/CanvasContainer";
-
-import ProblemSetEnv from "./Pages/setter/ProblemSetEnv";
-import SolutionChecker from "./Pages/SolutionChecker";
-import PublicNavbar from "./components/navbar/PublicNavbar";
+import Home from "./pages/Home";
+import Problems from "./pages/user/Problems";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
+import ProblemsCanvas from "./pages/ProblemsCanvas";
+import Topics from "./pages/user/Topics";
+import Series from "./pages/user/Series";
+import SetterProblems from "./pages/setter/SetterProblems";
+import ProblemSetEnv from "./pages/setter/ProblemSetEnv";
+import PublicNavbar from "./components/Navbars/PublicNavbar";
+import SolverProfileTab from "./components/SolverProfileTab";
 import Layout2 from "./components/Layouts/Layout2";
-import AdminLogin from "./Pages/auth/AdminLogin";
-import AdminHome from "./Pages/admin/AdminHome";
-import AdminTopics from "./Pages/admin/AdminTopics";
-import AdminSeries from "./Pages/admin/AdminSeries";
-import AdminProblems from "./Pages/admin/AdminProblems";
-import AdminTopicEditor from "./Pages/admin/AdminTopicEditor";
-import AdminSeriesEditor from "./Pages/admin/AdminSeriesEditor";
-import AdminProblemEditor from "./Pages/admin/AdminProblemEditor";
-import AdminCanvasList from "./Pages/admin/AdminCanvasList";
-import AdminCanvasEditor from "./Pages/admin/AdminCanvasEditor";
-import AdminContests from "./Pages/admin/AdminContests";
-import AdminSetters from "./Pages/admin/AdminSetters";
-
-import PrivateNavbar from "./components/navbar/PrivateNavbar";
-import AdminNavbar from "./components/navbar/AdminNavbar";
+import Layout3 from "./components/Layouts/Layout3";
+import AdminLogin from "./pages/auth/AdminLogin";
+import AdminHome from "./pages/admin/AdminHome";
+import AdminTopics from "./pages/admin/AdminTopics";
+import AdminSeries from "./pages/admin/AdminSeries";
+import AdminProblems from "./pages/admin/AdminProblems";
+import AdminTopicEditor from "./pages/admin/AdminTopicEditor";
+import AdminSeriesEditor from "./pages/admin/AdminSeriesEditor";
+import ProfileSubmissions from "./pages/user/ProfileSubmissions";
+import AdminProblemEditor from "./pages/admin/AdminProblemEditor";
+import AdminCanvasList from "./pages/admin/AdminCanvasList";
+import AdminCanvasEditor from "./pages/admin/AdminCanvasEditor";
+import AdminContests from "./pages/admin/AdminContests";
+import AdminSetters from "./pages/admin/AdminSetters";
+import PrivateNavbar from "./components/Navbars/PrivateNavbar";
+import AdminNavbar from "./components/Navbars/AdminNavbar";
 import LayoutMain from "./components/Layouts/LayoutMain";
-
-import Navbar from "./components/Navbar";
-
-import ProblemsSubmissions from "./Pages/ProblemsSubmissions";
-import SetterProfile from "./Pages/setter/SetterProfile";
-import Profile from "./Pages/user/Profille";
-import Contests from "./Pages/user/Contests";
-import SetterContests from "./Pages/setter/SetterContests";
-const cookies = new Cookies();
-
-const Private = () => {
-  const cookies = new Cookies();
-  const isLoggedIn = !!cookies.get("token");
-  return isLoggedIn ? (
-    <Layout2 nav={<PrivateNavbar />}>
-      <Outlet />
-    </Layout2>
-  ) : (
-    <Navigate to="/login" />
-  );
-};
-
+import ProblemsSubmissions from "./pages/ProblemsSubmissions";
+import SetterProfile from "./pages/setter/SetterProfile";
+import Profile from "./pages/user/Profile";
+import Contests from "./pages/user/Contests";
+import SetterContests from "./pages/setter/SetterContests";
+import GlobalContext from "./store/GlobalContext";
+import EmailVerification from "./pages/auth/EmailVerification";
 const ProblemSolver = () => {
-  const cookies = new Cookies();
-  const isLoggedIn = !!cookies.get("token");
-  const type = cookies.get("type");
+  const isLoggedIn = localStorage.hasOwnProperty("token");
+  const type = localStorage.getItem("type");
   return isLoggedIn ? (
     type == 0 ? (
       <Layout2 nav={<PrivateNavbar />}>
@@ -78,10 +58,21 @@ const ProblemSolver = () => {
   );
 };
 
+const SolverProfile = () => {
+  const [activeTab, setActiveTab] = useState("Details");
+  const click = (tab) => {
+    setActiveTab(tab);
+  };
+  return (
+    <LayoutMain left={<SolverProfileTab activeTab={activeTab} click={click} />}>
+      {activeTab == "Details" ? <Profile /> : <ProfileSubmissions />}
+    </LayoutMain>
+  );
+};
+
 const ProblemSetter = () => {
-  const cookies = new Cookies();
-  const isLoggedIn = !!cookies.get("token");
-  const type = cookies.get("type");
+  const isLoggedIn = localStorage.hasOwnProperty("token");
+  const type = localStorage.getItem("type");
   return isLoggedIn ? (
     type == 1 ? (
       <Layout2 nav={<PrivateNavbar />}>
@@ -96,10 +87,8 @@ const ProblemSetter = () => {
 };
 
 const Admin = () => {
-  const cookies = new Cookies();
-  const isLoggedIn = !!cookies.get("token");
-  const type = cookies.get("type");
-  console.log(type);
+  const isLoggedIn = localStorage.hasOwnProperty("token");
+  const type = localStorage.getItem("type");
   return isLoggedIn ? (
     type == 2 ? (
       <Layout2 nav={<AdminNavbar />}>
@@ -114,12 +103,17 @@ const Admin = () => {
 };
 
 const Public = () => {
-  const cookies = new Cookies();
-  const isLoggedIn = !!cookies.get("token");
-  const type = cookies.get("type");
-  return isLoggedIn ? (
+  return localStorage.hasOwnProperty("token") ? (
     <Navigate
-      to={type === 0 ? "/topics" : type === 1 ? "/problemSet" : "/admin/topics"}
+      to={
+        localStorage.getItem("type") == 0
+          ? "/topics"
+          : localStorage.getItem("type") == 1
+            ? "/problemSet"
+            : localStorage.getItem("type") == 2
+              ? "/admin/topics"
+              : "/login"
+      }
     />
   ) : (
     <Outlet />
@@ -127,16 +121,8 @@ const Public = () => {
 };
 
 const AppRoutes = () => {
-  const [type, setType] = useState(-1); // 0 - Solver, 1 - Setter, 2 - Guest
-  // const navigator = useNavigate();
-  useEffect(() => {
-    const isLoggedIn = !!cookies.get("token");
-    if (isLoggedIn) {
-      setType(cookies.get("type"));
-    } else {
-      setType(2);
-    }
-  }, []);
+  const { type } = useContext(GlobalContext); // 0 - Solver, 1 - Setter, 2 - Guest
+
   return (
     <Router>
       <Routes>
@@ -208,7 +194,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/admin/canvas"
+            path="/admin/canvases"
             element={
               <LayoutMain>
                 <AdminCanvasList />
@@ -216,7 +202,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/admin/canvas/:id"
+            path="/admin/canvases/:id"
             element={
               <LayoutMain>
                 <AdminCanvasEditor />
@@ -244,7 +230,7 @@ const AppRoutes = () => {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route element={<ProblemSetter />}>
           <Route
-            path="/problem/:id/preview"
+            path="/problems/:id/preview"
             element={
               <LayoutMain>
                 <ProblemsCanvas />
@@ -252,7 +238,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/problem/:prob_id/edit"
+            path="/problems/:problemid/edit"
             element={
               <LayoutMain>
                 <ProblemSetEnv />
@@ -263,7 +249,7 @@ const AppRoutes = () => {
             path="/problemSet"
             element={
               <LayoutMain>
-                <ProblemSet />
+                <SetterProblems />
               </LayoutMain>
             }
           />
@@ -287,7 +273,7 @@ const AppRoutes = () => {
         </Route>
         <Route element={<ProblemSolver />}>
           <Route
-            path="/problem/:id"
+            path="/problems/:id"
             element={
               <LayoutMain>
                 <ProblemsCanvas />
@@ -295,7 +281,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/submission/:id"
+            path="/submissions/:id"
             element={
               <LayoutMain>
                 <ProblemsSubmissions />
@@ -385,15 +371,17 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
-          <Route
-            path="/user/:username"
-            element={
-              <LayoutMain>
-                <Profile />
-              </LayoutMain>
-            }
-          />
+          <Route path="/user/:username" element={<SolverProfile />} />
         </Route>
+
+        {/* <Route
+          path="/user/:username"
+          element={
+            <LayoutMain>
+              <Profile />
+            </LayoutMain>
+          }
+        /> */}
         {/* 
         <Route element={<Private />}>
           <Route
@@ -409,6 +397,7 @@ const AppRoutes = () => {
         <Route element={<Public />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/verify-email" element={<EmailVerification />} />
         </Route>
         {type >= 0 && (
           <Route
@@ -417,7 +406,13 @@ const AppRoutes = () => {
               <Navigate
                 replace
                 to={
-                  type === 0 ? "/topics" : type === 1 ? "/problemSet" : "/home"
+                  type == 0
+                    ? "/topics"
+                    : type == 1
+                      ? "/problemSet"
+                      : type == 2
+                        ? "/admin/topics"
+                        : "/home"
                 }
               />
             }

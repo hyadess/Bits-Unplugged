@@ -4,15 +4,11 @@ import { Zoom } from "@mui/material";
 import ImageLoader from "../ImageLoader";
 import { setLoading } from "../../App";
 const CustomCard = ({ id, name, image, path, action }) => {
-  const navigator = useNavigate();
-  const switchPath = (pathname) => {
-    navigator(pathname);
-  };
-
+  const navigate = useNavigate();
   return (
     <Zoom in={true}>
       <div className="flex h-full flex-col items-center md:px-0">
-        <div className="bu-card-primary flex h-full w-full flex-col rounded-lg border shadow-lg">
+        <div className="bu-card-primary flex h-full md:w-full flex-col rounded-lg border shadow-lg">
           <h5 className="bu-text-primary mt-4 px-3 text-center text-2xl font-bold tracking-tight">
             {id}
           </h5>
@@ -39,7 +35,7 @@ const CustomCard = ({ id, name, image, path, action }) => {
             <div
               onClick={() => {
                 setLoading(true);
-                switchPath(path);
+                navigate(path);
               }}
               className="bu-button-secondary my-8 inline-flex  items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
             >

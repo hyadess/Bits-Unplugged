@@ -12,7 +12,7 @@ describe("POST /api/auth/login", () => {
       });
       expect(res.statusCode).toBe(200);
       expect(res.type).toEqual("application/json");
-      expect(res.body).toHaveProperty("token");
+      expect(res.body).toHaveProperty("access_token");
     });
   });
 
@@ -23,7 +23,7 @@ describe("POST /api/auth/login", () => {
         pass: "toor",
         type: "1",
       });
-      expect(res.statusCode).toBe(404);
+      expect(res.statusCode).toBe(403);
       expect(res.type).toEqual("application/json");
       expect(res.body).toHaveProperty("error");
     });

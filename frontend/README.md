@@ -22,3 +22,7 @@ Series -> Series
 Problem Analytics
 Recommendation System
 Admin Site
+
+## Architecture
+
+MVC

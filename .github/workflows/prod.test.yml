@@ -29,7 +29,7 @@ jobs:
         run: docker-compose -f docker-compose.prod.yml build
         env:
           DB_USER: env.DB_USER
-          DB_HOST: env.DB_HOST_DEV
+          DB_HOST: env.DB_HOST_PROD
           DB_DB: env.DB_DB
           DB_PASS: secrets.DB_PASS
           DB_PORT: env.DB_PORT

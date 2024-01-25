@@ -4,6 +4,7 @@ import CardContainer from "../../containers/CardContainer";
 import Title from "../../components/Title";
 import { topicApi } from "../../api";
 import GlobalContext from "../../store/GlobalContext";
+import TopicCard from "../../components/Cards/TopicCard";
 const Topics = () => {
   const { type } = useContext(GlobalContext);
   const [topicList, setTopicList] = useState([]);
@@ -29,9 +30,9 @@ const Topics = () => {
             } problems for particular topic right
         on our site`}
           />
-          <CardContainer col={3}>
+          <CardContainer col={2}>
             {topicList.map((topic, index) => (
-              <CustomCard
+              <TopicCard
                 key={index}
                 id={`Topic ${index + 1}`}
                 name={topic.name}

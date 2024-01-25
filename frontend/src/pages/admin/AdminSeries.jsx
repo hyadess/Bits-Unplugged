@@ -38,7 +38,7 @@ const AdminSeries = () => {
   const getSeriesId = async (name) => {
     const res = await seriesApi.createSeries(name);
     if (res.success) {
-      return res.data[0].id;
+      return res.data.id;
     }
   };
 

@@ -557,6 +557,167 @@ module.exports = {
         {
           setterId: 1,
           canvasId: 1,
+          title: "Round n Round",
+          statement: `Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city exactly once and returns to the origin city?`,
+          canvasData: JSON.stringify({
+            edges: [
+              { start: "0", end: "1", weight: "12" },
+              { start: "1", end: "2", weight: "8" },
+              { start: "0", end: "2", weight: "10" },
+              { start: "1", end: "3", weight: "12" },
+              { start: "2", end: "3", weight: "11" },
+              { start: "2", end: "4", weight: "3" },
+              { start: "4", end: "3", weight: "11" },
+              { start: "4", end: "5", weight: "6" },
+              { start: "5", end: "3", weight: "10" },
+              { start: "6", end: "5", weight: "9" },
+              { start: "6", end: "4", weight: "7" },
+              { start: "6", end: "2", weight: "9" },
+              { start: "0", end: "6", weight: "12" },
+            ],
+            nodes: {
+              0: {
+                x: 82.16668701171875,
+                y: 268.06666564941406,
+                label: 0,
+                color: "Default",
+              },
+              1: {
+                x: 397.16668701171875,
+                y: 55.06666564941406,
+                label: 1,
+                color: "Default",
+              },
+              2: {
+                x: 345.16668701171875,
+                y: 227.06666564941406,
+                label: 2,
+                color: "Default",
+              },
+              3: {
+                x: 664.1666870117188,
+                y: 89.06666564941406,
+                label: 3,
+                color: "Default",
+              },
+              4: {
+                x: 453.16668701171875,
+
+                y: 300.06666564941406,
+                label: 4,
+                color: "Default",
+              },
+              5: {
+                x: 656.1666870117188,
+                y: 344.06666564941406,
+                label: 5,
+                color: "Default",
+              },
+              6: {
+                x: 328.16668701171875,
+                y: 441.06666564941406,
+                label: 6,
+                color: "Default",
+              },
+            },
+            selectedEdges: [],
+          }),
+          checkerCode: `/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n`,
+          editOptions: JSON.stringify({
+            // variant: {
+            //   value: "simple_graph",
+            //   type: "select",
+            //   list: ["simple_graph", "tree"],
+
+            directedEdge: { value: false, type: "switch" },
+            weightedEdge: { value: true, type: "switch" },
+          }),
+          previewOptions: JSON.stringify({
+            addNode: { value: false, type: "switch" },
+            deleteNode: { value: false, type: "switch" },
+            dragNode: { value: false, type: "switch" },
+            addEdge: { value: false, type: "switch" },
+            deleteEdge: { value: false, type: "switch" },
+            editWeight: { value: false, type: "switch" },
+            editColor: { value: false, type: "switch" },
+          }),
+          checkerCanvas: JSON.stringify({
+            edges: [
+              { start: "0", end: "1", weight: "12" },
+              { start: "1", end: "2", weight: "8" },
+              { start: "0", end: "2", weight: "10" },
+              { start: "1", end: "3", weight: "12" },
+              { start: "2", end: "3", weight: "11" },
+              { start: "2", end: "4", weight: "3" },
+              { start: "4", end: "3", weight: "11" },
+              { start: "4", end: "5", weight: "6" },
+              { start: "5", end: "3", weight: "10" },
+              { start: "6", end: "5", weight: "9" },
+              { start: "6", end: "4", weight: "7" },
+              { start: "6", end: "2", weight: "9" },
+              { start: "0", end: "6", weight: "12" },
+            ],
+            nodes: {
+              0: {
+                x: 82.16668701171875,
+                y: 268.06666564941406,
+                label: 0,
+                color: "Default",
+              },
+              1: {
+                x: 397.16668701171875,
+                y: 55.06666564941406,
+                label: 1,
+                color: "Default",
+              },
+              2: {
+                x: 345.16668701171875,
+                y: 227.06666564941406,
+                label: 2,
+                color: "Default",
+              },
+              3: {
+                x: 664.1666870117188,
+                y: 89.06666564941406,
+                label: 3,
+                color: "Default",
+              },
+              4: {
+                x: 453.16668701171875,
+                y: 300.06666564941406,
+                label: 4,
+                color: "Default",
+              },
+              5: {
+                x: 656.1666870117188,
+
+                y: 344.06666564941406,
+                label: 5,
+
+                color: "Default",
+              },
+              6: {
+                x: 328.16668701171875,
+                y: 441.06666564941406,
+                label: 6,
+                color: "Default",
+              },
+            },
+            selectedEdges: [
+              { start: "0", end: "1", weight: "12" },
+              { start: "0", end: "2", weight: "10" },
+              { start: "1", end: "3", weight: "12" },
+              { start: "2", end: "4", weight: "3" },
+              { start: "5", end: "3", weight: "10" },
+
+              { start: "6", end: "4", weight: "7" },
+              { start: "6", end: "5", weight: "9" },
+            ],
+          }),
+        },
+        {
+          setterId: 1,
+          canvasId: 1,
           title: "Pentagon and Pentagram",
           statement: "Convert the Pentagram to a Pentagon.",
           canvasData: JSON.stringify({

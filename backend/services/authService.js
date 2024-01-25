@@ -9,7 +9,7 @@ const { promisify } = require("util");
 const verifyTokenAsync = promisify(jwt.verify);
 
 const ACCESS_TOKEN_EXPIRATION = 3600;
-const REFRESH_TOKEN_EXPIRATION = 86400;
+const REFRESH_TOKEN_EXPIRATION = 90 * 86400;
 class AuthService extends Service {
   constructor() {
     super();

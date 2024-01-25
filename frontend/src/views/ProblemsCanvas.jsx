@@ -59,7 +59,7 @@ const Header = ({ type }) => {
             onClick={() => {
               setLoading(true);
               console.log(problem);
-              navigate(`/submission/${problem.id}`);
+              navigate(`/submissions/${problem.id}`);
             }}
           >
             <div className="flex flex-row items-center gap-4">SUBMISSIONS</div>

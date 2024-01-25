@@ -34,7 +34,7 @@ class SubmissionRepository extends Repository {
   };
 
   getAllSubmissionsByUser = async (userId) => {
-    //console.log("lets see"+problemId);
+    console.log("lets see"+userId);
     const query = `
         SELECT * 
         FROM "Submissions" S

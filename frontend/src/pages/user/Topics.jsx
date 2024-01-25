@@ -23,10 +23,10 @@ const Topics = () => {
       {topicList.length && (
         <>
           <Title
-            title={`Problem ${type == 0 ? "Solving" : "Setting"}`}
+            title={`Select a Topic`}
             sub_title={`${
               type == 0 ? "Solve" : "Set"
-            } problems for particular series right
+            } problems for particular topic right
         on our site`}
           />
           <CardContainer col={3}>

@@ -91,7 +91,8 @@ const CanvasContainer = (props, ref) => {
   }, [componentPath]);
 
   useEffect(() => {
-    getCanvas();
+    // console.log("Canvas Id changed");
+    if (props.canvasId !== undefined && props.canvasId !== null) getCanvas();
   }, [props.canvasId]);
 
   const snakeCaseToTitleCase = (input) => {

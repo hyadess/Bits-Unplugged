@@ -19,7 +19,7 @@ const SetterProblemsView = ({
   return (
     <div>
       <Title
-        title={`Problem Setting Interface`}
+        title={`Previous Problems`}
         sub_title={`Set problems for particular series right on our site`}
       />
 

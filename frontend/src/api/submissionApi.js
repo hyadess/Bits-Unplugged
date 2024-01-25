@@ -11,6 +11,9 @@ class SubmissionApi extends Api {
     //console.log(problemId);
     return await this.get("/problems/" + problemId + "/submissions");
   };
+  getAllSubmissionsByUser =async () =>{
+    return await this.get("/submissions/");
+  }
 }
 
 export default SubmissionApi;

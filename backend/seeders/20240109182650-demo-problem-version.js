@@ -353,7 +353,7 @@ module.exports = {
       },
       {
         problemId: 9,
-        seriesId: 5,
+        seriesId: 7,
         isLive: true,
         serialNo: 1,
         canvasId: 1,
@@ -549,7 +549,7 @@ module.exports = {
         }),
       },
       {
-        problemId: 10,
+        problemId: 11,
         seriesId: 6,
         isLive: true,
         serialNo: 1,

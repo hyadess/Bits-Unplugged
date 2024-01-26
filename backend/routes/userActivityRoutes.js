@@ -31,6 +31,7 @@ router.get(
 );
 
 router.get("/stat/fails/me", userActivityController.totalFailedAttemptsByUser);
+router.get("/stat/recentfails/me", userActivityController.mostRecentFailsByUser);
 router.get(
   "/stat/successes/me",
   userActivityController.totalSolvedProblemsByUser

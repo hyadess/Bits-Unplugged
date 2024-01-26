@@ -382,17 +382,6 @@ const AppRoutes = () => {
             </LayoutMain>
           }
         /> */}
-        {/* 
-        <Route element={<Private />}>
-          <Route
-            path="/profile/:username"
-            element={
-              <LayoutMain>
-                <Profile />
-              </LayoutMain>
-            }
-          />
-        </Route> */}
 
         <Route element={<Public />}>
           <Route path="/login" element={<Login />} />
@@ -412,7 +401,7 @@ const AppRoutes = () => {
                       ? "/problemSet"
                       : type == 2
                         ? "/admin/topics"
-                        : "/home"
+                        : "/landing"
                 }
               />
             }
@@ -420,7 +409,7 @@ const AppRoutes = () => {
         )}
 
         <Route
-          path="/home"
+          path="/landing"
           element={
             <Layout2 nav={<PublicNavbar />}>
               <Home />

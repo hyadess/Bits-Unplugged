@@ -18,6 +18,14 @@ module.exports = {
       logo: {
         type: Sequelize.TEXT,
       },
+      isLive: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      serialNo: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

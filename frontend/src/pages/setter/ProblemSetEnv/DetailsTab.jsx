@@ -4,6 +4,7 @@ import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { problemApi } from "../../../api";
 import { useProblemContext } from "../../../store/ProblemContextProvider";
+import { showSuccess } from "../../../App";
 const DetailsTab = () => {
   const { state: problem, dispatch } = useProblemContext();
   return (
@@ -31,10 +32,11 @@ const DetailsTab = () => {
         <button
           className="bu-button-primary flex flex-row items-center justify-center gap-3 rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white focus:outline-none"
           onClick={async () => {
-            await problemApi.updateProblem(problem.id, {
+            const result = await problemApi.updateProblem(problem.id, {
               title: problem.title,
               statement: problem.statement,
             });
+            showSuccess("Details saved successfully", result);
           }}
         >
           <FontAwesomeIcon icon={faFloppyDisk} size="sm" />

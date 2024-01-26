@@ -83,6 +83,8 @@ const GraphComponent = (props, ref) => {
   const [isDragging, setIsDragging] = useState(-1);
   const [addNodeMode, setAddNodeMode] = useState(false);
   const [addEdgeMode, setAddEdgeMode] = useState(false);
+  const [selectedEdge, setSelectedEdge] = useState(null);
+  const [selectedNode, setSelectedNode] = useState(null);
   //custom sets................................................................................................
 
   const setNodes = (nodes) => {
@@ -373,6 +375,9 @@ const GraphComponent = (props, ref) => {
           }
         });
 
+        // Multi Edge Select Mode
+        // Multi Node Select Mode
+        
         //if clicked nere an edge, select that edge, else, create a node!!!
 
         if (nearestEdge && minDistance <= 1.0 * EDGECLICKRANGE) {
@@ -429,7 +434,7 @@ const GraphComponent = (props, ref) => {
     if (selectedNodes.length === 0) {
       setSelectedNodes([nodeKey]);
       setSelectedEdges([]);
-      console.log("DDDDDDDDDDDDDDDDDDd");
+      // console.log("DDDDDDDDDDDDDDDDDDd");
     } else if (selectedNodes.includes(nodeKey)) {
       // If the clicked node is already selected, unselect it
       setSelectedNodes((prev) =>

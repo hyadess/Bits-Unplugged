@@ -154,7 +154,7 @@ const Signup = () => {
         <div
           onClick={() => {
             setLoading(true);
-            navigate("/home");
+            navigate("/landing");
           }}
           className="cursor-pointer"
         >

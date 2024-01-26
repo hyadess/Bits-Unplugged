@@ -3,7 +3,10 @@ import TeamCard from "../components/Cards/TeamCard";
 const Team = () => {
   return (
     <section>
-      <div className="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16 ">
+      <div
+        id="aboutus"
+        className="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16 "
+      >
         <div className="mx-auto mb-8 max-w-screen-sm text-center lg:mb-16">
           <h2 className="bu-text-primary mb-4 text-4xl font-extrabold tracking-tight">
             Our Team

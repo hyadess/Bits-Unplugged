@@ -18,9 +18,9 @@ module.exports = {
         {
           // 2
           topicId: 4,
-          name: "Minimum Spanning Tree",
+          name: "Spanning Tree",
           description: "",
-        logo: "https://blog-c7ff.kxcdn.com/blog/wp-content/uploads/2017/01/blog-10.jpg",
+          logo: "https://blog-c7ff.kxcdn.com/blog/wp-content/uploads/2017/01/blog-10.jpg",
           createdAt: new Date(),
           updatedAt: new Date(),
         },

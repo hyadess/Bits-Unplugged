@@ -77,7 +77,7 @@ const PrivateNavbar = (props) => {
               }`}
               onClick={() => {
                 setLoading(true);
-                navigate("/home");
+                navigate("/landing");
               }}
             >
               <Logo width={180} height={45} />

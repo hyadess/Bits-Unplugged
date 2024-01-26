@@ -401,7 +401,7 @@ const AppRoutes = () => {
                       ? "/problemSet"
                       : type == 2
                         ? "/admin/topics"
-                        : "/home"
+                        : "/landing"
                 }
               />
             }
@@ -409,7 +409,7 @@ const AppRoutes = () => {
         )}
 
         <Route
-          path="/home"
+          path="/landing"
           element={
             <Layout2 nav={<PublicNavbar />}>
               <Home />

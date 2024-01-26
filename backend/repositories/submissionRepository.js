@@ -36,10 +36,21 @@ class SubmissionRepository extends Repository {
   getAllSubmissionsByUser = async (userId) => {
     console.log("lets see"+userId);
     const query = `
-        SELECT * 
-        FROM "Submissions" S
-        WHERE S."userId" = $1;
-        `;
+      SELECT 
+      S.*, 
+      P."problemId", 
+      P."title", 
+      P."seriesId", 
+      Ss."name"
+      FROM 
+      "Submissions" S
+      JOIN 
+      "ProblemVersions" P ON S."problemId" = P."id"
+      JOIN 
+      "Series" Ss ON P."seriesId" = Ss."id"
+      WHERE 
+      S."userId" = $1;
+    `;
     const params = [userId];
     const result = await this.query(query, params);
     return result;

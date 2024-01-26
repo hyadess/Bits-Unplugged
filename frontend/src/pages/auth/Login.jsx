@@ -93,7 +93,7 @@ const Login = () => {
             <div
               onClick={() => {
                 setLoading(true);
-                navigate("/home");
+                navigate("/landing");
               }}
               className="cursor-pointer"
             >
@@ -200,7 +200,7 @@ const Login = () => {
                   {/* <button
                   type="submit"
                   className="w-full text-white bg-pink-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-pink-600 hover:bg-pink-700 focus:ring-pink-800"
-                  onClick={() => navigate("/home")}
+                  onClick={() => navigate("/landing")}
                 >
                   View As Guest
                 </button> */}

@@ -42,14 +42,14 @@ const PublicNavbar = (props) => {
   }, []);
 
   return (
-    <div className="flex flex-row w-full justify-between md:justify-center">
+    <div className="flex flex-row w-full justify-between md:justify-center shadow-md">
       <div className="icon flex-2 hidden md:flex h-20 w-1/5 px-5">
         <div
           className="p-5 pl-0"
           onClick={() => {
-            if (location.pathname !== "/home") {
+            if (location.pathname !== "/landing") {
               setLoading(true);
-              navigate("/home");
+              navigate("/landing");
             }
           }}
         >
@@ -58,23 +58,24 @@ const PublicNavbar = (props) => {
       </div>
       <div className="flex md:justify-center w-full md:w-3/5">
         <>
-          <button
+          <a
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
-              location.pathname === "/home"
+              location.pathname === "/landing"
                 ? "border-[#1C5B5F] dark:border-pink-500"
                 : "border-transparent"
             }`}
             data-tip="Home"
-            onClick={() => {
-              if (location.pathname !== "/home") {
-                setLoading(true);
-                navigate("/home");
-              }
-            }}
+            href="#home"
+            // onClick={() => {
+            //   if (location.pathname !== "/landing") {
+            //     setLoading(true);
+            //     navigate("/landing");
+            //   }
+            // }}
           >
             <div
               className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
-                location.pathname === "/home"
+                location.pathname === "/landing"
                   ? "bu-text-title"
                   : "bu-text-primary-hover"
               }`}
@@ -83,47 +84,22 @@ const PublicNavbar = (props) => {
               Home
             </div>
             <div className="divider hidden md:flex "></div>
-          </button>
+          </a>
 
-          <button
-            className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
-              location.pathname === "/about"
-                ? "border-[#1C5B5F] dark:border-pink-500"
-                : "border-transparent"
-            }`}
-            data-tip="Home"
-            onClick={() => {
-              if (location.pathname !== "/home") {
-                setLoading(true);
-                navigate("/home");
-              }
-            }}
-          >
-            <div
-              className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
-                location.pathname === "/about"
-                  ? "bu-text-title"
-                  : "bu-text-primary-hover"
-              }`}
-            >
-              <FontAwesomeIcon icon={faPeopleGroup} />
-              About us
-            </div>
-            <div className="divider hidden md:flex "></div>
-          </button>
-          <button
+          <a
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
               location.pathname === "/features"
                 ? "border-[#1C5B5F] dark:border-pink-500"
                 : "border-transparent"
             }`}
             data-tip="Home"
-            onClick={() => {
-              if (location.pathname !== "/home") {
-                setLoading(true);
-                navigate("/home");
-              }
-            }}
+            href="#features"
+            // onClick={() => {
+            //   if (location.pathname !== "/landing") {
+            //     setLoading(true);
+            //     navigate("/landing");
+            //   }
+            // }}
           >
             <div
               className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
@@ -136,8 +112,34 @@ const PublicNavbar = (props) => {
               Features
             </div>
             <div className="divider hidden md:flex "></div>
-          </button>
-
+          </a>
+          <a
+            className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
+              location.pathname === "/about"
+                ? "border-[#1C5B5F] dark:border-pink-500"
+                : "border-transparent"
+            }`}
+            data-tip="About Us"
+            href="#aboutus"
+            // onClick={() => {
+            //   if (location.pathname !== "/aboutus") {
+            //     setLoading(true);
+            //     navigate("/landing");
+            //   }
+            // }}
+          >
+            <div
+              className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
+                location.pathname === "/about"
+                  ? "bu-text-title"
+                  : "bu-text-primary-hover"
+              }`}
+            >
+              <FontAwesomeIcon icon={faPeopleGroup} />
+              About us
+            </div>
+            <div className="divider hidden md:flex "></div>
+          </a>
           <button
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
               location.pathname === "/login"

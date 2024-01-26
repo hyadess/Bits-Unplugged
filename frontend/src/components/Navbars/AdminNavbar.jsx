@@ -43,7 +43,7 @@ const AdminNavbar = () => {
           className="p-5 pl-0"
           onClick={() => {
             setLoading(true);
-            navigate("/home");
+            navigate("/landing");
           }}
         >
           <Logo />

@@ -84,9 +84,14 @@ const CanvasDesignTab = ({ backupProblem }) => {
 
   const changeCanvas = (canvasId) => {
     // setCanvasId(canvasId;
-
+    dispatch({
+      type: "CLEAR_TEST_CANVAS",
+    });
+    dispatch({
+      type: "CLEAR_TEST_ACTIVITY",
+    });
     dispatch({ type: "UPDATE_CANVAS_ID", payload: canvasId });
-    console.log(problem.canvasId);
+    // console.log(problem.canvasId);
     // type: CHANGE_CANVAS
     if (canvasId == backupProblem.current.canvasId) {
       // saved one
@@ -109,6 +114,9 @@ const CanvasDesignTab = ({ backupProblem }) => {
         return canvas.id == canvasId;
       });
       if (res) {
+        // testRef.current.handleReset(
+        //   JSON.parse(JSON.stringify(problem.canvasData))
+        // ); // Call this after reset
         dispatch({
           type: "UPDATE_PROBLEM",
           payload: {

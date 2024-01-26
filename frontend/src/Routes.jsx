@@ -382,17 +382,6 @@ const AppRoutes = () => {
             </LayoutMain>
           }
         /> */}
-        {/* 
-        <Route element={<Private />}>
-          <Route
-            path="/profile/:username"
-            element={
-              <LayoutMain>
-                <Profile />
-              </LayoutMain>
-            }
-          />
-        </Route> */}
 
         <Route element={<Public />}>
           <Route path="/login" element={<Login />} />

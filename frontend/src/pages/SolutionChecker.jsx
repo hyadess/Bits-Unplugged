@@ -115,11 +115,12 @@ export default function SolutionChecker(props) {
             onChange={codeChanged}
             options={{
               inlineSuggest: true,
-              fontSize: "13px",
+              fontSize: "17px",
               formatOnType: true,
               autoClosingBrackets: true,
               minimap: { enabled: false },
               tabSize: 2,
+              wordWrap: "on",
               // automaticLayout: true,
             }}
           />

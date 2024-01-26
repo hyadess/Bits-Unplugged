@@ -7,14 +7,16 @@ module.exports = {
       "Series",
       [
         {
+          // 1
           topicId: 2,
           name: "Tower Of Hanoi",
           description: "",
-          logo: "/gifs/toh_light.gif",
+          logo: "https://us.123rf.com/450wm/ylivdesign/ylivdesign1701/ylivdesign170109038/70429747-colorful-pyramid-toy-icon-cartoon-illustration-of-colorful-pyramid-toy-vector-icon-for-web.jpg?ver=6",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
+          // 2
           topicId: 1,
           name: "Minimum Spanning Tree",
           description: "",
@@ -23,24 +25,27 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          // 3
           topicId: 1,
           name: "Shortest Path",
           description: "",
-          logo: "https://www.get-digital-help.com/wp-content/uploads/2014/05/Find-shortest-path4.gif",
+          logo: "https://media.istockphoto.com/id/1204141542/vector/easy-straight-complicated-paths.jpg?s=612x612&w=0&k=20&c=93R6hIIAEw2rTicfqNuj2GLfwPdDSLNruVrgx_O_DYA=",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
 
         {
+          // 4
           topicId: 1,
           name: "Graph Coloring",
           description: "",
-          logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Petersen_graph_3-coloring.svg/800px-Petersen_graph_3-coloring.svg.png",
+          logo: "https://static.vecteezy.com/system/resources/previews/029/583/668/original/color-icon-for-node-vector.jpg",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
 
         {
+          // 5
           topicId: 1,
           name: "Planar Graph",
           description: "",
@@ -49,14 +54,16 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          // 6
           topicId: 1,
           name: "Isomorphism",
           description: "",
-          logo: "https://images.squarespace-cdn.com/content/v1/52b30f7ae4b067ba989438d4/1419401410738-XTMSALY9255E01WH06Y1/image-asset.gif",
+          logo: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d1df5349-0b0f-4d07-a13d-c59daaae9f90/dg53ht0-d224bd39-3578-42c6-acd9-0336c3f641da.jpg/v1/fill/w_904,h_884,q_70,strp/spiderman_meme_by_yostverseeditsmarvel_dg53ht0-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTA1NyIsInBhdGgiOiJcL2ZcL2QxZGY1MzQ5LTBiMGYtNGQwNy1hMTNkLWM1OWRhYWFlOWY5MFwvZGc1M2h0MC1kMjI0YmQzOS0zNTc4LTQyYzYtYWNkOS0wMzM2YzNmNjQxZGEuanBnIiwid2lkdGgiOiI8PTEwODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.cv9Q8FgnY5Doy3JMOQaw6tkNp2wZ75eC1KiMELUhYas",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
+          // 7
           topicId: 1,
           name: "Bipartite Graph",
           description: "",
@@ -65,11 +72,20 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          // 8
+          topicId: 1,
+          name: "Travelling Salesman",
+          description: "",
+          logo: "https://media.istockphoto.com/id/1227007210/vector/business-decision-modern-businessman-standing-in-front-of-signpost-showing-different.jpg?s=612x612&w=0&k=20&c=0joKPEsJLRtPPC6WTnsZZg2MCmHPD-K6wj2c1hcp1VA=",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
           // id: 1,
           topicId: 4,
           name: "Red Black",
           description: "",
-          logo: "https://ds055uzetaobb.cloudfront.net/brioche/uploads/DtAKvHZ65j-rb-1.png?width=1200",
+          logo: "https://thumbs.dreamstime.com/b/illustration-black-tree-red-apples-vector-55899640.jpg",
           createdAt: new Date(),
           updatedAt: new Date(),
         },

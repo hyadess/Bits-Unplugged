@@ -62,15 +62,13 @@ const TowerOfHanoiView = ({
                     handleNumberOfDisksChange={handleNumberOfDisksChange}
                   />
                 )}
-              {mode === "preview" &&
-                previewOptions?.moves?.value &&
-                activityData && (
-                  <Typography variant="h5" className="bu-text-primary m-0 p-0">
-                    <b className="bu-text-primary">
-                      Moves: {activityData?.numberOfMoves ?? 0}
-                    </b>
-                  </Typography>
-                )}
+              {mode === "preview" && previewOptions?.moves?.value && (
+                <Typography variant="h5" className="bu-text-primary m-0 p-0">
+                  <b className="bu-text-primary">
+                    Moves: {activityData?.numberOfMoves ?? 0}
+                  </b>
+                </Typography>
+              )}
             </div>
           </div>
           <Divider sx={{ bgcolor: "rgb(236, 72, 153)" }} />

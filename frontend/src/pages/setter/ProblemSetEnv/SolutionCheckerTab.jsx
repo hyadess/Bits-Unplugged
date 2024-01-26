@@ -8,6 +8,7 @@ import { SelectionField } from "../../../components/InputFields";
 import { useProblemContext } from "../../../store/ProblemContextProvider";
 import { problemApi } from "../../../api";
 import SubmissionService from "../../../services/submissionService";
+import { showSuccess } from "../../../App";
 const SolutionCheckerTab = () => {
   const { state: problem, dispatch } = useProblemContext();
   const [output, setOutput] = useState("");
@@ -38,6 +39,7 @@ const SolutionCheckerTab = () => {
     });
     if (res.success) {
       // console.log(res);
+      showSuccess("Checker saved successfully", res);
     }
   };
 

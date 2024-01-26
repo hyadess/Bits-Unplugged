@@ -38,7 +38,7 @@ export default function ProfileSubmissions() {
               idx={index + 1}
               submissionId={submission.id}
               verdict={submission.verdict}
-              problem_name={submission.problemId}
+              problem_name={submission.name}
             />
           </div>
         ))}

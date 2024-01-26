@@ -227,6 +227,22 @@ class UserActivityRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+
+
+  mostRecentFailsByUser=async(userId) =>{
+    const query = `
+    SELECT A.*, PV."title"
+    FROM "Activities" A
+    JOIN "ProblemVersions" PV ON A."problemId" = PV."id"
+    WHERE A."userId" = $1
+      AND A."isSolved" = false
+    ORDER BY A."lastSolveTimestamp" DESC;
+    
+    `;
+    const params = [userId];
+    const result = await this.query(query, params);
+    return result;
+  };
 }
 
 module.exports = UserActivityRepository;

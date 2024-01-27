@@ -37,7 +37,7 @@ const ProblemSetCard = ({
     <div className="w-full h-full" key={id}>
       <div
         className={
-          "border rounded-lg shadow-lg bg-gray-700 bu-card-primary flex flex-col p-5 h-full"
+          "border rounded-lg shadow-lg bg-gray-700 bu-card-primary flex flex-col p-5 h-full justify-between"
         }
       >
         {/* <h5 className="text-2xl text-center font-bold tracking-tight bu-text-primary w-10%">

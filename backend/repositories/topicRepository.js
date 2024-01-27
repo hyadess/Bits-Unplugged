@@ -6,7 +6,10 @@ class TopicRepository extends Repository {
     super();
   }
   getAllTopics = async () => {
-    const topics = await db.Topic.findAll();
+    // In descending order of serialNo
+    const topics = await db.Topic.findAll({
+      order: [["serialNo", "DESC"]],
+    });
     return topics;
   };
   getTopicById = async (id) => {
@@ -18,6 +21,7 @@ class TopicRepository extends Repository {
     return newTopic;
   };
   updateTopic = async (id, data) => {
+    console.log(id, data);
     const [updatedRowsCount, [updatedTopic]] = await db.Topic.update(data, {
       returning: true,
       where: {
@@ -41,6 +45,23 @@ class TopicRepository extends Repository {
       return null;
     }
     return deletedTopic; // Return the deleted topic: Which is actually 1. Need a way around to find the row.
+  };
+
+  updateTopicSerial = async (data) => {
+    // console.log(data);
+    for (const item of data) {
+      const { topicId, serialNo } = item;
+      const recordToUpdate = await db.Topic.update(
+        { serialNo },
+        {
+          returning: true,
+          where: {
+            id: topicId,
+          },
+        }
+      );
+    }
+    // return updatedTopics;
   };
 }
 

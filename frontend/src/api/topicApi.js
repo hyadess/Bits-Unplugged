@@ -15,5 +15,11 @@ class TopicApi extends Api {
       name: name,
     });
   };
+  deleteTopic = async (id) => {
+    return await this.delete("/topics/" + id);
+  };
+  updateTopicSerial = async (data) => {
+    return await this.put("/topics/serial", data);
+  };
 }
 export default TopicApi;

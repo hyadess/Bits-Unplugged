@@ -52,6 +52,13 @@ class TopicController extends Controller {
       }
     });
   };
+
+  updateTopicSerial = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const updatedTopic = await topicRepository.updateTopicSerial(req.body);
+      res.status(200).json(updatedTopic);
+    });
+  };
 }
 
 module.exports = TopicController;

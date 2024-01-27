@@ -80,7 +80,7 @@ Edit the file and migrate: `npx sequelize db:migrate --name *****-alter-user-ima
 
 ### Changing table data
 
-Creating a migration file: `npx sequelize seed:generate --name add-problems`
+Creating a seeder file: `npx sequelize seed:generate --name add-problems`
 Edit the file and seed: `npx sequelize db:seed --seed *****-add-problems`
 
 ### Updating remote

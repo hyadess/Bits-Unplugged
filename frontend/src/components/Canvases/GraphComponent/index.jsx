@@ -192,7 +192,10 @@ const GraphComponent = (props, ref) => {
       setWidth(windowRef.current.offsetWidth);
     });
     resizeObserver.observe(windowRef.current);
-    return () => resizeObserver.disconnect(); // clean up
+    return () => {
+      resizeObserver.disconnect(); // clean up
+      document.body.style.cursor = "default";
+    }; // clean up
   }, []);
 
   // Function to calculate the distance from a point to a line segment...used to select an edge!!!!

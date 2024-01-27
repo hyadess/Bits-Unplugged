@@ -87,6 +87,7 @@ const ProblemSetEnvView = () => {
             testRef?.current?.handleReset(deepCopy(problem.canvasData));
           }
           setActiveComponent(tab);
+          // document.body.style.cursor = "default";
         }}
       />
 

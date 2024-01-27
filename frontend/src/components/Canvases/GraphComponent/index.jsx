@@ -377,7 +377,7 @@ const GraphComponent = (props, ref) => {
 
         // Multi Edge Select Mode
         // Multi Node Select Mode
-        
+
         //if clicked nere an edge, select that edge, else, create a node!!!
 
         if (nearestEdge && minDistance <= 1.0 * EDGECLICKRANGE) {
@@ -925,20 +925,11 @@ const GraphComponent = (props, ref) => {
       </div>
     </Modal>
   );
+
+  const [isHovered, setIsHovered] = useState(false);
   return (
     <div className="w-full  relative" ref={windowRef}>
       {Header()}
-      {/* <Tooltip
-        title="Click anywhere to add a node"
-        followCursor
-        size="large"
-        // open={addNodeMode}
-        // onOpen={()=>{}}
-        // onClose={()=>{}}
-      >
-        <div className="absolute h-full w-full z-10"></div>
-      </Tooltip> */}
-
       <Tooltip
         title={
           addNodeMode ? (
@@ -959,11 +950,27 @@ const GraphComponent = (props, ref) => {
         }
         followCursor
         size="large"
-        open={(addNodeMode || addEdgeMode) && !isPromptOpen}
+        open={isHovered && (addNodeMode || addEdgeMode) && !isPromptOpen}
         onOpen={() => {}}
         onClose={() => {}}
+        slotProps={{
+          popper: {
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 10],
+                },
+              },
+            ],
+          },
+        }}
       >
-        <div className="graph-container pt-16 overflow-hidden w-full">
+        <div
+          className="graph-container pt-16 overflow-hidden w-full"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <Stage
             width={width} // small glitch // 1102
             // width={window.innerWidth * 0.57}

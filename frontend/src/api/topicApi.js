@@ -10,6 +10,9 @@ class TopicApi extends Api {
   updateTopic = async (id, data) => {
     return await this.put("/topics/" + id, data);
   };
+  updateTopics = async (data) => {
+    return await this.put("/topics/", data);
+  };
   createTopic = async (name) => {
     return await this.post("/topics/", {
       name: name,

@@ -33,6 +33,86 @@ class TopicRepository extends Repository {
     }
     return updatedTopic.get();
   };
+
+  updateTopics = async (data) => {
+    // delete all existing topic, and insert new ones from data. This operation should be atomic. Or you can suggest a better way. I suggest want, If the topic doesn't exist, create it. If it exists, update it. If it exists in the database but not in the data, delete it.
+    // const transaction = await db.sequelize.transaction();
+    // try {
+    //   const deletedTopics = await db.Topic.destroy({
+    //     where: {},
+    //     truncate: true,
+    //     transaction,
+    //   });
+    //   const newTopics = await db.Topic.bulkCreate(data, { transaction });
+    //   await transaction.commit();
+    //   return newTopics;
+    // } catch (error) {
+    //   await transaction.rollback();
+    //   throw error;
+    // }
+    // for (const topic of data) {
+    //   const recordToUpdate = await db.Topic.update(topic, {
+    //     returning: true,
+    //     where: {
+    //       id: topic.id,
+    //     },
+    //   });
+    // }
+    // return updatedTopics;
+    //  If the topic doesn't exist, create it. If it exists, update it. If it exists in the database but not in the data, delete it.
+    const transaction = await db.sequelize.transaction();
+    try {
+      const existingTopics = await db.Topic.findAll();
+      const existingTopicIds = existingTopics.map((topic) => topic.id);
+      const dataTopicIds = data.map((topic) => topic.id);
+      const topicsToDelete = existingTopicIds.filter(
+        (id) => !dataTopicIds.includes(id)
+      );
+      const topicsToUpdate = existingTopicIds.filter((id) =>
+        dataTopicIds.includes(id)
+      );
+      const topicsToCreate = dataTopicIds.filter(
+        (id) => !existingTopicIds.includes(id)
+      );
+      const deletedTopics = await db.Topic.destroy({
+        where: {
+          id: topicsToDelete,
+        },
+        transaction,
+      });
+
+      // console.log(topicsToUpdate);
+      for (const topic of data) {
+        const recordToUpdate = await db.Topic.update(topic, {
+          returning: true,
+          where: {
+            id: topic.id,
+          },
+        });
+      }
+      // const updatedTopics = await Promise.all(
+      //   topicsToUpdate.map(async (id) => {
+      //     const recordToUpdate = await db.Topic.update(data, {
+      //       returning: true,
+      //       where: {
+      //         id,
+      //       },
+      //       transaction,
+      //     });
+      //     return recordToUpdate;
+      //   })
+      // );
+      const createdTopics = await db.Topic.bulkCreate(topicsToCreate, {
+        transaction,
+      });
+      await transaction.commit();
+      return createdTopics;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  };
+
   deleteTopic = async (id) => {
     const deletedTopic = await db.Topic.destroy({
       where: {

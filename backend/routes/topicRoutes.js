@@ -15,6 +15,7 @@ router.post("/", requiresAdmin, topicController.createTopic); // add_new
 router.get("/:id", topicController.getTopicById); // fetch
 router.put("/serial", requiresAdmin, topicController.updateTopicSerial); // edit
 router.put("/:id", requiresAdmin, topicController.updateTopic); // edit
+router.put("/", requiresAdmin, topicController.updateTopics); // edit
 router.delete("/:id", requiresAdmin, topicController.deleteTopic); // delete
 // router.get("/live", topicController.getAllTopics); // pending
 // router.put("/:id/live", (req, res) => res.status(204).json()); // edit

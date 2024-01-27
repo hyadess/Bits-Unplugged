@@ -205,6 +205,31 @@ code {
   }
 }
 
+.bu-button-save {
+  // If on bg
+  @extend .bu-button;
+  background-color: #74cde9;
+  &:hover {
+    background-color: #46bbdf;
+  }
+  &:active {
+    --tw-ring-color: #74cde9;
+  }
+}
+
+.dark {
+  .bu-button-save {
+    // If on bg
+    @apply bg-blue-600;
+    &:hover {
+      @apply bg-blue-700;
+    }
+    &:active {
+      @apply ring-blue-600;
+    }
+  }
+}
+
 .bu-button-delete {
   // If on card
   @extend .bu-button;

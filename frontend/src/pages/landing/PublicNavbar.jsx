@@ -57,14 +57,14 @@ const PublicNavbar = ({ nav, setNav }) => {
       </div>
       <div className="flex md:justify-center w-full md:w-3/5">
         <>
-          <a
+          <button
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
               nav === "home"
                 ? "border-[#1C5B5F] dark:border-pink-500"
                 : "border-transparent"
             }`}
             data-tip="Home"
-            href="#home"
+            // href="#home"
             onClick={() => {
               setNav("home");
             }}
@@ -78,16 +78,16 @@ const PublicNavbar = ({ nav, setNav }) => {
               Home
             </div>
             <div className="divider hidden md:flex "></div>
-          </a>
+          </button>
 
-          <a
+          <button
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
               nav === "features"
                 ? "border-[#1C5B5F] dark:border-pink-500"
                 : "border-transparent"
             }`}
             data-tip="Features"
-            href="#features"
+            // href="#features"
             onClick={() => {
               setNav("features");
             }}
@@ -101,15 +101,15 @@ const PublicNavbar = ({ nav, setNav }) => {
               Features
             </div>
             <div className="divider hidden md:flex "></div>
-          </a>
-          <a
+          </button>
+          <button
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
               nav === "aboutus"
                 ? "border-[#1C5B5F] dark:border-pink-500"
                 : "border-transparent"
             }`}
             data-tip="About Us"
-            href="#aboutus"
+            // href="#aboutus"
             onClick={() => {
               setNav("aboutus");
             }}
@@ -123,7 +123,7 @@ const PublicNavbar = ({ nav, setNav }) => {
               About us
             </div>
             <div className="divider hidden md:flex "></div>
-          </a>
+          </button>
           <button
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
               location.pathname === "/login"

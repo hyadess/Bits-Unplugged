@@ -8,7 +8,7 @@ export function useIsVisible(ref) {
       ([entry]) => {
         setIntersecting(entry.isIntersecting);
       },
-      { threshold: 0.8 } // Adjust this value as per your needs
+      { threshold: 0.7 } // Adjust this value as per your needs
     );
 
     observer.observe(ref.current);

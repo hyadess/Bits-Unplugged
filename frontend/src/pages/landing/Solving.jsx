@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { setLoading } from "../../App";
 import ImageLoader from "../../components/ImageLoader";
-import { useContext, useEffect, useRef } from "react";
+import { forwardRef, useContext, useEffect, useRef } from "react";
 import GlobalContext from "../../store/GlobalContext";
 import { useIsVisible } from "../../hooks/useIsVisible";
 
-const Solving = ({ setNav }) => {
+const Solving = ({ setNav }, ref) => {
   const navigate = useNavigate();
   const { type } = useContext(GlobalContext);
-  const ref = useRef();
+  // const ref = useRef();
   const isVisible = useIsVisible(ref);
 
   useEffect(() => {
@@ -80,4 +80,4 @@ const Solving = ({ setNav }) => {
   );
 };
 
-export default Solving;
+export default forwardRef(Solving);

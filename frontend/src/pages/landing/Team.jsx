@@ -1,9 +1,9 @@
-import { useEffect, useRef } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 import TeamCard from "../../components/Cards/TeamCard";
 import { useIsVisible } from "../../hooks/useIsVisible";
 
-const Team = ({ setNav }) => {
-  const ref = useRef();
+const Team = ({ setNav }, ref) => {
+  // const ref = useRef();
   const isVisible = useIsVisible(ref);
 
   useEffect(() => {
@@ -53,4 +53,4 @@ const Team = ({ setNav }) => {
   );
 };
 
-export default Team;
+export default forwardRef(Team);

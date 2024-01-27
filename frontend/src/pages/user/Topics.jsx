@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import CustomCard from "../../components/Cards/CustomCard";
-import CardContainer from "../../containers/CardContainer";
+import CardContainer from "../../containers/CardContainer2";
 import Title from "../../components/Title";
 import { topicApi } from "../../api";
 import GlobalContext from "../../store/GlobalContext";

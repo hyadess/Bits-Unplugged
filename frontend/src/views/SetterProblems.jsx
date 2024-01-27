@@ -1,7 +1,7 @@
 import CustomModal from "../components/Modal/CustomModal";
 import Title from "../components/Title";
 import ProblemSetCard from "../components/Cards/ProblemSetCard";
-import CardContainer from "../containers/CardContainer";
+import CardContainer from "../containers/CardContainer2";
 import ProblemAddButton from "../components/Buttons/ProblemAddButton";
 import { useEffect } from "react";
 

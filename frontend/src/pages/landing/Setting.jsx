@@ -1,14 +1,27 @@
 import { useNavigate } from "react-router-dom";
 import { setLoading } from "../../App";
 import ImageLoader from "../../components/ImageLoader";
-import { useContext } from "react";
+import { forwardRef, useContext, useEffect } from "react";
 import GlobalContext from "../../store/GlobalContext";
+import { useIsVisible } from "../../hooks/useIsVisible";
 
-const Setting = () => {
+const Setting = ({ setNav }, ref) => {
   const navigate = useNavigate();
   const { type } = useContext(GlobalContext);
+  // const ref = useRef();
+  const isVisible = useIsVisible(ref);
+
+  useEffect(() => {
+    if (isVisible) {
+      setNav("features");
+    }
+  }, [isVisible]);
+
   return (
-    <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center gap-8 px-4 py-8 sm:py-16 md:flex-row  md:justify-end lg:px-6 xl:gap-16">
+    <div
+      ref={ref}
+      className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center gap-8 px-4 py-8 sm:py-16 md:flex-row  md:justify-end lg:px-6 xl:gap-16"
+    >
       <div className="flex flex-row gap-0 md:w-50%">
         <video className="block w-full dark:hidden" autoPlay loop muted>
           <source src="/videos/graph_light.mp4" type="video/mp4" />
@@ -72,4 +85,4 @@ const Setting = () => {
   );
 };
 
-export default Setting;
+export default forwardRef(Setting);

@@ -20,6 +20,7 @@ const Home = () => {
   const homeRef = useRef(null);
   const featuresRef = useRef(null);
   const aboutusRef = useRef(null);
+  const settingRef = useRef(null);
   const handleClick = (newNav) => {
     setNav(newNav);
     smoothscroll.polyfill();
@@ -38,7 +39,7 @@ const Home = () => {
       </Navbar>
       <Hero setNav={setNav} ref={homeRef} />
       <Solving setNav={setNav} ref={featuresRef} />
-      <Setting />
+      <Setting setNav={setNav} ref={settingRef} />
       <Suspense fallback={<div>Loading...</div>}>
         <Team setNav={setNav} ref={aboutusRef} />
         <Footer />

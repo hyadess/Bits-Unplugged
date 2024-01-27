@@ -37,6 +37,7 @@ const TestTab = (props, ref) => {
           <Button
             variant="contained"
             color="success"
+            size="large"
             onClick={() => {
               dispatch({
                 type: "UPDATE_TEST_CANVAS",
@@ -62,6 +63,7 @@ const TestTab = (props, ref) => {
                 problem.testActivity
               )
             }
+            size="large"
             endIcon={<Send sx={{ fontSize: "2rem", color: "white" }} />}
           >
             Submit

@@ -33,8 +33,8 @@ class ContestApi extends Api {
     return await this.get("/contests/"+contestId+"/problems/userView");
   };
 
-  addContest = async () => {
-    return await this.post("/contests/addContest", {});
+  addContest = async (title) => {
+    return await this.post("/contests/addContest", {title});
   };
 
   updateTitle = async (contestId, title) => {

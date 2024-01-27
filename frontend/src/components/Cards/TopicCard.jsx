@@ -31,7 +31,7 @@ const TopicCard = ({ id, name, image, path, action }) => {
   const [progress, setProgress] = useState(0);
   useEffect(() => {
     let tmp = Math.round(Math.random() * 50);
-    let tmp2 = tmp + Math.round(Math.random() * 50);
+    let tmp2 = tmp + Math.round(Math.random() * 60);
     setSolved(tmp);
     setTotal(tmp2);
     setProgress(Math.round((tmp / tmp2) * 100));

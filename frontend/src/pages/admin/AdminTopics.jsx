@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomCard from "../../components/Cards/CustomCard";
-import CardContainer from "../../containers/CardContainer";
+import CardContainer from "../../containers/CardContainer2";
 import Cookies from "universal-cookie";
 import Title from "../../components/Title";
 import Modal from "../../components/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import { topicApi } from "../../api";
+import TopicCard from "../../components/Cards/TopicCard";
 const AdminTopics = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -65,15 +66,15 @@ const AdminTopics = () => {
         </div>
       </div>
       {!loading && (
-        <CardContainer col={3}>
+        <CardContainer col={2}>
           {topicList.map((topic, index) => (
-            <CustomCard
+            <TopicCard
               key={index}
               id={`Topic ${index + 1}`}
               name={topic.name}
               image={topic.logo}
-              path={`/admin/topics/${topic.id}`}
-              action="View Topic"
+              path={`/topics/${topic.id}`}
+              action="View Series"
             />
           ))}
         </CardContainer>

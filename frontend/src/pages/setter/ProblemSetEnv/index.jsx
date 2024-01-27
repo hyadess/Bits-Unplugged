@@ -25,7 +25,7 @@ const ProblemSetEnvView = () => {
   const deepCopy = (obj) => {
     return JSON.parse(JSON.stringify(obj));
   };
-  const testRef = useRef();
+  const testRef = useRef(null);
   const deleteProblem = async () => {
     const res = await problemApi.deleteProblem(problem.id);
     if (res.success) {
@@ -107,7 +107,7 @@ const ProblemSetEnvView = () => {
           <SolutionCheckerTab />
         </div>
         <div className={activeComponent === "Test" ? "block" : "hidden"}>
-          <TestTab testRef={testRef} />
+          <TestTab ref={testRef} />
         </div>
       </div>
       <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} />

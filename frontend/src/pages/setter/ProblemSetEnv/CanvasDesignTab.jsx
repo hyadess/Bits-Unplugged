@@ -83,13 +83,6 @@ const CanvasDesignTab = ({ backupProblem }) => {
   }, []);
 
   const changeCanvas = (canvasId) => {
-    // setCanvasId(canvasId;
-    dispatch({
-      type: "CLEAR_TEST_CANVAS",
-    });
-    dispatch({
-      type: "CLEAR_TEST_ACTIVITY",
-    });
     dispatch({ type: "UPDATE_CANVAS_ID", payload: canvasId });
     // console.log(problem.canvasId);
     // type: CHANGE_CANVAS
@@ -102,6 +95,8 @@ const CanvasDesignTab = ({ backupProblem }) => {
           canvasData: deepCopy(problem.canvasData),
           checkerCode: problem.checkerCode,
           checkerCanvas: deepCopy(problem.checkerCanvas ?? problem.canvasData),
+          test: null,
+          testActivity: {},
           editOptions: problem.editOptions,
           previewOptions: problem.previewOptions,
         },
@@ -123,6 +118,8 @@ const CanvasDesignTab = ({ backupProblem }) => {
             canvasData: null,
             checkerCode: res.template,
             checkerCanvas: null,
+            test: null,
+            testActivity: {},
             editOptions: res.editOptions,
             previewOptions: res.previewOptions,
           },

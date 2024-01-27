@@ -29,12 +29,6 @@ const ProblemContextProvider = ({ children }) => {
           checkerCode: payload,
         };
 
-      case "CLEAR_CHECKER_CANVAS":
-        return {
-          ...state,
-          checkerCanvas: null,
-        };
-
       case "UPDATE_CHECKER_CANVAS":
         return {
           ...state,
@@ -59,24 +53,10 @@ const ProblemContextProvider = ({ children }) => {
           canvasData: { ...state.canvasData, ...payload },
         };
 
-      case "CLEAR_TEST_CANVAS":
-        console.log("Test canvas cleared");
-        return {
-          ...state,
-          test: null,
-        };
-
       case "UPDATE_TEST_CANVAS":
         return {
           ...state,
           test: { ...state.test, ...payload },
-        };
-
-      case "CLEAR_TEST_ACTIVITY":
-        console.log("Test activity cleared");
-        return {
-          ...state,
-          testActivity: {},
         };
 
       case "UPDATE_TEST_ACTIVITY":

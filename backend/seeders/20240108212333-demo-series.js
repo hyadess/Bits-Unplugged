@@ -17,8 +17,8 @@ module.exports = {
         },
         {
           // 2
-          topicId: 1,
-          name: "Minimum Spanning Tree",
+          topicId: 4,
+          name: "Spanning Tree",
           description: "",
           logo: "https://blog-c7ff.kxcdn.com/blog/wp-content/uploads/2017/01/blog-10.jpg",
           createdAt: new Date(),
@@ -47,15 +47,6 @@ module.exports = {
         {
           // 5
           topicId: 1,
-          name: "Planar Graph",
-          description: "",
-          logo: "https://miro.medium.com/v2/resize:fit:1400/1*Xo-W6UucD0e2gmOB5wescg.gif",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          // 6
-          topicId: 1,
           name: "Isomorphism",
           description: "",
           logo: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d1df5349-0b0f-4d07-a13d-c59daaae9f90/dg53ht0-d224bd39-3578-42c6-acd9-0336c3f641da.jpg/v1/fill/w_904,h_884,q_70,strp/spiderman_meme_by_yostverseeditsmarvel_dg53ht0-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTA1NyIsInBhdGgiOiJcL2ZcL2QxZGY1MzQ5LTBiMGYtNGQwNy1hMTNkLWM1OWRhYWFlOWY5MFwvZGc1M2h0MC1kMjI0YmQzOS0zNTc4LTQyYzYtYWNkOS0wMzM2YzNmNjQxZGEuanBnIiwid2lkdGgiOiI8PTEwODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.cv9Q8FgnY5Doy3JMOQaw6tkNp2wZ75eC1KiMELUhYas",
@@ -63,16 +54,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          // 7
-          topicId: 1,
-          name: "Bipartite Graph",
-          description: "",
-          logo: "https://miro.medium.com/v2/resize:fit:588/0*PWKRBToddj9I36q4.gif",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          // 8
+          // 6
           topicId: 1,
           name: "Travelling Salesman",
           description: "",
@@ -80,6 +62,25 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          // 7
+          topicId: 1,
+          name: "Planar Graph",
+          description: "",
+          logo: "https://miro.medium.com/v2/resize:fit:1400/1*Xo-W6UucD0e2gmOB5wescg.gif",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          // 8
+          topicId: 1,
+          name: "Bipartite Graph",
+          description: "",
+          logo: "https://miro.medium.com/v2/resize:fit:588/0*PWKRBToddj9I36q4.gif",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+
         {
           // id: 1,
           topicId: 4,

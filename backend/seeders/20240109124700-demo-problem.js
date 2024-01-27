@@ -16,6 +16,7 @@ module.exports = {
       "Problems",
       [
         {
+          // 1
           setterId: 1,
           canvasId: 2,
           title: "3 Disks",
@@ -41,6 +42,7 @@ module.exports = {
           }),
         },
         {
+          // 2
           setterId: 1,
           canvasId: 2,
           title: "Min 3 Disks",
@@ -66,6 +68,7 @@ module.exports = {
           }),
         },
         {
+          // 3
           setterId: 1,
           canvasId: 2,
           title: "Min 4 Disks",
@@ -91,7 +94,7 @@ module.exports = {
           }),
         },
         {
-          // id: 36,
+          // 4,
           setterId: 1,
           canvasId: 2,
           title: "Double TOH",
@@ -116,6 +119,7 @@ module.exports = {
           }),
         },
         {
+          // 5
           setterId: 1,
           canvasId: 1,
           title: "Road Construction",
@@ -178,6 +182,7 @@ module.exports = {
           }),
         },
         {
+          // 6
           setterId: 1,
           canvasId: 1,
           title: "Road Construction 2",
@@ -263,6 +268,7 @@ module.exports = {
           }),
         },
         {
+          // 7
           setterId: 1,
           canvasId: 1,
           title: "Coloring",
@@ -325,6 +331,7 @@ module.exports = {
           checkerCanvas: null,
         },
         {
+          // 8
           setterId: 1,
           canvasId: 1,
           title: "Bipartition",
@@ -353,6 +360,7 @@ module.exports = {
           checkerCanvas: null,
         },
         {
+          // 9
           setterId: 1,
           canvasId: 1,
           title: "Rearrange",
@@ -407,6 +415,7 @@ module.exports = {
           checkerCanvas: null,
         },
         {
+          // 10
           setterId: 1,
           canvasId: 1,
           title: "Shorter Path",
@@ -555,6 +564,7 @@ module.exports = {
           }),
         },
         {
+          // 11
           setterId: 1,
           canvasId: 1,
           title: "Round n Round",

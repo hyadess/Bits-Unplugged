@@ -40,6 +40,7 @@ import SetterProfile from "./pages/setter/SetterProfile";
 import Profile from "./pages/user/Profile";
 import Contests from "./pages/user/Contests";
 import SetterContests from "./pages/setter/SetterContests";
+import Contest from "./pages/setter/Contest"
 import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
 const ProblemSolver = () => {
@@ -308,6 +309,15 @@ const AppRoutes = () => {
           />
 
           <Route
+            path="/contests/:id/preview"
+            element={
+              <LayoutMain>
+                <Contest />
+              </LayoutMain>
+            }
+          />
+
+          <Route
             path="/topics"
             element={
               <LayoutMain
@@ -401,7 +411,7 @@ const AppRoutes = () => {
                       ? "/problemSet"
                       : type == 2
                         ? "/admin/topics"
-                        : "/home"
+                        : "/landing"
                 }
               />
             }
@@ -409,7 +419,7 @@ const AppRoutes = () => {
         )}
 
         <Route
-          path="/home"
+          path="/landing"
           element={
             <Layout2 nav={<PublicNavbar />}>
               <Home />

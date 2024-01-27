@@ -37,13 +37,13 @@ const AdminNavbar = () => {
   }, []);
 
   return (
-    <div className="flex flex-row w-full justify-between md:justify-center">
+    <div className="flex flex-row w-full justify-between md:justify-center shadow-md">
       <div className="icon flex-2 hidden md:flex h-20 w-1/5 px-5">
         <div
           className="p-5 pl-0"
           onClick={() => {
             setLoading(true);
-            navigate("/home");
+            navigate("/landing");
           }}
         >
           <Logo />

@@ -110,13 +110,13 @@ class ContestRepository extends Repository {
 
   //*****************UPDATING CONTEST TABLE************* */
 
-  addContest = async (setterId) => {
+  addContest = async (setterId,title) => {
     const query = `
         INSERT INTO "Contests" ("title", "description", "startDate", "endDate", "status", "updatedAt")
-        VALUES (NULL, NULL, NULL, NULL, 'edit', $1)
+        VALUES ($1, NULL, NULL, NULL, 'edit', $2)
         RETURNING "contestId";          
         `;
-    const params = [Date.now()];
+    const params = [title,Date.now()];
     const result = await this.query(query, params);
     const contestId = result.data[0].contestId;
 

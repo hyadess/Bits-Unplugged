@@ -6,7 +6,7 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "./pages/landing/Home";
 import Problems from "./pages/user/Problems";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
@@ -15,7 +15,7 @@ import Topics from "./pages/user/Topics";
 import Series from "./pages/user/Series";
 import SetterProblems from "./pages/setter/SetterProblems";
 import ProblemSetEnv from "./pages/setter/ProblemSetEnv";
-import PublicNavbar from "./components/Navbars/PublicNavbar";
+import PublicNavbar from "./pages/landing/PublicNavbar";
 import SolverProfileTab from "./components/SolverProfileTab";
 import Layout2 from "./components/Layouts/Layout2";
 import Layout3 from "./components/Layouts/Layout3";
@@ -40,6 +40,7 @@ import SetterProfile from "./pages/setter/SetterProfile";
 import Profile from "./pages/user/Profile";
 import Contests from "./pages/user/Contests";
 import SetterContests from "./pages/setter/SetterContests";
+import Contest from "./pages/setter/Contest"
 import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
 const ProblemSolver = () => {
@@ -308,6 +309,15 @@ const AppRoutes = () => {
           />
 
           <Route
+            path="/contests/:id/preview"
+            element={
+              <LayoutMain>
+                <Contest />
+              </LayoutMain>
+            }
+          />
+
+          <Route
             path="/topics"
             element={
               <LayoutMain
@@ -382,17 +392,6 @@ const AppRoutes = () => {
             </LayoutMain>
           }
         /> */}
-        {/* 
-        <Route element={<Private />}>
-          <Route
-            path="/profile/:username"
-            element={
-              <LayoutMain>
-                <Profile />
-              </LayoutMain>
-            }
-          />
-        </Route> */}
 
         <Route element={<Public />}>
           <Route path="/login" element={<Login />} />
@@ -412,7 +411,7 @@ const AppRoutes = () => {
                       ? "/problemSet"
                       : type == 2
                         ? "/admin/topics"
-                        : "/home"
+                        : "/landing"
                 }
               />
             }
@@ -420,11 +419,11 @@ const AppRoutes = () => {
         )}
 
         <Route
-          path="/home"
+          path="/landing"
           element={
-            <Layout2 nav={<PublicNavbar />}>
-              <Home />
-            </Layout2>
+            // <Layout2 nav={<PublicNavbar />}>
+            <Home />
+            // </Layout2>
           }
         />
 

@@ -83,6 +83,8 @@ const GraphComponent = (props, ref) => {
   const [isDragging, setIsDragging] = useState(-1);
   const [addNodeMode, setAddNodeMode] = useState(false);
   const [addEdgeMode, setAddEdgeMode] = useState(false);
+  const [selectedEdge, setSelectedEdge] = useState(null);
+  const [selectedNode, setSelectedNode] = useState(null);
   //custom sets................................................................................................
 
   const setNodes = (nodes) => {
@@ -190,7 +192,10 @@ const GraphComponent = (props, ref) => {
       setWidth(windowRef.current.offsetWidth);
     });
     resizeObserver.observe(windowRef.current);
-    return () => resizeObserver.disconnect(); // clean up
+    return () => {
+      resizeObserver.disconnect(); // clean up
+      document.body.style.cursor = "default";
+    }; // clean up
   }, []);
 
   // Function to calculate the distance from a point to a line segment...used to select an edge!!!!
@@ -373,6 +378,9 @@ const GraphComponent = (props, ref) => {
           }
         });
 
+        // Multi Edge Select Mode
+        // Multi Node Select Mode
+
         //if clicked nere an edge, select that edge, else, create a node!!!
 
         if (nearestEdge && minDistance <= 1.0 * EDGECLICKRANGE) {
@@ -429,7 +437,7 @@ const GraphComponent = (props, ref) => {
     if (selectedNodes.length === 0) {
       setSelectedNodes([nodeKey]);
       setSelectedEdges([]);
-      console.log("DDDDDDDDDDDDDDDDDDd");
+      // console.log("DDDDDDDDDDDDDDDDDDd");
     } else if (selectedNodes.includes(nodeKey)) {
       // If the clicked node is already selected, unselect it
       setSelectedNodes((prev) =>
@@ -920,20 +928,11 @@ const GraphComponent = (props, ref) => {
       </div>
     </Modal>
   );
+
+  const [isHovered, setIsHovered] = useState(false);
   return (
     <div className="w-full  relative" ref={windowRef}>
       {Header()}
-      {/* <Tooltip
-        title="Click anywhere to add a node"
-        followCursor
-        size="large"
-        // open={addNodeMode}
-        // onOpen={()=>{}}
-        // onClose={()=>{}}
-      >
-        <div className="absolute h-full w-full z-10"></div>
-      </Tooltip> */}
-
       <Tooltip
         title={
           addNodeMode ? (
@@ -954,11 +953,27 @@ const GraphComponent = (props, ref) => {
         }
         followCursor
         size="large"
-        open={(addNodeMode || addEdgeMode) && !isPromptOpen}
+        open={isHovered && (addNodeMode || addEdgeMode) && !isPromptOpen}
         onOpen={() => {}}
         onClose={() => {}}
+        slotProps={{
+          popper: {
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 10],
+                },
+              },
+            ],
+          },
+        }}
       >
-        <div className="graph-container pt-16 overflow-hidden w-full">
+        <div
+          className="graph-container pt-16 overflow-hidden w-full"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <Stage
             width={width} // small glitch // 1102
             // width={window.innerWidth * 0.57}

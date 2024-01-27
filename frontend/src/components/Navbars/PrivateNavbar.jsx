@@ -69,7 +69,7 @@ const PrivateNavbar = (props) => {
   return (
     <>
       {type >= 0 && (
-        <div className="flex flex-row w-full justify-between md:justify-center">
+        <div className="flex flex-row w-full justify-between md:justify-center shadow-md">
           <div className="hidden md:flex h-20 w-1/5 items-center px-5">
             <div
               className={`p-5 pl-0 transition-all duration-300 ease-in-out ${

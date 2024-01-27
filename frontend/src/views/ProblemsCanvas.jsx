@@ -19,7 +19,7 @@ const Title = ({ problem }) => {
         </h2>
       </div>
       <span className="bu-text-subtitle text-xl">
-        {problem
+        {problem && problem.series
           ? problem?.series?.topic?.name + " > " + problem?.series?.name
           : ""}
       </span>
@@ -74,11 +74,11 @@ const Statement = ({ colorMode }) => {
   const { state: problem, dispatch } = useProblemContext();
   return (
     <div className="mx-auto max-w-screen-2xl items-center">
-      <div className="bu-text-primary mb-6  text-left font-light md:text-lg">
+      <div className="bu-text-primary  text-left font-light md:text-lg">
         <div
           style={{
             width: "100%",
-            padding: "30px 0",
+            paddingTop: "20px",
             fontSize: "25px",
             border: "none",
             borderRadius: "20px",
@@ -124,6 +124,7 @@ const Canvas = forwardRef(({ onReset, onSubmit }, ref) => {
         />
         <div className="flex flex-row justify-between">
           <Button
+            size="large"
             variant="contained"
             color="success"
             onClick={() => {
@@ -137,6 +138,7 @@ const Canvas = forwardRef(({ onReset, onSubmit }, ref) => {
             Reset
           </Button>
           <Button
+            size="large"
             variant="contained"
             onClick={onSubmit}
             endIcon={<SendIcon sx={{ fontSize: "2rem", color: "white" }} />}

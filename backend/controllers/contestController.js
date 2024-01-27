@@ -82,7 +82,7 @@ class ContestController extends Controller {
   };
 
   addContest = async (req, res) => {
-    let result = await contestRepository.addContest(req.user.userId);
+    let result = await contestRepository.addContest(req.user.userId,req.body.title);
     if (result.success) {
       res.status(201).json(result.data);
     } else {

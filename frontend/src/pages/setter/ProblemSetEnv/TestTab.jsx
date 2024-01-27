@@ -1,16 +1,16 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import CanvasContainer from "../../../components/Canvases/CanvasContainer";
 import Button from "@mui/material/Button";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import Send from "@mui/icons-material/Send";
 import { useProblemContext } from "../../../store/ProblemContextProvider";
 import SubmissionService from "../../../services/submissionService";
-const TestTab = ({ testRef }) => {
+const TestTab = (props, ref) => {
   const { state: problem, dispatch } = useProblemContext();
 
   return (
     problem.canvasId &&
-    testRef && (
+    ref && (
       <>
         <CanvasContainer
           canvasId={problem.canvasId}
@@ -28,7 +28,7 @@ const TestTab = ({ testRef }) => {
               payload: { ...data },
             });
           }}
-          ref={testRef}
+          ref={ref}
           mode="preview"
           previewOptions={problem.previewOptions}
           editOptions={problem.editOptions}
@@ -42,7 +42,7 @@ const TestTab = ({ testRef }) => {
                 type: "UPDATE_TEST_CANVAS",
                 payload: JSON.parse(JSON.stringify(problem.canvasData)),
               });
-              testRef.current.handleReset(
+              ref?.current.handleReset(
                 JSON.parse(JSON.stringify(problem.canvasData))
               ); // Call this after reset
             }}
@@ -72,4 +72,4 @@ const TestTab = ({ testRef }) => {
   );
 };
 
-export default TestTab;
+export default forwardRef(TestTab);

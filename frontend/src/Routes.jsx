@@ -6,7 +6,7 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "./pages/landing/Home";
 import Problems from "./pages/user/Problems";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
@@ -15,7 +15,7 @@ import Topics from "./pages/user/Topics";
 import Series from "./pages/user/Series";
 import SetterProblems from "./pages/setter/SetterProblems";
 import ProblemSetEnv from "./pages/setter/ProblemSetEnv";
-import PublicNavbar from "./components/Navbars/PublicNavbar";
+import PublicNavbar from "./pages/landing/PublicNavbar";
 import SolverProfileTab from "./components/SolverProfileTab";
 import Layout2 from "./components/Layouts/Layout2";
 import Layout3 from "./components/Layouts/Layout3";
@@ -421,9 +421,9 @@ const AppRoutes = () => {
         <Route
           path="/landing"
           element={
-            <Layout2 nav={<PublicNavbar />}>
-              <Home />
-            </Layout2>
+            // <Layout2 nav={<PublicNavbar />}>
+            <Home />
+            // </Layout2>
           }
         />
 

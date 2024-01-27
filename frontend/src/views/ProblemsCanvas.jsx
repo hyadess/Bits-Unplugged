@@ -124,6 +124,7 @@ const Canvas = forwardRef(({ onReset, onSubmit }, ref) => {
         />
         <div className="flex flex-row justify-between">
           <Button
+            size="large"
             variant="contained"
             color="success"
             onClick={() => {
@@ -137,6 +138,7 @@ const Canvas = forwardRef(({ onReset, onSubmit }, ref) => {
             Reset
           </Button>
           <Button
+            size="large"
             variant="contained"
             onClick={onSubmit}
             endIcon={<SendIcon sx={{ fontSize: "2rem", color: "white" }} />}

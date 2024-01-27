@@ -16,11 +16,13 @@ module.exports = (sequelize, DataTypes) => {
       name: DataTypes.STRING,
       description: DataTypes.TEXT,
       logo: DataTypes.TEXT,
+      isLive: DataTypes.BOOLEAN,
+      serialNo: DataTypes.INTEGER,
     },
     {
       sequelize,
       modelName: "Topic",
-  }
+    }
   );
   return Topic;
 };

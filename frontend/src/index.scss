@@ -231,15 +231,13 @@ code {
 }
 
 .bu-button-delete {
-  // If on card
   @extend .bu-button;
-  @apply bg-red-300;
+  background-color: #ef9c9c;
   &:hover {
-    @apply bg-red-400;
+    background-color: #e17171;
   }
   &:active {
-    // @apply bg-red-400;
-    @apply ring-red-300;
+    --tw-ring-color: #ef9c9c;
   }
 }
 

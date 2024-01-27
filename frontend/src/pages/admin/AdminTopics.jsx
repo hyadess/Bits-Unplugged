@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomCard from "../../components/Cards/CustomCard";
 import CardContainer from "../../containers/CardContainer2";
@@ -19,7 +19,13 @@ import {
   swap,
 } from "react-grid-dnd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCross,
+  faCrosshairs,
+  faFloppyDisk,
+  faPenToSquare,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { showSuccess } from "../../App";
 
 function DraggableTopicCard({
@@ -76,22 +82,20 @@ const AdminTopics = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [topicList, setTopicList] = useState([]);
+  const topicListRef = useRef(null);
   const [isEdit, setIsEdit] = useState(false);
   const getTopicList = async () => {
     const res = await topicApi.getAllTopics();
     if (res.success) {
       setTopicList(res.data);
+      topicListRef.current = res.data;
       setLoading(false);
-      console.log(res);
+      // console.log(res);
     }
   };
 
   const deleteTopic = async (topicId) => {
-    const res = await topicApi.deleteTopic(topicId);
-    if (res.success) {
-      // remove topic from topiclist with given topicId
-      setTopicList((prev) => prev.filter((topic) => topic.id !== topicId));
-    }
+    setTopicList((prev) => prev.filter((topic) => topic.id !== topicId));
   };
   const setTopic = (id, data) => {
     // set topic in given id with given data
@@ -140,6 +144,25 @@ const AdminTopics = () => {
     }
   };
 
+  const handleSave = async () => {
+    // update all topics
+    const topics = topicList.map((topic, index) => ({
+      ...topic,
+      serialNo: topicList.length - index, // if you want the serial number to start from 1 instead of 0
+    }));
+    
+    const res = await topicApi.updateTopics(topics);
+    if (res.success) {
+      topicListRef.current = topics;
+      setTopicList(topics);
+      showSuccess("Changes are saved", res);
+    }
+  };
+  const handleCancel = async (e) => {
+    // update all topics
+    setTopicList(topicListRef.current);
+  };
+
   const saveTopicSerial = async () => {
     const serials = [];
     for (let i = 0; i < topicList.length; i++) {
@@ -160,19 +183,35 @@ const AdminTopics = () => {
         <div className="flex flex-row justify-between">
           <Title title={`Topics`} sub_title={`Add/Delete/Update Topics`} />
           {isEdit ? (
-            <div className="flex items-center">
-              <button
-                className="bu-button-primary rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white"
-                onClick={async () => {
-                  setIsEdit((prev) => !prev);
-                  await saveTopicSerial();
-                }}
-              >
-                <div className="flex flex-row items-center gap-4">
-                  <FontAwesomeIcon icon={faFloppyDisk} size="lg" />
-                  SAVE
-                </div>
-              </button>
+            <div className="flex flex-row gap-4">
+              <div className="flex items-center">
+                <button
+                  className="bu-button-delete rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white"
+                  onClick={async () => {
+                    handleCancel();
+                    setIsEdit((prev) => !prev);
+                  }}
+                >
+                  <div className="flex flex-row items-center gap-4  w-[7rem] justify-center">
+                    <FontAwesomeIcon icon={faXmark} size="lg" />
+                    DISCARD
+                  </div>
+                </button>
+              </div>
+              <div className="flex items-center">
+                <button
+                  className="bu-button-primary rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white"
+                  onClick={async () => {
+                    await handleSave();
+                    setIsEdit((prev) => !prev);
+                  }}
+                >
+                  <div className="flex flex-row items-center gap-4 w-[7rem] justify-center">
+                    <FontAwesomeIcon icon={faFloppyDisk} size="lg" />
+                    SAVE
+                  </div>
+                </button>
+              </div>
             </div>
           ) : (
             <div className="flex items-center">
@@ -182,7 +221,7 @@ const AdminTopics = () => {
                   setIsEdit((prev) => !prev);
                 }}
               >
-                <div className="flex flex-row items-center gap-4">
+                <div className="flex flex-row items-center gap-4  w-[7rem] justify-center">
                   <FontAwesomeIcon icon={faPenToSquare} size="lg" />
                   EDIT
                 </div>

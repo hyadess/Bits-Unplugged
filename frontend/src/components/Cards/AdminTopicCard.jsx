@@ -107,7 +107,7 @@ const TopicCard = ({
               {isLive ? (
                 <IconButton
                   onClick={async () => {
-                    await topicApi.updateTopic(id, { isLive: false });
+                    // await topicApi.updateTopic(id, { isLive: false });
                     setTopic(id, { isLive: false });
                   }}
                 >
@@ -118,7 +118,7 @@ const TopicCard = ({
               ) : (
                 <IconButton
                   onClick={async () => {
-                    await topicApi.updateTopic(id, { isLive: true });
+                    // await topicApi.updateTopic(id, { isLive: true });
                     setTopic(id, { isLive: true });
                   }}
                 >

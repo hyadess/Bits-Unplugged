@@ -36,16 +36,19 @@ export default function Problems() {
             <div className="bu-text-primary text-5xl font-medium">Tree</div>
           </div> */}
           <CardContainer col={3}>
-            {seriesList.map((series, index) => (
-              <CustomCard
-                key={index}
-                id={`Series ${index + 1}`}
-                name={series.name}
-                image={series.logo}
-                path={`/series/${series.id}`}
-                action="View Problems"
-              />
-            ))}
+            {seriesList.map(
+              (series, index) =>
+                series.isLive && (
+                  <CustomCard
+                    key={index}
+                    id={`Series ${index + 1}`}
+                    name={series.name}
+                    image={series.logo}
+                    path={`/series/${series.id}`}
+                    action="View Problems"
+                  />
+                )
+            )}
           </CardContainer>
         </>
       )}

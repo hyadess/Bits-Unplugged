@@ -11,6 +11,8 @@ router.use(
 );
 
 router.get("/", topicController.getAllTopics);
+router.get("/:id/series", topicController.getAllSeries);
+router.put("/:id/series", topicController.updateAllSeries);
 router.post("/", requiresAdmin, topicController.createTopic); // add_new
 router.get("/:id", topicController.getTopicById); // fetch
 router.put("/serial", requiresAdmin, topicController.updateTopicSerial); // edit

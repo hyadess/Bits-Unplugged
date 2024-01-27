@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Logo from "../Logo";
+import Logo from "../../components/Logo";
 import { setLoading } from "../../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,11 +9,10 @@ import {
   faPeopleGroup,
   faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
-const PublicNavbar = (props) => {
+const PublicNavbar = ({ nav, setNav }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [darkMode, setDarkMode] = useState(null);
-  const [tab, setTab] = useState(0);
 
   const toggleDarkMode = () => {
     setDarkMode((prevDarkMode) => !prevDarkMode);
@@ -60,24 +59,19 @@ const PublicNavbar = (props) => {
         <>
           <a
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
-              location.pathname === "/landing"
+              nav === "home"
                 ? "border-[#1C5B5F] dark:border-pink-500"
                 : "border-transparent"
             }`}
             data-tip="Home"
             href="#home"
-            // onClick={() => {
-            //   if (location.pathname !== "/landing") {
-            //     setLoading(true);
-            //     navigate("/landing");
-            //   }
-            // }}
+            onClick={() => {
+              setNav("home");
+            }}
           >
             <div
               className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
-                location.pathname === "/landing"
-                  ? "bu-text-title"
-                  : "bu-text-primary-hover"
+                nav === "home" ? "bu-text-title" : "bu-text-primary-hover"
               }`}
             >
               <FontAwesomeIcon icon={faHouse} />
@@ -88,24 +82,19 @@ const PublicNavbar = (props) => {
 
           <a
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
-              location.pathname === "/features"
+              nav === "features"
                 ? "border-[#1C5B5F] dark:border-pink-500"
                 : "border-transparent"
             }`}
-            data-tip="Home"
+            data-tip="Features"
             href="#features"
-            // onClick={() => {
-            //   if (location.pathname !== "/landing") {
-            //     setLoading(true);
-            //     navigate("/landing");
-            //   }
-            // }}
+            onClick={() => {
+              setNav("features");
+            }}
           >
             <div
               className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
-                location.pathname === "/features"
-                  ? "bu-text-title"
-                  : "bu-text-primary-hover"
+                nav === "features" ? "bu-text-title" : "bu-text-primary-hover"
               }`}
             >
               <FontAwesomeIcon icon={faList} />
@@ -115,24 +104,19 @@ const PublicNavbar = (props) => {
           </a>
           <a
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
-              location.pathname === "/about"
+              nav === "aboutus"
                 ? "border-[#1C5B5F] dark:border-pink-500"
                 : "border-transparent"
             }`}
             data-tip="About Us"
             href="#aboutus"
-            // onClick={() => {
-            //   if (location.pathname !== "/aboutus") {
-            //     setLoading(true);
-            //     navigate("/landing");
-            //   }
-            // }}
+            onClick={() => {
+              setNav("aboutus");
+            }}
           >
             <div
               className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
-                location.pathname === "/about"
-                  ? "bu-text-title"
-                  : "bu-text-primary-hover"
+                nav === "aboutus" ? "bu-text-title" : "bu-text-primary-hover"
               }`}
             >
               <FontAwesomeIcon icon={faPeopleGroup} />

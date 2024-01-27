@@ -24,5 +24,11 @@ class TopicApi extends Api {
   updateTopicSerial = async (data) => {
     return await this.put("/topics/serial", data);
   };
+  getAllSeries = async (topicId) => {
+    return await this.get("/topics/" + topicId + "/series");
+  };
+  updateSeries = async (id, data) => {
+    return await this.put("/topics/" + id + "/series", data);
+  };
 }
 export default TopicApi;

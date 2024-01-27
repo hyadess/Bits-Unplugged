@@ -14,7 +14,7 @@ const LayoutMain = (props) => {
       <div className="fixed bottom-0 right-0 top-0 hidden w-1/5 p-5 md:mt-20 md:flex">
         {props.right}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

@@ -150,7 +150,7 @@ const AdminTopics = () => {
       ...topic,
       serialNo: topicList.length - index, // if you want the serial number to start from 1 instead of 0
     }));
-    
+
     const res = await topicApi.updateTopics(topics);
     if (res.success) {
       topicListRef.current = topics;

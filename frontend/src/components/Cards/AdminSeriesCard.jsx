@@ -10,14 +10,13 @@ import CheckCircle from "@mui/icons-material/CheckCircle";
 import AddTask from "@mui/icons-material/AddTask";
 import { topicApi } from "../../api";
 
-const TopicCard = ({
+const SeriesCard = ({
   id,
-  idx,
   name,
   image,
   path,
   isLive,
-  setTopic,
+  setSeries,
   deleteAction,
   isEdit,
 }) => {
@@ -40,8 +39,8 @@ const TopicCard = ({
         className="flex flex-col items-center w-full h-[10.5rem] cursor-pointer relative"
         onClick={() => {
           if (!isEdit) {
-            setLoading(true);
-            navigate(path);
+            // setLoading(true);
+            // navigate(path);
           }
         }}
       >
@@ -108,7 +107,7 @@ const TopicCard = ({
                 <IconButton
                   onClick={async () => {
                     // await topicApi.updateTopic(id, { isLive: false });
-                    setTopic(id, { isLive: false });
+                    setSeries(id, { isLive: false });
                   }}
                 >
                   <div className="flex items-center bu-text-primary">
@@ -119,7 +118,7 @@ const TopicCard = ({
                 <IconButton
                   onClick={async () => {
                     // await topicApi.updateTopic(id, { isLive: true });
-                    setTopic(id, { isLive: true });
+                    setSeries(id, { isLive: true });
                   }}
                 >
                   <div className="flex items-center bu-text-subtitle">
@@ -150,4 +149,4 @@ const TopicCard = ({
   );
 };
 
-export default TopicCard;
+export default SeriesCard;

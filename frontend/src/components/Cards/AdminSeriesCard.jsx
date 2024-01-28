@@ -46,7 +46,7 @@ const SeriesCard = ({
       >
         <div
           className={`flex flex-row border rounded-lg h-full w-full p-5 bu-card-primary ${
-            isLive ? (isEdit ? "shadow-xl" : "shadow-md") : "opacity-60"
+            isLive ? "shadow-md" : "opacity-60"
           }`}
         >
           <div className="flex flex-col gap-1 justify-between w-[70%]">
@@ -58,7 +58,7 @@ const SeriesCard = ({
             </div>
             <div className="flex flex-col gap-1">
               <h5 className="bu-text-subtitle text-sm">
-                {solved}/{total} problems solved
+              {solved}/{total} problems solved
               </h5>
               <div className="w-full h-[8.86px] left-[367.76px] top-[344.82px] bg-[#EDEDED] rounded-[6px]">
                 {progress && (

@@ -16,8 +16,64 @@ class SeriesRepository extends Repository {
       where: {
         topicId,
       },
+      // descending order by serialNo
+      order: [["serialNo", "DESC"]],
     });
     return series;
+  };
+
+  updateSeriesByTopic = async (topicId, data) => {
+    console.log("Called");
+    const transaction = await db.sequelize.transaction();
+    try {
+      // find all series by topicId
+      const existingSeries = await db.Series.findAll({
+        where: {
+          topicId,
+        },
+        transaction,
+      });
+
+      const existingSeriesIds = existingSeries.map((series) => series.id);
+      const dataSeriesIds = data.map((series) => series.id);
+      const seriesToDelete = existingSeriesIds.filter(
+        (id) => !dataSeriesIds.includes(id)
+      );
+      const seriesToUpdate = existingSeriesIds.filter((id) =>
+        dataSeriesIds.includes(id)
+      );
+      const seriesToCreate = dataSeriesIds.filter(
+        (id) => !existingSeriesIds.includes(id)
+      );
+      const deletedSeries = await db.Series.update(
+        { topicId: null },
+        {
+          returning: true,
+          where: {
+            id: seriesToDelete,
+          },
+          transaction,
+        }
+      );
+
+      console.log(seriesToUpdate);
+      for (const series of data) {
+        const recordToUpdate = await db.Series.update(series, {
+          returning: true,
+          where: {
+            id: series.id,
+          },
+        });
+      }
+      const createdSeries = await db.Series.bulkCreate(seriesToCreate, {
+        transaction,
+      });
+      await transaction.commit();
+      return createdSeries;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
   };
 
   getSeriesById = async (id) => {

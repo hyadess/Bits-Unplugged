@@ -31,16 +31,19 @@ const Topics = () => {
         on our site`}
           />
           <CardContainer col={2}>
-            {topicList.map((topic, index) => (
-              <TopicCard
-                key={index}
-                id={`Topic ${index + 1}`}
-                name={topic.name}
-                image={topic.logo}
-                path={`/topics/${topic.id}`}
-                action="View Series"
-              />
-            ))}
+            {topicList.map(
+              (topic, index) =>
+                topic.isLive && (
+                  <TopicCard
+                    key={index}
+                    id={`Topic ${index + 1}`}
+                    name={topic.name}
+                    image={topic.logo}
+                    path={`/topics/${topic.id}`}
+                    action="View Series"
+                  />
+                )
+            )}
           </CardContainer>
         </>
       )}

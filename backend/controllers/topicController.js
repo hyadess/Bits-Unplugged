@@ -1,5 +1,6 @@
 const Controller = require("./base");
 const TopicRepository = require("../repositories/topicRepository");
+const { seriesRepository } = require("../repositories");
 const topicRepository = new TopicRepository();
 class TopicController extends Controller {
   constructor() {
@@ -11,6 +12,22 @@ class TopicController extends Controller {
       res.status(200).send(topics);
     });
   };
+  getAllSeries = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const series = await seriesRepository.getSeriesByTopic(req.params.id);
+      res.status(200).send(series);
+    });
+  };
+  updateAllSeries = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const series = await seriesRepository.updateSeriesByTopic(
+        req.params.id,
+        req.body
+      );
+      res.status(200).send(series);
+    });
+  };
+
   getTopicById = async (req, res) => {
     this.handleRequest(res, async () => {
       const topic = await topicRepository.getTopicById(req.params.id);
@@ -42,6 +59,13 @@ class TopicController extends Controller {
     });
   };
 
+  updateTopics = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const updatedTopics = await topicRepository.updateTopics(req.body);
+      res.status(200).json(updatedTopics);
+    });
+  };
+
   deleteTopic = async (req, res) => {
     this.handleRequest(res, async () => {
       const deletedTopic = await topicRepository.deleteTopic(req.params.id);
@@ -50,6 +74,13 @@ class TopicController extends Controller {
       } else {
         res.status(200).json({ message: "Topic deleted successfully" });
       }
+    });
+  };
+
+  updateTopicSerial = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const updatedTopic = await topicRepository.updateTopicSerial(req.body);
+      res.status(200).json(updatedTopic);
     });
   };
 }

@@ -205,16 +205,39 @@ code {
   }
 }
 
-.bu-button-delete {
-  // If on card
+.bu-button-save {
+  // If on bg
   @extend .bu-button;
-  @apply bg-red-300;
+  background-color: #74cde9;
   &:hover {
-    @apply bg-red-400;
+    background-color: #46bbdf;
   }
   &:active {
-    // @apply bg-red-400;
-    @apply ring-red-300;
+    --tw-ring-color: #74cde9;
+  }
+}
+
+.dark {
+  .bu-button-save {
+    // If on bg
+    @apply bg-blue-600;
+    &:hover {
+      @apply bg-blue-700;
+    }
+    &:active {
+      @apply ring-blue-600;
+    }
+  }
+}
+
+.bu-button-delete {
+  @extend .bu-button;
+  background-color: #ef9c9c;
+  &:hover {
+    background-color: #e17171;
+  }
+  &:active {
+    --tw-ring-color: #ef9c9c;
   }
 }
 

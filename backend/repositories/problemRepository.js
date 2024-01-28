@@ -361,6 +361,23 @@ class ProblemsRepository extends Repository {
     }
     return deleteProblem;
   };
+
+  // clone a problem by id on db.Problem
+  cloneProblem = async (id) => {
+    const problem = await db.Problem.findByPk(id);
+    if (!problem) {
+      return null;
+    }
+    // use suffix Copy to avoid duplicate name
+    const clonedProblem = await db.Problem.create({
+      ...problem.toJSON(),
+      id: undefined,
+      // but what if there are multiple copies of the same problem?
+      title: problem.title + " Copy",
+    });
+    // console.log(clonedProblem);
+    return clonedProblem;
+  };
 }
 
 module.exports = ProblemsRepository;

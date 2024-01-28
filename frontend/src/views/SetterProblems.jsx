@@ -12,6 +12,7 @@ const SetterProblemsView = ({
   closeModal,
   createProblem,
   modalIsOpen,
+  cloneProblem,
 }) => {
   useEffect(() => {
     console.log(problemList);
@@ -36,6 +37,7 @@ const SetterProblemsView = ({
             isLive={prob.isLive}
             timestamp={prob.updatedAt}
             canvas={prob.canvas?.name}
+            cloneProblem={cloneProblem}
           />
         ))}
       </CardContainer>

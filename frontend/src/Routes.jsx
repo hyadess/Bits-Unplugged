@@ -38,7 +38,6 @@ import LayoutMain from "./components/Layouts/LayoutMain";
 import ProblemsSubmissions from "./pages/ProblemsSubmissions";
 import SetterProfile from "./pages/setter/SetterProfile";
 import Profile from "./pages/user/Profile";
-import Contests from "./pages/user/Contests";
 import SetterContests from "./pages/setter/SetterContests";
 import Contest from "./pages/setter/Contest"
 import GlobalContext from "./store/GlobalContext";
@@ -229,6 +228,7 @@ const AppRoutes = () => {
         </Route>
 
         <Route path="/admin/login" element={<AdminLogin />} />
+
         <Route element={<ProblemSetter />}>
           <Route
             path="/problems/:id/preview"
@@ -271,7 +271,17 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
+
+          <Route
+            path="/contests/:id/preview"
+            element={
+              <LayoutMain>
+                <Contest />
+              </LayoutMain>
+            }
+          />
         </Route>
+
         <Route element={<ProblemSolver />}>
           <Route
             path="/problems/:id"
@@ -299,23 +309,7 @@ const AppRoutes = () => {
             }
           />
 
-          <Route
-            path="/contests"
-            element={
-              <LayoutMain>
-                <Contests />
-              </LayoutMain>
-            }
-          />
-
-          <Route
-            path="/contests/:id/preview"
-            element={
-              <LayoutMain>
-                <Contest />
-              </LayoutMain>
-            }
-          />
+          
 
           <Route
             path="/topics"

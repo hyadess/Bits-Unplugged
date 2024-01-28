@@ -12,6 +12,7 @@ class ContestController extends Controller {
     } else {
       res.status(404).json(result);
     }
+    
   };
   getAllPublishedContests = async (req, res) => {
     let result = await contestRepository.getAllPublishedContests();

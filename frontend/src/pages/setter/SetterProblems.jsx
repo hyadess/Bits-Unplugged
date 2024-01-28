@@ -32,6 +32,14 @@ const SetterProblems = () => {
     }
   };
 
+  const cloneProblem = async (problemId) => {
+    const res = await problemApi.cloneProblem(problemId);
+    if (res.success) {
+      // setProblemList([...problemList, res.data]);
+      navigate(`/problems/${res.data.id}/edit`);
+    }
+  };
+
   const createProblem = async (title) => {
     setLoading(true);
     closeModal();
@@ -59,6 +67,7 @@ const SetterProblems = () => {
       createProblem={createProblem}
       problemList={problemList}
       modalIsOpen={modalIsOpen}
+      cloneProblem={cloneProblem}
     />
   );
 };

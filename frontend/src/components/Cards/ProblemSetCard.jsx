@@ -6,7 +6,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Button, IconButton } from "@mui/material";
 import Confirmation from "../Confirmation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTag, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faCopy, faTag, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
 import { getTimeStamp } from "../../services/dateUtil";
@@ -18,6 +18,7 @@ const ProblemSetCard = ({
   isLive,
   timestamp,
   canvas,
+  cloneProblem,
 }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -75,19 +76,11 @@ const ProblemSetCard = ({
             </div>
 
             <div className="w-1/3 flex items-center justify-center">
-              {isLive == 1 ? (
-                <IconButton onClick={() => unpublishProblem()}>
-                  <div className="flex items-center bu-text-primary">
-                    <CheckCircleIcon sx={{ fontSize: "1.5rem" }} />
-                  </div>
-                </IconButton>
-              ) : (
-                <IconButton onClick={() => publishProblem()}>
-                  <div className="flex items-center bu-text-subtitle">
-                    <AddTaskIcon sx={{ fontSize: "1.5rem" }} />
-                  </div>
-                </IconButton>
-              )}
+              <IconButton onClick={() => cloneProblem(id)}>
+                <div className="flex items-center bu-text-primary">
+                  <FontAwesomeIcon icon={faCopy} size="sm" />
+                </div>
+              </IconButton>
             </div>
 
             <div className="w-1/3 flex items-center justify-center">

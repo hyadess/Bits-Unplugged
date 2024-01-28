@@ -16,6 +16,9 @@ class SeriesApi extends Api {
   updateSerial = async (id, data) => {
     return await this.put("/series/" + id + "/problems/serial", data);
   };
+  updateProblems = async (id, data) => {
+    return await this.put("/series/" + id + "/problems", data);
+  };
   getAllProblems = async (seriesId) => {
     return await this.get("/series/" + seriesId + "/problems");
   };

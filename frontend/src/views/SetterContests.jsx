@@ -6,7 +6,7 @@ import ProblemAddButton from "../components/Buttons/ProblemAddButton";
 import { useEffect } from "react";
 
 const SetterContestsView = ({
-  problemList,
+  contestList,
   deleteProblem,
   openModal,
   closeModal,
@@ -14,7 +14,7 @@ const SetterContestsView = ({
   modalIsOpen,
 }) => {
   useEffect(() => {
-    console.log(problemList);
+    console.log(contestList);
   });
   return (
     <div>
@@ -26,16 +26,16 @@ const SetterContestsView = ({
       <ProblemAddButton onClick={openModal} />
 
       <CardContainer col={1}>
-        {problemList.map((prob, index) => (
+        {contestList.map((contest, index) => (
           <ContestSetCard
             key={index}
             idx={index + 1}
-            id={prob.id}
-            name={prob.title}
+            id={contest.id}
+            name={contest.title}
             deleteAction={deleteProblem}
-            isLive={prob.isLive}
-            timestamp={prob.updatedAt}
-            owner={prob.canvas?.name}
+            isLive={contest.isLive}
+            timestamp={contest.updatedAt}
+            owner={contest.canvas?.name}
           />
         ))}
       </CardContainer>

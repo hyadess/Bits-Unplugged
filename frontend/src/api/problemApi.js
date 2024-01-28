@@ -40,5 +40,8 @@ class ProblemApi extends Api {
       duration: time,
     });
   };
+  cloneProblem = async (problemId) => {
+    return await this.post("/problems/" + problemId + "/clone");
+  };
 }
 export default ProblemApi;

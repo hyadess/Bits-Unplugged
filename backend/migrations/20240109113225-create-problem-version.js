@@ -51,9 +51,6 @@ module.exports = {
       isLive: {
         type: Sequelize.BOOLEAN,
       },
-      approvalStatus: {
-        type: Sequelize.STRING,
-      },
       canvasData: {
         type: Sequelize.JSON,
       },
@@ -71,6 +68,10 @@ module.exports = {
       },
       checkerCanvas: {
         type: Sequelize.JSON,
+      },
+      approvalStatus: {
+        type: Sequelize.INTEGER, // 0 - old (Approved), 1 - latest (Approved), 2 - Pending (At most 1), 3 - Rejected
+        defaultValue: 2,
       },
       createdAt: {
         allowNull: false,

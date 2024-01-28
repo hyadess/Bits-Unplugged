@@ -39,9 +39,10 @@ import ProblemsSubmissions from "./pages/ProblemsSubmissions";
 import SetterProfile from "./pages/setter/SetterProfile";
 import Profile from "./pages/user/Profile";
 import SetterContests from "./pages/setter/SetterContests";
-import Contest from "./pages/setter/Contest"
+import Contest from "./pages/setter/Contest";
 import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
+import Contests from "./pages/user/Contests";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -309,7 +310,14 @@ const AppRoutes = () => {
             }
           />
 
-          
+          <Route
+            path="/contests"
+            element={
+              <LayoutMain>
+                <Contests />
+              </LayoutMain>
+            }
+          />
 
           <Route
             path="/topics"

@@ -187,6 +187,9 @@ const CanvasDesignTab = ({ backupProblem }) => {
             variant="contained"
             onClick={async () => {
               await updateCanvas();
+              backupProblem.current.canvasId = problem.canvasId;
+              backupProblem.current.editOptions = problem.editOptions;
+              backupProblem.current.previewOptions = problem.previewOptions;
             }}
             size="large"
             startIcon={<SaveIcon sx={{ fontSize: "2rem", color: "white" }} />}

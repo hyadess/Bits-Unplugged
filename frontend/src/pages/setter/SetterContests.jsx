@@ -1,32 +1,32 @@
-import SetterProblemsView from "../../views/SetterContests";
+import SetterContestsView from "../../views/SetterContests";
 import React, { useState, useEffect, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { setLoading } from "../../App";
-import { problemApi } from "../../api";
-const SetterProblems = () => {
+import { contestApi } from "../../api";
+const SetterContests = () => {
   const navigate = useNavigate();
-  const [problemList, setProblemList] = useState([]);
+  const [contestList, setContestList] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const deleteProblem = async (problemId) => {
-    const res = await problemApi.deleteProblem(problemId);
+    const res = await contestApi.deleteProblem(problemId);
     if (res.success) {
-      setProblemList(problemList.filter((problem) => problem.id !== problemId));
+      setContestList(contestList.filter((problem) => problem.id !== problemId));
     }
   };
-  const getProblemList = async () => {
-    const res = await problemApi.getAllProblems();
+  const getContestList = async () => {
+    const res = await contestApi.getAllPublishedContests();
     console.log(res.data);
     if (res.success) {
       // console.log(res.data);
       if (res.data.length > 0)
-        setProblemList(res.data.sort((a, b) => a.id - b.id));
+        setContestList(res.data.sort((a, b) => a.id - b.id));
       else setLoading(false);
     }
   };
 
   const getProblemId = async (title) => {
-    const res = await problemApi.createProblem(title);
+    const res = await contestApi.createProblem(title);
     if (res.success) {
       return res.data.id;
     }
@@ -48,19 +48,19 @@ const SetterProblems = () => {
   };
 
   useEffect(() => {
-    getProblemList();
+    getContestList();
   }, []);
 
   return (
-    <SetterProblemsView
+    <SetterContestsView
       openModal={openModal}
       closeModal={closeModal}
       deleteProblem={deleteProblem}
       createProblem={createProblem}
-      problemList={problemList}
+      contestList={contestList}
       modalIsOpen={modalIsOpen}
     />
   );
 };
 
-export default SetterProblems;
+export default SetterContests;

@@ -76,7 +76,7 @@ class UserActivityRepository extends Repository {
   };
 
   updateOnSuccessfulAttempt = async (userId, problemId) => {
-    //console.log("lets see"+problemId);
+    console.log("lets see"+problemId);
     const activity = db.Activity.findOne({ where: { userId, problemId } }).then(
       function (obj) {
         // update
@@ -234,10 +234,8 @@ class UserActivityRepository extends Repository {
     SELECT A.*, PV."title"
     FROM "Activities" A
     JOIN "ProblemVersions" PV ON A."problemId" = PV."id"
-    WHERE A."userId" = $1
-      AND A."isSolved" = false
+    WHERE A."userId" = $1 AND A."isSolved" = FALSE
     ORDER BY A."lastSolveTimestamp" DESC;
-    
     `;
     const params = [userId];
     const result = await this.query(query, params);

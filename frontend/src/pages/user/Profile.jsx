@@ -220,13 +220,13 @@ export default function Profile() {
     //draw a pie chart
     useEffect(() => {
       setChart({
-        series: [totalSuccessCount, totalFailCount],
+        series: [totalFailCount, totalSuccessCount],
         options: {
           chart: {
             type: "pie",
             height: 350,
           },
-          labels: ["Success", "Fail"],
+          labels: ["Fail", "Success"],
           responsive: [
             {
               breakpoint: 480,
@@ -302,7 +302,7 @@ export default function Profile() {
   return (
     <div className="flex flex-col">
       <Title title={"Profile Page"} />
-      <PieChart/>
+      <PieChart />
       <BarChart />
       <CalendarHeatmap
         startDate={new Date(new Date().getFullYear(), 0, 1)}

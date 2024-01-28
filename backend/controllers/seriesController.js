@@ -1,5 +1,6 @@
 const Controller = require("./base");
 const SeriesRepository = require("../repositories/seriesRepository");
+const { problemRepository } = require("../repositories");
 const seriesRepository = new SeriesRepository();
 class SeriesController extends Controller {
   constructor() {
@@ -76,6 +77,16 @@ class SeriesController extends Controller {
         }
       );
       res.status(200).send(problems);
+    });
+  };
+
+  updateAllProblems = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const problems = await problemRepository.updateProblemsBySeries(
+        req.params.id,
+        req.body
+      );
+      res.status(200).send({ message: "Problems updated successfully" });
     });
   };
 

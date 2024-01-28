@@ -1,7 +1,7 @@
 import CustomModal from "../components/Modal/CustomModal";
 import Title from "../components/Title";
 import ProblemSetCard from "../components/Cards/ProblemSetCard";
-import CardContainer from "../containers/CardContainer";
+import CardContainer from "../containers/CardContainer2";
 import ProblemAddButton from "../components/Buttons/ProblemAddButton";
 import { useEffect } from "react";
 
@@ -12,6 +12,7 @@ const SetterProblemsView = ({
   closeModal,
   createProblem,
   modalIsOpen,
+  cloneProblem,
 }) => {
   useEffect(() => {
     console.log(problemList);
@@ -36,6 +37,7 @@ const SetterProblemsView = ({
             isLive={prob.isLive}
             timestamp={prob.updatedAt}
             canvas={prob.canvas?.name}
+            cloneProblem={cloneProblem}
           />
         ))}
       </CardContainer>

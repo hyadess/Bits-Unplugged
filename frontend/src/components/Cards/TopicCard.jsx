@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { LinearProgress, Zoom } from "@mui/material";
 import ImageLoader from "../ImageLoader";
 import styled from "@emotion/styled";
+import { set } from "date-fns";
+import { setLoading } from "../../App";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: "10px",
@@ -31,7 +33,7 @@ const TopicCard = ({ id, name, image, path, action }) => {
   const [progress, setProgress] = useState(0);
   useEffect(() => {
     let tmp = Math.round(Math.random() * 50);
-    let tmp2 = tmp + Math.round(Math.random() * 50);
+    let tmp2 = tmp + Math.round(Math.random() * 60);
     setSolved(tmp);
     setTotal(tmp2);
     setProgress(Math.round((tmp / tmp2) * 100));
@@ -49,7 +51,10 @@ const TopicCard = ({ id, name, image, path, action }) => {
     <Zoom in={true}>
       <div
         className="flex flex-col items-center w-full h-[10.5rem] cursor-pointer"
-        onClick={() => navigate(path)}
+        onClick={() => {
+          setLoading(true);
+          navigate(path);
+        }}
       >
         <div className="flex flex-row border rounded-lg shadow-md bu-card-primary h-full w-full p-5">
           <div className="flex flex-col gap-1 justify-between w-[70%]">

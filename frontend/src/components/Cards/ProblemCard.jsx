@@ -22,17 +22,17 @@ import {
 import { fab } from "@fortawesome/free-brands-svg-icons";
 export default function ProblemCard({
   id,
-  idx,
   name,
   path,
   deleteAction,
   isLive,
-  topic,
-  series,
-  acceptance,
-  difficulty,
+  setProblem,
   isSolved,
 }) {
+  const [acceptance, setAcceptance] = useState(Math.round(Math.random() * 100));
+  const [difficulty, setDifficulty] = useState(
+    ["Easy", "Medium", "Hard"][Math.floor(Math.random() * 3)]
+  );
   useEffect(() => {
     setLoading(false);
   }, []);

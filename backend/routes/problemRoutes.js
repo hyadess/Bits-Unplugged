@@ -14,6 +14,7 @@ router.get("/:id", problemController.getProblemById); // api/problems?problemId=
 router.delete("/:id", problemController.deleteProblem); // api/problems
 router.post("/:id/submit", problemController.submitProblem);
 router.get("/:id/submissions", problemController.getSubmissions);
+router.post("/:id/clone", problemController.cloneProblem);
 // User - Submission of his own
 // Admin - Submission of the problem
 

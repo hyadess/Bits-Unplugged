@@ -58,63 +58,70 @@ const SolutionCheckerTab = () => {
   return (
     <>
       {checkerType == 0 ? (
-        <SolutionChecker
-          code={problem.checkerCode}
-          setCode={(code) =>
-            dispatch({ type: "UPDATE_CHECKER_CODE", payload: code })
-          }
-          stdout={stdout}
-          output={output}
-          setOutput={setOutput}
-          setStdout={setStdout}
-          checkSubmit={onSubmit}
-          save={updateSolutionChecker}
-        />
-      ) : checkerType == 1 ? (
-        <>
-          <CanvasContainer
-            canvasId={problem.canvasId}
-            input={problem.checkerCanvas}
-            setInput={(data) => {
-              dispatch({
-                type: "UPDATE_CHECKER_CANVAS",
-                payload: { ...data },
-              });
-            }}
-            ref={canvasRef}
-            mode="preview"
-            previewOptions={problem.previewOptions}
-            editOptions={problem.editOptions}
+        problem.canvasId && (
+          <SolutionChecker
+            code={problem.checkerCode}
+            setCode={(code) =>
+              dispatch({ type: "UPDATE_CHECKER_CODE", payload: code })
+            }
+            stdout={stdout}
+            output={output}
+            setOutput={setOutput}
+            setStdout={setStdout}
+            checkSubmit={onSubmit}
+            save={updateSolutionChecker}
           />
-          <div
-            className="flex py-5"
-            style={{ justifyContent: "space-between", marginLeft: "auto" }}
-          >
-            <Button
-              variant="contained"
-              color="success"
-              size="large"
-              onClick={() => {
-                resetChecker();
+        )
+      ) : checkerType == 1 ? (
+        problem.canvasId &&
+        canvasRef && (
+          <>
+            <CanvasContainer
+              canvasId={problem.canvasId}
+              input={problem.checkerCanvas}
+              setInput={(data) => {
+                dispatch({
+                  type: "UPDATE_CHECKER_CANVAS",
+                  payload: { ...data },
+                });
               }}
-              startIcon={
-                <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-              }
+              ref={canvasRef}
+              mode="preview"
+              previewOptions={problem.previewOptions}
+              editOptions={problem.editOptions}
+            />
+            <div
+              className="flex py-5"
+              style={{ justifyContent: "space-between", marginLeft: "auto" }}
             >
-              Reset
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => {
-                updateSolutionChecker();
-              }}
-              size="large"
-              startIcon={<SaveIcon sx={{ fontSize: "2rem", color: "white" }} />}
-            >
-              Save
-            </Button>
-          </div>
-        </>
+              <Button
+                variant="contained"
+                color="success"
+                size="large"
+                onClick={() => {
+                  resetChecker();
+                }}
+                startIcon={
+                  <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
+                }
+              >
+                Reset
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  updateSolutionChecker();
+                }}
+                size="large"
+                startIcon={
+                  <SaveIcon sx={{ fontSize: "2rem", color: "white" }} />
+                }
+              >
+                Save
+              </Button>
+            </div>
+          </>
+        )
       ) : (
         <></>
       )}

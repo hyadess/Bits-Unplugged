@@ -6,7 +6,7 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "./pages/landing/Home";
 import Problems from "./pages/user/Problems";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
@@ -15,7 +15,7 @@ import Topics from "./pages/user/Topics";
 import Series from "./pages/user/Series";
 import SetterProblems from "./pages/setter/SetterProblems";
 import ProblemSetEnv from "./pages/setter/ProblemSetEnv";
-import PublicNavbar from "./components/Navbars/PublicNavbar";
+import PublicNavbar from "./pages/landing/PublicNavbar";
 import SolverProfileTab from "./components/SolverProfileTab";
 import Layout2 from "./components/Layouts/Layout2";
 import Layout3 from "./components/Layouts/Layout3";
@@ -38,11 +38,11 @@ import LayoutMain from "./components/Layouts/LayoutMain";
 import ProblemsSubmissions from "./pages/ProblemsSubmissions";
 import SetterProfile from "./pages/setter/SetterProfile";
 import Profile from "./pages/user/Profile";
-import Contests from "./pages/user/Contests";
 import SetterContests from "./pages/setter/SetterContests";
-import Contest from "./pages/setter/Contest"
+import Contest from "./pages/setter/Contest";
 import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
+import Contests from "./pages/user/Contests";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -229,6 +229,7 @@ const AppRoutes = () => {
         </Route>
 
         <Route path="/admin/login" element={<AdminLogin />} />
+
         <Route element={<ProblemSetter />}>
           <Route
             path="/problems/:id/preview"
@@ -271,7 +272,17 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
+
+          <Route
+            path="/contests/:id/preview"
+            element={
+              <LayoutMain>
+                <Contest />
+              </LayoutMain>
+            }
+          />
         </Route>
+
         <Route element={<ProblemSolver />}>
           <Route
             path="/problems/:id"
@@ -304,15 +315,6 @@ const AppRoutes = () => {
             element={
               <LayoutMain>
                 <Contests />
-              </LayoutMain>
-            }
-          />
-
-          <Route
-            path="/contests/:id/preview"
-            element={
-              <LayoutMain>
-                <Contest />
               </LayoutMain>
             }
           />
@@ -421,9 +423,9 @@ const AppRoutes = () => {
         <Route
           path="/landing"
           element={
-            <Layout2 nav={<PublicNavbar />}>
-              <Home />
-            </Layout2>
+            // <Layout2 nav={<PublicNavbar />}>
+            <Home />
+            // </Layout2>
           }
         />
 

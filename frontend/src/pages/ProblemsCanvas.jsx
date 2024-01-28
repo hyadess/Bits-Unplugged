@@ -44,11 +44,12 @@ function ProblemsCanvasController() {
   };
 
   const reset = async () => {
+    console.log(backup.current);
     dispatch({
       type: "UPDATE_CANVAS",
       payload: deepCopy(backup.current),
     });
-    canvasRef?.current?.handleReset(JSON.parse(JSON.stringify(backup)));
+    canvasRef?.current?.handleReset(JSON.parse(JSON.stringify(backup.current)));
   };
 
   const startTimeRef = useRef(null);

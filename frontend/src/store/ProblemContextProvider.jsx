@@ -65,7 +65,6 @@ const ProblemContextProvider = ({ children }) => {
           testActivity: { ...state.testActivity, ...payload },
         };
       case "UPDATE_USER_ACTIVITY":
-        console.log("log:", payload);
         return {
           ...state,
           activityData: { ...state.activityData, ...payload },

@@ -64,6 +64,7 @@ function ProblemsCanvasController() {
     console.log("output " + res.output);
     await submissionApi.submitSolution(problem.canvasData, res.output, id);
     if (res.output === "Accepted") {
+      await userActivityApi.updateOnSuccessfulAttempt(id);
       if (startTimeRef.current) {
         const endTime = new Date();
         const durationInSeconds = Math.floor(
@@ -73,7 +74,6 @@ function ProblemsCanvasController() {
           await problemApi.trackDuration(id, durationInSeconds);
         }
       }
-      await userActivityApi.updateOnSuccessfulAttempt(id);
     } else {
       await userActivityApi.updateOnFailedAttempt(id);
     }

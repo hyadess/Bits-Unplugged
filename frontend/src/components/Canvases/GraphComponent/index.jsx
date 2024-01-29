@@ -392,7 +392,8 @@ const GraphComponent = (props, ref) => {
             // setSelectedEdge(null);
             updateSelectedEdges(
               data.selectedEdges.filter(
-                (selectedEdge) => selectedEdge !== nearestEdge
+                (selectedEdge) =>
+                  !shallowEqualityCheck(selectedEdge, nearestEdge)
               )
             );
           } else {

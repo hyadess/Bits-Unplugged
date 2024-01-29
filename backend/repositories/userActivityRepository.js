@@ -241,6 +241,71 @@ class UserActivityRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+
+  mostRecentSuccessByUser=async(userId) =>{
+    const query = `
+    SELECT A.*, PV."title"
+    FROM "Activities" A
+    JOIN "ProblemVersions" PV ON A."problemId" = PV."id"
+    WHERE A."userId" = $1 AND A."isSolved" = TRUE
+    ORDER BY A."lastSolveTimestamp" DESC;
+    `;
+    const params = [userId];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  totalProblemCountByTopic = async (topicId) => {
+    const query = `
+      SELECT
+      T."id",
+      COUNT(P."problemId") AS total_problems
+      FROM
+      "Topics" T
+      JOIN
+      "Series" S ON T."id" = S."topicId"
+      JOIN
+      "ProblemVersions" P ON S."id" = P."seriesId"
+      WHERE
+      T."id" = $1
+      GROUP BY
+      T."id"
+      `;
+    const params = [topicId];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  totalSolvedProblemCountByTopic = async (topicId,userId) => {
+    const query = `
+      SELECT
+      T."id",
+      COUNT(P."problemId") AS total_solved_problems
+      FROM
+      "Topics" T
+      JOIN
+      "Series" S ON T."id" = S."topicId"
+      JOIN
+      "ProblemVersions" P ON S."id" = P."seriesId"
+      JOIN
+      "Activities" A ON P."id" = A."problemId"
+      WHERE
+      T."id" = $1 AND A."userId" = $2 AND A."isSolved" = TRUE
+      GROUP BY
+      T."id"
+      `;
+    const params = [topicId,userId];
+    const result = await this.query(query, params);
+    return result;
+  }
+
+  
+
+
+
+
+
+
 }
 
 module.exports = UserActivityRepository;

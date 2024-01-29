@@ -36,6 +36,14 @@ router.get(
   "/stat/successes/me",
   userActivityController.totalSolvedProblemsByUser
 );
+router.get(
+  "/stat/:topicId/problems",
+  userActivityController.totalProblemCountByTopic
+);
+router.get(
+  "/stat/:topicId/solvedProblems",
+  userActivityController.totalSolvedProblemCountByTopic
+);
 
 router.put("/:problemId/track-duration", userActivityController.trackDuration);
 module.exports = router;

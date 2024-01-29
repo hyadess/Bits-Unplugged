@@ -22,6 +22,28 @@ const AdminProblems = () => {
   }, []);
   return (
     <>
+      <Title title={`Pending Problems`} sub_title={`Accept/Reject Problems`} />
+
+      <CardContainer col={2}>
+        {problemList &&
+          problemList.map(
+            (problem, index) =>
+              problem.approvalStatus == 2 && (
+                <PendingProblemCard
+                  key={index}
+                  idx={index + 1}
+                  id={`Problem ${index + 1}`}
+                  name={problem.title}
+                  image={problem.logo}
+                  path={`/admin/problems/${problem.id}`}
+                  action="Get Started"
+                  canvas={problem.canvas?.name}
+                  timestamp={problem.updatedAt}
+                />
+              )
+          )}
+      </CardContainer>
+
       <Title
         title={`Approved Problems`}
         sub_title={`Add/Delete/Update Problems`}
@@ -29,35 +51,21 @@ const AdminProblems = () => {
 
       <TableContainer>
         {problemList &&
-          problemList.map((problem, index) => (
-            <ProblemCard
-              key={index}
-              idx={index + 1}
-              id={`Problem ${index + 1}`}
-              name={problem.title}
-              image={problem.logo}
-              path={`/admin/problems/${problem.id}`}
-              action="Get Started"
-            />
-          ))}
+          problemList.map(
+            (problem, index) =>
+              problem.approvalStatus == 1 && (
+                <ProblemCard
+                  key={index}
+                  idx={index + 1}
+                  id={`Problem ${index + 1}`}
+                  name={problem.title}
+                  image={problem.logo}
+                  path={`/admin/problems/${problem.id}`}
+                  action="Get Started"
+                />
+              )
+          )}
       </TableContainer>
-
-      <Title title={`Pending Problems`} sub_title={`Accept/Reject Problems`} />
-
-      <CardContainer col={2}>
-        {problemList &&
-          problemList.map((problem, index) => (
-            <PendingProblemCard
-              key={index}
-              idx={index + 1}
-              id={`Problem ${index + 1}`}
-              name={problem.title}
-              image={problem.logo}
-              path={`/admin/problems/${problem.id}`}
-              action="Get Started"
-            />
-          ))}
-      </CardContainer>
     </>
   );
 };

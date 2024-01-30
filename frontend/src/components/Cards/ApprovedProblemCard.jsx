@@ -28,7 +28,8 @@ import { IconButton } from "@mui/material";
 import CheckCircle from "@mui/icons-material/CheckCircle";
 import AddTask from "@mui/icons-material/AddTask";
 import { getTimeStamp } from "../../services/dateUtil";
-export default function PendingProblemCard({
+import { SelectionField2, SelectionField3 } from "../InputFields";
+export default function ApprovedProblemCard({
   id,
   name,
   path,
@@ -44,6 +45,7 @@ export default function PendingProblemCard({
   const [difficulty, setDifficulty] = useState(
     ["Easy", "Medium", "Hard"][Math.floor(Math.random() * 3)]
   );
+
   useEffect(() => {
     setLoading(false);
   }, []);
@@ -58,14 +60,14 @@ export default function PendingProblemCard({
     <div className="w-full h-full relative" key={id}>
       <div
         className={
-          "border rounded-lg shadow-lg bg-gray-700 bu-card-primary flex flex-col p-5 h-full justify-between"
+          "border rounded-lg shadow-lg bg-gray-700 bu-card-primary flex flex-col p-5 h-full justify-between gap-5"
         }
       >
         <div
           className="flex flex-col cursor-pointer"
           onClick={() => {
-            setLoading(true);
-            navigate(`/admin/problems/${id}/preview`);
+            // setLoading(true);
+            // navigate(`/admin/problems/${id}`);
           }}
         >
           <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title w-75% cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
@@ -80,39 +82,29 @@ export default function PendingProblemCard({
           )}
         </div>
 
-        <div className="flex justify-between items-end">
-          <div className="bu-text-subtitle">{getTimeStamp(timestamp)}</div>
-          <div className="flex flex-row justify-center gap-2">
-            <div className="w-1/3 flex items-center justify-center">
-              <IconButton
-                onClick={async () => {
-                  const res = await problemApi.rejectProblem(id);
-                  if (res.success) {
-                    showSuccess("Problem rejected", res);
-                  }
-                }}
-              >
-                <div className="flex items-center bu-text-primary">
-                  <FontAwesomeIcon icon={faXmark} size="sm" />
-                </div>
-              </IconButton>
-            </div>
-            <div className="w-1/3 flex items-center justify-center">
-              <IconButton
-                onClick={async () => {
-                  const res = await problemApi.approveProblem(id);
-                  if (res.success) {
-                    showSuccess("Problem approved", res);
-                  }
-                }}
-              >
-                <div className="flex items-center bu-text-primary">
-                  <FontAwesomeIcon icon={faCheck} size="sm" />
-                </div>
-              </IconButton>
-            </div>
-          </div>
+        <div className="flex flex-col gap-5">
+          <SelectionField3
+            label="Topic"
+            onChange={() => {}}
+            id="topicId"
+            // value={problem.seriesId == null ? "" : problem.seriesId}
+            options={["Series 1", "Series 2", "Series 3"]}
+          />
+          <SelectionField2
+            label="Series"
+            onChange={() => {}}
+            id="seriesId"
+            // value={problem.seriesId == null ? "" : problem.seriesId}
+            options={["Series 1", "Series 2", "Series 3"]}
+          />
         </div>
+
+        <button
+          className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-primary"
+          onClick={unpublishProblem}
+        >
+          Save
+        </button>
       </div>
 
       <Confirmation

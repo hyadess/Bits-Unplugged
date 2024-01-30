@@ -89,6 +89,31 @@ class ProblemController extends Controller {
     });
   };
 
+  approveProblem = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const approvedProblem = await problemRepository.approveProblem(
+        req.params.id
+      );
+      if (!approvedProblem) {
+        res.status(404).json({ error: "Problem not found" });
+      } else {
+        res.status(200).json(approvedProblem);
+      }
+    });
+  };
+
+  rejectProblem = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const rejectedProblem = await problemRepository.rejectProblem(
+        req.params.id
+      );
+      if (!rejectedProblem) {
+        res.status(404).json({ error: "Problem not found" });
+      }
+      res.status(200).json(rejectedProblem);
+    });
+  };
+  
   updateSeries = async (req, res) => {
     let result = await problemRepository.updateSeries(
       req.params.problemId,

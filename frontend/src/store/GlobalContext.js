@@ -8,5 +8,7 @@ const GlobalContext = createContext({
   setNotificationUpdate: () => {},
   type: 0,
   setType: () => {},
+  colorMode: "light",
+  setColorMode: () => {},
 });
 export default GlobalContext;

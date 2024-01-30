@@ -7,6 +7,7 @@ import TableContainer from "../../containers/TableContainer";
 import { problemApi } from "../../api";
 import PendingProblemCard from "../../components/Cards/PendingProblemCard";
 import CardContainer from "../../containers/CardContainer2";
+import ApprovedProblemCard from "../../components/Cards/ApprovedProblemCard";
 const AdminProblems = () => {
   const [problemList, setProblemList] = useState([]);
   const getProblemList = async () => {
@@ -32,7 +33,7 @@ const AdminProblems = () => {
                 <PendingProblemCard
                   key={index}
                   idx={index + 1}
-                  id={`Problem ${index + 1}`}
+                  id={problem.id}
                   name={problem.title}
                   image={problem.logo}
                   path={`/admin/problems/${problem.id}`}
@@ -49,23 +50,25 @@ const AdminProblems = () => {
         sub_title={`Add/Delete/Update Problems`}
       />
 
-      <TableContainer>
+      <CardContainer col={2}>
         {problemList &&
           problemList.map(
             (problem, index) =>
               problem.approvalStatus == 1 && (
-                <ProblemCard
+                <ApprovedProblemCard
                   key={index}
                   idx={index + 1}
-                  id={`Problem ${index + 1}`}
+                  id={problem.id}
                   name={problem.title}
                   image={problem.logo}
                   path={`/admin/problems/${problem.id}`}
                   action="Get Started"
+                  canvas={problem.canvas?.name}
+                  timestamp={problem.updatedAt}
                 />
               )
           )}
-      </TableContainer>
+      </CardContainer>
     </>
   );
 };

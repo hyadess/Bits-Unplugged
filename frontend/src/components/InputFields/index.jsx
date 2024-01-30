@@ -1,6 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import EyeIcon from "../Icons/EyeIcon";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+} from "@mui/material";
 
 // const SearchField = ({ setSearchQuery, label, setSearch }) => {
 //   return (
@@ -159,6 +166,83 @@ export const SelectionField2 = (props) => {
   );
 };
 
+export const SelectionField3 = (props) => {
+  function getColorModeFromLocalStorage() {
+    return localStorage.getItem("color-theme") || "light";
+  }
+
+  const [colorMode, setColorMode] = useState(getColorModeFromLocalStorage());
+
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      setColorMode(getColorModeFromLocalStorage);
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+  return (
+    <FormControl
+      fullWidth
+      className=" input-field"
+      variant="outlined"
+      size={props.size === undefined ? "small" : props.size}
+    >
+      <InputLabel
+        htmlFor="outlined-adornment"
+        className="input-label"
+        sx={{
+          "&.Mui-focused": {
+            color: "#000000 !important",
+            fontWeight: "bold",
+          },
+        }}
+      >
+        {props.label}
+      </InputLabel>
+      <Select
+        required
+        id="outlined-adornment"
+        className="outlined-input"
+        value={props.value}
+        onChange={props.onChange(props.id)}
+        input={<OutlinedInput label={props.label} />}
+        // MenuProps={MenuProps}
+        label={props.label}
+        sx={{
+          // color: "white",
+          ".MuiOutlinedInput-notchedOutline": {
+            borderColor: "#000000",
+            borderRadius: ".4rem",
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: colorMode === "light" ? "#1c5b5f" : "rgb(214,31,105)",
+            borderWidth: ".15rem",
+            borderRadius: ".4rem",
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: colorMode === "light" ? "#1c5b5f" : "rgb(214,31,105)",
+          },
+          "&.Mui-focused": {
+            color: "#000000 !important",
+          },
+        }}
+      >
+        {props.options.map((value) => (
+          <MenuItem
+            key={value}
+            value={value}
+            // sx={{ height: "2rem" }}
+            // style={getStyles(name, personName, theme)}
+          >
+            {value}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+};
 export const PasswordField = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   return (

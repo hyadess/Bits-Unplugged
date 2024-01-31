@@ -206,7 +206,7 @@ export const SelectionField3 = (props) => {
         id="outlined-adornment"
         className="outlined-input"
         value={props.value}
-        onChange={props.onChange(props.id)}
+        onChange={props.onChange}
         input={<OutlinedInput label={props.label} />}
         // MenuProps={MenuProps}
         label={props.label}
@@ -229,14 +229,14 @@ export const SelectionField3 = (props) => {
           },
         }}
       >
-        {props.options.map((value) => (
+        {props.options.map((option) => (
           <MenuItem
-            key={value}
-            value={value}
+            key={option.value}
+            value={option.value}
             // sx={{ height: "2rem" }}
             // style={getStyles(name, personName, theme)}
           >
-            {value}
+            {option.label}
           </MenuItem>
         ))}
       </Select>

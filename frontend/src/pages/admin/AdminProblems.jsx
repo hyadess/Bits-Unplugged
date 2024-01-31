@@ -4,22 +4,44 @@ import Cookies from "universal-cookie";
 import Title from "../../components/Title";
 import ProblemCard from "../../components/Cards/ProblemCard";
 import TableContainer from "../../containers/TableContainer";
-import { problemApi } from "../../api";
+import { problemApi, seriesApi, topicApi } from "../../api";
 import PendingProblemCard from "../../components/Cards/PendingProblemCard";
 import CardContainer from "../../containers/CardContainer2";
 import ApprovedProblemCard from "../../components/Cards/ApprovedProblemCard";
+import { setLoading } from "../../App";
 const AdminProblems = () => {
   const [problemList, setProblemList] = useState([]);
+  const [topicList, setTopicList] = useState([]);
+  const [seriesList, setSeriesList] = useState([]);
+
   const getProblemList = async () => {
     const res = await problemApi.getAllProblems();
     if (res.success) {
       setProblemList(res.data);
       console.log(res);
+      setLoading(false);
     }
   };
 
+  const getTopicList = async () => {
+    const res = await topicApi.getAllTopics();
+    if (res.success) {
+      setTopicList(res.data);
+      console.log(res);
+    }
+  };
+
+  const getSeriesList = async () => {
+    const res = await seriesApi.getAllSeries();
+    if (res.success) {
+      setSeriesList(res.data);
+      console.log(res);
+    }
+  };
   useEffect(() => {
     getProblemList();
+    getSeriesList();
+    getTopicList();
   }, []);
   return (
     <>
@@ -61,10 +83,13 @@ const AdminProblems = () => {
                   id={problem.id}
                   name={problem.title}
                   image={problem.logo}
+                  problem={problem}
                   path={`/admin/problems/${problem.id}`}
                   action="Get Started"
                   canvas={problem.canvas?.name}
                   timestamp={problem.updatedAt}
+                  topicList={topicList}
+                  seriesList={seriesList}
                 />
               )
           )}

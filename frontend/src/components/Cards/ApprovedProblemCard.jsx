@@ -36,9 +36,12 @@ export default function ApprovedProblemCard({
   deleteAction,
   isLive,
   canvas,
+  problem,
   setProblem,
   isEdit,
   timestamp,
+  seriesList,
+  topicList,
 }) {
   const [open, setOpen] = useState(false);
   const [acceptance, setAcceptance] = useState(Math.round(Math.random() * 100));
@@ -46,9 +49,27 @@ export default function ApprovedProblemCard({
     ["Easy", "Medium", "Hard"][Math.floor(Math.random() * 3)]
   );
 
+  const [topic, setTopic] = useState(null);
+  const [series, setSeries] = useState(null);
+
   useEffect(() => {
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (seriesList.length > 0 && problem.seriesId) {
+      setSeries(
+        seriesList.filter((series) => series.id == problem.seriesId)[0]
+      );
+    }
+  }, [seriesList]);
+
+  useEffect(() => {
+    if (topicList.length > 0 && series) {
+      setTopic(topicList.filter((topic) => topic.id == series.topicId)[0]);
+    }
+  }, [topicList, series]);
+
   const navigate = useNavigate();
   const publishProblem = async () => {
     await problemApi.publishProblem(id);
@@ -85,26 +106,65 @@ export default function ApprovedProblemCard({
         <div className="flex flex-col gap-5">
           <SelectionField3
             label="Topic"
-            onChange={() => {}}
+            onChange={(e) =>
+              setTopic(
+                topicList.filter((topic) => topic.id == e.target.value)[0]
+              )
+            }
             id="topicId"
-            // value={problem.seriesId == null ? "" : problem.seriesId}
-            options={["Series 1", "Series 2", "Series 3"]}
+            value={topic == null ? "" : topic.id}
+            options={topicList.map((topic) => ({
+              label: topic.name,
+              value: topic.id,
+            }))}
           />
-          <SelectionField2
+          <SelectionField3
             label="Series"
-            onChange={() => {}}
+            onChange={(e) =>
+              setSeries(
+                seriesList.filter((series) => series.id == e.target.value)[0]
+              )
+            }
             id="seriesId"
-            // value={problem.seriesId == null ? "" : problem.seriesId}
-            options={["Series 1", "Series 2", "Series 3"]}
+            value={series == null ? "" : series.id}
+            options={(topic
+              ? seriesList.filter((series) => series.topicId === topic.id)
+              : seriesList
+            ).map((series) => ({
+              label: series.name,
+              value: series.id,
+            }))}
           />
         </div>
 
-        <button
-          className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-primary"
-          onClick={unpublishProblem}
-        >
-          Save
-        </button>
+        <div className="flex flex-row gap-3">
+          <button
+            className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-save"
+            // onClick={async () => {
+            //   const res = await problemApi.updateProblem(problem.id, {
+            //     ...problem,
+            //     seriesId: series?.id,
+            //   });
+            //   showSuccess("Problem updated successfully", res);
+            //   // setProblem((prev) => ({ ...prev, seriesId: series?.id }));
+            // }}
+          >
+            Live
+          </button>
+          <button
+            className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-primary"
+            onClick={async () => {
+              const res = await problemApi.updateProblem(problem.id, {
+                ...problem,
+                seriesId: series?.id,
+              });
+              showSuccess("Problem updated successfully", res);
+              // setProblem((prev) => ({ ...prev, seriesId: series?.id }));
+            }}
+          >
+            Save
+          </button>
+        </div>
       </div>
 
       <Confirmation

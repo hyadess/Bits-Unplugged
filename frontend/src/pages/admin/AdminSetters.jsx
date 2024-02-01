@@ -24,7 +24,7 @@ const AdminSetters = () => {
       <Title title={`Setter Requests`} sub_title={`Approve setters`} />
       <CardContainer col={3}>
         {setterList.map((user, index) => (
-          <div className="w-full h-full bg-white rounded-2xl shadow-xl flex flex-col items-center justify-center p-5">
+          <div className="w-full h-full bu-card-primary rounded-2xl shadow-xl flex flex-col items-center justify-center p-5">
             <img
               src={user.image}
               alt="profile"

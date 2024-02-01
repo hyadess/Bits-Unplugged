@@ -17,6 +17,7 @@ import {
   faCheckCircle,
   faXmark,
   faCheck,
+  faFloppyDisk,
   // far,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -91,7 +92,7 @@ export default function ApprovedProblemCard({
             // navigate(`/admin/problems/${id}`);
           }}
         >
-          <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title w-75% cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
+          <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title w-full cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
             {name}
           </h5>
 
@@ -138,7 +139,7 @@ export default function ApprovedProblemCard({
         </div>
 
         <div className="flex flex-row gap-3">
-          <button
+          {/* <button
             className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-save"
             // onClick={async () => {
             //   const res = await problemApi.updateProblem(problem.id, {
@@ -149,8 +150,8 @@ export default function ApprovedProblemCard({
             //   // setProblem((prev) => ({ ...prev, seriesId: series?.id }));
             // }}
           >
-            Live
-          </button>
+            Publish
+          </button> */}
           <button
             className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-primary"
             onClick={async () => {
@@ -162,6 +163,7 @@ export default function ApprovedProblemCard({
               // setProblem((prev) => ({ ...prev, seriesId: series?.id }));
             }}
           >
+            <FontAwesomeIcon icon={faFloppyDisk} className="mr-2" />
             Save
           </button>
         </div>

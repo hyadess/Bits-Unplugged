@@ -36,6 +36,20 @@ const AdminNavbar = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (darkMode != null) {
+      if (darkMode) {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("color-theme", "dark");
+        window.dispatchEvent(new Event("storage"));
+      } else {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("color-theme", "light");
+        window.dispatchEvent(new Event("storage"));
+      }
+    }
+  }, [darkMode]);
+
   return (
     <div className="flex flex-row w-full justify-between md:justify-center shadow-md">
       <div className="icon flex-2 hidden md:flex h-20 w-1/5 px-5">

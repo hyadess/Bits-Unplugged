@@ -15,6 +15,8 @@ router.delete("/:id", problemController.deleteProblem); // api/problems
 router.post("/:id/submit", problemController.submitProblem);
 router.get("/:id/submissions", problemController.getSubmissions);
 router.post("/:id/clone", problemController.cloneProblem);
+router.put("/:id/approve", problemController.approveProblem);
+router.put("/:id/reject", problemController.rejectProblem);
 // User - Submission of his own
 // Admin - Submission of the problem
 

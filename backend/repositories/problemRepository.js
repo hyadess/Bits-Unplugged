@@ -19,12 +19,21 @@ class ProblemsRepository extends Repository {
   getSubmittedProblems = async () => {
     const latestProblems = await db.ProblemVersion.findAll({
       where: {
-        createdAt: db.Sequelize.literal(`("problemId", "createdAt") IN (
+        createdAt: db.Sequelize
+          .literal(`("ProblemVersion"."problemId", "ProblemVersion"."createdAt") IN (
           SELECT "problemId", MAX("createdAt") as "latestCreatedAt"
-          FROM "ProblemVersions"
+          FROM "ProblemVersions" PV
           GROUP BY "problemId"
         )`),
       },
+      include: [
+        {
+          model: db.Canvas,
+          attributes: ["id", "name", "classname", "info"],
+          as: "canvas",
+          required: true,
+        },
+      ],
     });
     console.log(latestProblems);
     return latestProblems;
@@ -377,6 +386,36 @@ class ProblemsRepository extends Repository {
     });
     // console.log(clonedProblem);
     return clonedProblem;
+  };
+
+  approveProblem = async (id) => {
+    // Just update the approvalStatus field in ProblemVersion to 1 using ORM
+    const updatedProblem = await db.ProblemVersion.update(
+      {
+        approvalStatus: 1,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+    return updatedProblem;
+  };
+
+  rejectProblem = async (id) => {
+    // Just update the approvalStatus field in ProblemVersion to 0 using ORM
+    const updatedProblem = await db.ProblemVersion.update(
+      {
+        approvalStatus: 0,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+    return updatedProblem;
   };
 }
 

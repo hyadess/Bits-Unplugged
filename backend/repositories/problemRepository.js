@@ -4,6 +4,7 @@ const seriesRepository = new SeriesRepository();
 const CanvasRepository = require("./canvasRepository");
 const canvasRepository = new CanvasRepository();
 const db = require("../models/index");
+const { Op } = require("sequelize");
 
 class ProblemsRepository extends Repository {
   constructor() {
@@ -248,6 +249,105 @@ class ProblemsRepository extends Repository {
     return updatedProblem.get();
   };
 
+  getLatestProblemsBySeries = async (seriesId) => {
+    const latestProblemVersions = await db.ProblemVersion.findAll({
+      attributes: [
+        "problemId",
+        [
+          db.sequelize.fn("MAX", db.sequelize.col("createdAt")),
+          "latestCreatedAt",
+        ],
+      ],
+      where: {
+        seriesId: seriesId,
+      },
+      group: ["problemId", "seriesId"],
+      raw: true, // To get plain objects instead of Sequelize instances
+    });
+
+    const latestProblemIds = latestProblemVersions.map(
+      (version) => version.problemId
+    );
+
+    // console.log(latestProblemVersions);
+    const latestProblemVersionsQuery = await db.ProblemVersion.findAll({
+      where: {
+        problemId: {
+          [Op.in]: latestProblemIds,
+        },
+        createdAt: latestProblemVersions.map(
+          (version) => version.latestCreatedAt
+        ),
+      },
+      include: [
+        {
+          model: db.Series,
+          foreignKey: "seriesId",
+          as: "series",
+          required: true,
+          include: [
+            {
+              model: db.Topic,
+              foreignKey: "topicId",
+              as: "topic",
+              required: true,
+            },
+          ],
+        },
+      ],
+      order: [
+        ["serialNo", "DESC"], // Change 'ASC' to 'DESC' if you want descending order
+      ],
+    });
+
+    return latestProblemVersionsQuery;
+  };
+
+  updateProblemsBySeries = async (seriesId, data) => {
+    const existingProblems = await this.getLatestProblemsBySeries(seriesId);
+    const existingProblemIds = existingProblems.map((problem) => problem.id);
+    const dataProblemIds = data.map((problem) => problem.id);
+    const problemsToDelete = existingProblemIds.filter(
+      (id) => !dataProblemIds.includes(id)
+    );
+    const problemsToUpdate = existingProblemIds.filter((id) =>
+      dataProblemIds.includes(id)
+    );
+    const problemsToCreate = dataProblemIds.filter(
+      (id) => !existingProblemIds.includes(id)
+    );
+
+    const transaction = await db.sequelize.transaction();
+    try {
+      const deletedProblems = await db.ProblemVersion.destroy({
+        returning: true,
+        where: {
+          id: problemsToDelete,
+        },
+        transaction,
+      });
+      for (const problem of data) {
+        const recordToUpdate = await db.ProblemVersion.update(problem, {
+          returning: true,
+          where: {
+            id: problem.id,
+          },
+        });
+      }
+      const createdProblems = await db.ProblemVersion.bulkCreate(
+        problemsToCreate,
+        {
+          transaction,
+        }
+      );
+      await transaction.commit();
+      return createdProblems;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  };
+
   deleteProblem = async (id) => {
     const deleteProblem = await db.Problem.destroy({
       where: {
@@ -260,6 +360,23 @@ class ProblemsRepository extends Repository {
       return null;
     }
     return deleteProblem;
+  };
+
+  // clone a problem by id on db.Problem
+  cloneProblem = async (id) => {
+    const problem = await db.Problem.findByPk(id);
+    if (!problem) {
+      return null;
+    }
+    // use suffix Copy to avoid duplicate name
+    const clonedProblem = await db.Problem.create({
+      ...problem.toJSON(),
+      id: undefined,
+      // but what if there are multiple copies of the same problem?
+      title: problem.title + " Copy",
+    });
+    // console.log(clonedProblem);
+    return clonedProblem;
   };
 }
 

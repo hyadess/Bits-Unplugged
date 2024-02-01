@@ -206,6 +206,60 @@ export default function Profile() {
     );
   };
 
+  // pie chart to show all success and fails submissisons
+  const PieChart = () => {
+    const [chart, setChart] = useState(undefined);
+
+    //for barChartData, calculate total success count and fail count
+    let totalSuccessCount = 0;
+    let totalFailCount = 0;
+    barChartData.forEach((series) => {
+      totalSuccessCount += series.successCount;
+      totalFailCount += series.failCount;
+    });
+    //draw a pie chart
+    useEffect(() => {
+      setChart({
+        series: [totalFailCount, totalSuccessCount],
+        options: {
+          chart: {
+            type: "pie",
+            height: 350,
+          },
+          labels: ["Fail", "Success"],
+          responsive: [
+            {
+              breakpoint: 480,
+              options: {
+                chart: {
+                  width: 200,
+                },
+                legend: {
+                  position: "bottom",
+                },
+              },
+            },
+          ],
+        },
+      });
+    }, [barChartData]);
+    //return the pie chart
+    return (
+      <>
+        {chart !== undefined && barChartData.length > 0 ? (
+          <ApexCharts
+            options={chart.options}
+            series={chart.series}
+            type="pie"
+            height={350}
+          />
+        ) : (
+          <> </>
+        )}
+      </>
+    );
+  };
+
   const getSubmissions = async () => {
     const res = await submissionApi.getAllSubmissionsByUser();
     if (res.success) {
@@ -248,7 +302,8 @@ export default function Profile() {
   return (
     <div className="flex flex-col">
       <Title title={"Profile Page"} />
-      <BarChart/>
+      <PieChart />
+      <BarChart />
       <CalendarHeatmap
         startDate={new Date(new Date().getFullYear(), 0, 1)}
         endDate={new Date(new Date().getFullYear(), 11, 31)}
@@ -273,7 +328,7 @@ export default function Profile() {
         gutterSize={2} // Adjust the spacing between months
         gutterPx={10} // Adjust the pixel size of the gutter
       />
-      <ProfileRecentFails/>
+      <ProfileRecentFails />
       <Tooltip id="data-tip" />
     </div>
   );

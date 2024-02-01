@@ -20,6 +20,13 @@ class ProblemController extends Controller {
     });
   };
 
+  cloneProblem = async (req, res) => {
+    this.handleRequest(res, async () => {
+      let problem = await problemRepository.cloneProblem(req.params.id);
+      res.status(200).send(problem);
+    });
+  };
+
   //new for souvik......................
   getAllUnsolvedProblems = async (req, res) => {
     let result = await problemRepository.getAllUnsolvedProblems(

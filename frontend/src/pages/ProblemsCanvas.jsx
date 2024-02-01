@@ -44,11 +44,12 @@ function ProblemsCanvasController() {
   };
 
   const reset = async () => {
+    console.log(backup.current);
     dispatch({
       type: "UPDATE_CANVAS",
       payload: deepCopy(backup.current),
     });
-    canvasRef?.current?.handleReset(JSON.parse(JSON.stringify(backup)));
+    canvasRef?.current?.handleReset(JSON.parse(JSON.stringify(backup.current)));
   };
 
   const startTimeRef = useRef(null);
@@ -63,6 +64,7 @@ function ProblemsCanvasController() {
     console.log("output " + res.output);
     await submissionApi.submitSolution(problem.canvasData, res.output, id);
     if (res.output === "Accepted") {
+      await userActivityApi.updateOnSuccessfulAttempt(id);
       if (startTimeRef.current) {
         const endTime = new Date();
         const durationInSeconds = Math.floor(
@@ -72,7 +74,6 @@ function ProblemsCanvasController() {
           await problemApi.trackDuration(id, durationInSeconds);
         }
       }
-      await userActivityApi.updateOnSuccessfulAttempt(id);
     } else {
       await userActivityApi.updateOnFailedAttempt(id);
     }

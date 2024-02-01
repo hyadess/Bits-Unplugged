@@ -68,7 +68,7 @@ export default function PendingProblemCard({
             navigate(`/admin/problems/${id}/preview`);
           }}
         >
-          <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title w-75% cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
+          <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis w-full max-w-full">
             {name}
           </h5>
 
@@ -113,6 +113,33 @@ export default function PendingProblemCard({
             </div>
           </div>
         </div>
+
+        {/* <div className="flex flex-row justify-center gap-2 w-full">
+          <button
+            className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-delete"
+            onClick={async () => {
+              const res = await problemApi.rejectProblem(id);
+              if (res.success) {
+                showSuccess("Problem rejected", res);
+              }
+            }}
+          >
+            Reject
+          <FontAwesomeIcon icon={faXmark} size="sm" /> 
+          </button>
+          <button
+            className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-primary"
+            onClick={async () => {
+              const res = await problemApi.approveProblem(id);
+              if (res.success) {
+                showSuccess("Problem approved", res);
+              }
+            }}
+          >
+            Approve
+           <FontAwesomeIcon icon={faXmark} size="sm" /> 
+          </button>
+        </div> */}
       </div>
 
       <Confirmation

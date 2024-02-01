@@ -50,6 +50,7 @@ module.exports = {
       },
       isLive: {
         type: Sequelize.BOOLEAN,
+        defaultValue: true,
       },
       canvasData: {
         type: Sequelize.JSON,

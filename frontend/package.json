@@ -67,7 +67,7 @@
     "start": "react-scripts start",
     "dev": "vite",
     "build": "react-scripts build",
-    "both": "concurrently \"npm run dev\" \"nodemon ../backend/index.js\""
+    "both": "concurrently \"npm run start\" \"nodemon ../backend/index.js\""
   },
   "eslintConfig": {
     "extends": [

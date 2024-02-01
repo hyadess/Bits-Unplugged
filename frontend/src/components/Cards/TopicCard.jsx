@@ -104,7 +104,7 @@ const TopicCard = ({ id, topic_id, name, image, path, action }) => {
                 {solved}/{total} problems solved
               </h5>
               <div className="w-full h-[8.86px] left-[367.76px] top-[344.82px] bg-[#EDEDED] rounded-[6px]">
-                {progress && (
+                {progress > 0 && (
                   <div
                     className={`box-border h-[9.42px] border-[1px] rounded-[6px]`}
                     style={{

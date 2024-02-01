@@ -793,6 +793,558 @@ module.exports = {
           }),
           checkerCanvas: null,
         },
+        {
+          // id: 13,
+          setterId: 1,
+          canvasId: 1,
+          title: "Dijkstra",
+          statement: "Find shortest path from A to F.",
+          canvasData: JSON.stringify({
+            edges: [
+              {
+                start: "0",
+                end: "1",
+                weight: "4",
+              },
+              {
+                start: "0",
+                end: "2",
+                weight: "2",
+              },
+              {
+                start: "2",
+                end: "4",
+                weight: "3",
+              },
+              {
+                start: "1",
+                end: "2",
+                weight: "5",
+              },
+              {
+                start: "1",
+                end: "3",
+                weight: "10",
+              },
+              {
+                start: "4",
+                end: "3",
+                weight: "4",
+              },
+              {
+                start: "3",
+                end: "5",
+                weight: "11",
+              },
+            ],
+            nodes: {
+              0: {
+                x: 166.79998779296875,
+                y: 198.4666748046875,
+                label: "A",
+                color: "Default",
+              },
+              1: {
+                x: 326.79998779296875,
+                y: 71.4666748046875,
+                label: "B",
+                color: "Default",
+              },
+              2: {
+                x: 316.79998779296875,
+                y: 284.4666748046875,
+                label: "C",
+                color: "Default",
+              },
+              3: {
+                x: 493.79998779296875,
+                y: 75.4666748046875,
+                label: "D",
+                color: "Default",
+              },
+              4: {
+                x: 521.7999877929688,
+                y: 275.4666748046875,
+                label: "E",
+                color: "Default",
+              },
+              5: {
+                x: 700.7999877929688,
+                y: 168.4666748046875,
+                label: "F",
+                color: "Default",
+              },
+            },
+            selectedEdges: [],
+          }),
+          editOptions: JSON.stringify({
+            directedEdge: {
+              value: true,
+              type: "switch",
+            },
+            weightedEdge: {
+              value: true,
+              type: "switch",
+            },
+          }),
+          previewOptions: JSON.stringify({
+            addNode: {
+              value: false,
+              type: "switch",
+            },
+            deleteNode: {
+              value: false,
+              type: "switch",
+            },
+            dragNode: {
+              value: false,
+              type: "switch",
+            },
+            addEdge: {
+              value: false,
+              type: "switch",
+            },
+            deleteEdge: {
+              value: false,
+              type: "switch",
+            },
+            editWeight: {
+              value: false,
+              type: "switch",
+            },
+            editColor: {
+              value: false,
+              type: "switch",
+            },
+          }),
+          checkerCode:
+            "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({
+            edges: [
+              {
+                start: "0",
+                end: "1",
+                weight: "4",
+              },
+              {
+                start: "0",
+                end: "2",
+                weight: "2",
+              },
+              {
+                start: "2",
+                end: "4",
+                weight: "3",
+              },
+              {
+                start: "1",
+                end: "2",
+                weight: "5",
+              },
+              {
+                start: "1",
+                end: "3",
+                weight: "10",
+              },
+              {
+                start: "4",
+                end: "3",
+                weight: "4",
+              },
+              {
+                start: "3",
+                end: "5",
+                weight: "11",
+              },
+            ],
+            nodes: {
+              0: {
+                x: 166.79998779296875,
+                y: 198.4666748046875,
+                label: "A",
+                color: "Default",
+              },
+              1: {
+                x: 326.79998779296875,
+                y: 71.4666748046875,
+                label: "B",
+                color: "Default",
+              },
+              2: {
+                x: 316.79998779296875,
+                y: 284.4666748046875,
+                label: "C",
+                color: "Default",
+              },
+              3: {
+                x: 493.79998779296875,
+                y: 75.4666748046875,
+                label: "D",
+                color: "Default",
+              },
+              4: {
+                x: 521.7999877929688,
+                y: 275.4666748046875,
+                label: "E",
+                color: "Default",
+              },
+              5: {
+                x: 700.7999877929688,
+                y: 168.4666748046875,
+                label: "F",
+                color: "Default",
+              },
+            },
+            selectedEdges: [
+              {
+                start: "0",
+                end: "2",
+                weight: "2",
+              },
+              {
+                start: "2",
+                end: "4",
+                weight: "3",
+              },
+              {
+                start: "3",
+                end: "5",
+                weight: "11",
+              },
+              {
+                start: "4",
+                end: "3",
+                weight: "4",
+              },
+            ],
+          }),
+        },
+        {
+          // id: 14,
+          setterId: 1,
+          canvasId: 1,
+          title: "Wandering Merchant Dilemma",
+          statement:
+            "Given a connected graph representing a network of cities and the roads connecting them, your mission is to unravel the optimal cycle for a traveling salesman. The challenge is to identify a closed loop that traverses each city exactly once, allowing the salesman to showcase their merchandise in a cyclic journey. Develop a program to discover the Graphical Sales Circuit in the given graph, providing the sequence of cities that forms the most efficient cycle, ensuring maximum coverage and minimal travel distance.",
+          canvasData: JSON.stringify({
+            edges: [
+              {
+                start: "1",
+                end: "0",
+                weight: "10",
+              },
+              {
+                start: "0",
+                end: "2",
+                weight: "15",
+              },
+              {
+                start: "1",
+                end: "2",
+                weight: "35",
+              },
+              {
+                start: "0",
+                end: "3",
+                weight: "20",
+              },
+              {
+                start: "3",
+                end: "2",
+                weight: "30",
+              },
+              {
+                start: "1",
+                end: "3",
+                weight: "25",
+              },
+            ],
+            nodes: {
+              0: {
+                x: 409.16668701171875,
+                y: 67.06666564941406,
+                label: 0,
+                color: "Default",
+              },
+              1: {
+                x: 214.16668701171875,
+                y: 328.06666564941406,
+                label: 1,
+                color: "Default",
+              },
+              2: {
+                x: 646.1666870117188,
+                y: 368.0500030517578,
+                label: 2,
+                color: "Default",
+              },
+              3: {
+                x: 414.16668701171875,
+                y: 236.86666870117188,
+                label: 3,
+                color: "Default",
+              },
+            },
+            selectedEdges: [],
+          }),
+          editOptions: JSON.stringify({
+            directedEdge: {
+              value: false,
+              type: "switch",
+            },
+            weightedEdge: {
+              value: true,
+              type: "switch",
+            },
+          }),
+          previewOptions: JSON.stringify({
+            addNode: {
+              value: false,
+              type: "switch",
+            },
+            deleteNode: {
+              value: false,
+              type: "switch",
+            },
+            dragNode: {
+              value: false,
+              type: "switch",
+            },
+            addEdge: {
+              value: false,
+              type: "switch",
+            },
+            deleteEdge: {
+              value: false,
+              type: "switch",
+            },
+            editWeight: {
+              value: false,
+              type: "switch",
+            },
+            editColor: {
+              value: false,
+              type: "switch",
+            },
+          }),
+          checkerCode:
+            "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({
+            edges: [
+              {
+                start: "1",
+                end: "0",
+                weight: "10",
+              },
+              {
+                start: "0",
+                end: "2",
+                weight: "15",
+              },
+              {
+                start: "1",
+                end: "2",
+                weight: "35",
+              },
+              {
+                start: "0",
+                end: "3",
+                weight: "20",
+              },
+              {
+                start: "3",
+                end: "2",
+                weight: "30",
+              },
+              {
+                start: "1",
+                end: "3",
+                weight: "25",
+              },
+            ],
+            nodes: {
+              0: {
+                x: 409.16668701171875,
+                y: 67.06666564941406,
+                label: 0,
+                color: "Default",
+              },
+              1: {
+                x: 214.16668701171875,
+                y: 328.06666564941406,
+                label: 1,
+                color: "Default",
+              },
+              2: {
+                x: 646.1666870117188,
+                y: 368.0500030517578,
+                label: 2,
+                color: "Default",
+              },
+              3: {
+                x: 414.16668701171875,
+                y: 236.86666870117188,
+                label: 3,
+                color: "Default",
+              },
+            },
+            selectedEdges: [
+              {
+                start: "0",
+                end: "2",
+                weight: "15",
+              },
+              {
+                start: "1",
+                end: "0",
+                weight: "10",
+              },
+              {
+                start: "1",
+                end: "3",
+                weight: "25",
+              },
+              {
+                start: "3",
+                end: "2",
+                weight: "30",
+              },
+            ],
+          }),
+        },
+        {
+          id: 15,
+          setterId: 1,
+          canvasId: 1,
+          title: "Red Black",
+          statement: "Delete 5.",
+          canvasData: JSON.stringify({
+            edges: [
+              {
+                start: "1",
+                end: "3",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "4",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "0",
+                weight: "0",
+              },
+              {
+                start: "0",
+                end: "2",
+                weight: "0",
+              },
+              {
+                start: "2",
+                end: "5",
+                weight: "0",
+              },
+              {
+                start: "2",
+                end: "6",
+                weight: "0",
+              },
+            ],
+            nodes: {
+              0: {
+                x: 451.16668701171875,
+                y: 54.46665954589844,
+                label: 0,
+                color: "Black",
+              },
+              1: {
+                x: 327.16668701171875,
+                y: 183.46665954589844,
+                label: 1,
+                color: "Red",
+              },
+              2: {
+                x: 561.1666870117188,
+                y: 183.46665954589844,
+                label: 2,
+                color: "Red",
+              },
+              3: {
+                x: 159.16668701171875,
+                y: 235.46665954589844,
+                label: 3,
+                color: "Black",
+              },
+              4: {
+                x: 366.16668701171875,
+                y: 337.46665954589844,
+                label: 4,
+                color: "Black",
+              },
+              5: {
+                x: 533.1666870117188,
+                y: 336.46665954589844,
+                label: 5,
+                color: "Black",
+              },
+              6: {
+                x: 739.1666870117188,
+                y: 234.46665954589844,
+                label: 6,
+                color: "Black",
+              },
+            },
+            selectedEdges: [],
+          }),
+          editOptions: JSON.stringify({
+            directedEdge: {
+              value: false,
+              type: "switch",
+            },
+            weightedEdge: {
+              value: false,
+              type: "switch",
+            },
+          }),
+          previewOptions: JSON.stringify({
+            addNode: {
+              value: false,
+              type: "switch",
+            },
+            deleteNode: {
+              value: false,
+              type: "switch",
+            },
+            dragNode: {
+              value: true,
+              type: "switch",
+            },
+            addEdge: {
+              value: false,
+              type: "switch",
+            },
+            deleteEdge: {
+              value: true,
+              type: "switch",
+            },
+            editWeight: {
+              value: false,
+              type: "switch",
+            },
+            editColor: {
+              value: false,
+              type: "switch",
+            },
+          }),
+          checkerCode:
+            "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({
+            edges: [],
+            nodes: {},
+            selectedEdges: [],
+          }),
+        },
       ],
       {}
     );

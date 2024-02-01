@@ -59,6 +59,7 @@ const colorMap = {
   Pink: "#ff69b4",
   Orange: "#ff8c00",
   Brown: "#635147",
+  Black: "#000000",
 };
 const GraphComponent = (props, ref) => {
   const [userType, setUserType] = useState(0);

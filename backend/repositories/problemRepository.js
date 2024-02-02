@@ -417,6 +417,24 @@ class ProblemsRepository extends Repository {
     );
     return updatedProblem;
   };
+
+  getAllVersions = async (id) => {
+    const versions = await db.ProblemVersion.findAll({
+      where: {
+        problemId: id,
+      },
+      include: [
+        {
+          model: db.Canvas,
+          attributes: ["id", "name", "classname", "info"],
+          as: "canvas",
+          required: true,
+        },
+      ],
+      order: [["updatedAt", "DESC"]],
+    });
+    return versions;
+  };
 }
 
 module.exports = ProblemsRepository;

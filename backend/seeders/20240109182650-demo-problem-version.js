@@ -47,6 +47,7 @@ module.exports = {
         seriesId: 1,
         isLive: true,
         approvalStatus: 0,
+        feedback: "Problem statement is ambiguous.",
         serialNo: 4,
         canvasId: 2,
         title: "3 Disks",

@@ -403,11 +403,12 @@ class ProblemsRepository extends Repository {
     return updatedProblem;
   };
 
-  rejectProblem = async (id) => {
+  rejectProblem = async (id, feedback) => {
     // Just update the approvalStatus field in ProblemVersion to 0 using ORM
     const updatedProblem = await db.ProblemVersion.update(
       {
         approvalStatus: 0,
+        feedback: feedback,
       },
       {
         where: {

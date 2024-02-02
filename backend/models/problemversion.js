@@ -94,7 +94,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.JSON,
       },
       approvalStatus: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
+      },
+      feedback: {
+        type: DataTypes.TEXT,
       },
     },
     {

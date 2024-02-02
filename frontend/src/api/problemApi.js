@@ -49,5 +49,8 @@ class ProblemApi extends Api {
   rejectProblem = async (problemId) => {
     return await this.put("/problems/" + problemId + "/reject");
   };
+  getAllVersions = async (problemId) => {
+    return await this.get("/problems/" + problemId + "/versions");
+  };
 }
 export default ProblemApi;

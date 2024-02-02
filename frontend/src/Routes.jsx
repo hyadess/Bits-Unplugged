@@ -43,6 +43,7 @@ import Contest from "./pages/setter/Contest";
 import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
 import Contests from "./pages/user/Contests";
+import History from "./pages/setter/ProblemSetEnv/History";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -242,7 +243,7 @@ const AppRoutes = () => {
           <Route
             path="/problems/:problemid/edit"
             element={
-              <LayoutMain>
+              <LayoutMain right={<History />}>
                 <ProblemSetEnv />
               </LayoutMain>
             }

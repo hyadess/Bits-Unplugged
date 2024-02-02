@@ -43,6 +43,64 @@ module.exports = {
         }),
       },
       {
+        problemId: 1,
+        seriesId: 1,
+        isLive: true,
+        approvalStatus: 0,
+        serialNo: 4,
+        canvasId: 2,
+        title: "3 Disks",
+        statement:
+          "Move the 3 disks from left peg to right peg. You can use the middle peg to temporarily keep the disks.",
+        canvasData: JSON.stringify({
+          pegs: [[0, 1, 2], [], []],
+        }),
+        checkerCode:
+          "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+        editOptions: JSON.stringify({
+          customDisk: { value: true, type: "switch" },
+          ordered: { value: true, type: "switch" },
+        }),
+        previewOptions: JSON.stringify({
+          moves: { value: false, type: "switch" },
+          nDisks: { value: false, type: "switch" },
+          customDisk: { value: false, type: "switch" },
+          undo: { value: true, type: "switch" },
+        }),
+        checkerCanvas: JSON.stringify({
+          pegs: [[], [], [0, 1, 2]],
+        }),
+      },
+      {
+        problemId: 1,
+        seriesId: 1,
+        isLive: true,
+        approvalStatus: 2,
+        serialNo: 4,
+        canvasId: 2,
+        title: "3 Disks",
+        statement:
+          "Move the 3 disks from left peg to right peg. You can use the middle peg to temporarily keep the disks.",
+        canvasData: JSON.stringify({
+          pegs: [[0, 1, 2], [], []],
+        }),
+        checkerCode:
+          "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+        editOptions: JSON.stringify({
+          customDisk: { value: true, type: "switch" },
+          ordered: { value: true, type: "switch" },
+        }),
+        previewOptions: JSON.stringify({
+          moves: { value: false, type: "switch" },
+          nDisks: { value: false, type: "switch" },
+          customDisk: { value: false, type: "switch" },
+          undo: { value: true, type: "switch" },
+        }),
+        checkerCanvas: JSON.stringify({
+          pegs: [[], [], [0, 1, 2]],
+        }),
+      },
+      {
         problemId: 2,
         seriesId: 1,
         isLive: true,

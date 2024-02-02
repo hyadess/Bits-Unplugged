@@ -5,7 +5,6 @@ module.exports = {
   baseY: 220,
   sep: 10,
   colors: [
-    "black",
     "maroon",
     "darkslategrey",
     "green",

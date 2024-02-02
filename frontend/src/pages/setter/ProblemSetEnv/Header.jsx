@@ -1,6 +1,11 @@
 import React from "react";
 import Tooltip from "@mui/material/Tooltip";
-import { faExpand, faSave, faUpload } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowUpRightFromSquare,
+  faExpand,
+  faSave,
+  faUpload,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { setLoading, showSuccess } from "../../../App";
 import { IconButton } from "@mui/material";
@@ -77,7 +82,7 @@ const Header = ({ backupProblem }) => {
                 navigate(`/problems/${problem.id}/preview`);
               }}
             >
-              <FontAwesomeIcon icon={faExpand} />
+              <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
             </div>
           </IconButton>
         </Tooltip>

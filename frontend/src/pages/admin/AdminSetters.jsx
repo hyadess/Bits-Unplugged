@@ -22,9 +22,9 @@ const AdminSetters = () => {
   return (
     <>
       <Title title={`Setter Requests`} sub_title={`Approve setters`} />
-      <CardContainer col={2}>
+      <CardContainer col={3}>
         {setterList.map((user, index) => (
-          <div className="w-96 h-96 bg-white rounded-2xl shadow-xl flex flex-col items-center justify-center">
+          <div className="w-full h-full bu-card-primary rounded-2xl shadow-xl flex flex-col items-center justify-center p-5">
             <img
               src={user.image}
               alt="profile"
@@ -41,19 +41,35 @@ const AdminSetters = () => {
             </div>
             <div className="text-xl bu-text-primary">{user.fullname}</div>
             {/* <div className="text-xl bu-text-primary">{user.username}</div> */}
-            <div
-              className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-primary mt-5 cursor-pointer"
-              onClick={async () => {
-                const result = await authApi.approveSetter(user.id);
-                if (result.success) {
-                  showSuccess("Setter approved", result);
-                  setSetterList((prevSetterList) =>
-                    prevSetterList.filter((setter) => setter.id !== user.id)
-                  );
-                }
-              }}
-            >
-              APPROVE
+            <div className="flex flex-row gap-3 w-full">
+              <div
+                className="text-white font-medium rounded-lg text-sm px-5 py-2 text-center bu-button-delete mt-5 cursor-pointer w-50%"
+                // onClick={async () => {
+                //   const result = await authApi.approveSetter(user.id);
+                //   if (result.success) {
+                //     showSuccess("Setter approved", result);
+                //     setSetterList((prevSetterList) =>
+                //       prevSetterList.filter((setter) => setter.id !== user.id)
+                //     );
+                //   }
+                // }}
+              >
+                REJECT
+              </div>
+              <div
+                className="text-white font-medium rounded-lg text-sm px-5 py-2 text-center bu-button-primary mt-5 cursor-pointer w-50%"
+                onClick={async () => {
+                  const result = await authApi.approveSetter(user.id);
+                  if (result.success) {
+                    showSuccess("Setter approved", result);
+                    setSetterList((prevSetterList) =>
+                      prevSetterList.filter((setter) => setter.id !== user.id)
+                    );
+                  }
+                }}
+              >
+                APPROVE
+              </div>
             </div>
           </div>
         ))}

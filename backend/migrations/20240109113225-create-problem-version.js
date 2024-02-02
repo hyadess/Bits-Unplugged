@@ -61,9 +61,6 @@ module.exports = {
       previewOptions: {
         type: Sequelize.JSON,
       },
-      previewOptions: {
-        type: Sequelize.JSON,
-      },
       checkerCode: {
         type: Sequelize.TEXT,
       },

@@ -44,6 +44,7 @@ import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
 import Contests from "./pages/user/Contests";
 import History from "./pages/setter/ProblemSetEnv/History";
+import TopicStat from "./pages/user/TopicStat";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -371,7 +372,9 @@ const AppRoutes = () => {
           <Route
             path="/topics/:id"
             element={
-              <LayoutMain>
+              <LayoutMain
+              //right={<TopicStat/>}
+              >
                 <Series />
               </LayoutMain>
             }

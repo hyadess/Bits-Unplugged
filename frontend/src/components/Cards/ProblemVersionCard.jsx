@@ -27,6 +27,7 @@ const ProblemVersionCard = ({
   canvas,
   cloneProblem,
   approvalStatus,
+  feedback,
 }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -99,6 +100,12 @@ const ProblemVersionCard = ({
             )}
           </div>
         </div>
+
+        {feedback && (
+          <div className="rounded-lg bu-nav-color w-full p-2 mt-5 flex justify-center">
+            <div className="bu-text-subtitle align-middle">{feedback}</div>
+          </div>
+        )}
       </div>
     </div>
   );

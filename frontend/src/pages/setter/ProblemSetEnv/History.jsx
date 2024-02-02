@@ -31,6 +31,7 @@ const History = () => {
             timestamp={version.updatedAt}
             key={version.id}
             approvalStatus={version.approvalStatus}
+            feedback={version.feedback}
           />
         ))}
       </TableContainer>

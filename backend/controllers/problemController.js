@@ -105,7 +105,8 @@ class ProblemController extends Controller {
   rejectProblem = async (req, res) => {
     this.handleRequest(res, async () => {
       const rejectedProblem = await problemRepository.rejectProblem(
-        req.params.id
+        req.params.id,
+        req.body.feedback
       );
       if (!rejectedProblem) {
         res.status(404).json({ error: "Problem not found" });

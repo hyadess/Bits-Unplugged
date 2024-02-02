@@ -38,6 +38,7 @@ export default function PendingProblemCard({
   setProblem,
   isEdit,
   timestamp,
+  reject,
 }) {
   const [open, setOpen] = useState(false);
   const [acceptance, setAcceptance] = useState(Math.round(Math.random() * 100));
@@ -84,14 +85,7 @@ export default function PendingProblemCard({
           <div className="bu-text-subtitle">{getTimeStamp(timestamp)}</div>
           <div className="flex flex-row justify-center gap-2">
             <div className="w-1/3 flex items-center justify-center">
-              <IconButton
-                onClick={async () => {
-                  const res = await problemApi.rejectProblem(id);
-                  if (res.success) {
-                    showSuccess("Problem rejected", res);
-                  }
-                }}
-              >
+              <IconButton onClick={reject}>
                 <div className="flex items-center bu-text-primary">
                   <FontAwesomeIcon icon={faXmark} size="sm" />
                 </div>

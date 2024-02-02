@@ -8,12 +8,14 @@ import { problemApi, seriesApi, topicApi } from "../../api";
 import PendingProblemCard from "../../components/Cards/PendingProblemCard";
 import CardContainer from "../../containers/CardContainer2";
 import ApprovedProblemCard from "../../components/Cards/ApprovedProblemCard";
-import { setLoading } from "../../App";
+import { setLoading, showSuccess } from "../../App";
+import CustomModal from "../../components/Modal/CustomModal";
 const AdminProblems = () => {
   const [problemList, setProblemList] = useState([]);
   const [topicList, setTopicList] = useState([]);
   const [seriesList, setSeriesList] = useState([]);
-
+  const [open, setOpen] = useState(false);
+  const [problemId, setProblemId] = useState(null);
   const getProblemList = async () => {
     const res = await problemApi.getAllProblems();
     if (res.success) {
@@ -43,6 +45,7 @@ const AdminProblems = () => {
     getSeriesList();
     getTopicList();
   }, []);
+
   return (
     <>
       <Title title={`Pending Problems`} sub_title={`Accept/Reject Problems`} />
@@ -62,6 +65,10 @@ const AdminProblems = () => {
                   action="Get Started"
                   canvas={problem.canvas?.name}
                   timestamp={problem.updatedAt}
+                  reject={() => {
+                    setProblemId(problem.id);
+                    setOpen(true);
+                  }}
                 />
               )
           )}
@@ -94,6 +101,21 @@ const AdminProblems = () => {
               )
           )}
       </CardContainer>
+      {open && (
+        <CustomModal
+          label={<b>Rejection Reason (Optional)</b>}
+          placeholder={"Enter rejection reason"}
+          onClose={() => setOpen(false)}
+          onSubmit={async (value) => {
+            const res = await problemApi.rejectProblem(problemId, value);
+            setProblemId(null);
+            setOpen(false);
+            if (res.success) {
+              showSuccess("Problem rejected", res);
+            }
+          }}
+        />
+      )}
     </>
   );
 };

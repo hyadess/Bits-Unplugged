@@ -56,13 +56,13 @@ const ProblemVersionCard = ({
 
         <div className="flex flex-row justify-between">
           <div
-            className="flex flex-col cursor-pointer"
+            className="flex flex-col cursor-pointer w-[75%]"
             onClick={() => {
               setLoading(true);
               navigate(`/problems/${id}/preview`);
             }}
           >
-            <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
+            <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title w-full cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
               {name}
             </h5>
 
@@ -80,23 +80,23 @@ const ProblemVersionCard = ({
           <div className="bu-text-subtitle">{getTimeStamp(timestamp)}</div>
           <div className="bu-text-primary">
             {approvalStatus == 0 ? (
-              <div className="flex flex-row gap-2">
+              <div className="flex flex-row gap-2 items-end">
                 <div className="bu-text-subtitle">Rejected</div>
-                <div className="text-red-500">
+                <div className="text-red-500 text-xl">
                   <FontAwesomeIcon icon={faXmark} />
                 </div>
               </div>
             ) : approvalStatus == 1 ? (
-              <div className="flex flex-row gap-2">
+              <div className="flex flex-row gap-2 items-end">
                 <div className="bu-text-subtitle">Approved</div>
-                <div className="text-green-500">
+                <div className="text-green-500 text-xl">
                   <FontAwesomeIcon icon={faCheckDouble} />
                 </div>
               </div>
             ) : (
-              <div className="flex flex-row gap-2">
+              <div className="flex flex-row gap-2 items-end">
                 <div className="bu-text-subtitle">Pending</div>
-                <div className="text-gray-500">
+                <div className="text-gray-500 text-xl">
                   <FontAwesomeIcon icon={faHourglassHalf} />
                 </div>
               </div>
@@ -106,7 +106,9 @@ const ProblemVersionCard = ({
 
         {feedback && (
           <div className="rounded-lg bu-nav-color w-full p-2 mt-5 flex justify-center">
-            <div className="bu-text-subtitle align-middle">{feedback}</div>
+            <div className="bu-text-subtitle align-middle text-center">
+              {feedback}
+            </div>
           </div>
         )}
       </div>

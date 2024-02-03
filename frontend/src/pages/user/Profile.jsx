@@ -5,6 +5,7 @@ import { setLoading } from "../../App";
 import { submissionApi, userActivityApi } from "../../api";
 import { Tooltip } from "react-tooltip";
 import ApexCharts from "react-apexcharts";
+import Chart from "react-apexcharts";
 
 import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
@@ -270,6 +271,68 @@ export default function Profile() {
     }
   };
 
+  //for activity stats.....................
+  const [activityChartData, setActivityChartData] = useState([]);
+
+  const getRecentActivity = async () => {
+    const res=await userActivityApi.getAllDailyActivitiesForLast30Days();
+    if(res.success){
+      const chartData = res.data.map((entry) => ({
+        x: new Date(entry.activityDate), // Convert date string to Date object
+        y: entry.duration,
+      }));
+      setActivityChartData(chartData);
+    }
+  };
+
+  const options = {
+    chart: {
+      id: 'daily-activity-chart',
+      type: 'area',
+      height: 400,
+      toolbar: {
+        show: false,
+      },
+    },
+    xaxis: {
+      type: 'datetime',
+      labels: {
+        datetimeFormatter: {
+          year: 'yyyy',
+          month: "MMM 'yy",
+          day: 'dd MMM',
+          hour: 'HH:mm',
+        },
+      },
+    },
+    yaxis: {
+      title: {
+        text: 'Daily Active Time (minutes)',
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      curve: 'smooth',
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shadeIntensity: 1,
+        opacityFrom: 0.7,
+        opacityTo: 0.9,
+        stops: [0, 100],
+      },
+    },
+    colors: ['#008FFB'],
+  };
+
+
+
+
+
+
   // const getTotalSuccesses = async () => {
   //   const res = await userActivityApi.totalSolvedProblemsByUser();
   //   if (res.success) {
@@ -291,6 +354,7 @@ export default function Profile() {
 
   useEffect(() => {
     getSubmissions();
+    getRecentActivity();
     //setLoading(false);
   }, []);
   useEffect(() => {
@@ -304,6 +368,7 @@ export default function Profile() {
       <Title title={"Profile Page"} />
       <PieChart />
       <BarChart />
+      <Chart options={options} series={[{ name: 'Active Time', data: activityChartData }]} type="area" width="100%" />
       <CalendarHeatmap
         startDate={new Date(new Date().getFullYear(), 0, 1)}
         endDate={new Date(new Date().getFullYear(), 11, 31)}

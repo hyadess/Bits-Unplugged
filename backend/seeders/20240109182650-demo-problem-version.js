@@ -783,7 +783,7 @@ module.exports = {
         }),
       },
       {
-        problemId: 11,
+        problemId: 12,
         canvasId: 1,
         title: "Pentagon and Pentagram",
         statement: "Convert the Pentagram to a Pentagon.",

@@ -1,11 +1,13 @@
 const Repository = require("./base");
 const db = require("../models/index");
-
+const DailyActivityRepository = require('../repositories/dailyActivityRepository');
+const dailyActivityRepository = new DailyActivityRepository();
 class UserActivityRepository extends Repository {
   constructor() {
     super();
   }
   trackDuration = async (userId, problemId, duration) => {
+    dailyActivityRepository.todaysEntry(userId,duration);
     const activity = db.Activity.findOne({ where: { userId, problemId } }).then(
       function (obj) {
         // update

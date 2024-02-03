@@ -2,6 +2,8 @@ const router = require("express").Router();
 const authMiddleware = require("../services/tokenValidationService");
 const UserActivityController = require("../controllers/userActivityController");
 const userActivityController = new UserActivityController();
+const DailyActivityController = require("../controllers/dailyActivityController");
+const dailyActivityController = new DailyActivityController();
 const passport = require("passport");
 router.use(
   passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
@@ -43,6 +45,10 @@ router.get(
 router.get(
   "/stat/:topicId/solvedProblems",
   userActivityController.totalSolvedProblemCountByTopic
+);
+router.get(
+  "/stat/activetime",
+  dailyActivityController.getAllDailyActivitiesForLast30Days
 );
 
 router.put("/:problemId/track-duration", userActivityController.trackDuration);

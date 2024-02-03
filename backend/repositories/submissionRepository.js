@@ -27,7 +27,7 @@ class SubmissionRepository extends Repository {
         },
       ],
       where: {
-        problemId,
+        id:problemId,
       },
     });
     return result;

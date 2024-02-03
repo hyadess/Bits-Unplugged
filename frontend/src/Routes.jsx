@@ -232,6 +232,8 @@ const AppRoutes = () => {
 
         <Route path="/admin/login" element={<AdminLogin />} />
 
+
+
         <Route element={<ProblemSetter />}>
           <Route
             path="/problems/:id/preview"
@@ -283,7 +285,25 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
+
+          <Route
+            path="/contests/:contestid/edit"
+            element={
+              <LayoutMain right={<History />}>
+                <Contest />
+              </LayoutMain>
+            }
+          />
         </Route>
+
+        
+
+
+
+
+
+
+
 
         <Route element={<ProblemSolver />}>
           <Route

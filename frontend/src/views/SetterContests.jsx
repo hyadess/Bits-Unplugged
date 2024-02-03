@@ -10,7 +10,7 @@ const SetterContestsView = ({
   deleteProblem,
   openModal,
   closeModal,
-  createProblem,
+  createContest,
   modalIsOpen,
 }) => {
   useEffect(() => {
@@ -42,10 +42,10 @@ const SetterContestsView = ({
 
       {modalIsOpen && (
         <CustomModal
-          label={"Enter Problem Title"}
-          placeholder={"Problem Title"}
+          label={"Enter Contest Title"}
+          placeholder={"Contest Title"}
           onClose={closeModal}
-          onSubmit={createProblem}
+          onSubmit={createContest}
         />
       )}
     </div>

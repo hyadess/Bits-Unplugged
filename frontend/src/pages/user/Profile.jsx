@@ -370,7 +370,7 @@ export default function Profile() {
       </div>
       <BarChart />
       <div>
-        <Title title={""} sub_title={"Time you were active in our website"} />
+        <Title title={""} sub_title={"Your watch time"} />
       </div>
       <Chart
         options={options}
@@ -378,6 +378,9 @@ export default function Profile() {
         type="area"
         width="100%"
       />
+      <div>
+        <Title title={""} sub_title={"Your activity heatmap"} />
+      </div>
       <CalendarHeatmap
         startDate={new Date(new Date().getFullYear(), 0, 1)}
         endDate={new Date(new Date().getFullYear(), 11, 31)}

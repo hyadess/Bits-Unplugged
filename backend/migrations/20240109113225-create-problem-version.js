@@ -50,14 +50,12 @@ module.exports = {
       },
       isLive: {
         type: Sequelize.BOOLEAN,
+        defaultValue: true,
       },
       canvasData: {
         type: Sequelize.JSON,
       },
       editOptions: {
-        type: Sequelize.JSON,
-      },
-      previewOptions: {
         type: Sequelize.JSON,
       },
       previewOptions: {
@@ -72,6 +70,9 @@ module.exports = {
       approvalStatus: {
         type: Sequelize.INTEGER, // 0 - old (Approved), 1 - latest (Approved), 2 - Pending (At most 1), 3 - Rejected
         defaultValue: 2,
+      },
+      feedback: {
+        type: Sequelize.TEXT,
       },
       createdAt: {
         allowNull: false,

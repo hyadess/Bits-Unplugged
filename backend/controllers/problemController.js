@@ -89,6 +89,32 @@ class ProblemController extends Controller {
     });
   };
 
+  approveProblem = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const approvedProblem = await problemRepository.approveProblem(
+        req.params.id
+      );
+      if (!approvedProblem) {
+        res.status(404).json({ error: "Problem not found" });
+      } else {
+        res.status(200).json(approvedProblem);
+      }
+    });
+  };
+
+  rejectProblem = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const rejectedProblem = await problemRepository.rejectProblem(
+        req.params.id,
+        req.body.feedback
+      );
+      if (!rejectedProblem) {
+        res.status(404).json({ error: "Problem not found" });
+      }
+      res.status(200).json(rejectedProblem);
+    });
+  };
+
   updateSeries = async (req, res) => {
     let result = await problemRepository.updateSeries(
       req.params.problemId,
@@ -144,7 +170,7 @@ class ProblemController extends Controller {
     this.handleRequest(res, async () => {
       let submissions =
         req.user.type === 1
-          ? undefined
+          ? await problemRepository.getAllVersions(req.params.id)
           : req.user.type === 0
           ? await submissionRepository.getAllSubmissionsByUserAndProblem(
               req.user.userId,
@@ -157,6 +183,12 @@ class ProblemController extends Controller {
     });
   };
 
+  getAllVersions = async (req, res) => {
+    this.handleRequest(res, async () => {
+      let versions = await problemRepository.getAllVersions(req.params.id);
+      res.status(200).send(versions);
+    });
+  };
   // takeNthHint = async (req, res) => {};
   // rateProblem = async (req, res) => {};
   // getProblemRating = async (req, res) => {};

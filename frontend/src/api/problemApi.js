@@ -43,5 +43,16 @@ class ProblemApi extends Api {
   cloneProblem = async (problemId) => {
     return await this.post("/problems/" + problemId + "/clone");
   };
+  approveProblem = async (problemId) => {
+    return await this.put("/problems/" + problemId + "/approve");
+  };
+  rejectProblem = async (problemId, feedback) => {
+    return await this.put("/problems/" + problemId + "/reject", {
+      feedback: feedback,
+    });
+  };
+  getAllVersions = async (problemId) => {
+    return await this.get("/problems/" + problemId + "/versions");
+  };
 }
 export default ProblemApi;

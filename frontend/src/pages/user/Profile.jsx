@@ -275,8 +275,8 @@ export default function Profile() {
   const [activityChartData, setActivityChartData] = useState([]);
 
   const getRecentActivity = async () => {
-    const res=await userActivityApi.getAllDailyActivitiesForLast30Days();
-    if(res.success){
+    const res = await userActivityApi.getAllDailyActivitiesForLast30Days();
+    if (res.success) {
       const chartData = res.data.map((entry) => ({
         x: new Date(entry.activityDate), // Convert date string to Date object
         y: entry.duration,
@@ -287,37 +287,37 @@ export default function Profile() {
 
   const options = {
     chart: {
-      id: 'daily-activity-chart',
-      type: 'area',
+      id: "daily-activity-chart",
+      type: "area",
       height: 400,
       toolbar: {
         show: false,
       },
     },
     xaxis: {
-      type: 'datetime',
+      type: "datetime",
       labels: {
         datetimeFormatter: {
-          year: 'yyyy',
+          year: "yyyy",
           month: "MMM 'yy",
-          day: 'dd MMM',
-          hour: 'HH:mm',
+          day: "dd MMM",
+          hour: "HH:mm",
         },
       },
     },
     yaxis: {
       title: {
-        text: 'Daily Active Time (minutes)',
+        text: "Daily Active Time (seconds)",
       },
     },
     dataLabels: {
       enabled: false,
     },
     stroke: {
-      curve: 'smooth',
+      curve: "smooth",
     },
     fill: {
-      type: 'gradient',
+      type: "gradient",
       gradient: {
         shadeIntensity: 1,
         opacityFrom: 0.7,
@@ -325,13 +325,8 @@ export default function Profile() {
         stops: [0, 100],
       },
     },
-    colors: ['#008FFB'],
+    colors: ["#008FFB"],
   };
-
-
-
-
-
 
   // const getTotalSuccesses = async () => {
   //   const res = await userActivityApi.totalSolvedProblemsByUser();
@@ -366,9 +361,23 @@ export default function Profile() {
   return (
     <div className="flex flex-col">
       <Title title={"Profile Page"} />
+      <div>
+        <Title title={""} sub_title={"Your success and fail statistics"} />
+      </div>
       <PieChart />
+      <div>
+        <Title title={""} sub_title={"Your favourite series"} />
+      </div>
       <BarChart />
-      <Chart options={options} series={[{ name: 'Active Time', data: activityChartData }]} type="area" width="100%" />
+      <div>
+        <Title title={""} sub_title={"Time you were active in our website"} />
+      </div>
+      <Chart
+        options={options}
+        series={[{ name: "Active Time", data: activityChartData }]}
+        type="area"
+        width="100%"
+      />
       <CalendarHeatmap
         startDate={new Date(new Date().getFullYear(), 0, 1)}
         endDate={new Date(new Date().getFullYear(), 11, 31)}

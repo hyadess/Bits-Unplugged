@@ -432,7 +432,7 @@ class ProblemsRepository extends Repository {
           required: true,
         },
       ],
-      order: [["updatedAt", "DESC"]],
+      order: [["id", "DESC"]],
     });
     return versions;
   };

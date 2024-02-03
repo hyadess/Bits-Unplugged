@@ -54,23 +54,26 @@ const ProblemVersionCard = ({
           {idx}
         </h5> */}
 
-        <div
-          className="flex flex-col cursor-pointer"
-          onClick={() => {
-            setLoading(true);
-            navigate(`/problems/${id}/preview`);
-          }}
-        >
-          <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title w-75% cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
-            {name}
-          </h5>
+        <div className="flex flex-row justify-between">
+          <div
+            className="flex flex-col cursor-pointer"
+            onClick={() => {
+              setLoading(true);
+              navigate(`/problems/${id}/preview`);
+            }}
+          >
+            <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
+              {name}
+            </h5>
 
-          {canvas && (
-            <div className="flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400">
-              <FontAwesomeIcon icon={faTag} />
-              <h3 className="bu-text-primary">{canvas}</h3>
-            </div>
-          )}
+            {canvas && (
+              <div className="flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400">
+                <FontAwesomeIcon icon={faTag} />
+                <h3 className="bu-text-primary">{canvas}</h3>
+              </div>
+            )}
+          </div>
+          <h1 className="bu-text-disable text-2xl font-bold">#{id}</h1>
         </div>
 
         <div className="flex justify-between items-end">

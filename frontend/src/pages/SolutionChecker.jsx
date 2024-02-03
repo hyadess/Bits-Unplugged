@@ -129,7 +129,7 @@ export default function SolutionChecker(props) {
         {stdout.length > 0 && showStdOut && (
           <div
             className={
-              "w-full h-1/3 m-0 text-left p-5 bg-[#1F2531] text-md text-white  break-all overflow-scroll  box-border border-4 border-solid border-gray-600 border-spacing-4 whitespace-pre border-t-0"
+              "w-full h-1/3 m-0 text-left p-5 bg-[#1F2531] text-md text-white  break-all overflow-auto  box-border border-4 border-solid border-gray-600 border-spacing-4 whitespace-pre border-t-0"
             }
           >
             {stdout}

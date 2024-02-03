@@ -40,7 +40,7 @@ class UserActivityRepository extends Repository {
         if (obj)
           return obj.update({
             conseqFailedAttempt: obj.conseqFailedAttempt + 1,
-            isSolved: false,
+            isSolved: obj.isSolved || false,
             lastSolveTimestamp: Date.now(),
             lastSuccessfulSolveTimestamp: null,
             totalFailedAttempt: obj.totalFailedAttempt + 1,

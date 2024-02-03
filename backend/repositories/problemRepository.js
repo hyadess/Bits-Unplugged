@@ -403,11 +403,12 @@ class ProblemsRepository extends Repository {
     return updatedProblem;
   };
 
-  rejectProblem = async (id) => {
+  rejectProblem = async (id, feedback) => {
     // Just update the approvalStatus field in ProblemVersion to 0 using ORM
     const updatedProblem = await db.ProblemVersion.update(
       {
         approvalStatus: 0,
+        feedback: feedback,
       },
       {
         where: {
@@ -416,6 +417,24 @@ class ProblemsRepository extends Repository {
       }
     );
     return updatedProblem;
+  };
+
+  getAllVersions = async (id) => {
+    const versions = await db.ProblemVersion.findAll({
+      where: {
+        problemId: id,
+      },
+      include: [
+        {
+          model: db.Canvas,
+          attributes: ["id", "name", "classname", "info"],
+          as: "canvas",
+          required: true,
+        },
+      ],
+      order: [["id", "DESC"]],
+    });
+    return versions;
   };
 }
 

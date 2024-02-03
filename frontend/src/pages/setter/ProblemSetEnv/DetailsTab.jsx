@@ -29,20 +29,20 @@ const DetailsTab = () => {
       <div className="flex flex-col gap-2">
         <div className="bu-text-primary text-2xl font-medium">Statement</div>
         <ProblemStatement />
-        <button
-          className="bu-button-primary flex flex-row items-center justify-center gap-3 rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white focus:outline-none"
-          onClick={async () => {
-            const result = await problemApi.updateProblem(problem.id, {
-              title: problem.title,
-              statement: problem.statement,
-            });
-            showSuccess("Details saved successfully", result);
-          }}
-        >
-          <FontAwesomeIcon icon={faFloppyDisk} size="sm" />
-          SAVE
-        </button>
       </div>
+      <button
+        className="bu-button-primary flex flex-row items-center justify-center gap-2 rounded-lg px-7 py-3.5 text-center text-lg font-semibold focus:outline-none"
+        onClick={async () => {
+          const result = await problemApi.updateProblem(problem.id, {
+            title: problem.title,
+            statement: problem.statement,
+          });
+          showSuccess("Details saved successfully", result);
+        }}
+      >
+        <FontAwesomeIcon icon={faFloppyDisk} size="lg" />
+        SAVE
+      </button>
     </>
   );
 };

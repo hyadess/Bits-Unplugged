@@ -46,8 +46,13 @@ class ProblemApi extends Api {
   approveProblem = async (problemId) => {
     return await this.put("/problems/" + problemId + "/approve");
   };
-  rejectProblem = async (problemId) => {
-    return await this.put("/problems/" + problemId + "/reject");
+  rejectProblem = async (problemId, feedback) => {
+    return await this.put("/problems/" + problemId + "/reject", {
+      feedback: feedback,
+    });
+  };
+  getAllVersions = async (problemId) => {
+    return await this.get("/problems/" + problemId + "/versions");
   };
 }
 export default ProblemApi;

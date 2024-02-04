@@ -76,15 +76,8 @@ class ContestRepository extends Repository {
       JOIN
         "Setters" "S" ON "CS"."setterId" = "S"."id"
       JOIN
-        "Users" "U" ON "S"."userId" = "U"."id"
-      LEFT JOIN
-        "ContestProblems" "CP" ON "C"."id" = "CP"."contestId"
-      LEFT JOIN
-        "Problems" "P" ON "CP"."problemId" = "P"."id"
-      WHERE
-        "C"."id" = $1
-      GROUP BY
-        "C"."id";
+      "Users" "U" ON "S"."userId" = "U"."id"
+      WHERE "C"."id" = $1;
     `;
     const params = [contestId];
     const result = await this.query(query, params);
@@ -232,10 +225,42 @@ class ContestRepository extends Repository {
         SET "status" = 'completed', "updatedAt" = $2 , "endDate" = $2
         WHERE "id" = $1;
         `;
-    const params = [contestId, new Date()];
+    const params = [contestId, Date.now()];
     const result = await this.query(query, params);
     return result;
   };
+
+  updateDates = async (contestId, startDateString, endDateString) => {
+
+    const startDate = new Date(startDateString);
+    const endDate = new Date(endDateString);
+    const query = `
+        UPDATE "Contests" 
+        SET "startDate" = $2, "endDate" = $3
+        WHERE "id" = $1;
+        `;
+    const params = [contestId, startDate, endDate];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  availableCollaborators = async () => {
+    const query = `
+      SELECT
+      "S"."id",
+      "U"."username"
+      FROM
+      "Setters" "S"
+      JOIN
+      "Users" "U" ON "S"."userId" = "U"."id";
+      `;
+    const params = [];
+    const result = await this.query(query, params);
+    return result;
+  };
+    
+
+
 
   //***************UPDATING CONTEST SETTER TABLE**************** */
 

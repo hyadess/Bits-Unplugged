@@ -5,6 +5,7 @@ import { setLoading } from "../../App";
 import { submissionApi, userActivityApi } from "../../api";
 import { Tooltip } from "react-tooltip";
 import ApexCharts from "react-apexcharts";
+import Chart from "react-apexcharts";
 
 import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
@@ -124,7 +125,7 @@ export default function Profile() {
         options: {
           chart: {
             type: "bar",
-            height: 340,
+            height: 300,
             toolbar: {
               show: false,
             },
@@ -224,7 +225,7 @@ export default function Profile() {
         options: {
           chart: {
             type: "pie",
-            height: 350,
+            height: 300,
           },
           labels: ["Fail", "Success"],
           responsive: [
@@ -270,6 +271,159 @@ export default function Profile() {
     }
   };
 
+  //for activity stats.....................
+  const [activityChartData, setActivityChartData] = useState([]);
+
+  const getRecentActivity = async () => {
+    const res = await userActivityApi.getAllDailyActivitiesForLast30Days();
+    if (res.success) {
+      const chartData = res.data.map((entry) => ({
+        x: new Date(entry.activityDate), // Convert date string to Date object
+        y: entry.duration,
+      }));
+      setActivityChartData(chartData);
+    }
+  };
+
+  const options = {
+    chart: {
+      id: "daily-activity-chart",
+      type: "area",
+      height: 400,
+      toolbar: {
+        show: false,
+      },
+    },
+    xaxis: {
+      type: "datetime",
+      labels: {
+        datetimeFormatter: {
+          year: "yyyy",
+          month: "MMM 'yy",
+          day: "dd MMM",
+          hour: "HH:mm",
+        },
+      },
+    },
+    yaxis: {
+      title: {
+        text: "Daily Active Time (seconds)",
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      curve: "smooth",
+    },
+    fill: {
+      type: "gradient",
+      gradient: {
+        shadeIntensity: 1,
+        opacityFrom: 0.7,
+        opacityTo: 0.9,
+        stops: [0, 100],
+      },
+    },
+    colors: ["#008FFB"],
+  };
+
+  //submission distribution...............................
+
+  const [distributionChartData, setDistributionChartData] = useState({
+    options: {
+      chart: {
+        type: "histogram",
+      },
+      xaxis: {
+        title: {
+          text: "Time Taken",
+        },
+      },
+      yaxis: {
+        title: {
+          text: "Total Problems Solved",
+        },
+      },
+    },
+    series: [
+      {
+        name: "Distribution",
+        data: [],
+      },
+    ],
+  });
+
+  const getAllSusccessDuration = async () => {
+    const res = await userActivityApi.successesByUser();
+    if (res.success) {
+      console.log(res.data);
+
+      const minTimeTaken = Math.min(
+        ...res.data.map((item) => item.viewDuration)
+      );
+      const maxTimeTaken = Math.max(
+        ...res.data.map((item) => item.viewDuration)
+      );
+
+      const numberOfRanges = 20;
+      const rangeSize = (maxTimeTaken - minTimeTaken) / numberOfRanges;
+
+      const timeRanges = Array.from({ length: numberOfRanges }, (_, index) => {
+        const min = minTimeTaken + index * rangeSize;
+        const max = min + rangeSize;
+        return { min, max };
+      });
+
+      // Initialize an object to store the count of problems in each time range
+      const timeRangeCounts = Array(numberOfRanges+1).fill(0);
+
+      // Process the data to count the number of problems in each time range
+      res.data.forEach((item) => {
+        const timeTaken = item.viewDuration;
+
+        // Find the appropriate time range for the current item
+        const rangeIndex = Math.floor((timeTaken - minTimeTaken) / rangeSize);
+
+        // Increment the count for that time range
+        if (rangeIndex >= 0 && rangeIndex < numberOfRanges+1) {
+          timeRangeCounts[rangeIndex]++;
+        }
+      });
+      console.log(timeRangeCounts);
+
+      // Format the data for ApexCharts
+      const formattedData = timeRangeCounts.map((count, index) => ({
+        x:
+          (minTimeTaken +
+            index * rangeSize +
+            minTimeTaken +
+            (index + 1) * rangeSize) /
+          2,
+        y: count,
+      }));
+
+      setDistributionChartData({
+        options: {
+          chart: {
+            type: "histogram",
+          },
+          xaxis: {
+            title: {
+              text: "Time Taken",
+            },
+          },
+          yaxis: {
+            title: {
+              text: "Total Problems Solved",
+            },
+          },
+        },
+        series: [{ data: formattedData }],
+      });
+    }
+  };
+
   // const getTotalSuccesses = async () => {
   //   const res = await userActivityApi.totalSolvedProblemsByUser();
   //   if (res.success) {
@@ -291,19 +445,45 @@ export default function Profile() {
 
   useEffect(() => {
     getSubmissions();
+    getRecentActivity();
     //setLoading(false);
   }, []);
   useEffect(() => {
     transformHeatmapData();
     calculateSeriesStats();
+    getAllSusccessDuration();
     //setLoading(false);
   }, [submissions]);
 
   return (
     <div className="flex flex-col">
       <Title title={"Profile Page"} />
+      <div>
+        <Title title={""} sub_title={"Your success and fail statistics"} />
+      </div>
       <PieChart />
+      <div>
+        <Title title={""} sub_title={"Your favourite series"} />
+      </div>
       <BarChart />
+      <div>
+        <Title title={""} sub_title={"Your watch time"} />
+      </div>
+      <Chart
+        options={options}
+        series={[{ name: "Active Time", data: activityChartData }]}
+        type="area"
+        width="100%"
+      />
+      <Chart
+        options={distributionChartData.options}
+        series={distributionChartData.series}
+        type="bar"
+        height={300}
+      />
+      <div>
+        <Title title={""} sub_title={"Your activity heatmap"} />
+      </div>
       <CalendarHeatmap
         startDate={new Date(new Date().getFullYear(), 0, 1)}
         endDate={new Date(new Date().getFullYear(), 11, 31)}

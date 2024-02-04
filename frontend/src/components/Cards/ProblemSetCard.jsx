@@ -35,10 +35,10 @@ const ProblemSetCard = ({
     // await problemController.unpublishProblem(id);
   };
   return (
-    <div className="w-full h-full" key={id}>
+    <div className="w-full" key={id}>
       <div
         className={
-          "border rounded-lg shadow-lg bg-gray-700 bu-card-primary flex flex-col p-5 h-full justify-between"
+          "border rounded-lg shadow-lg bg-gray-700 bu-card-primary flex flex-col p-5 justify-between"
         }
       >
         {/* <h5 className="text-2xl text-center font-bold tracking-tight bu-text-primary w-10%">

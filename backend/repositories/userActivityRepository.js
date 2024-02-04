@@ -1,11 +1,13 @@
 const Repository = require("./base");
 const db = require("../models/index");
-
+const DailyActivityRepository = require("../repositories/dailyActivityRepository");
+const dailyActivityRepository = new DailyActivityRepository();
 class UserActivityRepository extends Repository {
   constructor() {
     super();
   }
   trackDuration = async (userId, problemId, duration) => {
+    dailyActivityRepository.todaysEntry(userId, duration);
     const activity = db.Activity.findOne({ where: { userId, problemId } }).then(
       function (obj) {
         // update
@@ -38,7 +40,7 @@ class UserActivityRepository extends Repository {
         if (obj)
           return obj.update({
             conseqFailedAttempt: obj.conseqFailedAttempt + 1,
-            isSolved: false,
+            isSolved: obj.isSolved || false,
             lastSolveTimestamp: Date.now(),
             lastSuccessfulSolveTimestamp: null,
             totalFailedAttempt: obj.totalFailedAttempt + 1,
@@ -76,7 +78,7 @@ class UserActivityRepository extends Repository {
   };
 
   updateOnSuccessfulAttempt = async (userId, problemId) => {
-    console.log("lets see"+problemId);
+    console.log("lets see" + problemId);
     const activity = db.Activity.findOne({ where: { userId, problemId } }).then(
       function (obj) {
         // update
@@ -228,8 +230,7 @@ class UserActivityRepository extends Repository {
     return result;
   };
 
-
-  mostRecentFailsByUser=async(userId) =>{
+  mostRecentFailsByUser = async (userId) => {
     const query = `
     SELECT A.*, PV."title"
     FROM "Activities" A
@@ -242,13 +243,12 @@ class UserActivityRepository extends Repository {
     return result;
   };
 
-  mostRecentSuccessByUser=async(userId) =>{
+  successesByUser=async(userId) =>{
     const query = `
     SELECT A.*, PV."title"
     FROM "Activities" A
     JOIN "ProblemVersions" PV ON A."problemId" = PV."id"
-    WHERE A."userId" = $1 AND A."isSolved" = TRUE
-    ORDER BY A."lastSolveTimestamp" DESC;
+    WHERE A."userId" = $1 AND A."isSolved" = TRUE;
     `;
     const params = [userId];
     const result = await this.query(query, params);
@@ -259,7 +259,7 @@ class UserActivityRepository extends Repository {
     const query = `
       SELECT
       T."id",
-      COUNT(P."problemId") AS total_problems
+      COUNT(DISTINCT P."problemId") AS total_problems
       FROM
       "Topics" T
       JOIN
@@ -276,7 +276,7 @@ class UserActivityRepository extends Repository {
     return result;
   };
 
-  totalSolvedProblemCountByTopic = async (topicId,userId) => {
+  totalSolvedProblemCountByTopic = async (topicId, userId) => {
     const query = `
       SELECT
       T."id",
@@ -294,18 +294,10 @@ class UserActivityRepository extends Repository {
       GROUP BY
       T."id"
       `;
-    const params = [topicId,userId];
+    const params = [topicId, userId];
     const result = await this.query(query, params);
     return result;
-  }
-
-  
-
-
-
-
-
-
+  };
 }
 
 module.exports = UserActivityRepository;

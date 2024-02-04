@@ -8,6 +8,9 @@ class UserActivityApi extends Api {
     return await this.post("/userActivity/" + problemId + "/failedAttempt");
   };
   totalSolvedProblemsByUser =async() =>{
+    return await this.get("/userActivity/stat/series/successes/me");
+  };
+  successesByUser =async() =>{
     return await this.get("/userActivity/stat/successes/me");
   };
   totalFailedProblemsByUser =async() =>{
@@ -22,6 +25,9 @@ class UserActivityApi extends Api {
   totalProblemCountByTopic =async(topicId) =>{
     //console.log(topicId);
     return await this.get("/userActivity/stat/"+topicId+"/problems");
+  };
+  getAllDailyActivitiesForLast30Days =async() =>{
+    return await this.get("/userActivity/stat/activetime");
   };
 
 

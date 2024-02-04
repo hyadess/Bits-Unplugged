@@ -62,8 +62,8 @@ const Header = ({ backupProblem }) => {
   };
 
   return (
-    <div className="mx-auto max-w-screen-2xl items-center py-4 pt-8 md:grid md:grid-cols-2">
-      <div className="flex flex-row items-center md:mt-0 w-full text-center text-5xl font-extrabold tracking-tight md:text-left bu-text-title">
+    <div className="mx-auto max-w-screen-2xl items-end py-4 flex flex-row justify-between">
+      <div className="text-5xl font-extrabold md:text-left bu-text-title w-[90%] whitespace-nowrap overflow-hidden overflow-ellipsis tracking-tight max-w-full leading-normal">
         {problem?.title?.length == 0 ? "Untitled" : problem.title}
       </div>
       <div className="flex flex-row justify-end">
@@ -76,7 +76,7 @@ const Header = ({ backupProblem }) => {
           <IconButton>
             <div
               data-tooltip-target="tooltip-default"
-              className="bu-text-primary flex cursor-pointer items-center text-3xl"
+              className="bu-text-primary flex cursor-pointer items-center text-4xl"
               onClick={() => {
                 setLoading(true);
                 navigate(`/problems/${problem.id}/preview`);
@@ -104,7 +104,7 @@ const Header = ({ backupProblem }) => {
       </IconButton>
     </Tooltip> */}
 
-        <Tooltip
+        {/* <Tooltip
           title={<h1 className="text-lg text-white">Save all</h1>}
           placement="top"
           arrow
@@ -120,9 +120,9 @@ const Header = ({ backupProblem }) => {
               <FontAwesomeIcon icon={faSave} />
             </div>
           </IconButton>
-        </Tooltip>
+        </Tooltip> */}
 
-        <Tooltip
+        {/* <Tooltip
           title={<h1 className="text-lg text-white">Publish</h1>}
           placement="top"
           arrow
@@ -137,7 +137,7 @@ const Header = ({ backupProblem }) => {
               <FontAwesomeIcon icon={faUpload} />
             </div>
           </IconButton>
-        </Tooltip>
+        </Tooltip> */}
       </div>
     </div>
   );

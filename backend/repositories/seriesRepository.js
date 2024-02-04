@@ -149,6 +149,7 @@ class SeriesRepository extends Repository {
         ...(filter.isLive !== null && {
           isLive: filter.isLive,
         }),
+        approvalStatus: 1,
       },
       include: [
         {

@@ -57,6 +57,15 @@ class UserActivityController extends Controller {
     }
   };
 
+  successesByUser = async (req, res) => { 
+    let result = await userActivityRepository.successesByUser(req.user.userId);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);   
+    }
+  };
+
   totalSolvedProblemsByUser = async (req, res) => {
     let result = await userActivityRepository.totalSolvedProblemsByUser(
       req.user.userId

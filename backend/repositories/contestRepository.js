@@ -57,9 +57,20 @@ class ContestRepository extends Repository {
   };
   getContestInfo = async (contestId) => {
     const query = `
-        SELECT  "C".*
-        FROM "Contests" "C"
-        WHERE "C"."id" = $1;
+      SELECT
+      "C".*,
+      jsonb_agg(jsonb_build_object('setterId', "S"."id", 'role', "CS"."role", 'username', "U"."username")) AS "ContestSetters"
+      FROM
+      "Contests" "C"
+      JOIN
+      "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
+      JOIN
+      "Setters" "S" ON "CS"."setterId" = "S"."id"
+      JOIN
+      "Users" "U" ON "S"."userId" = "U"."id"
+      GROUP BY
+      "C"."id";
+
         `;
     const params = [contestId];
     const result = await this.query(query, params);

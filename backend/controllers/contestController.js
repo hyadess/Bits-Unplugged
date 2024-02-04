@@ -30,6 +30,14 @@ class ContestController extends Controller {
       res.status(404).json(result);
     }
   };
+  getContestInfo = async (req, res) => {
+    let result = await contestRepository.getContestInfo(req.params.contestId);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
   getMyOwnContests = async (req, res) => {
     let result = await contestRepository.getMyOwnContests(req.user.userId);
     if (result.success) {

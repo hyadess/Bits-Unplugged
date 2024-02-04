@@ -14,7 +14,7 @@ export default function Problems() {
     const res = await seriesApi.getSeriesByTopic(id);
     if (res.success) {
       setSeriesList(res.data);
-      // setLoading(false);
+      //setLoading(false);
     }
   };
 

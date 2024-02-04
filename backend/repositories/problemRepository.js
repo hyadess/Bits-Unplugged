@@ -16,15 +16,68 @@ class ProblemsRepository extends Repository {
     return problems;
   };
 
-  getSubmittedProblems = async () => {
+  getLiveProblemsBySeries = async (userId, seriesId) => {
+    const latestProblemVersions = await db.sequelize.query(
+      `SELECT DISTINCT ON ("problemId")
+      "id", "problemId", "version"
+      FROM "ProblemVersions" PV
+      WHERE "approvalStatus" = 1
+      ORDER BY "problemId", "version" DESC`,
+      { type: db.Sequelize.QueryTypes.SELECT, raw: true }
+    );
+
     const latestProblems = await db.ProblemVersion.findAll({
       where: {
-        createdAt: db.Sequelize
-          .literal(`("ProblemVersion"."problemId", "ProblemVersion"."createdAt") IN (
-          SELECT "problemId", MAX("createdAt") as "latestCreatedAt"
-          FROM "ProblemVersions" PV
-          GROUP BY "problemId"
-        )`),
+        id: {
+          [Op.in]: latestProblemVersions.map((version) => version.id),
+        },
+        isLive: true,
+        seriesId,
+      },
+      include: [
+        {
+          model: db.Activity,
+          foreignKey: "problemId",
+          as: "activities",
+          where: { userId }, // Add your specific userId filter here
+          required: false,
+        },
+        {
+          model: db.Series,
+          foreignKey: "seriesId",
+          as: "series",
+          required: true,
+          include: [
+            {
+              model: db.Topic,
+              foreignKey: "topicId",
+              as: "topic",
+              required: true,
+            },
+          ],
+        },
+      ],
+      order: [
+        ["serialNo", "DESC"], // Change 'ASC' to 'DESC' if you want descending order
+      ],
+    });
+    return latestProblems;
+  };
+
+  getSubmittedProblems = async () => {
+    const latestProblemVersions = await db.sequelize.query(
+      `SELECT DISTINCT ON ("problemId")
+      "id", "problemId", "version"
+      FROM "ProblemVersions" PV
+      ORDER BY "problemId", "version" DESC`,
+      { type: db.Sequelize.QueryTypes.SELECT, raw: true }
+    );
+
+    const latestProblems = await db.ProblemVersion.findAll({
+      where: {
+        id: {
+          [Op.in]: latestProblemVersions.map((version) => version.id),
+        },
       },
       include: [
         {
@@ -34,15 +87,11 @@ class ProblemsRepository extends Repository {
           required: true,
         },
       ],
+      order: [
+        ["updatedAt", "DESC"], // Change 'ASC' to 'DESC' if you want descending order
+      ],
     });
-    console.log(latestProblems);
     return latestProblems;
-    // const query = `
-    // SELECT * FROM "ProblemVersions";
-    // `;
-    // const params = [];
-    // const result = await this.query(query, params);
-    // return result;
   };
 
   getMyProblems = async (setterId) => {

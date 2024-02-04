@@ -64,7 +64,7 @@ export default function PendingProblemCard({
         }
       >
         <div className="flex flex-row justify-between items-center">
-          <div className="flex flex-col cursor-pointer w-[75%]">
+          <div className="flex flex-col cursor-pointer w-[80%]">
             <h5
               className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis w-full max-w-full"
               onClick={() => {

@@ -39,6 +39,7 @@ const SetterContestsView = ({
             startDate={contest.startDate}
             endDate={contest.endDate}
             status={contest.status}
+            updatedAt={contest.updatedAt}
           />
         ))}
       </CardContainer>

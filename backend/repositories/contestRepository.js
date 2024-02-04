@@ -116,7 +116,7 @@ class ContestRepository extends Repository {
         VALUES ($1, NULL, NULL, NULL, 'edit', $2)
         RETURNING "id";          
         `;
-    const params = [title,new Date()];
+    const params = [title,new Date("February 1, 2024 11:13:00")];
     const result = await this.query(query, params);
     const contestId = result.data[0].id;
 
@@ -137,7 +137,7 @@ class ContestRepository extends Repository {
         SET "updatedAt" = $2
         WHERE "id" = $1;
         `;
-    const params = [contestId, new Date()];
+    const params = [contestId, new Date(null)];
     const result = await this.query(query, params);
 
     return result;
@@ -149,7 +149,7 @@ class ContestRepository extends Repository {
         SET "title" = $2, "updatedAt" = $3
         WHERE "id" = $1;
         `;
-    const params = [contestId, title, new Date()];
+    const params = [contestId, title, new Date(null)];
     const result = await this.query(query, params);
     return result;
   };

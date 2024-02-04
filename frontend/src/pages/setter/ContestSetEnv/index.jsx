@@ -1,48 +1,35 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { setLoading } from "../../../App";
-import { problemApi } from "../../../api";
+import { contestApi } from "../../../api";
 import ContestContextProvider, {
   useContestContext,
 } from "../../../store/ContestContextProvider";
-import ProbSetTab from "../../../components/ContestSetTab";
-import DetailsTab from "./DetailsTab";
-import ContestHeader from "./ContestHeader";
-import { useNavigate } from "react-router-dom";
+import ContestSetTab from "../../../components/ContestSetTab";
+import ContestHeader from "./ContestHeader"; // Import your ContestHeader component
+import DetailsTab from "./ContestDetails";
+import ProblemsTab from "./ContestProblems"; // Import your ProblemsTab component
 
-const ProblemSetEnvView = () => {
-  const backupProblem = useRef(null);
-  const { contestid } = useParams(); // problem.id
-  const [isFormDirty, setFormDirty] = useState(false); // pending
-  const [open, setOpen] = useState(false); // decouple
+const ContestSetEnvView = () => {
+  const backupContest = useRef(null);
+  const { id } = useParams();
+  const [isFormDirty, setFormDirty] = useState(false);
   const navigate = useNavigate();
-  const { state: problem, dispatch } = useContestContext();
-  const [activeComponent, setActiveComponent] = useState("Details"); // not related to database
-  const deepCopy = (obj) => {
-    return JSON.parse(JSON.stringify(obj));
-  };
-  const testRef = useRef(null);
-  const deleteProblem = async () => {
-    const res = await problemApi.deleteProblem(problem.id);
-    if (res.success) {
-      navigate("/problemSet");
-    }
-  };
+  const { state: contest, dispatch } = useContestContext();
+  const [activeComponent, setActiveComponent] = useState("Details");
+  const deepCopy = (obj) => JSON.parse(JSON.stringify(obj));
 
-  const getProblem = async () => {
-    const res = await problemApi.getProblemById(problemid);
+  const getContest = async () => {
+    const res = await contestApi.getContestById(id);
+    console.log(contest.title);
     if (res.success) {
-      backupProblem.current = res.data;
+      backupContest.current = res.data;
       dispatch({
         type: "SET_INITIAL_STATE",
-        payload: JSON.parse(
-          JSON.stringify({
-            ...res.data,
-            test: null,
-            testActivity: {},
-            checkerCanvas: res.data.checkerCanvas ?? res.data.canvasData,
-          })
-        ),
+        payload: {
+          ...res.data,
+          // Add additional properties as needed
+        },
       });
       setLoading(false);
     }
@@ -64,57 +51,48 @@ const ProblemSetEnvView = () => {
   }, [isFormDirty]);
 
   useEffect(() => {
-    if (problemid != undefined) {
-      getProblem();
+    if (id !== undefined) {
+      getContest();
     }
-  }, [problemid]);
+  }, [id]);
 
   return (
     <div>
-      <Header backupProblem={backupProblem} />
-      <ProbSetTab
+      <ContestHeader backupContest={backupContest} />
+
+      <ContestSetTab
         activeTab={activeComponent}
         click={(tab) => {
-          if (tab === "Test" && activeComponent !== "Test") {
-            dispatch({
-              type: "UPDATE_TEST_CANVAS",
-              payload: deepCopy(problem.canvasData),
-            });
-            testRef?.current?.handleReset(deepCopy(problem.canvasData));
-          }
           setActiveComponent(tab);
-          // document.body.style.cursor = "default";
         }}
       />
 
       <div className="component-container relative">
         <div
-          className={
-            "mt-5 flex flex-col gap-5 " +
-            (activeComponent === "Details" ? "block" : "hidden")
-          }
+          className={`mt-5 flex flex-col gap-5 ${
+            activeComponent === "Details" ? "block" : "hidden"
+          }`}
         >
           <DetailsTab />
         </div>
-        <div className={activeComponent === "Canvas" ? "block" : "hidden"}>
-          <CanvasDesignTab backupProblem={backupProblem} />
-        </div>
-        <div className={activeComponent === "Solution" ? "block" : "hidden"}>
-          <SolutionCheckerTab />
-        </div>
-        <div className={activeComponent === "Test" ? "block" : "hidden"}>
-          <TestTab ref={testRef} />
+        <div
+          className={`mt-5 flex flex-col gap-5 ${
+            activeComponent === "Problems" ? "block" : "hidden"
+          }`}
+        >
+          <ProblemsTab />
         </div>
       </div>
-      <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} />
     </div>
   );
 };
-const ProblemSetEnv = () => {
+
+const ContestSetEnv = () => {
   return (
-    <ProblemContextProvider>
-      <ProblemSetEnvView />
-    </ProblemContextProvider>
+    <ContestContextProvider>
+      <ContestSetEnvView />
+    </ContestContextProvider>
   );
 };
-export default ProblemSetEnv;
+
+export default ContestSetEnv;

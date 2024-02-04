@@ -1,6 +1,10 @@
 import Api from "./base";
 
 class ContestApi extends Api {
+  getContestById = async (contestId) => {
+    return await this.get("/contests/"+contestId);
+  };
+
   getAllContests = async () => {
     return await this.get("/contests");
   };

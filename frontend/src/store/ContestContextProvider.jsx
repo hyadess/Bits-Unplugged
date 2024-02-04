@@ -10,6 +10,11 @@ const ContestContextProvider = ({ children }) => {
         return payload;
       // Add other cases for updating specific properties as needed
       // For example, "UPDATE_CONTEST_NAME", "UPDATE_START_DATE", etc.
+      case "UPDATE_TITLE":
+        return {
+          ...state,
+          title: payload,
+        };
 
       default:
         return state;

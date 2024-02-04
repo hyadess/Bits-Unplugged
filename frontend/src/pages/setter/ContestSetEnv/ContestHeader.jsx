@@ -15,12 +15,9 @@ const ContestHeader = () => {
     return JSON.parse(JSON.stringify(obj));
   };
 
-  const updateCanvas = async () => {
-    // Add logic to update canvas data for the contest
-  };
+
 
   const saveAll = async () => {
-    await updateCanvas();
     const result = await contestApi.updateContest(contest.id, {
       title: contest.title,
       // Add other properties as needed for the contest

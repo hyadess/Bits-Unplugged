@@ -28,12 +28,13 @@ const SetterContests = () => {
   const getContestId = async (title) => {
     const res = await contestApi.addContest(title);
     if (res.success) {
-      return res.data.id;
+      
+      console.log(res.data[0].id);
+      return res.data[0].id;
     }
   };
 
   const createContest = async (title) => {
-    setLoading(true);
     closeModal();
     const contestID = await getContestId(title);
     navigate(`/contests/${contestID}/edit`);

@@ -17,7 +17,7 @@ const ContestSetCard = ({
   endDate,
   status,
   owner,
-  collaborators,
+  updatedAt,
   deleteAction,
 }) => {
   const [open, setOpen] = useState(false);
@@ -47,19 +47,27 @@ const ContestSetCard = ({
           </h5>
           <div className="flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400">
             <FontAwesomeIcon icon={faTag} />
-            <h3 className="bu-text-primary">{owner}</h3>
+            <h3 className="bu-text-primary font-semibold">{owner}</h3>
           </div>
         </div>
 
-        <div className="flex items-center justify-between mt-4">
-          <div className="flex gap-4 items-center">
-            <div className="bu-text-subtitle">{`Start Date: ${getTimeStamp(
-              startDate
-            )}`}</div>
-            <div className="bu-text-subtitle">{`End Date: ${getTimeStamp(
-              endDate
-            )}`}</div>
-            <div className="bu-text-subtitle">{`Status: ${status}`}</div>
+        <div className="flex justify-between mt-4">
+          <div className="flex flex-col gap-2 items-start">
+            <div className="bu-text-subtitle font-semibold">
+              {startDate ? `Start Date: ${getTimeStamp(startDate)}` : 'Start Date: Yet to be added'}
+            </div>
+            <div className="bu-text-subtitle font-semibold">
+              {endDate ? `End Date: ${getTimeStamp(endDate)}` : 'End Date: Yet to be added'}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 items-center">
+            <div className={`bu-text-subtitle font-semibold text-${status === "Live" ? 'green' : 'blue'}-500`}>
+              {`Status: ${status}`}
+            </div>
+            <div className="bu-text-subtitle font-semibold">
+              {updatedAt && `Last Updated: ${getTimeStamp(updatedAt)}`}
+            </div>
           </div>
 
           <div className="flex gap-4 items-center">

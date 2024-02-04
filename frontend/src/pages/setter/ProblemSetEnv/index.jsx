@@ -35,6 +35,7 @@ const ProblemSetEnvView = () => {
 
   const getProblem = async () => {
     const res = await problemApi.getProblemById(problemid);
+    console.log(problemid);
     if (res.success) {
       backupProblem.current = res.data;
       dispatch({

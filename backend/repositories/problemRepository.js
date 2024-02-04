@@ -86,6 +86,29 @@ class ProblemsRepository extends Repository {
           as: "canvas",
           required: true,
         },
+        {
+          model: db.Problem,
+          as: "problem",
+          required: true,
+          attributes: ["setterId"],
+          include: [
+            {
+              model: db.Setter,
+              as: "setter",
+              required: true,
+              attributes: ["isApproved"],
+              // Include all attributes of Setter or specify the ones you need
+              include: [
+                {
+                  model: db.User,
+                  as: "user",
+                  required: true,
+                  // Include all attributes of User or specify the ones you need
+                },
+              ],
+            },
+          ],
+        },
       ],
       order: [
         ["updatedAt", "DESC"], // Change 'ASC' to 'DESC' if you want descending order

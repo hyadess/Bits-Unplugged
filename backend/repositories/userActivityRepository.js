@@ -12,7 +12,7 @@ class UserActivityRepository extends Repository {
       function (obj) {
         // update
         if (obj) {
-          if (obj.isSolved) return;
+          if (obj.isSolved && obj.viewDuration!==0) return;
           console.log("Updated:", duration);
           return obj.update({
             viewDuration: obj.viewDuration + duration,
@@ -42,8 +42,8 @@ class UserActivityRepository extends Repository {
             conseqFailedAttempt: obj.conseqFailedAttempt + 1,
             isSolved: obj.isSolved || false,
             lastSolveTimestamp: Date.now(),
-            lastSuccessfulSolveTimestamp: null,
             totalFailedAttempt: obj.totalFailedAttempt + 1,
+            
           });
         // insert
         return db.Activity.create({
@@ -54,6 +54,7 @@ class UserActivityRepository extends Repository {
           lastSolveTimestamp: Date.now(),
           lastSuccessfulSolveTimestamp: null,
           totalFailedAttempt: 1,
+          viewDuration: 0,
         });
       }
     );
@@ -98,6 +99,7 @@ class UserActivityRepository extends Repository {
           lastSolveTimestamp: Date.now(),
           lastSuccessfulSolveTimestamp: Date.now(),
           totalFailedAttempt: 0,
+          viewDuration: 0,
         });
       }
     );
@@ -251,6 +253,18 @@ class UserActivityRepository extends Repository {
     WHERE A."userId" = $1 AND A."isSolved" = TRUE;
     `;
     const params = [userId];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  successesByProblem=async(problemId) =>{
+    const query = `
+    SELECT A.*, PV."title"
+    FROM "Activities" A
+    JOIN "ProblemVersions" PV ON A."problemId" = PV."id"
+    WHERE A."problemId" = $1 AND A."isSolved" = TRUE;
+    `;
+    const params = [problemId];
     const result = await this.query(query, params);
     return result;
   };

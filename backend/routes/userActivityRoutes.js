@@ -38,6 +38,11 @@ router.get(
   "/stat/successes/me",
   userActivityController.successesByUser
 );
+
+router.get(
+  "/stat/successes/:problemId",
+  userActivityController.successesByProblem
+);
 router.get(
   "/stat/series/successes/me",
   userActivityController.totalSolvedProblemsByUser

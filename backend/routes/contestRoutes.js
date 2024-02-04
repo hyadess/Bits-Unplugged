@@ -35,6 +35,7 @@ router.put(
   "/:contestId/updateDescription",
   contestController.updateDescription
 );
+router.get("/:contestId", contestController.getContestInfo);
 
 router.put("/:contestId/publish", contestController.publishContest);
 router.put("/:contestId/start", contestController.startContest);

@@ -359,9 +359,7 @@ export default function Profile() {
     if (res.success) {
       console.log(res.data);
 
-      const minTimeTaken = Math.min(
-        ...res.data.map((item) => item.viewDuration)
-      );
+      const minTimeTaken = 0;
       const maxTimeTaken = Math.max(
         ...res.data.map((item) => item.viewDuration)
       );

@@ -3,7 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import TableContainer from "../containers/TableContainer";
 import SubmissionCard from "../components/Cards/SubmissionCard";
 import { setLoading } from "../App";
-import { problemApi, submissionApi } from "../api";
+import { problemApi, submissionApi, userActivityApi } from "../api";
+import Chart from "react-apexcharts";
 export default function ProblemsSubmissions() {
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
@@ -12,6 +13,7 @@ export default function ProblemsSubmissions() {
   useEffect(() => {
     if (id !== undefined) {
       renderProblem();
+      getAllActivity();
       // getSubmissions();
       setLoading(false);
     }
@@ -21,6 +23,90 @@ export default function ProblemsSubmissions() {
     const res = await submissionApi.getAllSubmissionsByUserAndProblem(id);
     if (res.success) {
       setProblem(res.data);
+    }
+  };
+
+  //submission distribution...............................
+
+  const [distributionChartData, setDistributionChartData] = useState({
+    options: {
+      chart: {
+        type: "histogram",
+      },
+      xaxis: {
+        title: {
+          text: "Time Taken",
+        },
+      },
+      yaxis: {
+        title: {
+          text: "Total users Solved",
+        },
+      },
+    },
+    series: [
+      {
+        name: "Distribution",
+        data: [],
+      },
+    ],
+  });
+
+  const getAllActivity = async () => {
+    const res = await userActivityApi.successesByProblem(id);
+    if (res.success) {
+      console.log(res.data);
+
+      const minTimeTaken = 0;
+      const maxTimeTaken = Math.max(
+        ...res.data.map((item) => item.viewDuration)
+      );
+
+      const numberOfRanges = 20;
+      const rangeSize = (maxTimeTaken - minTimeTaken) / numberOfRanges;
+
+
+      // Initialize an object to store the count of problems in each time range
+      const timeRangeCounts = Array(numberOfRanges + 1).fill(0);
+
+      // Process the data to count the number of problems in each time range
+      res.data.forEach((item) => {
+        const timeTaken = item.viewDuration;
+
+        // Find the appropriate time range for the current item
+        const rangeIndex = Math.floor((timeTaken - minTimeTaken) / rangeSize);
+
+        // Increment the count for that time range
+        if (rangeIndex >= 0 && rangeIndex < numberOfRanges + 1) {
+          timeRangeCounts[rangeIndex]++;
+        }
+      });
+      console.log(timeRangeCounts);
+
+      // Format the data for ApexCharts
+      const formattedData = timeRangeCounts.map((count, index) => ({
+        x: minTimeTaken + index * rangeSize,
+        y: count,
+      }));
+
+      setDistributionChartData({
+        options: {
+          chart: {
+            type: "histogram",
+          },
+          xaxis: {
+            title: {
+              text: "Time Taken",
+            },
+          },
+          yaxis: {
+            title: {
+              text: "Total users Solved",
+            },
+          },
+        },
+        series: [{ data: formattedData }],
+      });
     }
   };
 
@@ -44,6 +130,21 @@ export default function ProblemsSubmissions() {
             {problem && problem.series.topic.name + " > " + problem.series.name}
           </span>
         </div>
+        {distributionChartData.series[0].data.length === 0 ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="text-2xl font-bold text-gray-500">
+              No submissions yet
+            </div>
+          </div>
+        ) : (
+          <Chart
+            options={distributionChartData.options}
+            series={distributionChartData.series}
+            type="bar"
+            height={300}
+          />
+        )}
+
         <TableContainer>
           {problem.submissions.map((submission, index) => (
             <SubmissionCard

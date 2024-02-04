@@ -85,8 +85,39 @@ module.exports = {
         defaultValue: new Date(),
       },
     });
+
+    await queryInterface.sequelize.query(`
+      CREATE OR REPLACE FUNCTION copy_problem_to_version()
+      RETURNS TRIGGER AS $$
+      DECLARE
+        problem_row "Problems"%ROWTYPE;
+      BEGIN
+        SELECT INTO problem_row * FROM "Problems" WHERE id = NEW."problemId";
+        NEW."problemId" := problem_row.id;
+        NEW."canvasId" := problem_row."canvasId";
+        NEW.title := problem_row.title;
+        NEW.statement := problem_row.statement;
+        NEW."canvasData" := problem_row."canvasData";
+        NEW."editOptions" := problem_row."editOptions";
+        NEW."previewOptions" := problem_row."previewOptions";
+        NEW."checkerCode" := problem_row."checkerCode";
+        NEW."checkerCanvas" := problem_row."checkerCanvas";
+        RETURN NEW;
+      END;
+      $$ LANGUAGE plpgsql;
+      
+      CREATE TRIGGER copy_problem_trigger
+      BEFORE INSERT ON "ProblemVersions"
+      FOR EACH ROW
+      EXECUTE FUNCTION copy_problem_to_version();
+    `);
   },
   async down(queryInterface, Sequelize) {
+    await queryInterface.sequelize.query(`
+      DROP TRIGGER IF EXISTS copy_problem_trigger ON "ProblemVersions";
+      DROP FUNCTION IF EXISTS copy_problem_to_version();
+    `);
+
     await queryInterface.dropTable("ProblemVersions");
   },
 };

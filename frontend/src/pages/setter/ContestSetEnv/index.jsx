@@ -21,15 +21,16 @@ const ContestSetEnvView = () => {
 
   const getContest = async () => {
     const res = await contestApi.getContestById(id);
-    console.log(contest.title);
     if (res.success) {
       backupContest.current = res.data;
       dispatch({
         type: "SET_INITIAL_STATE",
-        payload: {
-          ...res.data,
-          // Add additional properties as needed
-        },
+        payload: JSON.parse(
+            JSON.stringify({
+              ...res.data[0],
+              //title: res.data[0].title,
+            })
+          ),
       });
       setLoading(false);
     }

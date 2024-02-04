@@ -15,6 +15,13 @@ const ProblemsTab = () => {
   const [problems, setProblems] = useState([]);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
 
+  const deleteProblem = async (problemId) => {
+    const res = await contestApi.deleteProblem(problemId);
+    if (res.success) {
+      setProblems(problems.filter((problem) => problem.id !== problemId));
+    }
+  };
+
   const handleAddModalOpen = () => {
     setAddModalOpen(true);
   };
@@ -32,8 +39,9 @@ const ProblemsTab = () => {
     // Loop through selected problems and add each to the contest
     selectedProblems.forEach((selectedProblemId) => {
       contestApi.addProblemToContest(contestId, selectedProblemId);
+      setProblemList(problemList.filter((problem) => problem.id !== selectedProblemId));
     });
-  
+    getProblems();  
     // Close the modal
     handleAddModalClose();
   };
@@ -80,6 +88,7 @@ const ProblemsTab = () => {
             isLive={prob.isLive}
             timestamp={prob.updatedAt}
             canvas={prob.canvas?.name}
+            deleteAction={deleteProblem}
           />
         ))}
       </CardContainer>

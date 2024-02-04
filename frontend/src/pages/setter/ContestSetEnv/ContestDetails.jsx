@@ -31,7 +31,7 @@ const DetailsTab = () => {
       <div className="flex flex-col gap-2">
         <div className="bu-text-primary text-2xl font-medium">Details</div>
         <textarea
-          value={contest.details}
+          value={contest.description}
           name="details"
           className="border rounded-lg block w-full p-2.5 px-5 bu-input-primary"
           placeholder="Contest Details"
@@ -91,13 +91,11 @@ const DetailsTab = () => {
       <button
         className="bu-button-primary flex flex-row items-center justify-center gap-2 rounded-lg px-7 py-3.5 text-center text-lg font-semibold focus:outline-none"
         onClick={async () => {
-          const result = await contestApi.updateDetails(contest.id, {
-            title: contest.title,
-            details: contest.details,
-            startDate: contest.startDate,
-            endDate: contest.endDate,
-          });
-          showSuccess("Details saved successfully", result);
+          const result = await contestApi.updateTitle(contest.id,  contest.title);
+          const result1 = await contestApi.updateDescription(contest.id,  contest.details);
+          const result2 = await contestApi.updateDates(contest.id,  contest.startDate, contest.endDate);
+            
+          showSuccess("Details saved successfully", result&&result1&&result2);
         }}
       >
         <FontAwesomeIcon icon={faFloppyDisk} size="lg" />

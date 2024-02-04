@@ -8,14 +8,14 @@ const SetterContests = () => {
   const [contestList, setContestList] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const deleteProblem = async (contestID) => {
-    const res = await contestApi.deleteProblem(contestID);
+  const deleteContest = async (contestID) => {
+    const res = await contestApi.deleteContest(contestID);
     if (res.success) {
-      setContestList(contestList.filter((problem) => problem.id !== contestID));
+      setContestList(contestList.filter((contest) => contest.id !== contestID));
     }
   };
   const getContestList = async () => {
-    const res = await contestApi.getAllPublishedContests();
+    const res = await contestApi.getAllContests();
     console.log(res.data);
     if (res.success) {
       // console.log(res.data);
@@ -55,7 +55,7 @@ const SetterContests = () => {
     <SetterContestsView
       openModal={openModal}
       closeModal={closeModal}
-      deleteProblem={deleteProblem}
+      deleteContest={deleteContest}
       createContest={createContest}
       contestList={contestList}
       modalIsOpen={modalIsOpen}

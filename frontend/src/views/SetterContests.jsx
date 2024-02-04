@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 const SetterContestsView = ({
   contestList,
-  deleteProblem,
+  deleteContest,
   openModal,
   closeModal,
   createContest,
@@ -32,10 +32,13 @@ const SetterContestsView = ({
             idx={index + 1}
             id={contest.id}
             name={contest.title}
-            deleteAction={deleteProblem}
+            deleteAction={deleteContest}
             isLive={contest.isLive}
             timestamp={contest.updatedAt}
-            owner={contest.canvas?.name}
+            owner={contest.setters}
+            startDate={contest.startDate}
+            endDate={contest.endDate}
+            status={contest.status}
           />
         ))}
       </CardContainer>

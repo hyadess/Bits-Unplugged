@@ -116,7 +116,7 @@ class ContestRepository extends Repository {
         VALUES ($1, NULL, NULL, NULL, 'edit', $2)
         RETURNING "id";          
         `;
-    const params = [title,Date.now()];
+    const params = [title,new Date()];
     const result = await this.query(query, params);
     const contestId = result.data[0].id;
 
@@ -137,7 +137,7 @@ class ContestRepository extends Repository {
         SET "updatedAt" = $2
         WHERE "id" = $1;
         `;
-    const params = [contestId, Date.now()];
+    const params = [contestId, new Date()];
     const result = await this.query(query, params);
 
     return result;
@@ -149,7 +149,7 @@ class ContestRepository extends Repository {
         SET "title" = $2, "updatedAt" = $3
         WHERE "id" = $1;
         `;
-    const params = [contestId, title, Date.now()];
+    const params = [contestId, title, new Date()];
     const result = await this.query(query, params);
     return result;
   };
@@ -159,7 +159,7 @@ class ContestRepository extends Repository {
         SET "description" = $2, "updatedAt" = $3
         WHERE "id" = $1;
         `;
-    const params = [contestId, description, Date.now()];
+    const params = [contestId, description, new Date()];
     const result = await this.query(query, params);
     return result;
   };
@@ -171,21 +171,21 @@ class ContestRepository extends Repository {
         SET "status" = 'upcoming', "updatedAt" = $2
         WHERE "id" = $1;
         `;
-    const params = [contestId, Date.now()];
+    const params = [contestId, new Date()];
     const result = await this.query(query, params);
     return result;
   };
   // I am setting default duration 2 hr for now............
   // upcoming -> running
   startContest = async (contestId) => {
-    const currentTimestamp = Date.now();
+    const currentTimestamp = new Date();
     const twoHoursLater = currentTimestamp + 2 * 60 * 60 * 1000; // 2 hours in milliseconds
     const query = `
         UPDATE "Contests"
         SET "status" = 'running', "updatedAt" = $2 ,  "startDate" = $3, "endDate" = $4
         WHERE "id" = $1;
         `;
-    const params = [contestId, Date.now(), currentTimestamp, twoHoursLater];
+    const params = [contestId, new Date(), currentTimestamp, twoHoursLater];
     const result = await this.query(query, params);
     return result;
   };
@@ -196,7 +196,7 @@ class ContestRepository extends Repository {
         SET "status" = 'completed', "updatedAt" = $2 , "endDate" = $2
         WHERE "id" = $1;
         `;
-    const params = [contestId, Date.now()];
+    const params = [contestId, new Date()];
     const result = await this.query(query, params);
     return result;
   };
@@ -405,7 +405,7 @@ class ContestRepository extends Repository {
         VALUES ($1, $2, $3, $4)
         RETURNING "clarificationId";
         `;
-    const params = [contestId, title, description, Date.now()];
+    const params = [contestId, title, description, new Date()];
     const result = await this.query(query, params);
 
     return result;

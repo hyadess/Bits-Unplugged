@@ -38,6 +38,11 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
+      version: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+      },
       title: {
         type: Sequelize.STRING,
       },
@@ -91,8 +96,11 @@ module.exports = {
       RETURNS TRIGGER AS $$
       DECLARE
         problem_row "Problems"%ROWTYPE;
+        next_version integer;
       BEGIN
         SELECT INTO problem_row * FROM "Problems" WHERE id = NEW."problemId";
+        SELECT INTO next_version COALESCE(MAX(version), 0) + 1 FROM "ProblemVersions" WHERE "problemId" = NEW."problemId";
+
         NEW."problemId" := problem_row.id;
         NEW."canvasId" := problem_row."canvasId";
         NEW.title := problem_row.title;
@@ -102,6 +110,8 @@ module.exports = {
         NEW."previewOptions" := problem_row."previewOptions";
         NEW."checkerCode" := problem_row."checkerCode";
         NEW."checkerCanvas" := problem_row."checkerCanvas";
+        NEW.version := next_version;
+
         RETURN NEW;
       END;
       $$ LANGUAGE plpgsql;

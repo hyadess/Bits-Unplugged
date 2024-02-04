@@ -28,6 +28,7 @@ const ProblemVersionCard = ({
   cloneProblem,
   approvalStatus,
   feedback,
+  version,
 }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -73,7 +74,7 @@ const ProblemVersionCard = ({
               </div>
             )}
           </div>
-          <h1 className="bu-text-disable text-2xl font-bold">#{id}</h1>
+          <h1 className="bu-text-disable text-2xl font-semibold">#{version}</h1>
         </div>
 
         <div className="flex justify-between items-end">

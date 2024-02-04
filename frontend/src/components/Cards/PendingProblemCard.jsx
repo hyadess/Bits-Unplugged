@@ -107,7 +107,15 @@ export default function PendingProblemCard({
 
         <div className="flex justify-between items-end">
           <div className="bu-text-subtitle">{getTimeStamp(timestamp)}</div>
-          <h1 className="bu-text-subtitle">@{setter.username}</h1>
+          <h1
+            className="bu-text-subtitle cursor-pointer hover:underline"
+            onClick={() => {
+              setLoading(true);
+              navigate("/setter/" + setter.username);
+            }}
+          >
+            @{setter.username}
+          </h1>
         </div>
 
         {/* <div className="flex flex-row justify-center gap-2">
@@ -134,9 +142,9 @@ export default function PendingProblemCard({
           </div>
         </div> */}
 
-        <div className="flex flex-row justify-center gap-2 w-full mt-5">
+        <div className="flex flex-row justify-center gap-4 w-full mt-5">
           <button
-            className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-delete"
+            className="flex flex-row gap-2 flex-center font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-delete"
             onClick={async () => {
               const res = await problemApi.rejectProblem(id);
               if (res.success) {
@@ -145,10 +153,10 @@ export default function PendingProblemCard({
             }}
           >
             Reject
-            {/* <FontAwesomeIcon icon={faXmark} size="sm" /> */}
+            <FontAwesomeIcon icon={faXmark} size="sm" />
           </button>
           <button
-            className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-primary"
+            className="flex flex-row gap-2 flex-center  font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-primary"
             onClick={async () => {
               const res = await problemApi.approveProblem(id);
               if (res.success) {
@@ -157,7 +165,7 @@ export default function PendingProblemCard({
             }}
           >
             Approve
-            {/* <FontAwesomeIcon icon={faXmark} size="sm" /> */}
+            <FontAwesomeIcon icon={faCheck} size="sm" />
           </button>
         </div>
       </div>

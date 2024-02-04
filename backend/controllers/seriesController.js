@@ -68,14 +68,21 @@ class SeriesController extends Controller {
   getAllProblems = async (req, res) => {
     console.log(req.params, req.query);
     this.handleRequest(res, async () => {
-      const problems = await seriesRepository.getAllProblems(
-        req.user.userId,
-        req.params.id,
-        {
-          isSolved: req.query.solved !== undefined ? req.query.solved : null,
-          isLive: req.user.type === 0 ? true : null,
-        }
-      );
+      const problems =
+        req.user.type === 0
+          ? await seriesRepository.getAllProblems(
+              req.user.userId,
+              req.params.id,
+              {
+                isSolved:
+                  req.query.solved !== undefined ? req.query.solved : null,
+                isLive: req.user.type === 0 ? true : null,
+              }
+            )
+          : await problemRepository.getLiveProblemsBySeries(
+              req.user.userId,
+              req.params.id
+            );
       res.status(200).send(problems);
     });
   };

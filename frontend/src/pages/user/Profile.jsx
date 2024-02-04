@@ -125,7 +125,7 @@ export default function Profile() {
         options: {
           chart: {
             type: "bar",
-            height: 340,
+            height: 300,
             toolbar: {
               show: false,
             },
@@ -225,7 +225,7 @@ export default function Profile() {
         options: {
           chart: {
             type: "pie",
-            height: 350,
+            height: 300,
           },
           labels: ["Fail", "Success"],
           responsive: [
@@ -328,6 +328,102 @@ export default function Profile() {
     colors: ["#008FFB"],
   };
 
+  //submission distribution...............................
+
+  const [distributionChartData, setDistributionChartData] = useState({
+    options: {
+      chart: {
+        type: "histogram",
+      },
+      xaxis: {
+        title: {
+          text: "Time Taken",
+        },
+      },
+      yaxis: {
+        title: {
+          text: "Total Problems Solved",
+        },
+      },
+    },
+    series: [
+      {
+        name: "Distribution",
+        data: [],
+      },
+    ],
+  });
+
+  const getAllSusccessDuration = async () => {
+    const res = await userActivityApi.successesByUser();
+    if (res.success) {
+      console.log(res.data);
+
+      const minTimeTaken = Math.min(
+        ...res.data.map((item) => item.viewDuration)
+      );
+      const maxTimeTaken = Math.max(
+        ...res.data.map((item) => item.viewDuration)
+      );
+
+      const numberOfRanges = 20;
+      const rangeSize = (maxTimeTaken - minTimeTaken) / numberOfRanges;
+
+      const timeRanges = Array.from({ length: numberOfRanges }, (_, index) => {
+        const min = minTimeTaken + index * rangeSize;
+        const max = min + rangeSize;
+        return { min, max };
+      });
+
+      // Initialize an object to store the count of problems in each time range
+      const timeRangeCounts = Array(numberOfRanges+1).fill(0);
+
+      // Process the data to count the number of problems in each time range
+      res.data.forEach((item) => {
+        const timeTaken = item.viewDuration;
+
+        // Find the appropriate time range for the current item
+        const rangeIndex = Math.floor((timeTaken - minTimeTaken) / rangeSize);
+
+        // Increment the count for that time range
+        if (rangeIndex >= 0 && rangeIndex < numberOfRanges+1) {
+          timeRangeCounts[rangeIndex]++;
+        }
+      });
+      console.log(timeRangeCounts);
+
+      // Format the data for ApexCharts
+      const formattedData = timeRangeCounts.map((count, index) => ({
+        x:
+          (minTimeTaken +
+            index * rangeSize +
+            minTimeTaken +
+            (index + 1) * rangeSize) /
+          2,
+        y: count,
+      }));
+
+      setDistributionChartData({
+        options: {
+          chart: {
+            type: "histogram",
+          },
+          xaxis: {
+            title: {
+              text: "Time Taken",
+            },
+          },
+          yaxis: {
+            title: {
+              text: "Total Problems Solved",
+            },
+          },
+        },
+        series: [{ data: formattedData }],
+      });
+    }
+  };
+
   // const getTotalSuccesses = async () => {
   //   const res = await userActivityApi.totalSolvedProblemsByUser();
   //   if (res.success) {
@@ -355,6 +451,7 @@ export default function Profile() {
   useEffect(() => {
     transformHeatmapData();
     calculateSeriesStats();
+    getAllSusccessDuration();
     //setLoading(false);
   }, [submissions]);
 
@@ -377,6 +474,12 @@ export default function Profile() {
         series={[{ name: "Active Time", data: activityChartData }]}
         type="area"
         width="100%"
+      />
+      <Chart
+        options={distributionChartData.options}
+        series={distributionChartData.series}
+        type="bar"
+        height={300}
       />
       <div>
         <Title title={""} sub_title={"Your activity heatmap"} />

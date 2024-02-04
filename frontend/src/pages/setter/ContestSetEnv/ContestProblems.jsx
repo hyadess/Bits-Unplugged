@@ -9,9 +9,9 @@ const ProblemsTab = () => {
     <div>
       <h2 className="text-2xl font-bold mb-4">List of Problems</h2>
 
-      {contest.problems && contest.problems.length > 0 ? (
+      {contest.Problems && contest.Problems.length > 0 ? (
         <div>
-          {contest.problems.map((problem) => (
+          {contest.Problems.map((problem) => (
             <ProblemSetCard key={problem.id} problem={problem} />
             // You may replace ProblemCard with your actual component
           ))}

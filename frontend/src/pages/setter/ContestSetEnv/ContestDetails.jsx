@@ -76,6 +76,18 @@ const DetailsTab = () => {
         />
       </div>
 
+      {/* Check if collaborators array is not empty before rendering the list */}
+      {contest.collaborators && contest.collaborators.length > 0 && (
+        <div className="flex flex-col gap-2">
+          <div className="bu-text-primary text-2xl font-medium">Collaborators</div>
+          <ul>
+            {contest.collaborators.map((collaborator) => (
+              <li key={collaborator.id}>{collaborator.username}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <button
         className="bu-button-primary flex flex-row items-center justify-center gap-2 rounded-lg px-7 py-3.5 text-center text-lg font-semibold focus:outline-none"
         onClick={async () => {

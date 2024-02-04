@@ -58,24 +58,40 @@ class ContestRepository extends Repository {
   getContestInfo = async (contestId) => {
     const query = `
       SELECT
-      "C".*,
-      jsonb_agg(jsonb_build_object('setterId', "S"."id", 'role', "CS"."role", 'username', "U"."username")) AS "ContestSetters"
+        "C".*,
+        jsonb_agg(jsonb_build_object(
+          'setterId', "S"."id",
+          'role', "CS"."role",
+          'username', "U"."username"
+        )) AS "Setters",
+        jsonb_agg(jsonb_build_object(
+          'problemId', "P"."id",
+          'problemTitle', "P"."title",
+          'status', "CP"."status"
+        )) AS "Problems"
       FROM
-      "Contests" "C"
+        "Contests" "C"
       JOIN
-      "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
+        "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
       JOIN
-      "Setters" "S" ON "CS"."setterId" = "S"."id"
+        "Setters" "S" ON "CS"."setterId" = "S"."id"
       JOIN
-      "Users" "U" ON "S"."userId" = "U"."id"
+        "Users" "U" ON "S"."userId" = "U"."id"
+      LEFT JOIN
+        "ContestProblems" "CP" ON "C"."id" = "CP"."contestId"
+      LEFT JOIN
+        "Problems" "P" ON "CP"."problemId" = "P"."id"
+      WHERE
+        "C"."id" = $1
       GROUP BY
-      "C"."id";
-
-        `;
+        "C"."id";
+    `;
     const params = [contestId];
     const result = await this.query(query, params);
     return result;
   };
+  
+
 
   //***********GETTING SUBMISSIONS***********************
   getAllSubmissionsByContest = async (contestId) => {

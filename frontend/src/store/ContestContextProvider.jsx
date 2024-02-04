@@ -15,7 +15,28 @@ const ContestContextProvider = ({ children }) => {
           ...state,
           title: payload,
         };
-
+      case "UPDATE_TITLE":
+        return {
+          ...state,
+          title: payload,
+        };
+      case "UPDATE_DETAILS":
+        return {
+          ...state,
+          title: payload,
+        };
+      case "UPDATE_START_DATE":
+        return {
+          ...state,
+          title: payload,
+        };
+      case "UPDATE_END_DATE":
+        return {
+          ...state,
+          title: payload,
+        };
+    
+    
       default:
         return state;
     }

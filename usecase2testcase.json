@@ -151,7 +151,8 @@
         "input": {
           "problemId": 1,
           "userId": 1,
-          "verdict":"accepted"
+          "verdict":"accepted",
+          "viewDuration": 10
         },
         "expected": {
           "outcome": "Solution submission acccpted",
@@ -164,7 +165,8 @@
         "input": {
           "problemId": 1,
           "userId": 1,
-          "verdict":"wrong answer"
+          "verdict":"wrong answer",
+          "viewDuration": 10
         },
         "expected": {
           "outcome": "Solution submission rejected",

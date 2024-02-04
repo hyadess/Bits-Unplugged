@@ -78,6 +78,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+      version: DataTypes.INTEGER,
       canvasData: {
         type: DataTypes.JSON,
       },

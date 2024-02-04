@@ -50,9 +50,18 @@ class ContestRepository extends Repository {
         FROM "Contests" "C"
         JOIN "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
         WHERE "CS"."setterId" = $1 AND "CS"."role" = 'owner';
-
         `;
     const params = [setterId];
+    const result = await this.query(query, params);
+    return result;
+  };
+  getContestInfo = async (contestId) => {
+    const query = `
+        SELECT  "C".*
+        FROM "Contests" "C"
+        WHERE "C"."id" = $1;
+        `;
+    const params = [contestId];
     const result = await this.query(query, params);
     return result;
   };

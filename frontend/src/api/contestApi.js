@@ -25,6 +25,10 @@ class ContestApi extends Api {
     return await this.get("/contests/"+contestId+"/submissions");
   };
 
+  getContestInfo = async (contestId) => { 
+    return await this.get("/contests/"+contestId);
+  };
+
   getAllSubmissionsByUserAndContest = async (contestId) => {
     return await this.get("/contests/"+contestId+"/submissions/me");
   };

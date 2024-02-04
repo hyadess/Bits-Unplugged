@@ -48,7 +48,7 @@ const TopicCard = ({ id, topic_id, name, image, path, action }) => {
   };
 
   useEffect(() => {
-    setLoading(true);
+    // setLoading(true);
     getAll();
   }, []);
   useEffect(() => {

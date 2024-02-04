@@ -69,7 +69,7 @@ class SeriesController extends Controller {
     console.log(req.params, req.query);
     this.handleRequest(res, async () => {
       const problems =
-        req.user.type === 0
+        req.user.type === 1
           ? await seriesRepository.getAllProblems(
               req.user.userId,
               req.params.id,

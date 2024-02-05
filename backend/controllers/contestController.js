@@ -12,7 +12,6 @@ class ContestController extends Controller {
     } else {
       res.status(404).json(result);
     }
-    
   };
   getAllPublishedContests = async (req, res) => {
     let result = await contestRepository.getAllPublishedContests();
@@ -91,7 +90,10 @@ class ContestController extends Controller {
   };
 
   addContest = async (req, res) => {
-    let result = await contestRepository.addContest(req.user.userId,req.body.title);
+    let result = await contestRepository.addContest(
+      req.user.userId,
+      req.body.title
+    );
     if (result.success) {
       res.status(201).json(result.data);
     } else {
@@ -160,7 +162,9 @@ class ContestController extends Controller {
   };
 
   availableCollaborators = async (req, res) => {
-    let result = await contestRepository.availableCollaborators();
+    let result = await contestRepository.availableCollaborators(
+      req.user.userId
+    );
     if (result.success) {
       res.status(200).json(result.data);
     } else {
@@ -245,7 +249,7 @@ class ContestController extends Controller {
   deleteProblem = async (req, res) => {
     let result = await contestRepository.deleteProblem(
       req.params.contestId,
-      req.body.problemId
+      req.params.problemId
     );
     if (result.success) {
       res.status(204).json(result.data);

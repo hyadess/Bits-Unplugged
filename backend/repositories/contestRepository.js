@@ -7,16 +7,19 @@ class ContestRepository extends Repository {
   //*************ABOUT CONTEST****************** */
   getAllContests = async () => {
     const query = `
-        SELECT
-        "C".*,
-        STRING_AGG("CS"."setterId"::text, ', ') AS "setters",
-        STRING_AGG("CS"."role", ', ') AS "roles"
-        FROM
-        "Contests" "C"
-        JOIN
-        "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
-        GROUP BY
-        "C"."id";
+    SELECT
+    "C".*,
+    jsonb_agg(jsonb_build_object('setterId', "S"."id", 'role', "CS"."role", 'username', "U"."username", 'image', "U"."image")) AS "ContestSetters"
+    FROM
+    "Contests" "C"
+    JOIN
+    "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
+    JOIN
+    "Setters" "S" ON "CS"."setterId" = "S"."id"
+    JOIN
+    "Users" "U" ON "S"."userId" = "U"."id"
+    GROUP BY
+    "C"."id";
         `;
     const params = [];
     const result = await this.query(query, params);
@@ -59,7 +62,7 @@ class ContestRepository extends Repository {
     const query = `
         SELECT
         "C".*,
-        jsonb_agg(jsonb_build_object('setterId', "S"."id", 'role', "CS"."role", 'username', "U"."username")) AS "ContestSetters"
+        jsonb_agg(jsonb_build_object('setterId', "S"."id", 'role', "CS"."role", 'username', "U"."username", 'image', "U"."image")) AS "ContestSetters"
         FROM
         "Contests" "C"
         JOIN
@@ -76,10 +79,7 @@ class ContestRepository extends Repository {
     const params = [contestId];
     const result = await this.query(query, params);
     return result;
-};
-
-  
-
+  };
 
   //***********GETTING SUBMISSIONS***********************
   getAllSubmissionsByContest = async (contestId) => {
@@ -125,22 +125,24 @@ class ContestRepository extends Repository {
         SELECT "P".*, "CP"."status"
         FROM "Problems" "P"
         JOIN "ContestProblems" "CP" ON "P"."id" = "CP"."problemId"
+        Right JOIN "Canvases" "C" ON "P"."canvasId" = "C"."id"
         WHERE "CP"."contestId" = $1;        
         `;
     const params = [contestId];
     const result = await this.query(query, params);
+    console.log("==>", result.data[0]);
     return result;
   };
 
   //*****************UPDATING CONTEST TABLE************* */
 
-  addContest = async (setterId,title) => {
+  addContest = async (setterId, title) => {
     const query = `
         INSERT INTO "Contests" ("title", "description", "startDate", "endDate", "status", "updatedAt")
         VALUES ($1, NULL, NULL, NULL, 'edit', $2)
         RETURNING "id";          
         `;
-    const params = [title,new Date("February 1, 2024 11:13:00")];
+    const params = [title, new Date("February 1, 2024 11:13:00")];
     const result = await this.query(query, params);
     const contestId = result.data[0].id;
 
@@ -226,7 +228,6 @@ class ContestRepository extends Repository {
   };
 
   updateDates = async (contestId, startDateString, endDateString) => {
-
     const startDate = new Date(startDateString);
     const endDate = new Date(endDateString);
     const query = `
@@ -239,23 +240,22 @@ class ContestRepository extends Repository {
     return result;
   };
 
-  availableCollaborators = async () => {
+  availableCollaborators = async (id) => {
     const query = `
       SELECT
       "S"."id",
-      "U"."username"
+      "U"."username",
+      "U"."image"
       FROM
       "Setters" "S"
       JOIN
-      "Users" "U" ON "S"."userId" = "U"."id";
+      "Users" "U" ON "S"."userId" = "U"."id"
+      WHERE "S"."isApproved" = true AND "S"."userId" != $1;
       `;
-    const params = [];
+    const params = [id];
     const result = await this.query(query, params);
     return result;
   };
-    
-
-
 
   //***************UPDATING CONTEST SETTER TABLE**************** */
 
@@ -355,12 +355,13 @@ class ContestRepository extends Repository {
   //new ones...........
 
   deleteProblem = async (contestId, problemId) => {
-    const query1 = `
-        DELETE FROM "ContestSubmissions"
-        WHERE "contestId" = $1 AND "problemId" = $2; 
-        `;
+    console.log("----->", contestId, problemId);
+    // const query1 = `
+    //     DELETE FROM "ContestSubmissions"
+    //     WHERE "contestId" = $1 AND "problemId" = $2;
+    //     `;
     const params1 = [contestId, problemId];
-    const result1 = await this.query(query1, params1);
+    // const result1 = await this.query(query1, params1);
 
     const query = `
         DELETE FROM "ContestProblems"
@@ -479,4 +480,4 @@ class ContestRepository extends Repository {
     return result;
   };
 }
-module.exports=ContestRepository;
+module.exports = ContestRepository;

@@ -3,20 +3,21 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 
-const ProblemListModal = ({ problems, onClose, onAdd }) => {
-  const [selectedProblems, setSelectedProblems] = useState([]);
+const SetterListModal = ({ setters, onClose, onAdd }) => {
+  const [selectedSetters, setSelectedSetters] = useState([]);
 
-  const handleCheckboxChange = (problem) => {
-    if (selectedProblems.includes(problem)) {
-      setSelectedProblems(selectedProblems.filter((id) => id !== problem.id));
+  const handleCheckboxChange = (setter) => {
+    if (selectedSetters.includes(setter)) {
+      setSelectedSetters(selectedSetters.filter((id) => id !== setter.id));
     } else {
-      setSelectedProblems([...selectedProblems, problem]);
+      setSelectedSetters([...selectedSetters, setter]);
     }
   };
 
   const handleAddButtonClick = () => {
-    // Pass the selected problems to the parent component
-    onAdd(selectedProblems);
+    // Pass the selected setters to the parent component
+    console.log("Selected Setters:", setters);
+    onAdd(selectedSetters);
   };
 
   return (
@@ -29,23 +30,25 @@ const ProblemListModal = ({ problems, onClose, onAdd }) => {
           <CancelIcon />
         </button>
         <div className="p-4">
-          <h2 className="text-3xl font-bold text-primary mb-6">Select Problems</h2>
+          <h2 className="text-3xl font-bold text-primary mb-6">Select Collaborators</h2>
           <div className="max-h-[60vh] overflow-y-auto">
-            {problems.map((problem) => (
+            {setters.map((setter) => (
               <div
-                key={problem}
-                className="flex flex-col items-start mb-4 hover:bg-gray-100 p-4 rounded-md cursor-pointer"
+                key={setter.id}
+                className="flex flex-row items-center mb-4 hover:bg-gray-100 p-4 rounded-md cursor-pointer"
               >
                 <Checkbox
-                  checked={selectedProblems.includes(problem)}
-                  onChange={() => handleCheckboxChange(problem)}
+                  checked={selectedSetters.includes(setter)}
+                  onChange={() => handleCheckboxChange(setter)}
                   color="primary"
                 />
+                <img
+                  src={setter.image}
+                  alt={`${setter.username}'s profile`}
+                  className="ml-4 w-10 h-10 rounded-full"
+                />
                 <span className="ml-4 font-medium text-gray-800 text-lg hover:underline">
-                  {problem.title}
-                </span>
-                <span className="text-gray-500 text-md mt-2 ml-4">
-                   | Canvas: {problem.canvas.name}
+                  {setter.username}
                 </span>
               </div>
             ))}
@@ -66,4 +69,4 @@ const ProblemListModal = ({ problems, onClose, onAdd }) => {
   );
 };
 
-export default ProblemListModal;
+export default SetterListModal;

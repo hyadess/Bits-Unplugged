@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useContestContext } from "../../../store/ContestContextProvider";
-import ProblemSetCard from "../../../components/Cards/ProblemSetCard";
+import ProblemSetCard from "../../../components/Cards/ContestProblemCard";
 import CardContainer from "../../../containers/CardContainer2";
 import { problemApi } from "../../../api";
 import { contestApi } from "../../../api";
 import ProblemListModal from "../../../components/Modal/ProblemSelectModal";
 import ProblemAddButton from "../../../components/Buttons/ProblemAddButton";
 
-
 const ProblemsTab = () => {
   const { state: contest, dispatch } = useContestContext();
 
   const [problemList, setProblemList] = useState([]);
-  const [problems, setProblems] = useState([]);
+  //const [problems, setProblems] = useState([]);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
 
   const deleteProblem = async (problemId) => {
-    const res = await contestApi.deleteProblem(problemId);
+    console.log("Deleting problem", contest.id, problemId);
+    const res = await contestApi.deleteProblem(contest.id, problemId);
     if (res.success) {
-      setProblems(problems.filter((problem) => problem.id !== problemId));
+      dispatch({
+        type: "DELETE_PROBLEM",
+        payload: problemId,
+      });
     }
   };
 
@@ -30,22 +33,23 @@ const ProblemsTab = () => {
     setAddModalOpen(false);
   };
 
-  const handleAddProblems = (selectedProblems) => {
+  const handleAddProblems = async (selectedProblems) => {
     console.log("Selected Problems:", selectedProblems);
-  
+
     // Assuming you have the contest object available
     const contestId = contest.id;
-  
+
     // Loop through selected problems and add each to the contest
-    selectedProblems.forEach((selectedProblemId) => {
-      contestApi.addProblemToContest(contestId, selectedProblemId);
-      setProblemList(problemList.filter((problem) => problem.id !== selectedProblemId));
+    selectedProblems.forEach(async (selectedProblem) => {
+      await contestApi.addProblemToContest(contestId, selectedProblem.id);
     });
-    getProblems();  
+    dispatch({
+      type: "ADD_PROBLEM",
+      payload: selectedProblems,
+    });
     // Close the modal
     handleAddModalClose();
   };
-  
 
   const getProblemList = async () => {
     const res = await problemApi.getAllProblems();
@@ -57,21 +61,19 @@ const ProblemsTab = () => {
     }
   };
 
-  const getProblems = async () => {
-    const res = await contestApi.getAllProblemsByContest(contest.id);
-    console.log(res.data);
-    if (res.success) {
-      // console.log(res.data);
-      if (res.data.length > 0)
-        setProblems(res.data.sort((a, b) => a.id - b.id));
-    }
-  };
+  // const getProblems = async () => {
+  //   const res = await contestApi.getAllProblemsByContest(contest.id);
+  //   console.log(res.data);
+  //   if (res.success) {
+  //     // console.log(res.data);
+  //     if (res.data.length > 0)
+  //       setProblems(res.data.sort((a, b) => a.id - b.id));
+  //   }
+  // };
 
   useEffect(() => {
     getProblemList();
-    getProblems();
   }, []);
-
 
   return (
     <div>
@@ -79,7 +81,7 @@ const ProblemsTab = () => {
       <ProblemAddButton onClick={handleAddModalOpen} />
 
       <CardContainer col={2}>
-        {problems.map((prob, index) => (
+        {contest?.problems?.map((prob, index) => (
           <ProblemSetCard
             key={index}
             idx={index + 1}
@@ -93,10 +95,9 @@ const ProblemsTab = () => {
         ))}
       </CardContainer>
 
-
       {isAddModalOpen && (
         <ProblemListModal
-          problems={problemList}
+          problems={problemList.filter((problem) => contest.problems.every((p) => p.id !== problem.id))}
           onClose={handleAddModalClose}
           onAdd={handleAddProblems}
         />

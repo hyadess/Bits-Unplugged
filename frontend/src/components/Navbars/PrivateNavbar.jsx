@@ -35,7 +35,6 @@ const PrivateNavbar = (props) => {
 
   const toggleDarkMode = () => {
     setDarkMode((prevDarkMode) => !prevDarkMode);
-    console.log("Toggled");
   };
 
   useEffect(() => {

@@ -15,23 +15,26 @@ const ContestSetEnvView = () => {
   const { id } = useParams();
   const [isFormDirty, setFormDirty] = useState(false);
   const navigate = useNavigate();
-  const { state: contest, dispatch } = useContestContext();
+  const { dispatch } = useContestContext();
   const [activeComponent, setActiveComponent] = useState("Details");
   const deepCopy = (obj) => JSON.parse(JSON.stringify(obj));
 
   const getContest = async () => {
     const res = await contestApi.getContestById(id);
+    const res2 = await contestApi.getAllProblemsByContest(id);
     if (res.success) {
-      backupContest.current = res.data;
+      backupContest.current = res.data[0];
+
       dispatch({
         type: "SET_INITIAL_STATE",
         payload: JSON.parse(
-            JSON.stringify({
-              ...res.data[0],
-              //title: res.data[0].title,
-            })
-          ),
+          JSON.stringify({
+            ...res.data[0],
+            problems: res2.data,
+          })
+        ),
       });
+      console.log("Contest", res2.data);
       setLoading(false);
     }
   };

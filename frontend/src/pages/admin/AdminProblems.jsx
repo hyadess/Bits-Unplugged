@@ -69,6 +69,7 @@ const AdminProblems = () => {
                     setProblemId(problem.id);
                     setOpen(true);
                   }}
+                  setter={problem.problem.setter.user}
                 />
               )
           )}

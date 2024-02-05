@@ -32,6 +32,9 @@ class UserActivityApi extends Api {
   getAllDailyActivitiesForLast30Days =async() =>{
     return await this.get("/userActivity/stat/activetime");
   };
+  acceptanceByProblem =async(problemId) =>{
+    return await this.get("/userActivity/"+problemId+"/acceptance");
+  };
 
 
 }

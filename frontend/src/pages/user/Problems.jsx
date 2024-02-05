@@ -111,9 +111,10 @@ export default function Problems() {
               {problemList.map((problem, index) => (
                 <ProblemCard
                   idx={index + 1}
-                  id={`Problem ${index + 1}`}
+                  id={problem.id}
                   name={problem.title}
                   image={problem.logo}
+                  rating={problem.rating}
                   path={`/problems/${problem.id}`}
                   action="Get Started"
                   topic={problem.series.topic.name}

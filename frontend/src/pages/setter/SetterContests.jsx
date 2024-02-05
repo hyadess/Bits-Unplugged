@@ -8,14 +8,14 @@ const SetterContests = () => {
   const [contestList, setContestList] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const deleteProblem = async (problemId) => {
-    const res = await contestApi.deleteProblem(problemId);
+  const deleteContest = async (contestID) => {
+    const res = await contestApi.deleteContest(contestID);
     if (res.success) {
-      setContestList(contestList.filter((problem) => problem.id !== problemId));
+      setContestList(contestList.filter((contest) => contest.id !== contestID));
     }
   };
   const getContestList = async () => {
-    const res = await contestApi.getAllPublishedContests();
+    const res = await contestApi.getAllContests();
     console.log(res.data);
     if (res.success) {
       // console.log(res.data);
@@ -25,18 +25,19 @@ const SetterContests = () => {
     }
   };
 
-  const getProblemId = async (title) => {
-    const res = await contestApi.createProblem(title);
+  const getContestId = async (title) => {
+    const res = await contestApi.addContest(title);
     if (res.success) {
-      return res.data.id;
+      
+      console.log(res.data[0].id);
+      return res.data[0].id;
     }
   };
 
-  const createProblem = async (title) => {
-    setLoading(true);
+  const createContest = async (title) => {
     closeModal();
-    const problemId = await getProblemId(title);
-    navigate(`/problems/${problemId}/edit`);
+    const contestID = await getContestId(title);
+    navigate(`/contests/${contestID}/edit`);
   };
 
   const openModal = () => {
@@ -55,8 +56,8 @@ const SetterContests = () => {
     <SetterContestsView
       openModal={openModal}
       closeModal={closeModal}
-      deleteProblem={deleteProblem}
-      createProblem={createProblem}
+      deleteContest={deleteContest}
+      createContest={createContest}
       contestList={contestList}
       modalIsOpen={modalIsOpen}
     />

@@ -1,6 +1,10 @@
 import Api from "./base";
 
 class ContestApi extends Api {
+  getContestById = async (contestId) => {
+    return await this.get("/contests/"+contestId);
+  };
+
   getAllContests = async () => {
     return await this.get("/contests");
   };
@@ -75,8 +79,8 @@ class ContestApi extends Api {
     return await this.get("/contests/"+contestId+"/showAllCollaborators");
   };
 
-  addProblemToContest = async (contestId, title) => {
-    return await this.post("/contests/"+contestId+"/createProblem", { title });
+  addProblemToContest = async (contestId, problemId) => {
+    return await this.post("/contests/"+contestId+"/createProblem", { problemId });
   };
 
   makeProblemEligible = async (contestId, problemId) => {

@@ -15,6 +15,7 @@ import Topics from "./pages/user/Topics";
 import Series from "./pages/user/Series";
 import SetterProblems from "./pages/setter/SetterProblems";
 import ProblemSetEnv from "./pages/setter/ProblemSetEnv";
+import ContestSetEnv from "./pages/setter/ContestSetEnv";
 import PublicNavbar from "./pages/landing/PublicNavbar";
 import SolverProfileTab from "./components/SolverProfileTab";
 import Layout2 from "./components/Layouts/Layout2";
@@ -232,6 +233,8 @@ const AppRoutes = () => {
 
         <Route path="/admin/login" element={<AdminLogin />} />
 
+
+
         <Route element={<ProblemSetter />}>
           <Route
             path="/problems/:id/preview"
@@ -276,14 +279,32 @@ const AppRoutes = () => {
           />
 
           <Route
-            path="/contests/:id/preview"
+            path="/contests/:id/edit"
             element={
               <LayoutMain>
+                <ContestSetEnv />
+              </LayoutMain>
+            }
+          />
+
+          <Route
+            path="/contests/:contestid/edit"
+            element={
+              <LayoutMain right={<History />}>
                 <Contest />
               </LayoutMain>
             }
           />
         </Route>
+
+        
+
+
+
+
+
+
+
 
         <Route element={<ProblemSolver />}>
           <Route

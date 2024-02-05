@@ -312,6 +312,24 @@ class UserActivityRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+
+  acceptanceByProblem = async (problemId) => {
+    const query = `
+    SELECT
+    "A"."problemId",
+    COUNT(*) AS total_submissions,
+    SUM(CASE WHEN "A"."isSolved" THEN 1 ELSE 0 END) AS total_successful_submissions
+    FROM
+    "Activities" "A"
+    WHERE
+    "A"."problemId"= $1
+    GROUP BY
+    "A"."problemId";
+      `;
+    const params = [problemId];
+    const result = await this.query(query, params);
+    return result;
+  }
 }
 
 module.exports = UserActivityRepository;

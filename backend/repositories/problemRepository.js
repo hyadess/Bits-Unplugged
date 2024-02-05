@@ -485,6 +485,24 @@ class ProblemsRepository extends Repository {
     });
     return versions;
   };
+  updateRating = async (id, rating) => {
+    const problem = await db.ProblemVersion.findByPk(id);
+    if (!problem) {
+      return null;
+    }
+    const updatedProblem = await db.ProblemVersion.update(
+      {
+        rating: rating,
+      },
+      {
+        where: {
+          id,
+        },
+        returning: true,
+      }
+    );
+    return updatedProblem;
+  };
 }
 
 module.exports = ProblemsRepository;

@@ -100,6 +100,9 @@ module.exports = (sequelize, DataTypes) => {
       feedback: {
         type: DataTypes.TEXT,
       },
+      rating : {
+        type:DataTypes.INTEGER,
+      },
     },
     {
       sequelize,

@@ -79,6 +79,11 @@ module.exports = {
       feedback: {
         type: Sequelize.TEXT,
       },
+      rating: {
+        type: Sequelize.INTEGER,
+        allowNull:false,
+        defaultValue: 800,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

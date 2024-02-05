@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../ProbSetTab";
 import { setLoading } from "../../App";
-import { problemApi } from "../../api";
+import { problemApi, userActivityApi } from "../../api";
 import Confirmation from "../Confirmation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -20,20 +20,37 @@ import {
   faCircleXmark,
 } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
+
 export default function ProblemCard({
   id,
   name,
   path,
+  rating,
   deleteAction,
   isLive,
   setProblem,
   isSolved,
 }) {
   const [acceptance, setAcceptance] = useState(Math.round(Math.random() * 100));
-  const [difficulty, setDifficulty] = useState(
-    ["Easy", "Medium", "Hard"][Math.floor(Math.random() * 3)]
-  );
+  const getAcceptance = async (id) => {
+    const res = await userActivityApi.acceptanceByProblem(id);
+    if (res.success && res.data.length > 0) {
+      console.log(res.data);
+      setAcceptance(
+        res.data[0].total_submissions === 0
+          ? 0
+          : (res.data[0].total_successful_submissions * 100) /
+              res.data[0].total_submissions
+      );
+    }
+    else
+    {
+      setAcceptance(0);
+    }
+  };
+  const [difficulty, setDifficulty] = useState(rating);
   useEffect(() => {
+    getAcceptance(id);
     setLoading(false);
   }, []);
   const navigate = useNavigate();

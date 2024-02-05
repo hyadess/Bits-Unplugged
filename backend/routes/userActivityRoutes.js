@@ -47,6 +47,7 @@ router.get(
   "/stat/series/successes/me",
   userActivityController.totalSolvedProblemsByUser
 );
+router.get("/:problemId/acceptance", userActivityController.acceptanceByProblem);
 router.get(
   "/stat/:topicId/problems",
   userActivityController.totalProblemCountByTopic

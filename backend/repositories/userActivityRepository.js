@@ -243,13 +243,12 @@ class UserActivityRepository extends Repository {
     return result;
   };
 
-  mostRecentSuccessByUser = async (userId) => {
+  successesByUser=async(userId) =>{
     const query = `
     SELECT A.*, PV."title"
     FROM "Activities" A
     JOIN "ProblemVersions" PV ON A."problemId" = PV."id"
-    WHERE A."userId" = $1 AND A."isSolved" = TRUE
-    ORDER BY A."lastSolveTimestamp" DESC;
+    WHERE A."userId" = $1 AND A."isSolved" = TRUE;
     `;
     const params = [userId];
     const result = await this.query(query, params);

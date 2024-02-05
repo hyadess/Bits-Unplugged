@@ -35,10 +35,14 @@ router.put(
   "/:contestId/updateDescription",
   contestController.updateDescription
 );
+router.get("/:contestId", contestController.getContestInfo);
 
 router.put("/:contestId/publish", contestController.publishContest);
 router.put("/:contestId/start", contestController.startContest);
 router.put("/:contestId/end", contestController.endContest);
+
+router.post("/:contestId/updateDates", contestController.updateDates);
+router.get("/showSetters", contestController.availableCollaborators);
 
 router.post("/:contestId/addCollaborator", contestController.addCollaborator);
 router.get(

@@ -50,12 +50,36 @@ class ContestRepository extends Repository {
         FROM "Contests" "C"
         JOIN "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
         WHERE "CS"."setterId" = $1 AND "CS"."role" = 'owner';
-
         `;
     const params = [setterId];
     const result = await this.query(query, params);
     return result;
   };
+  getContestInfo = async (contestId) => {
+    const query = `
+        SELECT
+        "C".*,
+        jsonb_agg(jsonb_build_object('setterId', "S"."id", 'role', "CS"."role", 'username', "U"."username")) AS "ContestSetters"
+        FROM
+        "Contests" "C"
+        JOIN
+        "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
+        JOIN
+        "Setters" "S" ON "CS"."setterId" = "S"."id"
+        JOIN
+        "Users" "U" ON "S"."userId" = "U"."id"
+        WHERE
+        "C"."id" = $1
+        GROUP BY
+        "C"."id";
+    `;
+    const params = [contestId];
+    const result = await this.query(query, params);
+    return result;
+};
+
+  
+
 
   //***********GETTING SUBMISSIONS***********************
   getAllSubmissionsByContest = async (contestId) => {
@@ -116,7 +140,7 @@ class ContestRepository extends Repository {
         VALUES ($1, NULL, NULL, NULL, 'edit', $2)
         RETURNING "id";          
         `;
-    const params = [title,Date.now()];
+    const params = [title,new Date("February 1, 2024 11:13:00")];
     const result = await this.query(query, params);
     const contestId = result.data[0].id;
 
@@ -137,7 +161,7 @@ class ContestRepository extends Repository {
         SET "updatedAt" = $2
         WHERE "id" = $1;
         `;
-    const params = [contestId, Date.now()];
+    const params = [contestId, new Date(null)];
     const result = await this.query(query, params);
 
     return result;
@@ -149,7 +173,7 @@ class ContestRepository extends Repository {
         SET "title" = $2, "updatedAt" = $3
         WHERE "id" = $1;
         `;
-    const params = [contestId, title, Date.now()];
+    const params = [contestId, title, new Date(null)];
     const result = await this.query(query, params);
     return result;
   };
@@ -159,7 +183,7 @@ class ContestRepository extends Repository {
         SET "description" = $2, "updatedAt" = $3
         WHERE "id" = $1;
         `;
-    const params = [contestId, description, Date.now()];
+    const params = [contestId, description, new Date()];
     const result = await this.query(query, params);
     return result;
   };
@@ -171,21 +195,21 @@ class ContestRepository extends Repository {
         SET "status" = 'upcoming', "updatedAt" = $2
         WHERE "id" = $1;
         `;
-    const params = [contestId, Date.now()];
+    const params = [contestId, new Date()];
     const result = await this.query(query, params);
     return result;
   };
   // I am setting default duration 2 hr for now............
   // upcoming -> running
   startContest = async (contestId) => {
-    const currentTimestamp = Date.now();
+    const currentTimestamp = new Date();
     const twoHoursLater = currentTimestamp + 2 * 60 * 60 * 1000; // 2 hours in milliseconds
     const query = `
         UPDATE "Contests"
         SET "status" = 'running', "updatedAt" = $2 ,  "startDate" = $3, "endDate" = $4
         WHERE "id" = $1;
         `;
-    const params = [contestId, Date.now(), currentTimestamp, twoHoursLater];
+    const params = [contestId, new Date(), currentTimestamp, twoHoursLater];
     const result = await this.query(query, params);
     return result;
   };
@@ -200,6 +224,38 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+
+  updateDates = async (contestId, startDateString, endDateString) => {
+
+    const startDate = new Date(startDateString);
+    const endDate = new Date(endDateString);
+    const query = `
+        UPDATE "Contests" 
+        SET "startDate" = $2, "endDate" = $3
+        WHERE "id" = $1;
+        `;
+    const params = [contestId, startDate, endDate];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  availableCollaborators = async () => {
+    const query = `
+      SELECT
+      "S"."id",
+      "U"."username"
+      FROM
+      "Setters" "S"
+      JOIN
+      "Users" "U" ON "S"."userId" = "U"."id";
+      `;
+    const params = [];
+    const result = await this.query(query, params);
+    return result;
+  };
+    
+
+
 
   //***************UPDATING CONTEST SETTER TABLE**************** */
 
@@ -405,7 +461,7 @@ class ContestRepository extends Repository {
         VALUES ($1, $2, $3, $4)
         RETURNING "clarificationId";
         `;
-    const params = [contestId, title, description, Date.now()];
+    const params = [contestId, title, description, new Date()];
     const result = await this.query(query, params);
 
     return result;

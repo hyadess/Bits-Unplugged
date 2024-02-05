@@ -1,6 +1,10 @@
 import Api from "./base";
 
 class ContestApi extends Api {
+  getContestById = async (contestId) => {
+    return await this.get("/contests/"+contestId);
+  };
+
   getAllContests = async () => {
     return await this.get("/contests");
   };
@@ -21,6 +25,10 @@ class ContestApi extends Api {
     return await this.get("/contests/"+contestId+"/submissions");
   };
 
+  getContestInfo = async (contestId) => { 
+    return await this.get("/contests/"+contestId);
+  };
+
   getAllSubmissionsByUserAndContest = async (contestId) => {
     return await this.get("/contests/"+contestId+"/submissions/me");
   };
@@ -35,6 +43,12 @@ class ContestApi extends Api {
 
   addContest = async (title) => {
     return await this.post("/contests/addContest", {title});
+  };
+  updateDates = async (contestId, startDate, endDate) => {
+    return await this.post("/contests/"+contestId+"/updateDates", { startDate, endDate });  
+  };
+  availableCollaborators = async () => {
+    return await this.get("/contests/showSetters");
   };
 
   updateTitle = async (contestId, title) => {
@@ -65,8 +79,8 @@ class ContestApi extends Api {
     return await this.get("/contests/"+contestId+"/showAllCollaborators");
   };
 
-  addProblemToContest = async (contestId, title) => {
-    return await this.post("/contests/"+contestId+"/createProblem", { title });
+  addProblemToContest = async (contestId, problemId) => {
+    return await this.post("/contests/"+contestId+"/createProblem", { problemId });
   };
 
   makeProblemEligible = async (contestId, problemId) => {

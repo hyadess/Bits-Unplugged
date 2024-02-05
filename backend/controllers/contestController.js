@@ -30,6 +30,14 @@ class ContestController extends Controller {
       res.status(404).json(result);
     }
   };
+  getContestInfo = async (req, res) => {
+    let result = await contestRepository.getContestInfo(req.params.contestId);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
   getMyOwnContests = async (req, res) => {
     let result = await contestRepository.getMyOwnContests(req.user.userId);
     if (result.success) {
@@ -135,6 +143,28 @@ class ContestController extends Controller {
       res.status(204).json(result.data);
     } else {
       res.status(500).json(result);
+    }
+  };
+
+  updateDates = async (req, res) => {
+    let result = await contestRepository.updateDates(
+      req.params.contestId,
+      req.body.startDate,
+      req.body.endDate
+    );
+    if (result.success) {
+      res.status(204).json(result.data);
+    } else {
+      res.status(500).json(result);
+    }
+  };
+
+  availableCollaborators = async (req, res) => {
+    let result = await contestRepository.availableCollaborators();
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
     }
   };
 

@@ -38,6 +38,7 @@ const Solving = ({ setNav }, ref) => {
         <div
           onClick={() => {
             setLoading(true);
+            document.body.style.cursor = "default";
             type == 2
               ? navigate("/admin/topics")
               : type == 1

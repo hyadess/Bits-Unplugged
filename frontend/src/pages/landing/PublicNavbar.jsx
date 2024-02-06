@@ -190,7 +190,10 @@ const PublicNavbar = ({ nav, setNav }) => {
         </div>
         <button
           className="font-semibold flex flex-row items-center gap-3 rounded-lg text-lg px-7 py-2 text-center bu-button-primary"
-          onClick={() => navigate("/login")}
+          onClick={() => {
+            document.body.style.cursor = "default";
+            navigate("/login");
+          }}
         >
           <FontAwesomeIcon icon={faRightToBracket} />
           <h1 className="align-middle">Sign in</h1>

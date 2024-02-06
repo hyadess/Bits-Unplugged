@@ -9,6 +9,7 @@ import {
   faPeopleGroup,
   faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
+import Banner from "../../components/Banner";
 const PublicNavbar = ({ nav, setNav }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,7 +42,12 @@ const PublicNavbar = ({ nav, setNav }) => {
   }, []);
 
   return (
-    <div className="flex flex-row w-full justify-between md:justify-center shadow-md">
+    <div
+      className={
+        `flex flex-row w-full justify-between md:justify-center bu-nav-color bg-opacity-5 ` +
+        (nav !== "home" ? "" : "")
+      }
+    >
       <div className="icon flex-2 hidden md:flex h-20 w-1/5 px-5">
         <div
           className="p-5 pl-0"
@@ -57,6 +63,13 @@ const PublicNavbar = ({ nav, setNav }) => {
       </div>
       <div className="flex md:justify-center w-full md:w-3/5">
         <>
+          {/* <div className="py-3">
+            <Banner width={300} height={60} />
+          </div> */}
+          {/* <div>
+            <span className="text-5xl font-bold">BITS</span> <br />
+            <span className="font-bold text-center">UNPLUGGED</span>
+          </div> */}
           <button
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
               nav === "home"
@@ -124,7 +137,7 @@ const PublicNavbar = ({ nav, setNav }) => {
             </div>
             <div className="divider hidden md:flex "></div>
           </button>
-          <button
+          {/* <button
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
               location.pathname === "/login"
                 ? "border-[#1C5B5F] dark:border-pink-500"
@@ -144,10 +157,10 @@ const PublicNavbar = ({ nav, setNav }) => {
               Login
             </div>
             <div className="divider hidden md:flex "></div>
-          </button>
+          </button> */}
         </>
       </div>
-      <div className="flex h-20 w-1/3 md:w-1/5 items-center justify-center">
+      <div className="flex flex-row h-20 w-1/3 md:w-1/5 items-center justify-end px-5 gap-5">
         <div
           className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
           onClick={() => toggleDarkMode()}
@@ -175,6 +188,13 @@ const PublicNavbar = ({ nav, setNav }) => {
             ></path>
           </svg>
         </div>
+        <button
+          className="font-semibold flex flex-row items-center gap-3 rounded-lg text-lg px-7 py-2 text-center bu-button-primary"
+          onClick={() => navigate("/login")}
+        >
+          <FontAwesomeIcon icon={faRightToBracket} />
+          <h1 className="align-middle">Sign in</h1>
+        </button>
       </div>
     </div>
   );

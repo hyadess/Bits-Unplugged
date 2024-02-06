@@ -31,7 +31,7 @@ export default function ProblemCard({
   setProblem,
   isSolved,
 }) {
-  const [acceptance, setAcceptance] = useState(Math.round(Math.random() * 100));
+  const [acceptance, setAcceptance] = useState(0);
   const getAcceptance = async (id) => {
     const res = await userActivityApi.acceptanceByProblem(id);
     if (res.success && res.data.length > 0) {
@@ -42,9 +42,7 @@ export default function ProblemCard({
           : (res.data[0].total_successful_submissions * 100) /
               res.data[0].total_submissions
       );
-    }
-    else
-    {
+    } else {
       setAcceptance(0);
     }
   };
@@ -64,21 +62,19 @@ export default function ProblemCard({
     <div className="w-full h-full" key={id}>
       <div
         className={
-          "border rounded-lg shadow-md bg-gray-700 bu-card-primary flex flex-col p-5 h-full"
+          "border rounded-lg shadow-md bg-gray-700 bu-card-primary flex flex-col p-5 h-full cursor-pointer"
         }
+        onClick={() => {
+          setLoading(true);
+          navigate(path);
+        }}
       >
         {/* <h5 className="text-2xl text-center font-bold tracking-tight bu-text-primary w-10%">
           {idx}
         </h5> */}
 
-        <div className="flex flex-row cursor-pointer">
-          <h5
-            className="text-xl md:text-2xl tracking-tight bu-text-primary w-[45%] cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full"
-            onClick={() => {
-              setLoading(true);
-              navigate(path);
-            }}
-          >
+        <div className="flex flex-row">
+          <h5 className="text-xl md:text-2xl tracking-tight bu-text-primary w-[45%] cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
             {name}
           </h5>
           <h3

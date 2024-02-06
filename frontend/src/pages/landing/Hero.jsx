@@ -51,76 +51,79 @@ const Hero = ({ nav, setNav }, ref) => {
     console.log(container);
   };
 
-  const options = {
-    background: {
-      // color: {
-      //   value: "#232741",
-      // },
-      // position: "50% 50%",
-      // repeat: "no-repeat",
-      // size: "100%",
-    },
-    particles: {
-      number: {
-        value: 50,
-        density: {
-          enable: true,
-          area: 800,
-        },
+  const options = useMemo(
+    () => ({
+      background: {
+        // color: {
+        //   value: "#232741",
+        // },
+        // position: "50% 50%",
+        // repeat: "no-repeat",
+        // size: "100%",
       },
-      color: {
-        value: ["#3cba54", "#f4c20d", "#db3236", "#4885ed"],
-      },
-      shape: {
-        type: "circle",
-      },
-      opacity: {
-        value: 0.6,
-      },
-      size: {
-        value: { min: 1, max: 8 },
-      },
-      links: {
-        enable: true,
-        distance: 150,
-        color: "#808080",
-        opacity: 0.4,
-        width: 1,
-      },
-      move: {
-        enable: true,
-        speed: 3,
-        direction: "none",
-        random: false,
-        straight: false,
-        outModes: "out",
-      },
-    },
-    fullScreen: false,
-    interactivity: {
-      events: {
-        onHover: {
-          enable: true,
-          mode: "grab",
-        },
-        onClick: {
-          enable: true,
-          mode: "push",
-        },
-      },
-      modes: {
-        grab: {
-          distance: 140,
-          links: {
-            opacity: 1,
+      particles: {
+        number: {
+          value: 50,
+          density: {
+            enable: true,
+            area: 800,
           },
         },
-        push: {
-          quantity: 4,
+        color: {
+          value: ["#3cba54", "#f4c20d", "#db3236", "#4885ed"],
+        },
+        shape: {
+          type: "circle",
+        },
+        opacity: {
+          value: 0.6,
+        },
+        size: {
+          value: { min: 1, max: 8 },
+        },
+        links: {
+          enable: true,
+          distance: 150,
+          color: "#808080",
+          opacity: 0.4,
+          width: 1,
+        },
+        move: {
+          enable: true,
+          speed: 3,
+          direction: "none",
+          random: false,
+          straight: false,
+          outModes: "out",
         },
       },
-    },
-  };
+      fullScreen: false,
+      interactivity: {
+        events: {
+          onHover: {
+            enable: true,
+            mode: "grab",
+          },
+          onClick: {
+            enable: true,
+            mode: "push",
+          },
+        },
+        modes: {
+          grab: {
+            distance: 140,
+            links: {
+              opacity: 1,
+            },
+          },
+          push: {
+            quantity: 4,
+          },
+        },
+      },
+    }),
+    []
+  );
 
   // const options = useMemo(
   //   () => ({

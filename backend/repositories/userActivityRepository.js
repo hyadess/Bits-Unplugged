@@ -12,7 +12,7 @@ class UserActivityRepository extends Repository {
       function (obj) {
         // update
         if (obj) {
-          if (obj.isSolved && obj.viewDuration!==0) return;
+          if (obj.isSolved && obj.viewDuration !== 0) return; // Change needed
           console.log("Updated:", duration);
           return obj.update({
             viewDuration: obj.viewDuration + duration,
@@ -43,7 +43,6 @@ class UserActivityRepository extends Repository {
             isSolved: obj.isSolved || false,
             lastSolveTimestamp: Date.now(),
             totalFailedAttempt: obj.totalFailedAttempt + 1,
-            
           });
         // insert
         return db.Activity.create({
@@ -245,7 +244,7 @@ class UserActivityRepository extends Repository {
     return result;
   };
 
-  successesByUser=async(userId) =>{
+  successesByUser = async (userId) => {
     const query = `
     SELECT A.*, PV."title"
     FROM "Activities" A
@@ -257,7 +256,7 @@ class UserActivityRepository extends Repository {
     return result;
   };
 
-  successesByProblem=async(problemId) =>{
+  successesByProblem = async (problemId) => {
     const query = `
     SELECT A.*, PV."title"
     FROM "Activities" A
@@ -329,7 +328,7 @@ class UserActivityRepository extends Repository {
     const params = [problemId];
     const result = await this.query(query, params);
     return result;
-  }
+  };
 }
 
 module.exports = UserActivityRepository;

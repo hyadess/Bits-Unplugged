@@ -10,12 +10,14 @@ import {
   faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import Banner from "../../components/Banner";
+import GlobalContext from "../../store/GlobalContext";
 const PublicNavbar = ({ nav, setNav }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [darkMode, setDarkMode] = useState(null);
-
+  const { setColorMode } = useContext(GlobalContext);
   const toggleDarkMode = () => {
+    setColorMode(darkMode ? "light" : "dark");
     setDarkMode((prevDarkMode) => !prevDarkMode);
     console.log("Toggled");
   };
@@ -50,7 +52,7 @@ const PublicNavbar = ({ nav, setNav }) => {
     >
       <div className="icon flex-2 hidden md:flex h-20 w-1/5 items-center">
         <div
-          className="p-5"
+          className="p-5 pr-2"
           onClick={() => {
             if (location.pathname !== "/landing") {
               setLoading(true);
@@ -59,10 +61,9 @@ const PublicNavbar = ({ nav, setNav }) => {
           }}
         >
           <Logo />
-
           {/* <Banner height={41} width={156} /> */}
         </div>
-        <div className="bu-text-title text-3xl font-serif font-bold font-logo">
+        <div className="bu-text-title text-2xl font-serif font-bold font-logo">
           Bits Unplugged
         </div>
       </div>

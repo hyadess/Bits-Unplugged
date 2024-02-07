@@ -42,8 +42,8 @@ const Home = () => {
         <PublicNavbar nav={nav} setNav={handleClick} />
       </Navbar>
       <Hero nav={nav} setNav={setNav} ref={homeRef} />
-      <Solving setNav={setNav} ref={featuresRef} />
-      <Setting setNav={setNav} ref={settingRef} />
+      {/* <Solving setNav={setNav} ref={featuresRef} />
+      <Setting setNav={setNav} ref={settingRef} /> */}
       <Suspense fallback={<div>Loading...</div>}>
         <Team setNav={setNav} ref={aboutusRef} />
         <Footer />

@@ -19,7 +19,10 @@ import { loadSlim } from "@tsparticles/slim"; // if you are going to use `loadSl
 // import { loadBasic } from "@tsparticles/basic"; // if you are going to use `loadBasic`, install the "@tsparticles/basic" package too.
 import "./styles.scss";
 import AnimateCursor from "./AnimatedCursor";
-
+import { Button } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAnglesRight, faCaretRight } from "@fortawesome/free-solid-svg-icons";
+// import makeS
 const Card = ({ title, description, image }) => (
   <div
     className="flex flex-col items-center m-2 bg-[#1c5b5f] dark:bg-pink-600 rounded-lg shadow-lg cursor-pointer"
@@ -37,9 +40,20 @@ const Card = ({ title, description, image }) => (
   </div>
 );
 
+// const useStyles = makeStyles({
+//   customButton: {
+//     backgroundColor: "#000000", // Change this to your desired color
+//     color: "#ffffff", // Change this to your desired text color
+//     "&:hover": {
+//       backgroundColor: "#234567", // Change this to your desired hover color
+//     },
+//   },
+// });
 const Hero = ({ nav, setNav }, ref) => {
+  // const classes = useStyles();
   const navigate = useNavigate();
-  const { type } = useContext(GlobalContext);
+  // const {} = useContext(GlobalContext);
+  const { type, colorMode } = useContext(GlobalContext);
   //   const ref = useRef();
   const isVisible = useIsVisible(ref);
 
@@ -259,40 +273,68 @@ const Hero = ({ nav, setNav }, ref) => {
             interactive medium
           </p>
 
-          <div
-            onClick={() => {
-              setLoading(true);
-              document.body.style.cursor = "default";
-              type == 2
-                ? navigate("/admin/topics")
-                : type == 1
-                  ? navigate("/problemSet")
-                  : type == 0
-                    ? navigate("/topics")
-                    : navigate("/login");
-            }}
-            className="bu-button-secondary bu-text-primary inline-flex cursor-pointer items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
-          >
-            Get started
-            <svg
-              className="-mr-1 ml-2 h-5 w-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
+          <div className="bu-text-primary">
+            <div
+              onClick={() => {
+                setLoading(true);
+                document.body.style.cursor = "default";
+                type == 2
+                  ? navigate("/admin/topics")
+                  : type == 1
+                    ? navigate("/problemSet")
+                    : type == 0
+                      ? navigate("/topics")
+                      : navigate("/login");
+              }}
+              className="bu-button-secondary bu-text-primary inline-flex cursor-pointer items-center rounded-lg px-5 py-2.5 text-center font-semibold capitalize text-xl"
             >
-              <path
-                fillRule="evenodd"
-                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
+              <div className="flex flex-row gap-2 items-center">
+                Get Started
+                <FontAwesomeIcon icon={faAnglesRight} />
+              </div>
+            </div>
+            {/* <Button
+              variant="contained"
+              sx={{
+                borderRadius: "0.5rem",
+                backgroundColor:
+                  colorMode === "light" ? "#94cebc" : "rgb(191,18,93)",
+                padding: "0.5rem 1.75rem",
+                fontSize: "18px",
+                color: colorMode === "light" ? "black" : "white",
+                fontWeight: "bold",
+                transition: "background 0.3s ease 1",
+                ":hover": {
+                  backgroundColor:
+                    colorMode === "light"
+                      ? "rgb(124, 193, 172)"
+                      : "rgb(153,21,75)",
+                },
+              }}
+              onClick={() => {
+                setLoading(true);
+                document.body.style.cursor = "default";
+                type == 2
+                  ? navigate("/admin/topics")
+                  : type == 1
+                    ? navigate("/problemSet")
+                    : type == 0
+                      ? navigate("/topics")
+                      : navigate("/login");
+              }}
+            >
+              <div className="flex flex-row gap-2 items-center">
+                Get started
+                <FontAwesomeIcon icon={faAnglesRight} />
+              </div>
+            </Button> */}
           </div>
         </div>
         <div
           className="flex flex-row gap-0 md:w-50% relative"
           style={{ zIndex: 10 }}
         >
-          <Particles
+          {/* <Particles
             id="tsparticles"
             particlesLoaded={particlesLoaded}
             options={options}
@@ -300,24 +342,24 @@ const Hero = ({ nav, setNav }, ref) => {
               position: "absolute",
               width: "100%",
               height: "100%",
-              zIndex: -1,
+              zIndex: 11,
               top: 0,
               left: 0,
               right: 0,
               bottom: 0,
             }}
-          />
+          /> */}
           <ImageLoader
             className="block w-full dark:hidden"
             // src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
-            src="/images/hero-image.svg"
+            src="/images/hero-drag.svg"
             alt="dashboard image"
             style={{ zIndex: 10 }}
           />
           <ImageLoader
             className="hidden w-full dark:block"
             // src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup-dark.svg"
-            src="/images/hero-image.svg"
+            src="/images/hero-drag.svg"
             alt="dashboard image"
             style={{ zIndex: 10 }}
           />

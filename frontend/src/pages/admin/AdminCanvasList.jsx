@@ -37,7 +37,7 @@ const AdminCanvasList = () => {
   const getCanvasId = async (name) => {
     const res = await canvasApi.createCanvas(name);
     if (res.success) {
-      return res.data[0].id;
+      return res.data.id;
     }
   };
 

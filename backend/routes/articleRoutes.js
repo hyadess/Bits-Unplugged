@@ -1,33 +1,35 @@
-const express = require('express');
-const app = express();
+// const router = require("express").Router();
+// const authMiddleware = require("../services/tokenValidationService");
+// const CanvasController = require("../controllers/canvasController");
+// const canvasController = new CanvasController();
+// const passport = require("passport");
+// router.use(
+//   passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
+// );
 
-// Create a new article
-app.post('/articles', (req, res) => {
-    // Logic to create a new article
-    res.send('New article created');
-});
+// router.get("/", canvasController.getAllCanvases);
+// router.post("/", canvasController.createCanvas);
+// router.get("/:id", canvasController.getCanvasById);
+// router.put("/:id", canvasController.updateCanvas);
+// router.delete("/:id", canvasController.deleteCanvas);
 
-// Update an existing article
-app.put('/articles/:id', (req, res) => {
-    const articleId = req.params.id;
-    // Logic to update the article with the given ID
-    res.send(`Article ${articleId} updated`);
-});
+// // router.get("/live", canvasController.getAllCanvases); // pending
+// module.exports = router;
 
-// Delete an article
-app.delete('/articles/:id', (req, res) => {
-    const articleId = req.params.id;
-    // Logic to delete the article with the given ID
-    res.send(`Article ${articleId} deleted`);
-});
+const router = require("express").Router();
+const authMiddleware = require("../services/tokenValidationService");
+const ArticleController = require("../controllers/articleController");
+const articleController = new ArticleController();
+const passport = require("passport");
+router.use(
+  passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
+);
 
-// Make an article live
-app.patch('/articles/:id/live', (req, res) => {
-    const articleId = req.params.id;
-    // Logic to make the article with the given ID live
-    res.send(`Article ${articleId} is now live`);
-});
+router.get("/", articleController.getAllArticles);
+router.post("/", articleController.createArticle);
+router.get("/:id", articleController.getArticleById);
+router.put("/:id", articleController.updateArticle);
+router.delete("/:id", articleController.deleteArticle);
+// router.get("/live", articleController.getAllArticles); // pending
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-});
+module.exports = router;

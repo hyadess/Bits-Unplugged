@@ -10,6 +10,24 @@ class ArticleRepository extends Repository {
     return await db.Article.findAll();
   };
 
+  getArticlesBySeries = async (seriesId, isLive) => {
+    return await db.Article.findAll({
+      where: {
+        seriesId,
+        isLive,
+      },
+    });
+  };
+
+  getLiveArticlesBySeries = async (seriesId) => {
+    return await db.Article.findAll({
+      where: {
+        seriesId,
+        isLive: true,
+      },
+    });
+  };
+
   getLiveArticles = async () => {
     return await db.Article.findAll({
       where: {
@@ -74,3 +92,5 @@ class ArticleRepository extends Repository {
     return updatedArticle;
   };
 }
+
+module.exports = new ArticleRepository();

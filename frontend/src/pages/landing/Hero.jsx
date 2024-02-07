@@ -90,7 +90,7 @@ const Hero = ({ nav, setNav }, ref) => {
         },
         move: {
           enable: true,
-          speed: 3,
+          speed: 2,
           direction: "none",
           random: false,
           straight: false,
@@ -198,7 +198,7 @@ const Hero = ({ nav, setNav }, ref) => {
 
   return (
     <div className="bu-nav-color">
-      <AnimateCursor />
+      {/* <AnimateCursor /> */}
       <Particles
         id="tsparticles"
         particlesLoaded={particlesLoaded}
@@ -265,7 +265,7 @@ const Hero = ({ nav, setNav }, ref) => {
         src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
         alt="dashboard image"
       /> */}
-        <div className="flex flex-row gap-0 md:w-50%" style={{ zIndex: 100 }}>
+        <div className="flex flex-row gap-0 md:w-50%" style={{ zIndex: 10 }}>
           <ImageLoader
             className="block w-full dark:hidden"
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
@@ -277,7 +277,7 @@ const Hero = ({ nav, setNav }, ref) => {
             alt="dashboard image"
           />
         </div>
-        <div className="mt-4 md:mt-0 md:w-50%" style={{ zIndex: 100 }}>
+        <div className="mt-4 md:mt-0 md:w-50%" style={{ zIndex: 10 }}>
           <h2 className="bu-text-primary mb-4 text-center text-4xl font-extrabold tracking-tight md:text-left">
             A platform for exploring{" "}
             <span className="bu-text-title text-5xl">Computer Science</span>{" "}

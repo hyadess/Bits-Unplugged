@@ -1,6 +1,6 @@
 const Controller = require("./base");
 const SeriesRepository = require("../repositories/seriesRepository");
-const { problemRepository } = require("../repositories");
+const { problemRepository, articleRepository } = require("../repositories");
 const seriesRepository = new SeriesRepository();
 class SeriesController extends Controller {
   constructor() {
@@ -65,6 +65,20 @@ class SeriesController extends Controller {
       }
     });
   };
+
+  getAllArticles = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const articles =
+        req.user.type === 1
+          ? null
+          : await articleRepository.getArticlesBySeries(
+              req.params.id,
+              req.user.type === 0
+            );
+      res.status(200).send(articles);
+    });
+  };
+
   getAllProblems = async (req, res) => {
     console.log(req.params, req.query);
     this.handleRequest(res, async () => {

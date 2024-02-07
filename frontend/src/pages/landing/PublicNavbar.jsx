@@ -98,7 +98,7 @@ const PublicNavbar = ({ nav, setNav }) => {
             </div>
             <div className="divider hidden md:flex "></div>
           </button>
-
+          {/* 
           <button
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
               nav === "features"
@@ -120,7 +120,7 @@ const PublicNavbar = ({ nav, setNav }) => {
               Features
             </div>
             <div className="divider hidden md:flex "></div>
-          </button>
+          </button> */}
           <button
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
               nav === "aboutus"
@@ -195,7 +195,7 @@ const PublicNavbar = ({ nav, setNav }) => {
           </svg>
         </div>
         <button
-          className="font-semibold flex flex-row items-center gap-3 rounded-lg text-lg px-7 py-2 text-center bu-button-primary"
+          className="font-semibold flex-row items-center gap-3 rounded-lg text-lg px-7 py-2 text-center bu-button-primary hidden md:flex"
           onClick={() => {
             document.body.style.cursor = "default";
             navigate("/login");

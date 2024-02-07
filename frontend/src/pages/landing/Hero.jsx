@@ -256,9 +256,6 @@ const Hero = ({ nav, setNav }, ref) => {
         id="home"
         ref={ref}
         className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center gap-8 px-4 py-8 sm:py-16 md:flex-row  md:justify-center lg:px-6 xl:gap-16"
-        style={{
-          backgroundImage: "/images/bg.svg",
-        }}
       >
         <div className="mt-4 md:mt-0 md:w-50%" style={{ zIndex: 10 }}>
           <h2 className="bu-text-primary mb-4 text-center text-4xl font-extrabold tracking-tight md:text-left">
@@ -272,8 +269,7 @@ const Hero = ({ nav, setNav }, ref) => {
             without needing to write a single line of code through an
             interactive medium
           </p>
-
-          <div className="bu-text-primary">
+          <div>
             <div
               onClick={() => {
                 setLoading(true);
@@ -286,13 +282,16 @@ const Hero = ({ nav, setNav }, ref) => {
                       ? navigate("/topics")
                       : navigate("/login");
               }}
-              className="bu-button-secondary bu-text-primary inline-flex cursor-pointer items-center rounded-lg px-5 py-2.5 text-center font-semibold capitalize text-xl"
+              className="bu-button-secondary bu-text-primary cursor-pointer rounded-lg px-5 py-2.5 text-center font-semibold text-xl hidden md:flex flex-row justify-center w-[13rem]"
             >
               <div className="flex flex-row gap-2 items-center">
                 Get Started
                 <FontAwesomeIcon icon={faAnglesRight} />
               </div>
             </div>
+          </div>
+
+          <div className="bu-text-primary">
             {/* <Button
               variant="contained"
               sx={{
@@ -363,6 +362,25 @@ const Hero = ({ nav, setNav }, ref) => {
             alt="dashboard image"
             style={{ zIndex: 10 }}
           />
+        </div>
+        <div
+          onClick={() => {
+            setLoading(true);
+            document.body.style.cursor = "default";
+            type == 2
+              ? navigate("/admin/topics")
+              : type == 1
+                ? navigate("/problemSet")
+                : type == 0
+                  ? navigate("/topics")
+                  : navigate("/login");
+          }}
+          className="bu-button-secondary bu-text-primary cursor-pointer items-center rounded-lg px-5 py-2.5 text-center font-semibold capitalize text-xl flex md:hidden w-[12rem] justify-center"
+        >
+          <div className="flex flex-row gap-2 items-center">
+            Get Started
+            <FontAwesomeIcon icon={faAnglesRight} />
+          </div>
         </div>
       </div>
     </div>

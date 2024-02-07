@@ -88,8 +88,8 @@ export default function ApprovedProblemCard({
         <div
           className="flex flex-col cursor-pointer"
           onClick={() => {
-            // setLoading(true);
-            // navigate(`/admin/problems/${id}`);
+            setLoading(true);
+            navigate(path);
           }}
         >
           <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title w-full cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">

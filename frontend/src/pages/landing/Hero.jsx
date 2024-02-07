@@ -90,7 +90,7 @@ const Hero = ({ nav, setNav }, ref) => {
         },
         move: {
           enable: true,
-          speed: 3,
+          speed: 2,
           direction: "none",
           random: false,
           straight: false,
@@ -198,7 +198,7 @@ const Hero = ({ nav, setNav }, ref) => {
 
   return (
     <div className="bu-nav-color">
-      <AnimateCursor />
+      {/* <AnimateCursor /> */}
       <Particles
         id="tsparticles"
         particlesLoaded={particlesLoaded}

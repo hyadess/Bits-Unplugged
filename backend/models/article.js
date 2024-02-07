@@ -9,20 +9,25 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Article.hasMany(models.ArticleSection, {
-        foreignKey: "articleId",
-        as: "sections",
-      });
-      Article.hasMany(models.ArticleProblem, {
-        foreignKey: "articleId",
-        as: "problems",
+      Article.belongsTo(models.Series, {
+        foreignKey: "seriesId",
+        as: "series",
       });
     }
   }
   Article.init(
     {
+      seriesId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Series",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
       title: DataTypes.STRING,
-      content: DataTypes.ARRAY(DataTypes.JSON),
+      content: DataTypes.JSONB,
       isLive: DataTypes.BOOLEAN,
       serialNo: DataTypes.INTEGER,
     },

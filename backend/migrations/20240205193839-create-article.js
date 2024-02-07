@@ -9,11 +9,23 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      seriesId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Series",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
       title: {
         type: Sequelize.STRING,
       },
+      subtitle: {
+        type: Sequelize.STRING,
+      },
       content: {
-        type: Sequelize.ARRAY(Sequelize.JSON),
+        type: Sequelize.JSONB,
       },
       isLive: {
         type: Sequelize.BOOLEAN,
@@ -25,10 +37,12 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: new Date(),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: new Date(),
       },
     });
   },

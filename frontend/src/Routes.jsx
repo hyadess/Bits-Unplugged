@@ -46,6 +46,8 @@ import EmailVerification from "./pages/auth/EmailVerification";
 import Contests from "./pages/user/Contests";
 import History from "./pages/setter/ProblemSetEnv/History";
 import TopicStat from "./pages/user/TopicStat";
+import AdminArticles from "./pages/admin/AdminArticles";
+import AdminArticleEditor from "./pages/admin/AdminArticleEditor";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -214,6 +216,22 @@ const AppRoutes = () => {
             }
           />
           <Route
+            path="/admin/articles"
+            element={
+              <LayoutMain>
+                <AdminArticles />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/admin/articles/:id"
+            element={
+              <LayoutMain>
+                <AdminArticleEditor />
+              </LayoutMain>
+            }
+          />
+          <Route
             path="/admin/contests"
             element={
               <LayoutMain>
@@ -232,8 +250,6 @@ const AppRoutes = () => {
         </Route>
 
         <Route path="/admin/login" element={<AdminLogin />} />
-
-
 
         <Route element={<ProblemSetter />}>
           <Route
@@ -296,15 +312,6 @@ const AppRoutes = () => {
             }
           />
         </Route>
-
-        
-
-
-
-
-
-
-
 
         <Route element={<ProblemSolver />}>
           <Route

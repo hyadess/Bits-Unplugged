@@ -5,7 +5,7 @@ const ImageLoader = ({ src, alt, style, className }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
-    <div className="smooth-image-wrapper">
+    <div className="smooth-image-wrapper" style={{ zIndex: 10 }}>
       <img
         src={src}
         alt={alt}

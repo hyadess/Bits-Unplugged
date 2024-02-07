@@ -19,6 +19,24 @@ import { loadSlim } from "@tsparticles/slim"; // if you are going to use `loadSl
 // import { loadBasic } from "@tsparticles/basic"; // if you are going to use `loadBasic`, install the "@tsparticles/basic" package too.
 import "./styles.scss";
 import AnimateCursor from "./AnimatedCursor";
+
+const Card = ({ title, description, image }) => (
+  <div
+    className="flex flex-col items-center m-2 bg-[#1c5b5f] dark:bg-pink-600 rounded-lg shadow-lg cursor-pointer"
+    style={{ zIndex: 10 }}
+  >
+    <img
+      className="w-full h-32 object-cover"
+      src="https://img.freepik.com/free-vector/social-development-abstract-concept-vector-illustration-children-learn-social-skills-competence-positive-impact-successful-communication-career-success-education-abstract-metaphor_335657-1426.jpg?w=740&t=st=1707316499~exp=1707317099~hmac=c470bee6148a11ae758c7916257b0e887272d40d84f02397c2c602d3e03414ca"
+      alt={title}
+    />
+    <div className="p-6 flex flex-col items-center">
+      <h3 className="mb-2 text-3xl font-bold text-white">{title}</h3>
+      <p className="text-gray-200">{description}</p>
+    </div>
+  </div>
+);
+
 const Hero = ({ nav, setNav }, ref) => {
   const navigate = useNavigate();
   const { type } = useContext(GlobalContext);
@@ -63,7 +81,7 @@ const Hero = ({ nav, setNav }, ref) => {
       },
       particles: {
         number: {
-          value: 50,
+          value: 100,
           density: {
             enable: true,
             area: 800,
@@ -107,6 +125,7 @@ const Hero = ({ nav, setNav }, ref) => {
           onClick: {
             enable: true,
             mode: "push",
+            // other options
           },
         },
         modes: {
@@ -199,87 +218,37 @@ const Hero = ({ nav, setNav }, ref) => {
   return (
     <div className="bu-nav-color">
       {/* <AnimateCursor /> */}
-      <Particles
-        id="tsparticles"
-        particlesLoaded={particlesLoaded}
-        options={options}
-        style={{
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          zIndex: -1,
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-        }}
-      />
+
+      {/* <div
+        className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center px-4 py-8 sm:py-16  md:justify-center w-3/5 gap-5"
+        style={{ zIndex: 10 }}
+      >
+        <span
+          className="text-[#1c5b5f] dark:text-[#d61f68] text-8xl  font-extrabold flex flex-row items-center gap-5"
+          style={{ zIndex: 10 }}
+        >
+          <div className="p-5 bg-[#1c5b5f] dark:bg-pink-600 text-white">
+            BITS
+          </div>
+          <div>UNPLUGGED</div>
+        </span>{" "}
+        <div className="flex">
+          <Card title="Learn" description="Acquire new skills" />
+          <Card title="Practice" description="Hone your skills" />
+          <Card title="Compete" description="Showcase your skills" />
+        </div>
+      </div> */}
       <div
         id="home"
         ref={ref}
         className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center gap-8 px-4 py-8 sm:py-16 md:flex-row  md:justify-center lg:px-6 xl:gap-16"
+        style={{
+          backgroundImage: "/images/bg.svg",
+        }}
       >
-        {/* <h2
-          className="bu-text-primary mb-4 text-center tracking-tight md:text-left flex flex-col gap-3 flex-center"
-          style={{ zIndex: 100 }}
-        >
-          <span className="bu-text-title text-8xl font-extrabold ">
-            BITS UNPLUGGED
-          </span>
-          <br />
-          <h1 className="font-semibold text-center text-5xl">
-            Learn.Practice.Compete
-          </h1>
-
-          <div
-            onClick={() => {
-              setLoading(true);
-              type == 2
-                ? navigate("/admin/topics")
-                : type == 1
-                  ? navigate("/problemSet")
-                  : type == 0
-                    ? navigate("/topics")
-                    : navigate("/login");
-            }}
-            className="flex bu-button-secondary bu-text-primary flex-row cursor-pointer items-center rounded-lg px-5 py-2.5 text-center font-medium  mt-5 text-3xl "
-          >
-            Get started
-            <svg
-              className="-mr-1 ml-2 h-5 w-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-          </div>
-        </h2> */}
-
-        {/* <img
-        className="w-full dark:hidden"
-        src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
-        alt="dashboard image"
-      /> */}
-        <div className="flex flex-row gap-0 md:w-50%" style={{ zIndex: 10 }}>
-          <ImageLoader
-            className="block w-full dark:hidden"
-            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
-            alt="dashboard image"
-          />
-          <ImageLoader
-            className="hidden w-full dark:block"
-            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup-dark.svg"
-            alt="dashboard image"
-          />
-        </div>
         <div className="mt-4 md:mt-0 md:w-50%" style={{ zIndex: 10 }}>
           <h2 className="bu-text-primary mb-4 text-center text-4xl font-extrabold tracking-tight md:text-left">
-            A platform for exploring{" "}
+            A platform for learning{" "}
             <span className="bu-text-title text-5xl">Computer Science</span>{" "}
             without coding{" "}
           </h2>
@@ -318,6 +287,40 @@ const Hero = ({ nav, setNav }, ref) => {
               ></path>
             </svg>
           </div>
+        </div>
+        <div
+          className="flex flex-row gap-0 md:w-50% relative"
+          style={{ zIndex: 10 }}
+        >
+          <Particles
+            id="tsparticles"
+            particlesLoaded={particlesLoaded}
+            options={options}
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              zIndex: -1,
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}
+          />
+          <ImageLoader
+            className="block w-full dark:hidden"
+            // src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
+            src="/images/hero-image.svg"
+            alt="dashboard image"
+            style={{ zIndex: 10 }}
+          />
+          <ImageLoader
+            className="hidden w-full dark:block"
+            // src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup-dark.svg"
+            src="/images/hero-image.svg"
+            alt="dashboard image"
+            style={{ zIndex: 10 }}
+          />
         </div>
       </div>
     </div>

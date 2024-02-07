@@ -4,13 +4,18 @@ import { Avatar, InputAdornment, Typography } from "@mui/material";
 import Logo from "../Logo";
 import SearchBar from "../InputFields/SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBrain,
+  faChalkboardUser,
+  faHouse,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
 import { faTrello } from "@fortawesome/free-brands-svg-icons";
 import { profileApi } from "../../api";
 import AuthService from "../../services/authService";
 import GlobalContext from "../../store/GlobalContext";
-const PrivateNavbar = (props) => {
+const SolverNavbar = (props) => {
   const [user, setUser] = useState(null);
   const { type, setType } = useContext(GlobalContext);
   const [search, setSearch] = useState(false);
@@ -117,7 +122,7 @@ const PrivateNavbar = (props) => {
                       : "bu-text-primary-hover"
                   }`}
                 >
-                  <FontAwesomeIcon icon={faHouse} />
+                  <FontAwesomeIcon icon={faChalkboardUser} />
                   {type == 0 ? "Learn" : "Home"}
                 </div>
                 <div className="divider hidden md:flex "></div>
@@ -233,4 +238,4 @@ const PrivateNavbar = (props) => {
   );
 };
 
-export default PrivateNavbar;
+export default SolverNavbar;

@@ -57,6 +57,7 @@ module.exports = {
               }),
             },
           ]),
+          isLive: true,
         },
       ],
       {}

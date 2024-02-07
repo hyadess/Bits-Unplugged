@@ -23,6 +23,9 @@ class ArticleApi extends Api {
     console.log("/articles");
     return await this.get("/articles");
   };
+  getArticlesBySeries = async (id) => {
+    return await this.get("/series/" + id + "/articles");
+  };
   getArticleById = async (id) => {
     return await this.get("/articles/" + id);
   };

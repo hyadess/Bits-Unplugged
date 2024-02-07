@@ -48,12 +48,14 @@ import History from "./pages/setter/ProblemSetEnv/History";
 import TopicStat from "./pages/user/TopicStat";
 import AdminArticles from "./pages/admin/AdminArticles";
 import AdminArticleEditor from "./pages/admin/AdminArticleEditor";
+import Article from "./pages/user/Article";
+import SolverNavbar from "./components/Navbars/SolverNavbar";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
   return isLoggedIn ? (
     type == 0 ? (
-      <Layout2 nav={<PrivateNavbar />}>
+      <Layout2 nav={<SolverNavbar />}>
         <Outlet />
       </Layout2>
     ) : (
@@ -412,6 +414,14 @@ const AppRoutes = () => {
             element={
               <LayoutMain>
                 <Problems />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/articles/:id"
+            element={
+              <LayoutMain>
+                <Article />
               </LayoutMain>
             }
           />

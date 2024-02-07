@@ -10,7 +10,8 @@ module.exports = {
           // 1
           topicId: 2,
           name: "Tower Of Hanoi",
-          description: "",
+          description:
+            "Classic puzzle that challenges players to move a stack of disks from one peg to another, following strict rules, in the fewest possible moves.",
           logo: "https://us.123rf.com/450wm/ylivdesign/ylivdesign1701/ylivdesign170109038/70429747-colorful-pyramid-toy-icon-cartoon-illustration-of-colorful-pyramid-toy-vector-icon-for-web.jpg?ver=6",
           isLive: true,
           createdAt: new Date(),
@@ -30,7 +31,8 @@ module.exports = {
           // 3
           topicId: 1,
           name: "Shortest Path",
-          description: "",
+          description:
+            "Finding the most efficient route or path between two points in a given network or graph.",
           logo: "https://media.istockphoto.com/id/1204141542/vector/easy-straight-complicated-paths.jpg?s=612x612&w=0&k=20&c=93R6hIIAEw2rTicfqNuj2GLfwPdDSLNruVrgx_O_DYA=",
           isLive: true,
           createdAt: new Date(),

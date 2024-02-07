@@ -1,12 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-     "./index.html",
+    "./index.html",
     "./src/**/*.{js,jsx,ts,tsx}",
     "node_modules/flowbite-react/lib/esm/**/*.js",
   ],
   theme: {
     extend: {
+      fontFamily: {
+        logo: ["Logo Font", "sans-serif"],
+      },
       colors: {
         primary: {
           50: "#fdf2f8",

@@ -48,9 +48,9 @@ const PublicNavbar = ({ nav, setNav }) => {
         (nav !== "home" ? "" : "")
       }
     >
-      <div className="icon flex-2 hidden md:flex h-20 w-1/5 px-5">
+      <div className="icon flex-2 hidden md:flex h-20 w-1/5 items-center">
         <div
-          className="p-5 pl-0"
+          className="p-5"
           onClick={() => {
             if (location.pathname !== "/landing") {
               setLoading(true);
@@ -59,6 +59,11 @@ const PublicNavbar = ({ nav, setNav }) => {
           }}
         >
           <Logo />
+
+          {/* <Banner height={41} width={156} /> */}
+        </div>
+        <div className="bu-text-title text-3xl font-serif font-bold font-logo">
+          Bits Unplugged
         </div>
       </div>
       <div className="flex md:justify-center w-full md:w-3/5">

@@ -51,6 +51,7 @@ import AdminArticleEditor from "./pages/admin/AdminArticleEditor";
 import Article from "./pages/user/Article";
 import SolverNavbar from "./components/Navbars/SolverNavbar";
 import RecentProblems from "./pages/user/RecentProblems";
+import SetterNavbar from "./components/Navbars/SetterNavbar";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -84,7 +85,7 @@ const ProblemSetter = () => {
   const type = localStorage.getItem("type");
   return isLoggedIn ? (
     type == 1 ? (
-      <Layout2 nav={<PrivateNavbar />}>
+      <Layout2 nav={<SetterNavbar />}>
         <Outlet />
       </Layout2>
     ) : (
@@ -397,7 +398,7 @@ const AppRoutes = () => {
               // }
               >
                 <Topics />
-                <RecentProblems/>
+                <RecentProblems />
               </LayoutMain>
             }
           />

@@ -9,8 +9,23 @@ import { setLoading } from "../../App";
 import { faTrello } from "@fortawesome/free-brands-svg-icons";
 import { profileApi } from "../../api";
 import AuthService from "../../services/authService";
-import GlobalContext from "../../store/GlobalContext";
-const PrivateNavbar = (props) => {
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import GlobalContext from "store/GlobalContext";
+
+const SetterNavbar = (props) => {
   const [user, setUser] = useState(null);
   const { type, setType } = useContext(GlobalContext);
   const [search, setSearch] = useState(false);
@@ -149,7 +164,7 @@ const PrivateNavbar = (props) => {
                 </div>
               </button>
 
-              <button
+              {/* <button
                 className="icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info items-center justify-center border-b-4 border-transparent"
                 style={{ alignItems: "center", justifyContent: "center" }}
                 data-tip="Marketplace"
@@ -164,7 +179,7 @@ const PrivateNavbar = (props) => {
                   <FontAwesomeIcon icon={faRightFromBracket} />
                   Logout
                 </div>
-              </button>
+              </button> */}
             </>
           </div>
           <div className="flex md:flex h-20 w-1/3 md:w-1/5 items-center justify-end">
@@ -210,21 +225,88 @@ const PrivateNavbar = (props) => {
               </div>
             </div>
 
-            <div className="flex md:flex items-center justify-center w-3/5 md:w-1/3 cursor-pointer">
-              <Avatar
-                alt="blah"
-                src={
-                  user != null
-                    ? user.image
-                    : "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Solid_black.svg/2048px-Solid_black.svg.png"
-                }
-                onClick={() => {
-                  setLoading(true);
-                  type == 0
-                    ? navigate("/user/" + user.username)
-                    : navigate("/setter/" + user.username);
-                }}
-              />
+            <div className="flex md:flex items-center justify-center w-3/5 md:w-1/3">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar
+                    alt="blah"
+                    src={
+                      user != null
+                        ? user.image
+                        : "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Solid_black.svg/2048px-Solid_black.svg.png"
+                    }
+                    className="cursor-pointer"
+                    // onClick={() => {
+                    //   setLoading(true);
+                    //   type == 0
+                    //     ? navigate("/user/" + user.username)
+                    //     : navigate("/setter/" + user.username);
+                    // }}
+                  />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-60 p-3 mt-5 mr-1">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setLoading(true);
+                        type == 0
+                          ? navigate("/user/" + user.username)
+                          : navigate("/setter/" + user.username);
+                      }}
+                    >
+                      Profile
+                      {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      Billing
+                      {/* <DropdownMenuShortcut>⌘B</DropdownMenuShortcut> */}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      Settings
+                      {/* <DropdownMenuShortcut>⌘S</DropdownMenuShortcut> */}
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>Team</DropdownMenuItem>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>
+                        Invite users
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuPortal>
+                        <DropdownMenuSubContent>
+                          <DropdownMenuItem>Email</DropdownMenuItem>
+                          <DropdownMenuItem>Message</DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem>More...</DropdownMenuItem>
+                        </DropdownMenuSubContent>
+                      </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                    <DropdownMenuItem>
+                      New Team
+                      {/* <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut> */}
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>GitHub</DropdownMenuItem>
+                  <DropdownMenuItem>Support</DropdownMenuItem>
+                  <DropdownMenuItem disabled>API</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={async () => {
+                      setLoading(true);
+                      await AuthService.logout();
+                      setType(0);
+                      navigate("/login");
+                    }}
+                  >
+                    Log out
+                    {/* <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut> */}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </div>
@@ -233,4 +315,4 @@ const PrivateNavbar = (props) => {
   );
 };
 
-export default PrivateNavbar;
+export default SetterNavbar;

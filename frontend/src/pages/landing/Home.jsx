@@ -13,6 +13,7 @@ import Solving from "./Solving";
 import Setting from "./Setting";
 import Navbar from "../../components/Navbar";
 import { useIsVisible } from "../../hooks/useIsVisible";
+
 const Team = React.lazy(() => import("./Team"));
 const Footer = React.lazy(() => import("../../components/Footer"));
 const Home = () => {

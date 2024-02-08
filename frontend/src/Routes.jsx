@@ -46,6 +46,7 @@ import EmailVerification from "./pages/auth/EmailVerification";
 import Contests from "./pages/user/Contests";
 import History from "./pages/setter/ProblemSetEnv/History";
 import TopicStat from "./pages/user/TopicStat";
+import RecentProblems from "./pages/user/RecentProblems";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -387,6 +388,7 @@ const AppRoutes = () => {
               // }
               >
                 <Topics />
+                <RecentProblems/>
               </LayoutMain>
             }
           />

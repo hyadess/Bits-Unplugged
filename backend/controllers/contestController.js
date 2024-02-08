@@ -1,5 +1,6 @@
 const Controller = require("./base");
 const ContestRepository = require("../repositories/contestRepository");
+const sendMail = require("../services/email");
 const contestRepository = new ContestRepository();
 class ContestController extends Controller {
   constructor() {
@@ -162,10 +163,25 @@ class ContestController extends Controller {
   availableCollaborators = async (req, res) => {
     let result = await contestRepository.availableCollaborators();
     if (result.success) {
+      
       res.status(200).json(result.data);
     } else {
       res.status(404).json(result);
     }
+  };
+
+  collabRequest = async (req, res) => { 
+    let result = await contestRepository.getRequestedCollaborators(req.params.setterId);
+    if (result.success) {
+      sendMail(
+        result.data[0].email, 
+        "Collaboration Request", 
+        "You have a collaboration request from " + req.user.email + " for contest " + req.params.contestId
+      );
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    } 
   };
 
   addCollaborator = async (req, res) => {

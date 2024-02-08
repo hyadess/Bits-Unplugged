@@ -11,6 +11,8 @@ import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import "./heatmap.scss";
 import ProfileRecentFails from "./ProfileRecentFails";
+import ProfileInfo from "./ProfileInfo";
+import { set } from "date-fns";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -275,11 +277,13 @@ export default function Profile() {
   const [activityChartData, setActivityChartData] = useState([]);
 
   const getRecentActivity = async () => {
-    const res = await userActivityApi.getAllDailyActivitiesForLast30Days();
+    const res = await userActivityApi.daywiseActivityByUser();
     if (res.success) {
+      console.log("daywise activity");
+      console.log(res.data);
       const chartData = res.data.map((entry) => ({
-        x: new Date(entry.activityDate), // Convert date string to Date object
-        y: entry.duration,
+        x: new Date(entry.visitDate), // Convert date string to Date object
+        y: entry.totalDuration,
       }));
       setActivityChartData(chartData);
     }
@@ -374,7 +378,7 @@ export default function Profile() {
       });
 
       // Initialize an object to store the count of problems in each time range
-      const timeRangeCounts = Array(numberOfRanges+1).fill(0);
+      const timeRangeCounts = Array(numberOfRanges + 1).fill(0);
 
       // Process the data to count the number of problems in each time range
       res.data.forEach((item) => {
@@ -384,7 +388,7 @@ export default function Profile() {
         const rangeIndex = Math.floor((timeTaken - minTimeTaken) / rangeSize);
 
         // Increment the count for that time range
-        if (rangeIndex >= 0 && rangeIndex < numberOfRanges+1) {
+        if (rangeIndex >= 0 && rangeIndex < numberOfRanges + 1) {
           timeRangeCounts[rangeIndex]++;
         }
       });
@@ -442,6 +446,7 @@ export default function Profile() {
   // };
 
   useEffect(() => {
+    setLoading(false);
     getSubmissions();
     getRecentActivity();
     //setLoading(false);
@@ -459,6 +464,7 @@ export default function Profile() {
       <div>
         <Title title={""} sub_title={"Your success and fail statistics"} />
       </div>
+      <ProfileInfo/>
       <PieChart />
       <div>
         <Title title={""} sub_title={"Your favourite series"} />

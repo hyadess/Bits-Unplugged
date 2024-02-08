@@ -37,14 +37,17 @@ export default function ProblemCard({
     if (res.success && res.data.length > 0) {
       console.log(res.data);
       setAcceptance(
-        res.data[0].total_submissions === 0
+        Number(res.data[0].successful_submissions) +
+          Number(res.data[0].failed_submissions) ===
+          0
           ? 0
-          : (res.data[0].total_successful_submissions * 100) /
-              res.data[0].total_submissions
+          : Math.round(
+              (Number(res.data[0].successful_submissions) * 100) /
+                (Number(res.data[0].successful_submissions) +
+                  Number(res.data[0].failed_submissions))
+            )
       );
-    }
-    else
-    {
+    } else {
       setAcceptance(0);
     }
   };

@@ -7,7 +7,7 @@ class UserActivityRepository extends Repository {
     super();
   }
   trackDuration = async (userId, problemId, duration) => {
-    dailyActivityRepository.todaysEntry(userId, duration);
+    dailyActivityRepository.Entry(userId, problemId, duration);
     const activity = db.Activity.findOne({ where: { userId, problemId } }).then(
       function (obj) {
         // update
@@ -316,16 +316,16 @@ class UserActivityRepository extends Repository {
   acceptanceByProblem = async (problemId) => {
     const query = `
     SELECT
-    "A"."problemId",
-    COUNT(*) AS total_submissions,
-    SUM(CASE WHEN "A"."isSolved" THEN 1 ELSE 0 END) AS total_successful_submissions
+    "S"."problemId",
+    COUNT(DISTINCT CASE WHEN "S"."verdict" = 'Accepted' THEN 1 END) AS "successful_submissions",
+    SUM(CASE WHEN "S"."verdict" = 'Wrong answer' THEN 1 ELSE 0 END) AS "failed_submissions"
     FROM
-    "Activities" "A"
+    "Submissions" "S"
     WHERE
-    "A"."problemId"= $1
+    "S"."problemId"= $1
     GROUP BY
-    "A"."problemId";
-      `;
+    "S"."problemId";
+    `;
     const params = [problemId];
     const result = await this.query(query, params);
     return result;

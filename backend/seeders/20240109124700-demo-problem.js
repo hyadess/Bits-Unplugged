@@ -142,6 +142,7 @@ module.exports = {
               4: { x: 392, y: 396.8000030517578, label: 4, color: "Default" },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           checkerCode: `/**\n * @param {Object} data (userCanvas/solutionCanvas) - An object containing nodes and edges properties.\n * @param {Array} data.nodes - HashMap of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end, weight properties.\n * @param {Array} data.selectedEdges - Array of selectedEdges. Where each edge is an object with start, end, weight properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas, solutionCanvas) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n`,
           editOptions: JSON.stringify({
@@ -179,6 +180,7 @@ module.exports = {
               { start: "3", end: "1", weight: "5" },
               { start: "4", end: "3", weight: "3" },
             ],
+            selectedNodes: [],
           }),
         },
         {
@@ -212,6 +214,7 @@ module.exports = {
               6: { x: 652, y: 205, label: 6, color: "Default" },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           checkerCode: `/**\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction createGraph(edges) {\n  const graph = new Map();\n  for (const edge of edges) {\n    const { start, end, weight } = edge;\n\n    if (!graph.has(start)) {\n      graph.set(start, []);\n    }\n\n    if (!graph.has(end)) {\n      graph.set(end, []);\n    }\n\n    graph.get(start).push({ value: end, weight: parseInt(weight) });\n    graph.get(end).push({ value: start, weight: parseInt(weight) });\n  }\n  return graph;\n}\nfunction getCost(graph) {\n  // Step 3: Implement DFS to check if the graph is disconnected\n  function isDisconnected() {\n    const visited = new Set();\n    const nodes = [...graph.keys()];\n\n    function dfs(node) {\n      visited.add(node);\n      for (const neighbor of graph.get(node)) {\n        if (!visited.has(neighbor.value)) {\n          dfs(neighbor.value);\n        }\n      }\n    }\n    dfs(nodes[0]); // Start DFS from the first node\n    return visited.size !== nodes.length;\n  }\n\n  const disconnected = isDisconnected();\n\n  // Step 4: Calculate the sum of edge weights\n  function sumEdgeWeights() {\n    let sum = 0;\n    for (const edges of graph.values()) {\n      for (const edge of edges) {\n        sum += edge.weight;\n      }\n    }\n    return sum / 2;\n  }\n\n  if (disconnected) return -1;\n\n  const edgeWeightSum = sumEdgeWeights();\n  return edgeWeightSum;\n}\nfunction solutionChecker(userCanvas, solutionCanvas) {\n  const user_graph = createGraph(userCanvas.selectedEdges);\n  const setter_graph = createGraph(solutionCanvas.selectedEdges);\n\n  if (Array.from(user_graph.keys()).length !== Array.from(setter_graph.keys()).length)\n    return false;\n  const user_cost = getCost(user_graph);\n  const setter_cost = getCost(setter_graph);\n  console.log(user_cost);\n  if (user_cost !== -1 && user_cost === setter_cost) {\n    return true;\n  } else {\n    return false;\n  }\n}\n`,
           editOptions: JSON.stringify({
@@ -265,6 +268,7 @@ module.exports = {
               { start: "4", end: "6", weight: "3" },
               { start: "5", end: "2", weight: "5" },
             ],
+            selectedNodes: [],
           }),
         },
         {
@@ -305,8 +309,7 @@ module.exports = {
               9: { x: 539.7999877929688, y: 345, label: "", color: "Default" },
             },
             selectedEdges: [],
-            createdAt: new Date(),
-            updatedAt: new Date(),
+            selectedNodes: [],
           }),
           checkerCode: `/**\r\n *\r\n * @param {Object} data - An object containing nodes and edges properties.\r\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\r\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\r\n * @returns {boolean} True if the solution is valid, otherwise false.\r\n */\r\nfunction solutionChecker(data) {\r\n  // const edges =  data.edges.map(edge => ({\r\n\t// \tstart: edge.start,\r\n\t// \tend: edge.end,\r\n\t// \tweight: edge.weight\r\n  // }));\r\n  \r\n\r\n  const allEdgesHaveDifferentColors = data.edges.every(\r\n    edge => data.nodes[edge.start].color !== data.nodes[edge.end].color && data.nodes[edge.end].color !== "Default"); \r\n\r\n  const uniqueColorsSet = new Set();\r\n  data.edges.forEach(edge => {\r\n    uniqueColorsSet.add(data.nodes[edge.start].color);\r\n    uniqueColorsSet.add(data.nodes[edge.end].color);\r\n  });\r\n\r\n  const numberOfUniqueColors = uniqueColorsSet.size;\r\n\r\n  return allEdgesHaveDifferentColors && numberOfUniqueColors == 3;\r\n}`,
 
@@ -390,6 +393,7 @@ module.exports = {
               7: { x: 812, y: 449, label: 7, color: "Default" },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           statement:
             "Drag the nodes to make the graph a plane graph. In a plane graph there is no crossing edges.",
@@ -478,6 +482,7 @@ module.exports = {
               },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           checkerCode: `/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas, solutionCanvas) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n`,
           editOptions: JSON.stringify({
@@ -561,6 +566,7 @@ module.exports = {
               { start: "3", end: "4", weight: "4" },
               { start: "4", end: "6", weight: "2" },
             ],
+            selectedNodes: [],
           }),
         },
         {
@@ -631,6 +637,7 @@ module.exports = {
               },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           checkerCode: `/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n`,
           editOptions: JSON.stringify({
@@ -723,6 +730,7 @@ module.exports = {
               { start: "6", end: "4", weight: "7" },
               { start: "6", end: "5", weight: "9" },
             ],
+            selectedNodes: [],
           }),
         },
         {
@@ -771,6 +779,7 @@ module.exports = {
               },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           checkerCode: `/**\r\n *\r\n * @param {Object} data - An object containing nodes and edges properties.\r\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\r\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\r\n * @returns {boolean} True if the solution is valid, otherwise false.\r\n */\r\n\r\nfunction isIntersecting(a, b, c, d) {\r\n    // Returns true if line segment (a, b) intersects with line segment (c, d)\r\n    function ccw(a, b, c) {\r\n        return (c.y - a.y) * (b.x - a.x) > (b.y - a.y) * (c.x - a.x);\r\n    }\r\n\r\n    return (\r\n        ccw(a, c, d) !== ccw(b, c, d) &&\r\n        ccw(a, b, c) !== ccw(a, b, d)\r\n    );\r\n}\r\n\r\n\r\nfunction hasCommonNode(edgeA, edgeB) {\r\n    return (\r\n        edgeA.start === edgeB.start ||\r\n        edgeA.start === edgeB.end ||\r\n        edgeA.end === edgeB.start ||\r\n        edgeA.end === edgeB.end\r\n    );\r\n}\r\n\r\nfunction solutionChecker(data) {\r\n    const nodes = data.nodes;\r\n    const edges = data.edges;\r\n\r\n    for (let i = 0; i < edges.length; i++) {\r\n        const edgeA = edges[i];\r\n        \r\n        const startA = nodes[edgeA.start];\r\n        const endA = nodes[edgeA.end];\r\n\r\n        for (let j = i + 1; j < edges.length; j++) {\r\n            const edgeB = edges[j];\r\n\r\n            const startB = nodes[edgeB.start];\r\n            const endB = nodes[edgeB.end];\r\n\r\n            if (\r\n                isIntersecting(startA, endA, startB, endB) &&\r\n                !hasCommonNode(edgeA, edgeB)\r\n            ) {\r\n                // console.log(startA.x,startA.y,  startB.x, startB.y, endA.x, endA.y, endB.x, endB.y)\r\n                return false;\r\n            }\r\n        }\r\n    }\r\n\r\n    // No intersections found, it's a plane graph\r\n    return true;\r\n}`,
           editOptions: JSON.stringify({
@@ -876,6 +885,7 @@ module.exports = {
               },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           editOptions: JSON.stringify({
             directedEdge: {
@@ -1017,6 +1027,7 @@ module.exports = {
                 weight: "4",
               },
             ],
+            selectedNodes: [],
           }),
         },
         {
@@ -1086,6 +1097,7 @@ module.exports = {
               },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           editOptions: JSON.stringify({
             directedEdge: {
@@ -1210,6 +1222,7 @@ module.exports = {
                 weight: "30",
               },
             ],
+            selectedNodes: [],
           }),
         },
         {
@@ -1296,6 +1309,7 @@ module.exports = {
               },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           editOptions: JSON.stringify({
             directedEdge: {
@@ -1343,6 +1357,7 @@ module.exports = {
             edges: [],
             nodes: {},
             selectedEdges: [],
+            selectedNodes: [],
           }),
         },
         {

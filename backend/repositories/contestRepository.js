@@ -257,6 +257,27 @@ class ContestRepository extends Repository {
     return result;
   };
 
+  getRequestedCollaborators = async (setterId) => {
+    const query = `
+      SELECT
+      "S"."id",
+      "U"."username",
+      "C"."email"
+      FROM
+      "Setters" "S"
+      JOIN
+      "Users" "U" ON "S"."userId" = "U"."id"
+      JOIN
+      "Credentials" "C" ON "U"."id" = "C"."userId"
+      WHERE "S"."id" = $1;
+      `;
+    const params = [setterId];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+    
+
   //***************UPDATING CONTEST SETTER TABLE**************** */
 
   //collaborator should be an author............

@@ -10,12 +10,14 @@ import {
   faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import Banner from "../../components/Banner";
+import GlobalContext from "../../store/GlobalContext";
 const PublicNavbar = ({ nav, setNav }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [darkMode, setDarkMode] = useState(null);
-
+  const { setColorMode } = useContext(GlobalContext);
   const toggleDarkMode = () => {
+    setColorMode(darkMode ? "light" : "dark");
     setDarkMode((prevDarkMode) => !prevDarkMode);
     console.log("Toggled");
   };
@@ -50,7 +52,7 @@ const PublicNavbar = ({ nav, setNav }) => {
     >
       <div className="icon flex-2 hidden md:flex h-20 w-1/5 items-center">
         <div
-          className="p-5"
+          className="p-5 pr-2"
           onClick={() => {
             if (location.pathname !== "/landing") {
               setLoading(true);
@@ -59,10 +61,9 @@ const PublicNavbar = ({ nav, setNav }) => {
           }}
         >
           <Logo />
-
           {/* <Banner height={41} width={156} /> */}
         </div>
-        <div className="bu-text-title text-3xl font-serif font-bold font-logo">
+        <div className="bu-text-title text-2xl font-serif font-bold font-logo">
           Bits Unplugged
         </div>
       </div>
@@ -97,7 +98,7 @@ const PublicNavbar = ({ nav, setNav }) => {
             </div>
             <div className="divider hidden md:flex "></div>
           </button>
-
+          {/* 
           <button
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
               nav === "features"
@@ -119,7 +120,7 @@ const PublicNavbar = ({ nav, setNav }) => {
               Features
             </div>
             <div className="divider hidden md:flex "></div>
-          </button>
+          </button> */}
           <button
             className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
               nav === "aboutus"
@@ -194,7 +195,7 @@ const PublicNavbar = ({ nav, setNav }) => {
           </svg>
         </div>
         <button
-          className="font-semibold flex flex-row items-center gap-3 rounded-lg text-lg px-7 py-2 text-center bu-button-primary"
+          className="font-semibold flex-row items-center gap-3 rounded-lg text-lg px-7 py-2 text-center bu-button-primary hidden md:flex"
           onClick={() => {
             document.body.style.cursor = "default";
             navigate("/login");

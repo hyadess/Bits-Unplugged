@@ -14,7 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
         as: "user",
       }); 
-      
+      DailyActivity.belongsTo(models.ProblemVersion, {
+        foreignKey: "problemId",
+        as: "problem",
+      });
 
     }
   }
@@ -25,13 +28,23 @@ module.exports = (sequelize, DataTypes) => {
         model: "Users",
         key: "id",
       },
-      unique: "DailyActivities_userId_activityDate_key",
+      unique: "DailyActivities_userId_problemId_activityDate_key",
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
+    },
+    problemId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "ProblemVersions",
+        key: "id",
+      },
+      unique: "DailyActivities_userId_problemId_activityDate_key",
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
     },
     activityDate: {
-      type:DataTypes.DATEONLY,
-      unique: "DailyActivities_userId_activityDate_key",
+      type:DataTypes.DATE,
+      unique: "DailyActivities_userId_problemId_activityDate_key",
     },
     duration: DataTypes.INTEGER
   }, {
@@ -39,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'DailyActivity',
     indexes: [
       {
-        fields: ["userId", "activityDate"],
+        fields: ["userId", "problemId","activityDate"],
         unique: true,
       },
     ],

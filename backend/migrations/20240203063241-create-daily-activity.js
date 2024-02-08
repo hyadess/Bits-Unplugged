@@ -19,10 +19,19 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
+      problemId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "ProblemVersions",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
       activityDate: {
         allowNull: false,
-        type: Sequelize.DATEONLY,
-        defaultValue: new Date().toISOString().split('T')[0],
+        type: Sequelize.DATE,
+        defaultValue: new Date(),
       },
       duration: {
         allowNull: false,
@@ -41,9 +50,9 @@ module.exports = {
       }
     });
     await queryInterface.addConstraint("DailyActivities", {
-      fields: ["userId", "activityDate"],
+      fields: ["userId", "problemId","activityDate"],
       type: "unique",
-      name: "DailyActivities_userId_activityDate_key",
+      name: "DailyActivities_userId_problemId_activityDate_key",
     });
   },
   async down(queryInterface, Sequelize) {

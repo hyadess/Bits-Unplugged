@@ -13,6 +13,7 @@ import Solving from "./Solving";
 import Setting from "./Setting";
 import Navbar from "../../components/Navbar";
 import { useIsVisible } from "../../hooks/useIsVisible";
+
 const Team = React.lazy(() => import("./Team"));
 const Footer = React.lazy(() => import("../../components/Footer"));
 const Home = () => {
@@ -42,8 +43,8 @@ const Home = () => {
         <PublicNavbar nav={nav} setNav={handleClick} />
       </Navbar>
       <Hero nav={nav} setNav={setNav} ref={homeRef} />
-      <Solving setNav={setNav} ref={featuresRef} />
-      <Setting setNav={setNav} ref={settingRef} />
+      {/* <Solving setNav={setNav} ref={featuresRef} />
+      <Setting setNav={setNav} ref={settingRef} /> */}
       <Suspense fallback={<div>Loading...</div>}>
         <Team setNav={setNav} ref={aboutusRef} />
         <Footer />

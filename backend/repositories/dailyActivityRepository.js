@@ -6,65 +6,97 @@ class DailyActivityRepository extends Repository {
   constructor() {
     super();
   }
-    todaysEntry = async (userId,duration) => {
-        const today = new Date();
-        const date = today.toISOString().split('T')[0];
-        const dailyActivity = db.DailyActivity.findOne({where:{userId:userId,activityDate:date}}).then(
-        function(obj){
-            if(obj){
-            return obj.update({
-                duration: obj.duration + duration,
-            });
-            }
-            return db.DailyActivity.create({
-                userId:userId,
-                activityDate:date,
-                duration:duration,
-            });
-        }
-    );
+  Entry = async (userId,problemId,duration) => {
+    const today = new Date();
+    const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    const dailyActivity = db.DailyActivity.create({
+        userId:userId,
+        problemId:problemId,
+        activityDate:today,
+        duration:duration,
+      });
     return dailyActivity;
-    };
+  };
+  getDaywiseActivityByUser = async (userId) => {
+    const query = `
+      SELECT
+      "D"."userId",
+      "D"."activityDate"::DATE AS "visitDate",
+      SUM("D"."duration") AS "totalDuration"
+      FROM
+      "DailyActivities" "D"
+      WHERE
+      "D"."userId" = $1
+      GROUP BY
+      "D"."userId","visitDate"
+      ORDER BY
+      "D"."userId","visitDate";
+      `;
+    const params = [userId];
+    const result = await this.query(query, params);
+    return result;
+  };
+  recentlyViewedProblems = async (userId) => {
+    const query = `
+      SELECT
+      "D"."problemId",
+      "PV"."title",
+      "PV"."rating",
+      "A"."isSolved",
+      "D"."activityDate",
+      "D"."duration"
+      FROM
+      "DailyActivities" "D"
+      JOIN
+      "ProblemVersions" "PV" ON "D"."problemId" = "PV"."id"
+      JOIN 
+      "Activities" "A" ON "D"."problemId" = "A"."problemId"
+      JOIN
+      (
+        SELECT 
+            "problemId", 
+            MAX("activityDate") AS "maxDate"
+        FROM 
+            "DailyActivities"
+        WHERE 
+            "userId" = $1
+        GROUP BY 
+            "problemId"
+      ) "SUBQ" ON "D"."problemId" = "SUBQ"."problemId" AND "D"."activityDate" = "SUBQ"."maxDate"
+      WHERE
+      "D"."userId" = $1 AND "PV"."isLive" = TRUE
+      ORDER BY
+      "D"."activityDate" DESC;
+      `;
+    const params = [userId];
+    const result = await this.query(query, params);
+    return result;
+  };
 
-    getDailyActivity = async (userId, date) => {
-        try {
-          const dailyActivity = await db.DailyActivity.findOne({
-            where: { userId: userId, activityDate: date },
-          });
-      
-          if (dailyActivity) {
-            return dailyActivity.duration;
-          } else {
-            // If no entry is found, return 0 as the duration
-            return 0;
-          }
-        } catch (error) {
-          // Handle any errors that might occur during the database query
-          console.error('Error fetching daily activity:', error.message);
-          return 0; // Return 0 in case of an error
-        }
-    };
-    getAllDailyActivitiesForLast30Days = async (userId) => {
-      const endDate = new Date(); // Current date
-      const startDate = new Date();
-      startDate.setDate(endDate.getDate() - 29); // 30 days ago
-    
-      try {
-        const dailyActivities = await db.DailyActivity.findAll({
-          where: {
-            userId: userId,
-            activityDate: {
-              [Op.between]: [startDate, endDate],
-            },
-          },
-        });
-    
-        return dailyActivities;
-      } catch (error) {
-        console.error('Error fetching daily activities for the last 30 days:', error.message);
-        return [];
-      }
-    };
+  getDaywiseActivityByUserAndSeries = async (userId,seriesId) => {
+    const query = `
+      SELECT
+      "D"."userId",
+      "S"."id" AS "seriesId",
+      "D"."activityDate"::DATE AS "visitDate",
+      SUM("D"."duration") AS "totalDuration"
+      FROM
+      "DailyActivities" "D"
+      JOIN
+      "ProblemVersions" "PV" ON "D"."problemId" = "PV"."id"
+      JOIN 
+      "Series" "S" ON "PV"."seriesId" = "S"."id"
+      WHERE
+      "D"."userId" = $1 AND "PV"."seriesId" = $2
+      GROUP BY
+      "D"."userId","visitDate"
+      ORDER BY
+      "D"."userId","visitDate";
+      `;
+    const params = [userId,seriesId];
+    const result = await this.query(query, params);
+    return result;
+  };
 
     
 }

@@ -22,25 +22,6 @@ const Setting = ({ setNav }, ref) => {
       ref={ref}
       className="mx-auto flex min-h-screen max-w-screen-xl flex-col items-center gap-8 px-4 py-8 sm:py-16 md:flex-row  md:justify-end lg:px-6 xl:gap-16"
     >
-      <div className="flex flex-row gap-0 md:w-50%">
-        <video className="block w-full dark:hidden" autoPlay loop muted>
-          <source src="/videos/graph_light.mp4" type="video/mp4" />
-        </video>
-        {/* <ImageLoader
-        className="block w-full dark:hidden"
-        src="/gifs/toh_light.gif"
-        alt="dashboard image"
-      /> */}
-        <video className="hidden w-full dark:block" autoPlay loop muted>
-          <source src="/videos/graph_dark.mp4" type="video/mp4" />
-        </video>
-        {/* <ImageLoader
-        className="hidden w-full dark:block"
-        src="/gifs/toh_dark.gif"
-        alt="dashboard image"
-      /> */}
-      </div>
-
       <div className="mt-4 md:mt-0 md:w-50%">
         <h2 className="bu-text-primary mb-4 text-center text-4xl font-extrabold tracking-tight md:text-left">
           Design exciting{" "}
@@ -81,6 +62,24 @@ const Setting = ({ setNav }, ref) => {
             ></path>
           </svg>
         </div>
+      </div>
+      <div className="flex flex-row gap-0 md:w-50%">
+        <video className="block w-full dark:hidden" autoPlay loop muted>
+          <source src="/videos/graph_light.mp4" type="video/mp4" />
+        </video>
+        {/* <ImageLoader
+        className="block w-full dark:hidden"
+        src="/gifs/toh_light.gif"
+        alt="dashboard image"
+      /> */}
+        <video className="hidden w-full dark:block" autoPlay loop muted>
+          <source src="/videos/graph_dark.mp4" type="video/mp4" />
+        </video>
+        {/* <ImageLoader
+        className="hidden w-full dark:block"
+        src="/gifs/toh_dark.gif"
+        alt="dashboard image"
+      /> */}
       </div>
     </div>
   );

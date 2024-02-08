@@ -460,11 +460,11 @@ export default function Profile() {
 
   return (
     <div className="flex flex-col">
-      <Title title={"Profile Page"} />
+      <ProfileInfo />
       <div>
         <Title title={""} sub_title={"Your success and fail statistics"} />
       </div>
-      <ProfileInfo/>
+
       <PieChart />
       <div>
         <Title title={""} sub_title={"Your favourite series"} />

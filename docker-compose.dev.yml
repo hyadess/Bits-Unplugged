@@ -18,5 +18,5 @@ services:
         - DB_HOST=localhost
         - DB_DB=bitsunplugged
         - DB_PASS=root
-        - DB_PORT=${DB_PORT}
-        - JWT_SECRET=${JWT_SECRET}
+        - DB_PORT=5432
+        - JWT_SECRET=kuddusmia

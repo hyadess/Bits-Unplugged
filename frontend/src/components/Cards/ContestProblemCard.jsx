@@ -10,27 +10,47 @@ import { faCopy, faTag, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
 import { getTimeStamp } from "../../services/dateUtil";
+import { contestApi } from "api";
+import { useContestContext } from "../../store/ContestContextProvider";
+
 
 const ProblemSetCard = ({
+  contestId,
   id,
   idx,
   name,
+  currentPoints,
   deleteAction,
   isLive,
   timestamp,
   canvas,
   cloneProblem,
 }) => {
+  const { state: contest, dispatch } = useContestContext();
+
   const [open, setOpen] = useState(false);
-  const [points, setPoints] = useState(0);
+  const [points, setPoints] = useState(currentPoints);
   const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(false);
-    console.log(parseInt(timestamp, 10));
+    // console.log(parseInt(timestamp, 10));
     const date = new Date(parseInt(timestamp, 10));
-    console.log(canvas);
+    // console.log(canvas);
+    console.log("Points: ", currentPoints);
   }, []);
+
+  const handleSavePoints = async () => {
+    // Assuming you have an API to save points for the problem
+    const res = await contestApi.updatePoints(contestId,id, points);
+
+    if (res.success) {
+      console.log("Points saved successfully.");
+    } else {
+      console.error("Failed to save points.");
+    }
+  };
+
 
   const publishProblem = async () => {
     // await problemController.publishProblem(id);
@@ -57,10 +77,28 @@ const ProblemSetCard = ({
             <Input
               type="number"
               value={points}
-              onChange={(e) => setPoints(e.target.value)}
+              onChange={(e) => {
+                  dispatch({
+                    type: "UPDATE_RATING",
+                    payload: e.target.value,
+                  });
+                  setPoints(e.target.value);
+                }
+              }
               className="bg-gray-50 border border-green-100 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-.8 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
             />
+            <Button
+              onClick={handleSavePoints}
+              variant="outlined"
+              size="small"
+              style={{ color: '#6e9c83', borderColor: '#6e9c83' }}
+              >
+              Save
+            </Button>
+
           </div>
+
+          
 
           <div className="flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400">
             {/* You can customize this section */}

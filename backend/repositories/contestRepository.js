@@ -122,7 +122,7 @@ class ContestRepository extends Repository {
   // it is for setters....................
   getAllProblemsByContest = async (contestId) => {
     const query = `
-        SELECT "P".*, "CP"."status"
+        SELECT "P".*, "CP"."status", "CP"."rating"
         FROM "Problems" "P"
         JOIN "ContestProblems" "CP" ON "P"."id" = "CP"."problemId"
         Right JOIN "Canvases" "C" ON "P"."canvasId" = "C"."id"
@@ -348,6 +348,18 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
 
     const hudai = await this.updateContest(contestId);
+    return result;
+  };
+
+  updateRating = async (problemId, contestId, rating) => {
+    const query = `
+        UPDATE "ContestProblems"
+        SET "rating" = $3
+        WHERE "contestId" = $1 AND "problemId" = $2;
+        `;
+    const params = [contestId, problemId, rating];
+    const result = await this.query(query, params);
+
     return result;
   };
   //in_contest -> unpublished

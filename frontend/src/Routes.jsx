@@ -45,6 +45,7 @@ import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
 import Contests from "./pages/user/Contests";
 import History from "./pages/setter/ProblemSetEnv/History";
+import Collaborators from "./pages/setter/ContestSetEnv/ContestCollaborators";
 import TopicStat from "./pages/user/TopicStat";
 import AdminArticles from "./pages/admin/AdminArticles";
 import AdminArticleEditor from "./pages/admin/AdminArticleEditor";
@@ -301,9 +302,7 @@ const AppRoutes = () => {
           <Route
             path="/contests/:id/edit"
             element={
-              <LayoutMain>
-                <ContestSetEnv />
-              </LayoutMain>
+              <ContestSetEnv />
             }
           />
 

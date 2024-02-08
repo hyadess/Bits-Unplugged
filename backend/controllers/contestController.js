@@ -232,6 +232,18 @@ class ContestController extends Controller {
       res.status(500).json(result);
     }
   };
+  updateRating = async (req, res) => {
+    let result = await contestRepository.updateRating(
+      req.body.problemId,
+      req.params.contestId,
+      req.body.rating
+    );
+    if (result.success) {
+      res.status(204).json(result.data);
+    } else {
+      res.status(500).json(result);
+    }
+  };
   makeProblemNotEligible = async (req, res) => {
     let result = await contestRepository.makeProblemNotEligible(
       req.body.problemId,

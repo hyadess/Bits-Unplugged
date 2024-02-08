@@ -24,14 +24,6 @@ jobs:
 
       - name: Build the Docker image
         run: docker-compose -f docker-compose.dev.yml build
-        env:
-          DB_USER: postgres
-          DB_HOST: localhost
-          DB_DB: bitsunplugged
-          DB_PASS: root
-          DB_PORT: 5432
-          JWT_SECRET: secrets.JWT_SECRET
-          ADMIN_PASS: secrets.ADMIN_PASS
 
       - name: Push to Docker Hub
         run: docker push mahirlabibdihan/bitsunplugged-dev:latest

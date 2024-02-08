@@ -73,6 +73,14 @@ Create database: `npx sequelize db:create`
 Create schema: `npx sequelize db:migrate`
 Populate tables: `npx sequelize db:seed:all`
 
+### Creating Model
+
+npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string,password:string
+
+### Creating Seed
+
+npx sequelize seed:generate --name demo-user
+
 ### Changing schema
 
 Creating a migration file: `npx sequelize migration:create --name alter-user-image`

@@ -4,3 +4,4 @@ build/
 bugs.txt
 dist/
 .env*
+*.local.*

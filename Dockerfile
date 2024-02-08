@@ -53,10 +53,10 @@ RUN apt-get update && \
     apt-get clean
 
 COPY backend/dump.sql /docker-entrypoint-initdb.d/init.sql
-COPY entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh .
 
 USER postgres
  
 RUN /etc/init.d/postgresql start && psql -c "ALTER USER postgres WITH PASSWORD 'root';" && psql -c "CREATE DATABASE bitsunplugged;" && psql -c "GRANT ALL PRIVILEGES ON DATABASE bitsunplugged TO postgres;" && psql -d "postgres://postgres:root@localhost:5432/bitsunplugged" -a -f  /docker-entrypoint-initdb.d/init.sql
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]

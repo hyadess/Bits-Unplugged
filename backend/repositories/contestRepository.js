@@ -290,6 +290,17 @@ class ContestRepository extends Repository {
     return result;
   };
 
+  // getMyRole = async (userId, contestId) => {
+  //   const query = `
+  //       SELECT *
+  //       FROM "ContestSetters"
+  //       WHERE "contestId" = $1 AND "role" = 'collaborator';
+  //       `;
+  //   const params = [userId, contestId];
+  //   const result = await this.query(query, params);
+
+  //   return result;
+  // };
   //*******************UPDATING CONTEST PROBLEM TABLE************** */
 
   // assuming that this problem is already added ( using frontend call)

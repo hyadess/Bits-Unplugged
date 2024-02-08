@@ -19,6 +19,7 @@ const ContestSetCard = ({
   owner,
   updatedAt,
   deleteAction,
+  userID,
 }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ const ContestSetCard = ({
           </h5>
           <div className="flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400">
             <FontAwesomeIcon icon={faTag} />
-            <h3 className="bu-text-primary font-semibold">{owner}</h3>
+            <h3 className="bu-text-primary font-semibold">{owner.username}</h3>
           </div>
         </div>
 
@@ -101,8 +102,8 @@ const ContestSetCard = ({
             )}
 
             <IconButton
-              onClick={() => setOpen(true)}
-              className="text-red-500 hover:text-red-700"
+              onClick={() => (userID===owner.userID)? setOpen(true) : ''}
+              className={`text-red-500 ${userID==owner.userID? 'hover:text-red-700' : ''}`}
             >
               <div className="flex items-center">
                 <FontAwesomeIcon icon={faTrashCan} size="sm" />

@@ -50,6 +50,7 @@ import AdminArticles from "./pages/admin/AdminArticles";
 import AdminArticleEditor from "./pages/admin/AdminArticleEditor";
 import Article from "./pages/user/Article";
 import SolverNavbar from "./components/Navbars/SolverNavbar";
+import RecentProblems from "./pages/user/RecentProblems";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -396,6 +397,7 @@ const AppRoutes = () => {
               // }
               >
                 <Topics />
+                <RecentProblems/>
               </LayoutMain>
             }
           />

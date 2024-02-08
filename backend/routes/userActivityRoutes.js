@@ -58,8 +58,19 @@ router.get(
 );
 router.get(
   "/stat/activetime",
-  dailyActivityController.getAllDailyActivitiesForLast30Days
+  dailyActivityController.daywiseActivityByUser
+);
+router.put("/:problemId/track-duration", userActivityController.trackDuration);
+
+
+
+///on daily activity
+
+
+router.get(
+  "/stat/recentViews",
+  dailyActivityController.recentlyViewedProblems
 );
 
-router.put("/:problemId/track-duration", userActivityController.trackDuration);
+
 module.exports = router;

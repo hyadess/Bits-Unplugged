@@ -46,8 +46,10 @@ ARG DB_PORT
 ENV DB_PORT $DB_PORT
 
 ARG PORT
+ENV PORT $PORT
 EXPOSE $PORT 
 
+# Setup Database
 RUN apt-get update && \
     apt-get install -y postgresql && \
     apt-get clean

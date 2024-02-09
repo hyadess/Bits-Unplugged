@@ -1,0 +1,122 @@
+import React, { useEffect, useState } from "react";
+import CancelIcon from "@mui/icons-material/Cancel";
+import Checkbox from "@mui/material/Checkbox";
+import { showSuccess } from "../../../App";
+import { contestApi } from "../../../api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useContestContext } from "../../../store/ContestContextProvider";
+
+
+
+
+const Collaborators = () => {
+  const [selectedCollaborators, setSelectedCollaborators] = useState([]);
+  const [ContestCollaborators, setContestCollaborators] = useState([]);
+  const [isListOpen, setListOpen] = useState(false);
+  const [collaborators, setCollaborators] = useState(false);
+  const { state: contest, dispatch } = useContestContext();
+
+
+  useEffect(() => {
+    getCollaborators();
+  }, []);
+
+
+  const getCollaborators = async () => {
+    const res = await contestApi.availableCollaborators();
+    const res2 = await contestApi.showAllCollaborators(contest.id);
+    if (res.success) {
+      console.log("collaborators: ", res2.data);
+      setCollaborators(res.data);
+      setContestCollaborators(res2.data);
+    }
+  };
+
+  const handleListToggle = () => {
+    setListOpen(!isListOpen);
+  };
+
+  const handleCollaboratorSelect = (collaborator) => {
+    if (selectedCollaborators.includes(collaborator)) {
+      setSelectedCollaborators(selectedCollaborators.filter((id) => id !== collaborator.id));
+    } else {
+      setSelectedCollaborators([...selectedCollaborators, collaborator]);
+    }
+  };
+
+  const handleAddButtonClick = async () => {
+    // Add your logic to handle adding collaborators
+    console.log("Selected Collaborators:", selectedCollaborators);
+    const res = await contestApi.addCollaborator(contest.id,selectedCollaborators[0].id);
+    showSuccess(
+        "Invitation sent successfully", res
+      );
+    // Additional logic can be added here to handle the selected collaborators
+    handleListToggle();
+  };
+
+  return (
+    <div className="flex flex-col gap-5 w-full">
+      <button
+        className="flex flex-row gap-2 justify-center items-center bu-button-primary rounded-lg px-7 py-3.5 text-center text-lg font-semibold"
+        onClick={handleListToggle}
+      >
+        <FontAwesomeIcon icon={faPlus} size="lg" />
+        <h1>INVITE</h1>
+      </button>
+
+      <div className="max-h-[60vh] overflow-y-auto">
+          {ContestCollaborators?.map((setter) => (
+            <div
+              key={setter.id}
+              className="flex flex-row items-center mb-4 hover:bg-gray-100 p-4 rounded-md cursor-pointer"
+            >
+              <img
+                src={setter.image}
+                alt={`${setter.username}'s profile`}
+                className="ml-4 w-10 h-10 rounded-full"
+              />
+              <span className="ml-4 font-medium text-gray-800 text-lg hover:underline">
+                {setter.username}
+              </span>
+            </div>))}
+        </div>
+
+      {isListOpen && (
+        <div className="max-h-[60vh] overflow-y-auto">
+          {collaborators.map((setter) => (
+            <div
+              key={setter.id}
+              className="flex flex-row items-center mb-4 hover:bg-gray-100 p-4 rounded-md cursor-pointer"
+            >
+              <Checkbox
+                checked={selectedCollaborators.includes(setter)}
+                onChange={() => handleCollaboratorSelect(setter)}
+                color="primary"
+              />
+              <img
+                src={setter.image}
+                alt={`${setter.username}'s profile`}
+                className="ml-4 w-10 h-10 rounded-full"
+              />
+              <span className="ml-4 font-medium text-gray-800 text-lg hover:underline">
+                {setter.username}
+              </span>
+            </div>
+          ))}
+          <div className="mt-6">
+            <button
+              onClick={handleAddButtonClick}
+              className="w-full flex flex-row gap-2 justify-center items-center bu-button-primary rounded-lg px-7 py-3.5 text-center text-lg font-semibold"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Collaborators;

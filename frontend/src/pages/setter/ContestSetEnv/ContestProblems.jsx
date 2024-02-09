@@ -83,9 +83,11 @@ const ProblemsTab = () => {
       <CardContainer col={2}>
         {contest?.problems?.map((prob, index) => (
           <ProblemSetCard
+            contestId={contest.id}
             key={index}
             idx={index + 1}
             id={prob.id}
+            currentPoints={prob.rating}
             name={prob.title}
             isLive={prob.isLive}
             timestamp={prob.updatedAt}

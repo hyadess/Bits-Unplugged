@@ -16,3 +16,14 @@
 
 `git config --global core.eol lf`
 `git config --global core.autocrlf false`
+
+## Push to Github
+
+`./dump.sh` <!-- If there are changes to database schema -->
+`git add .`
+`git commit -m "All changes"`
+`git checkout dev`
+`git pull origin dev`
+`git checkout <your_branch>`
+`git merge dev`
+`git push origin dev`

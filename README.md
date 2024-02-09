@@ -20,7 +20,7 @@
 ## Push to Github
 
 `./dump.sh` <!-- If there are changes to database schema -->
-`git add .`
+`git add dump.sql`
 `git commit -m "All changes"`
 `git checkout dev`
 `git pull origin dev`

@@ -59,7 +59,7 @@ COPY entrypoint.sh .
 
 USER postgres
  
-RUN /etc/init.d/postgresql start && psql -c "ALTER USER postgres WITH PASSWORD 'root';" && psql -c "CREATE DATABASE bitsunplugged;" && psql -c "GRANT ALL PRIVILEGES ON DATABASE bitsunplugged TO postgres;" && psql -d "postgres://postgres:root@localhost:5432/bitsunplugged" -a -f  /docker-entrypoint-initdb.d/init.sql && npx sequelize db:drop && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all
+RUN /etc/init.d/postgresql start && psql -c "ALTER USER postgres WITH PASSWORD 'root';" && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all
 
 
 ENTRYPOINT ["./entrypoint.sh"]

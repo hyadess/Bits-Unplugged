@@ -98,6 +98,12 @@ class ContestApi extends Api {
     });
   };
 
+  updatePoints = async (contestId, problemId, rating) => {
+    return await this.put("/contests/" + contestId + "/updateRating", {
+      problemId, rating
+    });
+  };
+
   makeProblemNotEligible = async (contestId, problemId) => {
     return await this.put("/contests/" + contestId + "/makeNotEligible", {
       problemId,

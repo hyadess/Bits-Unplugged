@@ -52,6 +52,7 @@ router.get(
 
 router.post("/:contestId/createProblem", contestController.addProblemToContest);
 router.put("/:contestId/makeEligible", contestController.makeProblemEligible);
+router.put("/:contestId/updateRating", contestController.updateRating);
 router.put(
   "/:contestId/makeNotEligible",
   contestController.makeProblemNotEligible

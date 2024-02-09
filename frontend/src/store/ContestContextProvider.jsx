@@ -43,8 +43,21 @@ const ContestContextProvider = ({ children }) => {
           ...state,
           problems: [...state.problems, ...payload],
         };
+        
+      case "UPDATE_RATING":
+        const { problemId, newRating } = payload;
+        const updatedProblems = state.problems.map((problem) =>
+          problem.id === problemId ? { ...problem, rating: newRating } : problem
+        );
+
+        return {
+          ...state,
+          problems: updatedProblems,
+        };
+
       default:
         return state;
+  
     }
   };
 

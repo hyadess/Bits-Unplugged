@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { authApi, contestApi } from "../../../api";
 import { useContestContext } from "../../../store/ContestContextProvider";
 import { showSuccess } from "../../../App";
-import ProblemAddButton from "../../../components/Buttons/ProblemAddButton";
+import InviteButton from "../../../components/Buttons/InviteButton";
 import SetterListModal from "../../../components/Modal/ColaboratorSelectModal";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
 
 const DetailsTab = () => {
   const [isAddModalOpen, setAddModalOpen] = useState(false);
@@ -35,7 +36,15 @@ const DetailsTab = () => {
 
   return (
     <>
-      <ProblemAddButton onClick={handleAddModalOpen} />
+      {/* <InviteButton onClick={handleAddModalOpen} /> */}
+
+      <button
+        className="flex flex-row gap-2 justify-center items-center bu-button-primary rounded-lg px-7 py-3.5 text-center text-lg font-semibold"
+        onClick={handleAddModalOpen}
+      >
+        <FontAwesomeIcon icon={faUpload} size="lg" />
+        <h1>PUBLISH</h1>
+      </button>
 
       <div className="flex flex-col gap-2">
         <div className="bu-text-primary text-2xl font-medium">Title</div>

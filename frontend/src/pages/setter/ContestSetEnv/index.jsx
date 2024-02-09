@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { setLoading } from "../../../App";
 import { contestApi } from "../../../api";
+import LayoutMain from "../../../components/Layouts/LayoutMain";
+
 import ContestContextProvider, {
   useContestContext,
 } from "../../../store/ContestContextProvider";
@@ -9,6 +11,7 @@ import ContestSetTab from "../../../components/ContestSetTab";
 import ContestHeader from "./ContestHeader"; // Import your ContestHeader component
 import DetailsTab from "./ContestDetails";
 import ProblemsTab from "./ContestProblems"; // Import your ProblemsTab component
+import Collaborators from "./ContestCollaborators"; // Import your ProblemsTab component
 
 const ContestSetEnvView = () => {
   const backupContest = useRef(null);
@@ -94,7 +97,9 @@ const ContestSetEnvView = () => {
 const ContestSetEnv = () => {
   return (
     <ContestContextProvider>
-      <ContestSetEnvView />
+      <LayoutMain left={<Collaborators />}>
+        <ContestSetEnvView />
+      </LayoutMain>
     </ContestContextProvider>
   );
 };

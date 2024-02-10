@@ -33,7 +33,7 @@ import {
 
 const SolverNavbar = (props) => {
   const [user, setUser] = useState(null);
-  const { type, setType } = useContext(GlobalContext);
+  const { type, setType, setColorMode } = useContext(GlobalContext);
   const [search, setSearch] = useState(false);
   const [tab, setTab] = useState(0);
   const location = useLocation();
@@ -55,7 +55,9 @@ const SolverNavbar = (props) => {
   const [darkMode, setDarkMode] = useState(null);
 
   const toggleDarkMode = () => {
+    setColorMode(darkMode ? "light" : "dark");
     setDarkMode((prevDarkMode) => !prevDarkMode);
+    // setDarkMode((prevDarkMode) => !prevDarkMode);
   };
 
   useEffect(() => {

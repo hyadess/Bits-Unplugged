@@ -293,6 +293,7 @@ class ContestRepository extends Repository {
         `;
     const params = [contestId, collaboratorId];
     const result = await this.query(query, params);
+    
 
     const hudai = await this.updateContest(contestId);
 

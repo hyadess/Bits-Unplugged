@@ -164,41 +164,64 @@ class ContestController extends Controller {
 
   availableCollaborators = async (req, res) => {
     let result = await contestRepository.availableCollaborators(
-      req.user.userId
+      req.user.userId,
+      req.params.contestId
     );
     if (result.success) {
-      
       res.status(200).json(result.data);
     } else {
       res.status(404).json(result);
     }
   };
 
-  collabRequest = async (req, res) => { 
-    let result = await contestRepository.getRequestedCollaborators(req.params.setterId);
+  collabRequest = async (req, res) => {
+    let result = await contestRepository.getRequestedCollaborators(
+      req.params.setterId
+    );
     if (result.success) {
       sendMail(
-        result.data[0].email, 
-        "Collaboration Request", 
-        "You have a collaboration request from " + req.user.email + " for contest " + req.params.contestId
+        result.data[0].email,
+        "Collaboration Request",
+        "You have a collaboration request from " +
+          req.user.email +
+          " for contest " +
+          req.params.contestId
       );
       res.status(200).json(result.data);
     } else {
       res.status(404).json(result);
-    } 
+    }
   };
 
   addCollaborator = async (req, res) => {
-    let result = await contestRepository.addCollaborator(
-      req.params.contestId,
-      req.body.collaboratorId
-    );
-    if (result.success) {
-      res.status(204).json(result.data);
-    } else {
-      res.status(500).json(result);
+    this.handleRequest(res, async () => {
+      let result = await contestRepository.addCollaborator(
+        req.params.contestId,
+        req.body.collaboratorIds,
+        req.headers.origin
+      );
+      if (result.success) {
+        res.status(204).json(result.data);
+      } else {
+        res.status(500).json(result);
+      }
+    });
+  };
+
+  acceptInvitation = async (req, res) => {
+    try {
+      console.log(req.params);
+      const contestId = req.params.contestId;
+      const setterId = req.user.userId;
+      const result = await contestRepository.acceptInvitation(contestId, setterId);
+
+      res.status(200).json({ success: true, result });
+    } catch (error) {
+      console.error("Error accepting invitation:", error);
+      res.status(500).json({ success: false, error: "Internal Server Error" });
     }
   };
+
   showAllCollaborators = async (req, res) => {
     let result = await contestRepository.showAllCollaborators(
       req.params.contestId

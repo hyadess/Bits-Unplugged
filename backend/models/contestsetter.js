@@ -9,6 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      ContestSetter.belongsTo(models.Contest, { foreignKey: "contestId",  as: "contest"});
+      ContestSetter.belongsTo(models.Setter, { foreignKey: "userId", as: "setter" });
     }
   }
   ContestSetter.init(
@@ -26,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         references: {
           model: "Setters",
-          key: "id",
+          key: "userId",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",

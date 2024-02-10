@@ -3,6 +3,13 @@ require("dotenv").config();
 ("use strict");
 const nodemailer = require("nodemailer");
 const sendMail = async (to, subject, text) => {
+  console.log(
+    to,
+    text,
+    subject,
+    process.env.EMAIL_USER,
+    process.env.EMAIL_PASS
+  );
   var transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {

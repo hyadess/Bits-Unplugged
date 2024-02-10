@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       Contest.belongsToMany(models.Setter, { through: models.ContestSetter });
       Contest.belongsToMany(models.Problem, { through: models.ContestProblem });
       Contest.hasMany(models.Clarification);
+      Contest.hasMany(models.ContestSetter, {
+        foreignKey: "contestId",
+      });
     }
   }
   Contest.init(

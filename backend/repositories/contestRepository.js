@@ -194,10 +194,10 @@ class ContestRepository extends Repository {
   publishContest = async (contestId) => {
     const query = `
         UPDATE "Contests"
-        SET "status" = 'upcoming', "updatedAt" = $2
+        SET "status" = 'requested'
         WHERE "id" = $1;
         `;
-    const params = [contestId, new Date()];
+    const params = [contestId];
     const result = await this.query(query, params);
     return result;
   };
@@ -275,8 +275,6 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
-
-    
 
   //***************UPDATING CONTEST SETTER TABLE**************** */
 

@@ -2244,7 +2244,7 @@ module.exports = {
           canvasId: 1,
           title: "Factor",
           statement: "Find 1-factor of the given graph.",
-          canvasData: {
+          canvasData: JSON.stringify({
             edges: [
               {
                 start: "0",
@@ -2391,8 +2391,8 @@ module.exports = {
             },
             selectedEdges: [],
             selectedNodes: [],
-          },
-          editOptions: {
+          }),
+          editOptions: JSON.stringify({
             directedEdge: {
               value: false,
               type: "switch",
@@ -2401,8 +2401,8 @@ module.exports = {
               value: false,
               type: "switch",
             },
-          },
-          previewOptions: {
+          }),
+          previewOptions: JSON.stringify({
             addNode: {
               value: false,
               type: "switch",
@@ -2431,10 +2431,10 @@ module.exports = {
               value: false,
               type: "switch",
             },
-          },
+          }),
           checkerCode:
             "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
-          checkerCanvas: {
+          checkerCanvas: JSON.stringify({
             edges: [
               {
                 start: "0",
@@ -2607,60 +2607,7 @@ module.exports = {
               },
             ],
             selectedNodes: [],
-          },
-          createdAt: "2024-02-09T15:36:36.003Z",
-          updatedAt: "2024-02-09T15:38:45.740Z",
-          canvas: {
-            id: 1,
-            name: "Graph",
-            classname: "GraphComponent",
-            info: "Click anywhere in the canvas to create nodes. Click on two nodes to create an edge between them. You can also drag nodes.",
-            logo: "https://cdn0.iconfinder.com/data/icons/graph-4/100/graph1-512.png",
-            editOptions: {
-              directedEdge: {
-                value: false,
-                type: "switch",
-              },
-              weightedEdge: {
-                value: true,
-                type: "switch",
-              },
-            },
-            previewOptions: {
-              addNode: {
-                value: false,
-                type: "switch",
-              },
-              deleteNode: {
-                value: false,
-                type: "switch",
-              },
-              dragNode: {
-                value: true,
-                type: "switch",
-              },
-              addEdge: {
-                value: false,
-                type: "switch",
-              },
-              deleteEdge: {
-                value: true,
-                type: "switch",
-              },
-              editWeight: {
-                value: false,
-                type: "switch",
-              },
-              editColor: {
-                value: false,
-                type: "switch",
-              },
-            },
-            template:
-              "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
-            createdAt: "2024-02-09T15:36:26.722Z",
-            updatedAt: "2024-02-09T15:36:26.722Z",
-          },
+          }),
         },
         {
           // id: 20,
@@ -2668,7 +2615,7 @@ module.exports = {
           canvasId: 1,
           title: "Peterson Dominating",
           statement: "Find minimum dominating set.",
-          canvasData: {
+          canvasData: JSON.stringify({
             edges: [
               {
                 start: "8",
@@ -2810,8 +2757,8 @@ module.exports = {
             },
             selectedEdges: [],
             selectedNodes: [],
-          },
-          editOptions: {
+          }),
+          editOptions: JSON.stringify({
             directedEdge: {
               value: false,
               type: "switch",
@@ -2820,8 +2767,8 @@ module.exports = {
               value: false,
               type: "switch",
             },
-          },
-          previewOptions: {
+          }),
+          previewOptions: JSON.stringify({
             addNode: {
               value: false,
               type: "switch",
@@ -2850,10 +2797,10 @@ module.exports = {
               value: false,
               type: "switch",
             },
-          },
+          }),
           checkerCode:
             "/**\r\n *\r\n * @param {Object} data - An object containing nodes and edges properties.\r\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\r\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\r\n * @returns {boolean} True if the solution is valid, otherwise false.\r\n */\r\n\r\nfunction createGraph(edges) {\r\n  const graph = new Map();\r\n  for (const edge of edges) {\r\n    const { start, end, weight } = edge;\r\n\r\n    if (!graph.has(start)) {\r\n      graph.set(start, []);\r\n    }\r\n\r\n    if (!graph.has(end)) {\r\n      graph.set(end, []);\r\n    }\r\n\r\n    graph.get(start).push({ value: end, weight: parseInt(weight) });\r\n    graph.get(end).push({ value: start, weight: parseInt(weight) });\r\n  }\r\n  return graph;\r\n}\r\n\r\nfunction isDominatingSet(graph, selectedNodes) {\r\n    // Convert selectedNodes to a Set for faster lookup\r\n  const selectedNodesSet = new Set(selectedNodes);\r\n\r\n  // Create a set to store the dominated nodes\r\n  const dominatedNodes = new Set(selectedNodes);\r\n\r\n  // Iterate over all nodes in the graph\r\n  for (let node of graph.keys()) {\r\n    // If the node is in selectedNodes, it's already dominated\r\n    if (selectedNodesSet.has(node)) continue;\r\n\r\n    // Check if the node is adjacent to a node in selectedNodes\r\n    for (let adjacentNode of graph.get(node)) {\r\n      if (selectedNodesSet.has(adjacentNode.value)) {\r\n        dominatedNodes.add(node);\r\n        break;\r\n      }\r\n    }\r\n  }\r\n\r\n  // If the number of dominated nodes is equal to the number of nodes in the graph,\r\n  // then selectedNodes is a dominating set\r\n  return dominatedNodes.size === graph.size;\r\n}\r\n\r\nfunction solutionChecker(userCanvas, solutionCanvas, userActivity) {\r\n  if (solutionCanvas.selectedNodes.length === userCanvas.selectedNodes.length)\r\n  {\r\n    return isDominatingSet(createGraph(userCanvas.edges), userCanvas.selectedNodes);\r\n  }\r\n  return false;\r\n}\r\n",
-          checkerCanvas: {
+          checkerCanvas: JSON.stringify({
             edges: [
               {
                 start: "8",
@@ -2995,60 +2942,7 @@ module.exports = {
             },
             selectedEdges: [],
             selectedNodes: ["0", "2", "6"],
-          },
-          createdAt: "2024-02-09T15:36:24.132Z",
-          updatedAt: "2024-02-09T19:31:09.534Z",
-          canvas: {
-            id: 1,
-            name: "Graph",
-            classname: "GraphComponent",
-            info: "Click anywhere in the canvas to create nodes. Click on two nodes to create an edge between them. You can also drag nodes.",
-            logo: "https://cdn0.iconfinder.com/data/icons/graph-4/100/graph1-512.png",
-            editOptions: {
-              directedEdge: {
-                value: false,
-                type: "switch",
-              },
-              weightedEdge: {
-                value: true,
-                type: "switch",
-              },
-            },
-            previewOptions: {
-              addNode: {
-                value: false,
-                type: "switch",
-              },
-              deleteNode: {
-                value: false,
-                type: "switch",
-              },
-              dragNode: {
-                value: true,
-                type: "switch",
-              },
-              addEdge: {
-                value: false,
-                type: "switch",
-              },
-              deleteEdge: {
-                value: true,
-                type: "switch",
-              },
-              editWeight: {
-                value: false,
-                type: "switch",
-              },
-              editColor: {
-                value: false,
-                type: "switch",
-              },
-            },
-            template:
-              "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
-            createdAt: "2024-02-09T15:36:26.722Z",
-            updatedAt: "2024-02-09T15:36:26.722Z",
-          },
+          }),
         },
       ],
       {}

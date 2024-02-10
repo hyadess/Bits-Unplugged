@@ -1,5 +1,6 @@
 import React, {
   useState,
+  useRef,
   useEffect,
   forwardRef,
   useImperativeHandle,
@@ -45,6 +46,7 @@ const TowerOfHanoiView = ({
   calculateDiskWidth,
   extraDisk,
   setExtraDisk,
+  stageRef,
 }) => {
   return (
     <div className="tower-of-hanoi vbox">
@@ -83,6 +85,7 @@ const TowerOfHanoiView = ({
                     ? diskHeight * 1.2
                     : 0))
               }
+              ref={stageRef}
               scaleX={Math.min(window.innerWidth / 970, 1)}
               scaleY={Math.min(window.innerWidth / 900, 1)}
             >
@@ -117,7 +120,6 @@ const TowerOfHanoiView = ({
     </div>
   );
 };
-
 // Design, Solution, Test canvas
 const TowerOfHanoi = (props, ref) => {
   // const { state: problem, dispatch } = useProblemContext();
@@ -149,6 +151,7 @@ const TowerOfHanoi = (props, ref) => {
   //     return { ...prevData, numberOfDisks: n };
   //   });
   // };
+
   const setNumberOfPegs = (n) => {
     // setData((prevData) => {
     //   return { ...prevData, numberOfPegs: n };
@@ -718,6 +721,7 @@ const TowerOfHanoi = (props, ref) => {
       calculateDiskWidth={calculateDiskWidth}
       extraDisk={extraDisk}
       setExtraDisk={setExtraDisk}
+      stageRef={props.stageRef}
     />
   );
 };

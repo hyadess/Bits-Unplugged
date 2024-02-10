@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { setLoading } from "../../../App";
 import { contestApi } from "../../../api";
+import LayoutMain from "../../../components/Layouts/LayoutMain";
+
 import ContestContextProvider, {
   useContestContext,
 } from "../../../store/ContestContextProvider";
@@ -9,29 +11,33 @@ import ContestSetTab from "../../../components/ContestSetTab";
 import ContestHeader from "./ContestHeader"; // Import your ContestHeader component
 import DetailsTab from "./ContestDetails";
 import ProblemsTab from "./ContestProblems"; // Import your ProblemsTab component
+import Collaborators from "./ContestCollaborators"; // Import your ProblemsTab component
 
 const ContestSetEnvView = () => {
   const backupContest = useRef(null);
   const { id } = useParams();
   const [isFormDirty, setFormDirty] = useState(false);
   const navigate = useNavigate();
-  const { state: contest, dispatch } = useContestContext();
+  const { dispatch } = useContestContext();
   const [activeComponent, setActiveComponent] = useState("Details");
   const deepCopy = (obj) => JSON.parse(JSON.stringify(obj));
 
   const getContest = async () => {
     const res = await contestApi.getContestById(id);
+    const res2 = await contestApi.getAllProblemsByContest(id);
     if (res.success) {
-      backupContest.current = res.data;
+      backupContest.current = res.data[0];
+
       dispatch({
         type: "SET_INITIAL_STATE",
         payload: JSON.parse(
-            JSON.stringify({
-              ...res.data[0],
-              //title: res.data[0].title,
-            })
-          ),
+          JSON.stringify({
+            ...res.data[0],
+            problems: res2.data,
+          })
+        ),
       });
+      console.log("Contest", res2.data);
       setLoading(false);
     }
   };
@@ -91,7 +97,9 @@ const ContestSetEnvView = () => {
 const ContestSetEnv = () => {
   return (
     <ContestContextProvider>
-      <ContestSetEnvView />
+      <LayoutMain left={<Collaborators />}>
+        <ContestSetEnvView />
+      </LayoutMain>
     </ContestContextProvider>
   );
 };

@@ -1,3 +1,4 @@
+
 # Setup and build the client
 
 FROM node:20 as client
@@ -14,7 +15,7 @@ ENV REACT_APP_API_BASE_URL $REACT_APP_API_BASE_URL
 ARG VITE_APP_API_BASE_URL
 ENV VITE_APP_API_BASE_URL $VITE_APP_API_BASE_URL
 
-RUN npm run build
+RUN npm run build   
 
 # Setup the server
 
@@ -45,5 +46,20 @@ ARG DB_PORT
 ENV DB_PORT $DB_PORT
 
 ARG PORT
+ENV PORT $PORT
 EXPOSE $PORT 
-CMD ["npm", "start"]
+
+# Setup Database
+RUN apt-get update && \
+    apt-get install -y postgresql && \
+    apt-get clean
+
+COPY backend/dump.sql /docker-entrypoint-initdb.d/init.sql
+COPY entrypoint.sh .
+
+USER postgres
+ 
+RUN /etc/init.d/postgresql start && psql -c "ALTER USER postgres WITH PASSWORD 'root';" && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all
+
+
+ENTRYPOINT ["./entrypoint.sh"]

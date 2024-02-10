@@ -45,14 +45,20 @@ import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
 import Contests from "./pages/user/Contests";
 import History from "./pages/setter/ProblemSetEnv/History";
+import Collaborators from "./pages/setter/ContestSetEnv/ContestCollaborators";
 import TopicStat from "./pages/user/TopicStat";
+import AdminArticles from "./pages/admin/AdminArticles";
+import AdminArticleEditor from "./pages/admin/AdminArticleEditor";
+import Article from "./pages/user/Article";
+import SolverNavbar from "./components/Navbars/SolverNavbar";
 import RecentProblems from "./pages/user/RecentProblems";
+import SetterNavbar from "./components/Navbars/SetterNavbar";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
   return isLoggedIn ? (
     type == 0 ? (
-      <Layout2 nav={<PrivateNavbar />}>
+      <Layout2 nav={<SolverNavbar />}>
         <Outlet />
       </Layout2>
     ) : (
@@ -80,7 +86,7 @@ const ProblemSetter = () => {
   const type = localStorage.getItem("type");
   return isLoggedIn ? (
     type == 1 ? (
-      <Layout2 nav={<PrivateNavbar />}>
+      <Layout2 nav={<SetterNavbar />}>
         <Outlet />
       </Layout2>
     ) : (
@@ -215,6 +221,22 @@ const AppRoutes = () => {
             }
           />
           <Route
+            path="/admin/articles"
+            element={
+              <LayoutMain>
+                <AdminArticles />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/admin/articles/:id"
+            element={
+              <LayoutMain>
+                <AdminArticleEditor />
+              </LayoutMain>
+            }
+          />
+          <Route
             path="/admin/contests"
             element={
               <LayoutMain>
@@ -233,8 +255,6 @@ const AppRoutes = () => {
         </Route>
 
         <Route path="/admin/login" element={<AdminLogin />} />
-
-
 
         <Route element={<ProblemSetter />}>
           <Route
@@ -282,9 +302,7 @@ const AppRoutes = () => {
           <Route
             path="/contests/:id/edit"
             element={
-              <LayoutMain>
-                <ContestSetEnv />
-              </LayoutMain>
+              <ContestSetEnv />
             }
           />
 
@@ -297,15 +315,6 @@ const AppRoutes = () => {
             }
           />
         </Route>
-
-        
-
-
-
-
-
-
-
 
         <Route element={<ProblemSolver />}>
           <Route
@@ -388,7 +397,7 @@ const AppRoutes = () => {
               // }
               >
                 <Topics />
-                <RecentProblems/>
+                <RecentProblems />
               </LayoutMain>
             }
           />
@@ -407,6 +416,14 @@ const AppRoutes = () => {
             element={
               <LayoutMain>
                 <Problems />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/articles/:id"
+            element={
+              <LayoutMain>
+                <Article />
               </LayoutMain>
             }
           />

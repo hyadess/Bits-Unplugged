@@ -12,6 +12,7 @@ const SetterContestsView = ({
   closeModal,
   createContest,
   modalIsOpen,
+  userID,
 }) => {
   useEffect(() => {
     console.log(contestList);
@@ -35,11 +36,12 @@ const SetterContestsView = ({
             deleteAction={deleteContest}
             isLive={contest.isLive}
             timestamp={contest.updatedAt}
-            owner={contest.setters}
+            owner={contest.ContestSetters[0]}
             startDate={contest.startDate}
             endDate={contest.endDate}
             status={contest.status}
             updatedAt={contest.updatedAt}
+            userID={userID}
           />
         ))}
       </CardContainer>

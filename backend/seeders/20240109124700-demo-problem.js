@@ -142,6 +142,7 @@ module.exports = {
               4: { x: 392, y: 396.8000030517578, label: 4, color: "Default" },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           checkerCode: `/**\n * @param {Object} data (userCanvas/solutionCanvas) - An object containing nodes and edges properties.\n * @param {Array} data.nodes - HashMap of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end, weight properties.\n * @param {Array} data.selectedEdges - Array of selectedEdges. Where each edge is an object with start, end, weight properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas, solutionCanvas) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n`,
           editOptions: JSON.stringify({
@@ -179,6 +180,7 @@ module.exports = {
               { start: "3", end: "1", weight: "5" },
               { start: "4", end: "3", weight: "3" },
             ],
+            selectedNodes: [],
           }),
         },
         {
@@ -212,6 +214,7 @@ module.exports = {
               6: { x: 652, y: 205, label: 6, color: "Default" },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           checkerCode: `/**\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction createGraph(edges) {\n  const graph = new Map();\n  for (const edge of edges) {\n    const { start, end, weight } = edge;\n\n    if (!graph.has(start)) {\n      graph.set(start, []);\n    }\n\n    if (!graph.has(end)) {\n      graph.set(end, []);\n    }\n\n    graph.get(start).push({ value: end, weight: parseInt(weight) });\n    graph.get(end).push({ value: start, weight: parseInt(weight) });\n  }\n  return graph;\n}\nfunction getCost(graph) {\n  // Step 3: Implement DFS to check if the graph is disconnected\n  function isDisconnected() {\n    const visited = new Set();\n    const nodes = [...graph.keys()];\n\n    function dfs(node) {\n      visited.add(node);\n      for (const neighbor of graph.get(node)) {\n        if (!visited.has(neighbor.value)) {\n          dfs(neighbor.value);\n        }\n      }\n    }\n    dfs(nodes[0]); // Start DFS from the first node\n    return visited.size !== nodes.length;\n  }\n\n  const disconnected = isDisconnected();\n\n  // Step 4: Calculate the sum of edge weights\n  function sumEdgeWeights() {\n    let sum = 0;\n    for (const edges of graph.values()) {\n      for (const edge of edges) {\n        sum += edge.weight;\n      }\n    }\n    return sum / 2;\n  }\n\n  if (disconnected) return -1;\n\n  const edgeWeightSum = sumEdgeWeights();\n  return edgeWeightSum;\n}\nfunction solutionChecker(userCanvas, solutionCanvas) {\n  const user_graph = createGraph(userCanvas.selectedEdges);\n  const setter_graph = createGraph(solutionCanvas.selectedEdges);\n\n  if (Array.from(user_graph.keys()).length !== Array.from(setter_graph.keys()).length)\n    return false;\n  const user_cost = getCost(user_graph);\n  const setter_cost = getCost(setter_graph);\n  console.log(user_cost);\n  if (user_cost !== -1 && user_cost === setter_cost) {\n    return true;\n  } else {\n    return false;\n  }\n}\n`,
           editOptions: JSON.stringify({
@@ -265,6 +268,7 @@ module.exports = {
               { start: "4", end: "6", weight: "3" },
               { start: "5", end: "2", weight: "5" },
             ],
+            selectedNodes: [],
           }),
         },
         {
@@ -305,8 +309,7 @@ module.exports = {
               9: { x: 539.7999877929688, y: 345, label: "", color: "Default" },
             },
             selectedEdges: [],
-            createdAt: new Date(),
-            updatedAt: new Date(),
+            selectedNodes: [],
           }),
           checkerCode: `/**\r\n *\r\n * @param {Object} data - An object containing nodes and edges properties.\r\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\r\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\r\n * @returns {boolean} True if the solution is valid, otherwise false.\r\n */\r\nfunction solutionChecker(data) {\r\n  // const edges =  data.edges.map(edge => ({\r\n\t// \tstart: edge.start,\r\n\t// \tend: edge.end,\r\n\t// \tweight: edge.weight\r\n  // }));\r\n  \r\n\r\n  const allEdgesHaveDifferentColors = data.edges.every(\r\n    edge => data.nodes[edge.start].color !== data.nodes[edge.end].color && data.nodes[edge.end].color !== "Default"); \r\n\r\n  const uniqueColorsSet = new Set();\r\n  data.edges.forEach(edge => {\r\n    uniqueColorsSet.add(data.nodes[edge.start].color);\r\n    uniqueColorsSet.add(data.nodes[edge.end].color);\r\n  });\r\n\r\n  const numberOfUniqueColors = uniqueColorsSet.size;\r\n\r\n  return allEdgesHaveDifferentColors && numberOfUniqueColors == 3;\r\n}`,
 
@@ -390,6 +393,7 @@ module.exports = {
               7: { x: 812, y: 449, label: 7, color: "Default" },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           statement:
             "Drag the nodes to make the graph a plane graph. In a plane graph there is no crossing edges.",
@@ -478,6 +482,7 @@ module.exports = {
               },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           checkerCode: `/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas, solutionCanvas) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n`,
           editOptions: JSON.stringify({
@@ -561,6 +566,7 @@ module.exports = {
               { start: "3", end: "4", weight: "4" },
               { start: "4", end: "6", weight: "2" },
             ],
+            selectedNodes: [],
           }),
         },
         {
@@ -631,6 +637,7 @@ module.exports = {
               },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           checkerCode: `/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n`,
           editOptions: JSON.stringify({
@@ -723,6 +730,7 @@ module.exports = {
               { start: "6", end: "4", weight: "7" },
               { start: "6", end: "5", weight: "9" },
             ],
+            selectedNodes: [],
           }),
         },
         {
@@ -771,6 +779,7 @@ module.exports = {
               },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           checkerCode: `/**\r\n *\r\n * @param {Object} data - An object containing nodes and edges properties.\r\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\r\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\r\n * @returns {boolean} True if the solution is valid, otherwise false.\r\n */\r\n\r\nfunction isIntersecting(a, b, c, d) {\r\n    // Returns true if line segment (a, b) intersects with line segment (c, d)\r\n    function ccw(a, b, c) {\r\n        return (c.y - a.y) * (b.x - a.x) > (b.y - a.y) * (c.x - a.x);\r\n    }\r\n\r\n    return (\r\n        ccw(a, c, d) !== ccw(b, c, d) &&\r\n        ccw(a, b, c) !== ccw(a, b, d)\r\n    );\r\n}\r\n\r\n\r\nfunction hasCommonNode(edgeA, edgeB) {\r\n    return (\r\n        edgeA.start === edgeB.start ||\r\n        edgeA.start === edgeB.end ||\r\n        edgeA.end === edgeB.start ||\r\n        edgeA.end === edgeB.end\r\n    );\r\n}\r\n\r\nfunction solutionChecker(data) {\r\n    const nodes = data.nodes;\r\n    const edges = data.edges;\r\n\r\n    for (let i = 0; i < edges.length; i++) {\r\n        const edgeA = edges[i];\r\n        \r\n        const startA = nodes[edgeA.start];\r\n        const endA = nodes[edgeA.end];\r\n\r\n        for (let j = i + 1; j < edges.length; j++) {\r\n            const edgeB = edges[j];\r\n\r\n            const startB = nodes[edgeB.start];\r\n            const endB = nodes[edgeB.end];\r\n\r\n            if (\r\n                isIntersecting(startA, endA, startB, endB) &&\r\n                !hasCommonNode(edgeA, edgeB)\r\n            ) {\r\n                // console.log(startA.x,startA.y,  startB.x, startB.y, endA.x, endA.y, endB.x, endB.y)\r\n                return false;\r\n            }\r\n        }\r\n    }\r\n\r\n    // No intersections found, it's a plane graph\r\n    return true;\r\n}`,
           editOptions: JSON.stringify({
@@ -876,6 +885,7 @@ module.exports = {
               },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           editOptions: JSON.stringify({
             directedEdge: {
@@ -1017,6 +1027,7 @@ module.exports = {
                 weight: "4",
               },
             ],
+            selectedNodes: [],
           }),
         },
         {
@@ -1086,6 +1097,7 @@ module.exports = {
               },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           editOptions: JSON.stringify({
             directedEdge: {
@@ -1210,6 +1222,7 @@ module.exports = {
                 weight: "30",
               },
             ],
+            selectedNodes: [],
           }),
         },
         {
@@ -1296,6 +1309,7 @@ module.exports = {
               },
             },
             selectedEdges: [],
+            selectedNodes: [],
           }),
           editOptions: JSON.stringify({
             directedEdge: {
@@ -1343,6 +1357,885 @@ module.exports = {
             edges: [],
             nodes: {},
             selectedEdges: [],
+            selectedNodes: [],
+          }),
+        },
+        {
+          // id: 16,
+          setterId: 1,
+          canvasId: 1,
+          title: "Police Check Posts",
+          statement:
+            "The government plans to establish police check post with sophisticated equipment in road crossings of a city in such a way that every road has a check post. In a graph model of the city, where each vertex represents a road crossings and each edge represents a road, a vertex cover gives a feasible solution for the locations of police check posts. If the government wishes to minimize the number of police check posts for budget constraint, a vertex cover having the minimum number of vertices gives a feasible solution. A vertex cover of a graph G is a minimum vertex cover if it contains the minimum number of vertices among all vertex covers of G. **In the given graph model of the city, select the minimum number of checkposts to cover the whole city.**",
+          canvasData: JSON.stringify({
+            edges: [
+              {
+                start: "0",
+                end: "1",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "3",
+                weight: "0",
+              },
+              {
+                start: "0",
+                end: "3",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "2",
+                weight: "0",
+              },
+              {
+                start: "3",
+                end: "2",
+                weight: "0",
+              },
+              {
+                start: "2",
+                end: "4",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "5",
+                weight: "0",
+              },
+              {
+                start: "5",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "5",
+                end: "7",
+                weight: "0",
+              },
+              {
+                start: "7",
+                end: "8",
+                weight: "0",
+              },
+              {
+                start: "7",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "8",
+                end: "6",
+                weight: "0",
+              },
+            ],
+            nodes: {
+              0: {
+                x: 104.79998779296875,
+                y: 230,
+                label: "a",
+                color: "Default",
+              },
+              1: {
+                x: 193.79998779296875,
+                y: 110,
+                label: "b",
+                color: "Default",
+              },
+              2: {
+                x: 386.79998779296875,
+                y: 180,
+                label: "c",
+                color: "Default",
+              },
+              3: {
+                x: 261.79998779296875,
+                y: 301,
+                label: "d",
+                color: "Default",
+              },
+              4: {
+                x: 552.7999877929688,
+                y: 118.19999694824219,
+                label: "e",
+                color: "Default",
+              },
+              5: {
+                x: 514.7999877929688,
+                y: 266.1999969482422,
+                label: "g",
+                color: "Default",
+              },
+              6: {
+                x: 762.7999877929688,
+                y: 138.1999969482422,
+                label: "f",
+                color: "Default",
+              },
+              7: {
+                x: 663.7999877929688,
+                y: 334.1999969482422,
+                label: "h",
+                color: "Default",
+              },
+              8: {
+                x: 809.7999877929688,
+                y: 285.1999969482422,
+                label: "i",
+                color: "Default",
+              },
+            },
+            selectedEdges: [],
+            selectedNodes: [],
+          }),
+          editOptions: JSON.stringify({
+            directedEdge: {
+              value: false,
+              type: "switch",
+            },
+            weightedEdge: {
+              value: false,
+              type: "switch",
+            },
+          }),
+          previewOptions: JSON.stringify({
+            addNode: {
+              value: false,
+              type: "switch",
+            },
+            deleteNode: {
+              value: false,
+              type: "switch",
+            },
+            dragNode: {
+              value: false,
+              type: "switch",
+            },
+            addEdge: {
+              value: false,
+              type: "switch",
+            },
+            deleteEdge: {
+              value: false,
+              type: "switch",
+            },
+            editWeight: {
+              value: false,
+              type: "switch",
+            },
+            editColor: {
+              value: false,
+              type: "switch",
+            },
+          }),
+          checkerCode: `/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction isVertexCover(edges, selectedNodes) {\n  // Convert selectedNodes to a Set for faster lookup\n  const selectedNodesSet = new Set(selectedNodes);\n\n  // Iterate over all edges in the graph\n  for (let edge of edges) {\n    // Check if neither vertex of the edge is in selectedNodes\n    if (!selectedNodesSet.has(edge.start) && !selectedNodesSet.has(edge.end)) {\n      // If neither vertex is in selectedNodes, then selectedNodes is not a vertex cover\n      return false;\n    }\n  }\n\n  // If we've checked all edges and haven't returned false, then selectedNodes is a vertex cover\n  return true;\n}\n\nfunction solutionChecker(userCanvas, solutionCanvas, userActivity) {\n  if (solutionCanvas.selectedNodes.length === userCanvas.selectedNodes.length)\n  {\n    return isVertexCover(userCanvas.edges, userCanvas.selectedNodes);\n  }\n  return false;\n}\n`,
+          checkerCanvas: JSON.stringify({
+            edges: [
+              {
+                start: "0",
+                end: "1",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "3",
+                weight: "0",
+              },
+              {
+                start: "0",
+                end: "3",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "2",
+                weight: "0",
+              },
+              {
+                start: "3",
+                end: "2",
+                weight: "0",
+              },
+              {
+                start: "2",
+                end: "4",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "5",
+                weight: "0",
+              },
+              {
+                start: "5",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "5",
+                end: "7",
+                weight: "0",
+              },
+              {
+                start: "7",
+                end: "8",
+                weight: "0",
+              },
+              {
+                start: "7",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "8",
+                end: "6",
+                weight: "0",
+              },
+            ],
+            nodes: {
+              0: {
+                x: 104.79998779296875,
+                y: 230,
+                label: "a",
+                color: "Default",
+              },
+              1: {
+                x: 193.79998779296875,
+                y: 110,
+                label: "b",
+                color: "Default",
+              },
+              2: {
+                x: 386.79998779296875,
+                y: 180,
+                label: "c",
+                color: "Default",
+              },
+              3: {
+                x: 261.79998779296875,
+                y: 301,
+                label: "d",
+                color: "Default",
+              },
+              4: {
+                x: 552.7999877929688,
+                y: 118.19999694824219,
+                label: "e",
+                color: "Default",
+              },
+              5: {
+                x: 514.7999877929688,
+                y: 266.1999969482422,
+                label: "g",
+                color: "Default",
+              },
+              6: {
+                x: 762.7999877929688,
+                y: 138.1999969482422,
+                label: "f",
+                color: "Default",
+              },
+              7: {
+                x: 663.7999877929688,
+                y: 334.1999969482422,
+                label: "h",
+                color: "Default",
+              },
+              8: {
+                x: 809.7999877929688,
+                y: 285.1999969482422,
+                label: "i",
+                color: "Default",
+              },
+            },
+            selectedEdges: [],
+            selectedNodes: ["1", "3", "4", "6", "7"],
+          }),
+        },
+        {
+          // id: 17,
+          setterId: 1,
+          canvasId: 1,
+          title: "Independent Set",
+          statement: "Find the maximum independent set of the given graph.",
+          canvasData: JSON.stringify({
+            edges: [
+              {
+                start: "0",
+                end: "1",
+                weight: "0",
+              },
+              {
+                start: "0",
+                end: "3",
+                weight: "0",
+              },
+              {
+                start: "0",
+                end: "2",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "4",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "5",
+                weight: "0",
+              },
+              {
+                start: "5",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "3",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "2",
+                end: "4",
+                weight: "0",
+              },
+              {
+                start: "2",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "6",
+                end: "7",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "7",
+                weight: "0",
+              },
+            ],
+            nodes: {
+              0: {
+                x: 100.79998779296875,
+                y: 220.39999389648438,
+                label: 0,
+                color: "Default",
+              },
+              1: {
+                x: 279.79998779296875,
+                y: 84.39999389648438,
+                label: 1,
+                color: "Default",
+              },
+              2: {
+                x: 338.79998779296875,
+                y: 246.39999389648438,
+                label: 2,
+                color: "Default",
+              },
+              3: {
+                x: 280.79998779296875,
+                y: 368.3999938964844,
+                label: 3,
+                color: "Default",
+              },
+              4: {
+                x: 546.7999877929688,
+                y: 78.39999389648438,
+                label: 4,
+                color: "Default",
+              },
+              5: {
+                x: 510.79998779296875,
+                y: 212.39999389648438,
+                label: 5,
+                color: "Default",
+              },
+              6: {
+                x: 665.7999877929688,
+                y: 368.3999938964844,
+                label: 6,
+                color: "Default",
+              },
+              7: {
+                x: 762.7999877929688,
+                y: 177.39999389648438,
+                label: 7,
+                color: "Default",
+              },
+            },
+            selectedEdges: [],
+            selectedNodes: [],
+          }),
+          editOptions: JSON.stringify({
+            directedEdge: {
+              value: false,
+              type: "switch",
+            },
+            weightedEdge: {
+              value: false,
+              type: "switch",
+            },
+          }),
+          previewOptions: JSON.stringify({
+            addNode: {
+              value: false,
+              type: "switch",
+            },
+            deleteNode: {
+              value: false,
+              type: "switch",
+            },
+            dragNode: {
+              value: false,
+              type: "switch",
+            },
+            addEdge: {
+              value: false,
+              type: "switch",
+            },
+            deleteEdge: {
+              value: false,
+              type: "switch",
+            },
+            editWeight: {
+              value: false,
+              type: "switch",
+            },
+            editColor: {
+              value: false,
+              type: "switch",
+            },
+          }),
+          checkerCode:
+            "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction isIndependentSet(edges, selectedNodes) {\n  // Convert selectedNodes to a Set for faster lookup\n  const selectedNodesSet = new Set(selectedNodes);\n\n  // Iterate over all edges in the graph\n  for (let edge of edges) {\n    // Check if both vertices of the edge are in selectedNodes\n    if (selectedNodesSet.has(edge.start) && selectedNodesSet.has(edge.end)) {\n      // If both vertices are in selectedNodes, then selectedNodes is not an independent set\n      return false;\n    }\n  }\n\n  // If we've checked all edges and haven't returned false, then selectedNodes is a vertex cover\n  return true;\n}\n\nfunction solutionChecker(userCanvas, solutionCanvas, userActivity) {\n  if (userCanvas.selectedNodes.length === solutionCanvas.selectedNodes.length) {\n    return isIndependentSet(userCanvas.edges, userCanvas.selectedNodes);\n  }\n  return false;\n}\n",
+          checkerCanvas: JSON.stringify({
+            edges: [
+              {
+                start: "0",
+                end: "1",
+                weight: "0",
+              },
+              {
+                start: "0",
+                end: "3",
+                weight: "0",
+              },
+              {
+                start: "0",
+                end: "2",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "4",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "5",
+                weight: "0",
+              },
+              {
+                start: "5",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "3",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "2",
+                end: "4",
+                weight: "0",
+              },
+              {
+                start: "2",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "6",
+                end: "7",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "7",
+                weight: "0",
+              },
+            ],
+            nodes: {
+              0: {
+                x: 100.79998779296875,
+                y: 220.39999389648438,
+                label: 0,
+                color: "Default",
+              },
+              1: {
+                x: 279.79998779296875,
+                y: 84.39999389648438,
+                label: 1,
+                color: "Default",
+              },
+              2: {
+                x: 338.79998779296875,
+                y: 246.39999389648438,
+                label: 2,
+                color: "Default",
+              },
+              3: {
+                x: 280.79998779296875,
+                y: 368.3999938964844,
+                label: 3,
+                color: "Default",
+              },
+              4: {
+                x: 546.7999877929688,
+                y: 78.39999389648438,
+                label: 4,
+                color: "Default",
+              },
+              5: {
+                x: 510.79998779296875,
+                y: 212.39999389648438,
+                label: 5,
+                color: "Default",
+              },
+              6: {
+                x: 665.7999877929688,
+                y: 368.3999938964844,
+                label: 6,
+                color: "Default",
+              },
+              7: {
+                x: 762.7999877929688,
+                y: 177.39999389648438,
+                label: 7,
+                color: "Default",
+              },
+            },
+            selectedEdges: [],
+            selectedNodes: ["1", "2", "3", "5", "7"],
+          }),
+        },
+        {
+          // id: 18,
+          setterId: 1,
+          canvasId: 1,
+          title: "Fire Stations",
+          statement:
+            "The government plans to establish fire stations in a new city in such a way that a locality or one of its neighbor localities will have a fire station. In a graph model of the city, where each vertex represents a locality and each edge represents the neighborhood of two localities, a dominating set gives a feasible solution for the locations of fire stations. If the government wishes to minimize the number of fire stations for budget constraint, a minimum dominating set gives a feasible solution. Find the minimum dominating set of the given graph.",
+          canvasData: JSON.stringify({
+            edges: [
+              {
+                start: "0",
+                end: "1",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "3",
+                weight: "0",
+              },
+              {
+                start: "0",
+                end: "3",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "2",
+                weight: "0",
+              },
+              {
+                start: "3",
+                end: "2",
+                weight: "0",
+              },
+              {
+                start: "2",
+                end: "4",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "5",
+                weight: "0",
+              },
+              {
+                start: "5",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "5",
+                end: "7",
+                weight: "0",
+              },
+              {
+                start: "7",
+                end: "8",
+                weight: "0",
+              },
+              {
+                start: "7",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "8",
+                end: "6",
+                weight: "0",
+              },
+            ],
+            nodes: {
+              0: {
+                x: 104.79998779296875,
+                y: 230,
+                label: "a",
+                color: "Default",
+              },
+              1: {
+                x: 193.79998779296875,
+                y: 110,
+                label: "b",
+                color: "Default",
+              },
+              2: {
+                x: 386.79998779296875,
+                y: 180,
+                label: "c",
+                color: "Default",
+              },
+              3: {
+                x: 261.79998779296875,
+                y: 301,
+                label: "d",
+                color: "Default",
+              },
+              4: {
+                x: 552.7999877929688,
+                y: 118.19999694824219,
+                label: "e",
+                color: "Default",
+              },
+              5: {
+                x: 514.7999877929688,
+                y: 266.1999969482422,
+                label: "g",
+                color: "Default",
+              },
+              6: {
+                x: 762.7999877929688,
+                y: 138.1999969482422,
+                label: "f",
+                color: "Default",
+              },
+              7: {
+                x: 663.7999877929688,
+                y: 334.1999969482422,
+                label: "h",
+                color: "Default",
+              },
+              8: {
+                x: 809.7999877929688,
+                y: 285.1999969482422,
+                label: "i",
+                color: "Default",
+              },
+            },
+            selectedEdges: [],
+            selectedNodes: [],
+          }),
+          editOptions: JSON.stringify({
+            directedEdge: {
+              value: false,
+              type: "switch",
+            },
+            weightedEdge: {
+              value: false,
+              type: "switch",
+            },
+          }),
+          previewOptions: JSON.stringify({
+            addNode: {
+              value: false,
+              type: "switch",
+            },
+            deleteNode: {
+              value: false,
+              type: "switch",
+            },
+            dragNode: {
+              value: false,
+              type: "switch",
+            },
+            addEdge: {
+              value: false,
+              type: "switch",
+            },
+            deleteEdge: {
+              value: false,
+              type: "switch",
+            },
+            editWeight: {
+              value: false,
+              type: "switch",
+            },
+            editColor: {
+              value: false,
+              type: "switch",
+            },
+          }),
+          checkerCode:
+            "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction createGraph(edges) {\n  const graph = new Map();\n  for (const edge of edges) {\n    const { start, end, weight } = edge;\n\n    if (!graph.has(start)) {\n      graph.set(start, []);\n    }\n\n    if (!graph.has(end)) {\n      graph.set(end, []);\n    }\n\n    graph.get(start).push({ value: end, weight: parseInt(weight) });\n    graph.get(end).push({ value: start, weight: parseInt(weight) });\n  }\n  return graph;\n}\n\nfunction isDominatingSet(graph, selectedNodes) {\n    // Convert selectedNodes to a Set for faster lookup\n  const selectedNodesSet = new Set(selectedNodes);\n\n  // Create a set to store the dominated nodes\n  const dominatedNodes = new Set(selectedNodes);\n\n  // Iterate over all nodes in the graph\n  for (let node of graph.keys()) {\n    // If the node is in selectedNodes, it's already dominated\n    if (selectedNodesSet.has(node)) continue;\n\n    // Check if the node is adjacent to a node in selectedNodes\n    for (let adjacentNode of graph.get(node)) {\n      if (selectedNodesSet.has(adjacentNode.value)) {\n        dominatedNodes.add(node);\n        break;\n      }\n    }\n  }\n\n  // If the number of dominated nodes is equal to the number of nodes in the graph,\n  // then selectedNodes is a dominating set\n  return dominatedNodes.size === graph.size;\n}\n\nfunction solutionChecker(userCanvas, solutionCanvas, userActivity) {\n  if (solutionCanvas.selectedNodes.length === userCanvas.selectedNodes.length)\n  {\n    return isDominatingSet(createGraph(userCanvas.edges), userCanvas.selectedNodes);\n  }\n  return false;\n}\n",
+          checkerCanvas: JSON.stringify({
+            edges: [
+              {
+                start: "0",
+                end: "1",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "3",
+                weight: "0",
+              },
+              {
+                start: "0",
+                end: "3",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "2",
+                weight: "0",
+              },
+              {
+                start: "3",
+                end: "2",
+                weight: "0",
+              },
+              {
+                start: "2",
+                end: "4",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "5",
+                weight: "0",
+              },
+              {
+                start: "5",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "5",
+                end: "7",
+                weight: "0",
+              },
+              {
+                start: "7",
+                end: "8",
+                weight: "0",
+              },
+              {
+                start: "7",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "8",
+                end: "6",
+                weight: "0",
+              },
+            ],
+            nodes: {
+              0: {
+                x: 104.79998779296875,
+                y: 230,
+                label: "a",
+                color: "Default",
+              },
+              1: {
+                x: 193.79998779296875,
+                y: 110,
+                label: "b",
+                color: "Default",
+              },
+              2: {
+                x: 386.79998779296875,
+                y: 180,
+                label: "c",
+                color: "Default",
+              },
+              3: {
+                x: 261.79998779296875,
+                y: 301,
+                label: "d",
+                color: "Default",
+              },
+              4: {
+                x: 552.7999877929688,
+                y: 118.19999694824219,
+                label: "e",
+                color: "Default",
+              },
+              5: {
+                x: 514.7999877929688,
+                y: 266.1999969482422,
+                label: "g",
+                color: "Default",
+              },
+              6: {
+                x: 762.7999877929688,
+                y: 138.1999969482422,
+                label: "f",
+                color: "Default",
+              },
+              7: {
+                x: 663.7999877929688,
+                y: 334.1999969482422,
+                label: "h",
+                color: "Default",
+              },
+              8: {
+                x: 809.7999877929688,
+                y: 285.1999969482422,
+                label: "i",
+                color: "Default",
+              },
+            },
+            selectedEdges: [],
+            selectedNodes: ["1", "6"],
           }),
         },
       ],

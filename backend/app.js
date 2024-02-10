@@ -35,6 +35,13 @@ app.use(express.static("public"));
 app.use(express.static(CLIENT_BUILD_PATH));
 // Use cookie-parser middleware
 
+// check sequelize connection
+// const db = require("./models");
+// db.sequelize
+//   .authenticate()
+//   .then(() => console.log("Database connected..."))
+//   .catch((err) => console.log("Error: " + err));
+
 // app.use(fileUpload());
 app.use("/api", appRoutes);
 

@@ -9,6 +9,7 @@ const Banner = (props) => {
       preserveAspectRatio="xMidYMid meet"
       id="tight-bounds"
       xmlns="http://www.w3.org/2000/svg"
+      className="flex justify-start items-start"
       //   xmlns:xlink="http://www.w3.org/1999/xlink"
     >
       <g>
@@ -22,6 +23,7 @@ const Banner = (props) => {
               viewBox="0 0 658.6103407948224 168.8256586733327"
               height="101.38608579678937"
               width="395.52"
+              // className="flex flex-row gap-5"
             >
               <g transform="matrix(1,0,0,1,263.09034079482234,44.89381682624099)">
                 <svg

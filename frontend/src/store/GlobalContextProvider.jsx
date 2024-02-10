@@ -5,6 +5,7 @@ const GlobalContextProvider = (props) => {
   const [newNotificationFlag, setNewNotificationFlag] = useState(false);
   const [notificationUpdate, setNotificationUpdate] = useState(false);
   const [type, setType] = useState(false);
+  const [colorMode, setColorMode] = useState("light");
   const val = {
     pendingUpdate,
     setPendingUpdate,
@@ -14,6 +15,8 @@ const GlobalContextProvider = (props) => {
     setNotificationUpdate,
     type,
     setType,
+    colorMode,
+    setColorMode,
   };
   return (
     <GlobalContext.Provider value={val}>

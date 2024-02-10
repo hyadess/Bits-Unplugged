@@ -6,11 +6,11 @@ import Button from "@mui/material/Button";
 const ProblemListModal = ({ problems, onClose, onAdd }) => {
   const [selectedProblems, setSelectedProblems] = useState([]);
 
-  const handleCheckboxChange = (problemId) => {
-    if (selectedProblems.includes(problemId)) {
-      setSelectedProblems(selectedProblems.filter((id) => id !== problemId));
+  const handleCheckboxChange = (problem) => {
+    if (selectedProblems.includes(problem)) {
+      setSelectedProblems(selectedProblems.filter((id) => id !== problem.id));
     } else {
-      setSelectedProblems([...selectedProblems, problemId]);
+      setSelectedProblems([...selectedProblems, problem]);
     }
   };
 
@@ -33,12 +33,12 @@ const ProblemListModal = ({ problems, onClose, onAdd }) => {
           <div className="max-h-[60vh] overflow-y-auto">
             {problems.map((problem) => (
               <div
-                key={problem.id}
+                key={problem}
                 className="flex flex-col items-start mb-4 hover:bg-gray-100 p-4 rounded-md cursor-pointer"
               >
                 <Checkbox
-                  checked={selectedProblems.includes(problem.id)}
-                  onChange={() => handleCheckboxChange(problem.id)}
+                  checked={selectedProblems.includes(problem)}
+                  onChange={() => handleCheckboxChange(problem)}
                   color="primary"
                 />
                 <span className="ml-4 font-medium text-gray-800 text-lg hover:underline">

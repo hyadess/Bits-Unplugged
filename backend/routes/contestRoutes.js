@@ -35,6 +35,7 @@ router.put(
   "/:contestId/updateDescription",
   contestController.updateDescription
 );
+router.get("/showSetters", contestController.availableCollaborators);
 router.get("/:contestId", contestController.getContestInfo);
 
 router.put("/:contestId/publish", contestController.publishContest);
@@ -42,7 +43,6 @@ router.put("/:contestId/start", contestController.startContest);
 router.put("/:contestId/end", contestController.endContest);
 
 router.post("/:contestId/updateDates", contestController.updateDates);
-router.get("/showSetters", contestController.availableCollaborators);
 
 router.post("/:contestId/addCollaborator", contestController.addCollaborator);
 router.get(
@@ -52,6 +52,7 @@ router.get(
 
 router.post("/:contestId/createProblem", contestController.addProblemToContest);
 router.put("/:contestId/makeEligible", contestController.makeProblemEligible);
+router.put("/:contestId/updateRating", contestController.updateRating);
 router.put(
   "/:contestId/makeNotEligible",
   contestController.makeProblemNotEligible
@@ -64,7 +65,10 @@ router.post(
 
 //new ones....
 
-router.delete("/:contestId/deleteProblem", contestController.deleteProblem);
+router.delete(
+  "/:contestId/deleteProblem/:problemId",
+  contestController.deleteProblem
+);
 router.delete("/:contestId/delete", contestController.deleteContest);
 
 router.post(

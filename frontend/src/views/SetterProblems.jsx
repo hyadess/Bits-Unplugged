@@ -20,12 +20,12 @@ const SetterProblemsView = ({
   });
   return (
     <div>
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-col md:flex-row items-center justify-between">
         <Title
           title={`Previous Problems`}
           sub_title={`Set problems for particular series right on our site`}
         />
-        <div className="flex w-[20rem] items-center">
+        <div className="flex w-full md:w-[20rem] items-center">
           <div className="relative flex items-center w-full transition-all duration-300">
             <input
               // value={props.value}

@@ -35,7 +35,6 @@ const PrivateNavbar = (props) => {
 
   const toggleDarkMode = () => {
     setDarkMode((prevDarkMode) => !prevDarkMode);
-    console.log("Toggled");
   };
 
   useEffect(() => {
@@ -69,10 +68,10 @@ const PrivateNavbar = (props) => {
   return (
     <>
       {type >= 0 && (
-        <div className="flex flex-row w-full justify-between md:justify-center shadow-md">
+        <div className="bu-nav-color  flex flex-row w-full justify-between md:justify-center shadow-md">
           <div className="hidden md:flex h-20 w-1/5 items-center px-5">
             <div
-              className={`p-5 pl-0 transition-all duration-300 ease-in-out ${
+              className={`p-5 pl-0 transition-all duration-300 ease-in-out cursor-pointer ${
                 !search ? "opacity-100" : "opacity-0 hidden"
               }`}
               onClick={() => {
@@ -119,7 +118,7 @@ const PrivateNavbar = (props) => {
                   }`}
                 >
                   <FontAwesomeIcon icon={faHouse} />
-                  Home
+                  {type == 0 ? "Learn" : "Home"}
                 </div>
                 <div className="divider hidden md:flex "></div>
               </button>
@@ -146,7 +145,7 @@ const PrivateNavbar = (props) => {
                   }`}
                 >
                   <FontAwesomeIcon icon={faTrello} />
-                  Contests
+                  {type == 0 ? "Compete" : "Contests"}
                 </div>
               </button>
 

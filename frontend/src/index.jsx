@@ -3,15 +3,6 @@ import ReactDOM from "react-dom/client";
 import "./index.scss";
 import App from "./App";
 import GlobalContextProvider from "./store/GlobalContextProvider";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import {
-  GridContextProvider,
-  GridDropZone,
-  GridItem,
-  swap,
-} from "react-grid-dnd";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 
 export const COOKIE_AGE = 31536000;
 

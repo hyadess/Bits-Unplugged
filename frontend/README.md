@@ -25,4 +25,5 @@ Admin Site
 
 ## Architecture
 
-MVC
+Frontend: MVC
+Backend: Controller - Service - Repository

@@ -44,7 +44,7 @@ const ContestHeader = () => {
           <IconButton>
             <div
               data-tooltip-target="tooltip-default"
-              className="bu-text-primary flex cursor-pointer items-center text-3xl"
+              className="bu-text-primary flex cursor-pointer items-center text-5xl"
               onClick={() => {
                 setLoading(true);
                 navigate(`/contests/${contest.id}/preview`);
@@ -55,7 +55,7 @@ const ContestHeader = () => {
           </IconButton>
         </Tooltip>
 
-        <Tooltip
+        {/* <Tooltip
           title={<h1 className="text-lg text-white">Save all</h1>}
           placement="top"
           arrow
@@ -70,7 +70,7 @@ const ContestHeader = () => {
               <FontAwesomeIcon icon={faSave} />
             </div>
           </IconButton>
-        </Tooltip>
+        </Tooltip> */}
 
         <Tooltip
           title={<h1 className="text-lg text-white">Publish</h1>}
@@ -81,7 +81,7 @@ const ContestHeader = () => {
           <IconButton>
             <div
               data-tooltip-target="tooltip-default"
-              className="bu-text-primary flex cursor-pointer items-center text-3xl"
+              className="bu-text-primary flex cursor-pointer items-center text-5xl"
               onClick={updateAll}
             >
               <FontAwesomeIcon icon={faUpload} />

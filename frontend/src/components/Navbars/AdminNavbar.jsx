@@ -51,10 +51,10 @@ const AdminNavbar = () => {
   }, [darkMode]);
 
   return (
-    <div className="flex flex-row w-full justify-between md:justify-center shadow-md">
+    <div className="bu-nav-color flex flex-row w-full justify-between md:justify-center shadow-md">
       <div className="icon flex-2 hidden md:flex h-20 w-1/5 px-5">
         <div
-          className="p-5 pl-0"
+          className="p-5 pl-0 cursor-pointer"
           onClick={() => {
             setLoading(true);
             navigate("/landing");
@@ -70,6 +70,7 @@ const AdminNavbar = () => {
           <AdminNavButton path="/admin/canvases" label="Canvases" />
           <AdminNavButton path="/admin/problems" label="Problems" />
           <AdminNavButton path="/admin/contests" label="Contests" />
+          <AdminNavButton path="/admin/articles" label="Articles" />
           <AdminNavButton path="/admin/setters" label="Setters" />
           <button
             className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info border-b-4 border-transparent items-center justify-center"

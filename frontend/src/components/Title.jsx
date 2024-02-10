@@ -6,7 +6,7 @@ const Title = ({ title, sub_title }) => {
           <span className="bu-text-title">{title}</span>
         </h2>
 
-        <p className="mb-8 text-center md:text-left  font-light  md:text-lg bu-text-subtitle">
+        <p className="mb-5 text-center md:text-left  font-light  md:text-lg bu-text-subtitle">
           {sub_title}
         </p>
       </div>

@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
       "Contests",
       [
@@ -12,9 +12,15 @@ module.exports = {
           description: "Demo contest description",
           startDate: "1/1/2025",
           endDate: "1/2/2025",
+          status: "requested",
+        },
+        {
+          //id: 1,
+          title: "Demo Contest 2",
+          description: "Demo contest description",
+          startDate: "1/1/2025",
+          endDate: "1/2/2025",
           status: "upcoming",
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
       ],
       {}

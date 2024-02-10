@@ -1,3 +1,4 @@
+const db = require("../models");
 const Repository = require("./base");
 
 class ContestRepository extends Repository {
@@ -24,6 +25,18 @@ class ContestRepository extends Repository {
     const params = [];
     const result = await this.query(query, params);
     return result;
+  };
+  updateContest = async (id, data) => {
+    const [updatedRowsCount, [updatedContest]] = await db.Contest.update(data, {
+      returning: true,
+      where: {
+        id,
+      },
+    });
+    if (updatedRowsCount === 0) {
+      return null;
+    }
+    return updatedContest.get();
   };
   getAllPublishedContests = async () => {
     const query = `
@@ -156,8 +169,8 @@ class ContestRepository extends Repository {
     return result;
   };
 
-  // updateContest only triggers when a change in contest setter or contest problem is done
-  updateContest = async (contestId) => {
+  // accessContest only triggers when a change in contest setter or contest problem is done
+  accessContest = async (contestId) => {
     const query = `
         UPDATE "Contests"
         SET "updatedAt" = $2
@@ -194,10 +207,10 @@ class ContestRepository extends Repository {
   publishContest = async (contestId) => {
     const query = `
         UPDATE "Contests"
-        SET "status" = 'upcoming', "updatedAt" = $2
+        SET "status" = 'requested'
         WHERE "id" = $1;
         `;
-    const params = [contestId, new Date()];
+    const params = [contestId];
     const result = await this.query(query, params);
     return result;
   };
@@ -276,8 +289,6 @@ class ContestRepository extends Repository {
     return result;
   };
 
-    
-
   //***************UPDATING CONTEST SETTER TABLE**************** */
 
   //collaborator should be an author............
@@ -293,9 +304,8 @@ class ContestRepository extends Repository {
         `;
     const params = [contestId, collaboratorId];
     const result = await this.query(query, params);
-    
 
-    const hudai = await this.updateContest(contestId);
+    const hudai = await this.accessContest(contestId);
 
     return result;
   };
@@ -334,7 +344,7 @@ class ContestRepository extends Repository {
     const params = [contestId, problemId];
     const result = await this.query(query, params);
 
-    const hudai = await this.updateContest(contestId);
+    const hudai = await this.accessContest(contestId);
     return result;
   };
 
@@ -348,7 +358,7 @@ class ContestRepository extends Repository {
     const params = [contestId, problemId];
     const result = await this.query(query, params);
 
-    const hudai = await this.updateContest(contestId);
+    const hudai = await this.accessContest(contestId);
     return result;
   };
 
@@ -373,7 +383,7 @@ class ContestRepository extends Repository {
     const params = [contestId, problemId];
     const result = await this.query(query, params);
 
-    const hudai = await this.updateContest(contestId);
+    const hudai = await this.accessContest(contestId);
     return result;
   };
 
@@ -518,6 +528,29 @@ class ContestRepository extends Repository {
         SELECT *
         FROM "Clarifications"
         WHERE "contestId" = $1;
+        `;
+    const params = [contestId];
+    const result = await this.query(query, params);
+
+    return result;
+  };
+
+  approveContest = async (contestId) => {
+    const query = `
+        UPDATE "Contests"
+        SET "status" = 'upcoming'
+        WHERE "id" = $1;
+        `;
+    const params = [contestId];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  rejectContest = async (contestId) => {
+    const query = `
+        UPDATE "Contests"
+        SET "status" = 'rejected'
+        WHERE "id" = $1;
         `;
     const params = [contestId];
     const result = await this.query(query, params);

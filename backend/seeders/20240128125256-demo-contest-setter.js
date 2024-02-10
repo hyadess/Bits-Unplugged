@@ -13,6 +13,11 @@ module.exports = {
           setterId: 1,
           role: "owner",
         },
+        {
+          contestId: 2,
+          setterId: 1,
+          role: "owner",
+        },
       ],
       {}
     );

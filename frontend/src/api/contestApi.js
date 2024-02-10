@@ -5,6 +5,10 @@ class ContestApi extends Api {
     return await this.get("/contests/" + contestId);
   };
 
+  updateContest = async (contestId, contest) => {
+    return await this.put("/contests/" + contestId, contest);
+  };
+
   getAllContests = async () => {
     return await this.get("/contests");
   };
@@ -100,7 +104,8 @@ class ContestApi extends Api {
 
   updatePoints = async (contestId, problemId, rating) => {
     return await this.put("/contests/" + contestId + "/updateRating", {
-      problemId, rating
+      problemId,
+      rating,
     });
   };
 
@@ -116,7 +121,10 @@ class ContestApi extends Api {
 
   deleteProblem = async (contestId, problemId) => {
     console.log("contestId: ", contestId, "problemId: ", problemId);
-    return await this.delete("/contests/" + contestId + "/deleteProblem/" + problemId, {});
+    return await this.delete(
+      "/contests/" + contestId + "/deleteProblem/" + problemId,
+      {}
+    );
   };
 
   deleteContest = async (contestId) => {
@@ -166,6 +174,14 @@ class ContestApi extends Api {
     return await this.post("/contests/" + contestId + "/clarifications/add", {
       clarification,
     });
+  };
+
+  approveContest = async (contestId) => {
+    return await this.put("/contests/" + contestId + "/approve");
+  };
+
+  rejectContest = async (contestId) => {
+    return await this.put("/contests/" + contestId + "/reject");
   };
 }
 

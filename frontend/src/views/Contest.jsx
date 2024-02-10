@@ -1,55 +1,61 @@
 import CustomModal from "../components/Modal/CustomModal";
 import Title from "../components/Title";
-import ContestSetCard from "../components/Cards/ContestSetCard";
+import ContestCard from "../components/Cards/ContestCard";
 import CardContainer from "../containers/CardContainer";
 import ProblemAddButton from "../components/Buttons/ProblemAddButton";
 import { useEffect } from "react";
 
-const SetterContestsView = ({
-  problemList,
-  deleteProblem,
+const ContestsView = ({
+  contestList,
+  deleteContest,
   openModal,
   closeModal,
-  createProblem,
+  createContest,
   modalIsOpen,
+  userID,
 }) => {
   useEffect(() => {
-    console.log(problemList);
+    console.log(contestList);
   });
   return (
     <div>
       <Title
         title={`Previous Contests`}
-        sub_title={`Set `}
+        sub_title={`Set contests with particular problems right on our site`}
       />
 
       <ProblemAddButton onClick={openModal} />
 
       <CardContainer col={1}>
-        {problemList.map((prob, index) => (
-          <ContestSetCard
+        {contestList.map((contest, index) => (
+          <ContestCard
             key={index}
             idx={index + 1}
-            id={prob.id}
-            name={prob.title}
-            deleteAction={deleteProblem}
-            isLive={prob.isLive}
-            timestamp={prob.updatedAt}
-            owner={prob.canvas?.name}
+            id={contest.id}
+            name={contest.title}
+            deleteAction={deleteContest}
+            isLive={contest.isLive}
+            timestamp={contest.updatedAt}
+            owner={contest.ContestSetters[0]}
+            startDate={contest.startDate}
+            endDate={contest.endDate}
+            status={contest.status}
+            updatedAt={contest.updatedAt}
+            userID={userID}
           />
         ))}
       </CardContainer>
 
       {modalIsOpen && (
         <CustomModal
-          label={"Enter Problem Title"}
-          placeholder={"Problem Title"}
+          label={"Enter Contest Title"}
+          placeholder={"Contest Title"}
           onClose={closeModal}
-          onSubmit={createProblem}
+          onSubmit={createContest}
         />
       )}
     </div>
   );
 };
 
-export default SetterContestsView;
+export default ContestsView;

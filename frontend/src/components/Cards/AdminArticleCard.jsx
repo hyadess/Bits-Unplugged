@@ -18,6 +18,7 @@ import {
   faXmark,
   faCheck,
   faFloppyDisk,
+  faEdit
   // far,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -45,11 +46,6 @@ export default function AdminArticleCard({
   topicList,
 }) {
   const [open, setOpen] = useState(false);
-  const [acceptance, setAcceptance] = useState(Math.round(Math.random() * 100));
-  const [difficulty, setDifficulty] = useState(
-    ["Easy", "Medium", "Hard"][Math.floor(Math.random() * 3)]
-  );
-
   const [topic, setTopic] = useState(null);
   const [series, setSeries] = useState(null);
 
@@ -72,12 +68,8 @@ export default function AdminArticleCard({
   }, [topicList, series]);
 
   const navigate = useNavigate();
-  const publishProblem = async () => {
-    await problemApi.publishProblem(id);
-  };
-  const unpublishProblem = async () => {
-    await problemApi.unpublishProblem(id);
-  };
+
+
   return (
     <div className="w-full h-full relative" key={id}>
       <div
@@ -160,7 +152,7 @@ export default function AdminArticleCard({
             Publish
           </button> */}
           <button
-            className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-primary"
+            className="font-medium rounded-lg text-lg px-10 py-2 text-center w-full bu-button-primary"
             onClick={async () => {
               const res = await problemApi.updateProblem(problem.id, {
                 ...problem,
@@ -172,6 +164,15 @@ export default function AdminArticleCard({
           >
             <FontAwesomeIcon icon={faFloppyDisk} className="mr-2" />
             Save
+          </button>
+          <button
+            className="font-medium rounded-lg text-lg px-10 py-2 text-center w-full bu-button-primary"
+            onClick={async () => {
+              navigate(path);
+            }}
+          >
+            <FontAwesomeIcon icon={faEdit} className="mr-2" />
+            edit
           </button>
         </div>
       </div>

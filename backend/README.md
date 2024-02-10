@@ -21,7 +21,7 @@ GET /series/
 GET /series/:id
 GET /series/:id/problems
 
-- `GET /series/:id/problems?solved=false `
+- `GET /series/:id/problems?solved=false`
 
 POST /series/
 PUT /series/:id
@@ -65,6 +65,11 @@ POST /submissions/rate_me/:problemId
 GET /submissions/unsolved -->
 
 ## Sequelize
+
+### Installation
+
+npm install --save sequelize
+npm install --save pg pg-hstore
 
 ### Initial Setup
 

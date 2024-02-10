@@ -187,6 +187,13 @@ export const SelectionField3 = (props) => {
       fullWidth
       className=" input-field"
       variant="outlined"
+      sx={{
+        "& .MuiOutlinedInput-notchedOutline": {
+          borderWidth: "0.2px", // Adjust this value as needed
+          borderColor: "#000000",
+
+        },
+      }}
       size={props.size === undefined ? "small" : props.size}
     >
       <InputLabel

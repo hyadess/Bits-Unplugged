@@ -18,11 +18,11 @@ module.exports = {
             // },
             {
               type: "markdown",
-              data: `# Introduction \n The Tower of Hanoi is a classic mathematical puzzle that has captivated minds for centuries. Initially invented by the French mathematician Édouard Lucas in the late 19th century, the Tower of Hanoi has since become a popular problem in the realms of computer science, recreational mathematics, and even psychology.`,
+              data: "# Introduction \n The Tower of Hanoi is a classic mathematical puzzle that has captivated minds for centuries. Initially invented by the French mathematician Édouard Lucas in the late 19th century, the Tower of Hanoi has since become a popular problem in the realms of computer science, recreational mathematics, and even psychology.",
             },
             {
               type: "markdown",
-              data: "# The Puzzle \n The puzzle consists of three pegs and a number of disks of different sizes, which can slide onto any peg. The challenge is to move the entire stack of disks from one peg to another, with the following rules: \n - Only one disk can be moved at a time. \n - Each move consists of taking the top disk from one of the stacks and placing it on top of another stack. \n - No disk may be placed on top of a smaller disk. \n The goal is to move all the disks from the starting peg to the destination peg, using the spare peg as an intermediary, adhering to the above rules.",
+              data: "# The Puzzle \n The puzzle consists of three pegs and a number of disks of different sizes, which can slide onto any peg. The challenge is to move the entire stack of disks from one peg to another, with the following rules: \n <font size='5'>1\\. Only one disk can be moved at a time. \n 2\\. Each move consists of taking the top disk from one of the stacks and placing it on top of another stack. \n 3\\. No disk may be placed on top of a smaller disk. \n 4\\. The goal is to move all the disks from the starting peg to the destination peg, using the spare peg as an intermediary, adhering to the above rules.</font>",
             },
             {
               type: "markdown",

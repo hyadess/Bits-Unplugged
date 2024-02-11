@@ -9,12 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Contest.belongsToMany(models.Setter, { through: models.ContestSetter });
-      Contest.belongsToMany(models.Problem, { through: models.ContestProblem });
-      Contest.hasMany(models.Clarification);
       Contest.hasMany(models.ContestSetter, {
         foreignKey: "contestId",
+        as: "setters",
       });
+      Contest.hasMany(models.ContestProblem, {
+        foreignKey: "contestId",
+        as: "problems",
+      });
+      // Contest.hasMany(models.Clarification);
     }
   }
   Contest.init(
@@ -23,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.TEXT,
       startDate: DataTypes.DATE,
       endDate: DataTypes.DATE,
+      startDateTime: DataTypes.DATE,
       duration: DataTypes.FLOAT,
       status: DataTypes.STRING,
     },

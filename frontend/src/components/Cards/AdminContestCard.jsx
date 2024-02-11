@@ -128,7 +128,8 @@ import { contestApi } from "api";
 const ContestCard = ({
   id,
   name,
-  startDate,
+  startDateTime,
+  duration,
   endDate,
   status,
   owner,
@@ -138,11 +139,15 @@ const ContestCard = ({
 }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const [date, setDate] = useState(new Date(startDate));
+  const [date, setDate] = useState();
 
   useEffect(() => {
     setLoading(false);
-    console.log("Start: ", startDate, new Date());
+    if (startDateTime) setDate(new Date(startDateTime));
+    // console.log("Start: ", startDateTime, new Date());
+    // get end date from start date and duration
+    // let end = new Date(startDateTime);
+    // end.setTime(end.getTime() + duration * 60 * 60 * 1000);
   }, []);
 
   return (
@@ -185,7 +190,9 @@ const ContestCard = ({
         <button
           className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-primary"
           onClick={async () => {
-            const res = await contestApi.updateContest(id, { startDate: date });
+            const res = await contestApi.updateContest(id, {
+              startDateTime: date,
+            });
             showSuccess("Contest scheduled successfully", res);
             // setProblem((prev) => ({ ...prev, seriesId: series?.id }));
           }}

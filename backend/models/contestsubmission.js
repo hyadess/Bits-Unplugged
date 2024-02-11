@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       ContestSubmission.belongsTo(models.Participant, {
         foreignKey: "participantId",
-        onDelete: "CASCADE",
+        as: "participant",
       });
       ContestSubmission.belongsTo(models.Submission, {
         foreignKey: "submissionId",
-        onDelete: "CASCADE",
+        as: "submission",
       });
     }
   }

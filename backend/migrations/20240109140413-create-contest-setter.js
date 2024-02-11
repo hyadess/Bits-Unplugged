@@ -22,13 +22,17 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: {
           model: "Setters",
-          key: "id",
+          key: "userId",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
       role: {
         type: Sequelize.STRING,
+      },
+      status: {
+        type: Sequelize.STRING,
+        defaultValue: "Pending"
       },
       createdAt: {
         allowNull: false,

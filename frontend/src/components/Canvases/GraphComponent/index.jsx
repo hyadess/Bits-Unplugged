@@ -505,48 +505,36 @@ const GraphComponent = (props, ref) => {
 
   const deleteSelectedNodeOrEdge = () => {
     //node deletion
-    let updatedEdges = data.edges;
-    if (data.selectedNodes.length === 1) {
+    if (data.selectedNodes.length > 0) {
       if (
         props.mode === "preview" &&
         props?.previewOptions?.deleteNode?.value === false
       )
         return;
 
-      const deletedKey = data.selectedNodes[0];
-      // const nodeToDelete = data.nodes.filter(
-      //   (node) => node.nodeIndex === selectedNodes[0]
-      // )[0];
-
+      let updatedEdges = [...data.edges];
       const updatedNodes = { ...data.nodes };
-      delete updatedNodes[deletedKey];
-
-      updatedEdges = data.edges.filter(
-        (edge) => edge.start !== deletedKey && edge.end !== deletedKey
-      );
-
-      setNodes(updatedNodes);
-      setSelectedNodes([]);
-
-      // if (data.selectedEdges.length > 0) {
-      //   updatedEdges = updatedEdges.filter((edge) =>
-      //     data.selectedEdges.includes(edge)
-      //   );
-      // }
-
+      data.selectedNodes.forEach((node) => {
+        const deletedKey = node;
+        delete updatedNodes[deletedKey];
+        updatedEdges = updatedEdges.filter(
+          (edge) => edge.start !== deletedKey && edge.end !== deletedKey
+        );
+      });
       setEdges(updatedEdges);
-
-      setSelectedEdges([]);
+      setSelectedNodes([]);
+      setNodes(updatedNodes);
     }
 
     //edge deletion
-    if (data.selectedEdges.length > 0) {
+    else if (data.selectedEdges.length > 0) {
       if (
         props.mode === "preview" &&
         props?.previewOptions?.deleteEdge?.value === false
       )
         return;
 
+      let updatedEdges = data.edges;
       updatedEdges = updatedEdges.filter(
         (edge) =>
           !data.selectedEdges.some((selectedEdge) =>
@@ -824,7 +812,7 @@ const GraphComponent = (props, ref) => {
 
       {(props.mode === "edit" ||
         props?.previewOptions?.deleteNode?.value === true) &&
-        data?.selectedNodes?.length === 1 && (
+        data?.selectedNodes?.length > 0 && (
           <IconButton
             sx={
               {

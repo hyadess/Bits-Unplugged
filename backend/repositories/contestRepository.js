@@ -1,6 +1,5 @@
 const db = require("../models");
 const Repository = require("./base");
-const db = require("../models/index");
 const sendMail = require("../services/email");
 
 class ContestRepository extends Repository {
@@ -352,7 +351,7 @@ class ContestRepository extends Repository {
     return result;
   };
 
-  acceptInvitation = async (contestId, setterId)=>{
+  acceptInvitation = async (contestId, setterId) => {
     const query = `
         UPDATE "ContestSetters"
         SET "status" = 'accepted'
@@ -363,7 +362,7 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
 
     return result;
-  }
+  };
 
   showAllCollaborators = async (contestId) => {
     const query = `

@@ -30,6 +30,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import NavButton from "./NavButton";
 
 const SolverNavbar = (props) => {
   const [user, setUser] = useState(null);
@@ -109,126 +110,45 @@ const SolverNavbar = (props) => {
           </div>
           <div className="flex justify-start md:justify-center w-8/12 md:w-3/5">
             <>
-              <button
-                className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
-                  (type == 0 && location.pathname === "/topics") ||
-                  (type == 1 && location.pathname === "/problemSet")
-                    ? "border-[#1C5B5F] dark:border-pink-500"
-                    : "border-transparent"
-                }`}
-                data-tip="Home"
-                onClick={() => {
-                  if (type == 0) {
-                    if (location.pathname !== "/topics") {
-                      setLoading(true);
-                      navigate("/topics");
-                    }
-                  }
-                  if (type == 1) {
-                    if (location.pathname !== "/problemSet") {
-                      setLoading(true);
-                      navigate("/problemSet");
-                    }
-                  }
-                }}
-              >
-                <div
-                  className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
-                    (type == 0 && location.pathname === "/topics") ||
-                    (type == 1 && location.pathname === "/problemSet")
-                      ? "bu-text-title"
-                      : "bu-text-primary-hover"
-                  }`}
-                >
-                  <FontAwesomeIcon icon={faChalkboardUser} />
-                  {type == 0 ? "Learn" : "Home"}
-                </div>
-                <div className="divider hidden md:flex "></div>
-              </button>
-              {/* <button
-                className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
-                  (type == 0 && location.pathname === "/topics") ||
-                  (type == 1 && location.pathname === "/problemSet")
-                    ? "border-[#1C5B5F] dark:border-pink-500"
-                    : "border-transparent"
-                }`}
-                data-tip="Solve"
-                onClick={() => {
-                  if (location.pathname !== "/topics") {
-                    setLoading(true);
-                    navigate("/topics");
-                  }
-                }}
-              >
-                <div
-                  className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
-                    location.pathname === "/solve"
-                      ? "bu-text-title"
-                      : "bu-text-primary-hover"
-                  }`}
-                >
-                  <FontAwesomeIcon icon={faChalkboardUser} />
-                  {type == 0 ? "Solve" : "Home"}
-                </div>
-                <div className="divider hidden md:flex "></div>
-              </button> */}
-              <button
-                className={`icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info items-center justify-center border-b-4 ${
-                  (type == 0 && location.pathname === "/contests") ||
-                  (type == 1 && location.pathname === "/setter/contests")
-                    ? "border-[#1C5B5F] dark:border-pink-500"
-                    : "border-transparent"
-                }`}
-                data-tip="Marketplace"
-                onClick={() => {
-                  setLoading(true);
-                  navigate((type == 1 ? "setter" : "") + "/contests");
-                }}
-              >
-                <div
-                  className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
-                    (type == 0 && location.pathname === "/contests") ||
-                    (type == 1 && location.pathname === "/setter/contests")
-                      ? "bu-text-title"
-                      : "bu-text-primary-hover"
-                  }`}
-                >
-                  <FontAwesomeIcon icon={faTrello} />
-                  {type == 0 ? "Compete" : "Contests"}
-                </div>
-              </button>
-
-              {/* <button
-                className="icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info items-center justify-center border-b-4 border-transparent"
-                style={{ alignItems: "center", justifyContent: "center" }}
-                data-tip="Marketplace"
-                onClick={async () => {
-                  setLoading(true);
-                  await AuthService.logout();
-                  setType(0);
-                  navigate("/login");
-                }}
-              >
-                <div className="text-xs md:text-lg md:font-bold flex flex-row gap-3 items-center bu-text-primary-hover ">
-                  <FontAwesomeIcon icon={faRightFromBracket} />
-                  Logout
-                </div>
-              </button> */}
+              <NavButton
+                label={
+                  <>
+                    <FontAwesomeIcon icon={faHouse} />
+                    Home
+                  </>
+                }
+                path="/home"
+              />
+              <NavButton
+                label={
+                  <>
+                    <FontAwesomeIcon icon={faChalkboardUser} />
+                    Learn
+                  </>
+                }
+                path="/topics"
+              />
+              <NavButton
+                label={
+                  <>
+                    <FontAwesomeIcon icon={faChalkboardUser} />
+                    Practice
+                  </>
+                }
+                path="/practice"
+              />
+              <NavButton
+                label={
+                  <>
+                    <FontAwesomeIcon icon={faTrello} />
+                    Compete
+                  </>
+                }
+                path="/contests"
+              />
             </>
           </div>
           <div className="flex md:flex h-20 w-1/3 md:w-1/5 items-center justify-end">
-            {/* <button
-              className="hidden md:flex flex-col w-70 h-20 md:tooltip md:tooltip-right md:tooltip-info w-7/12 md:w-8/12 justify-center items-center"
-              data-tip="Marketplace"
-              onClick={() => {
-                navigate("/profile/" + user.username);
-              }}
-            >
-              <div className="text-xs md:text-lg md:font-bold bu-text-primary-hover">
-                {user != null ? user.fullname : "Loading..."}
-              </div>{" "}
-            </button> */}
-
             <div className="flex h-20 w-1/3 md:w-1/5 items-center justify-center">
               <div
                 className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"

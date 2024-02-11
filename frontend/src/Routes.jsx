@@ -53,6 +53,7 @@ import SolverNavbar from "./components/Navbars/SolverNavbar";
 import RecentProblems from "./pages/user/RecentProblems";
 import SetterNavbar from "./components/Navbars/SetterNavbar";
 import AcceptRequest from "pages/setter/ContestSetEnv/AcceptRequest";
+import UserHome from "pages/user/Home";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -281,7 +282,7 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
-          
+
           <Route path="/Accept-request" element={<AcceptRequest />} />
 
           <Route
@@ -302,12 +303,7 @@ const AppRoutes = () => {
             }
           />
 
-          <Route
-            path="/contests/:id/edit"
-            element={
-              <ContestSetEnv />
-            }
-          />
+          <Route path="/contests/:id/edit" element={<ContestSetEnv />} />
 
           <Route
             path="/contests/:contestid/edit"
@@ -351,6 +347,23 @@ const AppRoutes = () => {
             element={
               <LayoutMain>
                 <Contests />
+              </LayoutMain>
+            }
+          />
+
+          <Route
+            path="/home"
+            element={
+              <LayoutMain>
+                <UserHome />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/practice"
+            element={
+              <LayoutMain>
+                <UserHome />
               </LayoutMain>
             }
           />
@@ -447,8 +460,7 @@ const AppRoutes = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/verify-email" element={<EmailVerification />} />
         </Route>
-        
-        
+
         {type >= 0 && (
           <Route
             path="/"

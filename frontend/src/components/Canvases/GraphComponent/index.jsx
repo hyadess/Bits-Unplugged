@@ -62,6 +62,16 @@ const colorMap = {
   Brown: "#635147",
   Black: "#000000",
 };
+
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(
+        result[3],
+        16
+      )}`
+    : null;
+}
 const GraphComponent = (props, ref) => {
   const [userType, setUserType] = useState(0);
   const [edgeIndex, setEdgeIndex] = useState(0);
@@ -1201,14 +1211,19 @@ const GraphComponent = (props, ref) => {
                           hoveredNode === nodeKey ? "node-hovered" : ""
                         }
                         fill={
-                          // selectedNodes.includes(nodeKey)
-                          //   ? "#ec3965"
-                          //   : hoveredNode === nodeKey || isDragging === nodeKey
-                          //     ? "#38bf27"
-                          //     : "#a4a3a3"
-                          colorMap[data.nodes[nodeKey].color]
+                          data?.selectedNodes?.includes(nodeKey)
+                            ? `rgba(${hexToRgb(
+                                colorMap[data.nodes[nodeKey].color]
+                              )}, 0.7)`
+                            : hoveredNode === nodeKey || isDragging === nodeKey
+                              ? `rgba(${hexToRgb(
+                                  colorMap[data.nodes[nodeKey].color]
+                                )}, 0.8)`
+                              : `rgba(${hexToRgb(
+                                  colorMap[data.nodes[nodeKey].color]
+                                )}, 1)`
                         }
-                        // opacity={0.5}
+                        opacity={1}
                         stroke={
                           data?.selectedNodes?.includes(nodeKey)
                             ? "#ec3965"

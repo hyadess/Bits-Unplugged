@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { setLoading } from "../../App";
-import { articleApi } from "../../api";
+import { articleApi, submissionApi } from "../../api";
 import { useGlobalContext } from "../../store/GlobalContextProvider";
 import { set } from "date-fns";
 import Title from "components/Title";
@@ -18,6 +18,7 @@ import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SendIcon from "@mui/icons-material/Send";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import SubmissionService from "services/submissionService";
 const Statement = ({ data }) => {
   const { colorMode } = useGlobalContext();
   return (
@@ -49,6 +50,7 @@ const Canvas = ({
   onReset,
   articleBackup,
   updateCanvas,
+  updateActivity,
 }) => {
   const canvasRef = useRef(null);
   console.log("content for canvas");
@@ -75,13 +77,10 @@ const Canvas = ({
           ref={canvasRef}
           editOptions={content.editOptions}
           previewOptions={content.previewOptions}
-          // activityData={problem.activityData}
-          // setActivityData={(data) => {
-          //   dispatch({
-          //     type: "UPDATE_USER_ACTIVITY",
-          //     payload: { ...data },
-          //   });
-          // }}
+          activityData={content.activityData}
+          setActivityData={(activityData) => {
+            updateActivity(index, activityData);
+          }}
         />
         <div className="flex flex-row justify-between">
           <Button
@@ -101,7 +100,12 @@ const Canvas = ({
           <Button
             size="large"
             variant="contained"
-            onClick={onSubmit}
+            onClick={() => {
+              console.log("inside submit");
+              console.log(content.activityData);
+              if (content.activityData && content.activityData.length > 0)
+                onSubmit(content);
+            }}
             endIcon={<SendIcon sx={{ fontSize: "2rem", color: "white" }} />}
           >
             Submit
@@ -131,10 +135,27 @@ export default function Article() {
       console.log("done");
     }
   };
+  const solutionSubmit = async (content) => {
+    let res = await SubmissionService.checkSolution(
+      content.checkerCode,
+      content.checkerCanvas,
+      content.canvasData,
+      content.activityData
+    );
+    console.log("output " + res.output);
+    await submissionApi.submitSolution(content.canvasData, res.output, id);
+  };
 
   const updateCanvas = (index, canvasData) => {
     const newCanvasData = [...article.content];
     newCanvasData[index].canvasData = canvasData;
+    setArticle({ ...article, content: newCanvasData });
+  };
+
+  const updateActivity = (index, activityData) => {
+    console.log(activityData);
+    const newCanvasData = [...article.content];
+    newCanvasData[index].activityData = activityData;
     setArticle({ ...article, content: newCanvasData });
   };
 
@@ -167,15 +188,14 @@ export default function Article() {
                 index={index}
                 content={content}
                 onReset={reset}
-                onSubmit={() => console.log("submit")}
+                onSubmit={solutionSubmit}
                 articleBackup={articleBackup}
                 updateCanvas={updateCanvas}
+                updateActivity={updateActivity}
               />
             );
           }
         })}
-      {/* <h1>{article.name}</h1>
-      <p>{article.content}</p> */}
     </div>
   );
 }

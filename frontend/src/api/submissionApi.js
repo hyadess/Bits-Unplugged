@@ -1,10 +1,12 @@
 import Api from "./base";
 
 class SubmissionApi extends Api {
-  submitSolution = async (json, verdict, problemId) => {
+  submitSolution = async (json, verdict, problemId,duration) => {
     return await this.post("/submissions/" + problemId + "/saveSubmit", {
       ansJson: json,
       verdict: verdict,
+      duration: duration,
+
     });
   };
   getAllSubmissionsByUserAndProblem = async (problemId) => {

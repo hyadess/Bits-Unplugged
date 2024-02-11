@@ -54,6 +54,7 @@ import RecentProblems from "./pages/user/RecentProblems";
 import SetterNavbar from "./components/Navbars/SetterNavbar";
 import AcceptRequest from "pages/setter/ContestSetEnv/AcceptRequest";
 import UserHome from "pages/user/Home";
+import ProblemList from "pages/user/ProblemList";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -363,7 +364,7 @@ const AppRoutes = () => {
             path="/practice"
             element={
               <LayoutMain>
-                <UserHome />
+                <ProblemList />
               </LayoutMain>
             }
           />

@@ -16,6 +16,54 @@ class ProblemsRepository extends Repository {
     return problems;
   };
 
+  getAllLiveProblems = async (userId) => {
+    console.log("userId", userId);
+    const latestProblemVersions = await db.sequelize.query(
+      `SELECT DISTINCT ON ("problemId")
+      "id", "problemId", "version"
+      FROM "ProblemVersions" PV
+      WHERE "approvalStatus" = 1
+      ORDER BY "problemId", "version" DESC`,
+      { type: db.Sequelize.QueryTypes.SELECT, raw: true }
+    );
+
+    const latestProblems = await db.ProblemVersion.findAll({
+      where: {
+        id: {
+          [Op.in]: latestProblemVersions.map((version) => version.id),
+        },
+        isLive: true,
+      },
+      include: [
+        {
+          model: db.Activity,
+          foreignKey: "problemId",
+          as: "activities",
+          where: { userId }, // Add your specific userId filter here
+          required: false,
+        },
+        {
+          model: db.Series,
+          foreignKey: "seriesId",
+          as: "series",
+          required: true,
+          include: [
+            {
+              model: db.Topic,
+              foreignKey: "topicId",
+              as: "topic",
+              required: true,
+            },
+          ],
+        },
+      ],
+      order: [
+        ["updatedAt", "DESC"], // Change 'ASC' to 'DESC' if you want descending order
+      ],
+    });
+    return latestProblems;
+  };
+
   getLiveProblemsBySeries = async (userId, seriesId) => {
     const latestProblemVersions = await db.sequelize.query(
       `SELECT DISTINCT ON ("problemId")

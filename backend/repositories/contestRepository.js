@@ -170,6 +170,7 @@ class ContestRepository extends Repository {
   };
 
   // accessContest only triggers when a change in contest setter or contest problem is done
+  // Just a write a trigger in database?
   accessContest = async (contestId) => {
     const query = `
         UPDATE "Contests"

@@ -251,7 +251,7 @@ const SolverNavbar = (props) => {
                     // }}
                   />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-60 p-3 mt-5 mr-1">
+                <DropdownMenuContent className="w-60 p-2 mt-5 mr-1">
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>

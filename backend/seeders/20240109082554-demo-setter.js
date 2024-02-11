@@ -19,7 +19,7 @@ module.exports = {
         {
           // id: 3,
           userId: 5,
-          isApproved: false,
+          isApproved: true,
         },
         {
           // id: 3,

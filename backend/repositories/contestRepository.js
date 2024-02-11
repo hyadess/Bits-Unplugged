@@ -1,4 +1,6 @@
+const db = require("../models");
 const Repository = require("./base");
+const sendMail = require("../services/email");
 
 class ContestRepository extends Repository {
   constructor() {
@@ -15,7 +17,7 @@ class ContestRepository extends Repository {
     JOIN
     "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
     JOIN
-    "Setters" "S" ON "CS"."setterId" = "S"."id"
+    "Setters" "S" ON "CS"."setterId" = "S"."userId"
     JOIN
     "Users" "U" ON "S"."userId" = "U"."id"
     GROUP BY
@@ -24,6 +26,18 @@ class ContestRepository extends Repository {
     const params = [];
     const result = await this.query(query, params);
     return result;
+  };
+  updateContest = async (id, data) => {
+    const [updatedRowsCount, [updatedContest]] = await db.Contest.update(data, {
+      returning: true,
+      where: {
+        id,
+      },
+    });
+    if (updatedRowsCount === 0) {
+      return null;
+    }
+    return updatedContest.get();
   };
   getAllPublishedContests = async () => {
     const query = `
@@ -36,12 +50,22 @@ class ContestRepository extends Repository {
   // will also be visible to collaborators
   getMyContests = async (setterId) => {
     const query = `
-        SELECT "C".*, "CS"."role" AS "role"
-        FROM "Contests" "C"
-        JOIN "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
-        WHERE "CS"."setterId" = $1;
-
-        `;
+    SELECT
+    "C".*,
+    jsonb_agg(jsonb_build_object('setterId', "S"."id", 'role', "CS"."role", 'username', "U"."username", 'image', "U"."image")) AS "ContestSetters"
+    FROM
+    "Contests" "C"
+    JOIN
+    "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
+    JOIN
+    "Setters" "S" ON "CS"."setterId" = "S"."userId"
+    JOIN
+    "Users" "U" ON "S"."userId" = "U"."id"
+    WHERE 
+    "CS"."setterId" = $1
+    GROUP BY
+    "C"."id";
+    `;
     const params = [setterId];
     const result = await this.query(query, params);
     return result;
@@ -68,7 +92,7 @@ class ContestRepository extends Repository {
         JOIN
         "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
         JOIN
-        "Setters" "S" ON "CS"."setterId" = "S"."id"
+        "Setters" "S" ON "CS"."setterId" = "S"."userId"
         JOIN
         "Users" "U" ON "S"."userId" = "U"."id"
         WHERE
@@ -130,7 +154,7 @@ class ContestRepository extends Repository {
         `;
     const params = [contestId];
     const result = await this.query(query, params);
-    console.log("==>", result.data[0]);
+    // console.log("==>", result.data[0]);
     return result;
   };
 
@@ -156,8 +180,9 @@ class ContestRepository extends Repository {
     return result;
   };
 
-  // updateContest only triggers when a change in contest setter or contest problem is done
-  updateContest = async (contestId) => {
+  // accessContest only triggers when a change in contest setter or contest problem is done
+  // Just a write a trigger in database?
+  accessContest = async (contestId) => {
     const query = `
         UPDATE "Contests"
         SET "updatedAt" = $2
@@ -194,10 +219,10 @@ class ContestRepository extends Repository {
   publishContest = async (contestId) => {
     const query = `
         UPDATE "Contests"
-        SET "status" = 'upcoming', "updatedAt" = $2
+        SET "status" = 'requested'
         WHERE "id" = $1;
         `;
-    const params = [contestId, new Date()];
+    const params = [contestId];
     const result = await this.query(query, params);
     return result;
   };
@@ -240,19 +265,27 @@ class ContestRepository extends Repository {
     return result;
   };
 
-  availableCollaborators = async (id) => {
+  availableCollaborators = async (id, contestId) => {
     const query = `
       SELECT
-      "S"."id",
-      "U"."username",
-      "U"."image"
+        "S"."userId",
+        "U"."username",
+        "U"."image"
       FROM
-      "Setters" "S"
-      JOIN
-      "Users" "U" ON "S"."userId" = "U"."id"
-      WHERE "S"."isApproved" = true AND "S"."userId" != $1;
-      `;
-    const params = [id];
+        "Setters" "S"
+        JOIN
+        "Users" "U" ON "S"."userId" = "U"."id"
+      WHERE
+        "S"."isApproved" = true
+        AND "S"."userId" != $1
+        AND NOT EXISTS (
+          SELECT 1
+          FROM "ContestSetters" "CS"
+          WHERE "CS"."setterId" = "S"."userId"
+            AND "CS"."contestId" = $2
+        );
+    `;
+    const params = [id, contestId];
     const result = await this.query(query, params);
     return result;
   };
@@ -276,8 +309,6 @@ class ContestRepository extends Repository {
     return result;
   };
 
-    
-
   //***************UPDATING CONTEST SETTER TABLE**************** */
 
   //collaborator should be an author............
@@ -286,16 +317,49 @@ class ContestRepository extends Repository {
 
   // };
 
-  addCollaborator = async (contestId, collaboratorId) => {
-    const query = `
-        INSERT INTO "ContestSetters" ("contestId", "setterId", "role")
-        VALUES ($1, $2, 'collaborator');
-        `;
-    const params = [contestId, collaboratorId];
-    const result = await this.query(query, params);
-    
+  addCollaborator = async (contestId, collaboratorIds, url) => {
+    const valuesPart = collaboratorIds
+      .map(
+        (collaboratorId) => `(${contestId}, ${collaboratorId}, 'collaborator')`
+      )
+      .join(", ");
 
-    const hudai = await this.updateContest(contestId);
+    // Construct the full query
+    const query = `
+    INSERT INTO "ContestSetters" ("contestId", "setterId", "role")
+    VALUES
+      ${valuesPart};
+    `;
+    const result = await this.query(query);
+
+    const hudai = await this.accessContest(contestId);
+    collaboratorIds.map(async (collaboratorId) => {
+      const query2 = `SELECT "C"."email"
+                    FROM "Credentials" "C"
+                    JOIN "Users" "U" ON "U"."id"="C"."id"
+                    WHERE "U"."id" = $1 `;
+      const params = [collaboratorId];
+      const result = await this.query(query2, params);
+      console.log("Email : ,", result);
+      sendMail(
+        result.data[0].email,
+        "Email Verification",
+        `Please verify your email: ${url}/Accept-request?type=1&token=${contestId}`
+      );
+    });
+
+    return result;
+  };
+
+  acceptInvitation = async (contestId, setterId) => {
+    const query = `
+        UPDATE "ContestSetters"
+        SET "status" = 'accepted'
+        WHERE "contestId" = $1 AND "setterId" = $2;
+        `;
+
+    const params = [contestId, setterId];
+    const result = await this.query(query, params);
 
     return result;
   };
@@ -306,8 +370,19 @@ class ContestRepository extends Repository {
         FROM "ContestSetters"
         WHERE "contestId" = $1 AND "role" = 'collaborator';
         `;
+    const query2 = `
+        SELECT
+        "S"."setterId",
+        "U"."username",
+        "U"."image"
+        FROM
+        "ContestSetters" "S"
+        JOIN
+        "Users" "U" ON "S"."setterId" = "U"."id"
+        WHERE "S"."contestId" = $1;
+        `;
     const params = [contestId];
-    const result = await this.query(query, params);
+    const result = await this.query(query2, params);
 
     return result;
   };
@@ -334,7 +409,7 @@ class ContestRepository extends Repository {
     const params = [contestId, problemId];
     const result = await this.query(query, params);
 
-    const hudai = await this.updateContest(contestId);
+    const hudai = await this.accessContest(contestId);
     return result;
   };
 
@@ -348,7 +423,7 @@ class ContestRepository extends Repository {
     const params = [contestId, problemId];
     const result = await this.query(query, params);
 
-    const hudai = await this.updateContest(contestId);
+    const hudai = await this.accessContest(contestId);
     return result;
   };
 
@@ -373,7 +448,7 @@ class ContestRepository extends Repository {
     const params = [contestId, problemId];
     const result = await this.query(query, params);
 
-    const hudai = await this.updateContest(contestId);
+    const hudai = await this.accessContest(contestId);
     return result;
   };
 
@@ -518,6 +593,29 @@ class ContestRepository extends Repository {
         SELECT *
         FROM "Clarifications"
         WHERE "contestId" = $1;
+        `;
+    const params = [contestId];
+    const result = await this.query(query, params);
+
+    return result;
+  };
+
+  approveContest = async (contestId) => {
+    const query = `
+        UPDATE "Contests"
+        SET "status" = 'upcoming'
+        WHERE "id" = $1;
+        `;
+    const params = [contestId];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  rejectContest = async (contestId) => {
+    const query = `
+        UPDATE "Contests"
+        SET "status" = 'rejected'
+        WHERE "id" = $1;
         `;
     const params = [contestId];
     const result = await this.query(query, params);

@@ -78,7 +78,7 @@ const GraphComponent = (props, ref) => {
   //controls
   const [ctrlKeyPressed, setCtrlKeyPressed] = useState(false);
   const [zoom, setZoom] = useState(1);
-  const stageRef = useRef(null);
+  // const stageRef = useRef(null);
   const windowRef = useRef(null);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
@@ -305,7 +305,7 @@ const GraphComponent = (props, ref) => {
       return;
     }
 
-    const stage = stageRef.current;
+    const stage = props.stageRef.current;
     const { x, y } = stage.getPointerPosition();
 
     // now,,, edge can be selected if we click nereby....so implement this........
@@ -363,7 +363,7 @@ const GraphComponent = (props, ref) => {
           return;
         }
 
-        const stage = stageRef.current;
+        const stage = props.stageRef.current;
         const { x, y } = stage.getPointerPosition();
 
         // now,,, edge can be selected if we click nereby....so implement this........
@@ -601,7 +601,7 @@ const GraphComponent = (props, ref) => {
     const updatedY = newPosition.y;
 
     // Calculate the boundaries of the stage
-    const stage = stageRef.current;
+    const stage = props.stageRef.current;
     const stageWidth = stage.width();
     const stageHeight = stage.height();
 
@@ -1003,7 +1003,7 @@ const GraphComponent = (props, ref) => {
             height={500} // 630
             onClick={handleCanvasClick}
             onMouseMove={handleMouseMove}
-            ref={stageRef}
+            ref={props.stageRef}
             // scaleX={Math.min(width / 882, 1)}
             // scaleY={Math.min(width / 882, 1)}
           >

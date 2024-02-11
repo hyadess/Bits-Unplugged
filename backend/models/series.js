@@ -15,15 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Series.init(
     {
-      topicId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Topics",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
-      },
+      topicId: DataTypes.INTEGER,
       name: DataTypes.STRING,
       description: DataTypes.TEXT,
       logo: DataTypes.TEXT,

@@ -19,27 +19,29 @@ const Collaborators = () => {
 
 
   useEffect(() => {
-    getCollaborators();
-  }, []);
+    if(contest !== undefined) getCollaborators();
+  }, [contest]);
 
 
   const getCollaborators = async () => {
-    const res = await contestApi.availableCollaborators();
+    const res = await contestApi.availableCollaborators(contest.id);
     const res2 = await contestApi.showAllCollaborators(contest.id);
     if (res.success) {
       console.log("collaborators: ", res2.data);
       setCollaborators(res.data);
       setContestCollaborators(res2.data);
     }
+    return res;
   };
 
-  const handleListToggle = () => {
+  const handleListToggle = async() => {
+    const res= await getCollaborators();
     setListOpen(!isListOpen);
   };
 
   const handleCollaboratorSelect = (collaborator) => {
     if (selectedCollaborators.includes(collaborator)) {
-      setSelectedCollaborators(selectedCollaborators.filter((id) => id !== collaborator.id));
+      setSelectedCollaborators(selectedCollaborators.filter((userId) => userId !== collaborator.userId));
     } else {
       setSelectedCollaborators([...selectedCollaborators, collaborator]);
     }
@@ -48,10 +50,16 @@ const Collaborators = () => {
   const handleAddButtonClick = async () => {
     // Add your logic to handle adding collaborators
     console.log("Selected Collaborators:", selectedCollaborators);
-    const res = await contestApi.addCollaborator(contest.id,selectedCollaborators[0].id);
+    const collaboratorIds = selectedCollaborators.map(collaborator => collaborator.userId);
+
+    const res = await contestApi.addCollaborator(contest.id,collaboratorIds);
     showSuccess(
         "Invitation sent successfully", res
       );
+    setContestCollaborators([...ContestCollaborators, ...selectedCollaborators]);
+
+    setSelectedCollaborators([]);
+
     // Additional logic can be added here to handle the selected collaborators
     handleListToggle();
   };

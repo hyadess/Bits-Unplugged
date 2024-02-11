@@ -19,12 +19,15 @@ import { setLoading } from "../../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBroom,
+  faCamera,
+  faCameraRetro,
   faEye,
   faEyeSlash,
   faUser,
   faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 import { canvasApi } from "../../api";
+import { Camera } from "@mui/icons-material";
 const CanvasContainer = (props, ref) => {
   const [DynamicComponent, setDynamicComponent] = useState(null);
   const [componentPath, setComponentPath] = useState(null);
@@ -40,6 +43,23 @@ const CanvasContainer = (props, ref) => {
   ];
 
   const [canvasContainerMode, setCanvasContainerMode] = useState(props.mode);
+  const stageRef = useRef(null);
+  const saveCanvasAsImage = () => {
+    const stage = stageRef.current;
+    const image = stage.toDataURL();
+
+    // Create a temporary link element
+    const link = document.createElement("a");
+    link.href = image;
+    link.download = "canvas_image.png";
+
+    // Trigger the download
+    document.body.appendChild(link);
+    link.click();
+
+    // Clean up
+    document.body.removeChild(link);
+  };
   const loadComponent = async (name) => {
     try {
       const module = await import(/* @vite-ignore */ `./${name}`);
@@ -227,15 +247,50 @@ const CanvasContainer = (props, ref) => {
             previewOptions={previewOptions}
             ref={ref}
             mode={canvasContainerMode}
+            stageRef={stageRef}
           />
         )}
       </div>
       {/* </Zoom> */}
+      {/* <button
+        className="bu-button-primary text-2xl"
+        onClick={saveCanvasAsImage}
+      >
+        Save Canvas as Image
+      </button> */}
       <SettingsMenu />
       <div
         className="flex flex-row p-2 items-center"
         style={{ position: "absolute", top: "0", right: "0" }}
       >
+        {props.mode === "preview" && (
+          <Tooltip
+            title={<h1 className="text-lg text-white">Take Snapshot</h1>}
+            placement="top"
+            arrow
+            size="large"
+          >
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem",
+                }}
+                onClick={saveCanvasAsImage}
+              >
+                <div className="flex items-center bu-text-primary text-3xl">
+                  <FontAwesomeIcon icon={faCameraRetro} />
+                  {/* <Camera /> */}
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">
+                Capture
+              </div>
+            </div>
+          </Tooltip>
+        )}
+
         {props.mode === "edit" && (
           <Tooltip
             title={<h1 className="text-lg text-white">Canvas Mode</h1>}

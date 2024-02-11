@@ -12,6 +12,7 @@ module.exports = {
           description: "Demo contest description",
           startDate: "1/1/2025",
           endDate: "1/2/2025",
+          duration: "3",
           status: "requested",
         },
         {
@@ -20,6 +21,7 @@ module.exports = {
           description: "Demo contest description",
           startDate: "1/1/2025",
           endDate: "1/2/2025",
+          duration: "2.5",
           status: "upcoming",
         },
       ],

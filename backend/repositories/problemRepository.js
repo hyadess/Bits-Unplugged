@@ -202,13 +202,13 @@ class ProblemsRepository extends Repository {
     SELECT P.*, 
     S.name AS "seriesName", 
     T.name AS "topicName" 
-    FROM "Problems" P
+    FROM "ProblemVersions" P
     JOIN "Series" S ON P."seriesId" = S.id
     JOIN "Topics" T ON S."topicId" = T.id
-    LEFT JOIN "Activities" U ON P."id" = U."problemId" AND U."userId" = $1
-    WHERE (U."userId" IS NOT NULL AND U."isSolved" = FALSE)
+    LEFT JOIN "Activities" A ON P."id" = A."problemId" AND A."userId" = $1
+    WHERE (A."userId" IS NOT NULL AND A."isSolved" = FALSE)
     AND P."isLive" = TRUE
-    ORDER BY U."conseqFailedAttempt" DESC;
+    ORDER BY A."conseqFailedAttempt" DESC;
     `;
     const params = [userId];
     const result = await this.query(query, params);

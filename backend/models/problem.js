@@ -26,55 +26,22 @@ module.exports = (sequelize, DataTypes) => {
       //   as: "activity",
       // });
       // Problem.hasMany(models.Submission, { foreignKey: "problemId" });
-      Problem.belongsToMany(models.ContestProblem, {
+      Problem.hasMany(models.ContestProblem, {
         foreignKey: "problemId",
       });
     }
   }
   Problem.init(
     {
-      setterId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Setters",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      canvasId: {
-        type: DataTypes.INTEGER,
-        // allowNull: false,
-        references: {
-          model: "Canvases",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      title: {
-        type: DataTypes.STRING,
-      },
-      statement: {
-        type: DataTypes.TEXT,
-        defaultValue: "",
-      },
-      canvasData: {
-        type: DataTypes.JSON,
-      },
-      editOptions: {
-        type: DataTypes.JSON,
-      },
-      previewOptions: {
-        type: DataTypes.JSON,
-      },
-      checkerCode: {
-        type: DataTypes.TEXT,
-      },
-      checkerCanvas: {
-        type: DataTypes.JSON,
-      },
+      setterId: DataTypes.INTEGER,
+      canvasId: DataTypes.INTEGER,
+      title: DataTypes.STRING,
+      statement: DataTypes.TEXT,
+      canvasData: DataTypes.JSON,
+      editOptions: DataTypes.JSON,
+      previewOptions: DataTypes.JSON,
+      checkerCode: DataTypes.TEXT,
+      checkerCanvas: DataTypes.JSON,
     },
     {
       sequelize,

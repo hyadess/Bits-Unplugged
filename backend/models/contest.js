@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Contest.belongsToMany(models.ContestSetter, {
+      Contest.hasMany(models.ContestSetter, {
         foreignKey: "contestId",
         as: "setters",
       });
-      Contest.belongsToMany(models.ContestProblem, {
+      Contest.hasMany(models.ContestProblem, {
         foreignKey: "contestId",
         as: "problems",
       });
@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.TEXT,
       startDate: DataTypes.DATE,
       endDate: DataTypes.DATE,
+      startDateTime: DataTypes.DATE,
       duration: DataTypes.FLOAT,
       status: DataTypes.STRING,
     },

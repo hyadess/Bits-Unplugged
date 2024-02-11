@@ -112,6 +112,8 @@ const AdminContests = () => {
                 timestamp={contest.updatedAt}
                 owner={contest.ContestSetters[0]}
                 startDate={contest.startDate}
+                startDateTime={contest.startDateTime}
+                duration={contest.duration}
                 endDate={contest.endDate}
                 status={contest.status}
                 updatedAt={contest.updatedAt}

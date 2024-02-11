@@ -53,8 +53,7 @@ const Canvas = ({
   updateActivity,
 }) => {
   const canvasRef = useRef(null);
-  console.log("content for canvas");
-  console.log(articleBackup.current.content[index]);
+
   const reset = () => {
     onReset(index);
     canvasRef?.current?.handleReset(
@@ -103,8 +102,8 @@ const Canvas = ({
             onClick={() => {
               console.log("inside submit");
               console.log(content.activityData);
-              if (content.activityData && content.activityData.length > 0)
-                onSubmit(content);
+              
+              onSubmit(content);
             }}
             endIcon={<SendIcon sx={{ fontSize: "2rem", color: "white" }} />}
           >
@@ -138,25 +137,27 @@ export default function Article() {
   const solutionSubmit = async (content) => {
     let res = await SubmissionService.checkSolution(
       content.checkerCode,
-      content.checkerCanvas,
+      JSON.parse(content.checkerCanvas),
       content.canvasData,
-      content.activityData
+      content.activityData ?? {}
     );
-    console.log("output " + res.output);
     await submissionApi.submitSolution(content.canvasData, res.output, id);
   };
 
   const updateCanvas = (index, canvasData) => {
-    const newCanvasData = [...article.content];
-    newCanvasData[index].canvasData = canvasData;
-    setArticle({ ...article, content: newCanvasData });
+    setArticle((prev) => {
+      const newContent = [...prev.content];
+      newContent[index].canvasData = canvasData;
+      return { ...prev, content: newContent };
+    });
   };
 
   const updateActivity = (index, activityData) => {
-    console.log(activityData);
-    const newCanvasData = [...article.content];
-    newCanvasData[index].activityData = activityData;
-    setArticle({ ...article, content: newCanvasData });
+    setArticle((prev) => {
+      const newContent = [...prev.content];
+      newContent[index].activityData = activityData;
+      return { ...prev, content: newContent };
+    });
   };
 
   const reset = (index) => {

@@ -54,8 +54,8 @@ class ContestApi extends Api {
       endDate,
     });
   };
-  availableCollaborators = async () => {
-    return await this.get("/contests/showSetters");
+  availableCollaborators = async (contestId) => {
+    return await this.get("/contests/" + contestId + "/showSetters");
   };
 
   updateTitle = async (contestId, title) => {
@@ -80,13 +80,19 @@ class ContestApi extends Api {
     return await this.put("/contests/" + contestId + "/end", {});
   };
 
-  addCollaborator = async (contestId, collaboratorId) => {
+  addCollaborator = async (contestId, collaboratorIds) => {
     return await this.post("/contests/" + contestId + "/addCollaborator", {
-      collaboratorId,
+      collaboratorIds,
     });
   };
 
+  acceptInvitation = async (contestId) => {
+    console.log("Invitation from ", contestId);
+    return await this.post(`/contests/${contestId}/accept-invitation`);
+  };
+
   showAllCollaborators = async (contestId) => {
+    // console.log("===>", contestId);
     return await this.get("/contests/" + contestId + "/showAllCollaborators");
   };
 

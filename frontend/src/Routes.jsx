@@ -45,7 +45,6 @@ import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
 import Contests from "./pages/user/Contests";
 import History from "./pages/setter/ProblemSetEnv/History";
-import Collaborators from "./pages/setter/ContestSetEnv/ContestCollaborators";
 import TopicStat from "./pages/user/TopicStat";
 import AdminArticles from "./pages/admin/AdminArticles";
 import AdminArticleEditor from "./pages/admin/AdminArticleEditor";
@@ -53,6 +52,7 @@ import Article from "./pages/user/Article";
 import SolverNavbar from "./components/Navbars/SolverNavbar";
 import RecentProblems from "./pages/user/RecentProblems";
 import SetterNavbar from "./components/Navbars/SetterNavbar";
+import AcceptRequest from "pages/setter/ContestSetEnv/AcceptRequest";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -281,6 +281,9 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
+          
+          <Route path="/Accept-request" element={<AcceptRequest />} />
+
           <Route
             path="/setter/contests"
             element={
@@ -444,6 +447,8 @@ const AppRoutes = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/verify-email" element={<EmailVerification />} />
         </Route>
+        
+        
         {type >= 0 && (
           <Route
             path="/"

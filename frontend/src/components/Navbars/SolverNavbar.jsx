@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBrain,
   faChalkboardUser,
+  faHeadSideVirus,
   faHouse,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
@@ -131,7 +132,7 @@ const SolverNavbar = (props) => {
               <NavButton
                 label={
                   <>
-                    <FontAwesomeIcon icon={faChalkboardUser} />
+                    <FontAwesomeIcon icon={faHeadSideVirus} />
                     Practice
                   </>
                 }

@@ -81,7 +81,7 @@ module.exports = {
       },
       rating: {
         type: Sequelize.INTEGER,
-        allowNull:false,
+        allowNull: false,
         defaultValue: 800,
       },
       createdAt: {

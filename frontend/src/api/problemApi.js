@@ -57,5 +57,8 @@ class ProblemApi extends Api {
   getAllVersions = async (problemId) => {
     return await this.get("/problems/" + problemId + "/versions");
   };
+  getRecommendations = async () => {
+    return await this.get("/problems/recommendation");
+  };
 }
 export default ProblemApi;

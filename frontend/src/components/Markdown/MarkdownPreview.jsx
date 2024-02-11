@@ -13,8 +13,9 @@ const MarkdownPreview = ({ colorMode, text, customStyle }) => {
   return (
     <div data-color-mode={colorMode} className="text-2xl">
       <div className="wmde-markdown-var "> </div>
+      {/* <MDEditor.Markdown source={text} /> */}
       <MDEditor
-        height={70 + 35 * calculateNumberOfLines(text) + text.length / 2}
+        height={70 + 15 * calculateNumberOfLines(text) + text.length / 1.6}
         preview="preview"
         hideToolbar={true}
         enableScroll={false}
@@ -27,6 +28,7 @@ const MarkdownPreview = ({ colorMode, text, customStyle }) => {
           borderRadius: "20px",
           ...customStyle, // Merge props.style here
         }}
+        overflow={true}
         previewOptions={{
           components: {
             code: ({ children = [], className, ...props }) => {

@@ -9,6 +9,7 @@ router.use(
 
 router.get("/", problemController.getAllProblems); // api/problems/
 router.post("/", problemController.createProblem);
+router.get("/recommendation", problemController.getRecommendations); // api/problems?recommended=true
 router.put("/:id", problemController.updateProblem);
 router.get("/:id", problemController.getProblemById); // api/problems?problemId=true
 router.get("/:id/contestproblem", problemController.getContestProblemById); // api/problems?problemId=true
@@ -29,7 +30,7 @@ router.put("/:id/reject", problemController.rejectProblem);
 //   "/unsolved/attempted",
 //   problemController.getAllUnsolvedAndAttemptedProblems
 // ); // api/problems?solved=false
-// router.get("/recommendation", problemController.getRecommendations); // api/problems?recommended=true
+
 // router.put("/rating", (req, res) => res.status(200).send()); // dihan - Bookmark a problem
 
 module.exports = router;

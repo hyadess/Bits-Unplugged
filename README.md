@@ -27,3 +27,7 @@
 `git checkout <your_branch>`
 `git merge dev`
 `git push origin dev`
+
+## Packages
+
+Time picker: https://time.openstatus.dev/

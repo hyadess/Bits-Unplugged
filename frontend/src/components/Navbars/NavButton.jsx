@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { setLoading } from "../../App";
-const AdminNavButton = ({ label, path }) => {
+const NavButton = ({ label, path }) => {
   const navigate = useNavigate();
   const location = useLocation();
   return (
@@ -29,4 +29,4 @@ const AdminNavButton = ({ label, path }) => {
   );
 };
 
-export default AdminNavButton;
+export default NavButton;

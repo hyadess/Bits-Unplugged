@@ -9,12 +9,13 @@ module.exports = {
         {
           // id: 1,
           seriesId: 1,
-          title: "Basic Tower of Hanoi",
+          title:
+            "The Tower of Hanoi: A Fascinating Puzzle of Mathematical Beauty",
           content: JSON.stringify([
-            {
-              type: "markdown",
-              data: `# The Tower of Hanoi: A Fascinating Puzzle of Mathematical Beauty.`,
-            },
+            // {
+            //   type: "markdown",
+            //   data: `# The Tower of Hanoi: A Fascinating Puzzle of Mathematical Beauty.`,
+            // },
             {
               type: "markdown",
               data: `# Introduction \n The Tower of Hanoi is a classic mathematical puzzle that has captivated minds for centuries. Initially invented by the French mathematician Édouard Lucas in the late 19th century, the Tower of Hanoi has since become a popular problem in the realms of computer science, recreational mathematics, and even psychology.`,

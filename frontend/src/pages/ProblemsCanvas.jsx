@@ -62,21 +62,33 @@ function ProblemsCanvasController() {
       problem.activityData
     );
     console.log("output " + res.output);
-    await submissionApi.submitSolution(problem.canvasData, res.output, id);
+
     if (res.output === "Accepted") {
-      await userActivityApi.updateOnSuccessfulAttempt(id);
       if (startTimeRef.current) {
         const endTime = new Date();
         const durationInSeconds = Math.floor(
           (endTime - startTimeRef.current) / 1000
         );
+
         if (durationInSeconds > 1 && type == 0) {
           console.log("Duration:", durationInSeconds);
-          await problemApi.trackDuration(id, durationInSeconds);
+          await submissionApi.submitSolution(
+            problem.canvasData,
+            res.output,
+            id,
+            durationInSeconds
+          );
+        } else {
+          await submissionApi.submitSolution(
+            problem.canvasData,
+            res.output,
+            id,
+            0
+          );
         }
       }
     } else {
-      await userActivityApi.updateOnFailedAttempt(id);
+      await submissionApi.submitSolution(problem.canvasData, res.output, id, 0);
     }
   };
   function getColorModeFromLocalStorage() {

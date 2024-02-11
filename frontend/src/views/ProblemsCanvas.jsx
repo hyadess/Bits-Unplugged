@@ -74,7 +74,7 @@ const Header = ({ type }) => {
         </div>
       )}
     </div>
-  );
+  ); 
 };
 
 const Statement = ({ colorMode }) => {

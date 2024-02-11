@@ -7,6 +7,7 @@ router.use(
   passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
 );
 router.get("/", contestController.getAllContests);
+router.put("/:id", contestController.updateContest);
 router.get("/published", contestController.getAllPublishedContests);
 router.get("/all", contestController.getMyContests);
 router.get("/owned", contestController.getMyOwnContests);
@@ -109,5 +110,8 @@ router.post(
   "/:contestId/clarifications/add",
   contestController.addClarification
 );
+
+router.put("/:contestId/approve", contestController.approveContest);
+router.put("/:contestId/reject", contestController.rejectContest);
 
 module.exports = router;

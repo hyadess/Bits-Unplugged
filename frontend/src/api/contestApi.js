@@ -5,6 +5,10 @@ class ContestApi extends Api {
     return await this.get("/contests/" + contestId);
   };
 
+  updateContest = async (contestId, contest) => {
+    return await this.put("/contests/" + contestId, contest);
+  };
+
   getAllContests = async () => {
     return await this.get("/contests");
   };
@@ -176,6 +180,14 @@ class ContestApi extends Api {
     return await this.post("/contests/" + contestId + "/clarifications/add", {
       clarification,
     });
+  };
+
+  approveContest = async (contestId) => {
+    return await this.put("/contests/" + contestId + "/approve");
+  };
+
+  rejectContest = async (contestId) => {
+    return await this.put("/contests/" + contestId + "/reject");
   };
 }
 

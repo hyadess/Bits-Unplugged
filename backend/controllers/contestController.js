@@ -14,6 +14,19 @@ class ContestController extends Controller {
       res.status(404).json(result);
     }
   };
+  updateContest = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const updatedContest = await contestRepository.updateContest(
+        req.params.id,
+        req.body
+      );
+      if (!updatedContest) {
+        res.status(404).json({ error: "Contest not found" });
+      } else {
+        res.status(200).json(updatedContest);
+      }
+    });
+  };
   getAllPublishedContests = async (req, res) => {
     let result = await contestRepository.getAllPublishedContests();
     if (result.success) {
@@ -426,6 +439,24 @@ class ContestController extends Controller {
       res.status(200).json(result.data);
     } else {
       res.status(404).json(result);
+    }
+  };
+
+  approveContest = async (req, res) => {
+    let result = await contestRepository.approveContest(req.params.contestId);
+    if (result.success) {
+      res.status(204).json(result.data);
+    } else {
+      res.status(500).json(result);
+    }
+  };
+
+  rejectContest = async (req, res) => {
+    let result = await contestRepository.rejectContest(req.params.contestId);
+    if (result.success) {
+      res.status(204).json(result.data);
+    } else {
+      res.status(500).json(result);
     }
   };
 }

@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+
       // define association here
       ContestSetter.belongsTo(models.Contest, { foreignKey: "contestId",  as: "contest"});
       ContestSetter.belongsTo(models.Setter, { foreignKey: "userId", as: "setter" });

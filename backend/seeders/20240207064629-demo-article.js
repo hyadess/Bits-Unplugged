@@ -37,6 +37,7 @@ module.exports = {
             },
             {
               type: "canvas",
+              canvasId: 2,
               canvasData: JSON.stringify({
                 pegs: [[0, 1, 2], [], []],
               }),

@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Contest extends Model {
     /**
@@ -25,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.TEXT,
       startDate: DataTypes.DATE,
       endDate: DataTypes.DATE,
+      duration: DataTypes.FLOAT,
       status: DataTypes.STRING,
     },
     {

@@ -44,6 +44,7 @@ import Contest from "./pages/setter/Contest";
 import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
 import Contests from "./pages/user/Contests";
+import UserContest from "./pages/Contest";
 import History from "./pages/setter/ProblemSetEnv/History";
 import TopicStat from "./pages/user/TopicStat";
 import AdminArticles from "./pages/admin/AdminArticles";
@@ -53,6 +54,7 @@ import SolverNavbar from "./components/Navbars/SolverNavbar";
 import RecentProblems from "./pages/user/RecentProblems";
 import SetterNavbar from "./components/Navbars/SetterNavbar";
 import AcceptRequest from "pages/setter/ContestSetEnv/AcceptRequest";
+import ContestProblem from "pages/ContestProblem";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -334,6 +336,20 @@ const AppRoutes = () => {
               <LayoutMain>
                 <ProblemsSubmissions />
               </LayoutMain>
+            }
+          />
+
+        <Route
+            path="/contests/:id"
+            element={
+                <UserContest/>
+            }
+          />
+
+        <Route
+            path="/contests/:id/Problems/:problemid"
+            element={
+                <UserContest/>
             }
           />
 

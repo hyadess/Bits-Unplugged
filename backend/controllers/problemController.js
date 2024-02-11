@@ -62,6 +62,18 @@ class ProblemController extends Controller {
       }
     });
   };
+
+  getContestProblemById = async (req, res) => {
+    this.handleRequest(res, async () => {
+      let problem = await problemRepository.getProblemById(req.params.id)
+      if (!problem) {
+        res.status(404).json({ error: "Problem not found" });
+      } else {
+        res.status(200).json(problem);
+      }
+    });
+  };
+
   createProblem = async (req, res) => {
     this.handleRequest(res, async () => {
       const newProblem = await problemRepository.createProblem(

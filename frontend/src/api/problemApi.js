@@ -21,6 +21,9 @@ class ProblemApi extends Api {
   getProblemById = async (problemId) => {
     return await this.get("/problems/" + problemId);
   };
+  getContestProblemById = async (problemId) => {
+    return await this.get("/problems/" + problemId + "/contestproblem");
+  };
   createProblem = async (title) => {
     return await this.post("/problems/", {
       title: title,

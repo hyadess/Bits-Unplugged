@@ -143,6 +143,17 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+  getContestProblemById = async (contestId, problemId) => {
+    const query = `
+        SELECT "CP".*
+        FROM "Problems" "P"
+        JOIN "ContestProblems" "CP" ON "P"."id" = "CP"."problemId"
+        WHERE "CP"."contestId" = $1 AND "CP"."problemId" = $2;        
+        `;
+    const params = [contestId, problemId];
+    const result = await this.query(query, params);
+    return result;
+  };
   // it is for setters....................
   getAllProblemsByContest = async (contestId) => {
     const query = `
@@ -507,14 +518,22 @@ class ContestRepository extends Repository {
   // type 0 means live contest pariticipant, 1 means virtual
   participateUpcomingContest = async (userId, contestId) => {
     const query = `
-        INSERT INTO "Participants" ("contestId", "participantId", "type")
-        VALUES ($1 ,$2, $3);
-        `;
+    INSERT INTO "Participants" ("contestId", "userId", "type")
+    SELECT $1, $2, $3
+    WHERE NOT EXISTS (
+        SELECT 1 FROM "Participants" 
+        WHERE "contestId" = $1
+        AND "userId" = $2
+        AND "type" = $3
+    );
+    
+    `;
     const params = [contestId, userId, 0];
     const result = await this.query(query, params);
 
     return result;
-  };
+};
+
   leaveUpcomingContest = async (userId, contestId) => {
     const query = `
         DELETE FROM "Participants"

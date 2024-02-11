@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { faFloppyDisk, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { authApi, contestApi } from "../../../api";
@@ -11,6 +12,8 @@ import { faUpload } from "@fortawesome/free-solid-svg-icons";
 const DetailsTab = () => {
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [collaborators, setCollaborators] = useState(false);
+  const navigate = useNavigate();
+
 
   const { state: contest, dispatch } = useContestContext();
   useEffect(() => {
@@ -34,13 +37,21 @@ const DetailsTab = () => {
     }
   };
 
+  const publish = async () => {
+    const res = await contestApi.publishContest(contest.id);
+  
+    console.log(res.data);
+  };
+
   return (
     <>
       {/* <InviteButton onClick={handleAddModalOpen} /> */}
 
       <button
         className="flex flex-row gap-2 justify-center items-center bu-button-primary rounded-lg px-7 py-3.5 text-center text-lg font-semibold"
-        onClick={handleAddModalOpen}
+        onClick={() => {
+          publish();
+          navigate(`/setter/contests`);}}
       >
         <FontAwesomeIcon icon={faUpload} size="lg" />
         <h1>PUBLISH</h1>

@@ -91,7 +91,7 @@ const SolverNavbar = (props) => {
   return (
     <>
       {type >= 0 && (
-        <div className="bu-nav-color  flex flex-row w-full justify-between md:justify-center shadow-md">
+        <div className="bu-nav-color  flex flex-row w-full justify-between md:justify-center">
           <div className="hidden md:flex h-20 w-1/5 items-center px-5">
             <div
               className={`p-5 pl-0 transition-all duration-300 ease-in-out cursor-pointer ${
@@ -145,7 +145,33 @@ const SolverNavbar = (props) => {
                 </div>
                 <div className="divider hidden md:flex "></div>
               </button>
-
+              {/* <button
+                className={`flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-30 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info  items-center justify-center border-b-4 ${
+                  (type == 0 && location.pathname === "/topics") ||
+                  (type == 1 && location.pathname === "/problemSet")
+                    ? "border-[#1C5B5F] dark:border-pink-500"
+                    : "border-transparent"
+                }`}
+                data-tip="Solve"
+                onClick={() => {
+                  if (location.pathname !== "/topics") {
+                    setLoading(true);
+                    navigate("/topics");
+                  }
+                }}
+              >
+                <div
+                  className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
+                    location.pathname === "/solve"
+                      ? "bu-text-title"
+                      : "bu-text-primary-hover"
+                  }`}
+                >
+                  <FontAwesomeIcon icon={faChalkboardUser} />
+                  {type == 0 ? "Solve" : "Home"}
+                </div>
+                <div className="divider hidden md:flex "></div>
+              </button> */}
               <button
                 className={`icon basis-1/3 md:basis-1/6 flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info items-center justify-center border-b-4 ${
                   (type == 0 && location.pathname === "/contests") ||

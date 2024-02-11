@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, forwardRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  forwardRef,
+  useContext,
+} from "react";
 import { Route, useParams } from "react-router-dom";
 import InfoIcon from "@mui/icons-material/Info";
 import {
@@ -28,11 +34,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { canvasApi } from "../../api";
 import { Camera } from "@mui/icons-material";
+import GlobalContext from "store/GlobalContext";
 const CanvasContainer = (props, ref) => {
   const [DynamicComponent, setDynamicComponent] = useState(null);
   const [componentPath, setComponentPath] = useState(null);
   const [canvasInfo, seCanvasInfo] = useState(null);
   const [settings, setSettings] = useState(false);
+  const { type } = useContext(GlobalContext);
   const [editOptions, setEditOptions] = [
     props.editOptions,
     props.setEditOptions,
@@ -44,6 +52,7 @@ const CanvasContainer = (props, ref) => {
 
   const [canvasContainerMode, setCanvasContainerMode] = useState(props.mode);
   const stageRef = useRef(null);
+
   const saveCanvasAsImage = () => {
     const stage = stageRef.current;
     const image = stage.toDataURL();
@@ -263,7 +272,7 @@ const CanvasContainer = (props, ref) => {
         className="flex flex-row p-2 items-center"
         style={{ position: "absolute", top: "0", right: "0" }}
       >
-        {props.mode === "preview" && (
+        {type === 1 && props.mode === "preview" && (
           <Tooltip
             title={<h1 className="text-lg text-white">Take Snapshot</h1>}
             placement="top"

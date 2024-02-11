@@ -46,7 +46,7 @@ class SubmissionController extends Controller {
           req.user.userId,
           req.params.problemId
         );
-      } else {
+      } else if(req.body.verdict === "Wrong answer"){
         const userActivity= await userActivityRepository.updateOnFailedAttempt(
           req.user.userId,
           req.params.problemId

@@ -69,13 +69,18 @@ class SubmissionRepository extends Repository {
   };
 
   submitSolution = async (userId, problemId, data) => {
-    return await db.Submission.create({
+    const submission = await db.Submission.create({
       verdict: data.verdict,
       problemId: problemId,
       userId: userId,
       canvasData: data.ansJson,
+    }, {
+      returning: ['id'], // Specify the columns you want to return
     });
+  
+    return submission.id; // Return the newly created submission's ID
   };
+  
 }
 
 module.exports = SubmissionRepository;

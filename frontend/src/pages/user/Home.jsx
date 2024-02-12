@@ -22,7 +22,6 @@ export default function UserHome() {
     const res = await problemApi.getRecommendations();
     if (res.success) {
       setProblems(res.data);
-      console.log("recommended problems", res.data);
       setLoading(false);
     } else {
       //   setError(true);

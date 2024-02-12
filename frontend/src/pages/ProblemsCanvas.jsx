@@ -91,6 +91,7 @@ function ProblemsCanvasController() {
       await submissionApi.submitSolution(problem.canvasData, res.output, id, 0);
     }
   };
+  
   function getColorModeFromLocalStorage() {
     return localStorage.getItem("color-theme") || "light";
   }

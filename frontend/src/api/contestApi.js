@@ -41,6 +41,10 @@ class ContestApi extends Api {
     return await this.get("/contests/" + contestId + "/problems/setterView");
   };
 
+  getContestProblemById = async (contestId, problemId) => {
+    return await this.get("/contests/" + contestId + "/problem/" + problemId);
+  };
+
   getAllContestProblemsByContest = async (contestId) => {
     return await this.get("/contests/" + contestId + "/problems/userView");
   };
@@ -121,8 +125,8 @@ class ContestApi extends Api {
     });
   };
 
-  addSubmissionToContest = async (contestId) => {
-    return await this.post("/contests/" + contestId + "/addSubmission", {});
+  addSubmissionToContest = async (contestId, problemId, submissionId, points) => {
+    return await this.post("/contests/" + contestId + "/addSubmission", {problemId, submissionId, points,});
   };
 
   deleteProblem = async (contestId, problemId) => {

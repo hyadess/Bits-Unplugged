@@ -109,6 +109,7 @@ export default function Profile() {
 
       // Create lists for series names, success counts, and fail counts
       const seriesNames = top5Series.map((series) => series.name);
+      //console.log("series names",seriesNames);
       const successCounts = top5Series.map((series) => series.successCount);
       const failCounts = top5Series.map((series) => series.failCount);
 
@@ -156,8 +157,10 @@ export default function Profile() {
               style: {
                 colors: [],
                 fontSize: "0.8rem",
+                
               },
-              rotate: 0,
+              rotate: 10,
+              offsetY: 20,
               rotateAlways: true,
               tickPlacement: "on",
             },
@@ -369,7 +372,6 @@ export default function Profile() {
         show: false,
       },
       color: "#000000",
-      
     },
     series: [
       {

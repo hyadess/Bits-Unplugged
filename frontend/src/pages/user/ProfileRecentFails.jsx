@@ -35,10 +35,6 @@ export default function ProfileRecentFails() {
 
   return (
     <>
-      <div>
-        <Title title={""} sub_title={"Your recent attempts"} />
-      </div>
-
       <div className="flex flex-col gap-5 w-full">
         <div className="w-full p-5 rounded-lg shadow-md flex flex-row bu-text-primary bg-[#AADFCF] dark:bg-pink-600">
           <div className="text-xl w-[27%] font-medium">Problem name</div>
@@ -67,9 +63,7 @@ export default function ProfileRecentFails() {
                   path={`/problems/${problem.problemId}`}
                   action="Get Started"
                   attempts={problem.totalFailedAttempt}
-                  difficulty={
-                    ["Easy", "Medium", "Hard"][Math.floor(Math.random() * 3)]
-                  }
+                  difficulty={problem.rating}
                   last_tried={problem.lastSolveTimestamp}
                 />
               ))}

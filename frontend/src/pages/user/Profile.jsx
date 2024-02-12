@@ -461,57 +461,70 @@ export default function Profile() {
   return (
     <div className="flex flex-col">
       <ProfileInfo />
-      <div>
-        <Title title={""} sub_title={"Your success and fail statistics"} />
+      <Title  title={"Profile statistics"} />
+      <div className="bu-nav-color mb-6 px-10 py-6">
+        <Title title={""} sub_title={"chart shows your total successful and failed attempts accross all the topics"} />
+
+        <PieChart />
       </div>
 
-      <PieChart />
       <div>
-        <Title title={""} sub_title={"Your favourite series"} />
+        <Title title={""} sub_title={"Your fabourite series. Shows your total attempts accross different series"} />
+
+        <BarChart />
       </div>
-      <BarChart />
-      <div>
-        <Title title={""} sub_title={"Your watch time"} />
+
+      <div className="bu-nav-color mb-6 px-10 py-6">
+        <Title title={""} sub_title={"Time you spent solving problems"} />
+
+        <Chart
+          options={options}
+          series={[{ name: "Active Time", data: activityChartData }]}
+          type="area"
+          width="100%"
+        />
       </div>
-      <Chart
-        options={options}
-        series={[{ name: "Active Time", data: activityChartData }]}
-        type="area"
-        width="100%"
-      />
-      <Chart
-        options={distributionChartData.options}
-        series={distributionChartData.series}
-        type="bar"
-        height={300}
-      />
+
       <div>
+      <Title title={""} sub_title={"Your Solve time for different problems"} />
+        <Chart
+          options={distributionChartData.options}
+          series={distributionChartData.series}
+          type="bar"
+          height={300}
+        />
+      </div>
+
+      <div className="bu-nav-color mb-6 px-10 py-6">
         <Title title={""} sub_title={"Your activity heatmap"} />
+        <CalendarHeatmap
+          startDate={new Date(new Date().getFullYear(), 0, 1)}
+          endDate={new Date(new Date().getFullYear(), 11, 31)}
+          values={heatmapData}
+          classForValue={(value) => {
+            if (!value) {
+              return "color-empty";
+            }
+            return `color-scale-${Math.min(value.count, 4)}`;
+          }}
+          tooltipDataAttrs={(value) => {
+            if (value) {
+              return {
+                "data-tooltip": `has count: ${value.count}`,
+              };
+            } else {
+              return {
+                "data-tooltip": "has count: 0",
+              };
+            }
+          }}
+          gutterSize={2} // Adjust the spacing between months
+          gutterPx={10} // Adjust the pixel size of the gutter
+        />
       </div>
-      <CalendarHeatmap
-        startDate={new Date(new Date().getFullYear(), 0, 1)}
-        endDate={new Date(new Date().getFullYear(), 11, 31)}
-        values={heatmapData}
-        classForValue={(value) => {
-          if (!value) {
-            return "color-empty";
-          }
-          return `color-scale-${Math.min(value.count, 4)}`;
-        }}
-        tooltipDataAttrs={(value) => {
-          if (value) {
-            return {
-              "data-tooltip": `has count: ${value.count}`,
-            };
-          } else {
-            return {
-              "data-tooltip": "has count: 0",
-            };
-          }
-        }}
-        gutterSize={2} // Adjust the spacing between months
-        gutterPx={10} // Adjust the pixel size of the gutter
-      />
+
+      <Title  title={"You tried these problems recently"} />
+
       <ProfileRecentFails />
       <Tooltip id="data-tip" />
     </div>

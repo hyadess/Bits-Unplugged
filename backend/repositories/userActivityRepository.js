@@ -233,7 +233,8 @@ class UserActivityRepository extends Repository {
 
   mostRecentFailsByUser = async (userId) => {
     const query = `
-    SELECT A.*, PV."title"
+    SELECT A.*, PV."title",
+    PV."rating"
     FROM "Activities" A
     JOIN "ProblemVersions" PV ON A."problemId" = PV."id"
     WHERE A."userId" = $1 AND A."isSolved" = FALSE

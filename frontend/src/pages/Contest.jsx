@@ -8,7 +8,8 @@ import { faFire, faPlus, faTag } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import ContestProblem from "./ContestProblem";
 import LayoutMain from "../components/Layouts/LayoutMain";
-import Leaderboard from "./Leaderboard";
+import Leaderboard from "./Timer";
+import CountdownTimer from "./Timer";
 
 
 
@@ -82,13 +83,39 @@ const ProblemList = () => {
   
   
 
+// Inside the UserContest component
 const UserContest = () => {
   const { id } = useParams();
   const { problemid } = useParams();
+  let endTime;
+
+  useEffect(() => {
+    // Call a function to fetch contest details and get the contest duration
+    const fetchContestDetails = async () => {
+      try {
+        const contest = await contestApi.getContestById(id);
+        if (contest.success) {
+          const contestDuration = contest.data[0].duration * 60 * 60 * 1000;
+          const startDateTime = new Date(contest.data[0].startDateTime);
+          endTime = new Date(startDateTime.getTime() + contestDuration);
+        }
+      } catch (error) {
+        console.error("Error fetching contest details", error);
+      }
+    };
+
+    fetchContestDetails();
+
+    // Cleanup function
+    return () => {
+      // Add any cleanup logic if needed
+    };
+  }, []); // Removed 'id' from the dependency array
 
   return (
-    <LayoutMain left={<ProblemList />}
-    //right={<Leaderboard contestId={id} />}
+    <LayoutMain
+      left={<ProblemList />}
+      //right={<CountdownTimer targetDate={endTime} flag={"end"} />}
     >
       {problemid && <ContestProblem />}
     </LayoutMain>

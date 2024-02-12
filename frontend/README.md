@@ -27,3 +27,5 @@ Admin Site
 
 Frontend: MVC
 Backend: Controller - Service - Repository
+
+Tainwind -tap https://www.tailwindtap.com/components/timer/sales-end-countdown

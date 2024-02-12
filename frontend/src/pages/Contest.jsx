@@ -87,8 +87,17 @@ const ProblemList = () => {
 const UserContest = () => {
   const { id } = useParams();
   const { problemid } = useParams();
-  let endTime;
+  const [endTime, setendTime] = useState();
 
+  const EndAction = async () => {
+    try {
+      // Call contestApi.updateStatus with the contest ID and the new status
+      await contestApi.endContest(id);
+      console.log("Contest status updated to 'ended'");
+    } catch (error) {
+      console.error("Error updating contest status", error);
+    }
+  };
   useEffect(() => {
     // Call a function to fetch contest details and get the contest duration
     const fetchContestDetails = async () => {
@@ -97,7 +106,8 @@ const UserContest = () => {
         if (contest.success) {
           const contestDuration = contest.data[0].duration * 60 * 60 * 1000;
           const startDateTime = new Date(contest.data[0].startDateTime);
-          endTime = new Date(startDateTime.getTime() + contestDuration);
+          setendTime(new Date(startDateTime.getTime() + contestDuration));
+          console.log("Contest end time : ", startDateTime, endTime);
         }
       } catch (error) {
         console.error("Error fetching contest details", error);
@@ -115,7 +125,7 @@ const UserContest = () => {
   return (
     <LayoutMain
       left={<ProblemList />}
-      //right={<CountdownTimer targetDate={endTime} flag={"end"} />}
+      right={endTime && <CountdownTimer targetDate={endTime} flag={"end"} EndAction={EndAction}/>}
     >
       {problemid && <ContestProblem />}
     </LayoutMain>

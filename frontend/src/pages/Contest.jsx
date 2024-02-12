@@ -122,9 +122,48 @@ const UserContest = () => {
     };
   }, []); // Removed 'id' from the dependency array
 
+  const Leaderboard = ({  }) => {
+    const [leaderboard, setLeaderboard] = useState([]);
+    const { id } = useParams();
+  
+    useEffect(() => {
+      const fetchLeaderboard = async () => {
+        try {
+          const leaderboardData = await contestApi.getLeaderboard(id);
+          if (leaderboardData.success) {
+            // Sort the leaderboard by points in descending order
+            const sortedLeaderboard = leaderboardData.data.sort(
+              (a, b) => b.points - a.points
+            );
+            setLeaderboard(sortedLeaderboard);
+          }
+        } catch (error) {
+          console.error("Error fetching leaderboard", error);
+        }
+      };
+  
+      fetchLeaderboard();
+    }, []);
+    console.log("leaderboard : ", leaderboard);
+  
+    return (
+      <div className="absolute bottom-2 left-2leaderboard-container">
+        <h2 className="text-xl font-semibold mb-2">Leaderboard</h2>
+        <ul>
+          {leaderboard.map((entry) => (
+            <li className="flex justify-between items-center">
+              <span>{entry.username}</span>
+              <span>{entry.points} Points</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
   return (
     <LayoutMain
-      left={<ProblemList />}
+      left={<><ProblemList /> <Leaderboard/></>}
       right={endTime && <CountdownTimer targetDate={endTime} flag={"end"} EndAction={EndAction}/>}
     >
       {problemid && <ContestProblem />}

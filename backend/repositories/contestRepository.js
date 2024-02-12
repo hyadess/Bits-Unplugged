@@ -466,19 +466,27 @@ class ContestRepository extends Repository {
   //**********************UPDATING CONTEST PARTICIPATION TABLE****************** */
 
   // assuming that this submission is added in submissions table.......
-  addSubmissionToContest = async (
+addSubmissionToContest = async (
     problemId,
     contestId,
     submissionId,
     userId,
     points
   ) => {
-    const query = `
-        INSERT INTO "ContestSubmissions" ("contestId", "userId", "problemId", "submissionId", "points")
-        VALUES ($1, $2, $3, $4, $5);
-        `;
-    const params = [contestId, userId, problemId, submissionId, points];
-    const result = await this.query(query, params);
+    const participantQuery = `
+        SELECT "P"."id" FROM "Participants" "P" WHERE "P"."contestId" = $1 AND "P"."userId" = $2;
+    `;
+    const participantParams = [contestId, userId];
+    const participantResult = await this.query(participantQuery, participantParams);
+    const participantId = participantResult.data[0].id; 
+
+    // Then, insert the submission with the participantId
+    const submissionQuery = `
+        INSERT INTO "ContestSubmissions" ("participantId", "submissionId", "points")
+        VALUES ($1, $2, $3);
+    `;
+    const submissionParams = [participantId, submissionId, points];
+    const result = await this.query(submissionQuery, submissionParams);
 
     return result;
   };
@@ -499,7 +507,7 @@ class ContestRepository extends Repository {
         WHERE
         "C"."id" = $1
         GROUP BY
-        "CS"."participantId"
+        "U"."username"
         `;  
     const params = [contestId];
     const result = await this.query(query, params);

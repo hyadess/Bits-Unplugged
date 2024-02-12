@@ -62,6 +62,16 @@ const colorMap = {
   Brown: "#635147",
   Black: "#000000",
 };
+
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(
+        result[3],
+        16
+      )}`
+    : null;
+}
 const GraphComponent = (props, ref) => {
   const [userType, setUserType] = useState(0);
   const [edgeIndex, setEdgeIndex] = useState(0);
@@ -505,48 +515,36 @@ const GraphComponent = (props, ref) => {
 
   const deleteSelectedNodeOrEdge = () => {
     //node deletion
-    let updatedEdges = data.edges;
-    if (data.selectedNodes.length === 1) {
+    if (data.selectedNodes.length > 0) {
       if (
         props.mode === "preview" &&
         props?.previewOptions?.deleteNode?.value === false
       )
         return;
 
-      const deletedKey = data.selectedNodes[0];
-      // const nodeToDelete = data.nodes.filter(
-      //   (node) => node.nodeIndex === selectedNodes[0]
-      // )[0];
-
+      let updatedEdges = [...data.edges];
       const updatedNodes = { ...data.nodes };
-      delete updatedNodes[deletedKey];
-
-      updatedEdges = data.edges.filter(
-        (edge) => edge.start !== deletedKey && edge.end !== deletedKey
-      );
-
-      setNodes(updatedNodes);
-      setSelectedNodes([]);
-
-      // if (data.selectedEdges.length > 0) {
-      //   updatedEdges = updatedEdges.filter((edge) =>
-      //     data.selectedEdges.includes(edge)
-      //   );
-      // }
-
+      data.selectedNodes.forEach((node) => {
+        const deletedKey = node;
+        delete updatedNodes[deletedKey];
+        updatedEdges = updatedEdges.filter(
+          (edge) => edge.start !== deletedKey && edge.end !== deletedKey
+        );
+      });
       setEdges(updatedEdges);
-
-      setSelectedEdges([]);
+      setSelectedNodes([]);
+      setNodes(updatedNodes);
     }
 
     //edge deletion
-    if (data.selectedEdges.length > 0) {
+    else if (data.selectedEdges.length > 0) {
       if (
         props.mode === "preview" &&
         props?.previewOptions?.deleteEdge?.value === false
       )
         return;
 
+      let updatedEdges = data.edges;
       updatedEdges = updatedEdges.filter(
         (edge) =>
           !data.selectedEdges.some((selectedEdge) =>
@@ -824,7 +822,7 @@ const GraphComponent = (props, ref) => {
 
       {(props.mode === "edit" ||
         props?.previewOptions?.deleteNode?.value === true) &&
-        data?.selectedNodes?.length === 1 && (
+        data?.selectedNodes?.length > 0 && (
           <IconButton
             sx={
               {
@@ -1213,14 +1211,19 @@ const GraphComponent = (props, ref) => {
                           hoveredNode === nodeKey ? "node-hovered" : ""
                         }
                         fill={
-                          // selectedNodes.includes(nodeKey)
-                          //   ? "#ec3965"
-                          //   : hoveredNode === nodeKey || isDragging === nodeKey
-                          //     ? "#38bf27"
-                          //     : "#a4a3a3"
-                          colorMap[data.nodes[nodeKey].color]
+                          data?.selectedNodes?.includes(nodeKey)
+                            ? `rgba(${hexToRgb(
+                                colorMap[data.nodes[nodeKey].color]
+                              )}, 0.7)`
+                            : hoveredNode === nodeKey || isDragging === nodeKey
+                              ? `rgba(${hexToRgb(
+                                  colorMap[data.nodes[nodeKey].color]
+                                )}, 0.8)`
+                              : `rgba(${hexToRgb(
+                                  colorMap[data.nodes[nodeKey].color]
+                                )}, 1)`
                         }
-                        // opacity={0.5}
+                        opacity={1}
                         stroke={
                           data?.selectedNodes?.includes(nodeKey)
                             ? "#ec3965"

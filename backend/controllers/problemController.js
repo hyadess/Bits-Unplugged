@@ -10,9 +10,10 @@ class ProblemController extends Controller {
 
   getAllProblems = async (req, res) => {
     this.handleRequest(res, async () => {
+      console.log("GEEEEEEEEET");
       let problems =
         req.user.type === 0
-          ? undefined
+          ? await problemRepository.getAllLiveProblems(req.user.userId)
           : req.user.type === 1
           ? await problemRepository.getMyProblems(req.user.userId)
           : await problemRepository.getSubmittedProblems();

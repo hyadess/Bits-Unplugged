@@ -16,6 +16,54 @@ class ProblemsRepository extends Repository {
     return problems;
   };
 
+  getAllLiveProblems = async (userId) => {
+    console.log("userId", userId);
+    const latestProblemVersions = await db.sequelize.query(
+      `SELECT DISTINCT ON ("problemId")
+      "id", "problemId", "version"
+      FROM "ProblemVersions" PV
+      WHERE "approvalStatus" = 1
+      ORDER BY "problemId", "version" DESC`,
+      { type: db.Sequelize.QueryTypes.SELECT, raw: true }
+    );
+
+    const latestProblems = await db.ProblemVersion.findAll({
+      where: {
+        id: {
+          [Op.in]: latestProblemVersions.map((version) => version.id),
+        },
+        isLive: true,
+      },
+      include: [
+        {
+          model: db.Activity,
+          foreignKey: "problemId",
+          as: "activities",
+          where: { userId }, // Add your specific userId filter here
+          required: false,
+        },
+        {
+          model: db.Series,
+          foreignKey: "seriesId",
+          as: "series",
+          required: true,
+          include: [
+            {
+              model: db.Topic,
+              foreignKey: "topicId",
+              as: "topic",
+              required: true,
+            },
+          ],
+        },
+      ],
+      order: [
+        ["updatedAt", "DESC"], // Change 'ASC' to 'DESC' if you want descending order
+      ],
+    });
+    return latestProblems;
+  };
+
   getLiveProblemsBySeries = async (userId, seriesId) => {
     const latestProblemVersions = await db.sequelize.query(
       `SELECT DISTINCT ON ("problemId")
@@ -154,13 +202,13 @@ class ProblemsRepository extends Repository {
     SELECT P.*, 
     S.name AS "seriesName", 
     T.name AS "topicName" 
-    FROM "Problems" P
+    FROM "ProblemVersions" P
     JOIN "Series" S ON P."seriesId" = S.id
     JOIN "Topics" T ON S."topicId" = T.id
-    LEFT JOIN "Activities" U ON P."id" = U."problemId" AND U."userId" = $1
-    WHERE (U."userId" IS NOT NULL AND U."isSolved" = FALSE)
+    LEFT JOIN "Activities" A ON P."id" = A."problemId" AND A."userId" = $1
+    WHERE (A."userId" IS NOT NULL AND A."isSolved" = FALSE)
     AND P."isLive" = TRUE
-    ORDER BY U."conseqFailedAttempt" DESC;
+    ORDER BY A."conseqFailedAttempt" DESC;
     `;
     const params = [userId];
     const result = await this.query(query, params);

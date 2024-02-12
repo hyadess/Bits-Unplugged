@@ -165,7 +165,7 @@ const TowerOfHanoi = (props, ref) => {
     setData({ pegs: p });
   };
   const setNumberOfMoves = (n) => {
-    if (activityData !== undefined) {
+    if (setActivityData !== undefined) {
       if (props.mode === "edit") {
         setActivityData({ numberOfMoves: 0 });
       } else {

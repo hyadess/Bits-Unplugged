@@ -1,15 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
-import { useCountdown } from "../hooks/useCountdown";
-
-const DateTimeDisplay = ({ value, type, isDanger }) => {
-  return (
-    <div className={isDanger ? "countdown danger" : "countdown"}>
-      <p>{value}</p>
-      <span>{type}</span>
-    </div>
-  );
-};
+import { useCountdown } from "../hooks/useCountDown";
 
 const ExpiredNotice = ({ flag }) => {
   useEffect(() => {
@@ -26,25 +17,47 @@ const ExpiredNotice = ({ flag }) => {
 };
 
 const ShowCounter = ({ days, hours, minutes, seconds }) => {
+  useEffect(() => {
+    console.log(hours, minutes, seconds);
+  }, [seconds]);
+
   return (
-    <div className="show-counter">
-      <a className="countdown-link">
-        <DateTimeDisplay value={hours} type={"Hours"} isDanger={false} />
-        <p>:</p>
-        <DateTimeDisplay value={minutes} type={"Mins"} isDanger={false} />
-        <p>:</p>
-        <DateTimeDisplay value={seconds} type={"Seconds"} isDanger={false} />
-      </a>
-    </div>
+      <div className="absolute top-8 right-5 flex justify-between sm:px-4 justify-center items-center gap-10">
+        <div className="flex flex-col justify-center items-center gap-3">
+          <span className="py-3 px-3 bg-[#88BDBC] text-[#112D32] text-3xl font-semibold rounded-md">
+          {hours < 10 ? `0${hours}` : hours}
+          </span>
+          <span className="text-sm text-[#4b4b4a] font-bold">
+            {hours == 1 ? "Hour" : "Hours"}
+          </span>
+        </div>
+        <div className="flex flex-col justify-center items-center gap-3">
+          <span className="py-3 px-3 bg-[#88BDBC] text-[#112D32] text-3xl font-semibold rounded-md">
+          {minutes < 10 ? `0${minutes}` : minutes}
+          </span>
+          <span className="text-sm text-[#4b4b4a] font-bold">
+            {minutes == 1 ? "Minute" : "Minutes"}
+          </span>
+        </div>
+        <div className="flex flex-col justify-center items-center gap-3">
+          <span className="py-3 px-3 bg-[#88BDBC] text-[#112D32] text-3xl font-semibold rounded-md">
+          {seconds < 10 ? `0${seconds}` : seconds}
+          </span>
+          <span className="text-sm text-[#4b4b4a] font-bold">
+            {seconds == 1 ? "Second" : "Seconds"}
+          </span>
+        </div>
+      </div>
   );
 };
 
-const CountdownTimer = ({ targetDate, flag }) => {
+const CountdownTimer = ({ targetDate, flag, EndAction }) => {
+  console.log(targetDate);
   const [days, hours, minutes, seconds] = useCountdown(targetDate);
   // console.log(days, hours, minutes, seconds);
   // console.log(flag);
   if (days + hours + minutes + seconds <= 0) {
-    return <ExpiredNotice flag={flag} />;
+    EndAction();
   } else {
     return (
       <ShowCounter

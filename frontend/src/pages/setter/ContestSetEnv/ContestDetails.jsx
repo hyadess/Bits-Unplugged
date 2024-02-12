@@ -197,7 +197,7 @@ const DetailsTab = () => {
       <button
         className="bu-button-primary flex flex-row items-center justify-center gap-2 rounded-lg px-7 py-3.5 text-center text-lg font-semibold focus:outline-none"
         onClick={async () => {
-          const result = await contestApi.updateContest(contest.id, contest);
+const result = await contestApi.updateContest(contest.id, contest);
           showSuccess("Details saved successfully", result);
         }}
       >

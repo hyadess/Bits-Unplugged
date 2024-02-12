@@ -473,12 +473,20 @@ class ContestRepository extends Repository {
     userId,
     points
   ) => {
-    const query = `
-        INSERT INTO "ContestSubmissions" ("contestId", "userId", "problemId", "submissionId", "points")
-        VALUES ($1, $2, $3, $4, $5);
-        `;
-    const params = [contestId, userId, problemId, submissionId, points];
-    const result = await this.query(query, params);
+    const participantQuery = `
+        SELECT "P"."id" FROM "Participants" "P" WHERE "P"."contestId" = $1 AND "P"."userId" = $2;
+    `;
+    const participantParams = [contestId, userId];
+    const participantResult = await this.query(participantQuery, participantParams);
+    const participantId = participantResult.data[0].id;
+
+    // Then, insert the submission with the participantId
+    const submissionQuery = `
+        INSERT INTO "ContestSubmissions" ("participantId", "problemId", "submissionId", "points")
+        VALUES ($1, $2, $3, $4);
+    `;
+    const submissionParams = [participantId, problemId, submissionId, points];
+    const result = await this.query(submissionQuery, submissionParams);
 
     return result;
   };

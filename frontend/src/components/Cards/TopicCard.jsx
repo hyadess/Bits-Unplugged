@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LinearProgress, Zoom } from "@mui/material";
-import ImageLoader from "../ImageLoader";
+import ImageLoader from "../ImageLoaders/ImageLoader";
 import styled from "@emotion/styled";
 import { set } from "date-fns";
 import { setLoading } from "../../App";

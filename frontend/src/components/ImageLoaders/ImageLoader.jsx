@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { setLoading } from "../App";
+import { setLoading } from "../../App";
 const ImageLoader = ({ src, alt, style, className }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 

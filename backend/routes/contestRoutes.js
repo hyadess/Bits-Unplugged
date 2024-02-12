@@ -68,6 +68,8 @@ router.post(
   contestController.addSubmissionToContest
 );
 
+router.get("/:contestId/Leaderboard", contestController.getLeaderboard);
+
 //new ones....
 
 router.delete(

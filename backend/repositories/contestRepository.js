@@ -472,6 +472,31 @@ class ContestRepository extends Repository {
     return result;
   };
 
+  getLeaderboard = async (contestId) => {
+    const query = `
+        SELECT
+        "U"."username",
+        SUM("CS"."points") AS "points"
+        FROM
+        "ContestSubmissions" "CS"
+        JOIN
+        "Participants" "CP" ON "CP"."id" = "CS"."participantId"
+        JOIN
+        "Contests" "C" ON "C"."id" = "CP"."contestId"
+        JOIN
+        "Users" "U" ON "U"."id" = "CP"."userId"
+        WHERE
+        "C"."id" = $1
+        GROUP BY
+        "CS"."participantId"
+        `;  
+    const params = [contestId];
+    const result = await this.query(query, params);
+
+    return result;
+  };  
+    
+
   //new ones...........
 
   deleteProblem = async (contestId, problemId) => {

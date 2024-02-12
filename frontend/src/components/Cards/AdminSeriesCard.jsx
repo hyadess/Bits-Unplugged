@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IconButton, Zoom } from "@mui/material";
-import ImageLoader from "../ImageLoader";
+import ImageLoader from "../ImageLoaders/ImageLoader";
 import { setLoading } from "../../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
@@ -58,7 +58,7 @@ const SeriesCard = ({
             </div>
             <div className="flex flex-col gap-1">
               <h5 className="bu-text-subtitle text-sm">
-              {solved}/{total} problems solved
+                {solved}/{total} problems solved
               </h5>
               <div className="w-full h-[8.86px] left-[367.76px] top-[344.82px] bg-[#EDEDED] rounded-[6px]">
                 {progress && (

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { setLoading } from "../../App";
-import ImageLoader from "../../components/ImageLoader";
+import ImageLoader from "../../components/ImageLoaders/ImageLoader";
 import {
   forwardRef,
   useCallback,

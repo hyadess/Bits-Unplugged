@@ -12,6 +12,7 @@ router.post("/", problemController.createProblem);
 router.get("/recommendation", problemController.getRecommendations); // api/problems?recommended=true
 router.put("/:id", problemController.updateProblem);
 router.get("/:id", problemController.getProblemById); // api/problems?problemId=true
+router.get("/:id/contestproblem", problemController.getContestProblemById); // api/problems?problemId=true
 router.delete("/:id", problemController.deleteProblem); // api/problems
 router.post("/:id/submit", problemController.submitProblem);
 router.get("/:id/submissions", problemController.getSubmissions);

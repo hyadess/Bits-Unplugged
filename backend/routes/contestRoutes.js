@@ -38,6 +38,7 @@ router.put(
 );
 router.get("/:contestId/showSetters", contestController.availableCollaborators);
 router.get("/:contestId", contestController.getContestInfo);
+router.get("/:contestId/problem/:problemId", contestController.getContestProblemById);
 
 router.put("/:contestId/publish", contestController.publishContest);
 router.put("/:contestId/start", contestController.startContest);
@@ -67,6 +68,8 @@ router.post(
   "/:contestId/addSubmission",
   contestController.addSubmissionToContest
 );
+
+router.get("/:contestId/Leaderboard", contestController.getLeaderboard);
 
 //new ones....
 

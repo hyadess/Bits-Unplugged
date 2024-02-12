@@ -109,6 +109,7 @@ export default function Profile() {
 
       // Create lists for series names, success counts, and fail counts
       const seriesNames = top5Series.map((series) => series.name);
+      //console.log("series names",seriesNames);
       const successCounts = top5Series.map((series) => series.successCount);
       const failCounts = top5Series.map((series) => series.failCount);
 
@@ -140,12 +141,10 @@ export default function Profile() {
             },
           },
           grid: {
-            row: {
-              // colors: ["#fff", "#f2f2f2"],
-            },
+            show: false,
           },
           dataLabels: {
-            enabled: true,
+            show: true,
           },
           stroke: {
             show: true,
@@ -159,7 +158,8 @@ export default function Profile() {
                 colors: [],
                 fontSize: "0.8rem",
               },
-              rotate: 0,
+              rotate: 10,
+              offsetY: 20,
               rotateAlways: true,
               tickPlacement: "on",
             },
@@ -188,7 +188,11 @@ export default function Profile() {
                 return val + " problems";
               },
             },
+            style: {
+              colors: ["#000000"], // Add this line
+            },
           },
+          colors: ["#ef9c9c", "#aadfcf"],
         },
       });
     }, [barChartData]);
@@ -230,6 +234,17 @@ export default function Profile() {
             height: 300,
           },
           labels: ["Fail", "Success"],
+          colors: ["#ef9c9c", "#aadfcf"],
+          dataLabels: {
+            style: {
+              colors: ["#222222", "#222222"], // Add this line. This will make the labels dark black.
+              fontSize: "20px",
+            },
+          },
+          stroke: {
+            width: 0, // Add this line. This will remove the border.
+          },
+
           responsive: [
             {
               breakpoint: 480,
@@ -314,6 +329,9 @@ export default function Profile() {
         text: "Daily Active Time (seconds)",
       },
     },
+    grid: {
+      show: false,
+    },
     dataLabels: {
       enabled: false,
     },
@@ -323,13 +341,13 @@ export default function Profile() {
     fill: {
       type: "gradient",
       gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.7,
-        opacityTo: 0.9,
+        shadeIntensity: 0.7,
+        opacityFrom: 0.9,
+        opacityTo: 1,
         stops: [0, 100],
       },
     },
-    colors: ["#008FFB"],
+    colors: ["#aadfcf"],
   };
 
   //submission distribution...............................
@@ -349,6 +367,10 @@ export default function Profile() {
           text: "Total Problems Solved",
         },
       },
+      grid: {
+        show: false,
+      },
+      colors: ["#aadfcf"],
     },
     series: [
       {
@@ -461,57 +483,83 @@ export default function Profile() {
   return (
     <div className="flex flex-col">
       <ProfileInfo />
-      <div>
-        <Title title={""} sub_title={"Your success and fail statistics"} />
+      <Title title={"Profile statistics"} />
+      <div className="bu-nav-color mb-6 px-10 py-6">
+        <Title
+          title={""}
+          sub_title={
+            "chart shows your total successful and failed attempts accross all the topics"
+          }
+        />
+
+        <PieChart />
       </div>
 
-      <PieChart />
       <div>
-        <Title title={""} sub_title={"Your favourite series"} />
+        <Title
+          title={""}
+          sub_title={
+            "Your fabourite series. Shows your total attempts accross different series"
+          }
+        />
+
+        <BarChart />
       </div>
-      <BarChart />
-      <div>
-        <Title title={""} sub_title={"Your watch time"} />
+
+      <div className="bu-nav-color mb-6 px-10 py-6">
+        <Title title={""} sub_title={"Time you spent solving problems"} />
+
+        <Chart
+          options={options}
+          series={[{ name: "Active Time", data: activityChartData }]}
+          type="area"
+          width="100%"
+        />
       </div>
-      <Chart
-        options={options}
-        series={[{ name: "Active Time", data: activityChartData }]}
-        type="area"
-        width="100%"
-      />
-      <Chart
-        options={distributionChartData.options}
-        series={distributionChartData.series}
-        type="bar"
-        height={300}
-      />
+
       <div>
+        <Title
+          title={""}
+          sub_title={"Your Solve time for different problems"}
+        />
+        <Chart
+          options={distributionChartData.options}
+          series={distributionChartData.series}
+          type="bar"
+          height={300}
+        />
+      </div>
+
+      <div className="bu-nav-color mb-6 px-10 py-6">
         <Title title={""} sub_title={"Your activity heatmap"} />
+        <CalendarHeatmap
+          startDate={new Date(new Date().getFullYear(), 0, 1)}
+          endDate={new Date(new Date().getFullYear(), 11, 31)}
+          values={heatmapData}
+          classForValue={(value) => {
+            if (!value) {
+              return "color-empty";
+            }
+            return `color-scale-${Math.min(value.count, 4)}`;
+          }}
+          tooltipDataAttrs={(value) => {
+            if (value) {
+              return {
+                "data-tooltip": `has count: ${value.count}`,
+              };
+            } else {
+              return {
+                "data-tooltip": "has count: 0",
+              };
+            }
+          }}
+          gutterSize={2} // Adjust the spacing between months
+          gutterPx={10} // Adjust the pixel size of the gutter
+        />
       </div>
-      <CalendarHeatmap
-        startDate={new Date(new Date().getFullYear(), 0, 1)}
-        endDate={new Date(new Date().getFullYear(), 11, 31)}
-        values={heatmapData}
-        classForValue={(value) => {
-          if (!value) {
-            return "color-empty";
-          }
-          return `color-scale-${Math.min(value.count, 4)}`;
-        }}
-        tooltipDataAttrs={(value) => {
-          if (value) {
-            return {
-              "data-tooltip": `has count: ${value.count}`,
-            };
-          } else {
-            return {
-              "data-tooltip": "has count: 0",
-            };
-          }
-        }}
-        gutterSize={2} // Adjust the spacing between months
-        gutterPx={10} // Adjust the pixel size of the gutter
-      />
+
+      <Title title={"You tried these problems recently"} />
+
       <ProfileRecentFails />
       <Tooltip id="data-tip" />
     </div>

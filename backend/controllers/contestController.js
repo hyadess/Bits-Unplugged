@@ -92,6 +92,18 @@ class ContestController extends Controller {
       res.status(404).json(result);
     }
   };
+  getContestProblemById = async (req, res) => {
+    
+    let result = await contestRepository.getContestProblemById(
+      req.params.contestId,
+      req.params.problemId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
   getAllProblemsByContest = async (req, res) => {
     let result = await contestRepository.getAllProblemsByContest(
       req.params.contestId
@@ -308,6 +320,15 @@ class ContestController extends Controller {
     }
   };
 
+  getLeaderboard = async (req, res) => {
+    let result = await contestRepository.getLeaderboard(req.params.contestId);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
   //new ones...
 
   deleteProblem = async (req, res) => {
@@ -353,6 +374,8 @@ class ContestController extends Controller {
       res.status(500).json(result);
     }
   };
+
+
   participateVirtualContest = async (req, res) => {
     let result = await contestRepository.participateVirtualContest(
       req.user.userId,

@@ -1,4 +1,4 @@
-import ContestsView from "../../views/Contest";
+import ContestsView from "../../views/Contests";
 import React, { useState, useEffect, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { setLoading } from "../../App";

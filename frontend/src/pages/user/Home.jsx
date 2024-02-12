@@ -61,9 +61,9 @@ export default function UserHome() {
                 <div className="flex w-full">
                   <ProblemCard
                     idx={index + 1}
-                    id={problem.problemId}
+                    id={problem.id}
                     name={problem.title}
-                    path={`/problems/${problem.problemId}`}
+                    path={`/problems/${problem.id}`}
                     rating={problem.rating}
                     isSolved={
                       problem.isSolved === null ? -1 : problem.isSolved ? 1 : 0

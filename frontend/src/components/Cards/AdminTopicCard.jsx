@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IconButton, Zoom } from "@mui/material";
-import ImageLoader from "../ImageLoader";
+import ImageLoader from "../ImageLoaders/ImageLoader";
 import { setLoading } from "../../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";

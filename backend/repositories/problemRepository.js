@@ -199,16 +199,30 @@ class ProblemsRepository extends Repository {
 
   getAllUnsolvedAndAttemptedProblems = async (userId) => {
     const query = `
-    SELECT P.*, 
-    S.name AS "seriesName", 
-    T.name AS "topicName" 
-    FROM "ProblemVersions" P
-    JOIN "Series" S ON P."seriesId" = S.id
-    JOIN "Topics" T ON S."topicId" = T.id
-    LEFT JOIN "Activities" A ON P."id" = A."problemId" AND A."userId" = $1
-    WHERE (A."userId" IS NOT NULL AND A."isSolved" = FALSE)
-    AND P."isLive" = TRUE
-    ORDER BY A."conseqFailedAttempt" DESC;
+    (SELECT "P".*, 
+    "S"."name" AS "seriesName", 
+    "T"."name" AS "topicName",
+    "A"."isSolved"
+    FROM "ProblemVersions" "P"
+    JOIN "Series" "S" ON "P"."seriesId" = "S"."id"
+    JOIN "Topics" "T" ON "S"."topicId" = "T"."id"
+    JOIN "Activities" "A" ON "P"."id" = "A"."problemId" AND "A"."userId" = $1
+    WHERE "A"."isSolved" = FALSE
+    AND "P"."isLive" = TRUE
+    ORDER BY "A"."conseqFailedAttempt" DESC)
+    UNION ALL
+    (SELECT "P".*, 
+    "S"."name" AS "seriesName", 
+    "T"."name" AS "topicName",
+    null AS "isSolved"
+    FROM "ProblemVersions" "P"
+    JOIN "Series" "S" ON "P"."seriesId" = "S"."id"
+    JOIN "Topics" "T" ON "S"."topicId" = "T"."id"
+    WHERE "P"."isLive" = TRUE
+    AND NOT EXISTS (
+      SELECT 1 FROM "Activities" "A" 
+      WHERE "P"."id" = "A"."problemId" AND "A"."userId" = $1)    
+    LIMIT 2);
     `;
     const params = [userId];
     const result = await this.query(query, params);

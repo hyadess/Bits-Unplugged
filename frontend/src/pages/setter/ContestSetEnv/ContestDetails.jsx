@@ -154,10 +154,13 @@ const DetailsTab = () => {
             contest.startDate,
             contest.endDate
           );
+          const res = await contestApi.updateContest(contest.id, {
+            startDateTime: contest.startDate,
+          });
 
           showSuccess(
             "Details saved successfully",
-            result && result1 && result2
+            result && result1 && result2 && res
           );
         }}
       >

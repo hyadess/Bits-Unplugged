@@ -109,6 +109,7 @@ export default function Profile() {
 
       // Create lists for series names, success counts, and fail counts
       const seriesNames = top5Series.map((series) => series.name);
+      //console.log("series names",seriesNames);
       const successCounts = top5Series.map((series) => series.successCount);
       const failCounts = top5Series.map((series) => series.failCount);
 
@@ -132,6 +133,7 @@ export default function Profile() {
               show: false,
             },
           },
+
           plotOptions: {
             bar: {
               horizontal: false,
@@ -140,12 +142,10 @@ export default function Profile() {
             },
           },
           grid: {
-            row: {
-              // colors: ["#fff", "#f2f2f2"],
-            },
+            show: false,
           },
           dataLabels: {
-            enabled: true,
+            show: true,
           },
           stroke: {
             show: true,
@@ -159,7 +159,8 @@ export default function Profile() {
                 colors: [],
                 fontSize: "0.8rem",
               },
-              rotate: 0,
+              rotate: 10,
+              offsetY: 20,
               rotateAlways: true,
               tickPlacement: "on",
             },
@@ -182,13 +183,44 @@ export default function Profile() {
           fill: {
             opacity: 1,
           },
+
           tooltip: {
+            enabled: true,
+            enabledOnSeries: undefined,
+            shared: true,
+            followCursor: false,
+            intersect: false,
+            inverseOrder: false,
+            custom: undefined,
+            hideEmptySeries: true,
+            fillSeriesColor: false,
+            theme: "dark",
+            onDatasetHover: {
+              highlightDataSeries: false,
+            },
             y: {
               formatter: function (val) {
                 return val + " problems";
               },
             },
+            style: {
+              fontSize: "12px",
+              colors: ["#000000"], // Add this line
+            },
+            marker: {
+              show: true,
+            },
+            items: {
+              display: "flex",
+            },
+            fixed: {
+              enabled: false,
+              position: "topRight",
+              offsetX: 0,
+              offsetY: 0,
+            },
           },
+          colors: ["#ef9c9c", "#aadfcf"],
         },
       });
     }, [barChartData]);
@@ -230,6 +262,17 @@ export default function Profile() {
             height: 300,
           },
           labels: ["Fail", "Success"],
+          colors: ["#ef9c9c", "#aadfcf"],
+          dataLabels: {
+            style: {
+              colors: ["#222222", "#222222"], // Add this line. This will make the labels dark black.
+              fontSize: "20px",
+            },
+          },
+          stroke: {
+            width: 0, // Add this line. This will remove the border.
+          },
+
           responsive: [
             {
               breakpoint: 480,
@@ -314,6 +357,9 @@ export default function Profile() {
         text: "Daily Active Time (seconds)",
       },
     },
+    grid: {
+      show: false,
+    },
     dataLabels: {
       enabled: false,
     },
@@ -323,13 +369,59 @@ export default function Profile() {
     fill: {
       type: "gradient",
       gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.7,
-        opacityTo: 0.9,
+        shadeIntensity: 0.7,
+        opacityFrom: 0.9,
+        opacityTo: 1,
         stops: [0, 100],
       },
     },
-    colors: ["#008FFB"],
+    tooltip: {
+      enabled: true,
+      enabledOnSeries: undefined,
+      shared: true,
+      followCursor: false,
+      intersect: false,
+      inverseOrder: false,
+      custom: undefined,
+      hideEmptySeries: true,
+      fillSeriesColor: false,
+      theme: "dark",
+      style: {
+        fontSize: "12px",
+        fontFamily: undefined,
+      },
+      onDatasetHover: {
+        highlightDataSeries: false,
+      },
+      x: {
+        show: true,
+        format: "dd MMM",
+        formatter: undefined,
+      },
+      y: {
+        formatter: undefined,
+        title: {
+          formatter: (seriesName) => seriesName,
+        },
+      },
+      z: {
+        formatter: undefined,
+        title: "Size: ",
+      },
+      marker: {
+        show: true,
+      },
+      items: {
+        display: "flex",
+      },
+      fixed: {
+        enabled: false,
+        position: "topRight",
+        offsetX: 0,
+        offsetY: 0,
+      },
+    },
+    colors: ["#aadfcf"],
   };
 
   //submission distribution...............................
@@ -337,7 +429,11 @@ export default function Profile() {
   const [distributionChartData, setDistributionChartData] = useState({
     options: {
       chart: {
+        id: "daily-activity-chart",
         type: "histogram",
+        toolbar: {
+          show: false,
+        },
       },
       xaxis: {
         title: {
@@ -347,6 +443,64 @@ export default function Profile() {
       yaxis: {
         title: {
           text: "Total Problems Solved",
+        },
+      },
+      grid: {
+        show: false,
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      marker: {
+        colors: ["#000000"],
+        fillColors: ["#000000"],
+      },
+      colors: ["#aadfcf"],
+
+      tooltip: {
+        enabled: true,
+        enabledOnSeries: undefined,
+        shared: true,
+        followCursor: false,
+        intersect: false,
+        inverseOrder: false,
+        custom: undefined,
+        hideEmptySeries: true,
+        fillSeriesColor: false,
+        theme: "dark",
+        style: {
+          fontSize: "12px",
+          fontFamily: undefined,
+        },
+        onDatasetHover: {
+          highlightDataSeries: false,
+        },
+        x: {
+          show: true,
+          format: "dd MMM",
+          formatter: undefined,
+        },
+        y: {
+          formatter: undefined,
+          title: {
+            formatter: (seriesName) => seriesName,
+          },
+        },
+        z: {
+          formatter: undefined,
+          title: "Size: ",
+        },
+        marker: {
+          show: true,
+        },
+        items: {
+          display: "flex",
+        },
+        fixed: {
+          enabled: false,
+          position: "topRight",
+          offsetX: 0,
+          offsetY: 0,
         },
       },
     },
@@ -461,15 +615,25 @@ export default function Profile() {
   return (
     <div className="flex flex-col">
       <ProfileInfo />
-      <Title  title={"Profile statistics"} />
+      <Title title={"Profile statistics"} />
       <div className="bu-nav-color mb-6 px-10 py-6">
-        <Title title={""} sub_title={"chart shows your total successful and failed attempts accross all the topics"} />
+        <Title
+          title={""}
+          sub_title={
+            "chart shows your total successful and failed attempts accross all the topics"
+          }
+        />
 
         <PieChart />
       </div>
 
       <div>
-        <Title title={""} sub_title={"Your fabourite series. Shows your total attempts accross different series"} />
+        <Title
+          title={""}
+          sub_title={
+            "Your fabourite series. Shows your total attempts accross different series"
+          }
+        />
 
         <BarChart />
       </div>
@@ -486,7 +650,10 @@ export default function Profile() {
       </div>
 
       <div>
-      <Title title={""} sub_title={"Your Solve time for different problems"} />
+        <Title
+          title={""}
+          sub_title={"Your Solve time for different problems"}
+        />
         <Chart
           options={distributionChartData.options}
           series={distributionChartData.series}
@@ -523,7 +690,7 @@ export default function Profile() {
         />
       </div>
 
-      <Title  title={"You tried these problems recently"} />
+      <Title title={"You tried these problems recently"} />
 
       <ProfileRecentFails />
       <Tooltip id="data-tip" />

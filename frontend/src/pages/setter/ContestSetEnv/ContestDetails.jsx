@@ -11,6 +11,7 @@ import { faUpload } from "@fortawesome/free-solid-svg-icons";
 const DetailsTab = () => {
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [collaborators, setCollaborators] = useState(false);
+  const [timeString, setTimeString] = useState("");
 
   const { state: contest, dispatch } = useContestContext();
   useEffect(() => {
@@ -18,6 +19,12 @@ const DetailsTab = () => {
     console.log(contest.startDate, contest.endDate);
   }, []);
 
+  useEffect(() => {
+    const date = new Date(contest.startDateTime);
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    setTimeString(`${hours}:${minutes}`);
+  }, [contest.startDateTime]);
   const handleAddModalOpen = () => {
     setAddModalOpen(true);
   };
@@ -80,7 +87,7 @@ const DetailsTab = () => {
         />
       </div>
 
-      <div className="flex flex-col gap-2">
+      {/* <div className="flex flex-col gap-2">
         <div className="bu-text-primary text-2xl font-medium">Start Date</div>
         <input
           value={contest.startDate}
@@ -94,19 +101,68 @@ const DetailsTab = () => {
             })
           }
         />
-      </div>
+      </div> */}
 
       <div className="flex flex-col gap-2">
-        <div className="bu-text-primary text-2xl font-medium">End Date</div>
+        <div className="bu-text-primary text-2xl font-medium">Start Date</div>
         <input
-          // value={contest.endDate}
-          type="datetime-local"
+          value={
+            contest.startDateTime
+              ? new Date(contest.startDateTime).toISOString().split("T")[0]
+              : undefined
+          }
+          type="date"
           name="endDate"
           className="border text-[140%] rounded-lg block w-full p-2.5 px-5 bu-input-primary"
           onChange={(e) => {
-            console.log("===>", typeof e.target.value);
+            const date = new Date(contest.startDateTime);
+            const [year, month, day] = e.target.value.split("-");
+            date.setFullYear(parseInt(year, 10));
+            date.setMonth(parseInt(month, 10) - 1); // Months are 0-indexed in JavaScript
+            date.setDate(parseInt(day, 10));
             dispatch({
-              type: "UPDATE_END_DATE",
+              type: "UPDATE_CONTEST_DATE_TIME",
+              payload: date,
+            });
+          }}
+        />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <div className="bu-text-primary text-2xl font-medium">Start Time</div>
+        <input
+          value={contest.startDateTime ? timeString : undefined}
+          type="time"
+          name="endDate"
+          className="border text-[140%] rounded-lg block w-full p-2.5 px-5 bu-input-primary"
+          onChange={(e) => {
+            const [hours, minutes] = e.target.value.split(":");
+            const date = new Date(contest.startDateTime);
+            date.setHours(parseInt(hours, 10));
+            date.setMinutes(parseInt(minutes, 10));
+            dispatch({
+              type: "UPDATE_CONTEST_DATE_TIME",
+              payload: date,
+            });
+          }}
+        />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <div className="bu-text-primary text-2xl font-medium">
+          Duration (Hours)
+        </div>
+        <input
+          value={contest.duration}
+          type="number"
+          className="border text-[140%] rounded-lg block w-full p-2.5 px-5 bu-input-primary"
+          step={0.01}
+          placeholder="3"
+          min={0}
+          onChange={(e) => {
+            // if (e.target.value < 0) return;
+            dispatch({
+              type: "UPDATE_DURATION",
               payload: e.target.value,
             });
           }}
@@ -130,24 +186,8 @@ const DetailsTab = () => {
       <button
         className="bu-button-primary flex flex-row items-center justify-center gap-2 rounded-lg px-7 py-3.5 text-center text-lg font-semibold focus:outline-none"
         onClick={async () => {
-          const result = await contestApi.updateTitle(
-            contest.id,
-            contest.title
-          );
-          const result1 = await contestApi.updateDescription(
-            contest.id,
-            contest.details
-          );
-          const result2 = await contestApi.updateDates(
-            contest.id,
-            contest.startDate,
-            contest.endDate
-          );
-
-          showSuccess(
-            "Details saved successfully",
-            result && result1 && result2
-          );
+          const result = await contestApi.updateContest(contest.id, contest);
+          showSuccess("Details saved successfully", result);
         }}
       >
         {isAddModalOpen && (

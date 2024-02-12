@@ -133,6 +133,7 @@ export default function Profile() {
               show: false,
             },
           },
+
           plotOptions: {
             bar: {
               horizontal: false,
@@ -182,14 +183,41 @@ export default function Profile() {
           fill: {
             opacity: 1,
           },
+
           tooltip: {
+            enabled: true,
+            enabledOnSeries: undefined,
+            shared: true,
+            followCursor: false,
+            intersect: false,
+            inverseOrder: false,
+            custom: undefined,
+            hideEmptySeries: true,
+            fillSeriesColor: false,
+            theme: "dark",
+            onDatasetHover: {
+              highlightDataSeries: false,
+            },
             y: {
               formatter: function (val) {
                 return val + " problems";
               },
             },
             style: {
+              fontSize: "12px",
               colors: ["#000000"], // Add this line
+            },
+            marker: {
+              show: true,
+            },
+            items: {
+              display: "flex",
+            },
+            fixed: {
+              enabled: false,
+              position: "topRight",
+              offsetX: 0,
+              offsetY: 0,
             },
           },
           colors: ["#ef9c9c", "#aadfcf"],
@@ -347,6 +375,52 @@ export default function Profile() {
         stops: [0, 100],
       },
     },
+    tooltip: {
+      enabled: true,
+      enabledOnSeries: undefined,
+      shared: true,
+      followCursor: false,
+      intersect: false,
+      inverseOrder: false,
+      custom: undefined,
+      hideEmptySeries: true,
+      fillSeriesColor: false,
+      theme: "dark",
+      style: {
+        fontSize: "12px",
+        fontFamily: undefined,
+      },
+      onDatasetHover: {
+        highlightDataSeries: false,
+      },
+      x: {
+        show: true,
+        format: "dd MMM",
+        formatter: undefined,
+      },
+      y: {
+        formatter: undefined,
+        title: {
+          formatter: (seriesName) => seriesName,
+        },
+      },
+      z: {
+        formatter: undefined,
+        title: "Size: ",
+      },
+      marker: {
+        show: true,
+      },
+      items: {
+        display: "flex",
+      },
+      fixed: {
+        enabled: false,
+        position: "topRight",
+        offsetX: 0,
+        offsetY: 0,
+      },
+    },
     colors: ["#aadfcf"],
   };
 
@@ -355,7 +429,11 @@ export default function Profile() {
   const [distributionChartData, setDistributionChartData] = useState({
     options: {
       chart: {
+        id: "daily-activity-chart",
         type: "histogram",
+        toolbar: {
+          show: false,
+        },
       },
       xaxis: {
         title: {
@@ -370,7 +448,61 @@ export default function Profile() {
       grid: {
         show: false,
       },
+      dataLabels: {
+        enabled: false,
+      },
+      marker: {
+        colors: ["#000000"],
+        fillColors: ["#000000"],
+      },
       colors: ["#aadfcf"],
+
+      tooltip: {
+        enabled: true,
+        enabledOnSeries: undefined,
+        shared: true,
+        followCursor: false,
+        intersect: false,
+        inverseOrder: false,
+        custom: undefined,
+        hideEmptySeries: true,
+        fillSeriesColor: false,
+        theme: "dark",
+        style: {
+          fontSize: "12px",
+          fontFamily: undefined,
+        },
+        onDatasetHover: {
+          highlightDataSeries: false,
+        },
+        x: {
+          show: true,
+          format: "dd MMM",
+          formatter: undefined,
+        },
+        y: {
+          formatter: undefined,
+          title: {
+            formatter: (seriesName) => seriesName,
+          },
+        },
+        z: {
+          formatter: undefined,
+          title: "Size: ",
+        },
+        marker: {
+          show: true,
+        },
+        items: {
+          display: "flex",
+        },
+        fixed: {
+          enabled: false,
+          position: "topRight",
+          offsetX: 0,
+          offsetY: 0,
+        },
+      },
     },
     series: [
       {

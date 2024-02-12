@@ -17,6 +17,18 @@ const ContestContextProvider = ({ children }) => {
           title: payload,
         };
 
+      case "UPDATE_DURATION":
+        return {
+          ...state,
+          duration: payload,
+        };
+
+      case "UPDATE_CONTEST_DATE_TIME":
+        return {
+          ...state,
+          startDateTime: payload,
+        };
+
       case "UPDATE_DETAILS":
         return {
           ...state,
@@ -43,7 +55,7 @@ const ContestContextProvider = ({ children }) => {
           ...state,
           problems: [...state.problems, ...payload],
         };
-        
+
       case "UPDATE_RATING":
         const { problemId, newRating } = payload;
         const updatedProblems = state.problems.map((problem) =>
@@ -57,7 +69,6 @@ const ContestContextProvider = ({ children }) => {
 
       default:
         return state;
-  
     }
   };
 

@@ -140,12 +140,10 @@ export default function Profile() {
             },
           },
           grid: {
-            row: {
-              // colors: ["#fff", "#f2f2f2"],
-            },
+            show: false,
           },
           dataLabels: {
-            enabled: true,
+            show: true,
           },
           stroke: {
             show: true,
@@ -188,7 +186,11 @@ export default function Profile() {
                 return val + " problems";
               },
             },
+            style: {
+              colors: ["#000000"], // Add this line
+            },
           },
+          colors: ["#ef9c9c", "#aadfcf"],
         },
       });
     }, [barChartData]);
@@ -230,6 +232,17 @@ export default function Profile() {
             height: 300,
           },
           labels: ["Fail", "Success"],
+          colors: ["#ef9c9c", "#aadfcf"],
+          dataLabels: {
+            style: {
+              colors: ["#222222", "#222222"], // Add this line. This will make the labels dark black.
+              fontSize: "20px",
+            },
+          },
+          stroke: {
+            width: 0, // Add this line. This will remove the border.
+          },
+
           responsive: [
             {
               breakpoint: 480,
@@ -314,6 +327,9 @@ export default function Profile() {
         text: "Daily Active Time (seconds)",
       },
     },
+    grid: {
+      show: false,
+    },
     dataLabels: {
       enabled: false,
     },
@@ -349,6 +365,11 @@ export default function Profile() {
           text: "Total Problems Solved",
         },
       },
+      grid: {
+        show: false,
+      },
+      color: "#000000",
+      
     },
     series: [
       {
@@ -461,15 +482,25 @@ export default function Profile() {
   return (
     <div className="flex flex-col">
       <ProfileInfo />
-      <Title  title={"Profile statistics"} />
+      <Title title={"Profile statistics"} />
       <div className="bu-nav-color mb-6 px-10 py-6">
-        <Title title={""} sub_title={"chart shows your total successful and failed attempts accross all the topics"} />
+        <Title
+          title={""}
+          sub_title={
+            "chart shows your total successful and failed attempts accross all the topics"
+          }
+        />
 
         <PieChart />
       </div>
 
       <div>
-        <Title title={""} sub_title={"Your fabourite series. Shows your total attempts accross different series"} />
+        <Title
+          title={""}
+          sub_title={
+            "Your fabourite series. Shows your total attempts accross different series"
+          }
+        />
 
         <BarChart />
       </div>
@@ -486,7 +517,10 @@ export default function Profile() {
       </div>
 
       <div>
-      <Title title={""} sub_title={"Your Solve time for different problems"} />
+        <Title
+          title={""}
+          sub_title={"Your Solve time for different problems"}
+        />
         <Chart
           options={distributionChartData.options}
           series={distributionChartData.series}
@@ -523,7 +557,7 @@ export default function Profile() {
         />
       </div>
 
-      <Title  title={"You tried these problems recently"} />
+      <Title title={"You tried these problems recently"} />
 
       <ProfileRecentFails />
       <Tooltip id="data-tip" />

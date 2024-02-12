@@ -157,7 +157,6 @@ export default function Profile() {
               style: {
                 colors: [],
                 fontSize: "0.8rem",
-                
               },
               rotate: 10,
               offsetY: 20,
@@ -342,13 +341,13 @@ export default function Profile() {
     fill: {
       type: "gradient",
       gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.7,
-        opacityTo: 0.9,
+        shadeIntensity: 0.7,
+        opacityFrom: 0.9,
+        opacityTo: 1,
         stops: [0, 100],
       },
     },
-    colors: ["#008FFB"],
+    colors: ["#aadfcf"],
   };
 
   //submission distribution...............................
@@ -371,7 +370,7 @@ export default function Profile() {
       grid: {
         show: false,
       },
-      color: "#000000",
+      colors: ["#aadfcf"],
     },
     series: [
       {

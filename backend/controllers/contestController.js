@@ -92,6 +92,18 @@ class ContestController extends Controller {
       res.status(404).json(result);
     }
   };
+  getContestProblemById = async (req, res) => {
+    
+    let result = await contestRepository.getContestProblemById(
+      req.params.contestId,
+      req.params.problemId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
   getAllProblemsByContest = async (req, res) => {
     let result = await contestRepository.getAllProblemsByContest(
       req.params.contestId

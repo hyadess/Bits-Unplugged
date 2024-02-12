@@ -4,7 +4,7 @@ import { Button, IconButton } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTag, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faTag, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
 import { getTimeStamp } from "../../services/dateUtil";
@@ -63,7 +63,7 @@ const ContestSetCard = ({
           </div>
 
           <div className="flex flex-col gap-2 items-center">
-            <div className={`bu-text-subtitle font-semibold text-${status === "Live" ? 'green' : 'blue'}-500`}>
+            <div className={`bu-text-subtitle font-semibold text-${status === "live" ? 'green' : 'blue'}-500`}>
               {`Status: ${status}`}
             </div>
             <div className="bu-text-subtitle font-semibold">
@@ -73,8 +73,8 @@ const ContestSetCard = ({
 
           <div className="flex gap-4 items-center">
             <IconButton
-              onClick={() => navigate(`/contests/${id}/edit`)}
-              className="text-blue-500 hover:text-blue-700"
+              onClick={() =>(status==='edit')? navigate(`/contests/${id}/edit`): ""}
+              className={`text-blue-500 ${(status=='edit')? 'hover:text-blue-700' : ''}`}
             >
               <div className="flex items-center">
                 <FontAwesomeIcon icon={faPenToSquare} size="sm" />
@@ -87,7 +87,7 @@ const ContestSetCard = ({
                 className="text-green-500 hover:text-green-700"
               >
                 <div className="flex items-center">
-                  <CheckCircleIcon sx={{ fontSize: "1.5rem" }} />
+                <FontAwesomeIcon icon={faEye} size="sm" />
                 </div>
               </IconButton>
             ) : (
@@ -96,14 +96,14 @@ const ContestSetCard = ({
                 className="text-blue-500 hover:text-blue-700"
               >
                 <div className="flex items-center">
-                  <AddTaskIcon sx={{ fontSize: "1.5rem" }} />
+                <FontAwesomeIcon icon={faEye} size="sm" />
                 </div>
               </IconButton>
             )}
 
             <IconButton
-              onClick={() => (userID===owner.userID)? setOpen(true) : ''}
-              className={`text-red-500 ${userID==owner.userID? 'hover:text-red-700' : ''}`}
+              onClick={() => (userID===owner.userID && status==='edit')? setOpen(true) : ''}
+              className={`text-red-500 ${(userID==owner.userID && status=='edit')? 'hover:text-red-700' : ''}`}
             >
               <div className="flex items-center">
                 <FontAwesomeIcon icon={faTrashCan} size="sm" />

@@ -4,11 +4,12 @@ import { Button, IconButton } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTag, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faHandPointRight, faTag, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
 import { getTimeStamp } from "../../services/dateUtil";
 import Confirmation from "../Confirmation";
+import { contestApi } from "api";
 // ... (previous imports)
 
 const ContestCard = ({
@@ -24,6 +25,12 @@ const ContestCard = ({
 }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+
+  const handleButtonClick = async () => {
+    const res = await contestApi.participateUpcomingContest(id);
+    navigate(`/contests/${id}`);
+  };
+  
 
   useEffect(() => {
     setLoading(false);
@@ -67,11 +74,12 @@ const ContestCard = ({
           <div className="flex gap-4 items-center">
             <div className="flex w-full cursor-pointer items-center justify-center">
               <div
-                onClick={() => {setOpen(true);}}
+                onClick={() => handleButtonClick()}
                 className="bu-button-secondary my-8 inline-flex  items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
               >
                 <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
-                  Register
+                  Enter   
+                  {/* <FontAwesomeIcon icon={faHandPointRight} /> */}
                 </h5>
               </div>
             </div>

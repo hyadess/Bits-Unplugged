@@ -44,6 +44,7 @@ import Contest from "./pages/setter/Contest";
 import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
 import Contests from "./pages/user/Contests";
+import UserContest from "./pages/Contest";
 import History from "./pages/setter/ProblemSetEnv/History";
 import TopicStat from "./pages/user/TopicStat";
 import AdminArticles from "./pages/admin/AdminArticles";
@@ -331,6 +332,20 @@ const AppRoutes = () => {
               <LayoutMain>
                 <ProblemsSubmissions />
               </LayoutMain>
+            }
+          />
+
+        <Route
+            path="/contests/:id"
+            element={
+                <UserContest/>
+            }
+          />
+
+        <Route
+            path="/contests/:id/Problems/:problemid"
+            element={
+                <UserContest/>
             }
           />
 

@@ -20,11 +20,10 @@ const ContestsView = ({
   return (
     <div>
       <Title
-        title={`Previous Contests`}
-        sub_title={`Set contests with particular problems right on our site`}
+        title={`Contests`}
+        sub_title={`Participate in contests with various problems right on our site`}
       />
 
-      <ProblemAddButton onClick={openModal} />
 
       <CardContainer col={1}>
         {contestList.map((contest, index) => (
@@ -45,15 +44,6 @@ const ContestsView = ({
           />
         ))}
       </CardContainer>
-
-      {modalIsOpen && (
-        <CustomModal
-          label={"Enter Contest Title"}
-          placeholder={"Contest Title"}
-          onClose={closeModal}
-          onSubmit={createContest}
-        />
-      )}
     </div>
   );
 };

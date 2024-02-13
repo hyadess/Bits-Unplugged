@@ -29,8 +29,8 @@ class UserActivityRepository extends Repository {
           lastSolveTimestamp: null,
           lastSuccessfulSolveTimestamp: null,
           totalFailedAttempt: 0,
-          createdAt: timestamp,
-          updatedAt: timestamp,
+          createdAt: timestamp ?? new Date(),
+          updatedAt: timestamp ?? new Date(),
         });
       }
     );

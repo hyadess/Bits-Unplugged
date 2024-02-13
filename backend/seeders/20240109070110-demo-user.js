@@ -125,12 +125,6 @@ module.exports = {
         },
         {
           // id: 11,
-          fullname: "Gazi Fardin Zafor Suvro",
-          username: "suvro",
-          // image: "/images/tutor11.jpg",
-        },
-        {
-          // id: 11,
           fullname: "Sakib Mohammed Sobaha",
           username: "sobaha",
           // image: "/images/tutor11.jpg",
@@ -171,12 +165,7 @@ module.exports = {
           username: "ajoy",
           // image: "/images/tutor11.jpg",
         },
-        {
-          // id: 11,
-          fullname: "Mijanur Rahman",
-          username: "mijan",
-          // image: "/images/tutor11.jpg",
-        },
+
         {
           // id: 11,
           fullname: "Mustafa Siam-Ur-Rafique",
@@ -201,18 +190,7 @@ module.exports = {
           username: "anonto",
           // image: "/images/tutor11.jpg",
         },
-        {
-          // id: 11,
-          fullname: "Mijanur Rahman",
-          username: "mijan",
-          // image: "/images/tutor11.jpg",
-        },
-        {
-          // id: 11,
-          fullname: "Jarif Islam",
-          username: "jarif",
-          // image: "/images/tutor11.jpg",
-        },
+
         {
           // id: 11,
           fullname: "Debjany Ghosh Aronno",

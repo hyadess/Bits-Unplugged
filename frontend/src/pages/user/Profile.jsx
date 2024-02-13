@@ -616,7 +616,7 @@ export default function Profile() {
     <div className="flex flex-col">
       <ProfileInfo />
       <Title title={"Profile statistics"} />
-      <div className="bu-nav-color mb-6 px-10 py-6">
+      <div className="mb-6 px-10 py-6">
         <Title
           title={""}
           sub_title={
@@ -638,7 +638,7 @@ export default function Profile() {
         <BarChart />
       </div>
 
-      <div className="bu-nav-color mb-6 px-10 py-6">
+      <div className="mb-6 px-10 py-6">
         <Title title={""} sub_title={"Time you spent solving problems"} />
 
         <Chart
@@ -662,11 +662,17 @@ export default function Profile() {
         />
       </div>
 
-      <div className="bu-nav-color mb-6 px-10 py-6">
+      <div className="mb-6 px-10 py-6">
         <Title title={""} sub_title={"Your activity heatmap"} />
         <CalendarHeatmap
-          startDate={new Date(new Date().getFullYear(), 0, 1)}
-          endDate={new Date(new Date().getFullYear(), 11, 31)}
+          startDate={
+            new Date(
+              new Date().getFullYear() - 1,
+              new Date().getMonth(),
+              new Date().getDate()
+            )
+          }
+          endDate={new Date()}
           values={heatmapData}
           classForValue={(value) => {
             if (!value) {

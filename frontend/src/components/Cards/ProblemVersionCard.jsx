@@ -80,25 +80,25 @@ const ProblemVersionCard = ({
         <div className="flex justify-between items-end">
           <div className="bu-text-subtitle">{getTimeStamp(timestamp)}</div>
           <div className="bu-text-primary">
-            {approvalStatus == 0 ? (
+            {approvalStatus == 3 ? (
               <div className="flex flex-row gap-2 items-end">
                 <div className="bu-text-subtitle">Rejected</div>
                 <div className="text-red-500 text-xl">
                   <FontAwesomeIcon icon={faXmark} />
                 </div>
               </div>
-            ) : approvalStatus == 1 ? (
-              <div className="flex flex-row gap-2 items-end">
-                <div className="bu-text-subtitle">Approved</div>
-                <div className="text-green-500 text-xl">
-                  <FontAwesomeIcon icon={faCheckDouble} />
-                </div>
-              </div>
-            ) : (
+            ) : approvalStatus == 2 ? (
               <div className="flex flex-row gap-2 items-end">
                 <div className="bu-text-subtitle">Pending</div>
                 <div className="text-gray-500 text-xl">
                   <FontAwesomeIcon icon={faHourglassHalf} />
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-row gap-2 items-end">
+                <div className="bu-text-subtitle">Approved</div>
+                <div className="text-green-500 text-xl">
+                  <FontAwesomeIcon icon={faCheckDouble} />
                 </div>
               </div>
             )}

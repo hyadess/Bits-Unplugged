@@ -96,7 +96,7 @@ module.exports = {
           topicId: 1,
           name: "Independent Set",
           description: "",
-          logo: "https://miro.medium.com/v2/resize:fit:4800/format:webp/1*fYKrGW0IUeoS_8XtCoNaLw.gif",
+          logo: "https://static.vecteezy.com/system/resources/previews/002/371/726/original/independent-businesswoman-flat-illustration-vector.jpg",
           isLive: true,
         },
         {
@@ -104,7 +104,7 @@ module.exports = {
           topicId: 1,
           name: "Dominating Set",
           description: "",
-          logo: "https://miro.medium.com/v2/resize:fit:4800/format:webp/1*fYKrGW0IUeoS_8XtCoNaLw.gif",
+          logo: "https://www.shutterstock.com/image-vector/man-manipulates-abuses-relationship-woman-600nw-1939821709.jpg",
           isLive: true,
         },
         {

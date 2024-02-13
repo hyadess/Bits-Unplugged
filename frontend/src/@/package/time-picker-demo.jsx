@@ -10,16 +10,16 @@ import { TimePickerInput } from "../components/ui/time-picker-input";
 export function TimePickerDemo({ date, setDate }) {
   const minuteRef = useRef(null);
   const hourRef = useRef(null);
-  const [period, setPeriod] = useState(date.getHours() >= 12 ? "PM" : "AM");
+  // const [period, setPeriod] = useState(date.getHours() >= 12 ? "PM" : "AM");
 
   // const secondRef = useRef(null);
-  const togglePeriod = () => {
-    const newDate = new Date(date);
-    newDate.setHours((newDate.getHours() + 12) % 24);
-    setDate(newDate);
-    setPeriod((prev) => (prev === "AM" ? "PM" : "AM"));
-    // periodRef.current?.focus();
-  };
+  // const togglePeriod = () => {
+  //   const newDate = new Date(date);
+  //   newDate.setHours((newDate.getHours() + 12) % 24);
+  //   setDate(newDate);
+  //   setPeriod((prev) => (prev === "AM" ? "PM" : "AM"));
+  //   // periodRef.current?.focus();
+  // };
   // useEffect(() => {
   //   // setPeriod(date.getHours() >= 12 ? "PM" : "AM");
   //   console.log("Hours: ", date.getHours());

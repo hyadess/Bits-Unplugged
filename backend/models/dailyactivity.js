@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class DailyActivity extends Model {
     /**
@@ -13,49 +11,51 @@ module.exports = (sequelize, DataTypes) => {
       DailyActivity.belongsTo(models.User, {
         foreignKey: "userId",
         as: "user",
-      }); 
+      });
       DailyActivity.belongsTo(models.ProblemVersion, {
         foreignKey: "problemId",
         as: "problem",
       });
-
     }
   }
-  DailyActivity.init({
-    userId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "Users",
-        key: "id",
+  DailyActivity.init(
+    {
+      userId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        unique: "DailyActivities_userId_problemId_activityDate_key",
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
-      unique: "DailyActivities_userId_problemId_activityDate_key",
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
-    },
-    problemId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "ProblemVersions",
-        key: "id",
+      problemId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "ProblemVersions",
+          key: "id",
+        },
+        unique: "DailyActivities_userId_problemId_activityDate_key",
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
-      unique: "DailyActivities_userId_problemId_activityDate_key",
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
-    },
-    activityDate: {
-      type:DataTypes.DATE,
-      unique: "DailyActivities_userId_problemId_activityDate_key",
-    },
-    duration: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'DailyActivity',
-    indexes: [
-      {
-        fields: ["userId", "problemId","activityDate"],
-        unique: true,
+      activityDate: {
+        type: DataTypes.DATE,
+        unique: "DailyActivities_userId_problemId_activityDate_key",
       },
-    ],
-  });
+      duration: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "DailyActivity",
+      indexes: [
+        {
+          fields: ["userId", "problemId", "activityDate"],
+          unique: true,
+        },
+      ],
+    }
+  );
   return DailyActivity;
 };

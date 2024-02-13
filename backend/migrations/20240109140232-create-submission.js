@@ -34,6 +34,13 @@ module.exports = {
       canvasData: {
         type: Sequelize.JSON,
       },
+      userActivity: {
+        type: Sequelize.JSON,
+        defaultValue: {},
+      },
+      image: {
+        type: Sequelize.TEXT,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -6,8 +6,8 @@ class UserActivityRepository extends Repository {
   constructor() {
     super();
   }
-  trackDuration = async (userId, problemId, duration) => {
-    dailyActivityRepository.Entry(userId, problemId, duration);
+  trackDuration = async (userId, problemId, duration, timestamp) => {
+    dailyActivityRepository.Entry(userId, problemId, duration, timestamp);
     const activity = db.Activity.findOne({ where: { userId, problemId } }).then(
       function (obj) {
         // update
@@ -16,6 +16,7 @@ class UserActivityRepository extends Repository {
           console.log("Updated:", duration);
           return obj.update({
             viewDuration: obj.viewDuration + duration,
+            updatedAt: timestamp,
           });
         }
         // insert
@@ -28,6 +29,8 @@ class UserActivityRepository extends Repository {
           lastSolveTimestamp: null,
           lastSuccessfulSolveTimestamp: null,
           totalFailedAttempt: 0,
+          createdAt: timestamp,
+          updatedAt: timestamp,
         });
       }
     );

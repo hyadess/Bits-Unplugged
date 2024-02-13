@@ -15,7 +15,8 @@ class SubmissionService extends Service {
       await userActivityRepository.trackDuration(
         userId,
         problemId,
-        submission.duration
+        submission.duration,
+        submission.createdAt ?? new Date()
       );
 
       if (submission.verdict === "Accepted") {

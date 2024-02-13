@@ -8,7 +8,36 @@ router.post("/submissions", async (req, res) => {
   try {
     // Insert demo data into the database
     for (let userId = 10; userId <= 150; userId++)
-      for (let problemId = 1; problemId <= 1; problemId++)
+      for (let problemId = 1; problemId <= 20; problemId++)
+        // pick a random number of submissions for each problem
+        for (let t = 0; t < Math.floor(Math.random() * 10); t++)
+          await submissionService.submitSolution(userId, problemId, {
+            // pick a random verdict for each submission
+            verdict: ["Accepted", "Wrong answer"][
+              Math.floor(Math.random() * 2)
+            ],
+            canvasData: {},
+            duration: Math.floor(Math.random() * 100),
+            userActivity: {},
+            image: "",
+            // pick a random date in the past year
+            createdAt: new Date(
+              Date.now() - Math.floor(Math.random() * 365 * 24 * 60 * 60 * 1000)
+            ),
+          });
+
+    res.status(201).json({ message: "Demo data inserted successfully" });
+  } catch (err) {
+    console.error("Error inserting demo data:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+router.post("/submissions/:id", async (req, res) => {
+  try {
+    // Insert demo data into the database
+    for (let userId = req.params.id; userId <= req.params.id; userId++)
+      for (let problemId = 1; problemId <= 20; problemId++)
         // pick a random number of submissions for each problem
         for (let t = 0; t < Math.floor(Math.random() * 10); t++)
           await submissionService.submitSolution(userId, problemId, {

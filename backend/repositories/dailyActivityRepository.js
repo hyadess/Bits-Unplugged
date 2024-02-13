@@ -17,7 +17,7 @@ class DailyActivityRepository extends Repository {
     const dailyActivity = db.DailyActivity.create({
       userId: userId,
       problemId: problemId,
-      activityDate: today,
+      activityDate: today ?? new Date(),
       duration: duration,
     });
     return dailyActivity;

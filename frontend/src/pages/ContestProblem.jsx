@@ -111,7 +111,7 @@ function ContestProblemController() {
   
         if (result && result.success) {
           const res2 = await contestApi.getContestProblemById(id,problemid);
-          await contestApi.addSubmissionToContest(id, problemid, result.data, res2.data[0].rating);
+          await contestApi.addSubmissionToContest(id, problemid, result.data, 0);
         }    
       }
   };

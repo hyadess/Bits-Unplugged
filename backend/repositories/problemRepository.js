@@ -17,22 +17,10 @@ class ProblemsRepository extends Repository {
   };
 
   getAllLiveProblems = async (userId) => {
-    console.log("userId", userId);
-    const latestProblemVersions = await db.sequelize.query(
-      `SELECT DISTINCT ON ("problemId")
-      "id", "problemId", "version"
-      FROM "ProblemVersions" PV
-      WHERE "approvalStatus" = 1
-      ORDER BY "problemId", "version" DESC`,
-      { type: db.Sequelize.QueryTypes.SELECT, raw: true }
-    );
-
     const latestProblems = await db.ProblemVersion.findAll({
       where: {
-        id: {
-          [Op.in]: latestProblemVersions.map((version) => version.id),
-        },
         isLive: true,
+        approvalStatus: 1,
       },
       include: [
         {
@@ -65,20 +53,9 @@ class ProblemsRepository extends Repository {
   };
 
   getLiveProblemsBySeries = async (userId, seriesId) => {
-    const latestProblemVersions = await db.sequelize.query(
-      `SELECT DISTINCT ON ("problemId")
-      "id", "problemId", "version"
-      FROM "ProblemVersions" PV
-      WHERE "approvalStatus" = 1
-      ORDER BY "problemId", "version" DESC`,
-      { type: db.Sequelize.QueryTypes.SELECT, raw: true }
-    );
-
     const latestProblems = await db.ProblemVersion.findAll({
       where: {
-        id: {
-          [Op.in]: latestProblemVersions.map((version) => version.id),
-        },
+        approvalStatus: 1,
         isLive: true,
         seriesId,
       },
@@ -218,7 +195,7 @@ class ProblemsRepository extends Repository {
     FROM "ProblemVersions" "P"
     JOIN "Series" "S" ON "P"."seriesId" = "S"."id"
     JOIN "Topics" "T" ON "S"."topicId" = "T"."id"
-    WHERE "P"."isLive" = TRUE
+    WHERE "P"."isLive" = TRUE AND  "P"."approvalStatus" = 1
     AND NOT EXISTS (
       SELECT 1 FROM "Activities" "A" 
       WHERE "P"."id" = "A"."problemId" AND "A"."userId" = $1)    
@@ -523,8 +500,28 @@ class ProblemsRepository extends Repository {
   };
 
   approveProblem = async (id) => {
+    // First find the problemId of this problemVersion from id
+    const problemVersion = await db.ProblemVersion.findByPk(id);
+    if (!problemVersion) {
+      return null;
+    }
+    const problemId = problemVersion.problemId;
+
+    // Then update the approvalStatus field in ProblemVersion from 0 to 1
+    const oldApprovedProblem = await db.ProblemVersion.update(
+      {
+        approvalStatus: 0,
+      },
+      {
+        where: {
+          problemId,
+          approvalStatus: 1,
+        },
+      }
+    );
+
     // Just update the approvalStatus field in ProblemVersion to 1 using ORM
-    const updatedProblem = await db.ProblemVersion.update(
+    const newApprovedProblem = await db.ProblemVersion.update(
       {
         approvalStatus: 1,
       },
@@ -534,14 +531,14 @@ class ProblemsRepository extends Repository {
         },
       }
     );
-    return updatedProblem;
+    return newApprovedProblem;
   };
 
   rejectProblem = async (id, feedback) => {
     // Just update the approvalStatus field in ProblemVersion to 0 using ORM
     const updatedProblem = await db.ProblemVersion.update(
       {
-        approvalStatus: 0,
+        approvalStatus: 3,
         feedback: feedback,
       },
       {

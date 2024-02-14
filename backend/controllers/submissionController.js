@@ -1,10 +1,11 @@
 const Controller = require("./base");
 const SubmissionRepository = require("../repositories/submissionRepository");
-const ProblemRepository=require("../repositories/problemRepository");
+const ProblemRepository = require("../repositories/problemRepository");
 const UserActivityRepository = require("../repositories/userActivityRepository");
+const submissionService = require("../services/submissionService");
 const userActivityRepository = new UserActivityRepository();
 const submissionRepository = new SubmissionRepository();
-const problemRepository=new ProblemRepository();
+const problemRepository = new ProblemRepository();
 class SubmissionController extends Controller {
   constructor() {
     super();
@@ -35,25 +36,7 @@ class SubmissionController extends Controller {
   // getProblemStats = async (req, res) => {};
   submitSolution = async (req, res) => {
     this.handleRequest(res, async () => {
-      const durationTrack= await userActivityRepository.trackDuration(
-        req.user.userId,
-        req.params.problemId,
-        req.body.duration
-      );
-
-      if(req.body.verdict === "Accepted"){
-        const userActivity= await userActivityRepository.updateOnSuccessfulAttempt(
-          req.user.userId,
-          req.params.problemId
-        );
-      } else if(req.body.verdict === "Wrong answer"){
-        const userActivity= await userActivityRepository.updateOnFailedAttempt(
-          req.user.userId,
-          req.params.problemId
-        );
-      }
-  
-      const submission = await submissionRepository.submitSolution(
+      const result = submissionService.submitSolution(
         req.user.userId,
         req.params.problemId,
         req.body

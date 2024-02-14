@@ -1,20 +1,25 @@
-const Repository = require('./base');
-const db = require('../models/index');
-const { Op } = require('sequelize');
+const Repository = require("./base");
+const db = require("../models/index");
+const { Op } = require("sequelize");
 
 class DailyActivityRepository extends Repository {
   constructor() {
     super();
   }
-  Entry = async (userId,problemId,duration) => {
-    const today = new Date();
-    const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  Entry = async (userId, problemId, duration, timestamp) => {
+    const today = timestamp;
+    // const date =
+    //   today.getFullYear() +
+    //   "-" +
+    //   (today.getMonth() + 1) +
+    //   "-" +
+    //   today.getDate();
     const dailyActivity = db.DailyActivity.create({
-        userId:userId,
-        problemId:problemId,
-        activityDate:today,
-        duration:duration,
-      });
+      userId: userId,
+      problemId: problemId,
+      activityDate: today ?? new Date(),
+      duration: duration,
+    });
     return dailyActivity;
   };
   getDaywiseActivityByUser = async (userId) => {
@@ -46,23 +51,23 @@ class DailyActivityRepository extends Repository {
       "D"."activityDate",
       "D"."duration"
       FROM
-      "DailyActivities" "D"
+      (
+        SELECT
+        "DT"."problemId",
+        MAX("DT"."activityDate") AS "maxDate"
+        FROM
+        "DailyActivities" "DT"
+        WHERE
+        "DT"."userId" = $1
+        GROUP BY
+        "DT"."problemId"
+      ) "X"
+      JOIN
+      "DailyActivities" "D" ON "X"."problemId" = "D"."problemId" AND "X"."maxDate" = "D"."activityDate"
       JOIN
       "ProblemVersions" "PV" ON "D"."problemId" = "PV"."id"
       JOIN 
-      "Activities" "A" ON "D"."problemId" = "A"."problemId"
-      JOIN
-      (
-        SELECT 
-            "problemId", 
-            MAX("activityDate") AS "maxDate"
-        FROM 
-            "DailyActivities"
-        WHERE 
-            "userId" = $1
-        GROUP BY 
-            "problemId"
-      ) "SUBQ" ON "D"."problemId" = "SUBQ"."problemId" AND "D"."activityDate" = "SUBQ"."maxDate"
+      "Activities" "A" ON "D"."problemId" = "A"."problemId" AND "D"."userId" = "A"."userId"
       WHERE
       "D"."userId" = $1 AND "PV"."isLive" = TRUE
       ORDER BY
@@ -73,7 +78,7 @@ class DailyActivityRepository extends Repository {
     return result;
   };
 
-  getDaywiseActivityByUserAndSeries = async (userId,seriesId) => {
+  getDaywiseActivityByUserAndSeries = async (userId, seriesId) => {
     const query = `
       SELECT
       "D"."userId",
@@ -93,11 +98,9 @@ class DailyActivityRepository extends Repository {
       ORDER BY
       "D"."userId","visitDate";
       `;
-    const params = [userId,seriesId];
+    const params = [userId, seriesId];
     const result = await this.query(query, params);
     return result;
   };
-
-    
 }
 module.exports = DailyActivityRepository;

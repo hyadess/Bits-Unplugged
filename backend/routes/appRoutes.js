@@ -9,6 +9,7 @@ const submissionRoutes = require("./submissionRoutes");
 const userActivityRoutes = require("./userActivityRoutes");
 const contestRoutes = require("./contestRoutes");
 const articleRoutes = require("./articleRoutes");
+const seedRoutes = require("./seedRoutes");
 const base = require("../repositories/base");
 
 require("../services/passport");
@@ -32,5 +33,6 @@ router.use("/submissions", submissionRoutes);
 router.use("/userActivity", userActivityRoutes);
 router.use("/contests", contestRoutes);
 router.use("/articles", articleRoutes);
+router.use("/seed", seedRoutes);
 
 module.exports = router;

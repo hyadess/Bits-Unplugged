@@ -51,23 +51,23 @@ class DailyActivityRepository extends Repository {
       "D"."activityDate",
       "D"."duration"
       FROM
-      "DailyActivities" "D"
+      (
+        SELECT
+        "DT"."problemId",
+        MAX("DT"."activityDate") AS "maxDate"
+        FROM
+        "DailyActivities" "DT"
+        WHERE
+        "DT"."userId" = $1
+        GROUP BY
+        "DT"."problemId"
+      ) "X"
+      JOIN
+      "DailyActivities" "D" ON "X"."problemId" = "D"."problemId" AND "X"."maxDate" = "D"."activityDate"
       JOIN
       "ProblemVersions" "PV" ON "D"."problemId" = "PV"."id"
       JOIN 
-      "Activities" "A" ON "D"."problemId" = "A"."problemId"
-      JOIN
-      (
-        SELECT 
-            "problemId", 
-            MAX("activityDate") AS "maxDate"
-        FROM 
-            "DailyActivities"
-        WHERE 
-            "userId" = $1
-        GROUP BY 
-            "problemId"
-      ) "SUBQ" ON "D"."problemId" = "SUBQ"."problemId" AND "D"."activityDate" = "SUBQ"."maxDate"
+      "Activities" "A" ON "D"."problemId" = "A"."problemId" AND "D"."userId" = "A"."userId"
       WHERE
       "D"."userId" = $1 AND "PV"."isLive" = TRUE
       ORDER BY

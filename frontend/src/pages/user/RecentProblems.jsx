@@ -22,6 +22,7 @@ export default function RecentProblems() {
     const res = await userActivityApi.recentlyViewedProblems();
     if (res.success) {
       setProblems(res.data);
+      console.log("recent problems", res.data);
       setLoading(false);
     } else {
       setError(true);

@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { Avatar, InputAdornment, Typography } from "@mui/material";
-import { profileApi } from "../../api";
-import Title from "../../components/Title";
+import { profileApi } from "../../../api";
+import Title from "../../../components/Title";
 
 export default function ProfileInfo() {
   const [curUser, setCurUser] = useState(null);
@@ -43,7 +43,7 @@ export default function ProfileInfo() {
           {curUser?.fullname}
         </p>
         <p className="mb-3 text-center md:text-left  font-light  md:text-lg bu-text-subtitle">
-         email: {curUser?.email}
+          email: {curUser?.email}
         </p>
       </div>
     </div>

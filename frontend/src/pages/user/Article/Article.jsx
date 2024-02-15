@@ -6,9 +6,9 @@ import React, {
   forwardRef,
 } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { setLoading } from "../../App";
-import { articleApi, submissionApi } from "../../api";
-import { useGlobalContext } from "../../store/GlobalContextProvider";
+import { setLoading } from "../../../App";
+import { articleApi, submissionApi } from "../../../api";
+import { useGlobalContext } from "../../../store/GlobalContextProvider";
 import { set } from "date-fns";
 import Title from "components/Title";
 import MarkdownPreview from "components/Markdown/MarkdownPreview";
@@ -102,7 +102,7 @@ const Canvas = ({
             onClick={() => {
               console.log("inside submit");
               console.log(content.activityData);
-              
+
               onSubmit(content);
             }}
             endIcon={<SendIcon sx={{ fontSize: "2rem", color: "white" }} />}
@@ -133,7 +133,7 @@ export default function Article() {
       console.log(article);
       console.log("done");
     }
-  };
+  }; 
   const solutionSubmit = async (content) => {
     let res = await SubmissionService.checkSolution(
       content.checkerCode,

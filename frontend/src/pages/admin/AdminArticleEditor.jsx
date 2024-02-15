@@ -5,7 +5,7 @@ import { setLoading } from "../../App";
 import { useGlobalContext } from "store/GlobalContextProvider";
 import Title from "../../components/Title";
 import MarkDownContainer from "./MarkDownContainer";
-import { faAdd,faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function AdminArticleEditor() {
@@ -59,12 +59,47 @@ export default function AdminArticleEditor() {
     });
   };
 
+  const writeArticle = () => {
+    return (
+      <div className="flex flex-col justify-between">
+        {article?.content?.length > 0 &&
+          article?.content?.map((content, index) => {
+            if (content.type === "markdown") {
+              return (
+                <MarkDownContainer
+                  index={index}
+                  colorMode={colorMode}
+                  text={content.data}
+                  setText={updateMarkdown}
+                  onAdd={() => addMarkdown(index)}
+                  onDelete={() => deleteMarkdown(index)}
+                />
+              );
+            } else if (content.type === "canvas") {
+              // return (
+              //   <Canvas
+              //     index={index}
+              //     content={content}
+              //     onReset={reset}
+              //     onSubmit={solutionSubmit}
+              //     articleBackup={articleBackup}
+              //     updateCanvas={updateCanvas}
+              //     updateActivity={updateActivity}
+              //   />
+              // );
+            }
+          })}
+      </div>
+    );
+  };
+
   useEffect(() => {
     getArticleInfo();
   }, []);
 
   useEffect(() => {
     console.log(article);
+    writeArticle();
   }, [article]);
 
   return (
@@ -73,35 +108,7 @@ export default function AdminArticleEditor() {
         <div className="flex flex-row justify-between">
           <Title title={article.title} sub_title={article.subtitle} />
         </div>
-        <div className="flex flex-col justify-between">
-          {article?.content?.length > 0 &&
-            article?.content?.map((content, index) => {
-              if (content.type === "markdown") {
-                return (
-                  <MarkDownContainer
-                    index={index}
-                    colorMode={colorMode}
-                    text={content.data}
-                    setText={updateMarkdown}
-                    onAdd={addMarkdown}
-                    onDelete={deleteMarkdown}
-                  />
-                );
-              } else if (content.type === "canvas") {
-                // return (
-                //   <Canvas
-                //     index={index}
-                //     content={content}
-                //     onReset={reset}
-                //     onSubmit={solutionSubmit}
-                //     articleBackup={articleBackup}
-                //     updateCanvas={updateCanvas}
-                //     updateActivity={updateActivity}
-                //   />
-                // );
-              }
-            })}
-        </div>
+        <writeArticle />
 
         <div className="flex justify-center">
           <div className="mx-6 pd-2">

@@ -95,6 +95,9 @@ class ContestApi extends Api {
     return await this.post(`/contests/${contestId}/accept-invitation`);
   };
 
+  getLeaderboard = async (contestId) => {
+    return await this.get(`/contests/${contestId}/Leaderboard`);
+  };
   showAllCollaborators = async (contestId) => {
     // console.log("===>", contestId);
     return await this.get("/contests/" + contestId + "/showAllCollaborators");
@@ -125,8 +128,17 @@ class ContestApi extends Api {
     });
   };
 
-  addSubmissionToContest = async (contestId, problemId, submissionId, points) => {
-    return await this.post("/contests/" + contestId + "/addSubmission", {problemId, submissionId, points,});
+  addSubmissionToContest = async (
+    contestId,
+    problemId,
+    submissionId,
+    points
+  ) => {
+    return await this.post("/contests/" + contestId + "/addSubmission", {
+      problemId,
+      submissionId,
+      points,
+    });
   };
 
   deleteProblem = async (contestId, problemId) => {

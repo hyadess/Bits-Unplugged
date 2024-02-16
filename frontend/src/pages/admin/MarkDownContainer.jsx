@@ -23,7 +23,7 @@ export default function MarkDownContainer({
         <div className="mx-6">
           <button
             className="flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400"
-            onClick={() => onDelete(index)}
+            onClick={onDelete}
           >
             <FontAwesomeIcon icon={faTrashCan} />
           </button>
@@ -31,7 +31,7 @@ export default function MarkDownContainer({
         <div className="mx-6 pd-2">
           <button
             className="flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400"
-            onClick={() => onAdd(index)}
+            onClick={onAdd}
           >
             <FontAwesomeIcon icon={faAdd} />
           </button>

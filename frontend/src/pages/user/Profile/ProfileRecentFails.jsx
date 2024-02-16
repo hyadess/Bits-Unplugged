@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import RecentFailCard from "../../components/Cards/RecentFailCard";
-import TableContainer from "../../containers/TableContainer";
-import Title from "../../components/Title";
-import { setLoading } from "../../App";
+import RecentFailCard from "../../../components/Cards/RecentFailCard";
+import TableContainer from "../../../containers/TableContainer";
+import Title from "../../../components/Title";
+import { setLoading } from "../../../App";
 // import { Switch } from "@mui/material";
 // import { useState } from 'react'
 import { Switch } from "@headlessui/react";
-import { userActivityApi } from "../../api";
-import CardContainer from "../../containers/CardContainer";
+import { userActivityApi } from "../../../api";
+import CardContainer from "../../../containers/CardContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckDouble,

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import Title from "../../components/Title";
-import { setLoading } from "../../App";
-import { submissionApi, userActivityApi } from "../../api";
+import Title from "../../../components/Title";
+import { setLoading } from "../../../App";
+import { submissionApi, userActivityApi } from "../../../api";
 import { Tooltip } from "react-tooltip";
 import ApexCharts from "react-apexcharts";
 import Chart from "react-apexcharts";

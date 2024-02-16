@@ -27,7 +27,7 @@ import AdminSeries from "./pages/admin/AdminSeries";
 import AdminProblems from "./pages/admin/AdminProblems";
 import AdminTopicEditor from "./pages/admin/AdminTopicEditor";
 import AdminSeriesEditor from "./pages/admin/AdminSeriesEditor";
-import ProfileSubmissions from "./pages/user/ProfileSubmissions";
+import ProfileSubmissions from "./pages/user/Profile/ProfileSubmissions";
 import AdminProblemEditor from "./pages/admin/AdminProblemEditor";
 import AdminCanvasList from "./pages/admin/AdminCanvasList";
 import AdminCanvasEditor from "./pages/admin/AdminCanvasEditor";
@@ -38,7 +38,7 @@ import AdminNavbar from "./components/Navbars/AdminNavbar";
 import LayoutMain from "./components/Layouts/LayoutMain";
 import ProblemsSubmissions from "./pages/ProblemsSubmissions";
 import SetterProfile from "./pages/setter/SetterProfile";
-import Profile from "./pages/user/Profile";
+import Profile from "./pages/user/Profile/Profile";
 import SetterContests from "./pages/setter/SetterContests";
 import Contest from "./pages/setter/Contest";
 import GlobalContext from "./store/GlobalContext";
@@ -49,7 +49,7 @@ import History from "./pages/setter/ProblemSetEnv/History";
 import TopicStat from "./pages/user/TopicStat";
 import AdminArticles from "./pages/admin/AdminArticles";
 import AdminArticleEditor from "./pages/admin/AdminArticleEditor";
-import Article from "./pages/user/Article";
+import Article from "./pages/user/Article/Article";
 import SolverNavbar from "./components/Navbars/SolverNavbar";
 import RecentProblems from "./pages/user/RecentProblems";
 import SetterNavbar from "./components/Navbars/SetterNavbar";
@@ -335,18 +335,11 @@ const AppRoutes = () => {
             }
           />
 
-        <Route
-            path="/contests/:id"
-            element={
-                <UserContest/>
-            }
-          />
+          <Route path="/contests/:id" element={<UserContest />} />
 
-        <Route
+          <Route
             path="/contests/:id/Problems/:problemid"
-            element={
-                <UserContest/>
-            }
+            element={<UserContest />}
           />
 
           <Route

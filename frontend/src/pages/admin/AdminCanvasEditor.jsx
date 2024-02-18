@@ -18,9 +18,9 @@ import {
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { setLoading } from "../../App";
+import { setLoading, showSuccess } from "../../App";
 import { canvasApi } from "../../api";
-import { Switch } from "@mui/material";
+import { FormControl, Switch } from "@mui/material";
 import GlobalContext from "../../store/GlobalContext";
 
 // const snakeCaseToTitleCase = (input) => {
@@ -234,6 +234,7 @@ const OptionList = ({ options, setCanvas, id }) => {
                 options={[
                   { value: "select", label: "Select" },
                   { value: "switch", label: "Switch" },
+                  { value: "number", label: "Number" },
                 ]}
               />
               {options[key].type == "switch" ? (
@@ -274,6 +275,32 @@ const OptionList = ({ options, setCanvas, id }) => {
                     id="seriesId"
                     value={options[key].value}
                     options={options[key].list}
+                  />
+                </div>
+              ) : options[key].type == "number" ? (
+                <div className="flex-col">
+                  <label className="block mb-2 text-sm font-medium bu-text-primary">
+                    {"Default"}
+                  </label>
+                  <input
+                    value={options[key].value}
+                    type="number"
+                    className="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
+                    step={1}
+                    placeholder="0"
+                    // min={0}
+                    onChange={(e) => {
+                      setCanvas((prevJson) => ({
+                        ...prevJson,
+                        [id]: {
+                          ...prevJson[id],
+                          [key]: {
+                            ...prevJson[id][key],
+                            value: e.target.value,
+                          },
+                        },
+                      }));
+                    }}
                   />
                 </div>
               ) : (
@@ -334,6 +361,7 @@ const OptionList = ({ options, setCanvas, id }) => {
             options={[
               { value: "select", label: "Select" },
               { value: "switch", label: "Switch" },
+              { value: "number", label: "Number" },
             ]}
           />
           <button
@@ -342,12 +370,14 @@ const OptionList = ({ options, setCanvas, id }) => {
               if (newOption.option !== "" && newOption.type !== "") {
                 if (newOption.type === "switch") {
                   options[newOption.option] = { value: false, type: "switch" };
-                } else {
+                } else if (newOption.type === "select") {
                   options[newOption.option] = {
                     value: "",
                     type: "select",
                     list: [],
                   };
+                } else if (newOption.type === "number") {
+                  options[newOption.option] = { value: 0, type: "number" };
                 }
                 setCanvas((prevJson) => ({
                   ...prevJson,
@@ -393,6 +423,7 @@ const AdminCanvasEditor = () => {
   const handleSave = async () => {
     const res = await canvasApi.updateCanvas(id, canvas);
     if (res.success) {
+      showSuccess("Canvas updated successfully", res);
       console.log(res);
     }
   };

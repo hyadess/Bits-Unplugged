@@ -171,22 +171,16 @@ const ArrayComponent = (props, ref) => {
   // }, [array]);
 
   const moveCard = (dragRow, dragCol, hoverRow, hoverCol) => {
-    // setArray((prevState) => {
-    //   const dragCard = prevState[0][dragIndex];
-    //   const copiedStateArray = [...prevState[0]];
-    //   copiedStateArray.splice(dragIndex, 1);
-    //   copiedStateArray.splice(hoverIndex, 0, dragCard);
-    //   return [copiedStateArray];
-    // });
-
-    // console.log(dragIndex, hoverIndex);
-    const dragCard = data.array[dragRow][dragCol];
-    const copiedArray = [...data.array];
-    const copiedStateArray = [...data.array[dragRow]];
-    copiedStateArray.splice(dragCol, 1);
-    copiedStateArray.splice(hoverCol, 0, dragCard);
-    copiedArray[dragRow] = copiedStateArray;
-    setData({ array: copiedArray });
+    setData((prevState) => {
+      // console.log(prevState);
+      const dragCard = prevState.array[dragRow][dragCol];
+      const copiedArray = [...prevState.array];
+      const copiedStateArray = [...prevState.array[dragRow]];
+      copiedStateArray.splice(dragCol, 1);
+      copiedStateArray.splice(hoverCol, 0, dragCard);
+      copiedArray[dragRow] = copiedStateArray;
+      return { array: copiedArray };
+    });
   };
   return (
     <div className="h-[100%] flex flex-col">
@@ -267,9 +261,21 @@ const ArrayComponent = (props, ref) => {
           <input
             type="text"
             className="border sm:text-sm rounded-lg block p-2.5 bu-input-primary w-20 text-center"
-            // value={numberOfRows}
+            value={
+              // Find element in data.array[data?.selectedElements[0] / 10] using selectedElements[0]
+              data?.array[Math.floor(data?.selectedElements[0] / 10)][
+                data?.array[
+                  Math.floor(data?.selectedElements[0] / 10)
+                ].findIndex(
+                  (element) => element.key === data.selectedElements[0]
+                )
+              ].label
+            }
             placeholder="value"
-            onChange={(e) => {}}
+            onChange={(e) => {
+              // column of selectedElement changes when dragged
+              // save key in selectedElements
+            }}
           />
         ) : (
           <></>
@@ -322,16 +328,15 @@ const ArrayComponent = (props, ref) => {
                   setData({ array: newArray });
                   if (newArray[row][col].selected) {
                     // add {row,col} pair to selectedElements
+                    console.log([...data.selectedElements, element.key]);
                     setSelectedElements([
                       ...data.selectedElements,
-                      { row, col },
+                      element.key,
                     ]);
                   } else {
                     // remove {row,col} pair from selectedElements
                     setSelectedElements(
-                      data.selectedElements.filter(
-                        (element) => element.row != row || element.col != col
-                      )
+                      data.selectedElements.filter((e) => e != element.key)
                     );
                   }
                 }}

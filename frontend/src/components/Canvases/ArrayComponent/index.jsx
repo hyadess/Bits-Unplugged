@@ -10,7 +10,15 @@ import React, {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-function DraggableElement({ label, id, row, col, moveCard, canDrag }) {
+function DraggableElement({
+  element,
+  setElement,
+  id,
+  row,
+  col,
+  moveCard,
+  canDrag,
+}) {
   const [{ isDragging }, drag] = useDrag({
     type: "card",
     item: () => ({ row, col }),
@@ -39,7 +47,7 @@ function DraggableElement({ label, id, row, col, moveCard, canDrag }) {
       style={{ opacity: isDragging ? 0 : 1 }}
       className="w-full"
     >
-      <Element label={label} row={row} col={col} />
+      <Element element={element} setElement={setElement} row={row} col={col} />
     </div>
   );
 }
@@ -246,7 +254,12 @@ const ArrayComponent = (props, ref) => {
                   id={i * 10 + j}
                   row={i}
                   col={j}
-                  label={element.label}
+                  element={element}
+                  setElement={(newData) => {
+                    const newArray = [...data.array];
+                    newArray[i][j] = newData;
+                    setData({ array: newArray });
+                  }}
                   moveCard={moveCard}
                   canDrag={true}
                 />

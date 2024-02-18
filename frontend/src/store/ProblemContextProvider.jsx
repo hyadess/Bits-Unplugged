@@ -3,7 +3,9 @@ import { createContext, useContext, useReducer } from "react";
 const ProblemContext = createContext();
 const ProblemContextProvider = ({ children }) => {
   const reducer = (state, action) => {
-    const { type, payload } = action;
+    const { type, payload } =
+      typeof action === "function" ? action(state) : action;
+
     switch (type) {
       case "SET_INITIAL_STATE":
         return payload;
@@ -99,7 +101,7 @@ const ProblemContextProvider = ({ children }) => {
     }
   };
   const [state, dispatch] = useReducer(reducer, { problemId: 0 });
-  return (
+    return (
     <ProblemContext.Provider value={{ state, dispatch }}>
       {children}
     </ProblemContext.Provider>

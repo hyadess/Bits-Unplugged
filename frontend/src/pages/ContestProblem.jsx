@@ -98,6 +98,7 @@ function ContestProblemController() {
   
         if (result && result.success) {
           const res2 = await contestApi.getContestProblemById(id,problemid);
+          console.log("submission id ==>",result);
           await contestApi.addSubmissionToContest(id, problemid, result.data, res2.data[0].rating);
         }
       }
@@ -111,6 +112,8 @@ function ContestProblemController() {
   
         if (result && result.success) {
           const res2 = await contestApi.getContestProblemById(id,problemid);
+          console.log("submission id ==>",result);
+
           await contestApi.addSubmissionToContest(id, problemid, result.data, 0);
         }    
       }

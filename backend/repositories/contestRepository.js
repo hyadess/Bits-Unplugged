@@ -466,30 +466,56 @@ class ContestRepository extends Repository {
   //**********************UPDATING CONTEST PARTICIPATION TABLE****************** */
 
   // assuming that this submission is added in submissions table.......
-addSubmissionToContest = async (
+  addSubmissionToContest = async (
     problemId,
     contestId,
     submissionId,
     userId,
     points
   ) => {
+    // Check if a submission with the same problemId and userId exists and has an "accepted" verdict
+    const existingSubmissionQuery = `
+      SELECT "S"."id" 
+      FROM "Submissions" "S"
+      WHERE "S"."problemId" = $1 AND "S"."userId" = $2 AND "S"."verdict" = 'Accepted' AND "S"."id" != $3
+    `;
+    const existingSubmissionParams = [problemId, userId, submissionId];
+    const existingSubmissionResult = await this.query(
+      existingSubmissionQuery,
+      existingSubmissionParams
+    );
+  
+      // Check if existingSubmissionResult is defined and has data property
+  if (existingSubmissionResult && existingSubmissionResult.data) {
+    // Check if there is an existing submission with the same problemId and userId and "accepted" verdict
+    if (existingSubmissionResult.data.length > 0) {
+      // Submission with the same problemId and userId and "accepted" verdict already exists
+      console.log("Submission with the same problemId and userId already exists with 'accepted' verdict.");
+      return existingSubmissionResult; // Do not proceed with adding to ContestSubmissions
+    }
+  }
+  
+    // If not, proceed to check for participant and insert the submission
     const participantQuery = `
-        SELECT "P"."id" FROM "Participants" "P" WHERE "P"."contestId" = $1 AND "P"."userId" = $2;
+      SELECT "P"."id" FROM "Participants" "P" WHERE "P"."contestId" = $1 AND "P"."userId" = $2;
     `;
     const participantParams = [contestId, userId];
     const participantResult = await this.query(participantQuery, participantParams);
-    const participantId = participantResult.data[0].id; 
-
+  
+    const participantId = participantResult.data[0].id;
+  
     // Then, insert the submission with the participantId
+    console.log("submission id ==>",submissionId);
     const submissionQuery = `
-        INSERT INTO "ContestSubmissions" ("participantId", "submissionId", "points")
-        VALUES ($1, $2, $3);
+      INSERT INTO "ContestSubmissions" ("participantId", "submissionId", "points")
+      VALUES ($1, $2, $3);
     `;
     const submissionParams = [participantId, submissionId, points];
     const result = await this.query(submissionQuery, submissionParams);
-
+  
     return result;
   };
+  
 
   getLeaderboard = async (contestId) => {
     const query = `

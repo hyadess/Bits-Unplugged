@@ -45,6 +45,7 @@ import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
 import Contests from "./pages/user/Contests";
 import UserContest from "./pages/Contest";
+import UserContestDetails from "./pages/ContestDetails";
 import History from "./pages/setter/ProblemSetEnv/History";
 import TopicStat from "./pages/user/TopicStat";
 import AdminArticles from "./pages/admin/AdminArticles";
@@ -335,7 +336,7 @@ const AppRoutes = () => {
             }
           />
 
-          <Route path="/contests/:id" element={<UserContest />} />
+          <Route path="/contests/:id" element={<UserContestDetails />} />
 
           <Route
             path="/contests/:id/Problems/:problemid"

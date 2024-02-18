@@ -12,9 +12,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "participantId",
         as: "participant",
       });
-      ContestSubmission.belongsTo(models.Submission, {
-        foreignKey: "submissionId",
-        as: "submission",
+      ContestSubmission.belongsTo(models.ContestProblem, {
+        foreignKey: "contestProblemId",
+        as: "contestProblem",
       });
     }
   }
@@ -29,15 +29,24 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      submissionId: {
+      contestProblemId: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
-          model: "Submissions",
+          model: "ContestProblems",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
+      verdict: DataTypes.STRING,
+      canvasData: DataTypes.JSON,
+      userActivity: {
+        type: DataTypes.JSON,
+        defaultValue: {},
+      },
+      image: DataTypes.TEXT,
+      
       points: DataTypes.INTEGER,
     },
     {

@@ -56,6 +56,7 @@ import SetterNavbar from "./components/Navbars/SetterNavbar";
 import AcceptRequest from "pages/setter/ContestSetEnv/AcceptRequest";
 import UserHome from "pages/user/Home";
 import ProblemList from "pages/user/ProblemList";
+import SetterProfileTab from "components/SetterProfileTab";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -80,6 +81,20 @@ const SolverProfile = () => {
   return (
     <LayoutMain left={<SolverProfileTab activeTab={activeTab} click={click} />}>
       {activeTab == "Details" ? <Profile /> : <ProfileSubmissions />}
+    </LayoutMain>
+  );
+};
+
+const ProfileForSetter = () => {
+  const [activeTab, setActiveTab] = useState("Details");
+  const click = (tab) => {
+    setActiveTab(tab);
+  };
+  return (
+    // <LayoutMain left={<SetterProfileTab activeTab={activeTab} click={click} />}>
+    <LayoutMain left={<></>}>
+      {/* {activeTab == "Details" ? <SetterProfile /> : <SetterProblems />} */}
+      {<SetterProfile />}
     </LayoutMain>
   );
 };
@@ -296,14 +311,7 @@ const AppRoutes = () => {
             }
           />
 
-          <Route
-            path="/setter/:username"
-            element={
-              <LayoutMain>
-                <SetterProfile />
-              </LayoutMain>
-            }
-          />
+          <Route path="/setter/:username" element={<ProfileForSetter />} />
 
           <Route path="/contests/:id/edit" element={<ContestSetEnv />} />
 

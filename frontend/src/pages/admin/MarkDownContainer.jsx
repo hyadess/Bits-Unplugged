@@ -18,7 +18,7 @@ export default function MarkDownContainer({
     setText(index, value);
   };
   return (
-    <div className="flex flex-col my-10 mx-10 mb-4">
+    <div className="flex flex-col my-10 mb-4">
       <div className="flex justify-center items-center ">
         <div className="mx-6">
           <button

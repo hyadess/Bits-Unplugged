@@ -9,8 +9,10 @@ import React, {
 } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faCaretDown,
   faCaretLeft,
   faCaretRight,
+  faCaretUp,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
@@ -65,6 +67,41 @@ function Header() {
     </div>
   );
 }
+
+function rotateSubarrayLeft(array, start, end, positions) {
+  const subarray = array.slice(start, end + 1);
+  const rotatedSubarray = [];
+  const n = subarray.length;
+
+  for (let i = 0; i < n; i++) {
+    const newIndex = (i + (n - (positions % n))) % n; // Adjust rotation for left rotation
+    rotatedSubarray[newIndex] = subarray[i];
+  }
+
+  for (let i = start, j = 0; i <= end; i++, j++) {
+    array[i] = rotatedSubarray[j];
+  }
+
+  return array;
+}
+
+function rotateSubarray(array, start, end, positions) {
+  const subarray = array.slice(start, end + 1);
+  const rotatedSubarray = [];
+  const n = subarray.length;
+
+  for (let i = 0; i < n; i++) {
+    const newIndex = (i + positions) % n;
+    rotatedSubarray[newIndex] = subarray[i];
+  }
+
+  for (let i = start, j = 0; i <= end; i++, j++) {
+    array[i] = rotatedSubarray[j];
+  }
+
+  return array;
+}
+
 const ArrayComponent = (props, ref) => {
   const [numberOfRows, setNumberOfRows] = useState(1);
   const [numberOfColumns, setNumberOfColumns] = useState(10);
@@ -282,25 +319,234 @@ const ArrayComponent = (props, ref) => {
         )}
         {data?.selectedElements.length === 2 ? (
           <div className="flex flex-row gap-3 items-center">
-            <button className="bu-button-primary rounded-lg px-7 h-[2.7rem] text-center text-md font-semibold text-white">
+            <button
+              className="bu-button-primary rounded-lg px-7 h-[2.7rem] text-center text-md font-semibold text-white"
+              onClick={() => {
+                const rowNo = Math.floor(data?.selectedElements[0] / 10);
+                const i1 = data?.array[
+                  Math.floor(data?.selectedElements[0] / 10)
+                ].findIndex(
+                  (element) => element.key === data.selectedElements[0]
+                );
+                const i2 = data?.array[
+                  Math.floor(data?.selectedElements[0] / 10)
+                ].findIndex(
+                  (element) => element.key === data.selectedElements[1]
+                );
+
+                // now swap data.array[rowNo][i1] and data.array[rowNo][i2]
+                const newArray = [...data.array];
+                const temp = newArray[rowNo][i1];
+                newArray[rowNo][i1] = newArray[rowNo][i2];
+                newArray[rowNo][i2] = temp;
+                setData({ array: newArray });
+
+                // also swap selectedElements
+                // const tempSelectedElements = [...data.selectedElements];
+                // const tempSelected = tempSelectedElements[0];
+                // tempSelectedElements[0] = tempSelectedElements[1];
+                // tempSelectedElements[1] = tempSelected;
+                // setSelectedElements(tempSelectedElements);
+              }}
+            >
               Swap
             </button>
-            <button className="bu-button-primary rounded-lg px-7 h-[2.7rem] text-center text-md font-semibold text-white">
+            <button
+              className="bu-button-primary rounded-lg px-7 h-[2.7rem] text-center text-md font-semibold text-white"
+              onClick={() => {
+                const rowNo = Math.floor(data?.selectedElements[0] / 10);
+                const i1 = data?.array[
+                  Math.floor(data?.selectedElements[0] / 10)
+                ].findIndex(
+                  (element) => element.key === data.selectedElements[0]
+                );
+                const i2 = data?.array[
+                  Math.floor(data?.selectedElements[0] / 10)
+                ].findIndex(
+                  (element) => element.key === data.selectedElements[1]
+                );
+
+                const min = Math.min(i1, i2);
+                const max = Math.max(i1, i2);
+
+                // now reverse data.array[rowNo][min] to data.array[rowNo][max]
+                const newArray = [...data.array];
+                const temp = newArray[rowNo].slice(min, max + 1).reverse();
+                newArray[rowNo].splice(min, max - min + 1, ...temp);
+                setData({ array: newArray });
+
+                // also swap selectedElements
+                // const tempSelectedElements = [...data.selectedElements];
+                // const tempSelected = tempSelectedElements[0];
+                // tempSelectedElements[0] = tempSelectedElements[1];
+                // tempSelectedElements[1] = tempSelected;
+                // setSelectedElements(tempSelectedElements);
+              }}
+            >
               Reverse
             </button>
-            <button className="bu-button-primary rounded-lg px-7 h-[2.7rem] text-center text-md font-semibold text-white">
+            {/* <button className="bu-button-primary rounded-lg px-7 h-[2.7rem] text-center text-md font-semibold text-white">
               Sort
-            </button>
+            </button> */}
             <div className="flex flex-row gap-[.1rem] h-[2.7rem]">
               <button
                 className="bu-button-primary px-7 text-center text-2xl font-medium text-white"
                 style={{ borderRadius: "0.5rem 0 0 0.5rem" }}
+                onClick={() => {
+                  const rowNo = Math.floor(data?.selectedElements[0] / 10);
+                  const i1 = data?.array[
+                    Math.floor(data?.selectedElements[0] / 10)
+                  ].findIndex(
+                    (element) => element.key === data.selectedElements[0]
+                  );
+                  const i2 = data?.array[
+                    Math.floor(data?.selectedElements[0] / 10)
+                  ].findIndex(
+                    (element) => element.key === data.selectedElements[1]
+                  );
+
+                  const min = Math.min(i1, i2);
+                  const max = Math.max(i1, i2);
+
+                  // now sort data.array[rowNo][min] to data.array[rowNo][max] in descending order
+                  const newArray = [...data.array];
+                  const temp = newArray[rowNo]
+                    .slice(min, max + 1)
+                    .sort((a, b) => b.label - a.label);
+                  newArray[rowNo].splice(min, max - min + 1, ...temp);
+                  setData({ array: newArray });
+
+                  // set selected in newArray[rowNo] false
+                  newArray[rowNo].forEach((element) => {
+                    element.selected = false;
+                  });
+
+                  newArray[rowNo][min].selected = true;
+                  newArray[rowNo][max].selected = true;
+                  setSelectedElements([
+                    newArray[rowNo][min].key,
+                    newArray[rowNo][max].key,
+                  ]);
+                }}
+              >
+                <FontAwesomeIcon icon={faCaretDown} />
+              </button>
+              <button
+                className="bu-button-primary px-7 text-center font-medium text-white text-2xl"
+                style={{ borderRadius: "0 0.5rem 0.5rem 0" }}
+                onClick={() => {
+                  const rowNo = Math.floor(data?.selectedElements[0] / 10);
+                  const i1 = data?.array[
+                    Math.floor(data?.selectedElements[0] / 10)
+                  ].findIndex(
+                    (element) => element.key === data.selectedElements[0]
+                  );
+                  const i2 = data?.array[
+                    Math.floor(data?.selectedElements[0] / 10)
+                  ].findIndex(
+                    (element) => element.key === data.selectedElements[1]
+                  );
+
+                  const min = Math.min(i1, i2);
+                  const max = Math.max(i1, i2);
+
+                  // now sort data.array[rowNo][min] to data.array[rowNo][max] in descending order
+                  const newArray = [...data.array];
+                  const temp = newArray[rowNo]
+                    .slice(min, max + 1)
+                    .sort((a, b) => a.label - b.label);
+                  newArray[rowNo].splice(min, max - min + 1, ...temp);
+                  setData({ array: newArray });
+
+                  newArray[rowNo].forEach((element) => {
+                    element.selected = false;
+                  });
+
+                  newArray[rowNo][min].selected = true;
+                  newArray[rowNo][max].selected = true;
+                  setSelectedElements([
+                    newArray[rowNo][min].key,
+                    newArray[rowNo][max].key,
+                  ]);
+                }}
+              >
+                <FontAwesomeIcon icon={faCaretUp} />
+              </button>
+            </div>
+            <div className="flex flex-row gap-[.1rem] h-[2.7rem]">
+              <button
+                className="bu-button-primary px-7 text-center text-2xl font-medium text-white"
+                style={{ borderRadius: "0.5rem 0 0 0.5rem" }}
+                onClick={() => {
+                  console.log("Left");
+                  const rowNo = Math.floor(data?.selectedElements[0] / 10);
+                  const i1 = data?.array[
+                    Math.floor(data?.selectedElements[0] / 10)
+                  ].findIndex(
+                    (element) => element.key === data.selectedElements[0]
+                  );
+                  const i2 = data?.array[
+                    Math.floor(data?.selectedElements[0] / 10)
+                  ].findIndex(
+                    (element) => element.key === data.selectedElements[1]
+                  );
+
+                  const min = Math.min(i1, i2);
+                  const max = Math.max(i1, i2);
+
+                  // now rotate left subarray [data.array[rowNo][min] to data.array[rowNo][max]]
+
+                  // const temp = newArray[rowNo].slice(min, max + 1);
+                  // temp.push(temp.shift());
+                  // newArray[rowNo].splice(min, temp.length, ...temp);
+
+                  const newArray = [...data.array];
+                  const newRow = newArray[rowNo];
+                  // console.log(min, max, newArray);
+                  newRow[max].selected = false;
+                  newRow[min + 1].selected = true;
+                  setSelectedElements([newRow[min + 1].key, newRow[min].key]);
+                  newArray[rowNo] = rotateSubarrayLeft(newRow, min, max, 1);
+                  setData({ array: newArray });
+                }}
               >
                 <FontAwesomeIcon icon={faCaretLeft} />
               </button>
               <button
                 className="bu-button-primary px-7 text-center font-medium text-white text-2xl"
                 style={{ borderRadius: "0 0.5rem 0.5rem 0" }}
+                onClick={() => {
+                  console.log("Left");
+                  const rowNo = Math.floor(data?.selectedElements[0] / 10);
+                  const i1 = data?.array[
+                    Math.floor(data?.selectedElements[0] / 10)
+                  ].findIndex(
+                    (element) => element.key === data.selectedElements[0]
+                  );
+                  const i2 = data?.array[
+                    Math.floor(data?.selectedElements[0] / 10)
+                  ].findIndex(
+                    (element) => element.key === data.selectedElements[1]
+                  );
+
+                  const min = Math.min(i1, i2);
+                  const max = Math.max(i1, i2);
+
+                  // now rotate left subarray [data.array[rowNo][min] to data.array[rowNo][max]]
+
+                  // const temp = newArray[rowNo].slice(min, max + 1);
+                  // temp.push(temp.shift());
+                  // newArray[rowNo].splice(min, temp.length, ...temp);
+
+                  const newArray = [...data.array];
+                  const newRow = newArray[rowNo];
+                  // console.log(min, max, newArray);
+                  newRow[min].selected = false;
+                  newRow[max - 1].selected = true;
+                  setSelectedElements([newRow[max].key, newRow[max - 1].key]);
+                  newArray[rowNo] = rotateSubarray(newRow, min, max, 1);
+                  setData({ array: newArray });
+                }}
               >
                 <FontAwesomeIcon icon={faCaretRight} />
               </button>

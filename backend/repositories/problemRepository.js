@@ -195,7 +195,7 @@ class ProblemsRepository extends Repository {
     FROM "ProblemVersions" "P"
     JOIN "Series" "S" ON "P"."seriesId" = "S"."id"
     JOIN "Topics" "T" ON "S"."topicId" = "T"."id"
-    WHERE "P"."isLive" = TRUE
+    WHERE "P"."isLive" = TRUE AND  "P"."approvalStatus" = 1
     AND NOT EXISTS (
       SELECT 1 FROM "Activities" "A" 
       WHERE "P"."id" = "A"."problemId" AND "A"."userId" = $1)    

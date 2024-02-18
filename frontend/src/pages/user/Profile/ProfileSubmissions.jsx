@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import Title from "../../components/Title";
-import { setLoading } from "../../App";
-import { submissionApi } from "../../api";
+import Title from "../../../components/Title";
+import { setLoading } from "../../../App";
+import { submissionApi } from "../../../api";
 import { Tooltip } from "react-tooltip";
 import CalendarHeatmap from "react-calendar-heatmap";
-import TableContainer from "../../containers/TableContainer";
-import SubmissionCard from "../../components/Cards/SubmissionCard";
+import TableContainer from "../../../containers/TableContainer";
+import SubmissionCard from "../../../components/Cards/SubmissionCard";
 import "react-calendar-heatmap/dist/styles.css";
 import "./heatmap.scss";
 

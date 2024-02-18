@@ -37,7 +37,7 @@ class SubmissionController extends Controller {
   submitSolution = async (req, res) => {
     this.handleRequest(res, async () => {
       const result = submissionService.submitSolution(
-        res.user.userId,
+        req.user.userId,
         req.params.problemId,
         req.body
       );

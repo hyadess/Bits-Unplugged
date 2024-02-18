@@ -7,6 +7,8 @@ import React, {
   useImperativeHandle,
   useState,
 } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 function DraggableElement({ label, id, row, col, moveCard, canDrag }) {
   const [{ isDragging }, drag] = useDrag({
@@ -193,6 +195,10 @@ const ArrayComponent = (props, ref) => {
             setData({ array: newArray });
           }}
         />
+        <div className="bu-text-primary text-2xl">
+          <FontAwesomeIcon icon={faXmark} />
+        </div>
+
         <input
           type="number"
           className="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"

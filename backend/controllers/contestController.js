@@ -85,7 +85,7 @@ class ContestController extends Controller {
     let result = await contestRepository.isContestProblemSolved(
       req.user.userId,
       req.params.contestId,
-      req.params.problemId
+      req.body.problemId
     );
     if (result.success) {
       res.status(200).json(result.data);

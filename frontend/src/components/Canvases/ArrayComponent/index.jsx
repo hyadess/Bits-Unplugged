@@ -260,59 +260,36 @@ const ArrayComponent = (props, ref) => {
           />
         </div>
         {data?.selectedElements.length === 1 ? (
-          <div className="no-ring-input flex-center p-1">
-            <FormControl fullWidth variant="outlined" size="small">
-              <InputLabel
-                htmlFor="outlined-adornment"
-                className="bu-text-primary"
-              >
-                Value
-              </InputLabel>
-              <OutlinedInput
-                required
-                placeholder=""
-                id="outlined-adornment"
-                className="outline-none bu-text-primary"
-                type="text"
-                // value={data?.selectedElements[0]?.label}
-                onChange={(e) => {
-                  // data.edges = data.edges.filter(
-                  //   (edge) =>
-                  //     JSON.stringify(edge) !==
-                  //     JSON.stringify(data?.selectedEdges[0])
-                  // );
-                  // data.selectedEdges[0].weight = e.target.value;
-                  // setEdges([...data.edges, data.selectedEdges[0]]);
-                }}
-                label={"Value"}
-                size="small"
-                sx={{ width: "5rem" }}
-              />
-            </FormControl>
-          </div>
+          <input
+            type="text"
+            className="border sm:text-sm rounded-lg block p-2.5 bu-input-primary w-20 text-center"
+            // value={numberOfRows}
+            placeholder="value"
+            onChange={(e) => {}}
+          />
         ) : (
           <></>
         )}
         {data?.selectedElements.length === 2 ? (
-          <div className="flex flex-row gap-3">
-            <button className="bu-button-primary rounded-lg px-7 py-2 text-center text-lg font-medium text-white">
+          <div className="flex flex-row gap-3 items-center">
+            <button className="bu-button-primary rounded-lg px-7 h-[2.7rem] text-center text-md font-semibold text-white">
               Swap
             </button>
-            <button className="bu-button-primary rounded-lg px-7 py-2 text-center text-lg font-medium text-white">
+            <button className="bu-button-primary rounded-lg px-7 h-[2.7rem] text-center text-md font-semibold text-white">
               Reverse
             </button>
-            <button className="bu-button-primary rounded-lg px-7 py-2 text-center text-lg font-medium text-white">
+            <button className="bu-button-primary rounded-lg px-7 h-[2.7rem] text-center text-md font-semibold text-white">
               Sort
             </button>
-            <div className="flex flex-row gap-[.1rem]">
+            <div className="flex flex-row gap-[.1rem] h-[2.7rem]">
               <button
-                className="bu-button-primary px-7 py-2 text-center text-2xl font-medium text-white"
+                className="bu-button-primary px-7 text-center text-2xl font-medium text-white"
                 style={{ borderRadius: "0.5rem 0 0 0.5rem" }}
               >
                 <FontAwesomeIcon icon={faCaretLeft} />
               </button>
               <button
-                className="bu-button-primary px-7 py-2 text-center font-medium text-white text-2xl"
+                className="bu-button-primary px-7 text-center font-medium text-white text-2xl"
                 style={{ borderRadius: "0 0.5rem 0.5rem 0" }}
               >
                 <FontAwesomeIcon icon={faCaretRight} />

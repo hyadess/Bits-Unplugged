@@ -20,7 +20,8 @@ const CanvasDesignTab = ({ backupProblem }) => {
       type: "UPDATE_CHECKER_CANVAS",
       payload: deepCopy(problem.canvasData),
     });
-    backupProblem.current.canvasData = problem.canvasData;
+    console.log("Canvas Updated");
+    backupProblem.current.canvasData = deepCopy(problem.canvasData);
     const res = await problemApi.updateProblem(problem.id, {
       canvasId: problem.canvasId,
       canvasData: problem.canvasData,
@@ -40,7 +41,7 @@ const CanvasDesignTab = ({ backupProblem }) => {
       type: "UPDATE_PROBLEM",
       payload: {
         canvasId: backupProblem?.current?.canvasId,
-        canvasData: backupProblem?.current?.canvasData,
+        canvasData: deepCopy(backupProblem?.current?.canvasData),
         editOptions: backupProblem?.current?.editOptions,
         previewOptions: backupProblem?.current?.previewOptions,
       },
@@ -133,6 +134,11 @@ const CanvasDesignTab = ({ backupProblem }) => {
   };
 
   const { state: problem, dispatch } = useProblemContext();
+
+  useEffect(() => {
+    console.log("Backup:", backupProblem?.current?.canvasData.array);
+  }, [problem.canvasData]);
+
   return (
     <>
       {problem.canvasId && (

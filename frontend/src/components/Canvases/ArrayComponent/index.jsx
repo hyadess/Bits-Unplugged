@@ -105,7 +105,7 @@ function rotateSubarray(array, start, end, positions) {
 const ArrayComponent = (props, ref) => {
   const [numberOfRows, setNumberOfRows] = useState(1);
   const [numberOfColumns, setNumberOfColumns] = useState(10);
-  const [array, setArray] = useState([]);
+  // const [array, setArray] = useState([]);
 
   const [data, setData] = [props.input, props.setInput];
   useImperativeHandle(ref, () => {
@@ -122,6 +122,9 @@ const ArrayComponent = (props, ref) => {
   };
   const handleReset = (resetData) => {
     if (resetData != null && resetData.array != null) {
+      setNumberOfRows(resetData.array.length);
+      setNumberOfColumns(resetData.array[0]?.length ?? 1);
+      console.log(resetData);
       // console.log("handleReset:", resetData);
       // importData(resetData);
     } else {
@@ -414,7 +417,6 @@ const ArrayComponent = (props, ref) => {
                     .slice(min, max + 1)
                     .sort((a, b) => b.label - a.label);
                   newArray[rowNo].splice(min, max - min + 1, ...temp);
-                  setData({ array: newArray });
 
                   // set selected in newArray[rowNo] false
                   newArray[rowNo].forEach((element) => {
@@ -423,10 +425,14 @@ const ArrayComponent = (props, ref) => {
 
                   newArray[rowNo][min].selected = true;
                   newArray[rowNo][max].selected = true;
-                  setSelectedElements([
-                    newArray[rowNo][min].key,
-                    newArray[rowNo][max].key,
-                  ]);
+
+                  setData({
+                    array: newArray,
+                    selectedElements: [
+                      newArray[rowNo][min].key,
+                      newArray[rowNo][max].key,
+                    ],
+                  });
                 }}
               >
                 <FontAwesomeIcon icon={faCaretDown} />
@@ -456,7 +462,6 @@ const ArrayComponent = (props, ref) => {
                     .slice(min, max + 1)
                     .sort((a, b) => a.label - b.label);
                   newArray[rowNo].splice(min, max - min + 1, ...temp);
-                  setData({ array: newArray });
 
                   newArray[rowNo].forEach((element) => {
                     element.selected = false;
@@ -464,10 +469,13 @@ const ArrayComponent = (props, ref) => {
 
                   newArray[rowNo][min].selected = true;
                   newArray[rowNo][max].selected = true;
-                  setSelectedElements([
-                    newArray[rowNo][min].key,
-                    newArray[rowNo][max].key,
-                  ]);
+                  setData({
+                    array: newArray,
+                    selectedElements: [
+                      newArray[rowNo][min].key,
+                      newArray[rowNo][max].key,
+                    ],
+                  });
                 }}
               >
                 <FontAwesomeIcon icon={faCaretUp} />

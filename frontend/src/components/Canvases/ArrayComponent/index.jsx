@@ -14,6 +14,7 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
+import { setLoading } from "App";
 
 function DraggableElement({
   element,
@@ -112,9 +113,11 @@ const ArrayComponent = (props, ref) => {
 
   useEffect(() => {
     if (props.input != null && props.input.array != null) {
+      setNumberOfRows(data.array.length);
+      setNumberOfColumns(data.array[0]?.length ?? 0);
       // setNumberOfMoves(0);
       // importData(props.input);
-      // setLoading(false);
+      setLoading(false);
     } else {
       setNumberOfRows(1);
       setNumberOfColumns(10);
@@ -134,6 +137,7 @@ const ArrayComponent = (props, ref) => {
           })),
         ],
       });
+      setLoading(false);
     }
   }, []);
 

@@ -8,6 +8,8 @@ import GlobalContext from "../store/GlobalContext";
 import ProblemContextProvider, {
   useProblemContext,
 } from "../store/ProblemContextProvider";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 function ProblemsCanvasController() {
   const { type } = useContext(GlobalContext);
   const { id } = useParams();
@@ -91,7 +93,7 @@ function ProblemsCanvasController() {
       await submissionApi.submitSolution(problem.canvasData, res.output, id, 0);
     }
   };
-  
+
   function getColorModeFromLocalStorage() {
     return localStorage.getItem("color-theme") || "light";
   }
@@ -138,7 +140,9 @@ function ProblemsCanvasController() {
 const ProblemSetEnv = () => {
   return (
     <ProblemContextProvider>
-      <ProblemsCanvasController />
+      <DndProvider backend={HTML5Backend}>
+        <ProblemsCanvasController />
+      </DndProvider>
     </ProblemContextProvider>
   );
 };

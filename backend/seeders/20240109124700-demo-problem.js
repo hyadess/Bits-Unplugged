@@ -2944,6 +2944,158 @@ module.exports = {
             selectedNodes: ["0", "2", "6"],
           }),
         },
+        {
+          // id: 23,
+          setterId: 1,
+          canvasId: 3,
+          title: "Drag Sort",
+          statement: "Sort the array in ascending order by simply dragging.",
+          canvasData: JSON.stringify({
+            selectedElements: [],
+            array: [
+              [
+                {
+                  label: "5",
+                  selected: false,
+                  key: 5,
+                },
+                {
+                  label: "0",
+                  selected: false,
+                  key: 0,
+                },
+                {
+                  label: "9",
+                  selected: false,
+                  key: 9,
+                },
+                {
+                  label: "8",
+                  selected: false,
+                  key: 8,
+                },
+                {
+                  label: "3",
+                  selected: false,
+                  key: 3,
+                },
+                {
+                  label: "6",
+                  selected: false,
+                  key: 6,
+                },
+                {
+                  label: "1",
+                  selected: false,
+                  key: 1,
+                },
+                {
+                  label: "2",
+                  selected: false,
+                  key: 2,
+                },
+                {
+                  label: "7",
+                  selected: false,
+                  key: 7,
+                },
+                {
+                  label: "4",
+                  selected: false,
+                  key: 4,
+                },
+              ],
+            ],
+          }),
+          editOptions: JSON.stringify({
+            dataType: {
+              value: "Integer",
+              type: "select",
+              list: ["Integer", "Character"],
+            },
+          }),
+          previewOptions: JSON.stringify({
+            drag: {
+              value: "0",
+              type: "number",
+            },
+            swap: {
+              value: 0,
+              type: "number",
+            },
+            rotate: {
+              value: 0,
+              type: "number",
+            },
+            reverse: {
+              value: 0,
+              type: "number",
+            },
+            sort: {
+              value: 0,
+              type: "number",
+            },
+          }),
+          checkerCode:
+            "function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}",
+          checkerCanvas: JSON.stringify({
+            selectedElements: [],
+            array: [
+              [
+                {
+                  label: "0",
+                  selected: false,
+                  key: 0,
+                },
+                {
+                  label: "1",
+                  selected: false,
+                  key: 1,
+                },
+                {
+                  label: "2",
+                  selected: false,
+                  key: 2,
+                },
+                {
+                  label: "3",
+                  selected: false,
+                  key: 3,
+                },
+                {
+                  label: "4",
+                  selected: false,
+                  key: 4,
+                },
+                {
+                  label: "5",
+                  selected: false,
+                  key: 5,
+                },
+                {
+                  label: "6",
+                  selected: false,
+                  key: 6,
+                },
+                {
+                  label: "7",
+                  selected: false,
+                  key: 7,
+                },
+                {
+                  label: "8",
+                  selected: false,
+                  key: 8,
+                },
+                {
+                  label: "9",
+                  selected: false,
+                  key: 9,
+                },
+              ],
+            ],
+          }),
+        },
       ],
       {}
     );

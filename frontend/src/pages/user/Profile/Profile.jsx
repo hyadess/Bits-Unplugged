@@ -14,6 +14,8 @@ import ProfileRecentFails from "./ProfileRecentFails";
 import ProfileInfo from "./ProfileInfo";
 import { set } from "date-fns";
 
+// https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.uplabs.com%2Fposts%2Ffatou-dashboard-design-applicant-profile-page-design-in-xd&psig=AOvVaw3GwoLsJspGKr0w1icxfd95&ust=1708193790479000&source=images&cd=vfe&opi=89978449&ved=0CBUQjhxqFwoTCOjQ1_K7sIQDFQAAAAAdAAAAABAY
+// https://www.google.com/url?sa=i&url=https%3A%2F%2Fuxplanet.org%2F50-free-profile-page-design-samples-templates-psd-sketch-for-inspiration-2f939aaee66b&psig=AOvVaw3GwoLsJspGKr0w1icxfd95&ust=1708193790479000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCOjQ1_K7sIQDFQAAAAAdAAAAABA5
 export default function Profile() {
   const navigate = useNavigate();
   const [submissions, setSubmissions] = useState([]);

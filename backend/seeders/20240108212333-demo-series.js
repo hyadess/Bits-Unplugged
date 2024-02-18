@@ -92,7 +92,7 @@ module.exports = {
           isLive: true,
         },
         {
-          // 10,
+          // 11,
           topicId: 1,
           name: "Independent Set",
           description: "",
@@ -100,7 +100,7 @@ module.exports = {
           isLive: true,
         },
         {
-          // 11,
+          // 12,
           topicId: 1,
           name: "Dominating Set",
           description: "",
@@ -108,7 +108,7 @@ module.exports = {
           isLive: true,
         },
         {
-          // 12,
+          // 13,
           topicId: 1,
           name: "Factor",
           description: "",
@@ -116,7 +116,7 @@ module.exports = {
           isLive: true,
         },
         {
-          // 13,
+          // 14,
           topicId: 1,
           name: "Max Flow Min Cut",
           description: "",
@@ -124,15 +124,15 @@ module.exports = {
           isLive: false,
         },
         {
-          // 14
+          // 15
           topicId: 3,
           name: "Bubble Sort",
           description: "",
           logo: "https://res.cloudinary.com/practicaldev/image/fetch/s--tZV8xTN4--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_66%2Cw_880/https://i.imgur.com/p36pPuu.gif",
           isLive: true,
         },
-
         {
+          // 16
           topicId: 3,
           name: "Selection Sort",
           description: "",
@@ -140,6 +140,7 @@ module.exports = {
           isLive: true,
         },
         {
+          // 17
           topicId: 3,
           name: "Quick Sort",
           description: "",
@@ -147,10 +148,19 @@ module.exports = {
           isLive: true,
         },
         {
+          // 18
           topicId: 3,
           name: "Merge Sort",
           description: "",
           logo: "https://assets.digitalocean.com/articles/alligator/js/understanding-merge-sort/merge-sort-animation.gif",
+          isLive: true,
+        },
+        {
+          // 19
+          topicId: 3,
+          name: "Insertion Sort",
+          description: "",
+          logo: "https://thagomizer.com/img/InsertionSortCopyingVersion.gif",
           isLive: true,
         },
         {

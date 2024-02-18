@@ -28,7 +28,7 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      verdict: {
+      verdict: { 
         type: Sequelize.STRING,
       },
       canvasData: {

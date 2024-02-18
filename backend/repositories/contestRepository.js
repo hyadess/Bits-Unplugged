@@ -108,10 +108,11 @@ class ContestRepository extends Repository {
   //***********GETTING SUBMISSIONS***********************
   getAllSubmissionsByContest = async (contestId) => {
     const query = `
-        SELECT "CP".*, "S".*
-        FROM "ContestSubmissions" "CP"
-        JOIN "Submissions" "S" ON "CP"."submissionId" = "S"."submissionId"
-        WHERE "CP"."contestId" = $1;
+        SELECT "CS".*, "U".*
+        FROM "ContestSubmissions" "CS"
+        JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
+        JOIN "Users" "U" ON "P"."userId" = "U"."id"
+        WHERE "P"."contestId" = $1;
         `;
     const params = [contestId];
     const result = await this.query(query, params);
@@ -119,15 +120,30 @@ class ContestRepository extends Repository {
   };
   getAllSubmissionsByUserAndContest = async (userId, contestId) => {
     const query = `
-        SELECT "CP".*, "S".*
-        FROM "ContestSubmissions" "CP"
-        JOIN "Submissions" "S" ON "CP"."submissionId" = "S"."submissionId"
-        WHERE "CP"."contestId" = $2 AND "CP"."userId" = $1;
+        SELECT "CS".*, "U".*
+        FROM "ContestSubmissions" "CS"
+        JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
+        JOIN "Users" "U" ON "P"."userId" = "U"."id"
+        WHERE "P"."contestId" = $2 AND "P"."userId" = $1;
         `;
     const params = [userId, contestId];
     const result = await this.query(query, params);
     return result;
   };
+
+  isContestProblemSolved = async (userId, contestId, problemId) => {
+    const query = `
+        SELECT "CS"."verdict"
+        FROM "ContestSubmissions" "CS"
+        JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
+        JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
+        WHERE "P"."contestId" = $2 AND "P"."userId" = $1 AND "CP"."problemId" = $3;
+        `;
+    const params = [userId, contestId, problemId];
+    const result = await this.query(query, params);
+    return result;
+  };
+
 
   //*************GETTING PROBLEMS*********************** */
 
@@ -466,11 +482,14 @@ class ContestRepository extends Repository {
   //**********************UPDATING CONTEST PARTICIPATION TABLE****************** */
 
   // assuming that this submission is added in submissions table.......
-addSubmissionToContest = async (
+  addSubmissionToContest = async (
     problemId,
     contestId,
-    submissionId,
     userId,
+    verdict,
+    canvasData,
+    userActivity,
+    image,
     points
   ) => {
     const participantQuery = `
@@ -480,12 +499,21 @@ addSubmissionToContest = async (
     const participantResult = await this.query(participantQuery, participantParams);
     const participantId = participantResult.data[0].id; 
 
+    //get contest problem id....this part will not be needed if the provided problem id is contest problem id
+    const contestProblemQuery = `
+        SELECT "CP"."id" FROM "ContestProblems" "CP" WHERE "CP"."contestId" = $1 AND "CP"."problemId" = $2;
+    `;
+    const contestProblemParams = [contestId, problemId];
+    const contestProblemResult = await this.query(contestProblemQuery, contestProblemParams);
+    const contestProblemId = contestProblemResult.data[0].id;
+
+
     // Then, insert the submission with the participantId
     const submissionQuery = `
-        INSERT INTO "ContestSubmissions" ("participantId", "submissionId", "points")
-        VALUES ($1, $2, $3);
+        INSERT INTO "ContestSubmissions" ("participantId", "contestProblemId", "verdict", "canvasData", "userActivity", "image", "points")
+        VALUES ($1, $2, $3, $4, $5, $6, $7);
     `;
-    const submissionParams = [participantId, submissionId, points];
+    const submissionParams = [participantId, contestProblemId, verdict, canvasData, userActivity, image, points];
     const result = await this.query(submissionQuery, submissionParams);
 
     return result;
@@ -494,6 +522,7 @@ addSubmissionToContest = async (
   getLeaderboard = async (contestId) => {
     const query = `
         SELECT
+        "U"."id",
         "U"."username",
         SUM("CS"."points") AS "points"
         FROM
@@ -507,7 +536,7 @@ addSubmissionToContest = async (
         WHERE
         "C"."id" = $1
         GROUP BY
-        "U"."username"
+        "U"."id","U"."username"
         `;  
     const params = [contestId];
     const result = await this.query(query, params);

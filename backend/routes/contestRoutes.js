@@ -21,6 +21,8 @@ router.get(
   contestController.getAllSubmissionsByUserAndContest
 );
 
+router.get("/:contestId/isSolved", contestController.isContestProblemSolved);
+
 router.get(
   "/:contestId/problems/setterView",
   contestController.getAllProblemsByContest

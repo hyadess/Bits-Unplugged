@@ -14,6 +14,7 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
+import { setLoading } from "App";
 
 function DraggableElement({
   element,
@@ -112,9 +113,11 @@ const ArrayComponent = (props, ref) => {
 
   useEffect(() => {
     if (props.input != null && props.input.array != null) {
+      setNumberOfRows(data.array.length);
+      setNumberOfColumns(data.array[0]?.length ?? 0);
       // setNumberOfMoves(0);
       // importData(props.input);
-      // setLoading(false);
+      setLoading(false);
     } else {
       setNumberOfRows(1);
       setNumberOfColumns(10);
@@ -134,6 +137,7 @@ const ArrayComponent = (props, ref) => {
           })),
         ],
       });
+      setLoading(false);
     }
   }, []);
 
@@ -301,44 +305,44 @@ const ArrayComponent = (props, ref) => {
         )}
       </div>
 
-      <DndProvider backend={HTML5Backend}>
-        <div className="flex flex-col gap-5 p-5 pt-2 justify-center min-h-[30vh]">
-          {data?.array.map((row, i) => (
-            <div className="flex flex-row gap-5 items-center h-full ">
-              {row?.map((element, j) => (
-                <DraggableElement
-                  key={element.key}
-                  id={i * 10 + j}
-                  row={i}
-                  col={j}
-                  element={element}
-                  onClick={(row, col) => {
-                    const newArray = [...data.array];
-                    newArray[row][col].selected = !newArray[row][col].selected;
-                    setData({ array: newArray });
-                    if (newArray[row][col].selected) {
-                      // add {row,col} pair to selectedElements
-                      setSelectedElements([
-                        ...data.selectedElements,
-                        { row, col },
-                      ]);
-                    } else {
-                      // remove {row,col} pair from selectedElements
-                      setSelectedElements(
-                        data.selectedElements.filter(
-                          (element) => element.row != row || element.col != col
-                        )
-                      );
-                    }
-                  }}
-                  moveCard={moveCard}
-                  canDrag={true}
-                />
-              ))}
-            </div>
-          ))}
-        </div>
-      </DndProvider>
+      {/* <DndProvider backend={HTML5Backend}> */}
+      <div className="flex flex-col gap-5 p-5 pt-2 justify-center min-h-[30vh]">
+        {data?.array.map((row, i) => (
+          <div className="flex flex-row gap-5 items-center h-full ">
+            {row?.map((element, j) => (
+              <DraggableElement
+                key={element.key}
+                id={i * 10 + j}
+                row={i}
+                col={j}
+                element={element}
+                onClick={(row, col) => {
+                  const newArray = [...data.array];
+                  newArray[row][col].selected = !newArray[row][col].selected;
+                  setData({ array: newArray });
+                  if (newArray[row][col].selected) {
+                    // add {row,col} pair to selectedElements
+                    setSelectedElements([
+                      ...data.selectedElements,
+                      { row, col },
+                    ]);
+                  } else {
+                    // remove {row,col} pair from selectedElements
+                    setSelectedElements(
+                      data.selectedElements.filter(
+                        (element) => element.row != row || element.col != col
+                      )
+                    );
+                  }
+                }}
+                moveCard={moveCard}
+                canDrag={true}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+      {/* </DndProvider> */}
     </div>
   );
 };

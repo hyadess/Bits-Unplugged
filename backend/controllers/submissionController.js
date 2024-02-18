@@ -41,7 +41,7 @@ class SubmissionController extends Controller {
         req.params.problemId,
         req.body
       );
-      res.status(201).json(submission);
+      res.status(201).json(result);
     });
   };
 

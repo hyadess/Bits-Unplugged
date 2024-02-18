@@ -13,6 +13,8 @@ import CanvasDesignTab from "./CanvasDesignTab";
 import DetailsTab from "./DetailsTab";
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const ProblemSetEnvView = () => {
   const backupProblem = useRef(null);
@@ -118,7 +120,9 @@ const ProblemSetEnvView = () => {
 const ProblemSetEnv = () => {
   return (
     <ProblemContextProvider>
-      <ProblemSetEnvView />
+      <DndProvider backend={HTML5Backend}>
+        <ProblemSetEnvView />
+      </DndProvider>
     </ProblemContextProvider>
   );
 };

@@ -301,44 +301,44 @@ const ArrayComponent = (props, ref) => {
         )}
       </div>
 
-      <DndProvider backend={HTML5Backend}>
-        <div className="flex flex-col gap-5 p-5 pt-2 justify-center min-h-[30vh]">
-          {data?.array.map((row, i) => (
-            <div className="flex flex-row gap-5 items-center h-full ">
-              {row?.map((element, j) => (
-                <DraggableElement
-                  key={element.key}
-                  id={i * 10 + j}
-                  row={i}
-                  col={j}
-                  element={element}
-                  onClick={(row, col) => {
-                    const newArray = [...data.array];
-                    newArray[row][col].selected = !newArray[row][col].selected;
-                    setData({ array: newArray });
-                    if (newArray[row][col].selected) {
-                      // add {row,col} pair to selectedElements
-                      setSelectedElements([
-                        ...data.selectedElements,
-                        { row, col },
-                      ]);
-                    } else {
-                      // remove {row,col} pair from selectedElements
-                      setSelectedElements(
-                        data.selectedElements.filter(
-                          (element) => element.row != row || element.col != col
-                        )
-                      );
-                    }
-                  }}
-                  moveCard={moveCard}
-                  canDrag={true}
-                />
-              ))}
-            </div>
-          ))}
-        </div>
-      </DndProvider>
+      {/* <DndProvider backend={HTML5Backend}> */}
+      <div className="flex flex-col gap-5 p-5 pt-2 justify-center min-h-[30vh]">
+        {data?.array.map((row, i) => (
+          <div className="flex flex-row gap-5 items-center h-full ">
+            {row?.map((element, j) => (
+              <DraggableElement
+                key={element.key}
+                id={i * 10 + j}
+                row={i}
+                col={j}
+                element={element}
+                onClick={(row, col) => {
+                  const newArray = [...data.array];
+                  newArray[row][col].selected = !newArray[row][col].selected;
+                  setData({ array: newArray });
+                  if (newArray[row][col].selected) {
+                    // add {row,col} pair to selectedElements
+                    setSelectedElements([
+                      ...data.selectedElements,
+                      { row, col },
+                    ]);
+                  } else {
+                    // remove {row,col} pair from selectedElements
+                    setSelectedElements(
+                      data.selectedElements.filter(
+                        (element) => element.row != row || element.col != col
+                      )
+                    );
+                  }
+                }}
+                moveCard={moveCard}
+                canDrag={true}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+      {/* </DndProvider> */}
     </div>
   );
 };

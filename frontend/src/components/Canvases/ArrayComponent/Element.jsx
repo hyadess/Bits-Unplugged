@@ -1,7 +1,7 @@
 import { Divider } from "@mui/material";
 import { useEffect } from "react";
 
-export default function Element({ element, setElement, row, col, isDragging }) {
+export default function Element({ element, onClick, row, col, isDragging }) {
   useEffect(() => {}, []);
   return (
     <div
@@ -10,7 +10,7 @@ export default function Element({ element, setElement, row, col, isDragging }) {
           ? "border-[#ec3965]"
           : "border-[#dedede] hover:border-[#38bf27]"
       }`}
-      onClick={() => setElement({ ...element, selected: !element.selected })}
+      onClick={() => onClick(row, col)}
     >
       <div className="flex-center text-3xl font-semibold bu-text-primary p-3">
         {element.label}

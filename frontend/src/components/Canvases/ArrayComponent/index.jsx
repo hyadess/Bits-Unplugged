@@ -8,11 +8,16 @@ import React, {
   useState,
 } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCaretLeft,
+  faCaretRight,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
 
 function DraggableElement({
   element,
-  setElement,
+  onClick,
   id,
   row,
   col,
@@ -47,7 +52,7 @@ function DraggableElement({
       style={{ opacity: isDragging ? 0 : 1 }}
       className="w-full"
     >
-      <Element element={element} setElement={setElement} row={row} col={col} />
+      <Element element={element} onClick={onClick} row={row} col={col} />
     </div>
   );
 }
@@ -71,6 +76,12 @@ const ArrayComponent = (props, ref) => {
       // getData: () => exportData(),
     };
   });
+
+  const setSelectedElements = (elements) => {
+    setData({
+      selectedElements: elements,
+    });
+  };
   const handleReset = (resetData) => {
     if (resetData != null && resetData.array != null) {
       // console.log("handleReset:", resetData);
@@ -84,6 +95,7 @@ const ArrayComponent = (props, ref) => {
       //     selected: false,
       //   })),
       // ]);
+      setSelectedElements([]);
       setData({
         array: [
           Array.from({ length: 10 }, (_, i) => ({
@@ -112,6 +124,7 @@ const ArrayComponent = (props, ref) => {
       //     selected: false,
       //   })),
       // ]);
+      setSelectedElements([]);
       setData({
         array: [
           Array.from({ length: 10 }, (_, i) => ({
@@ -124,20 +137,21 @@ const ArrayComponent = (props, ref) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (data && JSON.stringify(data.array) !== JSON.stringify(array)) {
-      // console.log("Data:", data);
+  // useEffect(() => {
+  //   if (data && JSON.stringify(data.array) !== JSON.stringify(array)) {
+  //     // console.log("Data:", data);
 
-      setNumberOfRows(data.array.length);
-      setNumberOfColumns(data.array[0]?.length ?? 0);
-      // setArray(JSON.parse(JSON.stringify(data.array)));
-      // console.log(
-      //   "Data changed:",
-      //   "Data.array: " + JSON.stringify(data.array),
-      //   "array: " + JSON.stringify(array)
-      // );
-    }
-  }, [data]);
+  //     setNumberOfRows(data.array.length);
+  //     setNumberOfColumns(data.array[0]?.length ?? 0);
+  //     // setArray(JSON.parse(JSON.stringify(data.array)));
+  //     // console.log(
+  //     //   "Data changed:",
+  //     //   "Data.array: " + JSON.stringify(data.array),
+  //     //   "array: " + JSON.stringify(array)
+  //     // );
+  //     setSelectedElements([]);
+  //   }
+  // }, [data]);
 
   // useEffect(() => {
   //   if (data && JSON.stringify(data.array) !== JSON.stringify(array)) {
@@ -172,78 +186,144 @@ const ArrayComponent = (props, ref) => {
   };
   return (
     <div className="h-[100%] flex flex-col">
-      <div className="flex flex-row gap-3 w-60 p-5 h-20 items-center">
-        <input
-          type="number"
-          className="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
-          value={numberOfRows}
-          placeholder="rows"
-          step={1}
-          min={1}
-          max={10}
-          onChange={(e) => {
-            let nRows = e.target.value;
-            let nCols = numberOfColumns;
-            setNumberOfRows(e.target.value);
-            // increase size of data.array
-            const newArray = [...data.array];
-            if (newArray.length < nRows) {
-              for (let i = newArray.length; i < nRows; i++) {
-                newArray.push(
-                  Array.from({ length: nCols }, (_, i) => ({
-                    label: (nRows - 1) * 10 + i,
-                    selected: false,
-                    key: (nRows - 1) * 10 + i,
-                  }))
-                );
-              }
-            } else if (newArray.length > nRows) {
-              newArray.pop();
-            }
-            setData({ array: newArray });
-          }}
-        />
-        <div className="bu-text-primary text-2xl">
-          <FontAwesomeIcon icon={faXmark} />
-        </div>
-
-        <input
-          type="number"
-          className="border sm:text-sm rounded-lg block w-full p-2.5 bu-input-primary"
-          value={numberOfColumns}
-          placeholder="cols"
-          step={1}
-          min={1}
-          max={10}
-          onChange={(e) => {
-            let nCols = e.target.value;
-            let nRows = numberOfRows;
-            setNumberOfColumns(e.target.value);
-            // increase size of data.array
-            if (nRows == 0) {
-              setData({
-                array: [{ label: "0", selected: false }],
-              });
-            } else {
+      <div className="flex flex-row gap-3 p-5 h-20 items-center w-[47rem]">
+        <div className="flex flex-row gap-3 h-20 items-center">
+          <input
+            type="number"
+            className="border sm:text-sm rounded-lg block p-2.5 bu-input-primary w-20"
+            value={numberOfRows}
+            placeholder="rows"
+            step={1}
+            min={1}
+            max={10}
+            onChange={(e) => {
+              let nRows = e.target.value;
+              let nCols = numberOfColumns;
+              setNumberOfRows(e.target.value);
+              // increase size of data.array
               const newArray = [...data.array];
-              newArray.forEach((row, i) => {
-                if (row.length < nCols) {
-                  for (let j = row.length; j < nCols; j++) {
-                    row.push({
-                      label: i * 10 + j,
+              if (newArray.length < nRows) {
+                for (let i = newArray.length; i < nRows; i++) {
+                  newArray.push(
+                    Array.from({ length: nCols }, (_, i) => ({
+                      label: (nRows - 1) * 10 + i,
                       selected: false,
-                      key: i * 10 + j,
-                    });
-                  }
-                } else if (row.length > nCols) {
-                  row.pop();
+                      key: (nRows - 1) * 10 + i,
+                    }))
+                  );
                 }
-              });
-              setData(newArray);
-            }
-          }}
-        />
+              } else if (newArray.length > nRows) {
+                newArray.pop();
+              }
+              setData({ array: newArray });
+            }}
+          />
+          <div className="bu-text-primary text-2xl">
+            <FontAwesomeIcon icon={faXmark} />
+          </div>
+
+          <input
+            type="number"
+            className="border sm:text-sm rounded-lg block w-20 p-2.5 bu-input-primary"
+            value={numberOfColumns}
+            placeholder="cols"
+            step={1}
+            min={1}
+            max={10}
+            onChange={(e) => {
+              let nCols = e.target.value;
+              let nRows = numberOfRows;
+              setNumberOfColumns(e.target.value);
+              // increase size of data.array
+              if (nRows == 0) {
+                setData({
+                  array: [{ label: "0", selected: false }],
+                });
+              } else {
+                const newArray = [...data.array];
+                newArray.forEach((row, i) => {
+                  if (row.length < nCols) {
+                    for (let j = row.length; j < nCols; j++) {
+                      row.push({
+                        label: i * 10 + j,
+                        selected: false,
+                        key: i * 10 + j,
+                      });
+                    }
+                  } else if (row.length > nCols) {
+                    row.pop();
+                  }
+                });
+                setData(newArray);
+              }
+            }}
+          />
+        </div>
+        {data?.selectedElements.length === 1 ? (
+          <div className="no-ring-input flex-center p-1">
+            <FormControl fullWidth variant="outlined" size="small">
+              <InputLabel
+                htmlFor="outlined-adornment"
+                className="bu-text-primary"
+              >
+                Value
+              </InputLabel>
+              <OutlinedInput
+                required
+                placeholder=""
+                id="outlined-adornment"
+                className="outline-none bu-text-primary"
+                type="text"
+                // value={data?.selectedElements[0]?.label}
+                onChange={(e) => {
+                  // data.edges = data.edges.filter(
+                  //   (edge) =>
+                  //     JSON.stringify(edge) !==
+                  //     JSON.stringify(data?.selectedEdges[0])
+                  // );
+                  // data.selectedEdges[0].weight = e.target.value;
+                  // setEdges([...data.edges, data.selectedEdges[0]]);
+                }}
+                label={"Value"}
+                size="small"
+                sx={{ width: "5rem" }}
+              />
+            </FormControl>
+          </div>
+        ) : (
+          <></>
+        )}
+        {data?.selectedElements.length === 2 ? (
+          <div className="flex flex-row gap-3">
+            <button className="bu-button-primary rounded-lg px-7 py-2 text-center text-lg font-medium text-white">
+              Swap
+            </button>
+            <button className="bu-button-primary rounded-lg px-7 py-2 text-center text-lg font-medium text-white">
+              Reverse
+            </button>
+            <button className="bu-button-primary rounded-lg px-7 py-2 text-center text-lg font-medium text-white">
+              Sort
+            </button>
+            <div className="flex flex-row gap-[.1rem]">
+              <button
+                className="bu-button-primary px-7 py-2 text-center text-2xl font-medium text-white"
+                style={{ borderRadius: "0.5rem 0 0 0.5rem" }}
+              >
+                <FontAwesomeIcon icon={faCaretLeft} />
+              </button>
+              <button
+                className="bu-button-primary px-7 py-2 text-center font-medium text-white text-2xl"
+                style={{ borderRadius: "0 0.5rem 0.5rem 0" }}
+              >
+                <FontAwesomeIcon icon={faCaretRight} />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
+
       <DndProvider backend={HTML5Backend}>
         <div className="flex flex-col gap-5 p-5 pt-2 justify-center min-h-[30vh]">
           {data?.array.map((row, i) => (
@@ -255,10 +335,24 @@ const ArrayComponent = (props, ref) => {
                   row={i}
                   col={j}
                   element={element}
-                  setElement={(newData) => {
+                  onClick={(row, col) => {
                     const newArray = [...data.array];
-                    newArray[i][j] = newData;
+                    newArray[row][col].selected = !newArray[row][col].selected;
                     setData({ array: newArray });
+                    if (newArray[row][col].selected) {
+                      // add {row,col} pair to selectedElements
+                      setSelectedElements([
+                        ...data.selectedElements,
+                        { row, col },
+                      ]);
+                    } else {
+                      // remove {row,col} pair from selectedElements
+                      setSelectedElements(
+                        data.selectedElements.filter(
+                          (element) => element.row != row || element.col != col
+                        )
+                      );
+                    }
                   }}
                   moveCard={moveCard}
                   canDrag={true}

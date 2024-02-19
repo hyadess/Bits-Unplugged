@@ -8,11 +8,55 @@ import MarkDownContainer from "./MarkDownContainer";
 import { faAdd, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function AdminArticleEditor() {
+const WriteArticle = ({
+  article,
+  colorMode,
+  updateMarkdown,
+  addMarkdown,
+  deleteMarkdown,
+}) => {
+  //console.log("inside article writing");
+  return (
+    <div className="flex flex-col justify-between">
+      {article?.content?.length > 0 &&
+        article?.content?.map((content, index) => {
+          if (content.type === "markdown") {
+            console.log("write markdown", index);
+            return (
+              <MarkDownContainer
+                key={content.boxId}
+                index={index}
+                colorMode={colorMode}
+                text={content.data}
+                setText={updateMarkdown}
+                onAdd={() => addMarkdown(index)}
+                onDelete={() => deleteMarkdown(index)}
+              />
+            );
+          } else if (content.type === "canvas") {
+            // return (
+            //   <Canvas
+            //     index={index}
+            //     content={content}
+            //     onReset={reset}
+            //     onSubmit={solutionSubmit}
+            //     articleBackup={articleBackup}
+            //     updateCanvas={updateCanvas}
+            //     updateActivity={updateActivity}
+            //   />
+            // );
+          }
+        })}
+    </div>
+  );
+};
+
+const AdminArticleEditor = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [article, setArticle] = useState(null);
   const articleBackup = useRef(null);
+  const [boxCount, setBoxCount] = useState(0);
 
   function getColorModeFromLocalStorage() {
     return localStorage.getItem("color-theme") || "light";
@@ -24,6 +68,15 @@ export default function AdminArticleEditor() {
     if (res.success) {
       articleBackup.current = JSON.parse(JSON.stringify(res.data));
       setArticle(res.data);
+      //set box count as the max box id
+      let max = 0;
+      res.data.content.forEach((content) => {
+        if (content.boxId > max) {
+          max = content.boxId;
+        }
+      });
+      setBoxCount(max);
+
       console.log(article);
       console.log("done");
     }
@@ -46,7 +99,12 @@ export default function AdminArticleEditor() {
   const addMarkdown = (index) => {
     setArticle((prev) => {
       let newContent = [...prev.content];
-      newContent.splice(index, 0, { data: "type here", type: "markdown" });
+      newContent.splice(index, 0, {
+        boxId: boxCount + 1,
+        data: "type here",
+        type: "markdown",
+      });
+      setBoxCount((prev) => prev + 1);
       return { ...prev, content: newContent };
     });
   };
@@ -59,47 +117,14 @@ export default function AdminArticleEditor() {
     });
   };
 
-  const writeArticle = () => {
-    return (
-      <div className="flex flex-col justify-between">
-        {article?.content?.length > 0 &&
-          article?.content?.map((content, index) => {
-            if (content.type === "markdown") {
-              return (
-                <MarkDownContainer
-                  index={index}
-                  colorMode={colorMode}
-                  text={content.data}
-                  setText={updateMarkdown}
-                  onAdd={() => addMarkdown(index)}
-                  onDelete={() => deleteMarkdown(index)}
-                />
-              );
-            } else if (content.type === "canvas") {
-              // return (
-              //   <Canvas
-              //     index={index}
-              //     content={content}
-              //     onReset={reset}
-              //     onSubmit={solutionSubmit}
-              //     articleBackup={articleBackup}
-              //     updateCanvas={updateCanvas}
-              //     updateActivity={updateActivity}
-              //   />
-              // );
-            }
-          })}
-      </div>
-    );
-  };
-
   useEffect(() => {
     getArticleInfo();
+    setLoading(false);
   }, []);
 
   useEffect(() => {
     console.log(article);
-    writeArticle();
+    //WriteArticle();
   }, [article]);
 
   return (
@@ -108,7 +133,13 @@ export default function AdminArticleEditor() {
         <div className="flex flex-row justify-between">
           <Title title={article.title} sub_title={article.subtitle} />
         </div>
-        <writeArticle />
+        <WriteArticle
+          article={article}
+          colorMode={colorMode}
+          updateMarkdown={updateMarkdown}
+          addMarkdown={addMarkdown}
+          deleteMarkdown={deleteMarkdown}
+        />
 
         <div className="flex justify-center">
           <div className="mx-6 pd-2">
@@ -131,4 +162,6 @@ export default function AdminArticleEditor() {
       </div>
     )
   );
-}
+};
+
+export default AdminArticleEditor;

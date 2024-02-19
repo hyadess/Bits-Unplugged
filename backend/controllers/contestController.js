@@ -81,6 +81,18 @@ class ContestController extends Controller {
       res.status(404).json(result);
     }
   };
+  isContestProblemSolved = async (req, res) => {
+    let result = await contestRepository.isContestProblemSolved(
+      req.user.userId,
+      req.params.contestId,
+      req.body.problemId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
 
   getAllContestProblemsByContest = async (req, res) => {
     let result = await contestRepository.getAllContestProblemsByContest(
@@ -309,9 +321,14 @@ class ContestController extends Controller {
     let result = await contestRepository.addSubmissionToContest(
       req.body.problemId,
       req.params.contestId,
-      req.body.submissionId,
       req.user.userId,
-      req.body.points
+     
+      req.body.verdict,
+      req.body.canvasData,
+      req.body.userActivity,
+      req.body.image,
+      req.body.point
+
     );
     if (result.success) {
       res.status(204).json(result.data);

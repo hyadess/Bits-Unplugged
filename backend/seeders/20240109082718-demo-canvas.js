@@ -29,6 +29,7 @@ module.exports = {
             deleteEdge: { value: false, type: "switch" },
             editWeight: { value: false, type: "switch" },
             editColor: { value: false, type: "switch" },
+            editLabel: { value: false, type: "switch" },
           }),
           template:
             "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",

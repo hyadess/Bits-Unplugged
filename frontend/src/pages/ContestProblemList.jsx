@@ -6,12 +6,7 @@ import { contestApi } from "../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFire, faPlus, faTag } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
-import ContestProblem from "./ContestProblem";
-import LayoutMain from "../components/Layouts/LayoutMain";
-import Leaderboard from "./Timer";
-import CountdownTimer from "./Timer";
-import ContestSettersList from "./ContestSetterList";
-
+import ProblemCard from "components/Cards/UserContestProblemCard";
 // ... other imports
 
 const ProblemList = () => {
@@ -33,6 +28,7 @@ const ProblemList = () => {
       const sortedProblems = res.data.sort((a, b) => a.rating - b.rating);
       setProblems(sortedProblems);
     }
+    console.log("contest problems ===>", problems);
     return res;
   };
 
@@ -63,23 +59,11 @@ const ProblemList = () => {
         </h2>
         </div>
         {problems?.map((problem) => (
-          <div
-            key={problem.id}
-            className={`flex flex-col items-left mb-4 hover:bg-gray-100 p-4 rounded-md cursor-pointer relative w-[15vw] h-[10vh] ${
-              selectedProblemId === problem.id ? "bg-gray-100" : ""
-            }`}
-            onClick={() => handleProblemClick(problem.id)}
-          >
-            <h2 className="text-left text-2xl font-extrabold tracking-tight ">
-          <span className="bu-text-title">{problem.title}</span>
-        </h2>
-            <div className="absolute bottom-2 right-2 flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400">
-              <h3 className="bu-text-subtitle font-semibold text-sm">
-                {problem.rating}
-              </h3>
-              <FontAwesomeIcon icon={faFire} />
-            </div>
-          </div>
+          <ProblemCard  contestId={id} 
+                        problem={problem} 
+                        onClick={handleProblemClick} 
+                        selectedId={selectedProblemId}>
+                        </ProblemCard>
         ))}
       </div>
     </div>

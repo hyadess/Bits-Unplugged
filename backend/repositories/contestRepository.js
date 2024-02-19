@@ -137,10 +137,11 @@ class ContestRepository extends Repository {
         FROM "ContestSubmissions" "CS"
         JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
         JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
-        WHERE "P"."contestId" = $2 AND "P"."userId" = $1 AND "CP"."problemId" = $3;
+        WHERE "P"."contestId" = $1 AND "P"."userId" = $2 AND "CP"."problemId"=$3 AND "CS"."verdict" = 'Accepted';
         `;
-    const params = [userId, contestId, problemId];
+    const params = [contestId, userId, problemId];
     const result = await this.query(query, params);
+    console.log("submissions ==>", result.data, params);
     return result;
   };
 
@@ -173,12 +174,19 @@ class ContestRepository extends Repository {
   // it is for setters....................
   getAllProblemsByContest = async (contestId) => {
     const query = `
-        SELECT "P".*, "CP"."status", "CP"."rating"
-        FROM "Problems" "P"
-        JOIN "ContestProblems" "CP" ON "P"."id" = "CP"."problemId"
-        Right JOIN "Canvases" "C" ON "P"."canvasId" = "C"."id"
-        WHERE "CP"."contestId" = $1;        
-        `;
+    SELECT "P".*, "CP"."status", "CP"."rating",
+        CASE WHEN EXISTS (
+            SELECT *
+            FROM "ContestSubmissions" "CS"
+            JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
+            JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
+            WHERE "P"."contestId" = $1 AND "CP"."problemId" = "P"."id" AND "CS"."verdict" = 'Accepted'
+        ) THEN true ELSE false END AS "isSolved"
+    FROM "Problems" "P"
+    JOIN "ContestProblems" "CP" ON "P"."id" = "CP"."problemId"
+    RIGHT JOIN "Canvases" "C" ON "P"."canvasId" = "C"."id"
+    WHERE "CP"."contestId" = $1;
+`;
     const params = [contestId];
     const result = await this.query(query, params);
     // console.log("==>", result.data[0]);
@@ -489,30 +497,8 @@ class ContestRepository extends Repository {
     verdict,
     canvasData,
     userActivity,
-    image,
     points
   ) => {
-    // Check if a submission with the same problemId and userId exists and has an "accepted" verdict
-    const existingSubmissionQuery = `
-      SELECT "S"."id" 
-      FROM "Submissions" "S"
-      WHERE "S"."problemId" = $1 AND "S"."userId" = $2 AND "S"."verdict" = 'Accepted' AND "S"."id" != $3
-    `;
-    const existingSubmissionParams = [problemId, userId, submissionId];
-    const existingSubmissionResult = await this.query(
-      existingSubmissionQuery,
-      existingSubmissionParams
-    );
-  
-      // Check if existingSubmissionResult is defined and has data property
-  if (existingSubmissionResult && existingSubmissionResult.data) {
-    // Check if there is an existing submission with the same problemId and userId and "accepted" verdict
-    if (existingSubmissionResult.data.length > 0) {
-      // Submission with the same problemId and userId and "accepted" verdict already exists
-      console.log("Submission with the same problemId and userId already exists with 'accepted' verdict.");
-      return existingSubmissionResult; // Do not proceed with adding to ContestSubmissions
-    }
-  }
   
     // If not, proceed to check for participant and insert the submission
     const participantQuery = `
@@ -530,12 +516,11 @@ class ContestRepository extends Repository {
     const contestProblemResult = await this.query(contestProblemQuery, contestProblemParams);
     const contestProblemId = contestProblemResult.data[0].id;
     // Then, insert the submission with the participantId
-    console.log("submission id ==>",submissionId);
     const submissionQuery = `
-        INSERT INTO "ContestSubmissions" ("participantId", "contestProblemId", "verdict", "canvasData", "userActivity", "image", "points")
-        VALUES ($1, $2, $3, $4, $5, $6, $7);
+        INSERT INTO "ContestSubmissions" ("participantId", "contestProblemId", "verdict", "canvasData", "userActivity", "points")
+        VALUES ($1, $2, $3, $4, $5, $6);
     `;
-    const submissionParams = [participantId, contestProblemId, verdict, canvasData, userActivity, image, points];
+    const submissionParams = [participantId, contestProblemId, verdict, canvasData, userActivity, points];
     const result = await this.query(submissionQuery, submissionParams);
   
     return result;

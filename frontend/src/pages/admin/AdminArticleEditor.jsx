@@ -7,7 +7,80 @@ import Title from "../../components/Title";
 import MarkDownContainer from "./MarkDownContainer";
 import { faAdd, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CanvasContainer from "components/Canvases/CanvasContainer";
+import { Button } from "react-day-picker";
+import { SendIcon } from "lucide-react";
+import { RotateLeft } from "@mui/icons-material";
 
+const Canvas = ({
+  index,
+  onSubmit,
+  content,
+  onReset,
+  articleBackup,
+  updateCanvas,
+  updateActivity,
+}) => {
+  const canvasRef = useRef(null);
+
+  const reset = () => {
+    onReset(index);
+    canvasRef?.current?.handleReset(
+      JSON.parse(
+        JSON.stringify(articleBackup.current.content[index].canvasData)
+      )
+    );
+  };
+
+  return (
+    content.canvasId && (
+      <div className="flex w-full flex-col gap-5">
+        <CanvasContainer
+          canvasId={content.canvasId}
+          input={content.canvasData}
+          setInput={(canvasData) => {
+            updateCanvas(index, canvasData);
+          }}
+          mode={"preview"}
+          ref={canvasRef}
+          editOptions={content.editOptions}
+          previewOptions={content.previewOptions}
+          activityData={content.activityData}
+          setActivityData={(activityData) => {
+            updateActivity(index, activityData);
+          }}
+        />
+        <div className="flex flex-row justify-between">
+          <Button
+            size="large"
+            variant="contained"
+            color="success"
+            onClick={() => {
+              reset();
+              // canvasRef.current.handleReset(); // Call this after reset
+            }}
+            startIcon={<RotateLeft sx={{ fontSize: "2rem", color: "white" }} />}
+          >
+            Reset
+          </Button>
+          <Button
+            size="large"
+            variant="contained"
+            onClick={() => {
+              console.log("inside submit");
+              console.log(content.activityData);
+
+              onSubmit(content);
+            }}
+            endIcon={<SendIcon sx={{ fontSize: "2rem", color: "white" }} />}
+          >
+            Submit
+          </Button>
+        </div>
+      </div>
+    )
+  );
+};
 const WriteArticle = ({
   article,
   colorMode,
@@ -16,6 +89,16 @@ const WriteArticle = ({
   deleteMarkdown,
 }) => {
   //console.log("inside article writing");
+  // const reset = (index) => {
+  //   // console.log(articleBackup.current.content);
+  //   updateCanvas(
+  //     index,
+  //     JSON.parse(
+  //       JSON.stringify(articleB.current.content[index].canvasData)
+  //     )
+  //   );
+  // };
+
   return (
     <div className="flex flex-col justify-between">
       {article?.content?.length > 0 &&
@@ -77,6 +160,17 @@ const AdminArticleEditor = () => {
       });
       setBoxCount(max);
 
+      // dispatch({
+      //   type: "SET_INITIAL_STATE",
+      //   payload: JSON.parse(
+      //     JSON.stringify({
+      //       ...res.data,
+      //       test: null,
+      //       testActivity: {},
+      //       checkerCanvas: res.data.checkerCanvas ?? res.data.canvasData,
+      //     })
+      //   ),
+      // });
       console.log(article);
       console.log("done");
     }

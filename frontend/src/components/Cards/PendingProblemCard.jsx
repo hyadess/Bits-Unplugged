@@ -145,11 +145,12 @@ export default function PendingProblemCard({
         <div className="flex flex-row justify-center gap-4 w-full mt-5">
           <button
             className="flex flex-row gap-2 flex-center font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-delete"
-            onClick={async () => {
-              const res = await problemApi.rejectProblem(id);
-              if (res.success) {
-                showSuccess("Problem rejected", res);
-              }
+            onClick={() => {
+              // const res = await problemApi.rejectProblem(id);
+              // if (res.success) {
+              //   showSuccess("Problem rejected", res);
+              // }
+              reject();
             }}
           >
             Reject

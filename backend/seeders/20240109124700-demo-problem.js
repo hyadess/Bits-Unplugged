@@ -157,6 +157,7 @@ module.exports = {
             deleteEdge: { value: false, type: "switch" },
             editWeight: { value: false, type: "switch" },
             editColor: { value: false, type: "switch" },
+            editLabel: { value: false, type: "switch" },
           }),
           checkerCanvas: JSON.stringify({
             edges: [
@@ -234,6 +235,7 @@ module.exports = {
             deleteEdge: { value: false, type: "switch" },
             editWeight: { value: false, type: "switch" },
             editColor: { value: false, type: "switch" },
+            editLabel: { value: false, type: "switch" },
           }),
           checkerCanvas: JSON.stringify({
             edges: [
@@ -330,6 +332,7 @@ module.exports = {
             deleteEdge: { value: false, type: "switch" },
             editWeight: { value: false, type: "switch" },
             editColor: { value: true, type: "switch" },
+            editLabel: { value: false, type: "switch" },
           }),
           checkerCanvas: null,
         },
@@ -359,6 +362,7 @@ module.exports = {
             deleteEdge: { value: true, type: "switch" },
             editWeight: { value: false, type: "switch" },
             editColor: { value: false, type: "switch" },
+            editLabel: { value: false, type: "switch" },
           }),
           checkerCanvas: null,
         },
@@ -415,6 +419,7 @@ module.exports = {
             deleteEdge: { value: true, type: "switch" },
             editWeight: { value: false, type: "switch" },
             editColor: { value: false, type: "switch" },
+            editLabel: { value: false, type: "switch" },
           }),
           checkerCanvas: null,
         },
@@ -502,6 +507,7 @@ module.exports = {
             deleteEdge: { value: true, type: "switch" },
             editWeight: { value: false, type: "switch" },
             editColor: { value: false, type: "switch" },
+            editLabel: { value: false, type: "switch" },
           }),
 
           checkerCanvas: JSON.stringify({
@@ -657,6 +663,7 @@ module.exports = {
             deleteEdge: { value: false, type: "switch" },
             editWeight: { value: false, type: "switch" },
             editColor: { value: false, type: "switch" },
+            editLabel: { value: false, type: "switch" },
           }),
           checkerCanvas: JSON.stringify({
             edges: [
@@ -799,6 +806,7 @@ module.exports = {
             deleteEdge: { value: false, type: "switch" },
             editWeight: { value: false, type: "switch" },
             editColor: { value: false, type: "switch" },
+            editLabel: { value: false, type: "switch" },
           }),
           checkerCanvas: null,
         },
@@ -926,6 +934,7 @@ module.exports = {
               value: false,
               type: "switch",
             },
+            editLabel: { value: false, type: "switch" },
           }),
           checkerCode:
             "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
@@ -1138,6 +1147,7 @@ module.exports = {
               value: false,
               type: "switch",
             },
+            editLabel: { value: false, type: "switch" },
           }),
           checkerCode:
             "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
@@ -1350,6 +1360,7 @@ module.exports = {
               value: false,
               type: "switch",
             },
+            editLabel: { value: false, type: "switch" },
           }),
           checkerCode:
             "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
@@ -1533,6 +1544,7 @@ module.exports = {
               value: false,
               type: "switch",
             },
+            editLabel: { value: false, type: "switch" },
           }),
           checkerCode: `/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction isVertexCover(edges, selectedNodes) {\n  // Convert selectedNodes to a Set for faster lookup\n  const selectedNodesSet = new Set(selectedNodes);\n\n  // Iterate over all edges in the graph\n  for (let edge of edges) {\n    // Check if neither vertex of the edge is in selectedNodes\n    if (!selectedNodesSet.has(edge.start) && !selectedNodesSet.has(edge.end)) {\n      // If neither vertex is in selectedNodes, then selectedNodes is not a vertex cover\n      return false;\n    }\n  }\n\n  // If we've checked all edges and haven't returned false, then selectedNodes is a vertex cover\n  return true;\n}\n\nfunction solutionChecker(userCanvas, solutionCanvas, userActivity) {\n  if (solutionCanvas.selectedNodes.length === userCanvas.selectedNodes.length)\n  {\n    return isVertexCover(userCanvas.edges, userCanvas.selectedNodes);\n  }\n  return false;\n}\n`,
           checkerCanvas: JSON.stringify({
@@ -1819,6 +1831,7 @@ module.exports = {
               value: false,
               type: "switch",
             },
+            editLabel: { value: false, type: "switch" },
           }),
           checkerCode:
             "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction isIndependentSet(edges, selectedNodes) {\n  // Convert selectedNodes to a Set for faster lookup\n  const selectedNodesSet = new Set(selectedNodes);\n\n  // Iterate over all edges in the graph\n  for (let edge of edges) {\n    // Check if both vertices of the edge are in selectedNodes\n    if (selectedNodesSet.has(edge.start) && selectedNodesSet.has(edge.end)) {\n      // If both vertices are in selectedNodes, then selectedNodes is not an independent set\n      return false;\n    }\n  }\n\n  // If we've checked all edges and haven't returned false, then selectedNodes is a vertex cover\n  return true;\n}\n\nfunction solutionChecker(userCanvas, solutionCanvas, userActivity) {\n  if (userCanvas.selectedNodes.length === solutionCanvas.selectedNodes.length) {\n    return isIndependentSet(userCanvas.edges, userCanvas.selectedNodes);\n  }\n  return false;\n}\n",
@@ -2107,6 +2120,7 @@ module.exports = {
               value: false,
               type: "switch",
             },
+            editLabel: { value: false, type: "switch" },
           }),
           checkerCode:
             "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction createGraph(edges) {\n  const graph = new Map();\n  for (const edge of edges) {\n    const { start, end, weight } = edge;\n\n    if (!graph.has(start)) {\n      graph.set(start, []);\n    }\n\n    if (!graph.has(end)) {\n      graph.set(end, []);\n    }\n\n    graph.get(start).push({ value: end, weight: parseInt(weight) });\n    graph.get(end).push({ value: start, weight: parseInt(weight) });\n  }\n  return graph;\n}\n\nfunction isDominatingSet(graph, selectedNodes) {\n    // Convert selectedNodes to a Set for faster lookup\n  const selectedNodesSet = new Set(selectedNodes);\n\n  // Create a set to store the dominated nodes\n  const dominatedNodes = new Set(selectedNodes);\n\n  // Iterate over all nodes in the graph\n  for (let node of graph.keys()) {\n    // If the node is in selectedNodes, it's already dominated\n    if (selectedNodesSet.has(node)) continue;\n\n    // Check if the node is adjacent to a node in selectedNodes\n    for (let adjacentNode of graph.get(node)) {\n      if (selectedNodesSet.has(adjacentNode.value)) {\n        dominatedNodes.add(node);\n        break;\n      }\n    }\n  }\n\n  // If the number of dominated nodes is equal to the number of nodes in the graph,\n  // then selectedNodes is a dominating set\n  return dominatedNodes.size === graph.size;\n}\n\nfunction solutionChecker(userCanvas, solutionCanvas, userActivity) {\n  if (solutionCanvas.selectedNodes.length === userCanvas.selectedNodes.length)\n  {\n    return isDominatingSet(createGraph(userCanvas.edges), userCanvas.selectedNodes);\n  }\n  return false;\n}\n",
@@ -2431,6 +2445,7 @@ module.exports = {
               value: false,
               type: "switch",
             },
+            editLabel: { value: false, type: "switch" },
           }),
           checkerCode:
             "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
@@ -2797,6 +2812,7 @@ module.exports = {
               value: false,
               type: "switch",
             },
+            editLabel: { value: false, type: "switch" },
           }),
           checkerCode:
             "/**\r\n *\r\n * @param {Object} data - An object containing nodes and edges properties.\r\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\r\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\r\n * @returns {boolean} True if the solution is valid, otherwise false.\r\n */\r\n\r\nfunction createGraph(edges) {\r\n  const graph = new Map();\r\n  for (const edge of edges) {\r\n    const { start, end, weight } = edge;\r\n\r\n    if (!graph.has(start)) {\r\n      graph.set(start, []);\r\n    }\r\n\r\n    if (!graph.has(end)) {\r\n      graph.set(end, []);\r\n    }\r\n\r\n    graph.get(start).push({ value: end, weight: parseInt(weight) });\r\n    graph.get(end).push({ value: start, weight: parseInt(weight) });\r\n  }\r\n  return graph;\r\n}\r\n\r\nfunction isDominatingSet(graph, selectedNodes) {\r\n    // Convert selectedNodes to a Set for faster lookup\r\n  const selectedNodesSet = new Set(selectedNodes);\r\n\r\n  // Create a set to store the dominated nodes\r\n  const dominatedNodes = new Set(selectedNodes);\r\n\r\n  // Iterate over all nodes in the graph\r\n  for (let node of graph.keys()) {\r\n    // If the node is in selectedNodes, it's already dominated\r\n    if (selectedNodesSet.has(node)) continue;\r\n\r\n    // Check if the node is adjacent to a node in selectedNodes\r\n    for (let adjacentNode of graph.get(node)) {\r\n      if (selectedNodesSet.has(adjacentNode.value)) {\r\n        dominatedNodes.add(node);\r\n        break;\r\n      }\r\n    }\r\n  }\r\n\r\n  // If the number of dominated nodes is equal to the number of nodes in the graph,\r\n  // then selectedNodes is a dominating set\r\n  return dominatedNodes.size === graph.size;\r\n}\r\n\r\nfunction solutionChecker(userCanvas, solutionCanvas, userActivity) {\r\n  if (solutionCanvas.selectedNodes.length === userCanvas.selectedNodes.length)\r\n  {\r\n    return isDominatingSet(createGraph(userCanvas.edges), userCanvas.selectedNodes);\r\n  }\r\n  return false;\r\n}\r\n",
@@ -3094,6 +3110,72 @@ module.exports = {
                 },
               ],
             ],
+          }),
+        },
+        {
+          id: 22,
+          setterId: 1,
+          canvasId: 1,
+          title: "BST",
+          statement:
+            "Draw the Binary Search Tree of the array **[5,4,2,6,1,10]**.",
+          canvasData: JSON.stringify({
+            edges: [],
+            nodes: {},
+            selectedEdges: [],
+            selectedNodes: [],
+          }),
+          editOptions: JSON.stringify({
+            directedEdge: {
+              value: true,
+              type: "switch",
+            },
+            weightedEdge: {
+              value: false,
+              type: "switch",
+            },
+          }),
+          previewOptions: JSON.stringify({
+            addNode: {
+              value: true,
+              type: "switch",
+            },
+            deleteNode: {
+              value: true,
+              type: "switch",
+            },
+            dragNode: {
+              value: true,
+              type: "switch",
+            },
+            addEdge: {
+              value: true,
+              type: "switch",
+            },
+            deleteEdge: {
+              value: true,
+              type: "switch",
+            },
+            editWeight: {
+              value: false,
+              type: "switch",
+            },
+            editColor: {
+              value: false,
+              type: "switch",
+            },
+            editLabel: {
+              value: true,
+              type: "switch",
+            },
+          }),
+          checkerCode:
+            "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({
+            edges: [],
+            nodes: {},
+            selectedEdges: [],
+            selectedNodes: [],
           }),
         },
       ],

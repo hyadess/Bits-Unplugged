@@ -838,33 +838,35 @@ const GraphComponent = (props, ref) => {
             </div>
           </IconButton>
         )}
-      {props.mode === "edit" && data?.selectedNodes?.length === 1 && (
-        <div className="no-ring-input flex-center p-1">
-          <FormControl fullWidth variant="outlined" size="small">
-            <InputLabel
-              htmlFor="outlined-adornment"
-              className="bu-text-primary"
-            >
-              Node Label
-            </InputLabel>
-            <OutlinedInput
-              required
-              placeholder="Node Label"
-              id="outlined-adornment"
-              className="outlined-input bu-text-primary"
-              type="text"
-              value={data?.nodes[data.selectedNodes[0]]?.label}
-              onChange={(e) => {
-                data.nodes[data.selectedNodes[0]].label = e.target.value;
-                setNodes(data.nodes);
-              }}
-              label={"Node Label"}
-              size="small"
-              sx={{ width: "10rem" }}
-            />
-          </FormControl>
-        </div>
-      )}
+      {(props.mode === "edit" ||
+        props?.previewOptions?.editLabel?.value === true) &&
+        data?.selectedNodes?.length === 1 && (
+          <div className="no-ring-input flex-center p-1">
+            <FormControl fullWidth variant="outlined" size="small">
+              <InputLabel
+                htmlFor="outlined-adornment"
+                className="bu-text-primary"
+              >
+                Node Label
+              </InputLabel>
+              <OutlinedInput
+                required
+                placeholder="Node Label"
+                id="outlined-adornment"
+                className="outlined-input bu-text-primary"
+                type="text"
+                value={data?.nodes[data.selectedNodes[0]]?.label}
+                onChange={(e) => {
+                  data.nodes[data.selectedNodes[0]].label = e.target.value;
+                  setNodes(data.nodes);
+                }}
+                label={"Node Label"}
+                size="small"
+                sx={{ width: "10rem" }}
+              />
+            </FormControl>
+          </div>
+        )}
 
       {(props.mode === "edit" ||
         props?.previewOptions?.editColor?.value === true) &&

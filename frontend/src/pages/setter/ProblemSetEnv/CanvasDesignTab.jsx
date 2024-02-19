@@ -136,7 +136,7 @@ const CanvasDesignTab = ({ backupProblem }) => {
   const { state: problem, dispatch } = useProblemContext();
 
   useEffect(() => {
-    console.log("Backup:", backupProblem?.current?.canvasData.array);
+    console.log("Backup:", backupProblem?.current?.canvasData?.array);
   }, [problem.canvasData]);
 
   return (

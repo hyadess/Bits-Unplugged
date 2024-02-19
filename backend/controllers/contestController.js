@@ -82,10 +82,11 @@ class ContestController extends Controller {
     }
   };
   isContestProblemSolved = async (req, res) => {
+    console.log("problem id ==>", req.body.problemId);
     let result = await contestRepository.isContestProblemSolved(
       req.user.userId,
       req.params.contestId,
-      req.body.problemId
+      req.params.problemId
     );
     if (result.success) {
       res.status(200).json(result.data);
@@ -326,7 +327,6 @@ class ContestController extends Controller {
       req.body.verdict,
       req.body.canvasData,
       req.body.userActivity,
-      req.body.image,
       req.body.point
 
     );

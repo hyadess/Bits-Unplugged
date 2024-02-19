@@ -31,6 +31,7 @@ const UserContestDetails = () => {
   
     const getContest = async () => {
       const res = await contestApi.getContestById(id);
+      console.log("contest in details =>", res);
       if (res.success) setContest(res.data[0]);
       return res;
     };

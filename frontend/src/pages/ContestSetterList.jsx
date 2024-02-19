@@ -15,11 +15,13 @@ const ContestSettersList = ({ setterList }) => {
           </h2>
 
           <p className="bu-text-subtitle font-light sm:text-xl lg:mb-8">
-            Meet our dynamic team who are here to help you at each step of your journey
+            Meet our dynamic team who are here to help you at each step of your
+            journey
           </p>
         </div>
         <div className="mx-auto grid h-full w-full grid-cols-1 place-items-center gap-8 md:w-75% md:grid-cols-2">
-          {setterList.map((setter) => (
+          {setterList?.map((setter) => (
+
             <SetterCard
               key={setter.id}
               name={setter.username}

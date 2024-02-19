@@ -615,53 +615,54 @@ export default function Profile() {
   }, [submissions]);
 
   return (
-    <div className="flex flex-col">
-      <ProfileInfo />
+    <div className="flex flex-col pr-5">
+      {/* <ProfileInfo /> */}
       <Title title={"Profile statistics"} />
-      <div className="mb-6 px-10 py-6">
-        <Title
-          title={""}
-          sub_title={
-            "chart shows your total successful and failed attempts accross all the topics"
-          }
-        />
+      <div className="flex flex-row items-end">
+        <div className="mb-6 px-10 py-6">
+          <Title
+            title={""}
+            sub_title={
+              "chart shows your total successful and failed attempts accross all the topics"
+            }
+          />
+          <PieChart />
+        </div>
 
-        <PieChart />
+        <div>
+          <Title
+            title={""}
+            sub_title={
+              "Your fabourite series. Shows your total attempts accross different series"
+            }
+          />
+          <BarChart />
+        </div>
       </div>
 
-      <div>
-        <Title
-          title={""}
-          sub_title={
-            "Your fabourite series. Shows your total attempts accross different series"
-          }
-        />
+      <div className="flex flex-row w-full items-end">
+        <div className="px-10 py-6 w-1/2">
+          <Title title={""} sub_title={"Time you spent solving problems"} />
+          <Chart
+            options={options}
+            series={[{ name: "Active Time", data: activityChartData }]}
+            type="area"
+            width="100%"
+          />
+        </div>
 
-        <BarChart />
-      </div>
-
-      <div className="mb-6 px-10 py-6">
-        <Title title={""} sub_title={"Time you spent solving problems"} />
-
-        <Chart
-          options={options}
-          series={[{ name: "Active Time", data: activityChartData }]}
-          type="area"
-          width="100%"
-        />
-      </div>
-
-      <div>
-        <Title
-          title={""}
-          sub_title={"Your Solve time for different problems"}
-        />
-        <Chart
-          options={distributionChartData.options}
-          series={distributionChartData.series}
-          type="bar"
-          height={300}
-        />
+        <div className="w-1/2">
+          <Title
+            title={""}
+            sub_title={"Your Solve time for different problems"}
+          />
+          <Chart
+            options={distributionChartData.options}
+            series={distributionChartData.series}
+            type="bar"
+            height={300}
+          />
+        </div>
       </div>
 
       <div className="mb-6 px-10 py-6">

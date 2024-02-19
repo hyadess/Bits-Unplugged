@@ -101,7 +101,7 @@ const CountdownTimer = ({ targetDate, flag, EndAction }) => {
  // Fetch leaderboard only once on component mount
 
   if (days + hours + minutes + seconds <= 0) {
-    EndAction();
+    //EndAction();
     
   } else {
     return (<>

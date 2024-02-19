@@ -42,6 +42,8 @@ class SubmissionController extends Controller {
         req.body
       );
       res.status(201).json(result);
+      console.log("submission id ======>", result?.id);
+
     });
   };
 

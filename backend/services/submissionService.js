@@ -27,12 +27,12 @@ class SubmissionService extends Service {
       } else if (submission.verdict === "Wrong answer") {
         await userActivityRepository.updateOnFailedAttempt(userId, problemId);
       }
-      await submissionRepository.submitSolution({
+      const res = await submissionRepository.submitSolution({
         ...submission,
         problemId,
         userId,
       });
-      return { success: true };
+      return { success: true , id: res};
     } catch (err) {
       console.log(err);
       return { success: false };

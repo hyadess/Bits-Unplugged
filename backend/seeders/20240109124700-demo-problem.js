@@ -3113,7 +3113,7 @@ module.exports = {
           }),
         },
         {
-          id: 22,
+          // id: 22,
           setterId: 1,
           canvasId: 1,
           title: "BST",

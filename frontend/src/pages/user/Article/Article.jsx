@@ -17,12 +17,19 @@ import { Button, IconButton, Tooltip } from "@mui/material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SendIcon from "@mui/icons-material/Send";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faArrowRight,
+  faCaretRight,
+  faPenToSquare,
+} from "@fortawesome/free-solid-svg-icons";
 import SubmissionService from "services/submissionService";
+import ImageLoader from "components/ImageLoaders/ImageLoader";
+import { Save } from "@mui/icons-material";
 const Statement = ({ data }) => {
   const { colorMode } = useGlobalContext();
   return (
-    <div className="mx-auto max-w-screen-2xl items-center">
+    <div className="mx-auto items-center w-full">
       <div className="bu-text-primary  text-left font-light md:text-lg">
         <div
           style={{
@@ -115,6 +122,71 @@ const Canvas = ({
   );
 };
 
+const deepCopy = (obj) => {
+  return typeof obj === "string"
+    ? JSON.parse(obj)
+    : JSON.parse(JSON.stringify(obj));
+};
+
+const SlideShow = (props) => {
+  const [images, setImages] = useState([]);
+  const [index, setIndex] = useState(0);
+
+  useState(() => {
+    setImages(deepCopy(props.images));
+  }, [props.images]);
+
+  return (
+    <>
+      <div className="bu-card-primary rounded-[30px] py-10">
+        {images.map((image, i) => {
+          return (
+            <img
+              key={i}
+              src={image.url}
+              alt={image.caption}
+              style={{
+                width: "40rem",
+                margin: "auto",
+                display: index === i ? "block" : "none",
+              }}
+            />
+          );
+        })}
+        {/* <img
+          key={index}
+          src={images[index]?.url}
+          alt={images[index]?.caption}
+          style={{ width: "40rem", margin: "auto" }}
+        /> */}
+      </div>
+      <div className="flex flex-row justify-between w-full">
+        <button
+          className="text-white font-semibold rounded-lg px-5 py-2 text-center bu-button-primary cursor-pointer flex flex-row gap-3 items-center text-2xl"
+          style={{ visibility: index === 0 ? "hidden" : "visible" }}
+          onClick={() => {
+            setIndex((prev) => Math.max(prev - 1, 0));
+          }}
+        >
+          <FontAwesomeIcon icon={faArrowLeft} />
+          Prev
+        </button>
+        <button
+          className="text-white font-semibold rounded-lg px-5 py-2 text-center bu-button-primary cursor-pointer flex flex-row gap-3 items-center text-2xl"
+          onClick={() => {
+            setIndex((prev) => Math.min(prev + 1, images.length - 1));
+          }}
+          style={{
+            visibility: index === images.length - 1 ? "hidden" : "visible",
+          }}
+        >
+          Next
+          <FontAwesomeIcon icon={faArrowRight} />
+        </button>
+      </div>
+    </>
+  );
+};
 export default function Article() {
   const { id } = useParams();
   const articleBackup = useRef(null);
@@ -133,12 +205,16 @@ export default function Article() {
       console.log(article);
       console.log("done");
     }
-  }; 
+  };
   const solutionSubmit = async (content) => {
     let res = await SubmissionService.checkSolution(
       content.checkerCode,
-      JSON.parse(content.checkerCanvas),
-      content.canvasData,
+      typeof content.checkerCanvas === "string"
+        ? JSON.parse(content.checkerCanvas)
+        : content.checkerCanvas,
+      typeof content.canvasData === "string"
+        ? JSON.parse(content.canvasData)
+        : content.canvasData,
       content.activityData ?? {}
     );
     await submissionApi.submitSolution(content.canvasData, res.output, id);
@@ -179,24 +255,28 @@ export default function Article() {
   return (
     <div>
       <Title title={article.title} />
-      {article?.content?.length > 0 &&
-        article?.content?.map((content, index) => {
-          if (content.type === "markdown") {
-            return <Statement colorMode={colorMode} data={content.data} />;
-          } else if (content.type === "canvas") {
-            return (
-              <Canvas
-                index={index}
-                content={content}
-                onReset={reset}
-                onSubmit={solutionSubmit}
-                articleBackup={articleBackup}
-                updateCanvas={updateCanvas}
-                updateActivity={updateActivity}
-              />
-            );
-          }
-        })}
+      <div className="flex flex-col gap-5">
+        {article?.content?.length > 0 &&
+          article?.content?.map((content, index) => {
+            if (content.type === "markdown") {
+              return <Statement colorMode={colorMode} data={content.data} />;
+            } else if (content.type === "canvas") {
+              return (
+                <Canvas
+                  index={index}
+                  content={content}
+                  onReset={reset}
+                  onSubmit={solutionSubmit}
+                  articleBackup={articleBackup}
+                  updateCanvas={updateCanvas}
+                  updateActivity={updateActivity}
+                />
+              );
+            } else if (content.type === "slideshow") {
+              return <SlideShow images={content.images} />;
+            }
+          })}
+      </div>
     </div>
   );
 }

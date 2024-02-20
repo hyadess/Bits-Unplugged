@@ -7,7 +7,13 @@ import { SelectionField2 } from "../../../components/InputFields";
 import { useProblemContext } from "../../../store/ProblemContextProvider";
 import { canvasApi, problemApi } from "../../../api";
 import { showSuccess } from "../../../App";
-const CanvasDesignTab = ({ backupProblem }) => {
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import { Select, MenuItem } from "@mui/material";
+import SelectionField from "./SelectionField";
+
+const CanvasDesignTab = ({ backupProblem, onSave }) => {
   const [canvasList, setCanvasList] = useState([]);
   const [canvasFullList, setCanvasFullList] = useState([]);
   const canvasRef = useRef();
@@ -177,7 +183,7 @@ const CanvasDesignTab = ({ backupProblem }) => {
 
       {problem.canvasId && (
         <div
-          className="flex py-5"
+          className="flex py-5 gap-5"
           style={{ justifyContent: "space-between", marginLeft: "auto" }}
         >
           <Button
@@ -194,10 +200,23 @@ const CanvasDesignTab = ({ backupProblem }) => {
           >
             Reset
           </Button>
+          {/* <SelectionField2
+            label="Choose Canvas"
+            onChange={handleCanvasChange}
+            id="canvasId"
+            value={problem.canvasId == null ? "" : problem.canvasId}
+            options={canvasList}
+          /> */}
+          <SelectionField
+            label="Choose Canvas"
+            onChange={(e) => changeCanvas(e.target.value)}
+            value={problem.canvasId == null ? "" : problem.canvasId}
+            options={canvasList}
+          />
           <Button
             variant="contained"
             onClick={async () => {
-              await updateCanvas();
+              await onSave();
               backupProblem.current.canvasId = problem.canvasId;
               backupProblem.current.editOptions = problem.editOptions;
               backupProblem.current.previewOptions = problem.previewOptions;
@@ -209,14 +228,6 @@ const CanvasDesignTab = ({ backupProblem }) => {
           </Button>
         </div>
       )}
-
-      <SelectionField2
-        label="Choose Canvas"
-        onChange={handleCanvasChange}
-        id="canvasId"
-        value={problem.canvasId == null ? "" : problem.canvasId}
-        options={canvasList}
-      />
     </>
   );
 };

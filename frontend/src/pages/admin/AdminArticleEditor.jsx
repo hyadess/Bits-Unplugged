@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { articleApi } from "../../api";
-import { setLoading } from "../../App";
+import { setLoading, showSuccess } from "../../App";
 import { useGlobalContext } from "store/GlobalContextProvider";
 import Title from "../../components/Title";
 import MarkDownContainer from "./MarkDownContainer";
@@ -11,6 +11,18 @@ import CanvasContainer from "components/Canvases/CanvasContainer";
 import { Button } from "react-day-picker";
 import { SendIcon } from "lucide-react";
 import { RotateLeft } from "@mui/icons-material";
+import ProblemContextProvider, {
+  useProblemContext,
+} from "store/ProblemContextProvider";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import Header from "./articleSetEnv/Header";
+import ProbSetTab from "components/ProbSetTab";
+import DetailsTab from "./articleSetEnv/DetailsTab";
+import CanvasDesignTab from "./articleSetEnv/CanvasDesignTab";
+import SolutionCheckerTab from "./articleSetEnv/SolutionCheckerTab";
+import TestTab from "./articleSetEnv/TestTab";
+import Confirmation from "components/Confirmation";
 
 const Canvas = ({
   index,
@@ -81,6 +93,131 @@ const Canvas = ({
     )
   );
 };
+
+const ArticleCanvas = ({ data, articleId, content, index }) => {
+  const { state: problem, dispatch } = useProblemContext();
+  const navigate = useNavigate();
+  const backupProblem = useRef(null);
+  const [activeComponent, setActiveComponent] = useState("Canvas"); // not related to database
+  const testRef = useRef(null);
+  const deepCopy = (obj) => {
+    return typeof obj === "string"
+      ? JSON.parse(obj)
+      : JSON.parse(JSON.stringify(obj));
+  };
+
+  const getProblem = async () => {
+    backupProblem.current = data;
+    dispatch({
+      type: "SET_INITIAL_STATE",
+      payload: deepCopy({
+        ...data,
+        test: null,
+        testActivity: {},
+        checkerCanvas: deepCopy(data.checkerCanvas ?? data.canvasData),
+        canvasData: deepCopy(data.canvasData),
+        editOptions: deepCopy(data.editOptions),
+        previewOptions: deepCopy(data.previewOptions),
+      }),
+    });
+  };
+
+  const updateCanvas = async () => {
+    console.log("UPDATE CANVAS  ");
+    dispatch({
+      type: "UPDATE_CHECKER_CANVAS",
+      payload: deepCopy(problem.canvasData),
+    });
+
+    backupProblem.current.canvasData = deepCopy(problem.canvasData);
+    const newContent = [...content];
+    newContent[index] = {
+      ...newContent[index],
+      canvasId: problem.canvasId,
+      canvasData: problem.canvasData,
+      editOptions: problem.editOptions,
+      previewOptions: problem.previewOptions,
+      checkerCode: problem.checkerCode,
+      checkerCanvas: problem.checkerCanvas,
+    };
+    const res = await articleApi.updateArticle(articleId, {
+      content: newContent,
+    });
+    if (res.success) {
+      // console.log(res);
+      showSuccess("Canvas saved successfully", res);
+    }
+  };
+
+  const updateSolutionChecker = async (checkerType) => {
+    if (checkerType == 0 && problem.checkerCode == null) return;
+    if (checkerType == 1 && problem.checkerCanvas == null) return;
+    const newContent = [...content];
+    newContent[index] = {
+      ...newContent[index],
+      ...(checkerType == 0 && {
+        checkerCode: problem.checkerCode,
+      }),
+      ...(checkerType == 1 && {
+        checkerCanvas: problem.checkerCanvas,
+      }),
+    };
+    const res = await articleApi.updateArticle(articleId, {
+      content: newContent,
+    });
+    if (res.success) {
+      showSuccess("Checker saved successfully", res);
+    }
+  };
+
+  useEffect(() => {
+    getProblem();
+  }, []);
+  return (
+    <div>
+      {/* <Header backupProblem={backupProblem} /> */}
+      <ProbSetTab
+        activeTab={activeComponent}
+        click={(tab) => {
+          if (tab === "Test" && activeComponent !== "Test") {
+            dispatch({
+              type: "UPDATE_TEST_CANVAS",
+              payload: deepCopy(problem.canvasData),
+            });
+            testRef?.current?.handleReset(deepCopy(problem.canvasData));
+          }
+          setActiveComponent(tab);
+          // document.body.style.cursor = "default";
+        }}
+      />
+
+      <div className="component-container relative">
+        {/* <div
+          className={
+            "mt-5 flex flex-col gap-5 " +
+            (activeComponent === "Details" ? "block" : "hidden")
+          }
+        >
+          <DetailsTab />
+        </div> */}
+        <div className={activeComponent === "Canvas" ? "block" : "hidden"}>
+          <CanvasDesignTab
+            backupProblem={backupProblem}
+            onSave={updateCanvas}
+          />
+        </div>
+        <div className={activeComponent === "Solution" ? "block" : "hidden"}>
+          <SolutionCheckerTab onSave={updateSolutionChecker} />
+        </div>
+        <div className={activeComponent === "Test" ? "block" : "hidden"}>
+          <TestTab ref={testRef} />
+        </div>
+      </div>
+      {/* <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} /> */}
+    </div>
+  );
+};
+
 const WriteArticle = ({
   article,
   colorMode,
@@ -88,17 +225,6 @@ const WriteArticle = ({
   addMarkdown,
   deleteMarkdown,
 }) => {
-  //console.log("inside article writing");
-  // const reset = (index) => {
-  //   // console.log(articleBackup.current.content);
-  //   updateCanvas(
-  //     index,
-  //     JSON.parse(
-  //       JSON.stringify(articleB.current.content[index].canvasData)
-  //     )
-  //   );
-  // };
-
   return (
     <div className="flex flex-col justify-between">
       {article?.content?.length > 0 &&
@@ -117,17 +243,18 @@ const WriteArticle = ({
               />
             );
           } else if (content.type === "canvas") {
-            // return (
-            //   <Canvas
-            //     index={index}
-            //     content={content}
-            //     onReset={reset}
-            //     onSubmit={solutionSubmit}
-            //     articleBackup={articleBackup}
-            //     updateCanvas={updateCanvas}
-            //     updateActivity={updateActivity}
-            //   />
-            // );
+            return (
+              <ProblemContextProvider>
+                <DndProvider backend={HTML5Backend}>
+                  <ArticleCanvas
+                    articleId={article.id}
+                    data={content}
+                    content={article.content}
+                    index={index}
+                  />
+                </DndProvider>
+              </ProblemContextProvider>
+            );
           }
         })}
     </div>

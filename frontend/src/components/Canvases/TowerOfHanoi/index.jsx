@@ -73,7 +73,7 @@ const TowerOfHanoiView = ({
               )}
             </div>
           </div>
-          <Divider sx={{ bgcolor: "rgb(236, 72, 153)" }} />
+          {/* <Divider sx={{ bgcolor: "rgb(236, 72, 153)" }} /> */}
           <div className={`toh-canvas vbox flex-center`}>
             <Stage
               x={20}

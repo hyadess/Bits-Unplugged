@@ -1,11 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { articleApi } from "../../api";
+import { articleApi, storageApi } from "../../api";
 import { setLoading, showSuccess } from "../../App";
 import { useGlobalContext } from "store/GlobalContextProvider";
 import Title from "../../components/Title";
 import MarkDownContainer from "./MarkDownContainer";
-import { faAdd, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAdd,
+  faArrowLeft,
+  faArrowRight,
+  faFloppyDisk,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CanvasContainer from "components/Canvases/CanvasContainer";
 import { Button } from "react-day-picker";
@@ -23,6 +29,8 @@ import CanvasDesignTab from "./articleSetEnv/CanvasDesignTab";
 import SolutionCheckerTab from "./articleSetEnv/SolutionCheckerTab";
 import TestTab from "./articleSetEnv/TestTab";
 import Confirmation from "components/Confirmation";
+import { Tooltip } from "@mui/material";
+import { IconButton } from "@mui/material";
 
 const Canvas = ({
   index,
@@ -217,9 +225,258 @@ const ArticleCanvas = ({ data, articleId, content, index }) => {
     </div>
   );
 };
+const deepCopy = (obj) => {
+  return typeof obj === "string"
+    ? JSON.parse(obj)
+    : JSON.parse(JSON.stringify(obj));
+};
+const SlideShow = ({ data, articleId, content, index, onSave }) => {
+  const [images, setImages] = useState([]);
+  const [serial, setSerial] = useState(0);
+
+  useState(() => {
+    console.log(data);
+    setImages(deepCopy(data.images));
+  }, [data.images]);
+
+  return (
+    <div className="flex flex-col gap-5">
+      <div className="bu-card-primary pb-10 rounded-[30px] flex flex-col">
+        <div className="flex flex-row justify-between">
+          <div className="flex flex-row p-4 items-start bu-text-primary text-2xl font-semibold">
+            {serial + 1}/{images.length}
+          </div>
+          <div className="flex flex-row p-2 items-center">
+            <Tooltip
+              title={<h1 className="text-lg text-white">Delete Image</h1>}
+              placement="top"
+              arrow
+              size="large"
+            >
+              <div className="flex flex-col items-center bu-text-primary font-bold">
+                <IconButton
+                  sx={{
+                    fontSize: "2rem",
+                    width: "3rem",
+                    height: "3rem",
+                  }}
+                  onClick={() => {
+                    setImages((prev) => {
+                      const newImages = [...prev];
+                      newImages.splice(serial, 1);
+                      return newImages;
+                    });
+                    setSerial((prev) => Math.min(prev, images.length - 2));
+                  }}
+                >
+                  <div className="flex items-center bu-text-primary text-3xl">
+                    <FontAwesomeIcon icon={faTrashCan} />
+                  </div>
+                </IconButton>
+                <div className="transform translate-y-[-50%] text-sm">
+                  Delete
+                </div>
+              </div>
+            </Tooltip>
+            <Tooltip
+              title={<h1 className="text-lg text-white">Add Image</h1>}
+              placement="top"
+              arrow
+              size="large"
+            >
+              <input
+                type="file"
+                id="fileInput"
+                style={{ display: "none" }}
+                onChange={(event) => {
+                  const file = event.target.files[0];
+                  // add this file to images array
+                  // insert this file to images array after the current index
+
+                  setImages((prev) => {
+                    const newImages = [...prev];
+                    const newImage = {
+                      url: URL.createObjectURL(file),
+                      caption: file.name,
+                      status: "new",
+                      file: file,
+                    };
+                    newImages.splice(serial + 1, 0, newImage);
+                    return newImages;
+                  });
+                  setSerial((prev) => prev + 1);
+                }}
+              />
+              <div className="flex flex-col items-center bu-text-primary font-bold">
+                <IconButton
+                  sx={{
+                    fontSize: "2rem",
+                    width: "3rem",
+                    height: "3rem",
+                  }}
+                  onClick={() => {
+                    document.getElementById("fileInput").click();
+                  }}
+                >
+                  <div className="flex items-center bu-text-primary text-3xl">
+                    <FontAwesomeIcon icon={faAdd} />
+                  </div>
+                </IconButton>
+                <div className="transform translate-y-[-50%] text-sm">Add</div>
+              </div>
+            </Tooltip>
+            <Tooltip
+              title={<h1 className="text-lg text-white">Save All</h1>}
+              placement="top"
+              arrow
+              size="large"
+            >
+              <div className="flex flex-col items-center bu-text-primary font-bold">
+                <IconButton
+                  sx={{
+                    fontSize: "2rem",
+                    width: "3rem",
+                    height: "3rem",
+                  }}
+                  onClick={async () => {
+                    // First list all the images.file that are new
+                    const newImageFiles = images
+                      .filter((image) => image.status === "new")
+                      .map((image) => image.file);
+
+                    if (newImageFiles.length) {
+                      // Then upload all the new images
+                      const formData = new FormData();
+                      newImageFiles.forEach((file, index) => {
+                        formData.append("file", file);
+                      });
+                      console.log(newImageFiles, formData);
+                      const res = await storageApi.upload(formData);
+                      console.log(res);
+                      if (res.success) {
+                        const newPaths =
+                          newImageFiles.length > 1
+                            ? res.data.paths
+                            : [res.data.path];
+                        // now update the images array with the new paths on status "new"
+                        const newImages = [...images];
+                        let count = 0;
+                        newImages.forEach((image, i) => {
+                          if (image.status === "new") {
+                            image.url = newPaths[count++];
+                            // remove status and file field
+                            delete image.status;
+                            delete image.file;
+                          }
+                        });
+                        console.log(newImages);
+
+                        const newContent = [...content];
+                        newContent[index] = {
+                          ...newContent[index],
+                          images: newImages,
+                        };
+                        setImages(newImages);
+                        const res2 = await articleApi.updateArticle(articleId, {
+                          content: newContent,
+                        });
+                        if (res2.success) {
+                          // console.log(res);
+                          showSuccess("Images saved successfully", res2);
+                          onSave(newImages);
+                        }
+                      }
+                    } else if (images.length < data.images.length) {
+                      // images are deleted
+                      const newContent = [...content];
+                      newContent[index] = {
+                        ...newContent[index],
+                        images: images,
+                      };
+                      const res2 = await articleApi.updateArticle(articleId, {
+                        content: newContent,
+                      });
+                      if (res2.success) {
+                        // console.log(res);
+                        showSuccess("Images saved successfully", res2);
+                      }
+
+                      // Find which image was deleted by comparing url
+                      const deletedImages = data.images
+                        .filter((image) => {
+                          return !images.find((img) => img.url === image.url);
+                        })
+                        .map((image) => image.url);
+                      console.log(deletedImages);
+                      console.log(await storageApi.remove(deletedImages));
+                      onSave(images);
+                      // update the data.images with the new images
+                    }
+                  }}
+                >
+                  <div className="flex items-center bu-text-primary text-3xl">
+                    <FontAwesomeIcon icon={faFloppyDisk} />
+                  </div>
+                </IconButton>
+                <div className="transform translate-y-[-50%] text-sm">Save</div>
+              </div>
+            </Tooltip>
+          </div>
+        </div>
+
+        {images?.map((image, i) => {
+          return (
+            <img
+              key={i}
+              src={image.url}
+              alt={image.caption}
+              style={{
+                width: "40rem",
+                margin: "auto",
+                display: serial === i ? "block" : "none",
+                pointerEvents: "none",
+              }}
+            />
+          );
+        })}
+        {/* <img
+          key={index}
+          src={images[index]?.url}
+          alt={images[index]?.caption}
+          style={{ width: "40rem", margin: "auto" }}
+        /> */}
+      </div>
+      <div className="flex flex-row justify-between w-full">
+        <button
+          className="text-white font-semibold rounded-lg px-5 py-2 text-center bu-button-primary cursor-pointer flex flex-row gap-3 items-center text-2xl"
+          style={{ visibility: serial === 0 ? "hidden" : "visible" }}
+          onClick={() => {
+            setSerial((prev) => Math.max(prev - 1, 0));
+          }}
+        >
+          <FontAwesomeIcon icon={faArrowLeft} />
+          Prev
+        </button>
+        <button
+          className="text-white font-semibold rounded-lg px-5 py-2 text-center bu-button-primary cursor-pointer flex flex-row gap-3 items-center text-2xl"
+          onClick={() => {
+            setSerial((prev) => Math.min(prev + 1, images.length - 1));
+          }}
+          style={{
+            visibility: serial === images.length - 1 ? "hidden" : "visible",
+          }}
+        >
+          Next
+          <FontAwesomeIcon icon={faArrowRight} />
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const WriteArticle = ({
   article,
+  setArticle,
   colorMode,
   updateMarkdown,
   addMarkdown,
@@ -254,6 +511,22 @@ const WriteArticle = ({
                   />
                 </DndProvider>
               </ProblemContextProvider>
+            );
+          } else if (content.type === "slideshow") {
+            return (
+              <SlideShow
+                articleId={article.id}
+                data={content}
+                content={article.content}
+                index={index}
+                onSave={(images) =>
+                  setArticle((prev) => {
+                    const newContent = [...prev.content];
+                    newContent[index].images = images;
+                    return { ...prev, content: newContent };
+                  })
+                }
+              />
             );
           }
         })}
@@ -355,6 +628,7 @@ const AdminArticleEditor = () => {
           <Title title={article.title} sub_title={article.subtitle} />
         </div>
         <WriteArticle
+          setArticle={setArticle}
           article={article}
           colorMode={colorMode}
           updateMarkdown={updateMarkdown}

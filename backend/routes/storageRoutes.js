@@ -6,9 +6,10 @@ router.use(
   passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
 );
 
-router.delete("/", (req, res) => {
+router.post("/delete", (req, res) => {
   const { path } = req.body;
   // Check if path is an array or not
+  console.log(req.body);
   if (Array.isArray(path)) {
     // If path is an array, loop through each path
     path.forEach((p) => {
@@ -33,7 +34,8 @@ router.delete("/", (req, res) => {
   }
 });
 
-router.post("/", (req, res) => {
+router.post("/upload", (req, res) => {
+  console.log(req.files);
   if (req.files === null) {
     return res.status(400).json({ msg: "No file uploaded" });
   }
@@ -76,7 +78,8 @@ router.post("/", (req, res) => {
   } else {
     const timestamp = Date.now(); // Get current timestamp
     const fileExtension = file.name.split(".").pop();
-    const uniqueFileName = `${timestamp}.${fileExtension}`;
+    const randomString = Math.random().toString(36).substring(7); // Generate random string
+    const uniqueFileName = `${timestamp}_${randomString}.${fileExtension}`;
     file.mv(`public/uploads/${uniqueFileName}`, (err) => {
       if (err) {
         console.error(err);

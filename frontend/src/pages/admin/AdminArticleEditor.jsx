@@ -492,52 +492,71 @@ const WriteArticle = ({
   deleteMarkdown,
 }) => {
   return (
-    <div className="flex flex-col justify-between">
+    <div className="flex flex-col justify-between gap-10">
       {article?.content?.length > 0 &&
         article?.content?.map((content, index) => {
-          if (content.type === "markdown") {
-            console.log("write markdown", index);
-            return (
-              <MarkDownContainer
-                key={content.boxId}
-                index={index}
-                colorMode={colorMode}
-                text={content.data}
-                setText={updateMarkdown}
-                onAdd={() => addMarkdown(index)}
-                onDelete={() => deleteMarkdown(index)}
-              />
-            );
-          } else if (content.type === "canvas") {
-            return (
-              <ProblemContextProvider>
-                <DndProvider backend={HTML5Backend}>
-                  <ArticleCanvas
-                    articleId={article.id}
-                    data={content}
-                    content={article.content}
-                    index={index}
-                  />
-                </DndProvider>
-              </ProblemContextProvider>
-            );
-          } else if (content.type === "slideshow") {
-            return (
-              <SlideShow
-                articleId={article.id}
-                data={content}
-                content={article.content}
-                index={index}
-                onSave={(images) =>
-                  setArticle((prev) => {
-                    const newContent = [...prev.content];
-                    newContent[index].images = images;
-                    return { ...prev, content: newContent };
-                  })
-                }
-              />
-            );
-          }
+          return (
+            <div>
+              <div className="flex justify-center items-center ">
+                <div className="mx-6">
+                  <button
+                    className="flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400"
+                    onClick={() => deleteMarkdown(index)}
+                  >
+                    <FontAwesomeIcon icon={faTrashCan} />
+                  </button>
+                </div>
+                <div className="mx-6 pd-2">
+                  <button
+                    className="flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400"
+                    onClick={() => addMarkdown(index)}
+                  >
+                    <FontAwesomeIcon icon={faAdd} />
+                  </button>
+                </div>
+              </div>
+              {content.type === "markdown" ? (
+                <MarkDownContainer
+                  key={content.boxId}
+                  index={index}
+                  colorMode={colorMode}
+                  text={content.data}
+                  setText={updateMarkdown}
+                  onAdd={() => addMarkdown(index)}
+                  onDelete={() => deleteMarkdown(index)}
+                />
+              ) : content.type === "slideshow" ? (
+                <SlideShow
+                  articleId={article.id}
+                  data={content}
+                  content={article.content}
+                  index={index}
+                  onSave={(images) =>
+                    setArticle((prev) => {
+                      const newContent = [...prev.content];
+                      newContent[index].images = images;
+                      return { ...prev, content: newContent };
+                    })
+                  }
+                />
+              ) : content.type === "canvas" ? (
+                <ProblemContextProvider>
+                  <DndProvider backend={HTML5Backend}>
+                    <div>
+                      <ArticleCanvas
+                        articleId={article.id}
+                        data={content}
+                        content={article.content}
+                        index={index}
+                      />
+                    </div>
+                  </DndProvider>
+                </ProblemContextProvider>
+              ) : (
+                <></>
+              )}
+            </div>
+          );
         })}
     </div>
   );

@@ -12,8 +12,8 @@ module.exports = {
           description: "Demo contest description",
           startDate: "1/1/2025",
           endDate: "1/2/2025",
-          startDateTime: null,
-          duration: "3",
+          startDateTime: new Date(),
+          duration: "0.01",
           status: "requested",
         },
         {

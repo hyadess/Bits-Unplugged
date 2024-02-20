@@ -42,6 +42,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { SelectionField } from "../../InputFields";
 import Info from "@mui/icons-material/Info";
+import { set } from "date-fns";
 const RADIUS = 30;
 const EDGECLICKRANGE = 20;
 const canvasWidth = 1440;
@@ -59,7 +60,18 @@ const colorMap = {
   Pink: "#ff69b4",
   Orange: "#ff8c00",
   Brown: "#635147",
+  Black: "#000000",
 };
+
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(
+        result[3],
+        16
+      )}`
+    : null;
+}
 const GraphComponent = (props, ref) => {
   const [userType, setUserType] = useState(0);
   const [edgeIndex, setEdgeIndex] = useState(0);
@@ -69,14 +81,14 @@ const GraphComponent = (props, ref) => {
   // edge: start, end, isSelected, isHovered
 
   //node and edge hover and select
-  const [selectedNodes, setSelectedNodes] = useState([]);
+  // const [selectedNodes, setSelectedNodes] = useState([]);
   // const [selectedEdge, setSelectedEdge] = useState(null);
   const [hoveredNode, setHoveredNode] = useState(null);
   const [hoveredEdge, setHoveredEdge] = useState(null);
   //controls
   const [ctrlKeyPressed, setCtrlKeyPressed] = useState(false);
   const [zoom, setZoom] = useState(1);
-  const stageRef = useRef(null);
+  // const stageRef = useRef(null);
   const windowRef = useRef(null);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
@@ -98,11 +110,16 @@ const GraphComponent = (props, ref) => {
     });
   };
   const setSelectedEdges = (edges) => {
-    console.log(edges);
     setData({
       selectedEdges: edges,
     });
   };
+  const setSelectedNodes = (nodes) => {
+    setData({
+      selectedNodes: nodes,
+    });
+  };
+
   const updateSelectedEdges = (newSelectedEdges) => {
     const sortedEdges = [...newSelectedEdges].sort((a, b) => {
       // Convert x and y to integers
@@ -124,6 +141,14 @@ const GraphComponent = (props, ref) => {
     setSelectedEdges(sortedEdges);
   };
 
+  const updateSelectedNodes = (newSelectedNodes) => {
+    const sortedNodes = [...newSelectedNodes].sort((a, b) => {
+      // a and b is the node index in string format. Compare them as integers.
+      return parseInt(a, 10) - parseInt(b, 10);
+    });
+    setSelectedNodes(sortedNodes);
+  };
+
   //...........................................................................................................
 
   //for edge weight entering prompt..............................................................................
@@ -136,7 +161,7 @@ const GraphComponent = (props, ref) => {
 
   const closePrompt = () => {
     setCurEdgeWeight("");
-    setSelectedNodes([selectedNodes[0]]);
+    setSelectedNodes([data.selectedNodes[0]]);
     setIsPromptOpen(false);
   };
 
@@ -149,14 +174,14 @@ const GraphComponent = (props, ref) => {
       isNaN(curEdgeWeight)
     ) {
       setCurEdgeWeight("");
-      setSelectedNodes([selectedNodes[0]]);
+      setSelectedNodes([data.selectedNodes[0]]);
       setIsPromptOpen(false);
       return;
     }
 
     const newEdge = {
-      start: selectedNodes[0],
-      end: selectedNodes[1],
+      start: data.selectedNodes[0],
+      end: data.selectedNodes[1],
       weight: curEdgeWeight,
     };
     //setEdgeIndex(edgeIndex + 1);
@@ -290,7 +315,7 @@ const GraphComponent = (props, ref) => {
       return;
     }
 
-    const stage = stageRef.current;
+    const stage = props.stageRef.current;
     const { x, y } = stage.getPointerPosition();
 
     // now,,, edge can be selected if we click nereby....so implement this........
@@ -348,7 +373,7 @@ const GraphComponent = (props, ref) => {
           return;
         }
 
-        const stage = stageRef.current;
+        const stage = props.stageRef.current;
         const { x, y } = stage.getPointerPosition();
 
         // now,,, edge can be selected if we click nereby....so implement this........
@@ -392,7 +417,8 @@ const GraphComponent = (props, ref) => {
             // setSelectedEdge(null);
             updateSelectedEdges(
               data.selectedEdges.filter(
-                (selectedEdge) => selectedEdge !== nearestEdge
+                (selectedEdge) =>
+                  !shallowEqualityCheck(selectedEdge, nearestEdge)
               )
             );
           } else {
@@ -402,7 +428,7 @@ const GraphComponent = (props, ref) => {
           }
         } else if (data?.selectedEdges?.length > 0) {
           setSelectedEdges([]);
-        } else if (selectedNodes.length > 0) {
+        } else if (data?.selectedNodes?.length > 0) {
           setSelectedNodes([]);
         } else {
           if (
@@ -434,14 +460,13 @@ const GraphComponent = (props, ref) => {
   };
 
   const handleNodeClick = (nodeKey) => {
-    if (selectedNodes.length === 0) {
+    if (!data?.selectedNodes || data?.selectedNodes?.length === 0) {
       setSelectedNodes([nodeKey]);
       setSelectedEdges([]);
-      // console.log("DDDDDDDDDDDDDDDDDDd");
-    } else if (selectedNodes.includes(nodeKey)) {
+    } else if (data?.selectedNodes?.includes(nodeKey)) {
       // If the clicked node is already selected, unselect it
-      setSelectedNodes((prev) =>
-        prev.filter((selectedNode) => selectedNode !== nodeKey)
+      updateSelectedNodes(
+        data.selectedNodes.filter((selectedNode) => selectedNode !== nodeKey)
       );
       //console.log("Double click");
       setSelectedEdges([]);
@@ -450,24 +475,27 @@ const GraphComponent = (props, ref) => {
         props?.previewOptions?.addEdge?.value === false) ||
       addEdgeMode === false
     ) {
-      setSelectedNodes([nodeKey]);
+      updateSelectedNodes([...data.selectedNodes, nodeKey]);
       setSelectedEdges([]);
-    } else if (selectedNodes.length === 1 && selectedNodes[0] !== nodeKey) {
+    } else if (
+      data.selectedNodes.length === 1 &&
+      data.selectedNodes[0] !== nodeKey
+    ) {
       // don't add any more node if there exists one................
       const alreadyExists = data.edges.some(
         (edge) =>
-          (edge.start === selectedNodes[0] && edge.end === nodeKey) ||
-          (edge.start === nodeKey && edge.end === selectedNodes[0])
+          (edge.start === data.selectedNodes[0] && edge.end === nodeKey) ||
+          (edge.start === nodeKey && edge.end === data.selectedNodes[0])
       );
       if (!alreadyExists) {
-        setSelectedNodes([...selectedNodes, nodeKey]);
+        updateSelectedNodes([...data.selectedNodes, nodeKey]);
         if (props?.editOptions?.weightedEdge?.value === true) {
           openPrompt(); // need to take weight input...........
         } else {
           const edges = data.edges;
           // just create the edge....................
           const newEdge = {
-            start: selectedNodes[0],
+            start: data.selectedNodes[0],
             end: nodeKey,
             weight: "0",
           };
@@ -487,48 +515,36 @@ const GraphComponent = (props, ref) => {
 
   const deleteSelectedNodeOrEdge = () => {
     //node deletion
-    let updatedEdges = data.edges;
-    if (selectedNodes.length === 1) {
+    if (data.selectedNodes.length > 0) {
       if (
         props.mode === "preview" &&
         props?.previewOptions?.deleteNode?.value === false
       )
         return;
 
-      const deletedKey = selectedNodes[0];
-      // const nodeToDelete = data.nodes.filter(
-      //   (node) => node.nodeIndex === selectedNodes[0]
-      // )[0];
-
+      let updatedEdges = [...data.edges];
       const updatedNodes = { ...data.nodes };
-      delete updatedNodes[deletedKey];
-
-      updatedEdges = data.edges.filter(
-        (edge) => edge.start !== deletedKey && edge.end !== deletedKey
-      );
-
-      setNodes(updatedNodes);
-      setSelectedNodes([]);
-
-      // if (data.selectedEdges.length > 0) {
-      //   updatedEdges = updatedEdges.filter((edge) =>
-      //     data.selectedEdges.includes(edge)
-      //   );
-      // }
-
+      data.selectedNodes.forEach((node) => {
+        const deletedKey = node;
+        delete updatedNodes[deletedKey];
+        updatedEdges = updatedEdges.filter(
+          (edge) => edge.start !== deletedKey && edge.end !== deletedKey
+        );
+      });
       setEdges(updatedEdges);
-
-      setSelectedEdges([]);
+      setSelectedNodes([]);
+      setNodes(updatedNodes);
     }
 
     //edge deletion
-    if (data.selectedEdges.length > 0) {
+    else if (data.selectedEdges.length > 0) {
       if (
         props.mode === "preview" &&
         props?.previewOptions?.deleteEdge?.value === false
       )
         return;
 
+      let updatedEdges = data.edges;
       updatedEdges = updatedEdges.filter(
         (edge) =>
           !data.selectedEdges.some((selectedEdge) =>
@@ -583,7 +599,7 @@ const GraphComponent = (props, ref) => {
     const updatedY = newPosition.y;
 
     // Calculate the boundaries of the stage
-    const stage = stageRef.current;
+    const stage = props.stageRef.current;
     const stageWidth = stage.width();
     const stageHeight = stage.height();
 
@@ -598,10 +614,10 @@ const GraphComponent = (props, ref) => {
     // Update the node's position
     const updatedNodes = { ...data.nodes };
 
-    if (selectedNodes.includes(nodeKey)) {
+    if (data.selectedNodes.includes(nodeKey)) {
       // If the clicked node is already selected, unselect it
-      setSelectedNodes(
-        selectedNodes.filter((selectedNode) => selectedNode !== nodeKey)
+      updateSelectedNodes(
+        data.selectedNodes.filter((selectedNode) => selectedNode !== nodeKey)
       );
     }
 
@@ -649,6 +665,7 @@ const GraphComponent = (props, ref) => {
       setEdges([]);
       setNodes({});
       setSelectedEdges([]);
+      setSelectedNodes([]);
       setNodeIndex(0);
     }
   };
@@ -671,7 +688,7 @@ const GraphComponent = (props, ref) => {
         !(
           (props.mode === "edit" ||
             props?.previewOptions?.deleteNode?.value === true) &&
-          selectedNodes.length > 0
+          data?.selectedNodes?.length > 0
         ) && (
           <Tooltip
             title={<h1 className="text-lg text-white">Add Node</h1>}
@@ -688,6 +705,8 @@ const GraphComponent = (props, ref) => {
                   height: "3rem",
                 }}
                 onClick={() => {
+                  setSelectedNodes([]);
+                  setSelectedEdges([]);
                   if (addNodeMode) document.body.style.cursor = "default";
                   else document.body.style.cursor = "crosshair";
                   if (!addNodeMode) setAddEdgeMode(false);
@@ -712,7 +731,7 @@ const GraphComponent = (props, ref) => {
         !(
           (props.mode === "edit" ||
             props?.previewOptions?.deleteNode?.value === true) &&
-          selectedNodes.length > 0
+          data?.selectedNodes?.length > 0
         ) && (
           <Tooltip
             title={<h1 className="text-lg text-white">Add Edge</h1>}
@@ -729,6 +748,8 @@ const GraphComponent = (props, ref) => {
                   height: "3rem",
                 }}
                 onClick={() => {
+                  setSelectedNodes([]);
+                  setSelectedEdges([]);
                   if (addEdgeMode) document.body.style.cursor = "default";
                   else document.body.style.cursor = "copy";
                   if (!addEdgeMode) setAddNodeMode(false);
@@ -801,7 +822,7 @@ const GraphComponent = (props, ref) => {
 
       {(props.mode === "edit" ||
         props?.previewOptions?.deleteNode?.value === true) &&
-        selectedNodes.length === 1 && (
+        data?.selectedNodes?.length > 0 && (
           <IconButton
             sx={
               {
@@ -817,37 +838,39 @@ const GraphComponent = (props, ref) => {
             </div>
           </IconButton>
         )}
-      {props.mode === "edit" && selectedNodes.length === 1 && (
-        <div className="no-ring-input flex-center p-1">
-          <FormControl fullWidth variant="outlined" size="small">
-            <InputLabel
-              htmlFor="outlined-adornment"
-              className="bu-text-primary"
-            >
-              Node Label
-            </InputLabel>
-            <OutlinedInput
-              required
-              placeholder="Node Label"
-              id="outlined-adornment"
-              className="outlined-input bu-text-primary"
-              type="text"
-              value={data?.nodes[selectedNodes[0]]?.label}
-              onChange={(e) => {
-                data.nodes[selectedNodes[0]].label = e.target.value;
-                setNodes(data.nodes);
-              }}
-              label={"Node Label"}
-              size="small"
-              sx={{ width: "10rem" }}
-            />
-          </FormControl>
-        </div>
-      )}
+      {(props.mode === "edit" ||
+        props?.previewOptions?.editLabel?.value === true) &&
+        data?.selectedNodes?.length === 1 && (
+          <div className="no-ring-input flex-center p-1">
+            <FormControl fullWidth variant="outlined" size="small">
+              <InputLabel
+                htmlFor="outlined-adornment"
+                className="bu-text-primary"
+              >
+                Node Label
+              </InputLabel>
+              <OutlinedInput
+                required
+                placeholder="Node Label"
+                id="outlined-adornment"
+                className="outlined-input bu-text-primary"
+                type="text"
+                value={data?.nodes[data.selectedNodes[0]]?.label}
+                onChange={(e) => {
+                  data.nodes[data.selectedNodes[0]].label = e.target.value;
+                  setNodes(data.nodes);
+                }}
+                label={"Node Label"}
+                size="small"
+                sx={{ width: "10rem" }}
+              />
+            </FormControl>
+          </div>
+        )}
 
       {(props.mode === "edit" ||
         props?.previewOptions?.editColor?.value === true) &&
-        selectedNodes.length === 1 && (
+        data?.selectedNodes?.length === 1 && (
           <div className="no-ring-input flex-center p-1">
             <FormControl fullWidth variant="outlined" size="small">
               <InputLabel
@@ -861,9 +884,9 @@ const GraphComponent = (props, ref) => {
                 // required
                 id="outlined-adornment"
                 className="outlined-input bu-text-primary"
-                value={data?.nodes[selectedNodes[0]]?.color}
+                value={data?.nodes[data.selectedNodes[0]]?.color}
                 onChange={(e) => {
-                  data.nodes[selectedNodes[0]].color = e.target.value;
+                  data.nodes[data.selectedNodes[0]].color = e.target.value;
                   setNodes(data.nodes);
                 }}
                 input={<OutlinedInput label={"Node Color"} />}
@@ -980,7 +1003,7 @@ const GraphComponent = (props, ref) => {
             height={500} // 630
             onClick={handleCanvasClick}
             onMouseMove={handleMouseMove}
-            ref={stageRef}
+            ref={props.stageRef}
             // scaleX={Math.min(width / 882, 1)}
             // scaleY={Math.min(width / 882, 1)}
           >
@@ -1190,16 +1213,21 @@ const GraphComponent = (props, ref) => {
                           hoveredNode === nodeKey ? "node-hovered" : ""
                         }
                         fill={
-                          // selectedNodes.includes(nodeKey)
-                          //   ? "#ec3965"
-                          //   : hoveredNode === nodeKey || isDragging === nodeKey
-                          //     ? "#38bf27"
-                          //     : "#a4a3a3"
-                          colorMap[data.nodes[nodeKey].color]
+                          data?.selectedNodes?.includes(nodeKey)
+                            ? `rgba(${hexToRgb(
+                                colorMap[data.nodes[nodeKey].color]
+                              )}, 0.7)`
+                            : hoveredNode === nodeKey || isDragging === nodeKey
+                              ? `rgba(${hexToRgb(
+                                  colorMap[data.nodes[nodeKey].color]
+                                )}, 0.8)`
+                              : `rgba(${hexToRgb(
+                                  colorMap[data.nodes[nodeKey].color]
+                                )}, 1)`
                         }
-                        // opacity={0.5}
+                        opacity={1}
                         stroke={
-                          selectedNodes.includes(nodeKey)
+                          data?.selectedNodes?.includes(nodeKey)
                             ? "#ec3965"
                             : hoveredNode === nodeKey || isDragging === nodeKey
                               ? "#38bf27"
@@ -1207,14 +1235,14 @@ const GraphComponent = (props, ref) => {
                         }
                         strokeEnabled={true}
                         strokeWidth={
-                          selectedNodes.includes(nodeKey)
+                          data?.selectedNodes?.includes(nodeKey)
                             ? 6
                             : hoveredNode === nodeKey || isDragging === nodeKey
                               ? 5
                               : 0
                         }
                         brightness={
-                          selectedNodes.includes(nodeKey)
+                          data?.selectedNodes?.includes(nodeKey)
                             ? 0.5
                             : hoveredNode === nodeKey || isDragging === nodeKey
                               ? 0
@@ -1232,7 +1260,7 @@ const GraphComponent = (props, ref) => {
                         verticalAlign="middle" // Vertically align the text
                         fontSize={30} // Set font size
                         fill={
-                          selectedNodes.includes(nodeKey)
+                          data?.selectedNodes?.includes(nodeKey)
                             ? "white"
                             : hoveredNode === nodeKey
                               ? "white"

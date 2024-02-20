@@ -1,6 +1,14 @@
 import Api from "./base";
 
 class ContestApi extends Api {
+  getContestById = async (contestId) => {
+    return await this.get("/contests/" + contestId);
+  };
+
+  updateContest = async (contestId, contest) => {
+    return await this.put("/contests/" + contestId, contest);
+  };
+
   getAllContests = async () => {
     return await this.get("/contests");
   };
@@ -18,91 +26,159 @@ class ContestApi extends Api {
   };
 
   getAllSubmissionsByContest = async (contestId) => {
-    return await this.get("/contests/"+contestId+"/submissions");
+    return await this.get("/contests/" + contestId + "/submissions");
+  };
+
+  getContestInfo = async (contestId) => {
+    return await this.get("/contests/" + contestId);
   };
 
   getAllSubmissionsByUserAndContest = async (contestId) => {
-    return await this.get("/contests/"+contestId+"/submissions/me");
+    return await this.get("/contests/" + contestId + "/submissions/me");
   };
 
   getAllProblemsByContest = async (contestId) => {
-    return await this.get("/contests/"+contestId+"/problems/setterView");
+    return await this.get("/contests/" + contestId + "/problems/setterView");
+  };
+
+  getContestProblemById = async (contestId, problemId) => {
+    return await this.get("/contests/" + contestId + "/problem/" + problemId);
   };
 
   getAllContestProblemsByContest = async (contestId) => {
-    return await this.get("/contests/"+contestId+"/problems/userView");
+    return await this.get("/contests/" + contestId + "/problems/userView");
+  };
+
+  isContestProblemSolved = async (contestId,problemId) => {
+    // console.log("problem id ==>", problemId);
+    return await this.get("/contests/" + contestId + "/isSolved/" + problemId);
   };
 
   addContest = async (title) => {
-    return await this.post("/contests/addContest", {title});
+    return await this.post("/contests/addContest", { title });
+  };
+  updateDates = async (contestId, startDate, endDate) => {
+    return await this.post("/contests/" + contestId + "/updateDates", {
+      startDate,
+      endDate,
+    });
+  };
+  availableCollaborators = async (contestId) => {
+    return await this.get("/contests/" + contestId + "/showSetters");
   };
 
   updateTitle = async (contestId, title) => {
-    return await this.put("/contests/"+contestId+"/updateTitle", { title });
+    return await this.put("/contests/" + contestId + "/updateTitle", { title });
   };
 
   updateDescription = async (contestId, description) => {
-    return await this.put("/contests/"+contestId+"/updateDescription", { description });
+    return await this.put("/contests/" + contestId + "/updateDescription", {
+      description,
+    });
   };
 
   publishContest = async (contestId) => {
-    return await this.put("/contests/"+contestId+"/publish", {});
+    return await this.put("/contests/" + contestId + "/publish", {});
   };
 
   startContest = async (contestId) => {
-    return await this.put("/contests/"+contestId+"/start", {});
+    return await this.put("/contests/" + contestId + "/start", {});
   };
 
   endContest = async (contestId) => {
-    return await this.put("/contests/"+contestId+"/end", {});
+    return await this.put("/contests/" + contestId + "/end", {});
   };
 
-  addCollaborator = async (contestId, collaboratorId) => {
-    return await this.post("/contests/"+contestId+"/addCollaborator", { collaboratorId });
+  addCollaborator = async (contestId, collaboratorIds) => {
+    return await this.post("/contests/" + contestId + "/addCollaborator", {
+      collaboratorIds,
+    });
   };
 
+  acceptInvitation = async (contestId) => {
+    console.log("Invitation from ", contestId);
+    return await this.post(`/contests/${contestId}/accept-invitation`);
+  };
+
+  getLeaderboard = async (contestId) => {
+    return await this.get(`/contests/${contestId}/Leaderboard`);
+  };
   showAllCollaborators = async (contestId) => {
-    return await this.get("/contests/"+contestId+"/showAllCollaborators");
+    // console.log("===>", contestId);
+    return await this.get("/contests/" + contestId + "/showAllCollaborators");
   };
 
-  addProblemToContest = async (contestId, title) => {
-    return await this.post("/contests/"+contestId+"/createProblem", { title });
+  addProblemToContest = async (contestId, problemId) => {
+    return await this.post("/contests/" + contestId + "/createProblem", {
+      problemId,
+    });
   };
 
   makeProblemEligible = async (contestId, problemId) => {
-    return await this.put("/contests/"+contestId+"/makeEligible", { problemId });
+    return await this.put("/contests/" + contestId + "/makeEligible", {
+      problemId,
+    });
+  };
+
+  updatePoints = async (contestId, problemId, rating) => {
+    return await this.put("/contests/" + contestId + "/updateRating", {
+      problemId,
+      rating,
+    });
   };
 
   makeProblemNotEligible = async (contestId, problemId) => {
-    return await this.put("/contests/"+contestId+"/makeNotEligible", { problemId });
+    return await this.put("/contests/" + contestId + "/makeNotEligible", {
+      problemId,
+    });
   };
 
-  addSubmissionToContest = async (contestId) => {
-    return await this.post("/contests/"+contestId+"/addSubmission", {});
+  addSubmissionToContest = async (
+    contestId,
+    problemId,
+    verdict,
+    canvasData,
+    userActivity,
+    point
+  ) => {
+    return await this.post("/contests/" + contestId + "/addSubmission", {
+      problemId,
+      verdict,
+      canvasData,
+      userActivity,
+      point
+    });
   };
 
   deleteProblem = async (contestId, problemId) => {
-    return await this.delete("/contests/"+contestId+"/deleteProblem", { problemId });
+    console.log("contestId: ", contestId, "problemId: ", problemId);
+    return await this.delete(
+      "/contests/" + contestId + "/deleteProblem/" + problemId,
+      {}
+    );
   };
 
   deleteContest = async (contestId) => {
-    return await this.delete("/contests/"+contestId+"/delete", {});
+    return await this.delete("/contests/" + contestId + "/delete", {});
   };
 
   participateUpcomingContest = async (contestId) => {
-    return await this.post("/contests/"+contestId+"/participate/live", {});
+    return await this.post("/contests/" + contestId + "/participate/live", {});
   };
 
   leaveUpcomingContest = async (contestId) => {
-    return await this.delete("/contests/"+contestId+"/leave/live", {});
+    return await this.delete("/contests/" + contestId + "/leave/live", {});
   };
 
   participateVirtualContest = async (contestId) => {
-    return await this.post("/contests/"+contestId+"/participate/virtual", {});
+    return await this.post(
+      "/contests/" + contestId + "/participate/virtual",
+      {}
+    );
   };
 
   leaveVirtualContest = async (contestId) => {
-    return await this.delete("/contests/"+contestId+"/leave/virtual", {});
+    return await this.delete("/contests/" + contestId + "/leave/virtual", {});
   };
 
   showAllLiveContestByUser = async () => {
@@ -114,19 +190,29 @@ class ContestApi extends Api {
   };
 
   showLiveParticipantList = async (contestId) => {
-    return await this.get("/contests/"+contestId+"/participants/live");
+    return await this.get("/contests/" + contestId + "/participants/live");
   };
 
   showVirtualParticipantList = async (contestId) => {
-    return await this.get("/contests/"+contestId+"/participants/virtual");
+    return await this.get("/contests/" + contestId + "/participants/virtual");
   };
 
   showAllClarifications = async (contestId) => {
-    return await this.get("/contests/"+contestId+"/clarifications");
+    return await this.get("/contests/" + contestId + "/clarifications");
   };
 
   addClarification = async (contestId, clarification) => {
-    return await this.post("/contests/"+contestId+"/clarifications/add", { clarification });
+    return await this.post("/contests/" + contestId + "/clarifications/add", {
+      clarification,
+    });
+  };
+
+  approveContest = async (contestId) => {
+    return await this.put("/contests/" + contestId + "/approve");
+  };
+
+  rejectContest = async (contestId) => {
+    return await this.put("/contests/" + contestId + "/reject");
   };
 }
 

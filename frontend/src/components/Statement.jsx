@@ -34,7 +34,7 @@ function ProblemStatement() {
     };
   }, []);
   return (
-    <div className="flex flex-col gap-5 pb-5">
+    <div className="flex flex-col gap-5">
       {/* <MarkdownEditor value={text} onChange={setText} height="200px" /> */}
 
       <MarkdownEditor

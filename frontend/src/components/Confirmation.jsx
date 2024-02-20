@@ -5,6 +5,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Confirmation = ({ open, setOpen, onConfirm, param }) => {
   const handleClose = () => {
@@ -21,24 +23,24 @@ const Confirmation = ({ open, setOpen, onConfirm, param }) => {
         Are you sure you want to continue?
       </DialogTitle>
       <DialogActions>
-        <Button
+        <button
           variant="contained"
           onClick={handleClose}
-          className="red-button"
+          className="font-bold rounded-lg text-3xl px-7 py-1 text-center bu-button-delete"
         >
-          <CloseIcon />
-        </Button>
-        <Button
-          variant="contained"
+          <FontAwesomeIcon icon={faXmark} />
+        </button>
+        <button
+          // variant="contained"
           onClick={() => {
             handleClose();
             param ? onConfirm(param) : onConfirm();
           }}
-          className="blue-button"
+          className="font-bold rounded-lg text-3xl px-7 py-1 text-center bu-button-primary"
           autoFocus
         >
-          <DoneIcon />
-        </Button>
+          <FontAwesomeIcon icon={faCheck} />
+        </button>
       </DialogActions>
     </Dialog>
   );

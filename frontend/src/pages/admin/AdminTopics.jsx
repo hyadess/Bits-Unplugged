@@ -8,16 +8,9 @@ import Modal from "../../components/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import { topicApi } from "../../api";
 import TopicCard from "../../components/Cards/AdminTopicCard";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
-import {
-  GridContextProvider,
-  GridDropZone,
-  GridItem,
-  swap,
-} from "react-grid-dnd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCross,
@@ -235,7 +228,7 @@ const AdminTopics = () => {
             onClick={openModal}
             className="w-16 h-16 rounded-full justify-center inline-flex items-center text-white font-medium text-sm p-4 text-center ursor-pointer shadow-lg cursor-pointer bu-button-secondary "
           >
-            <div className="text-primary-900 dark:text-gray-900">
+            <div className="text-[#ebebeb] dark:text-gray-900">
               <AddIcon sx={{ fontSize: "4rem" }} />
             </div>
           </div>

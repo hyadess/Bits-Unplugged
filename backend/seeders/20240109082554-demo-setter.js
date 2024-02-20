@@ -10,22 +10,26 @@ module.exports = {
           // id: 1,
           userId: 1,
           isApproved: true,
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           // id: 2,
           userId: 3,
           isApproved: true,
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           // id: 3,
           userId: 5,
+          isApproved: true,
+        },
+        {
+          // id: 3,
+          userId: 8,
           isApproved: false,
-          createdAt: new Date(),
-          updatedAt: new Date(),
+        },
+        {
+          // id: 3,
+          userId: 9,
+          isApproved: false,
         },
       ],
       {}

@@ -16,24 +16,130 @@ class ProblemsRepository extends Repository {
     return problems;
   };
 
-  getSubmittedProblems = async () => {
+  getAllLiveProblems = async (userId) => {
     const latestProblems = await db.ProblemVersion.findAll({
       where: {
-        createdAt: db.Sequelize.literal(`("problemId", "createdAt") IN (
-          SELECT "problemId", MAX("createdAt") as "latestCreatedAt"
-          FROM "ProblemVersions"
-          GROUP BY "problemId"
-        )`),
+        isLive: true,
+        approvalStatus: 1,
       },
+      include: [
+        {
+          model: db.Activity,
+          foreignKey: "problemId",
+          as: "activities",
+          where: { userId }, // Add your specific userId filter here
+          required: false,
+        },
+        {
+          model: db.Series,
+          foreignKey: "seriesId",
+          as: "series",
+          required: true,
+          include: [
+            {
+              model: db.Topic,
+              foreignKey: "topicId",
+              as: "topic",
+              required: true,
+            },
+          ],
+        },
+      ],
+      order: [
+        ["updatedAt", "DESC"], // Change 'ASC' to 'DESC' if you want descending order
+      ],
     });
-    console.log(latestProblems);
     return latestProblems;
-    // const query = `
-    // SELECT * FROM "ProblemVersions";
-    // `;
-    // const params = [];
-    // const result = await this.query(query, params);
-    // return result;
+  };
+
+  getLiveProblemsBySeries = async (userId, seriesId) => {
+    const latestProblems = await db.ProblemVersion.findAll({
+      where: {
+        approvalStatus: 1,
+        isLive: true,
+        seriesId,
+      },
+      include: [
+        {
+          model: db.Activity,
+          foreignKey: "problemId",
+          as: "activities",
+          where: { userId }, // Add your specific userId filter here
+          required: false,
+        },
+        {
+          model: db.Series,
+          foreignKey: "seriesId",
+          as: "series",
+          required: true,
+          include: [
+            {
+              model: db.Topic,
+              foreignKey: "topicId",
+              as: "topic",
+              required: true,
+            },
+          ],
+        },
+      ],
+      order: [
+        ["serialNo", "DESC"], // Change 'ASC' to 'DESC' if you want descending order
+      ],
+    });
+    return latestProblems;
+  };
+
+  getSubmittedProblems = async () => {
+    const latestProblemVersions = await db.sequelize.query(
+      `SELECT DISTINCT ON ("problemId")
+      "id", "problemId", "version"
+      FROM "ProblemVersions" PV
+      ORDER BY "problemId", "version" DESC`,
+      { type: db.Sequelize.QueryTypes.SELECT, raw: true }
+    );
+
+    const latestProblems = await db.ProblemVersion.findAll({
+      where: {
+        id: {
+          [Op.in]: latestProblemVersions.map((version) => version.id),
+        },
+      },
+      include: [
+        {
+          model: db.Canvas,
+          attributes: ["id", "name", "classname", "info"],
+          as: "canvas",
+          required: true,
+        },
+        {
+          model: db.Problem,
+          as: "problem",
+          required: true,
+          attributes: ["setterId"],
+          include: [
+            {
+              model: db.Setter,
+              as: "setter",
+              required: true,
+              attributes: ["isApproved"],
+              // Include all attributes of Setter or specify the ones you need
+              include: [
+                {
+                  model: db.User,
+                  as: "user",
+                  required: true,
+                  // Include all attributes of User or specify the ones you need
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      order: [
+        ["updatedAt", "DESC"], // Change 'ASC' to 'DESC' if you want descending order
+      ],
+    });
+    return latestProblems;
   };
 
   getMyProblems = async (setterId) => {
@@ -70,16 +176,30 @@ class ProblemsRepository extends Repository {
 
   getAllUnsolvedAndAttemptedProblems = async (userId) => {
     const query = `
-    SELECT P.*, 
-    S.name AS "seriesName", 
-    T.name AS "topicName" 
-    FROM "Problems" P
-    JOIN "Series" S ON P."seriesId" = S.id
-    JOIN "Topics" T ON S."topicId" = T.id
-    LEFT JOIN "Activities" U ON P."id" = U."problemId" AND U."userId" = $1
-    WHERE (U."userId" IS NOT NULL AND U."isSolved" = FALSE)
-    AND P."isLive" = TRUE
-    ORDER BY U."conseqFailedAttempt" DESC;
+    (SELECT "P".*, 
+    "S"."name" AS "seriesName", 
+    "T"."name" AS "topicName",
+    "A"."isSolved"
+    FROM "ProblemVersions" "P"
+    JOIN "Series" "S" ON "P"."seriesId" = "S"."id"
+    JOIN "Topics" "T" ON "S"."topicId" = "T"."id"
+    JOIN "Activities" "A" ON "P"."id" = "A"."problemId" AND "A"."userId" = $1
+    WHERE "A"."isSolved" = FALSE
+    AND "P"."isLive" = TRUE
+    ORDER BY "A"."conseqFailedAttempt" DESC)
+    UNION ALL
+    (SELECT "P".*, 
+    "S"."name" AS "seriesName", 
+    "T"."name" AS "topicName",
+    null AS "isSolved"
+    FROM "ProblemVersions" "P"
+    JOIN "Series" "S" ON "P"."seriesId" = "S"."id"
+    JOIN "Topics" "T" ON "S"."topicId" = "T"."id"
+    WHERE "P"."isLive" = TRUE AND  "P"."approvalStatus" = 1
+    AND NOT EXISTS (
+      SELECT 1 FROM "Activities" "A" 
+      WHERE "P"."id" = "A"."problemId" AND "A"."userId" = $1)    
+    LIMIT 2);
     `;
     const params = [userId];
     const result = await this.query(query, params);
@@ -220,6 +340,7 @@ class ProblemsRepository extends Repository {
   };
 
   updateProblem = async (id, data) => {
+    console.log(data);
     const [updatedRowsCount, [updatedProblem]] = await db.Problem.update(data, {
       returning: true,
       where: {
@@ -233,7 +354,7 @@ class ProblemsRepository extends Repository {
   };
 
   updateProblemVersion = async (id, data) => {
-    console.log(data);
+    console.log(id, data);
     const [updatedRowsCount, [updatedProblem]] = await db.ProblemVersion.update(
       data,
       {
@@ -377,6 +498,93 @@ class ProblemsRepository extends Repository {
     });
     // console.log(clonedProblem);
     return clonedProblem;
+  };
+
+  approveProblem = async (id) => {
+    // First find the problemId of this problemVersion from id
+    const problemVersion = await db.ProblemVersion.findByPk(id);
+    if (!problemVersion) {
+      return null;
+    }
+    const problemId = problemVersion.problemId;
+
+    // Then update the approvalStatus field in ProblemVersion from 0 to 1
+    const oldApprovedProblem = await db.ProblemVersion.update(
+      {
+        approvalStatus: 0,
+      },
+      {
+        where: {
+          problemId,
+          approvalStatus: 1,
+        },
+      }
+    );
+
+    // Just update the approvalStatus field in ProblemVersion to 1 using ORM
+    const newApprovedProblem = await db.ProblemVersion.update(
+      {
+        approvalStatus: 1,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+    return newApprovedProblem;
+  };
+
+  rejectProblem = async (id, feedback) => {
+    // Just update the approvalStatus field in ProblemVersion to 0 using ORM
+    const updatedProblem = await db.ProblemVersion.update(
+      {
+        approvalStatus: 3,
+        feedback: feedback,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+    return updatedProblem;
+  };
+
+  getAllVersions = async (id) => {
+    const versions = await db.ProblemVersion.findAll({
+      where: {
+        problemId: id,
+      },
+      include: [
+        {
+          model: db.Canvas,
+          attributes: ["id", "name", "classname", "info"],
+          as: "canvas",
+          required: true,
+        },
+      ],
+      order: [["id", "DESC"]],
+    });
+    return versions;
+  };
+  updateRating = async (id, rating) => {
+    const problem = await db.ProblemVersion.findByPk(id);
+    if (!problem) {
+      return null;
+    }
+    const updatedProblem = await db.ProblemVersion.update(
+      {
+        rating: rating,
+      },
+      {
+        where: {
+          id,
+        },
+        returning: true,
+      }
+    );
+    return updatedProblem;
   };
 }
 

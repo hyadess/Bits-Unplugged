@@ -15,11 +15,17 @@ module.exports = {
       description: {
         type: Sequelize.TEXT,
       },
+      startDateTime: {
+        type: Sequelize.DATE,
+      },
       startDate: {
         type: Sequelize.DATE,
       },
       endDate: {
         type: Sequelize.DATE,
+      },
+      duration: {
+        type: Sequelize.FLOAT,
       },
       status: {
         type: Sequelize.STRING,

@@ -17,18 +17,23 @@ module.exports = {
       },
       info: {
         type: Sequelize.TEXT,
+        defaultValue: "",
       },
       logo: {
         type: Sequelize.TEXT,
       },
       editOptions: {
         type: Sequelize.JSON,
+        defaultValue: {},
       },
       previewOptions: {
         type: Sequelize.JSON,
+        defaultValue: {},
       },
       template: {
         type: Sequelize.TEXT,
+        defaultValue:
+          "function solutionChecker(userCanvas,solutionCanvas,userActivity)\n{\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}",
       },
       createdAt: {
         allowNull: false,

@@ -1,5 +1,6 @@
 const Controller = require("./base");
 const ContestRepository = require("../repositories/contestRepository");
+const sendMail = require("../services/email");
 const contestRepository = new ContestRepository();
 class ContestController extends Controller {
   constructor() {
@@ -12,7 +13,19 @@ class ContestController extends Controller {
     } else {
       res.status(404).json(result);
     }
-    
+  };
+  updateContest = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const updatedContest = await contestRepository.updateContest(
+        req.params.id,
+        req.body
+      );
+      if (!updatedContest) {
+        res.status(404).json({ error: "Contest not found" });
+      } else {
+        res.status(200).json(updatedContest);
+      }
+    });
   };
   getAllPublishedContests = async (req, res) => {
     let result = await contestRepository.getAllPublishedContests();
@@ -24,6 +37,14 @@ class ContestController extends Controller {
   };
   getMyContests = async (req, res) => {
     let result = await contestRepository.getMyContests(req.user.userId);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+  getContestInfo = async (req, res) => {
+    let result = await contestRepository.getContestInfo(req.params.contestId);
     if (result.success) {
       res.status(200).json(result.data);
     } else {
@@ -60,10 +81,35 @@ class ContestController extends Controller {
       res.status(404).json(result);
     }
   };
+  isContestProblemSolved = async (req, res) => {
+    console.log("problem id ==>", req.body.problemId);
+    let result = await contestRepository.isContestProblemSolved(
+      req.user.userId,
+      req.params.contestId,
+      req.params.problemId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
 
   getAllContestProblemsByContest = async (req, res) => {
     let result = await contestRepository.getAllContestProblemsByContest(
       req.params.contestId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+  getContestProblemById = async (req, res) => {
+    
+    let result = await contestRepository.getContestProblemById(
+      req.params.contestId,
+      req.params.problemId
     );
     if (result.success) {
       res.status(200).json(result.data);
@@ -83,7 +129,10 @@ class ContestController extends Controller {
   };
 
   addContest = async (req, res) => {
-    let result = await contestRepository.addContest(req.user.userId,req.body.title);
+    let result = await contestRepository.addContest(
+      req.user.userId,
+      req.body.title
+    );
     if (result.success) {
       res.status(201).json(result.data);
     } else {
@@ -138,10 +187,11 @@ class ContestController extends Controller {
     }
   };
 
-  addCollaborator = async (req, res) => {
-    let result = await contestRepository.addCollaborator(
+  updateDates = async (req, res) => {
+    let result = await contestRepository.updateDates(
       req.params.contestId,
-      req.body.collaboratorId
+      req.body.startDate,
+      req.body.endDate
     );
     if (result.success) {
       res.status(204).json(result.data);
@@ -149,6 +199,67 @@ class ContestController extends Controller {
       res.status(500).json(result);
     }
   };
+
+  availableCollaborators = async (req, res) => {
+    let result = await contestRepository.availableCollaborators(
+      req.user.userId,
+      req.params.contestId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
+  collabRequest = async (req, res) => {
+    let result = await contestRepository.getRequestedCollaborators(
+      req.params.setterId
+    );
+    if (result.success) {
+      sendMail(
+        result.data[0].email,
+        "Collaboration Request",
+        "You have a collaboration request from " +
+          req.user.email +
+          " for contest " +
+          req.params.contestId
+      );
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
+  addCollaborator = async (req, res) => {
+    this.handleRequest(res, async () => {
+      let result = await contestRepository.addCollaborator(
+        req.params.contestId,
+        req.body.collaboratorIds,
+        req.headers.origin
+      );
+      if (result.success) {
+        res.status(204).json(result.data);
+      } else {
+        res.status(500).json(result);
+      }
+    });
+  };
+
+  acceptInvitation = async (req, res) => {
+    try {
+      console.log(req.params);
+      const contestId = req.params.contestId;
+      const setterId = req.user.userId;
+      const result = await contestRepository.acceptInvitation(contestId, setterId);
+
+      res.status(200).json({ success: true, result });
+    } catch (error) {
+      console.error("Error accepting invitation:", error);
+      res.status(500).json({ success: false, error: "Internal Server Error" });
+    }
+  };
+
   showAllCollaborators = async (req, res) => {
     let result = await contestRepository.showAllCollaborators(
       req.params.contestId
@@ -182,6 +293,18 @@ class ContestController extends Controller {
       res.status(500).json(result);
     }
   };
+  updateRating = async (req, res) => {
+    let result = await contestRepository.updateRating(
+      req.body.problemId,
+      req.params.contestId,
+      req.body.rating
+    );
+    if (result.success) {
+      res.status(204).json(result.data);
+    } else {
+      res.status(500).json(result);
+    }
+  };
   makeProblemNotEligible = async (req, res) => {
     let result = await contestRepository.makeProblemNotEligible(
       req.body.problemId,
@@ -199,9 +322,13 @@ class ContestController extends Controller {
     let result = await contestRepository.addSubmissionToContest(
       req.body.problemId,
       req.params.contestId,
-      req.body.submissionId,
       req.user.userId,
-      req.body.points
+     
+      req.body.verdict,
+      req.body.canvasData,
+      req.body.userActivity,
+      req.body.point
+
     );
     if (result.success) {
       res.status(204).json(result.data);
@@ -210,12 +337,21 @@ class ContestController extends Controller {
     }
   };
 
+  getLeaderboard = async (req, res) => {
+    let result = await contestRepository.getLeaderboard(req.params.contestId);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
   //new ones...
 
   deleteProblem = async (req, res) => {
     let result = await contestRepository.deleteProblem(
       req.params.contestId,
-      req.body.problemId
+      req.params.problemId
     );
     if (result.success) {
       res.status(204).json(result.data);
@@ -255,6 +391,8 @@ class ContestController extends Controller {
       res.status(500).json(result);
     }
   };
+
+
   participateVirtualContest = async (req, res) => {
     let result = await contestRepository.participateVirtualContest(
       req.user.userId,
@@ -341,6 +479,24 @@ class ContestController extends Controller {
       res.status(200).json(result.data);
     } else {
       res.status(404).json(result);
+    }
+  };
+
+  approveContest = async (req, res) => {
+    let result = await contestRepository.approveContest(req.params.contestId);
+    if (result.success) {
+      res.status(204).json(result.data);
+    } else {
+      res.status(500).json(result);
+    }
+  };
+
+  rejectContest = async (req, res) => {
+    let result = await contestRepository.rejectContest(req.params.contestId);
+    if (result.success) {
+      res.status(204).json(result.data);
+    } else {
+      res.status(500).json(result);
     }
   };
 }

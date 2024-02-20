@@ -13,6 +13,7 @@ import Solving from "./Solving";
 import Setting from "./Setting";
 import Navbar from "../../components/Navbar";
 import { useIsVisible } from "../../hooks/useIsVisible";
+
 const Team = React.lazy(() => import("./Team"));
 const Footer = React.lazy(() => import("../../components/Footer"));
 const Home = () => {
@@ -32,12 +33,16 @@ const Home = () => {
       aboutusRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  useEffect(() => {
+    console.log("New nav: ", nav);
+  }, [nav]);
   return (
     <Layout1>
       <Navbar>
         <PublicNavbar nav={nav} setNav={handleClick} />
       </Navbar>
-      <Hero setNav={setNav} ref={homeRef} />
+      <Hero nav={nav} setNav={setNav} ref={homeRef} />
       <Solving setNav={setNav} ref={featuresRef} />
       <Setting setNav={setNav} ref={settingRef} />
       <Suspense fallback={<div>Loading...</div>}>

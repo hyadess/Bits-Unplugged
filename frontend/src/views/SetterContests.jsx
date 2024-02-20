@@ -7,11 +7,12 @@ import { useEffect } from "react";
 
 const SetterContestsView = ({
   contestList,
-  deleteProblem,
+  deleteContest,
   openModal,
   closeModal,
-  createProblem,
+  createContest,
   modalIsOpen,
+  userID,
 }) => {
   useEffect(() => {
     console.log(contestList);
@@ -32,20 +33,25 @@ const SetterContestsView = ({
             idx={index + 1}
             id={contest.id}
             name={contest.title}
-            deleteAction={deleteProblem}
+            deleteAction={deleteContest}
             isLive={contest.isLive}
             timestamp={contest.updatedAt}
-            owner={contest.canvas?.name}
+            owner={contest.ContestSetters[0]}
+            startDate={contest.startDate}
+            endDate={contest.endDate}
+            status={contest.status}
+            updatedAt={contest.updatedAt}
+            userID={userID}
           />
         ))}
       </CardContainer>
 
       {modalIsOpen && (
         <CustomModal
-          label={"Enter Problem Title"}
-          placeholder={"Problem Title"}
+          label={"Enter Contest Title"}
+          placeholder={"Contest Title"}
           onClose={closeModal}
-          onSubmit={createProblem}
+          onSubmit={createContest}
         />
       )}
     </div>

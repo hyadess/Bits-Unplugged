@@ -21,27 +21,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   Submission.init(
     {
-      problemId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "ProblemVersions",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      userId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Users",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
+      problemId: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
       verdict: DataTypes.STRING,
       canvasData: DataTypes.JSON,
+      userActivity: DataTypes.JSON,
+      image: DataTypes.TEXT,
     },
     {
       sequelize,

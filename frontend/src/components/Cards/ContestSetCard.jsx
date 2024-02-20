@@ -4,7 +4,7 @@ import { Button, IconButton } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTag, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faTag, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
 import { getTimeStamp } from "../../services/dateUtil";
@@ -17,8 +17,9 @@ const ContestSetCard = ({
   endDate,
   status,
   owner,
-  collaborators,
+  updatedAt,
   deleteAction,
+  userID,
 }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -37,62 +38,80 @@ const ContestSetCard = ({
 
   return (
     <div className="w-full h-full" key={id}>
-      <div className="border rounded-lg shadow-lg bg-gray-700 bu-card-primary flex flex-col p-5 h-full">
-        <div className="flex flex-col cursor-pointer" onClick={() => navigate(`/contests/${id}/preview`)}>
-          <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title w-75% cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
+      <div className="border rounded-lg shadow-lg bg-gray-700 bu-card-primary flex flex-col p-5">
+        <div
+          className="cursor-pointer"
+          onClick={() => navigate(`/contests/${id}/preview`)}
+        >
+          <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title">
             {name}
           </h5>
           <div className="flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400">
             <FontAwesomeIcon icon={faTag} />
-            <h3 className="bu-text-primary">owner</h3>
+            <h3 className="bu-text-primary font-semibold">{owner.username}</h3>
           </div>
         </div>
 
-        <div className="flex justify-between items-end">
-          <div className="bu-text-subtitle">
-            {`Start Date: {getTimeStamp(startDate)} - End Date: {getTimeStamp(endDate)}`}
-          </div>
-          <div className="bu-text-primary mt-2">
-            {`Collaborators: {collaborators.join(", ")}`}
-          </div>
-          <div className="flex flex-row ">
-            <div className="w-1/4 flex items-center justify-center">
-              <div className="bu-text-primary">{`Status: ${status}`}</div>
+        <div className="flex justify-between mt-4">
+          <div className="flex flex-col gap-2 items-start">
+            <div className="bu-text-subtitle font-semibold">
+              {startDate ? `Start Date: ${getTimeStamp(startDate)}` : 'Start Date: Yet to be added'}
             </div>
-            <div className="w-1/4 flex items-center justify-center">
-              <IconButton onClick={() => navigate(`/contests/${id}/edit`)}>
-                <div className="flex items-center bu-text-primary">
-                  <FontAwesomeIcon icon={faPenToSquare} size="sm" />
+            <div className="bu-text-subtitle font-semibold">
+              {endDate ? `End Date: ${getTimeStamp(endDate)}` : 'End Date: Yet to be added'}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 items-center">
+            <div className={`bu-text-subtitle font-semibold text-${status === "live" ? 'green' : 'blue'}-500`}>
+              {`Status: ${status}`}
+            </div>
+            <div className="bu-text-subtitle font-semibold">
+              {updatedAt && `Last Updated: ${getTimeStamp(updatedAt)}`}
+            </div>
+          </div>
+
+          <div className="flex gap-4 items-center">
+            <IconButton
+              onClick={() =>(status==='edit')? navigate(`/contests/${id}/edit`): ""}
+              className={`text-blue-500 ${(status=='edit')? 'hover:text-blue-700' : ''}`}
+            >
+              <div className="flex items-center">
+                <FontAwesomeIcon icon={faPenToSquare} size="sm" />
+              </div>
+            </IconButton>
+
+            {status === "Live" ? (
+              <IconButton
+                onClick={unpublishContest}
+                className="text-green-500 hover:text-green-700"
+              >
+                <div className="flex items-center">
+                <FontAwesomeIcon icon={faEye} size="sm" />
                 </div>
               </IconButton>
-            </div>
-            <div className="w-1/4 flex items-center justify-center">
-              {status === "Live" ? (
-                <IconButton onClick={unpublishContest}>
-                  <div className="flex items-center bu-text-primary">
-                    <CheckCircleIcon sx={{ fontSize: "1.5rem" }} />
-                  </div>
-                </IconButton>
-              ) : (
-                <IconButton onClick={publishContest}>
-                  <div className="flex items-center bu-text-subtitle">
-                    <AddTaskIcon sx={{ fontSize: "1.5rem" }} />
-                  </div>
-                </IconButton>
-              )}
-            </div>
-            <div className="w-1/4 flex items-center justify-center">
-              <IconButton onClick={() => setOpen(true)}>
-                <div className="flex items-center bu-text-primary">
-                  <FontAwesomeIcon icon={faTrashCan} size="sm" />
+            ) : (
+              <IconButton
+                onClick={publishContest}
+                className="text-blue-500 hover:text-blue-700"
+              >
+                <div className="flex items-center">
+                <FontAwesomeIcon icon={faEye} size="sm" />
                 </div>
               </IconButton>
-            </div>
+            )}
+
+            <IconButton
+              onClick={() => (userID===owner.userID && status==='edit')? setOpen(true) : ''}
+              className={`text-red-500 ${(userID==owner.userID && status=='edit')? 'hover:text-red-700' : ''}`}
+            >
+              <div className="flex items-center">
+                <FontAwesomeIcon icon={faTrashCan} size="sm" />
+              </div>
+            </IconButton>
           </div>
         </div>
       </div>
-
-      
 
       <Confirmation open={open} setOpen={setOpen} onConfirm={deleteAction} param={id} />
     </div>

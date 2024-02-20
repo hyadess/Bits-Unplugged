@@ -21,7 +21,7 @@ GET /series/
 GET /series/:id
 GET /series/:id/problems
 
-- `GET /series/:id/problems?solved=false `
+- `GET /series/:id/problems?solved=false`
 
 POST /series/
 PUT /series/:id
@@ -66,12 +66,25 @@ GET /submissions/unsolved -->
 
 ## Sequelize
 
+### Installation
+
+npm install --save sequelize
+npm install --save pg pg-hstore
+
 ### Initial Setup
 
 Drop database: `npx sequelize db:drop`
 Create database: `npx sequelize db:create`
 Create schema: `npx sequelize db:migrate`
 Populate tables: `npx sequelize db:seed:all`
+
+### Creating Model
+
+npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string,password:string
+
+### Creating Seed
+
+npx sequelize seed:generate --name demo-user
 
 ### Changing schema
 

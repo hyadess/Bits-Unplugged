@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LinearProgress, Zoom } from "@mui/material";
-import ImageLoader from "../ImageLoader";
+import ImageLoader from "../ImageLoaders/ImageLoader";
 import styled from "@emotion/styled";
 import { set } from "date-fns";
 import { setLoading } from "../../App";
+import { userActivityApi } from "../../api";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: "10px",
@@ -26,18 +27,38 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 /* Rectangle 89290 */
 
-const TopicCard = ({ id, name, image, path, action }) => {
+const TopicCard = ({ id, topic_id, name, image, path, action }) => {
   const navigate = useNavigate();
   const [solved, setSolved] = useState(0);
   const [total, setTotal] = useState(0);
   const [progress, setProgress] = useState(0);
+
+  const getAll = async () => {
+    const res = await userActivityApi.totalProblemCountByTopic(topic_id);
+    console.log(res);
+    if (res.success) {
+      if (res.data.length === 0) return;
+      setTotal(res.data[0].total_problems);
+    }
+    const res2 = await userActivityApi.totalSolvedProblemCountByTopic(topic_id);
+    if (res2.success) {
+      if (res2.data.length === 0) return;
+      setSolved(res2.data[0].total_solved_problems);
+    }
+  };
+
   useEffect(() => {
-    let tmp = Math.round(Math.random() * 50);
-    let tmp2 = tmp + Math.round(Math.random() * 60);
-    setSolved(tmp);
-    setTotal(tmp2);
-    setProgress(Math.round((tmp / tmp2) * 100));
+    // setLoading(true);
+    getAll();
   }, []);
+  useEffect(() => {
+    if (total === 0) {
+      setProgress(0);
+    } else {
+      setProgress(Math.round((solved / total) * 100));
+    }
+    setLoading(false);
+  }, [solved, total]);
 
   useEffect(() => {
     console.log(
@@ -83,7 +104,7 @@ const TopicCard = ({ id, name, image, path, action }) => {
                 {solved}/{total} problems solved
               </h5>
               <div className="w-full h-[8.86px] left-[367.76px] top-[344.82px] bg-[#EDEDED] rounded-[6px]">
-                {progress && (
+                {progress > 0 && (
                   <div
                     className={`box-border h-[9.42px] border-[1px] rounded-[6px]`}
                     style={{

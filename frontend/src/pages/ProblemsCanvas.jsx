@@ -8,6 +8,8 @@ import GlobalContext from "../store/GlobalContext";
 import ProblemContextProvider, {
   useProblemContext,
 } from "../store/ProblemContextProvider";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 function ProblemsCanvasController() {
   const { type } = useContext(GlobalContext);
   const { id } = useParams();
@@ -62,22 +64,36 @@ function ProblemsCanvasController() {
       problem.activityData
     );
     console.log("output " + res.output);
-    await submissionApi.submitSolution(problem.canvasData, res.output, id);
+
     if (res.output === "Accepted") {
       if (startTimeRef.current) {
         const endTime = new Date();
         const durationInSeconds = Math.floor(
           (endTime - startTimeRef.current) / 1000
         );
-        if (durationInSeconds > 3 && type == 0) {
-          await problemApi.trackDuration(id, durationInSeconds);
+
+        if (durationInSeconds > 1 && type == 0) {
+          console.log("Duration:", durationInSeconds);
+          await submissionApi.submitSolution(
+            problem.canvasData,
+            res.output,
+            id,
+            durationInSeconds
+          );
+        } else {
+          await submissionApi.submitSolution(
+            problem.canvasData,
+            res.output,
+            id,
+            0
+          );
         }
       }
-      await userActivityApi.updateOnSuccessfulAttempt(id);
     } else {
-      await userActivityApi.updateOnFailedAttempt(id);
+      await submissionApi.submitSolution(problem.canvasData, res.output, id, 0);
     }
   };
+
   function getColorModeFromLocalStorage() {
     return localStorage.getItem("color-theme") || "light";
   }
@@ -102,9 +118,9 @@ function ProblemsCanvasController() {
           (endTime - startTimeRef.current) / 1000
         );
 
-        console.log("Duration:", durationInSeconds);
+        //console.log("Duration:", durationInSeconds);
         // Send the duration to the backend
-        if (durationInSeconds > 3 && type == 0)
+        if (durationInSeconds > 1 && type == 0)
           problemApi.trackDuration(id, durationInSeconds);
       }
     };
@@ -124,7 +140,9 @@ function ProblemsCanvasController() {
 const ProblemSetEnv = () => {
   return (
     <ProblemContextProvider>
-      <ProblemsCanvasController />
+      <DndProvider backend={HTML5Backend}>
+        <ProblemsCanvasController />
+      </DndProvider>
     </ProblemContextProvider>
   );
 };

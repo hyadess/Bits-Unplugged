@@ -10,6 +10,7 @@ const Topics = () => {
   const [topicList, setTopicList] = useState([]);
   const getTopicList = async () => {
     const res = await topicApi.getAllTopics();
+    //console.log(res);
     if (res.success) {
       setTopicList(res.data);
       console.log(res);
@@ -37,6 +38,7 @@ const Topics = () => {
                   <TopicCard
                     key={index}
                     id={`Topic ${index + 1}`}
+                    topic_id={topic.id}
                     name={topic.name}
                     image={topic.logo}
                     path={`/topics/${topic.id}`}

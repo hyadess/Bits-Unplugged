@@ -8,9 +8,14 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      ContestSubmission.belongsTo(models.Participant);
-      ContestSubmission.belongsTo(models.Submission);
+      ContestSubmission.belongsTo(models.Participant, {
+        foreignKey: "participantId",
+        as: "participant",
+      });
+      ContestSubmission.belongsTo(models.ContestProblem, {
+        foreignKey: "contestProblemId",
+        as: "contestProblem",
+      });
     }
   }
   ContestSubmission.init(
@@ -24,15 +29,24 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      submissionId: {
+      contestProblemId: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
-          model: "Submissions",
+          model: "ContestProblems",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
+      verdict: DataTypes.STRING,
+      canvasData: DataTypes.JSON,
+      userActivity: {
+        type: DataTypes.JSON,
+        defaultValue: {},
+      },
+      image: DataTypes.TEXT,
+      
       points: DataTypes.INTEGER,
     },
     {

@@ -7,9 +7,10 @@ class ProfileRepository extends Repository {
 
   getProfile = async (user_id) => {
     const query = `
-      SELECT *
-      FROM "Users"
-      WHERE "id" = $1;
+      SELECT "U".*, "C"."email"
+      FROM "Users" "U"
+      JOIN "Credentials" "C" ON "U"."id" = "C"."userId"
+      WHERE "U"."id" = $1;
     `;
     const params = [user_id];
     const result = await this.query(query, params);

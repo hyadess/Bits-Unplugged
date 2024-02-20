@@ -27,14 +27,14 @@ class SubmissionRepository extends Repository {
         },
       ],
       where: {
-        problemId,
+        id: problemId,
       },
     });
     return result;
   };
 
   getAllSubmissionsByUser = async (userId) => {
-    console.log("lets see"+userId);
+    console.log("lets see" + userId);
     const query = `
       SELECT 
       S.*, 
@@ -68,13 +68,19 @@ class SubmissionRepository extends Repository {
     return result;
   };
 
-  submitSolution = async (userId, problemId, data) => {
-    return await db.Submission.create({
-      verdict: data.verdict,
-      problemId: problemId,
-      userId: userId,
-      canvasData: data.ansJson,
+  /*
+  {
+    verdict: data.verdict,
+    problemId: problemId,
+    userId: userId,
+    canvasData: data.canvasData,
+  }
+  */
+  submitSolution = async (data) => {
+    const submission = await db.Submission.create(data, {
+      returning: ["id"], // Specify the columns you want to return
     });
+    return submission.id; // Return the newly created submission's ID
   };
 }
 

@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, forwardRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  forwardRef,
+  useContext,
+} from "react";
 import { Route, useParams } from "react-router-dom";
 import InfoIcon from "@mui/icons-material/Info";
 import {
@@ -19,17 +25,22 @@ import { setLoading } from "../../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBroom,
+  faCamera,
+  faCameraRetro,
   faEye,
   faEyeSlash,
   faUser,
   faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 import { canvasApi } from "../../api";
+import { Camera } from "@mui/icons-material";
+import GlobalContext from "store/GlobalContext";
 const CanvasContainer = (props, ref) => {
   const [DynamicComponent, setDynamicComponent] = useState(null);
   const [componentPath, setComponentPath] = useState(null);
   const [canvasInfo, seCanvasInfo] = useState(null);
   const [settings, setSettings] = useState(false);
+  const { type } = useContext(GlobalContext);
   const [editOptions, setEditOptions] = [
     props.editOptions,
     props.setEditOptions,
@@ -40,6 +51,24 @@ const CanvasContainer = (props, ref) => {
   ];
 
   const [canvasContainerMode, setCanvasContainerMode] = useState(props.mode);
+  const stageRef = useRef(null);
+
+  const saveCanvasAsImage = () => {
+    const stage = stageRef.current;
+    const image = stage.toDataURL();
+
+    // Create a temporary link element
+    const link = document.createElement("a");
+    link.href = image;
+    link.download = "canvas_image.png";
+
+    // Trigger the download
+    document.body.appendChild(link);
+    link.click();
+
+    // Clean up
+    document.body.removeChild(link);
+  };
   const loadComponent = async (name) => {
     try {
       const module = await import(/* @vite-ignore */ `./${name}`);
@@ -112,7 +141,7 @@ const CanvasContainer = (props, ref) => {
   }
   const OptionList = ({ options, setOptions }) => {
     return (
-      <div className="pt-2" style={{ minHeight: "1rem" }}>
+      <div className="flex flex-col gap-2 pt-2" style={{ minHeight: "1rem" }}>
         {Object.keys(options).map((key, index) =>
           options[key].type == "switch" ? (
             <div className="flex flex-row justify-between items-center">
@@ -152,6 +181,7 @@ const CanvasContainer = (props, ref) => {
                   ".MuiSvgIcon-root ": {
                     fill: "white !important",
                   },
+                  width: "9rem",
                 }}
                 // // MenuProps={MenuProps}
               >
@@ -167,6 +197,21 @@ const CanvasContainer = (props, ref) => {
                 ))}
               </Select>
             </div>
+          ) : options[key].type == "number" ? (
+            <div className="flex flex-row justify-between items-center">
+              <h1 className="text-white">{camelCaseToTitleCase(key)}</h1>
+              <input
+                value={options[key].value}
+                type="number"
+                className="border sm:text-sm rounded-lg block w-[9rem] h-[2.6rem] p-2.5 bg-gray-700 border-gray-600 focus:ring-pink-600 focus:border-pink-600 placeholder-gray-400 text-white text-center"
+                step={1}
+                placeholder="0"
+                // min={0}
+                onChange={(e) => {
+                  setOptions({ key: key, value: e.target.value });
+                }}
+              />
+            </div>
           ) : (
             <></>
           )
@@ -179,7 +224,7 @@ const CanvasContainer = (props, ref) => {
       <>
         {settings ? (
           <div
-            className="flex flex-col p-5 w-30% bg-slate-900 rounded-lg shadow-lg"
+            className="flex flex-col p-5 w-30% bg-slate-900 rounded-lg shadow-lg z-30"
             style={{
               position: "absolute",
               top: "4rem",
@@ -227,15 +272,50 @@ const CanvasContainer = (props, ref) => {
             previewOptions={previewOptions}
             ref={ref}
             mode={canvasContainerMode}
+            stageRef={stageRef}
           />
         )}
       </div>
       {/* </Zoom> */}
+      {/* <button
+        className="bu-button-primary text-2xl"
+        onClick={saveCanvasAsImage}
+      >
+        Save Canvas as Image
+      </button> */}
       <SettingsMenu />
       <div
         className="flex flex-row p-2 items-center"
         style={{ position: "absolute", top: "0", right: "0" }}
       >
+        {type !== 0 && props.mode === "preview" && (
+          <Tooltip
+            title={<h1 className="text-lg text-white">Take Snapshot</h1>}
+            placement="top"
+            arrow
+            size="large"
+          >
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem",
+                }}
+                onClick={saveCanvasAsImage}
+              >
+                <div className="flex items-center bu-text-primary text-3xl">
+                  <FontAwesomeIcon icon={faCameraRetro} />
+                  {/* <Camera /> */}
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">
+                Capture
+              </div>
+            </div>
+          </Tooltip>
+        )}
+
         {props.mode === "edit" && (
           <Tooltip
             title={<h1 className="text-lg text-white">Canvas Mode</h1>}

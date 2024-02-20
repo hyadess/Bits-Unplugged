@@ -5,6 +5,7 @@ const cors = require("cors");
 const cron = require("node-cron");
 const https = require("https");
 const passport = require("passport");
+const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 cron.schedule("*/14 * * * *", () => {
   let host = process.env.BASE_URL;
@@ -35,7 +36,14 @@ app.use(express.static("public"));
 app.use(express.static(CLIENT_BUILD_PATH));
 // Use cookie-parser middleware
 
-// app.use(fileUpload());
+// check sequelize connection
+// const db = require("./models");
+// db.sequelize
+//   .authenticate()
+//   .then(() => console.log("Database connected..."))
+//   .catch((err) => console.log("Error: " + err));
+
+app.use(fileUpload());
 app.use("/api", appRoutes);
 
 app.get("/invalid", (req, res) => {

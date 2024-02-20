@@ -28,11 +28,18 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      verdict: {
+      verdict: { 
         type: Sequelize.STRING,
       },
       canvasData: {
         type: Sequelize.JSON,
+      },
+      userActivity: {
+        type: Sequelize.JSON,
+        defaultValue: {},
+      },
+      image: {
+        type: Sequelize.TEXT,
       },
       createdAt: {
         allowNull: false,

@@ -1,10 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
   Outlet,
+  useNavigate,
+  useParams,
 } from "react-router-dom";
 import Home from "./pages/landing/Home";
 import Problems from "./pages/user/Problems";
@@ -15,6 +17,7 @@ import Topics from "./pages/user/Topics";
 import Series from "./pages/user/Series";
 import SetterProblems from "./pages/setter/SetterProblems";
 import ProblemSetEnv from "./pages/setter/ProblemSetEnv";
+import ContestSetEnv from "./pages/setter/ContestSetEnv";
 import PublicNavbar from "./pages/landing/PublicNavbar";
 import SolverProfileTab from "./components/SolverProfileTab";
 import Layout2 from "./components/Layouts/Layout2";
@@ -26,7 +29,7 @@ import AdminSeries from "./pages/admin/AdminSeries";
 import AdminProblems from "./pages/admin/AdminProblems";
 import AdminTopicEditor from "./pages/admin/AdminTopicEditor";
 import AdminSeriesEditor from "./pages/admin/AdminSeriesEditor";
-import ProfileSubmissions from "./pages/user/ProfileSubmissions";
+import ProfileSubmissions from "./pages/user/Profile/ProfileSubmissions";
 import AdminProblemEditor from "./pages/admin/AdminProblemEditor";
 import AdminCanvasList from "./pages/admin/AdminCanvasList";
 import AdminCanvasEditor from "./pages/admin/AdminCanvasEditor";
@@ -37,18 +40,36 @@ import AdminNavbar from "./components/Navbars/AdminNavbar";
 import LayoutMain from "./components/Layouts/LayoutMain";
 import ProblemsSubmissions from "./pages/ProblemsSubmissions";
 import SetterProfile from "./pages/setter/SetterProfile";
-import Profile from "./pages/user/Profile";
+import Profile from "./pages/user/Profile/Profile";
 import SetterContests from "./pages/setter/SetterContests";
 import Contest from "./pages/setter/Contest";
 import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
 import Contests from "./pages/user/Contests";
+import UserContest from "./pages/Contest";
+import UserContestDetails from "./pages/ContestDetails";
+import History from "./pages/setter/ProblemSetEnv/History";
+import TopicStat from "./pages/user/TopicStat";
+import AdminArticles from "./pages/admin/AdminArticles";
+import AdminArticleEditor from "./pages/admin/AdminArticleEditor";
+import Article from "./pages/user/Article/Article";
+import SolverNavbar from "./components/Navbars/SolverNavbar";
+import RecentProblems from "./pages/user/RecentProblems";
+import SetterNavbar from "./components/Navbars/SetterNavbar";
+import AcceptRequest from "pages/setter/ContestSetEnv/AcceptRequest";
+import UserHome from "pages/user/Home";
+import ProblemList from "pages/user/ProblemList";
+import SetterProfileTab from "components/SetterProfileTab";
+import LayoutSecondary from "components/Layouts/LayoutSecondary";
+import { contestApi } from "api";
+import CountdownTimer from "pages/Timer";
+import ContestProblemList from "pages/ContestProblemList";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
   return isLoggedIn ? (
     type == 0 ? (
-      <Layout2 nav={<PrivateNavbar />}>
+      <Layout2 nav={<SolverNavbar />}>
         <Outlet />
       </Layout2>
     ) : (
@@ -65,8 +86,66 @@ const SolverProfile = () => {
     setActiveTab(tab);
   };
   return (
-    <LayoutMain left={<SolverProfileTab activeTab={activeTab} click={click} />}>
+    <LayoutSecondary
+      left={<SolverProfileTab activeTab={activeTab} click={click} />}
+    >
       {activeTab == "Details" ? <Profile /> : <ProfileSubmissions />}
+    </LayoutSecondary>
+  );
+};
+
+const ProfileForSetter = () => {
+  const [activeTab, setActiveTab] = useState("Details");
+  const click = (tab) => {
+    setActiveTab(tab);
+  };
+  return (
+    // <LayoutMain left={<SetterProfileTab activeTab={activeTab} click={click} />}>
+    <LayoutMain left={<></>}>
+      {/* {activeTab == "Details" ? <SetterProfile /> : <SetterProblems />} */}
+      {<SetterProfile />}
+    </LayoutMain>
+  );
+};
+
+const ContestWrapper = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [endTime, setendTime] = useState();
+  const fetchContestDetails = async () => {
+    try {
+      const contest = await contestApi.getContestById(id);
+      if (contest.success) {
+        const contestDuration = contest.data[0].duration * 60 * 60 * 1000;
+        const startDateTime = new Date(contest.data[0].startDateTime);
+        setendTime(new Date(startDateTime.getTime() + contestDuration));
+        console.log("Contest end time : ", startDateTime, endTime);
+      }
+    } catch (error) {
+      console.error("Error fetching contest details", error);
+    }
+  };
+  useEffect(() => {
+    fetchContestDetails();
+  }, [id]);
+  return (
+    <LayoutMain
+      left={
+        <>
+          <ContestProblemList />
+        </>
+      }
+      right={
+        endTime?.getTime() > Date.now() && (
+          <CountdownTimer
+            targetDate={endTime}
+            flag={"end"}
+            EndAction={() => navigate("/contests/" + id)}
+          />
+        )
+      }
+    >
+      <Outlet />
     </LayoutMain>
   );
 };
@@ -76,7 +155,7 @@ const ProblemSetter = () => {
   const type = localStorage.getItem("type");
   return isLoggedIn ? (
     type == 1 ? (
-      <Layout2 nav={<PrivateNavbar />}>
+      <Layout2 nav={<SetterNavbar />}>
         <Outlet />
       </Layout2>
     ) : (
@@ -211,6 +290,22 @@ const AppRoutes = () => {
             }
           />
           <Route
+            path="/admin/articles"
+            element={
+              <LayoutMain>
+                <AdminArticles />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/admin/articles/:id"
+            element={
+              <LayoutMain>
+                <AdminArticleEditor />
+              </LayoutMain>
+            }
+          />
+          <Route
             path="/admin/contests"
             element={
               <LayoutMain>
@@ -242,7 +337,7 @@ const AppRoutes = () => {
           <Route
             path="/problems/:problemid/edit"
             element={
-              <LayoutMain>
+              <LayoutMain right={<History />}>
                 <ProblemSetEnv />
               </LayoutMain>
             }
@@ -255,6 +350,9 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
+
+          <Route path="/Accept-request" element={<AcceptRequest />} />
+
           <Route
             path="/setter/contests"
             element={
@@ -264,19 +362,14 @@ const AppRoutes = () => {
             }
           />
 
-          <Route
-            path="/setter/:username"
-            element={
-              <LayoutMain>
-                <SetterProfile />
-              </LayoutMain>
-            }
-          />
+          <Route path="/setter/:username" element={<ProfileForSetter />} />
+
+          <Route path="/contests/:id/edit" element={<ContestSetEnv />} />
 
           <Route
-            path="/contests/:id/preview"
+            path="/contests/:contestid/edit"
             element={
-              <LayoutMain>
+              <LayoutMain right={<History />}>
                 <Contest />
               </LayoutMain>
             }
@@ -284,6 +377,13 @@ const AppRoutes = () => {
         </Route>
 
         <Route element={<ProblemSolver />}>
+          <Route element={<ContestWrapper />}>
+            <Route path="/contests/:id" element={<UserContestDetails />} />
+            <Route
+              path="/contests/:id/problems/:problemid"
+              element={<UserContest />}
+            />
+          </Route>
           <Route
             path="/problems/:id"
             element={
@@ -315,6 +415,23 @@ const AppRoutes = () => {
             element={
               <LayoutMain>
                 <Contests />
+              </LayoutMain>
+            }
+          />
+
+          <Route
+            path="/home"
+            element={
+              <LayoutMain>
+                <UserHome />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/practice"
+            element={
+              <LayoutMain>
+                <ProblemList />
               </LayoutMain>
             }
           />
@@ -364,13 +481,16 @@ const AppRoutes = () => {
               // }
               >
                 <Topics />
+                {/* <RecentProblems /> */}
               </LayoutMain>
             }
           />
           <Route
             path="/topics/:id"
             element={
-              <LayoutMain>
+              <LayoutMain
+              //right={<TopicStat/>}
+              >
                 <Series />
               </LayoutMain>
             }
@@ -380,6 +500,14 @@ const AppRoutes = () => {
             element={
               <LayoutMain>
                 <Problems />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/articles/:id"
+            element={
+              <LayoutMain>
+                <Article />
               </LayoutMain>
             }
           />
@@ -400,6 +528,7 @@ const AppRoutes = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/verify-email" element={<EmailVerification />} />
         </Route>
+
         {type >= 0 && (
           <Route
             path="/"

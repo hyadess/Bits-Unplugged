@@ -219,44 +219,49 @@ const AdminSeriesEditor = () => {
             value={series.topicId == null ? "" : series.topicId}
             options={topicList}
           />
-          <div className="bu-bg-title text-white p-5 rounded-md text-3xl font-bold">
-            Problems
-          </div>
-          <div className="flex flex-col gap-5 w-full">
-            <div className="w-full p-5 rounded-lg shadow-md flex flex-row bu-text-primary bg-[#AADFCF] dark:bg-pink-600">
-              <div className="text-xl w-[45%] font-medium">Name</div>
-              <div className="text-xl w-[20%] font-medium flex gap-2 items-center justify-center">
-                {/* <FontAwesomeIcon icon={faCheckDouble} /> */}
-                <HowToReg />
-                Acceptance
+
+          {problemList.length > 0 && (
+            <>
+              <div className="bu-bg-title text-white p-5 rounded-md text-3xl font-bold">
+                Problems
               </div>
-              <div className="text-xl w-20% font-medium flex gap-2 items-center justify-center">
-                <FontAwesomeIcon icon={faFire} />
-                Difficulty
+              <div className="flex flex-col gap-5 w-full">
+                <div className="w-full p-5 rounded-lg shadow-md flex flex-row bu-text-primary bg-[#AADFCF] dark:bg-pink-600">
+                  <div className="text-xl w-[45%] font-medium">Name</div>
+                  <div className="text-xl w-[20%] font-medium flex gap-2 items-center justify-center">
+                    {/* <FontAwesomeIcon icon={faCheckDouble} /> */}
+                    <HowToReg />
+                    Acceptance
+                  </div>
+                  <div className="text-xl w-20% font-medium flex gap-2 items-center justify-center">
+                    <FontAwesomeIcon icon={faFire} />
+                    Difficulty
+                  </div>
+                  <div className="text-xl w-15% font-medium flex gap-2 items-center justify-center">
+                    <FontAwesomeIcon icon={faHeartPulse} />
+                    Action
+                  </div>
+                </div>
+                {problemList.length && (
+                  <TableContainer>
+                    {problemList.map((problem, index) => (
+                      <DraggableProblemCard
+                        key={problem.id}
+                        id={problem.id}
+                        index={index}
+                        name={problem.name}
+                        image={problem.logo}
+                        problem={problem}
+                        setProblem={setProblem}
+                        deleteProblem={deleteProblem}
+                        moveCard={moveCard}
+                      />
+                    ))}
+                  </TableContainer>
+                )}
               </div>
-              <div className="text-xl w-15% font-medium flex gap-2 items-center justify-center">
-                <FontAwesomeIcon icon={faHeartPulse} />
-                Action
-              </div>
-            </div>
-            {problemList.length && (
-              <TableContainer>
-                {problemList.map((problem, index) => (
-                  <DraggableProblemCard
-                    key={problem.id}
-                    id={problem.id}
-                    index={index}
-                    name={problem.name}
-                    image={problem.logo}
-                    problem={problem}
-                    setProblem={setProblem}
-                    deleteProblem={deleteProblem}
-                    moveCard={moveCard}
-                  />
-                ))}
-              </TableContainer>
-            )}
-          </div>
+            </>
+          )}
           <button
             className="text-white font-medium rounded-lg text-lg px-7 py-2 text-center bu-button-primary"
             onClick={handleSave}

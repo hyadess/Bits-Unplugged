@@ -10,9 +10,10 @@ class ProblemController extends Controller {
 
   getAllProblems = async (req, res) => {
     this.handleRequest(res, async () => {
+      console.log("GEEEEEEEEET");
       let problems =
         req.user.type === 0
-          ? undefined
+          ? await problemRepository.getAllLiveProblems(req.user.userId)
           : req.user.type === 1
           ? await problemRepository.getMyProblems(req.user.userId)
           : await problemRepository.getSubmittedProblems();
@@ -62,6 +63,18 @@ class ProblemController extends Controller {
       }
     });
   };
+
+  getContestProblemById = async (req, res) => {
+    this.handleRequest(res, async () => {
+      let problem = await problemRepository.getProblemById(req.params.id);
+      if (!problem) {
+        res.status(404).json({ error: "Problem not found" });
+      } else {
+        res.status(200).json(problem);
+      }
+    });
+  };
+
   createProblem = async (req, res) => {
     this.handleRequest(res, async () => {
       const newProblem = await problemRepository.createProblem(
@@ -77,6 +90,8 @@ class ProblemController extends Controller {
       const updatedProblem =
         req.user.type === 1
           ? await problemRepository.updateProblem(req.params.id, req.body)
+          : req.user.type === 2
+          ? await problemRepository.updateProblem(req.params.id, req.body)
           : await problemRepository.updateProblemVersion(
               req.params.id,
               req.body
@@ -86,6 +101,32 @@ class ProblemController extends Controller {
       } else {
         res.status(200).json(updatedProblem);
       }
+    });
+  };
+
+  approveProblem = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const approvedProblem = await problemRepository.approveProblem(
+        req.params.id
+      );
+      if (!approvedProblem) {
+        res.status(404).json({ error: "Problem not found" });
+      } else {
+        res.status(200).json(approvedProblem);
+      }
+    });
+  };
+
+  rejectProblem = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const rejectedProblem = await problemRepository.rejectProblem(
+        req.params.id,
+        req.body.feedback
+      );
+      if (!rejectedProblem) {
+        res.status(404).json({ error: "Problem not found" });
+      }
+      res.status(200).json(rejectedProblem);
     });
   };
 
@@ -144,7 +185,7 @@ class ProblemController extends Controller {
     this.handleRequest(res, async () => {
       let submissions =
         req.user.type === 1
-          ? undefined
+          ? await problemRepository.getAllVersions(req.params.id)
           : req.user.type === 0
           ? await submissionRepository.getAllSubmissionsByUserAndProblem(
               req.user.userId,
@@ -157,6 +198,12 @@ class ProblemController extends Controller {
     });
   };
 
+  getAllVersions = async (req, res) => {
+    this.handleRequest(res, async () => {
+      let versions = await problemRepository.getAllVersions(req.params.id);
+      res.status(200).send(versions);
+    });
+  };
   // takeNthHint = async (req, res) => {};
   // rateProblem = async (req, res) => {};
   // getProblemRating = async (req, res) => {};

@@ -9,7 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      ProblemVersion.belongsTo(models.Problem, { foreignKey: "problemId" });
+      ProblemVersion.belongsTo(models.Problem, {
+        foreignKey: "problemId",
+        as: "problem",
+      });
       ProblemVersion.belongsTo(models.Series, {
         foreignKey: "seriesId",
         as: "series",
@@ -35,67 +38,22 @@ module.exports = (sequelize, DataTypes) => {
   }
   ProblemVersion.init(
     {
-      problemId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Problems",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      seriesId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Series",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
-      },
-      canvasId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Setters",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      title: {
-        type: DataTypes.STRING,
-      },
-      statement: {
-        type: DataTypes.TEXT,
-      },
-      serialNo: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
-      },
-      isLive: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
-      canvasData: {
-        type: DataTypes.JSON,
-      },
-      editOptions: {
-        type: DataTypes.JSON,
-      },
-      previewOptions: {
-        type: DataTypes.JSON,
-      },
-      checkerCode: {
-        type: DataTypes.TEXT,
-      },
-      checkerCanvas: {
-        type: DataTypes.JSON,
-      },
-      approvalStatus: {
-        type: DataTypes.STRING,
-      },
+      problemId: DataTypes.INTEGER,
+      seriesId: DataTypes.INTEGER,
+      canvasId: DataTypes.INTEGER,
+      title: DataTypes.STRING,
+      statement: DataTypes.TEXT,
+      serialNo: DataTypes.INTEGER,
+      isLive: DataTypes.BOOLEAN,
+      version: DataTypes.INTEGER,
+      canvasData: DataTypes.JSON,
+      editOptions: DataTypes.JSON,
+      previewOptions: DataTypes.JSON,
+      checkerCode: DataTypes.TEXT,
+      checkerCanvas: DataTypes.JSON,
+      approvalStatus: DataTypes.INTEGER,
+      feedback: DataTypes.TEXT,
+      rating: DataTypes.INTEGER,
     },
     {
       sequelize,

@@ -7,6 +7,7 @@ router.use(
   passport.authenticate("jwt", { failureRedirect: "/invalid", session: false })
 );
 router.get("/", contestController.getAllContests);
+router.put("/:id", contestController.updateContest);
 router.get("/published", contestController.getAllPublishedContests);
 router.get("/all", contestController.getMyContests);
 router.get("/owned", contestController.getMyOwnContests);
@@ -19,6 +20,8 @@ router.get(
   "/:contestId/submissions/me",
   contestController.getAllSubmissionsByUserAndContest
 );
+
+router.get("/:contestId/isSolved/:problemId", contestController.isContestProblemSolved);
 
 router.get(
   "/:contestId/problems/setterView",
@@ -35,12 +38,21 @@ router.put(
   "/:contestId/updateDescription",
   contestController.updateDescription
 );
+router.get("/:contestId/showSetters", contestController.availableCollaborators);
+router.get("/:contestId", contestController.getContestInfo);
+router.get("/:contestId/problem/:problemId", contestController.getContestProblemById);
 
 router.put("/:contestId/publish", contestController.publishContest);
 router.put("/:contestId/start", contestController.startContest);
 router.put("/:contestId/end", contestController.endContest);
 
+router.post("/:contestId/updateDates", contestController.updateDates);
+
 router.post("/:contestId/addCollaborator", contestController.addCollaborator);
+router.post(
+  "/:contestId/accept-invitation",
+  contestController.acceptInvitation
+);
 router.get(
   "/:contestId/showAllCollaborators",
   contestController.showAllCollaborators
@@ -48,6 +60,7 @@ router.get(
 
 router.post("/:contestId/createProblem", contestController.addProblemToContest);
 router.put("/:contestId/makeEligible", contestController.makeProblemEligible);
+router.put("/:contestId/updateRating", contestController.updateRating);
 router.put(
   "/:contestId/makeNotEligible",
   contestController.makeProblemNotEligible
@@ -58,9 +71,14 @@ router.post(
   contestController.addSubmissionToContest
 );
 
+router.get("/:contestId/Leaderboard", contestController.getLeaderboard);
+
 //new ones....
 
-router.delete("/:contestId/deleteProblem", contestController.deleteProblem);
+router.delete(
+  "/:contestId/deleteProblem/:problemId",
+  contestController.deleteProblem
+);
 router.delete("/:contestId/delete", contestController.deleteContest);
 
 router.post(
@@ -97,5 +115,8 @@ router.post(
   "/:contestId/clarifications/add",
   contestController.addClarification
 );
+
+router.put("/:contestId/approve", contestController.approveContest);
+router.put("/:contestId/reject", contestController.rejectContest);
 
 module.exports = router;

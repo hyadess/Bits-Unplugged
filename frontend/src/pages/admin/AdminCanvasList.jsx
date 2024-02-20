@@ -37,7 +37,7 @@ const AdminCanvasList = () => {
   const getCanvasId = async (name) => {
     const res = await canvasApi.createCanvas(name);
     if (res.success) {
-      return res.data[0].id;
+      return res.data.id;
     }
   };
 
@@ -75,7 +75,7 @@ const AdminCanvasList = () => {
           onClick={openModal}
           className="w-16 h-16 rounded-full justify-center inline-flex items-center text-white font-medium text-sm p-4 text-center ursor-pointer shadow-lg cursor-pointer bu-button-secondary "
         >
-          <div className="text-primary-900 dark:text-gray-900">
+          <div className="text-[#ebebeb] dark:text-gray-900">
             <AddIcon sx={{ fontSize: "4rem" }} />
           </div>
         </div>

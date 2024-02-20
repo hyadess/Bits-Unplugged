@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../ProbSetTab";
 import { setLoading } from "../../App";
+import { getTimeStamp } from "services/dateUtil";
 export default function RecentFailCard({
-    idx,
-    id,
-    name,
-    path,
-    action,
-    attempts,
-    difficulty,
-    last_tried,
+  idx,
+  id,
+  name,
+  path,
+  action,
+  attempts,
+  difficulty,
+  last_tried,
 }) {
   useEffect(() => {
     setLoading(false);
@@ -38,11 +39,7 @@ export default function RecentFailCard({
           >
             {name}
           </h5>
-          <h3
-            className="text-red-500 w-[10%] font-bold"
-          >
-            {attempts}
-          </h3>
+          <h3 className="text-red-500 w-[10%] font-bold">{attempts}</h3>
 
           <h3
             className={`text-center w-[15%] text-lg ${
@@ -55,8 +52,8 @@ export default function RecentFailCard({
           >
             {difficulty}
           </h3>
-          <div className="text-center w-[40%] text-2xl font-bold">
-            {last_tried}
+          <div className="text-center w-[40%] text-xl bu-text-primary">
+            {getTimeStamp(last_tried)}
           </div>
         </div>
       </div>

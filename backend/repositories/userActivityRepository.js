@@ -1,19 +1,22 @@
 const Repository = require("./base");
 const db = require("../models/index");
-
+const DailyActivityRepository = require("../repositories/dailyActivityRepository");
+const dailyActivityRepository = new DailyActivityRepository();
 class UserActivityRepository extends Repository {
   constructor() {
     super();
   }
-  trackDuration = async (userId, problemId, duration) => {
+  trackDuration = async (userId, problemId, duration, timestamp) => {
+    dailyActivityRepository.Entry(userId, problemId, duration, timestamp);
     const activity = db.Activity.findOne({ where: { userId, problemId } }).then(
       function (obj) {
         // update
         if (obj) {
-          if (obj.isSolved) return;
+          if (obj.isSolved && obj.viewDuration !== 0) return; // Change needed
           console.log("Updated:", duration);
           return obj.update({
             viewDuration: obj.viewDuration + duration,
+            updatedAt: timestamp,
           });
         }
         // insert
@@ -26,6 +29,8 @@ class UserActivityRepository extends Repository {
           lastSolveTimestamp: null,
           lastSuccessfulSolveTimestamp: null,
           totalFailedAttempt: 0,
+          createdAt: timestamp ?? new Date(),
+          updatedAt: timestamp ?? new Date(),
         });
       }
     );
@@ -38,9 +43,8 @@ class UserActivityRepository extends Repository {
         if (obj)
           return obj.update({
             conseqFailedAttempt: obj.conseqFailedAttempt + 1,
-            isSolved: false,
+            isSolved: obj.isSolved || false,
             lastSolveTimestamp: Date.now(),
-            lastSuccessfulSolveTimestamp: null,
             totalFailedAttempt: obj.totalFailedAttempt + 1,
           });
         // insert
@@ -52,6 +56,7 @@ class UserActivityRepository extends Repository {
           lastSolveTimestamp: Date.now(),
           lastSuccessfulSolveTimestamp: null,
           totalFailedAttempt: 1,
+          viewDuration: 0,
         });
       }
     );
@@ -76,7 +81,7 @@ class UserActivityRepository extends Repository {
   };
 
   updateOnSuccessfulAttempt = async (userId, problemId) => {
-    //console.log("lets see"+problemId);
+    console.log("lets see" + problemId);
     const activity = db.Activity.findOne({ where: { userId, problemId } }).then(
       function (obj) {
         // update
@@ -96,6 +101,7 @@ class UserActivityRepository extends Repository {
           lastSolveTimestamp: Date.now(),
           lastSuccessfulSolveTimestamp: Date.now(),
           totalFailedAttempt: 0,
+          viewDuration: 0,
         });
       }
     );
@@ -228,18 +234,102 @@ class UserActivityRepository extends Repository {
     return result;
   };
 
+  mostRecentFailsByUser = async (userId) => {
+    const query = `
+    SELECT A.*, PV."title",
+    PV."rating"
+    FROM "Activities" A
+    JOIN "ProblemVersions" PV ON A."problemId" = PV."id"
+    WHERE A."userId" = $1 AND A."isSolved" = FALSE
+    ORDER BY A."lastSolveTimestamp" DESC;
+    `;
+    const params = [userId];
+    const result = await this.query(query, params);
+    return result;
+  };
 
-  mostRecentFailsByUser=async(userId) =>{
+  successesByUser = async (userId) => {
     const query = `
     SELECT A.*, PV."title"
     FROM "Activities" A
     JOIN "ProblemVersions" PV ON A."problemId" = PV."id"
-    WHERE A."userId" = $1
-      AND A."isSolved" = false
-    ORDER BY A."lastSolveTimestamp" DESC;
-    
+    WHERE A."userId" = $1 AND A."isSolved" = TRUE;
     `;
     const params = [userId];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  successesByProblem = async (problemId) => {
+    const query = `
+    SELECT A.*, PV."title"
+    FROM "Activities" A
+    JOIN "ProblemVersions" PV ON A."problemId" = PV."id"
+    WHERE A."problemId" = $1 AND A."isSolved" = TRUE;
+    `;
+    const params = [problemId];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  totalProblemCountByTopic = async (topicId) => {
+    const query = `
+      SELECT
+      T."id",
+      COUNT(DISTINCT P."problemId") AS total_problems
+      FROM
+      "Topics" T
+      JOIN
+      "Series" S ON T."id" = S."topicId"
+      JOIN
+      "ProblemVersions" P ON S."id" = P."seriesId"
+      WHERE
+      T."id" = $1
+      GROUP BY
+      T."id"
+      `;
+    const params = [topicId];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  totalSolvedProblemCountByTopic = async (topicId, userId) => {
+    const query = `
+      SELECT
+      T."id",
+      COUNT(P."problemId") AS total_solved_problems
+      FROM
+      "Topics" T
+      JOIN
+      "Series" S ON T."id" = S."topicId"
+      JOIN
+      "ProblemVersions" P ON S."id" = P."seriesId"
+      JOIN
+      "Activities" A ON P."id" = A."problemId"
+      WHERE
+      T."id" = $1 AND A."userId" = $2 AND A."isSolved" = TRUE
+      GROUP BY
+      T."id"
+      `;
+    const params = [topicId, userId];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  acceptanceByProblem = async (problemId) => {
+    const query = `
+    SELECT
+    "S"."problemId",
+    COUNT(DISTINCT CASE WHEN "S"."verdict" = 'Accepted' THEN 1 END) AS "successful_submissions",
+    SUM(CASE WHEN "S"."verdict" = 'Wrong answer' THEN 1 ELSE 0 END) AS "failed_submissions"
+    FROM
+    "Submissions" "S"
+    WHERE
+    "S"."problemId"= $1
+    GROUP BY
+    "S"."problemId";
+    `;
+    const params = [problemId];
     const result = await this.query(query, params);
     return result;
   };

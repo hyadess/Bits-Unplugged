@@ -1,6 +1,6 @@
 const Controller = require("./base");
 const SeriesRepository = require("../repositories/seriesRepository");
-const { problemRepository } = require("../repositories");
+const { problemRepository, articleRepository } = require("../repositories");
 const seriesRepository = new SeriesRepository();
 class SeriesController extends Controller {
   constructor() {
@@ -65,17 +65,38 @@ class SeriesController extends Controller {
       }
     });
   };
+
+  getAllArticles = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const articles =
+        req.user.type === 1
+          ? null
+          : await articleRepository.getArticlesBySeries(
+              req.params.id,
+              req.user.type === 0
+            );
+      res.status(200).send(articles);
+    });
+  };
+
   getAllProblems = async (req, res) => {
     console.log(req.params, req.query);
     this.handleRequest(res, async () => {
-      const problems = await seriesRepository.getAllProblems(
-        req.user.userId,
-        req.params.id,
-        {
-          isSolved: req.query.solved !== undefined ? req.query.solved : null,
-          isLive: req.user.type === 0 ? true : null,
-        }
-      );
+      const problems =
+        req.user.type === 1
+          ? await seriesRepository.getAllProblems(
+              req.user.userId,
+              req.params.id,
+              {
+                isSolved:
+                  req.query.solved !== undefined ? req.query.solved : null,
+                isLive: req.user.type === 0 ? true : null,
+              }
+            )
+          : await problemRepository.getLiveProblemsBySeries(
+              req.user.userId,
+              req.params.id
+            );
       res.status(200).send(problems);
     });
   };

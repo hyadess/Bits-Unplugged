@@ -57,6 +57,26 @@ class UserActivityController extends Controller {
     }
   };
 
+  successesByUser = async (req, res) => { 
+    let result = await userActivityRepository.successesByUser(req.user.userId);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);   
+    }
+  };
+  successesByProblem = async (req, res) => {
+    let result = await userActivityRepository.successesByProblem(
+      req.params.problemId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+  
+
   totalSolvedProblemsByUser = async (req, res) => {
     let result = await userActivityRepository.totalSolvedProblemsByUser(
       req.user.userId
@@ -108,6 +128,39 @@ class UserActivityController extends Controller {
       res.status(404).json(result);
     }
   };
+
+  totalSolvedProblemCountByTopic = async (req, res) => {
+    let result = await userActivityRepository.totalSolvedProblemCountByTopic(
+      req.params.topicId,
+      req.user.userId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+  totalProblemCountByTopic = async (req, res) => {
+    //console.log("topic id"+req.params.topicId);
+    let result = await userActivityRepository.totalProblemCountByTopic(
+      req.params.topicId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+  acceptanceByProblem = async (req, res) => {
+    let result = await userActivityRepository.acceptanceByProblem(
+      req.params.problemId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  }
 }
 
 module.exports = UserActivityController;

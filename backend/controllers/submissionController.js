@@ -1,6 +1,11 @@
 const Controller = require("./base");
 const SubmissionRepository = require("../repositories/submissionRepository");
+const ProblemRepository = require("../repositories/problemRepository");
+const UserActivityRepository = require("../repositories/userActivityRepository");
+const submissionService = require("../services/submissionService");
+const userActivityRepository = new UserActivityRepository();
 const submissionRepository = new SubmissionRepository();
+const problemRepository = new ProblemRepository();
 class SubmissionController extends Controller {
   constructor() {
     super();
@@ -31,12 +36,12 @@ class SubmissionController extends Controller {
   // getProblemStats = async (req, res) => {};
   submitSolution = async (req, res) => {
     this.handleRequest(res, async () => {
-      const submission = await submissionRepository.submitSolution(
+      const result = submissionService.submitSolution(
         req.user.userId,
         req.params.problemId,
         req.body
       );
-      res.status(201).json(submission);
+      res.status(201).json(result);
     });
   };
 

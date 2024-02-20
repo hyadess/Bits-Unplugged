@@ -1,0 +1,254 @@
+[
+  {
+    "usecase": {
+      "name": "Problem Publication",
+      "scenario": "Setter publishes a problem and Admin approves or rejects",
+      "actors": "Setter, Admin",
+      "preconditions": "Setter is an admin approved setter in our system",
+      "steps": [
+        "Setter designs a problem and saves it",
+        "Setter submits the problem for approval",
+        "Admin approves or rejects the problem"
+      ]
+    },
+    "testcases": [
+      {
+        "name": "Valid Problem Submission",
+        "description": "Verify that a setter can successfully design and submit a problem for approval.",
+        "input": {
+          "problemId": 1
+        },
+        "expected": {
+          "outcome": "Problem submitted for approval",
+          "status": "Approved"
+        }
+      },
+      {
+        "name": "Empty Canvas Submission",
+        "description": "Verify that the system handles the case where a setter tries to submit a problem without any canvas.",
+        "input": {
+          "problemId": 1
+        },
+        "expected": {
+          "outcome": "Registration failed",
+          "status": "Rejected"
+        }
+      },
+      {
+        "name": "Admin Approval",
+        "description": "Verify that the admin can successfully approve a problem.",
+        "input": {
+          "adminApproval": true
+        },
+        "expected": {
+          "outcome": "Problem approved",
+          "status": "Approved"
+        }
+      },
+      {
+        "name": "Admin Rejection",
+        "description": "Verify that the admin can reject a problem.",
+        "input": {
+          "adminApproval": false
+        },
+        "expected": {
+          "outcome": "Problem rejected",
+          "status": "Rejected"
+        }
+      }
+    ]
+  },
+  {
+    "usecase": {
+      "name": "Problem Setter Registration",
+      "scenario": "A user intends to become a problem setter and registers for the role. Admin reviews and approves/rejects the registration.",
+      "actors": "User, Admin",
+      "preconditions": "",
+      "steps": [
+        "User expresses the intention to become a problem setter",
+        "User submits the registration request",
+        "Admin reviews the registration request and makes a decision (approve/reject)"
+      ]
+    },
+    "testcases": [
+      {
+        "name": "Valid Registration Request",
+        "description": "Verify that a user can successfully submit a valid registration request to become a problem setter.",
+        "input": {
+          "name": "Mahir Labib Dihan",
+          "email": "mahirlabibdihan@gmail.com"
+        },
+        "expected": {
+          "outcome": "Registration request submitted for approval",
+          "status": "Pending Approval"
+        }
+      },
+      {
+        "name": "Empty Registration Details",
+        "description": "Verify that the system handles the case where a user tries to submit an empty registration request.",
+        "input": {},
+        "expected": {
+          "outcome": "Registration request failed",
+          "status": "Rejected"
+        }
+      },
+      {
+        "name": "Administrator Approval",
+        "description": "Verify that the administrator can successfully approve a submitted problem setter registration request.",
+        "input": {
+          "adminApproval": true
+        },
+        "expected": {
+          "outcome": "Registration approved",
+          "status": "Approved"
+        }
+      },
+      {
+        "name": "Administrator Rejection",
+        "description": "Verify that the administrator can reject a submitted problem setter registration request.",
+        "input": {
+          "adminApproval": false
+        },
+        "expected": {
+          "outcome": "Registration rejected",
+          "status": "Rejected"
+        }
+      }
+    ]
+  },
+  {
+    "usecase": {
+      "name": "Problem Solution Submission",
+      "scenario": "A registered user intends to solve a problem available on the platform. The user successfully solves the problem, and the system records the solution.",
+      "actors": "User",
+      "preconditions": "User is registered and logged into the system",
+      "steps": [
+        "User navigates to the list of available problems",
+        "User selects a specific problem to solve",
+        "User provides a solution to the problem",
+        "User submits the solution",
+        "System checks the solution, gives verdict and updates the user's solving history"
+      ]
+    },
+    "testcases": [
+      {
+        "name": "Valid Problem Solution",
+        "description": "Verify that a user can successfully solve a problem and submit a valid solution.",
+        "input": {
+          "problemId": 1,
+          "solutionJson": "solution.json",
+          "checkerJson": "answer.json",
+          "checkerCode": "code.js"
+        },
+        "expected": {
+          "outcome": "Solution submitted successfully",
+          "status": "Recorded"
+        }
+      },
+      {
+        "name": "Solution acceptd",
+        "description": "database will be updated as the solution is matched with the answer",
+        "input": {
+          "problemId": 1,
+          "userId": 1,
+          "verdict":"accepted",
+          "viewDuration": 10
+        },
+        "expected": {
+          "outcome": "Solution submission acccpted",
+          "status": "Recorded"
+        }
+      },
+      {
+        "name": "wrong answer",
+        "description": "database will be updated as the solution isn't matched with the answer",
+        "input": {
+          "problemId": 1,
+          "userId": 1,
+          "verdict":"wrong answer",
+          "viewDuration": 10
+        },
+        "expected": {
+          "outcome": "Solution submission rejected",
+          "status": "Recorded"
+        }
+      }
+    ]
+  },
+  {
+    "usecase": {
+      "name": "Add Problem To Contest",
+      "scenario": "A contest owner or collaborators can add own designed problems to the contest",
+      "actors": "contest setter",
+      "preconditions": "contest setter should be a registered setter in our system. contest id should be a valid contest id and the problem also should be a valid one",
+      "steps": [
+        "Setter navigates to the list of his/her owned or contributed conetests",
+        "Setter selects a specific contest to add problem in",
+        "Setter choose a problem of his/her own and add to the contest"
+      ]
+    },
+    "testcases": [
+      {
+        "name": "Valid problem addition",
+        "description": "a problem is being added into contest ",
+        "input": {
+          "contestId": 1,
+          "problemId": 1
+
+        },
+        "expected": {
+          "outcome": "problem added to contest",
+          "status": "approved"
+        }
+      }
+    ]
+  },
+  {
+    "usecase": {
+      "name": "Contest Submission for Approval",
+      "scenario": "A contest organizer wants to submit a complete contest for approval. The organizer arranges the contest, including multiple problems, and submits it for approval. An administrator reviews and approves/rejects the submitted contest.",
+      "actors": "Contest Setter, Admin",
+      "preconditions": "Contest Setter is registered as a setter in our system.",
+      "steps": [
+        "Contest Organizer creates a new contest with multiple problems",
+        "Contest Organizer submits the complete contest for approval",
+        "Administrator reviews and approves/rejects the submitted contest"
+      ]
+    },
+    "testcases": [
+      {
+        "name": "Valid Contest Submission",
+        "description": "Verify that a contest organizer can successfully create and submit a valid contest with multiple problems for approval.",
+        "input": {
+          "contestId": 2
+        },
+        "expected": {
+          "outcome": "Contest submitted for approval",
+          "status": "Pending Approval"
+        }
+      },
+      {
+        "name": "Administrator Approval",
+        "description": "Verify that the contest can be published.",
+        "input": {
+          "adminApproval": true
+        },
+        "expected": {
+          "outcome": "Contest approved",
+          "status": "Approved"
+        }
+      },
+      {
+        "name": "Administrator Rejection",
+        "description": "Verify that the contest is rejected.",
+        "input": {
+          "adminApproval": false
+        },
+        "expected": {
+          "outcome": "Contest rejected",
+          "status": "Rejected"
+        }
+      }
+    ]
+  }
+]

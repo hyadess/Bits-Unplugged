@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
 import CanvasContainer from "../components/Canvases/CanvasContainer";
-import { Button } from "@mui/material";
+import { Button, IconButton, Tooltip } from "@mui/material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import SendIcon from "@mui/icons-material/Send";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -35,22 +35,29 @@ const Header = ({ type }) => {
       <Title problem={problem} />
       {type != 0 ? (
         <div className="flex items-center">
-          <button
-            className="bu-button-primary rounded-lg px-7 py-3.5 text-center text-lg font-medium text-white"
-            onClick={() => {
-              setLoading(true);
-              navigate(
-                type == 2
-                  ? `/admin/problems/${problem.id}`
-                  : `/problems/${problem.id}/edit`
-              );
-            }}
+          <Tooltip
+            title={<h1 className="text-lg text-white">Edit</h1>}
+            placement="top"
+            arrow
+            size="large"
           >
-            <div className="flex flex-row items-center gap-4">
-              <FontAwesomeIcon icon={faPenToSquare} size="sm" />
-              EDIT
-            </div>
-          </button>
+            <IconButton>
+              <div
+                data-tooltip-target="tooltip-default"
+                className="bu-text-primary flex cursor-pointer items-center text-4xl"
+                onClick={() => {
+                  setLoading(true);
+                  navigate(
+                    type == 2
+                      ? `/admin/problems/${problem.id}`
+                      : `/problems/${problem.id}/edit`
+                  );
+                }}
+              >
+                <FontAwesomeIcon icon={faPenToSquare} />
+              </div>
+            </IconButton>
+          </Tooltip>
         </div>
       ) : (
         <div className="flex items-center">
@@ -104,10 +111,15 @@ const Canvas = forwardRef(({ onReset, onSubmit }, ref) => {
         <CanvasContainer
           canvasId={problem.canvasId}
           input={problem.canvasData}
-          setInput={(data) => {
-            dispatch({
-              type: "UPDATE_CANVAS",
-              payload: { ...data },
+          setInput={(dataOrFunction) => {
+            dispatch((prevState) => {
+              return {
+                type: "UPDATE_CANVAS",
+                payload:
+                  typeof dataOrFunction === "function"
+                    ? dataOrFunction(prevState.canvasData)
+                    : dataOrFunction,
+              };
             });
           }}
           mode={"preview"}

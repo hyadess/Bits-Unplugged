@@ -21,6 +21,9 @@ class ProblemApi extends Api {
   getProblemById = async (problemId) => {
     return await this.get("/problems/" + problemId);
   };
+  getContestProblemById = async (problemId) => {
+    return await this.get("/problems/" + problemId + "/contestproblem");
+  };
   createProblem = async (title) => {
     return await this.post("/problems/", {
       title: title,
@@ -42,6 +45,20 @@ class ProblemApi extends Api {
   };
   cloneProblem = async (problemId) => {
     return await this.post("/problems/" + problemId + "/clone");
+  };
+  approveProblem = async (problemId) => {
+    return await this.put("/problems/" + problemId + "/approve");
+  };
+  rejectProblem = async (problemId, feedback) => {
+    return await this.put("/problems/" + problemId + "/reject", {
+      feedback: feedback,
+    });
+  };
+  getAllVersions = async (problemId) => {
+    return await this.get("/problems/" + problemId + "/versions");
+  };
+  getRecommendations = async () => {
+    return await this.get("/problems/recommendation");
   };
 }
 export default ProblemApi;

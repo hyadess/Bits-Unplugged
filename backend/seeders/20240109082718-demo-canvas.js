@@ -19,21 +19,20 @@ module.exports = {
             //   list: ["simple_graph", "tree"],
             // },
             directedEdge: { value: false, type: "switch" },
-            weightedEdge: { value: true, type: "switch" },
+            weightedEdge: { value: false, type: "switch" },
           }),
           previewOptions: JSON.stringify({
             addNode: { value: false, type: "switch" },
             deleteNode: { value: false, type: "switch" },
-            dragNode: { value: true, type: "switch" },
+            dragNode: { value: false, type: "switch" },
             addEdge: { value: false, type: "switch" },
-            deleteEdge: { value: true, type: "switch" },
+            deleteEdge: { value: false, type: "switch" },
             editWeight: { value: false, type: "switch" },
             editColor: { value: false, type: "switch" },
+            editLabel: { value: false, type: "switch" },
           }),
           template:
             "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           // id: 2,
@@ -53,8 +52,44 @@ module.exports = {
           }),
           template:
             "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
-          createdAt: new Date(),
-          updatedAt: new Date(),
+        },
+        {
+          // id: 3,
+          name: "Array",
+          classname: "ArrayComponent",
+          info: "",
+          logo: "https://static.vecteezy.com/system/resources/previews/025/361/649/non_2x/mathematics-matrix-concept-thin-line-icon-or-sign-vector.jpg",
+          editOptions: JSON.stringify({
+            dataType: {
+              value: "Integer",
+              type: "select",
+              list: ["Integer", "Character"],
+            },
+          }),
+          previewOptions: JSON.stringify({
+            drag: {
+              value: "0",
+              type: "number",
+            },
+            swap: {
+              value: 0,
+              type: "number",
+            },
+            rotate: {
+              value: 0,
+              type: "number",
+            },
+            reverse: {
+              value: 0,
+              type: "number",
+            },
+            sort: {
+              value: 0,
+              type: "number",
+            },
+          }),
+          template:
+            "function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}",
         },
       ],
       {}

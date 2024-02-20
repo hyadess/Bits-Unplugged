@@ -236,12 +236,18 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
 
   useState(() => {
     console.log(data);
-    setImages(deepCopy(data.images));
+    const newImages = deepCopy(data.images);
+    setImages(newImages);
+    if (newImages.length > 0) {
+      setSerial(0);
+    } else {
+      setSerial(-1);
+    }
   }, [data.images]);
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="bu-card-primary pb-10 rounded-[30px] flex flex-col">
+      <div className="bu-card-primary pb-10 rounded-[30px] flex flex-col min-h-[25rem]">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row p-4 items-start bu-text-primary text-2xl font-semibold">
             {serial + 1}/{images.length}
@@ -340,9 +346,12 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
                   }}
                   onClick={async () => {
                     // First list all the images.file that are new
-                    const newImageFiles = images
-                      .filter((image) => image.status === "new")
-                      .map((image) => image.file);
+                    let newImageFiles = [];
+                    images.forEach((image) => {
+                      if (image.status === "new") {
+                        newImageFiles.push(image.file);
+                      }
+                    });
 
                     if (newImageFiles.length) {
                       // Then upload all the new images

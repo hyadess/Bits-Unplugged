@@ -34,7 +34,7 @@ router.post("/delete", (req, res) => {
   }
 });
 
-router.post("/upload", (req, res) => {
+router.post("/upload", async (req, res) => {
   console.log(req.files);
   if (req.files === null) {
     return res.status(400).json({ msg: "No file uploaded" });
@@ -46,35 +46,33 @@ router.post("/upload", (req, res) => {
     // If file is an array, loop through each file
     const promises = [];
     const fileNames = [];
-    file.forEach((f) => {
+    for (const f of file) {
       const timestamp = Date.now(); // Get current timestamp
       const randomString = Math.random().toString(36).substring(7); // Generate random string
       const fileExtension = f.name.split(".").pop();
       const uniqueFileName = `${timestamp}_${randomString}.${fileExtension}`;
-      const promise = new Promise((resolve, reject) => {
-        f.mv(`public/uploads/${uniqueFileName}`, (err) => {
-          if (err) {
-            console.error(err);
-            reject(err);
-          } else {
-            fileNames.push(`/uploads/${uniqueFileName}`);
-            resolve();
-          }
-        });
-      });
-      promises.push(promise);
-    });
 
-    // Wait for all promises to resolve
-    Promise.all(promises)
-      .then(() => {
-        res.json({
-          paths: fileNames,
+      try {
+        await new Promise((resolve, reject) => {
+          f.mv(`public/uploads/${uniqueFileName}`, (err) => {
+            if (err) {
+              console.error(err);
+              reject(err);
+            } else {
+              fileNames.push(`/uploads/${uniqueFileName}`);
+              resolve();
+            }
+          });
         });
-      })
-      .catch((err) => {
+      } catch (err) {
         res.status(500).send(err);
-      });
+        return; // Stop execution in case of error
+      }
+    }
+
+    res.json({
+      paths: fileNames,
+    });
   } else {
     const timestamp = Date.now(); // Get current timestamp
     const fileExtension = file.name.split(".").pop();

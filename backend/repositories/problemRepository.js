@@ -340,6 +340,7 @@ class ProblemsRepository extends Repository {
   };
 
   updateProblem = async (id, data) => {
+    console.log(data);
     const [updatedRowsCount, [updatedProblem]] = await db.Problem.update(data, {
       returning: true,
       where: {
@@ -353,7 +354,7 @@ class ProblemsRepository extends Repository {
   };
 
   updateProblemVersion = async (id, data) => {
-    console.log(data);
+    console.log(id, data);
     const [updatedRowsCount, [updatedProblem]] = await db.ProblemVersion.update(
       data,
       {

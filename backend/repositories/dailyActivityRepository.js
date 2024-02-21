@@ -22,7 +22,7 @@ class DailyActivityRepository extends Repository {
     });
     return dailyActivity;
   };
-  getDaywiseActivityByUser = async (userId) => {
+  getDaywiseActivityByUser = async (username) => {
     const query = `
       SELECT
       "D"."userId",
@@ -30,14 +30,16 @@ class DailyActivityRepository extends Repository {
       SUM("D"."duration") AS "totalDuration"
       FROM
       "DailyActivities" "D"
+      JOIN
+      "Users" "U" ON "D"."userId" = "U"."id"
       WHERE
-      "D"."userId" = $1
+      "U"."username" = $1
       GROUP BY
       "D"."userId","visitDate"
       ORDER BY
       "D"."userId","visitDate";
       `;
-    const params = [userId];
+    const params = [username];
     const result = await this.query(query, params);
     return result;
   };

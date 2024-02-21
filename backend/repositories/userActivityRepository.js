@@ -234,28 +234,30 @@ class UserActivityRepository extends Repository {
     return result;
   };
 
-  mostRecentFailsByUser = async (userId) => {
+  mostRecentFailsByUser = async (username) => {
     const query = `
     SELECT A.*, PV."title",
     PV."rating"
     FROM "Activities" A
     JOIN "ProblemVersions" PV ON A."problemId" = PV."id"
-    WHERE A."userId" = $1 AND A."isSolved" = FALSE
+    JOIN "Users" U ON A."userId" = U."id"
+    WHERE U."username" = $1 AND A."isSolved" = FALSE
     ORDER BY A."lastSolveTimestamp" DESC;
     `;
-    const params = [userId];
+    const params = [username];
     const result = await this.query(query, params);
     return result;
   };
 
-  successesByUser = async (userId) => {
+  successesByUser = async (username) => {
     const query = `
     SELECT A.*, PV."title"
     FROM "Activities" A
     JOIN "ProblemVersions" PV ON A."problemId" = PV."id"
-    WHERE A."userId" = $1 AND A."isSolved" = TRUE;
+    JOIN "Users" U ON A."userId" = U."id"
+    WHERE U."username" = $1 AND A."isSolved" = TRUE;
     `;
-    const params = [userId];
+    const params = [username];
     const result = await this.query(query, params);
     return result;
   };

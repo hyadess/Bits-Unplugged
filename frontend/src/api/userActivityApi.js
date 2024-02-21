@@ -10,8 +10,8 @@ class UserActivityApi extends Api {
   totalSolvedProblemsByUser =async() =>{
     return await this.get("/userActivity/stat/series/successes/me");
   };
-  successesByUser =async() =>{
-    return await this.get("/userActivity/stat/successes/me");
+  successesByUser =async(username) =>{
+    return await this.get("/userActivity/stat/"+username+"/successes/user");
   };
   successesByProblem =async(problemId) =>{
     return await this.get("/userActivity/stat/successes/"+problemId);
@@ -19,8 +19,8 @@ class UserActivityApi extends Api {
   totalFailedProblemsByUser =async() =>{
     return await this.get("/userActivity/stat/fails/me");
   };
-  mostRecentFailsByUser =async() =>{
-    return await this.get("/userActivity/stat/recentfails/me");
+  mostRecentFailsByUser =async(username) =>{
+    return await this.get("/userActivity/stat/"+username+"recentfails/user");
   };
   totalSolvedProblemCountByTopic =async(topicId) =>{
     return await this.get("/userActivity/stat/"+topicId+"/solvedProblems");
@@ -29,8 +29,8 @@ class UserActivityApi extends Api {
     //console.log(topicId);
     return await this.get("/userActivity/stat/"+topicId+"/problems");
   };
-  daywiseActivityByUser =async() =>{
-    return await this.get("/userActivity/stat/activetime");
+  daywiseActivityByUser =async(username) =>{
+    return await this.get("/userActivity/stat/"+username+"/activetime");
   };
 
 

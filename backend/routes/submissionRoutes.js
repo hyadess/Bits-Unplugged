@@ -15,7 +15,7 @@ router.get(
   "/:problemId/allUsers",
   submissionController.getAllSubmissionsByProblem
 );
-router.get("/", submissionController.getAllSubmissionsByUser);
+router.get("/:username/all", submissionController.getAllSubmissionsForUser);
 router.post("/:problemId/saveSubmit", submissionController.submitSolution);
 
 

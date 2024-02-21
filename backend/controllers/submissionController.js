@@ -26,9 +26,9 @@ class SubmissionController extends Controller {
     );
     this.handleResponse(result, res);
   };
-  getAllSubmissionsByUser = async (req, res) => {
+  getAllSubmissionsForUser = async (req, res) => {
     let result = await submissionRepository.getAllSubmissionsByUser(
-      req.user.userId
+      req.params.username
     );
     this.handleResponse(result, res);
   };

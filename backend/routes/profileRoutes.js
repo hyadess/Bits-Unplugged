@@ -8,6 +8,7 @@ router.use(
 );
 
 router.get("/", profileController.getProfile);
+router.get("/:username", profileController.getProfileByUsername);
 router.post("/", profileController.setProfile);
 router.put("/", profileController.updateProfile);
 router.post("/upload", (req, res) => res.status(200).send()); // dihan - Upload profile picture

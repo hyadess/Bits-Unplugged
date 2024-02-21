@@ -33,9 +33,12 @@ router.get(
 );
 
 router.get("/stat/fails/me", userActivityController.totalFailedAttemptsByUser);
-router.get("/stat/recentfails/me", userActivityController.mostRecentFailsByUser);
+
+
+
+router.get("/stat/:username/recentfails/user", userActivityController.mostRecentFailsByUser);
 router.get(
-  "/stat/successes/me",
+  "/stat/:username/successes/user",
   userActivityController.successesByUser
 );
 
@@ -57,7 +60,7 @@ router.get(
   userActivityController.totalSolvedProblemCountByTopic
 );
 router.get(
-  "/stat/activetime",
+  "/stat/:username/activetime",
   dailyActivityController.daywiseActivityByUser
 );
 router.put("/:problemId/track-duration", userActivityController.trackDuration);

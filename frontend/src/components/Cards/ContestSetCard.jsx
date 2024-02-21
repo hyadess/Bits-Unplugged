@@ -9,22 +9,31 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
 import { getTimeStamp } from "../../services/dateUtil";
 import Confirmation from "../Confirmation";
+import { jwtDecode } from 'jwt-decode';
+
 
 const ContestSetCard = ({
   id,
   name,
   startDate,
-  endDate,
+  duration,
   status,
   owner,
   updatedAt,
   deleteAction,
-  userID,
 }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
+  const [userId, setUserId] = useState(null);
+
+  const fetchUser = async () => {
+    const decoded = jwtDecode(localStorage.getItem("token")).userId;
+    setUserId(decoded);
+  };
+
   useEffect(() => {
+    fetchUser();
     setLoading(false);
   }, []);
 
@@ -58,7 +67,7 @@ const ContestSetCard = ({
               {startDate ? `Start Date: ${getTimeStamp(startDate)}` : 'Start Date: Yet to be added'}
             </div>
             <div className="bu-text-subtitle font-semibold">
-              {endDate ? `End Date: ${getTimeStamp(endDate)}` : 'End Date: Yet to be added'}
+              {duration ? `Duration: ${duration} hours` : 'Duration : Yet to be added'}
             </div>
           </div>
 
@@ -102,8 +111,8 @@ const ContestSetCard = ({
             )}
 
             <IconButton
-              onClick={() => (userID===owner.userID && status==='edit')? setOpen(true) : ''}
-              className={`text-red-500 ${(userID==owner.userID && status=='edit')? 'hover:text-red-700' : ''}`}
+              onClick={() => (userId===owner.setterId && status==='edit')? setOpen(true) : ''}
+              className={`text-red-500 ${(userId===owner.setterId && status=='edit')? 'hover:text-red-700' : ''}`}
             >
               <div className="flex items-center">
                 <FontAwesomeIcon icon={faTrashCan} size="sm" />

@@ -1,6 +1,7 @@
 import { Line, Rect } from "react-konva";
 import KonvaButton from "./KonvaButton";
 import { diskHeight, pegWidth, sep, colors } from "./config";
+import React from "react";
 
 const CustomDisk = ({
   data,
@@ -11,21 +12,25 @@ const CustomDisk = ({
   handleDiskHover,
   handleDiskUnhover,
   calculateDiskWidth,
+  visible,
 }) => {
   return (
-    <>
+    <React.Fragment>
       <Line
         points={[0, 260, 20 + pegWidth * 3, 260]}
-        stroke={"rgb(236, 72, 153)"}
-        strokeWidth={1}
+        stroke={"rgb(0,0,0)"}
+        strokeWidth={2}
+        visible={visible}
       />
       <KonvaButton
+        opacity={0}
         text="<"
         x={pegWidth - 20}
         y={270}
         onClick={() =>
           extraDisk > -1 ? setExtraDisk((prev) => prev - 1) : setExtraDisk(9)
         }
+        visible={visible}
       />
       {extraDisk !== -1 ? (
         <Rect
@@ -62,6 +67,7 @@ const CustomDisk = ({
           strokeEnabled={true}
           opacity={0.9}
           cornerRadius={[10, 10, 10, 10]}
+          visible={visible}
         />
       ) : (
         <></>
@@ -74,8 +80,9 @@ const CustomDisk = ({
         onClick={() =>
           extraDisk < 9 ? setExtraDisk(extraDisk + 1) : setExtraDisk(-1)
         }
+        visible={visible}
       />
-    </>
+    </React.Fragment>
   );
 };
 

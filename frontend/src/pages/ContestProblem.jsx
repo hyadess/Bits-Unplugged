@@ -25,12 +25,15 @@ function ContestProblemController() {
   useEffect(() => {
     const fetchData = async () => {
       renderProblem();
+      // fetch contest. We need the end time
     };
 
     fetchData();
   }, [problemid]);
   const deepCopy = (obj) => {
-    return JSON.parse(JSON.stringify(obj));
+    return typeof obj === "string"
+      ? JSON.parse(obj)
+      : JSON.parse(JSON.stringify(obj));
   };
 
   const renderProblem = async () => {
@@ -111,6 +114,7 @@ function ContestProblemController() {
             res2.data[0].rating
           );
         }
+
       }
     } else {
       // const result = await submissionApi.submitSolution(

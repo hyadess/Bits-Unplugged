@@ -9,6 +9,16 @@ import { useProblemContext } from "../../../store/ProblemContextProvider";
 import { problemApi } from "../../../api";
 import SubmissionService from "../../../services/submissionService";
 import { showSuccess } from "../../../App";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCode,
+  faObjectGroup,
+  faPlay,
+  faRotateRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { ToggleButton } from "@mui/material";
+import { Code } from "@mui/icons-material";
+// import SaveIcon from "@mui/icons-material/Save";
 const SolutionCheckerTab = ({ onSave }) => {
   const { state: problem, dispatch } = useProblemContext();
   const [output, setOutput] = useState("");
@@ -18,14 +28,12 @@ const SolutionCheckerTab = ({ onSave }) => {
   const onSubmit = async () => {
     const result = await SubmissionService.checkSolution(
       problem.checkerCode,
-      typeof problem.checkerCanvas === "string"
-        ? JSON.parse(problem.checkerCanvas)
-        : problem.checkerCanvas,
+      problem.checkerCanvas,
       problem.test,
       problem.testActivity
     );
     setOutput(result.output);
-    setStdout(result.stdout);
+    // setStdout(result.stdout);
   };
 
   const updateSolutionChecker = async () => {
@@ -45,7 +53,7 @@ const SolutionCheckerTab = ({ onSave }) => {
   };
 
   return (
-    <>
+    <div className="relative">
       {checkerType == 0 ? (
         problem.canvasId && (
           <SolutionChecker
@@ -79,7 +87,35 @@ const SolutionCheckerTab = ({ onSave }) => {
               previewOptions={problem.previewOptions}
               editOptions={problem.editOptions}
             />
-            <div
+            <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
+              <div
+                className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
+                onClick={() => {
+                  resetChecker();
+                }}
+              >
+                {/* <RotateLeftIcon /> */}
+                <FontAwesomeIcon icon={faRotateRight} />
+              </div>
+
+              <div
+                className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
+                onClick={onSubmit}
+              >
+                <FontAwesomeIcon icon={faPlay} />
+                {/* RUN */}
+              </div>
+              <div
+                className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
+                onClick={() => {
+                  updateSolutionChecker();
+                }}
+              >
+                {/* SAVE */}
+                <SaveIcon />
+              </div>
+            </div>
+            {/* <div
               className="flex py-5"
               style={{ justifyContent: "space-between", marginLeft: "auto" }}
             >
@@ -96,7 +132,7 @@ const SolutionCheckerTab = ({ onSave }) => {
               >
                 Reset
               </Button>
-              {/* <SelectionField
+               <SelectionField
                 label="Choose Checker"
                 onChange={(e) => setCheckerType(e.target.value)}
                 value={checkerType}
@@ -104,7 +140,7 @@ const SolutionCheckerTab = ({ onSave }) => {
                   { label: "code", value: 0 },
                   { label: "canvas", value: 1 },
                 ]}
-              /> */}
+              /> 
               <Button
                 variant="contained"
                 onClick={() => {
@@ -117,13 +153,20 @@ const SolutionCheckerTab = ({ onSave }) => {
               >
                 Save
               </Button>
-            </div>
+            </div> */}
           </>
         )
       ) : (
         <></>
       )}
-      <SelectionField
+
+      <button
+        className="bu-button-secondary rounded-l-full px-7 py-2 text-center text-2xl  text-white absolute bottom-0 right-0 font-bold"
+        onClick={() => setCheckerType((prev) => !prev)}
+      >
+        <FontAwesomeIcon icon={checkerType ? faCode : faObjectGroup} />
+      </button>
+      {/* <SelectionField
         label="Choose Checker"
         onChange={setCheckerType}
         value={checkerType}
@@ -131,8 +174,8 @@ const SolutionCheckerTab = ({ onSave }) => {
           { label: "code", value: 0 },
           { label: "canvas", value: 1 },
         ]}
-      />
-    </>
+      /> */}
+    </div>
   );
 };
 

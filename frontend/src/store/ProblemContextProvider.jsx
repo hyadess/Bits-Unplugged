@@ -10,7 +10,7 @@ const ProblemContextProvider = ({ children }) => {
       case "SET_INITIAL_STATE":
         return payload;
       case "UPDATE_PROBLEM":
-        return {
+                return {
           ...state,
           ...payload,
         };
@@ -50,7 +50,7 @@ const ProblemContextProvider = ({ children }) => {
         };
 
       case "UPDATE_CANVAS":
-        return {
+                return {
           ...state,
           canvasData: { ...state.canvasData, ...payload },
         };
@@ -59,6 +59,12 @@ const ProblemContextProvider = ({ children }) => {
         return {
           ...state,
           test: { ...state.test, ...payload },
+        };
+
+      case "SET_TEST_CANVAS":
+        return {
+          ...state,
+          test: payload,
         };
 
       case "UPDATE_TEST_ACTIVITY":
@@ -101,7 +107,7 @@ const ProblemContextProvider = ({ children }) => {
     }
   };
   const [state, dispatch] = useReducer(reducer, { problemId: 0 });
-    return (
+  return (
     <ProblemContext.Provider value={{ state, dispatch }}>
       {children}
     </ProblemContext.Provider>

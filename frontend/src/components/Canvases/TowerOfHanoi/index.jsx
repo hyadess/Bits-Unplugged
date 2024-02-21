@@ -49,10 +49,10 @@ const TowerOfHanoiView = ({
   stageRef,
 }) => {
   return (
-    <div className="tower-of-hanoi vbox">
+    <div className="tower-of-hanoi flex flex-col h-[32rem]">
       {data && (
         <>
-          <div className="toh-header hbox">
+          <div className="toh-header flex flex-row">
             {(mode === "edit" || previewOptions?.undo?.value) && (
               <UndoRedoButton handleUndo={handleUndo} handleRedo={handleRedo} />
             )}
@@ -74,16 +74,12 @@ const TowerOfHanoiView = ({
             </div>
           </div>
           {/* <Divider sx={{ bgcolor: "rgb(236, 72, 153)" }} /> */}
-          <div className={`toh-canvas vbox flex-center`}>
+          <div className={`toh-canvas flex-center h-full`}>
             <Stage
               x={20}
               width={Math.min(window.innerWidth / 900, 1) * (60 + pegWidth * 3)}
               height={
-                Math.min(window.innerWidth / 800, 1) *
-                (280 +
-                  (mode === "edit" || previewOptions?.customDisk?.value
-                    ? diskHeight * 1.2
-                    : 0))
+                Math.min(window.innerWidth / 800, 1) * (280 + diskHeight * 1.2)
               }
               ref={stageRef}
               scaleX={Math.min(window.innerWidth / 970, 1)}
@@ -100,18 +96,17 @@ const TowerOfHanoiView = ({
                   calculateDiskWidth={calculateDiskWidth}
                   draggableDisks={draggableDisks}
                 />
-                {(mode === "edit" || previewOptions?.customDisk?.value) && (
-                  <CustomDisk
-                    data={data}
-                    extraDisk={extraDisk}
-                    setExtraDisk={setExtraDisk}
-                    handleDiskDragStart={handleDiskDragStart}
-                    handleDiskDragEnd={handleDiskDragEnd}
-                    handleDiskHover={handleDiskHover}
-                    handleDiskUnhover={handleDiskUnhover}
-                    calculateDiskWidth={calculateDiskWidth}
-                  />
-                )}
+                <CustomDisk
+                  data={data}
+                  extraDisk={extraDisk}
+                  setExtraDisk={setExtraDisk}
+                  handleDiskDragStart={handleDiskDragStart}
+                  handleDiskDragEnd={handleDiskDragEnd}
+                  handleDiskHover={handleDiskHover}
+                  handleDiskUnhover={handleDiskUnhover}
+                  calculateDiskWidth={calculateDiskWidth}
+                  visible={mode === "edit" || previewOptions?.customDisk?.value}
+                />
               </Layer>
             </Stage>
           </div>

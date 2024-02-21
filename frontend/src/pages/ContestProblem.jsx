@@ -25,12 +25,15 @@ function ContestProblemController() {
   useEffect(() => {
     const fetchData = async () => {
       renderProblem();
+      // fetch contest. We need the end time
     };
 
     fetchData();
   }, [problemid]);
   const deepCopy = (obj) => {
-    return JSON.parse(JSON.stringify(obj));
+    return typeof obj === "string"
+      ? JSON.parse(obj)
+      : JSON.parse(JSON.stringify(obj));
   };
 
   const renderProblem = async () => {
@@ -98,12 +101,18 @@ function ContestProblemController() {
           );
         }
 
-        const isSolved = await contestApi.isContestProblemSolved(id,problemid);
+        const isSolved = await contestApi.isContestProblemSolved(id, problemid);
         console.log("submissions==>", isSolved);
         if (isSolved.data.length === 0) {
-          const res2 = await contestApi.getContestProblemById(id,problemid);
-          await contestApi.addSubmissionToContest(id, problemid, res.output,problem.canvasData,
-            problem.activityData, res2.data[0].rating);
+          const res2 = await contestApi.getContestProblemById(id, problemid);
+          await contestApi.addSubmissionToContest(
+            id,
+            problemid,
+            res.output,
+            problem.canvasData,
+            problem.activityData,
+            res2.data[0].rating
+          );
         }
       }
     } else {
@@ -113,11 +122,17 @@ function ContestProblemController() {
         problemid,
         0
       );
-      const isSolved = await contestApi.isContestProblemSolved(id,problemid);
-        console.log("submissions==>", isSolved);
-      await contestApi.addSubmissionToContest(id, problemid, res.output,problem.canvasData,
-                                              problem.activityData, 0);
-        }
+      const isSolved = await contestApi.isContestProblemSolved(id, problemid);
+      console.log("submissions==>", isSolved);
+      await contestApi.addSubmissionToContest(
+        id,
+        problemid,
+        res.output,
+        problem.canvasData,
+        problem.activityData,
+        0
+      );
+    }
   };
 
   function getColorModeFromLocalStorage() {

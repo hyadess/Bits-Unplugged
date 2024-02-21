@@ -29,18 +29,23 @@ import {
   faCameraRetro,
   faEye,
   faEyeSlash,
+  faObjectUngroup,
   faUser,
   faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 import { canvasApi } from "../../api";
 import { Camera } from "@mui/icons-material";
 import GlobalContext from "store/GlobalContext";
+import html2canvas from "html2canvas";
 const CanvasContainer = (props, ref) => {
   const [DynamicComponent, setDynamicComponent] = useState(null);
   const [componentPath, setComponentPath] = useState(null);
   const [canvasInfo, seCanvasInfo] = useState(null);
   const [settings, setSettings] = useState(false);
+  const [canvasMenu, setCanvasMenu] = useState(false);
   const { type } = useContext(GlobalContext);
+  const [canvasList, setCanvasList] = useState([]);
+  const [canvasFullList, setCanvasFullList] = useState([]);
   const [editOptions, setEditOptions] = [
     props.editOptions,
     props.setEditOptions,
@@ -53,9 +58,17 @@ const CanvasContainer = (props, ref) => {
   const [canvasContainerMode, setCanvasContainerMode] = useState(props.mode);
   const stageRef = useRef(null);
 
-  const saveCanvasAsImage = () => {
+  const saveCanvasAsImage = async () => {
     const stage = stageRef.current;
-    const image = stage.toDataURL();
+
+    // check if the stage is canvas or canvas = await html2canvas(element), then use canvas.toDataURL()
+    let image;
+    try {
+      image = stage.toDataURL();
+    } catch (error) {
+      const canvas = await html2canvas(stage, { backgroundColor: null });
+      image = canvas.toDataURL("image/png");
+    }
 
     // Create a temporary link element
     const link = document.createElement("a");
@@ -78,6 +91,24 @@ const CanvasContainer = (props, ref) => {
       return null;
     }
   };
+
+  const getCanvasList = async () => {
+    const res = await canvasApi.getAllCanvas();
+    if (res.success) {
+      setCanvasFullList(res.data);
+      const newArray = res.data.map((canvas) => ({
+        value: canvas.id,
+        label: canvas.name,
+      }));
+
+      setCanvasList(newArray);
+      // console.log("=->", res);
+    }
+  };
+
+  useEffect(() => {
+    getCanvasList(props.mode);
+  }, [props.onCanvasChange]);
 
   useEffect(() => {
     setCanvasContainerMode(props.mode);
@@ -219,20 +250,108 @@ const CanvasContainer = (props, ref) => {
       </div>
     );
   };
+
+  const canvasMenuRef = useRef(null);
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        canvasMenuRef.current &&
+        !canvasMenuRef.current.contains(event.target)
+      ) {
+        setCanvasMenu(false);
+      }
+    }
+
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [canvasMenuRef]);
+
+  const CanvasMenu = () => {
+    return (
+      <>
+        {canvasMenu ? (
+          <div
+            ref={canvasMenuRef}
+            className="flex flex-col p-5 w-30% bg-slate-900 rounded-lg shadow-lg z-30"
+            style={{
+              position: "absolute",
+              top: "1rem",
+              right: "6rem",
+              backgroundColor: "rgba(17, 24, 39, 0.9)",
+            }}
+          >
+            <div className="flex flex-col gap-2 max-h-[20rem] overflow-y-auto">
+              <h1 className="text-xl font-semibold text-white">
+                Choose a canvas
+              </h1>
+              <Divider sx={{ bgcolor: "white" }} />
+              {/* <OptionList options={editOptions} setOptions={setEditOptions} /> */}
+              <div className="flex flex-col gap-2">
+                {canvasList.map((canvas, index) => (
+                  <button
+                    key={index}
+                    className={
+                      `text-white text-lg p-2 rounded-lg  ` +
+                      (canvas.value === props.canvasId
+                        ? "bg-pink-600"
+                        : "bg-slate-800 hover:bg-slate-700")
+                    }
+                    onClick={() => {
+                      props.onCanvasChange(canvas.value);
+                      setCanvasMenu(false);
+                    }}
+                  >
+                    {canvas.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+      </>
+    );
+  };
+
+  // Do same for settingsMenuRef
+  const settingsMenuRef = useRef(null);
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        settingsMenuRef.current &&
+        !settingsMenuRef.current.contains(event.target)
+      ) {
+        setSettings(false);
+      }
+    }
+
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [settingsMenuRef]);
   const SettingsMenu = () => {
     return (
       <>
         {settings ? (
           <div
+            ref={settingsMenuRef}
             className="flex flex-col p-5 w-30% bg-slate-900 rounded-lg shadow-lg z-30"
             style={{
               position: "absolute",
-              top: "4rem",
-              right: "2rem",
+              top: "1rem",
+              right: "1rem",
               backgroundColor: "rgba(17, 24, 39, 0.9)",
             }}
           >
-            {canvasContainerMode === "preview" ? (
+            {props.mode !== "edit" ? (
               <div className="flex flex-col">
                 <h1 className="text-white">Preview Options</h1>
                 <Divider sx={{ bgcolor: "white" }} />
@@ -259,8 +378,8 @@ const CanvasContainer = (props, ref) => {
     <div className="relative mt-5">
       {/* <Zoom in={true}> */}
       <div
-        className="rounded-[30px] bg-[#fbfbfb] dark:bg-[#1F2531]"
-        style={{ minHeight: "40vh" }}
+        className="rounded-[30px] bg-[#fbfbfb] dark:bg-[#1F2531] min-h-[32rem]"
+        // style={{ minHeight: "40vh" }}
       >
         {DynamicComponent && (
           <DynamicComponent
@@ -271,7 +390,7 @@ const CanvasContainer = (props, ref) => {
             editOptions={editOptions}
             previewOptions={previewOptions}
             ref={ref}
-            mode={canvasContainerMode}
+            mode={props.mode === "edit" ? "edit" : "preview"}
             stageRef={stageRef}
           />
         )}
@@ -284,10 +403,38 @@ const CanvasContainer = (props, ref) => {
         Save Canvas as Image
       </button> */}
       <SettingsMenu />
+      <CanvasMenu />
       <div
         className="flex flex-row p-2 items-center"
         style={{ position: "absolute", top: "0", right: "0" }}
       >
+        {props.onCanvasChange !== undefined && (
+          <Tooltip
+            title={<h1 className="text-lg text-white">Choose Canvas</h1>}
+            placement="top"
+            arrow
+            size="large"
+          >
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem",
+                }}
+                onClick={() => setCanvasMenu((prev) => !prev)}
+              >
+                <div className="flex items-center bu-text-primary text-3xl">
+                  <FontAwesomeIcon icon={faObjectUngroup} />
+                  {/* <Camera /> */}
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">
+                Canvases
+              </div>
+            </div>
+          </Tooltip>
+        )}
         {type !== 0 && props.mode === "preview" && (
           <Tooltip
             title={<h1 className="text-lg text-white">Take Snapshot</h1>}
@@ -316,7 +463,7 @@ const CanvasContainer = (props, ref) => {
           </Tooltip>
         )}
 
-        {props.mode === "edit" && (
+        {/* {props.mode !== "preview" && (
           <Tooltip
             title={<h1 className="text-lg text-white">Canvas Mode</h1>}
             placement="top"
@@ -351,9 +498,9 @@ const CanvasContainer = (props, ref) => {
               </div>
             </div>
           </Tooltip>
-        )}
+        )} */}
 
-        {props.mode === "edit" && (
+        {props.mode !== "preview" && (
           <Tooltip
             title={<h1 className="text-lg text-white">Clear Canvas</h1>}
             placement="top"
@@ -378,12 +525,11 @@ const CanvasContainer = (props, ref) => {
             </div>
           </Tooltip>
         )}
-        {props.mode === "edit" && (
+        {props.mode !== "preview" && (
           <Tooltip
             title={
               <h1 className="text-lg text-white">
-                {(canvasContainerMode === "edit" ? "Edit" : "Preview") +
-                  " Options"}
+                {(props.mode === "edit" ? "Edit" : "Preview") + " Options"}
               </h1>
             }
             placement="top"

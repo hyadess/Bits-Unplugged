@@ -143,7 +143,12 @@ const SlideShow = (props) => {
 
   return (
     <>
-      <div className="bu-card-primary rounded-[30px] py-10">
+      <div className="bu-card-primary pb-10 rounded-[30px] flex flex-col min-h-[25rem]">
+        <div className="flex flex-row justify-between">
+          <div className="flex flex-row p-4 items-start bu-text-primary text-2xl font-semibold">
+            {index + 1}/{images.length}
+          </div>
+        </div>
         {images.map((image, i) => {
           return (
             <img

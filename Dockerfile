@@ -28,7 +28,7 @@ COPY --from=client /app/frontend/build/ ./frontend/build/
 WORKDIR /app/backend/
 COPY backend/package*.json .
 RUN npm install
-COPY backend/ .
+COPY backend/ . 
 
 ARG DB_USER
 ENV DB_USER $DB_USER
@@ -61,5 +61,5 @@ USER postgres
  
 RUN /etc/init.d/postgresql start && psql -c "ALTER USER postgres WITH PASSWORD 'root';" && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all
 
-
-ENTRYPOINT ["./entrypoint.sh"]
+USER root
+ENTRYPOINT ["bash entrypoint.sh"]

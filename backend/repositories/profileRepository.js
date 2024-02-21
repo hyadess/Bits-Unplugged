@@ -30,6 +30,18 @@ class ProfileRepository extends Repository {
     return result;
   }
 
+  searchProfileByQuery = async (seachQuery) => {
+    const query = `
+      SELECT "U".*, "C"."email","C"."role"
+      FROM "Users" AS "U"
+      JOIN "Credentials" AS "C" ON "U"."id" = "C"."userId"
+      WHERE "U"."username" LIKE '%' || $1 || '%';
+    `;
+    const params = [seachQuery];
+    const result = await this.query(query, params);
+    return result;
+  }
+
   setProfile = async (data) => {
     const query = `
         INSERT INTO "Users" ("fullname", "username", "image", "dob", "is_public")

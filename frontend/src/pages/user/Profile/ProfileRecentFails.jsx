@@ -32,7 +32,7 @@ export default function ProfileRecentFails() {
 
   useEffect(() => {
     getRecentFailList();
-  }, []);
+  }, [username]);
 
   return (
     <>

@@ -7,5 +7,8 @@ class ProfileApi extends Api {
   getProfileByUsername = async (username) => {
     return await this.get(`/profile/${username}`);
   };
+  searchProfileByQuery = async (seachQuery) => {
+    return await this.get(`/profile/search/${seachQuery}`);
+  };
 }
 export default ProfileApi;

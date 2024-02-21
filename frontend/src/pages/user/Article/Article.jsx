@@ -26,6 +26,14 @@ import {
 import SubmissionService from "services/submissionService";
 import ImageLoader from "components/ImageLoaders/ImageLoader";
 import { Save } from "@mui/icons-material";
+import {
+  faCamera,
+  faCameraRetro,
+  faCode,
+  faObjectGroup,
+  faPlay,
+  faRotateRight,
+} from "@fortawesome/free-solid-svg-icons";
 const Statement = ({ data }) => {
   const { colorMode } = useGlobalContext();
   return (
@@ -72,7 +80,7 @@ const Canvas = ({
 
   return (
     content.canvasId && (
-      <div className="flex w-full flex-col gap-5">
+      <div className="flex w-full flex-col">
         <CanvasContainer
           canvasId={content.canvasId}
           input={content.canvasData}
@@ -88,34 +96,31 @@ const Canvas = ({
             updateActivity(index, activityData);
           }}
         />
-        <div className="flex flex-row justify-between">
-          <Button
-            size="large"
-            variant="contained"
-            color="success"
-            onClick={() => {
-              reset();
-              // canvasRef.current.handleReset(); // Call this after reset
-            }}
-            startIcon={
-              <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-            }
+        <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
+          <div
+            className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
+            onClick={onReset}
           >
-            Reset
-          </Button>
-          <Button
-            size="large"
-            variant="contained"
-            onClick={() => {
-              console.log("inside submit");
-              console.log(content.activityData);
+            {/* <RotateLeftIcon /> */}
+            <FontAwesomeIcon icon={faRotateRight} />
+          </div>
 
-              onSubmit(content);
-            }}
-            endIcon={<SendIcon sx={{ fontSize: "2rem", color: "white" }} />}
+          <div
+            className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
+            onClick={() => onSubmit(content)}
           >
-            Submit
-          </Button>
+            <FontAwesomeIcon icon={faPlay} />
+            {/* RUN */}
+          </div>
+          <div
+            className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
+            onClick={() => {
+              // updateSolutionChecker();
+            }}
+          >
+            {/* SAVE */}
+            <FontAwesomeIcon icon={faCameraRetro} />
+          </div>
         </div>
       </div>
     )

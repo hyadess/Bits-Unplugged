@@ -297,7 +297,7 @@ const ArrayComponent = (props, ref) => {
             }}
           />
         </div>
-        {data?.selectedElements.length === 1 ? (
+        {data?.selectedElements?.length === 1 ? (
           <input
             type="text"
             className="border sm:text-sm rounded-lg block p-2.5 bu-input-primary w-20 text-center"
@@ -320,7 +320,7 @@ const ArrayComponent = (props, ref) => {
         ) : (
           <></>
         )}
-        {data?.selectedElements.length === 2 ? (
+        {data?.selectedElements?.length === 2 ? (
           <div className="flex flex-row gap-3 items-center">
             <button
               className="bu-button-primary rounded-lg px-7 h-[2.7rem] text-center text-md font-semibold text-white"
@@ -567,7 +567,7 @@ const ArrayComponent = (props, ref) => {
 
       {/* <DndProvider backend={HTML5Backend}> */}
       <div className="flex flex-col gap-5 p-5 pt-2 justify-center min-h-[30vh]">
-        {data?.array.map((row, i) => (
+        {data?.array?.map((row, i) => (
           <div className="flex flex-row gap-5 items-center h-full ">
             {row?.map((element, j) => (
               <DraggableElement

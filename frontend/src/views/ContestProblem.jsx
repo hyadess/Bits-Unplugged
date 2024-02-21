@@ -74,7 +74,7 @@ const Header = ({ type }) => {
         </div>
       )}
     </div>
-  ); 
+  );
 };
 
 const Statement = ({ colorMode }) => {
@@ -111,10 +111,15 @@ const Canvas = forwardRef(({ onReset, onSubmit }, ref) => {
         <CanvasContainer
           canvasId={problem.canvasId}
           input={problem.canvasData}
-          setInput={(data) => {
-            dispatch({
-              type: "UPDATE_CANVAS",
-              payload: { ...data },
+          setInput={(dataOrFunction) => {
+            dispatch((prevState) => {
+              return {
+                type: "UPDATE_CANVAS",
+                payload:
+                  typeof dataOrFunction === "function"
+                    ? dataOrFunction(prevState.canvasData)
+                    : dataOrFunction,
+              };
             });
           }}
           mode={"preview"}

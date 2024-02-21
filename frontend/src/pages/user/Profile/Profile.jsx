@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Title from "../../../components/Title";
 import { setLoading } from "../../../App";
 import { submissionApi, userActivityApi } from "../../../api";
@@ -18,6 +18,7 @@ import { set } from "date-fns";
 // https://www.google.com/url?sa=i&url=https%3A%2F%2Fuxplanet.org%2F50-free-profile-page-design-samples-templates-psd-sketch-for-inspiration-2f939aaee66b&psig=AOvVaw3GwoLsJspGKr0w1icxfd95&ust=1708193790479000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCOjQ1_K7sIQDFQAAAAAdAAAAABA5
 export default function Profile() {
   const navigate = useNavigate();
+  let { username } = useParams();
   const [submissions, setSubmissions] = useState([]);
   //const [successes, setSuccesses] = useState([]);
   //const [fails, setFails] = useState([]);
@@ -309,7 +310,8 @@ export default function Profile() {
   };
 
   const getSubmissions = async () => {
-    const res = await submissionApi.getAllSubmissionsByUser();
+    console.log("getSubmissions",username);
+    const res = await submissionApi.getAllSubmissionsByUser(username);
     if (res.success) {
       setSubmissions(res.data);
       //console.log(submissions);
@@ -322,7 +324,7 @@ export default function Profile() {
   const [activityChartData, setActivityChartData] = useState([]);
 
   const getRecentActivity = async () => {
-    const res = await userActivityApi.daywiseActivityByUser();
+    const res = await userActivityApi.daywiseActivityByUser(username);
     if (res.success) {
       console.log("daywise activity");
       console.log(res.data);
@@ -515,7 +517,7 @@ export default function Profile() {
   });
 
   const getAllSusccessDuration = async () => {
-    const res = await userActivityApi.successesByUser();
+    const res = await userActivityApi.successesByUser(username);
     if (res.success) {
       console.log(res.data);
 
@@ -606,7 +608,7 @@ export default function Profile() {
     getSubmissions();
     getRecentActivity();
     //setLoading(false);
-  }, []);
+  }, [username]);
   useEffect(() => {
     transformHeatmapData();
     calculateSeriesStats();

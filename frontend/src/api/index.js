@@ -8,6 +8,7 @@ import UserActivityApi from "./userActivityApi";
 import AuthApi from "./authApi";
 import ContestApi from "./contestApi";
 import ArticleApi from "./articleApi";
+import StorageApi from "./storageApi";
 
 export const authApi = new AuthApi();
 export const canvasApi = new CanvasApi();
@@ -19,3 +20,4 @@ export const submissionApi = new SubmissionApi();
 export const userActivityApi = new UserActivityApi();
 export const contestApi = new ContestApi();
 export const articleApi = new ArticleApi();
+export const storageApi = new StorageApi();

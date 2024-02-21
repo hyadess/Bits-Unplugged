@@ -5,6 +5,7 @@ const cors = require("cors");
 const cron = require("node-cron");
 const https = require("https");
 const passport = require("passport");
+const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 cron.schedule("*/14 * * * *", () => {
   let host = process.env.BASE_URL;
@@ -42,7 +43,7 @@ app.use(express.static(CLIENT_BUILD_PATH));
 //   .then(() => console.log("Database connected..."))
 //   .catch((err) => console.log("Error: " + err));
 
-// app.use(fileUpload());
+app.use(fileUpload());
 app.use("/api", appRoutes);
 
 app.get("/invalid", (req, res) => {

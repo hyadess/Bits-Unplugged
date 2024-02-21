@@ -1,10 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
   Outlet,
+  useNavigate,
+  useParams,
 } from "react-router-dom";
 import Home from "./pages/landing/Home";
 import Problems from "./pages/user/Problems";
@@ -58,6 +60,10 @@ import AcceptRequest from "pages/setter/ContestSetEnv/AcceptRequest";
 import UserHome from "pages/user/Home";
 import ProblemList from "pages/user/ProblemList";
 import SetterProfileTab from "components/SetterProfileTab";
+import LayoutSecondary from "components/Layouts/LayoutSecondary";
+import { contestApi } from "api";
+import CountdownTimer from "pages/Timer";
+import ContestProblemList from "pages/ContestProblemList";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -80,9 +86,11 @@ const SolverProfile = () => {
     setActiveTab(tab);
   };
   return (
-    <LayoutMain left={<SolverProfileTab activeTab={activeTab} click={click} />}>
+    <LayoutSecondary
+      left={<SolverProfileTab activeTab={activeTab} click={click} />}
+    >
       {activeTab == "Details" ? <Profile /> : <ProfileSubmissions />}
-    </LayoutMain>
+    </LayoutSecondary>
   );
 };
 
@@ -96,6 +104,48 @@ const ProfileForSetter = () => {
     <LayoutMain left={<></>}>
       {/* {activeTab == "Details" ? <SetterProfile /> : <SetterProblems />} */}
       {<SetterProfile />}
+    </LayoutMain>
+  );
+};
+
+const ContestWrapper = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [endTime, setendTime] = useState();
+  const fetchContestDetails = async () => {
+    try {
+      const contest = await contestApi.getContestById(id);
+      if (contest.success) {
+        const contestDuration = contest.data[0].duration * 60 * 60 * 1000;
+        const startDateTime = new Date(contest.data[0].startDateTime);
+        setendTime(new Date(startDateTime.getTime() + contestDuration));
+        console.log("Contest end time : ", startDateTime, endTime);
+      }
+    } catch (error) {
+      console.error("Error fetching contest details", error);
+    }
+  };
+  useEffect(() => {
+    fetchContestDetails();
+  }, [id]);
+  return (
+    <LayoutMain
+      left={
+        <>
+          <ContestProblemList />
+        </>
+      }
+      right={
+        endTime?.getTime() > Date.now() && (
+          <CountdownTimer
+            targetDate={endTime}
+            flag={"end"}
+            EndAction={() => navigate("/contests/" + id)}
+          />
+        )
+      }
+    >
+      <Outlet />
     </LayoutMain>
   );
 };
@@ -327,6 +377,13 @@ const AppRoutes = () => {
         </Route>
 
         <Route element={<ProblemSolver />}>
+          <Route element={<ContestWrapper />}>
+            <Route path="/contests/:id" element={<UserContestDetails />} />
+            <Route
+              path="/contests/:id/problems/:problemid"
+              element={<UserContest />}
+            />
+          </Route>
           <Route
             path="/problems/:id"
             element={
@@ -342,13 +399,6 @@ const AppRoutes = () => {
                 <ProblemsSubmissions />
               </LayoutMain>
             }
-          />
-
-          <Route path="/contests/:id" element={<UserContestDetails />} />
-
-          <Route
-            path="/contests/:id/Problems/:problemid"
-            element={<UserContest />}
           />
 
           <Route

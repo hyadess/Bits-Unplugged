@@ -9,8 +9,8 @@ module.exports = {
         {
           // id: 1,
           seriesId: 1,
-          title:
-            "The Tower of Hanoi: A Fascinating Puzzle of Mathematical Beauty",
+          title: "The Tower of Hanoi",
+          subtitle: "A Fascinating Puzzle of Mathematical Beauty",
           content: JSON.stringify([
             // {
             //   type: "markdown",
@@ -63,6 +63,43 @@ module.exports = {
               checkerCanvas: JSON.stringify({
                 pegs: [[], [], [0, 1, 2]],
               }),
+            },
+            {
+              boxId: 7,
+              type: "canvas",
+              canvasId: 2,
+              canvasData: JSON.stringify({
+                pegs: [[0, 1, 2], [], []],
+              }),
+              checkerCode:
+                "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+              editOptions: JSON.stringify({
+                customDisk: { value: true, type: "switch" },
+                ordered: { value: true, type: "switch" },
+              }),
+              previewOptions: JSON.stringify({
+                moves: { value: false, type: "switch" },
+                nDisks: { value: false, type: "switch" },
+                customDisk: { value: false, type: "switch" },
+                undo: { value: true, type: "switch" },
+              }),
+              checkerCanvas: JSON.stringify({
+                pegs: [[], [], [0, 1, 2]],
+              }),
+            },
+            {
+              boxId: 8,
+              type: "slideshow",
+              images: JSON.stringify([
+                { url: "/images/toh_1.png", caption: "Caption 1" },
+                { url: "/images/toh_2.png", caption: "Caption 2" },
+                { url: "/images/toh_3.png", caption: "Caption 3" },
+                { url: "/images/toh_4.png", caption: "Caption 4" },
+                { url: "/images/toh_5.png", caption: "Caption 5" },
+                { url: "/images/toh_6.png", caption: "Caption 6" },
+                { url: "/images/toh_7.png", caption: "Caption 7" },
+                { url: "/images/toh_8.png", caption: "Caption 8" },
+              ]),
             },
           ]),
           isLive: true,

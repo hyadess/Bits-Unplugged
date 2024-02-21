@@ -9,7 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ProblemCard from "components/Cards/UserContestProblemCard";
 // ... other imports
 
-const ProblemList = () => {
+const ContestProblemList = () => {
   const [problems, setProblems] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -32,11 +32,11 @@ const ProblemList = () => {
     return res;
   };
 
-  const getContest = async () =>{
+  const getContest = async () => {
     const res = await contestApi.getContestById(id);
-    if(res.success)setContest(res.data[0]);
+    if (res.success) setContest(res.data[0]);
     return res;
-  }
+  };
 
   const handleProblemClick = (problemId) => {
     problemId == "details"
@@ -55,19 +55,20 @@ const ProblemList = () => {
           onClick={() => handleProblemClick("details")}
         >
           <h2 className="text-left text-3xl font-extrabold tracking-tight ">
-          <span className="bu-text-title">{contest?.title}</span>
-        </h2>
+            <span className="bu-text-title">{contest?.title}</span>
+          </h2>
         </div>
         {problems?.map((problem) => (
-          <ProblemCard  contestId={id} 
-                        problem={problem} 
-                        onClick={handleProblemClick} 
-                        selectedId={selectedProblemId}>
-                        </ProblemCard>
+          <ProblemCard
+            contestId={id}
+            problem={problem}
+            onClick={handleProblemClick}
+            selectedId={selectedProblemId}
+          ></ProblemCard>
         ))}
       </div>
     </div>
   );
 };
 
-export default ProblemList;
+export default ContestProblemList;

@@ -98,14 +98,12 @@ function ContestProblemController() {
           );
         }
 
-        if (result && result.success) {
-          const res2 = await contestApi.getContestProblemById(id, problemid);
-          await contestApi.addSubmissionToContest(
-            id,
-            problemid,
-            result.data,
-            res2.data[0].rating
-          );
+        const isSolved = await contestApi.isContestProblemSolved(id,problemid);
+        console.log("submissions==>", isSolved);
+        if (isSolved.data.length === 0) {
+          const res2 = await contestApi.getContestProblemById(id,problemid);
+          await contestApi.addSubmissionToContest(id, problemid, res.output,problem.canvasData,
+            problem.activityData, res2.data[0].rating);
         }
       }
     } else {
@@ -115,12 +113,11 @@ function ContestProblemController() {
         problemid,
         0
       );
-
-      if (result && result.success) {
-        const res2 = await contestApi.getContestProblemById(id, problemid);
-        await contestApi.addSubmissionToContest(id, problemid, result.data, 0);
-      }
-    }
+      const isSolved = await contestApi.isContestProblemSolved(id,problemid);
+        console.log("submissions==>", isSolved);
+      await contestApi.addSubmissionToContest(id, problemid, res.output,problem.canvasData,
+                                              problem.activityData, 0);
+        }
   };
 
   function getColorModeFromLocalStorage() {

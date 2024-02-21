@@ -288,7 +288,7 @@ const CanvasContainer = (props, ref) => {
         className="flex flex-row p-2 items-center"
         style={{ position: "absolute", top: "0", right: "0" }}
       >
-        {type === 1 && props.mode === "preview" && (
+        {type !== 0 && props.mode === "preview" && (
           <Tooltip
             title={<h1 className="text-lg text-white">Take Snapshot</h1>}
             placement="top"

@@ -18,7 +18,7 @@ module.exports = {
     database: process.env.DB_DB || "bitsunplugged",
     port: process.env.DB_PORT || "5432",
     dialect: "postgres",
-    // logging: false,
+    logging: false,
   },
   test: {
     username: process.env.DB_USER || "postgres",

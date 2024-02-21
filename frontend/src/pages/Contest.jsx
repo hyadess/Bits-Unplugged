@@ -10,22 +10,23 @@ import ContestProblem from "./ContestProblem";
 import LayoutMain from "../components/Layouts/LayoutMain";
 import Leaderboard from "./Timer";
 import CountdownTimer from "./Timer";
-import ProblemList from "./ContestProblemList";;
+import ContestProblemList from "./ContestProblemList";
 
 // Inside the UserContest component
 const UserContest = () => {
   const { id } = useParams();
   const { problemid } = useParams();
   const [endTime, setendTime] = useState();
-
+  const navigate = useNavigate();
   const EndAction = async () => {
-    try {
-      // Call contestApi.updateStatus with the contest ID and the new status
-      await contestApi.endContest(id);
-      console.log("Contest status updated to 'ended'");
-    } catch (error) {
-      console.error("Error updating contest status", error);
-    }
+    navigate("/contests/" + id);
+    // try {
+    //   // Call contestApi.updateStatus with the contest ID and the new status
+    //   await contestApi.endContest(id);
+    //   console.log("Contest status updated to 'ended'");
+    // } catch (error) {
+    //   console.error("Error updating contest status", error);
+    // }
   };
   useEffect(() => {
     // Call a function to fetch contest details and get the contest duration
@@ -51,28 +52,7 @@ const UserContest = () => {
     };
   }, []); // Removed 'id' from the dependency array
 
-
-
-  return (
-    <LayoutMain
-      left={
-        <>
-          <ProblemList /> 
-        </>
-      }
-      right={
-        endTime && (
-          <CountdownTimer
-            targetDate={endTime}
-            flag={"end"}
-            EndAction={EndAction}
-          />
-        )
-      }
-    >
-      {problemid && <ContestProblem />}
-    </LayoutMain>
-  );
+  return <>{problemid && <ContestProblem />}</>;
 };
 
 export default UserContest;

@@ -9,7 +9,7 @@ import { useProblemContext } from "../../../store/ProblemContextProvider";
 import { problemApi } from "../../../api";
 import SubmissionService from "../../../services/submissionService";
 import { showSuccess } from "../../../App";
-const SolutionCheckerTab = () => {
+const SolutionCheckerTab = ({ onSave }) => {
   const { state: problem, dispatch } = useProblemContext();
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
@@ -18,7 +18,9 @@ const SolutionCheckerTab = () => {
   const onSubmit = async () => {
     const result = await SubmissionService.checkSolution(
       problem.checkerCode,
-      problem.checkerCanvas,
+      typeof problem.checkerCanvas === "string"
+        ? JSON.parse(problem.checkerCanvas)
+        : problem.checkerCanvas,
       problem.test,
       problem.testActivity
     );
@@ -27,20 +29,7 @@ const SolutionCheckerTab = () => {
   };
 
   const updateSolutionChecker = async () => {
-    if (checkerType == 0 && problem.checkerCode == null) return;
-    if (checkerType == 1 && problem.checkerCanvas == null) return;
-    const res = await problemApi.updateProblem(problem.id, {
-      ...(checkerType == 0 && {
-        checkerCode: problem.checkerCode,
-      }),
-      ...(checkerType == 1 && {
-        checkerCanvas: problem.checkerCanvas,
-      }),
-    });
-    if (res.success) {
-      // console.log(res);
-      showSuccess("Checker saved successfully", res);
-    }
+    onSave(checkerType);
   };
 
   const canvasRef = useRef();
@@ -107,6 +96,15 @@ const SolutionCheckerTab = () => {
               >
                 Reset
               </Button>
+              {/* <SelectionField
+                label="Choose Checker"
+                onChange={(e) => setCheckerType(e.target.value)}
+                value={checkerType}
+                options={[
+                  { label: "code", value: 0 },
+                  { label: "canvas", value: 1 },
+                ]}
+              /> */}
               <Button
                 variant="contained"
                 onClick={() => {

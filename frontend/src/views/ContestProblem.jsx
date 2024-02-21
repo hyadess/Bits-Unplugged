@@ -10,6 +10,14 @@ import { setLoading } from "../App";
 import "katex/dist/katex.css";
 import MarkdownPreview from "../components/Markdown/MarkdownPreview";
 import { useProblemContext } from "../store/ProblemContextProvider";
+import {
+  faCamera,
+  faCameraRetro,
+  faCode,
+  faObjectGroup,
+  faPlay,
+  faRotateRight,
+} from "@fortawesome/free-solid-svg-icons";
 const Title = ({ problem }) => {
   return (
     <div className="flex max-w-screen-xl flex-col gap-3 py-4 sm:pt-12">
@@ -74,7 +82,7 @@ const Header = ({ type }) => {
         </div>
       )}
     </div>
-  ); 
+  );
 };
 
 const Statement = ({ colorMode }) => {
@@ -107,14 +115,19 @@ const Canvas = forwardRef(({ onReset, onSubmit }, ref) => {
   return (
     problem.canvasId &&
     ref && (
-      <div className="flex w-full flex-col gap-5">
+      <div className="flex w-full flex-col">
         <CanvasContainer
           canvasId={problem.canvasId}
           input={problem.canvasData}
-          setInput={(data) => {
-            dispatch({
-              type: "UPDATE_CANVAS",
-              payload: { ...data },
+          setInput={(dataOrFunction) => {
+            dispatch((prevState) => {
+              return {
+                type: "UPDATE_CANVAS",
+                payload:
+                  typeof dataOrFunction === "function"
+                    ? dataOrFunction(prevState.canvasData)
+                    : dataOrFunction,
+              };
             });
           }}
           mode={"preview"}
@@ -129,29 +142,31 @@ const Canvas = forwardRef(({ onReset, onSubmit }, ref) => {
             });
           }}
         />
-        <div className="flex flex-row justify-between">
-          <Button
-            size="large"
-            variant="contained"
-            color="success"
-            onClick={() => {
-              onReset();
-              // canvasRef.current.handleReset(); // Call this after reset
-            }}
-            startIcon={
-              <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-            }
+        <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
+          <div
+            className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
+            onClick={onReset}
           >
-            Reset
-          </Button>
-          <Button
-            size="large"
-            variant="contained"
+            {/* <RotateLeftIcon /> */}
+            <FontAwesomeIcon icon={faRotateRight} />
+          </div>
+
+          <div
+            className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
             onClick={onSubmit}
-            endIcon={<SendIcon sx={{ fontSize: "2rem", color: "white" }} />}
           >
-            Submit
-          </Button>
+            <FontAwesomeIcon icon={faPlay} />
+            {/* RUN */}
+          </div>
+          <div
+            className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
+            onClick={() => {
+              // updateSolutionChecker();
+            }}
+          >
+            {/* SAVE */}
+            <FontAwesomeIcon icon={faCameraRetro} />
+          </div>
         </div>
       </div>
     )

@@ -6,9 +6,9 @@ import React, {
 } from "react";
 import { Stage, Layer, Rect, Label, Text, Tag, Line, Group } from "react-konva";
 
-const KonvaButton = ({ x, y, onClick, text }) => {
+const KonvaButton = ({ x, y, onClick, text, visible }) => {
   return (
-    <Label onClick={onClick} x={x} y={y}>
+    <Label onClick={onClick} x={x} y={y} visible={visible}>
       <Tag
         fill="black"
         lineJoin="round"

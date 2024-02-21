@@ -58,6 +58,7 @@ import AcceptRequest from "pages/setter/ContestSetEnv/AcceptRequest";
 import UserHome from "pages/user/Home";
 import ProblemList from "pages/user/ProblemList";
 import SetterProfileTab from "components/SetterProfileTab";
+import LayoutSecondary from "components/Layouts/LayoutSecondary";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -80,9 +81,11 @@ const SolverProfile = () => {
     setActiveTab(tab);
   };
   return (
-    <LayoutMain left={<SolverProfileTab activeTab={activeTab} click={click} />}>
+    <LayoutSecondary
+      left={<SolverProfileTab activeTab={activeTab} click={click} />}
+    >
       {activeTab == "Details" ? <Profile /> : <ProfileSubmissions />}
-    </LayoutMain>
+    </LayoutSecondary>
   );
 };
 

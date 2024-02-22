@@ -22,5 +22,6 @@ router.delete("/:id", seriesController.deleteSeries);
 router.get("/:id/problems", seriesController.getAllProblems); // transfer to problem
 router.get("/:id/articles", seriesController.getAllArticles);
 router.put("/:id/problems", seriesController.updateAllProblems); // transfer to problem
+router.put("/:id/articles", seriesController.updateAllArticles); // transfer to problem
 router.put("/:id/problems/serial", seriesController.updateSerial);
 module.exports = router;

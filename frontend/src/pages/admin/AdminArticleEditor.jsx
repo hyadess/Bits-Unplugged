@@ -177,7 +177,7 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
 
   return (
     <div className="flex flex-col gap-5">
-    <div className="bu-card-primary pb-10 rounded-[30px] flex flex-col min-h-[25rem]">
+      <div className="bu-card-primary pb-10 rounded-[30px] flex flex-col min-h-[25rem]">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row p-4 items-start bu-text-primary text-2xl font-semibold">
             {serial + 1}/{images.length}
@@ -413,37 +413,63 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
   );
 };
 
+const CustomButton = ({ onClick, label, icon }) => {
+  return (
+    <button
+      className="flex flex-row items-center gap-2 px-5 bu-text-primary border-2 border-black dark:border-white rounded-full hover:bg-[#aadfcf] dark:hover:bg-pink-700 transition-colors duration-500  font-medium"
+      onClick={onClick}
+    >
+      {label}
+      {icon}
+    </button>
+  );
+};
 const WriteArticle = ({
   article,
   setArticle,
   colorMode,
   updateMarkdown,
-  addMarkdown,
-  deleteMarkdown,
+  addContent,
+  deleteContent,
 }) => {
   return (
     <div className="flex flex-col justify-between gap-10">
       {article?.content?.length > 0 &&
         article?.content?.map((content, index) => {
           return (
-            <div>
-              <div className="flex justify-center items-center ">
-                <div className="mx-6">
-                  <button
-                    className="flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400"
-                    onClick={() => deleteMarkdown(index)}
-                  >
-                    <FontAwesomeIcon icon={faTrashCan} />
-                  </button>
-                </div>
-                <div className="mx-6 pd-2">
-                  <button
-                    className="flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400"
-                    onClick={() => addMarkdown(index)}
-                  >
-                    <FontAwesomeIcon icon={faAdd} />
-                  </button>
-                </div>
+            <>
+              <div className="flex flex-row justify-center items-center gap-5">
+                <CustomButton
+                  label="Markdown"
+                  icon={<FontAwesomeIcon icon={faAdd} />}
+                  onClick={() => addContent(index, "markdown")}
+                />
+                <CustomButton
+                  label="Problem"
+                  icon={<FontAwesomeIcon icon={faAdd} />}
+                  onClick={() => addContent(index, "canvas")}
+                />
+                <CustomButton
+                  label="Solution"
+                  icon={<FontAwesomeIcon icon={faAdd} />}
+                  onClick={() => addContent(index, "slideshow")}
+                />
+                <CustomButton
+                  label="Image"
+                  icon={<FontAwesomeIcon icon={faAdd} />}
+                  onClick={() => addContent(index, "image")}
+                />
+                <CustomButton
+                  label="Video"
+                  icon={<FontAwesomeIcon icon={faAdd} />}
+                  onClick={() => addContent(index, "video")}
+                />
+                <button
+                  className="flex flex-row items-center gap-2 bu-text-primary text-2xl"
+                  onClick={() => deleteContent(index)}
+                >
+                  <FontAwesomeIcon icon={faTrashCan} />
+                </button>
               </div>
               {content.type === "markdown" ? (
                 <MarkDownContainer
@@ -452,8 +478,6 @@ const WriteArticle = ({
                   colorMode={colorMode}
                   text={content.data}
                   setText={updateMarkdown}
-                  onAdd={() => addMarkdown(index)}
-                  onDelete={() => deleteMarkdown(index)}
                 />
               ) : content.type === "slideshow" ? (
                 <SlideShow
@@ -486,7 +510,7 @@ const WriteArticle = ({
               ) : (
                 <></>
               )}
-            </div>
+            </>
           );
         })}
     </div>
@@ -562,7 +586,28 @@ const AdminArticleEditor = () => {
     });
   };
 
+  const addContent = (index, type) => {
+    setArticle((prev) => {
+      let newContent = [...prev.content];
+      newContent.splice(index, 0, {
+        boxId: boxCount + 1,
+        data: "type here",
+        type: type,
+      });
+      setBoxCount((prev) => prev + 1);
+      return { ...prev, content: newContent };
+    });
+  };
+
   const deleteMarkdown = (index) => {
+    setArticle((prev) => {
+      let newContent = [...prev.content];
+      newContent.splice(index, 1);
+      return { ...prev, content: newContent };
+    });
+  };
+
+  const deleteContent = (index) => {
     setArticle((prev) => {
       let newContent = [...prev.content];
       newContent.splice(index, 1);
@@ -591,10 +636,44 @@ const AdminArticleEditor = () => {
           article={article}
           colorMode={colorMode}
           updateMarkdown={updateMarkdown}
-          addMarkdown={addMarkdown}
-          deleteMarkdown={deleteMarkdown}
+          addContent={addContent}
+          deleteContent={deleteContent}
         />
 
+        <div className="flex flex-row justify-center items-center gap-5 m-10">
+          <CustomButton
+            label="Markdown"
+            icon={<FontAwesomeIcon icon={faAdd} />}
+            onClick={() => addContent(article.content.length, "markdown")}
+          />
+          <CustomButton
+            label="Problem"
+            icon={<FontAwesomeIcon icon={faAdd} />}
+            onClick={() => addContent(article.content.length, "canvas")}
+          />
+          <CustomButton
+            label="Solution"
+            icon={<FontAwesomeIcon icon={faAdd} />}
+            onClick={() => addContent(article.content.length, "slideshow")}
+          />
+          <CustomButton
+            label="Image"
+            icon={<FontAwesomeIcon icon={faAdd} />}
+            onClick={() => addContent(article.content.length, "image")}
+          />
+          <CustomButton
+            label="Video"
+            icon={<FontAwesomeIcon icon={faAdd} />}
+            onClick={() => addContent(article.content.length, "video")}
+          />
+          <button
+            className="flex flex-row items-center gap-2 bu-text-primary text-2xl"
+            onClick={() => saveArticle()}
+          >
+            <FontAwesomeIcon icon={faFloppyDisk} />
+          </button>
+        </div>
+        {/* 
         <div className="flex justify-center">
           <div className="mx-6 pd-2">
             <button
@@ -612,7 +691,7 @@ const AdminArticleEditor = () => {
               <FontAwesomeIcon icon={faFloppyDisk} />
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     )
   );

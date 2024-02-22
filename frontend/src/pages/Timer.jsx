@@ -50,48 +50,6 @@ const ShowCounter = ({ days, hours, minutes, seconds }) => {
   );
 };
 
-const Leaderboard = ({}) => {
-  const [leaderboard, setLeaderboard] = useState([]);
-  const { id } = useParams();
-
-  useEffect(() => {
-    const fetchLeaderboard = async () => {
-      try {
-        const leaderboardData = await contestApi.getLeaderboard(id);
-        if (leaderboardData.success) {
-          // Sort the leaderboard by points in descending order
-          const sortedLeaderboard = leaderboardData.data.sort(
-            (a, b) => b.points - a.points
-          );
-          setLeaderboard(sortedLeaderboard);
-        }
-      } catch (error) {
-        console.error("Error fetching leaderboard", error);
-      }
-    };
-
-    fetchLeaderboard();
-  }, []);
-
-  return (
-    <div className="absolute bottom-10 max-h-[60vh] overflow-y-auto">
-      {leaderboard?.map((setter) => (
-        <div
-          key={setter.id}
-          className="flex flex-row items-center mb-4 hover:bg-gray-100 p-4 rounded-md cursor-pointer"
-        >
-          <span className="ml-4 font-medium text-gray-800 text-lg hover:underline">
-            {setter.username}
-          </span>
-          <span className="ml-4 font-medium text-gray-800 text-lg hover:underline">
-            {setter.points}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-};
-
 const CountdownTimer = ({ targetDate, flag, EndAction }) => {
   const [days, hours, minutes, seconds] = useCountdown(targetDate);
 
@@ -108,7 +66,6 @@ const CountdownTimer = ({ targetDate, flag, EndAction }) => {
           minutes={minutes}
           seconds={seconds}
         />
-        <Leaderboard />
       </>
     );
   }

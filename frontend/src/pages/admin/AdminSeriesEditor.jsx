@@ -17,13 +17,62 @@ import {
   faFire,
   faHeartPulse,
 } from "@fortawesome/free-solid-svg-icons";
-import { seriesApi, topicApi } from "../../api";
+import { articleApi, seriesApi, topicApi } from "../../api";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import ProblemSetCard from "../../components/Cards/ProblemSetCard";
 import ProblemCard from "../../components/Cards/AdminProblemCard";
 import HowToReg from "@mui/icons-material/HowToReg";
 import TableContainer from "../../containers/TableContainer";
+import {
+  faCheckDouble,
+  faCheckToSlot,
+} from "@fortawesome/free-solid-svg-icons";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import ArticleCard from "components/Cards/AdminSeriesArticleCard";
+const DraggableArticleCard = ({
+  id,
+  name,
+  index,
+  moveCard,
+  article,
+  setArticle,
+  deleteArticle,
+}) => {
+  const [{ isDragging }, drag] = useDrag({
+    type: "card",
+    item: () => ({ id, index }),
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+  const [, drop] = useDrop({
+    accept: "card",
+    hover(item, monitor) {
+      if (item.index !== index && monitor.isOver({ shallow: true })) {
+        moveCard(item.index, index);
+        item.index = index;
+      }
+    },
+  });
+  return (
+    <div
+      ref={(node) => drag(drop(node))}
+      style={{ opacity: isDragging ? 0 : 1 }}
+      className="w-full"
+    >
+      <ArticleCard
+        // idx={index + 1}
+        id={article.id}
+        name={article.title}
+        path={`/articles/${article.id}`}
+        setArticle={setArticle}
+        onDelete={deleteArticle}
+        isLive={article.isLive}
+      />
+    </div>
+  );
+};
 
 const DraggableProblemCard = ({
   id,
@@ -68,7 +117,7 @@ const DraggableProblemCard = ({
         // acceptance={Math.round(Math.random() * 100)}
         // difficulty={["Easy", "Medium", "Hard"][Math.floor(Math.random() * 3)]}
         isSolved={
-          problem.activities.length > 0
+          problem?.activities?.length > 0
             ? problem.activities[0].isSolved === null
               ? -1
               : problem.activities[0].isSolved
@@ -90,7 +139,7 @@ const AdminSeriesEditor = () => {
   const [series, setSeries] = useState(null);
   const [topicList, setTopicList] = useState([]);
   const [problemList, setProblemList] = useState([]);
-
+  const [articleList, setArticleList] = useState([]);
   const handleChange = (prop) => (event) => {
     setSeries({ ...series, [prop]: event.target.value });
   };
@@ -105,12 +154,27 @@ const AdminSeriesEditor = () => {
     );
   };
 
+  const deleteArticle = (articleId) => {
+    setArticleList((prev) =>
+      prev.filter((article) => article.id !== articleId)
+    );
+  };
+
   // const setSeries = (id, data) => {
   //   // set series in given id with given data
   //   setSeriesList((prev) =>
   //     prev.map((series) => (series.id === id ? { ...series, ...data } : series))
   //   );
   // };
+
+  const setArticle = (id, data) => {
+    // set problem in given id with given data
+    setArticleList((prev) =>
+      prev.map((article) =>
+        article.id === id ? { ...article, ...data } : article
+      )
+    );
+  };
 
   const setProblem = (id, data) => {
     // set problem in given id with given data
@@ -119,6 +183,16 @@ const AdminSeriesEditor = () => {
         problem.id === id ? { ...problem, ...data } : problem
       )
     );
+  };
+
+  const moveArticleCard = (dragIndex, hoverIndex) => {
+    setArticleList((prev) => {
+      const dragCard = prev[dragIndex];
+      const coppiedArray = [...prev];
+      coppiedArray.splice(dragIndex, 1);
+      coppiedArray.splice(hoverIndex, 0, dragCard);
+      return coppiedArray;
+    });
   };
 
   const moveCard = (dragIndex, hoverIndex) => {
@@ -137,6 +211,14 @@ const AdminSeriesEditor = () => {
     if (res.success) {
       setSeries(res.data);
       setLoading(false);
+    }
+  };
+
+  const getArticleList = async () => {
+    const res = await articleApi.getArticlesBySeries(id);
+    if (res.success) {
+      console.log(res.data);
+      setArticleList(res.data);
     }
   };
 
@@ -174,9 +256,16 @@ const AdminSeriesEditor = () => {
       serialNo: problemList.length - index,
     }));
 
-    console.log(problems);
     await seriesApi.updateProblems(id, problems);
     setProblemList(problems);
+
+    const articles = articleList.map((item, index) => ({
+      ...item,
+      serialNo: articleList.length - index,
+    }));
+    console.log("Articles:", articles);
+    await seriesApi.updateArticles(id, articles);
+    setArticleList(articles);
 
     const res = await seriesApi.updateSeries(id, series);
     if (res.success) {
@@ -184,10 +273,12 @@ const AdminSeriesEditor = () => {
       showSuccess("Changes are saved", res);
     }
   };
+
   useEffect(() => {
     getSeries();
     getProblemList();
     getTopicList();
+    getArticleList();
   }, []);
   return (
     series && (
@@ -219,6 +310,47 @@ const AdminSeriesEditor = () => {
             value={series.topicId == null ? "" : series.topicId}
             options={topicList}
           />
+
+          {articleList.length > 0 && (
+            <>
+              <div className="bu-bg-title text-white p-5 rounded-md text-3xl font-bold">
+                Articles
+              </div>
+              <div className="flex flex-col gap-5 w-full">
+                <div className="w-full p-5 rounded-lg shadow-md flex flex-row bu-text-primary bg-[#AADFCF] dark:bg-pink-600 ">
+                  <div className="text-xl w-[45%] font-medium">Articles</div>
+                  <div className="text-xl w-[20%] font-medium flex gap-2 items-center justify-center">
+                    {/* <FontAwesomeIcon icon={faCheckDouble} /> */}
+                    <HowToRegIcon />
+                    Readers
+                  </div>
+                  <div className="text-xl w-20% font-medium flex gap-2 items-center justify-center">
+                    <FontAwesomeIcon icon={faFire} />
+                    Time
+                  </div>
+                  <div className="text-xl w-15% font-medium flex gap-2 items-center justify-center">
+                    <FontAwesomeIcon icon={faHeartPulse} />
+                    Action
+                  </div>
+                </div>
+                <TableContainer>
+                  {articleList.map((article, index) => (
+                    <DraggableArticleCard
+                      key={article.id}
+                      id={article.id}
+                      index={index}
+                      name={article.title}
+                      image={article.logo}
+                      article={article}
+                      setArticle={setArticle}
+                      deleteArticle={deleteArticle}
+                      moveCard={moveArticleCard}
+                    />
+                  ))}
+                </TableContainer>
+              </div>
+            </>
+          )}
 
           {problemList.length > 0 && (
             <>

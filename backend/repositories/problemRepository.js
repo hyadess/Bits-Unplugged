@@ -90,18 +90,11 @@ class ProblemsRepository extends Repository {
   };
 
   getSubmittedProblems = async () => {
-    const latestProblemVersions = await db.sequelize.query(
-      `SELECT DISTINCT ON ("problemId")
-      "id", "problemId", "version"
-      FROM "ProblemVersions" PV
-      ORDER BY "problemId", "version" DESC`,
-      { type: db.Sequelize.QueryTypes.SELECT, raw: true }
-    );
-
+    console.log("Get all admin problem");
     const latestProblems = await db.ProblemVersion.findAll({
       where: {
-        id: {
-          [Op.in]: latestProblemVersions.map((version) => version.id),
+        approvalStatus: {
+          [Op.or]: [1, 2],
         },
       },
       include: [
@@ -371,34 +364,11 @@ class ProblemsRepository extends Repository {
   };
 
   getLatestProblemsBySeries = async (seriesId) => {
-    const latestProblemVersions = await db.ProblemVersion.findAll({
-      attributes: [
-        "problemId",
-        [
-          db.sequelize.fn("MAX", db.sequelize.col("createdAt")),
-          "latestCreatedAt",
-        ],
-      ],
-      where: {
-        seriesId: seriesId,
-      },
-      group: ["problemId", "seriesId"],
-      raw: true, // To get plain objects instead of Sequelize instances
-    });
-
-    const latestProblemIds = latestProblemVersions.map(
-      (version) => version.problemId
-    );
-
     // console.log(latestProblemVersions);
     const latestProblemVersionsQuery = await db.ProblemVersion.findAll({
       where: {
-        problemId: {
-          [Op.in]: latestProblemIds,
-        },
-        createdAt: latestProblemVersions.map(
-          (version) => version.latestCreatedAt
-        ),
+        approvalStatus: 1,
+        seriesId,
       },
       include: [
         {

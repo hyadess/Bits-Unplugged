@@ -8,6 +8,8 @@ import { showSuccess } from "../../../App";
 import InviteButton from "../../../components/Buttons/InviteButton";
 import SetterListModal from "../../../components/Modal/ColaboratorSelectModal";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { jwtDecode } from 'jwt-decode';
+
 
 const DetailsTab = () => {
   const [isAddModalOpen, setAddModalOpen] = useState(false);
@@ -16,8 +18,16 @@ const DetailsTab = () => {
   const navigate = useNavigate();
 
   const { state: contest, dispatch } = useContestContext();
+  const [userId, setUserId] = useState(null);
+
+  const fetchUser = async () => {
+    const decoded = jwtDecode(localStorage.getItem("token")).userId;
+    setUserId(decoded);
+  };
+
   useEffect(() => {
     getCollaborators();
+    fetchUser();
     console.log(contest.startDate, contest.endDate);
   }, []);
 
@@ -44,9 +54,7 @@ const DetailsTab = () => {
   };
 
   const publish = async () => {
-    const res = await contestApi.publishContest(contest.id);
-
-    console.log(res.data);
+      await contestApi.publishContest(contest.id);
   };
 
   return (

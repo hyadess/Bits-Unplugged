@@ -94,7 +94,7 @@ export default function SolutionChecker(props) {
 
   return (
     <div>
-      <div className="flex flex-col gap-0 md:gap-0 w-full bg-[#1F2531] mt-4 h-128">
+      <div className="flex flex-col gap-0 md:gap-0 w-full bg-[#1F2531] mt-4 h-[32.3rem]">
         <div
           className={
             "w-full bg-[#1F2531] " +

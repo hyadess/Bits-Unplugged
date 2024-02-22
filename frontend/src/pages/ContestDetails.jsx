@@ -1,34 +1,15 @@
 import React, { useEffect, useState } from "react";
-import CancelIcon from "@mui/icons-material/Cancel";
-import Checkbox from "@mui/material/Checkbox";
-import { showSuccess } from "../App";
 import { contestApi } from "../api";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFire, faPlus, faTag } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
-import ContestProblem from "./ContestProblem";
-import LayoutMain from "../components/Layouts/LayoutMain";
-import Leaderboard from "./Timer";
-import CountdownTimer from "./Timer";
 import ContestSettersList from "./ContestSetterList";
-import ContestProblemList from "./ContestProblemList";
-import ContestContextProvider from "store/ContestContextProvider";
+import Leaderboard from "./LeaderBoard";
 
 const UserContestDetails = () => {
   const { id } = useParams();
   const [endTime, setEndTime] = useState();
   const [contest, setContest] = useState(null);
+  const [leaderboard, setLeaderboard] = useState(null);
   const navigate = useNavigate();
-  const EndAction = async () => {
-    // navigate("/contests/" + id);
-    // try {
-    //   // Call contestApi.updateStatus with the contest ID and the new status
-    //   await contestApi.endContest(id);
-    //   console.log("Contest status updated to 'ended'");
-    // } catch (error) {
-    //   console.error("Error updating contest status", error);
-    // }
-  };
 
   const getContest = async () => {
     const res = await contestApi.getContestById(id);
@@ -45,10 +26,18 @@ const UserContestDetails = () => {
     }
   };
 
+  const fetchLeaderboard = async () => {
+    const leaderboardRes = await contestApi.getLeaderboard(id);
+    console.log("leaderboard =>", leaderboardRes);
+    if (leaderboardRes.success) setLeaderboard(leaderboardRes.data);
+    return leaderboardRes;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       await getContest();
       await fetchContestDetails();
+      await fetchLeaderboard();
     };
 
     fetchData();
@@ -61,7 +50,13 @@ const UserContestDetails = () => {
     fetchData();
   }, [contest]);
 
-  return <>{<ContestSettersList setterList={contest?.ContestSetters} />}</>;
+  return (
+    <>
+      {leaderboard && <Leaderboard leaderboard={leaderboard} contest_id={id} />}
+      <ContestSettersList setterList={contest?.ContestSetters} />
+      
+    </>
+  );
 };
 
 export default UserContestDetails;

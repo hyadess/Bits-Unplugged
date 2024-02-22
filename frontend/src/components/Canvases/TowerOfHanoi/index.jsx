@@ -105,7 +105,10 @@ const TowerOfHanoiView = ({
                   handleDiskHover={handleDiskHover}
                   handleDiskUnhover={handleDiskUnhover}
                   calculateDiskWidth={calculateDiskWidth}
-                  visible={mode === "edit" || previewOptions?.customDisk?.value}
+                  visible={
+                    mode === "edit" ||
+                    (previewOptions?.customDisk?.value ?? false)
+                  }
                 />
               </Layer>
             </Stage>

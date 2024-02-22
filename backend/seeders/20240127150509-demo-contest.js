@@ -14,7 +14,7 @@ module.exports = {
           endDate: "1/2/2025",
           startDateTime: new Date(),
           duration: "0.01",
-          status: "requested",
+          status: "edit",
         },
         {
           //id: 1,

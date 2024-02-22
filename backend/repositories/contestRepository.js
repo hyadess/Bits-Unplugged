@@ -62,7 +62,7 @@ class ContestRepository extends Repository {
     JOIN
     "Users" "U" ON "S"."userId" = "U"."id"
     WHERE 
-    "CS"."setterId" = $1
+    "CS"."setterId" = $1 AND "CS"."status"='accepted'
     GROUP BY
     "C"."id";
     `;
@@ -145,6 +145,21 @@ class ContestRepository extends Repository {
     return result;
   };
 
+  totalProblemSolved = async (userId, contestId) => {
+    const query = `
+      SELECT COUNT(DISTINCT "CP"."problemId") as "totalSolved"
+      FROM "ContestSubmissions" "CS"
+      JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
+      JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
+      WHERE "P"."contestId" = $1 AND "P"."userId" = $2 AND "CS"."verdict" = 'Accepted';
+    `;
+    const params = [contestId, userId];
+    const result = await this.query(query, params);
+  
+    return result;
+  };
+  
+
 
   //*************GETTING PROBLEMS*********************** */
 
@@ -193,6 +208,20 @@ class ContestRepository extends Repository {
     return result;
   };
 
+  totalProblemCountByContest = async (contestId) => {
+    const query = `
+      SELECT COUNT(*) as "totalProblems"
+      FROM "Problems" "P"
+      JOIN "ContestProblems" "CP" ON "P"."id" = "CP"."problemId"
+      WHERE "CP"."contestId" = $1;
+    `;
+    const params = [contestId];
+    const result = await this.query(query, params);
+
+    return result;
+  };
+  
+
   //*****************UPDATING CONTEST TABLE************* */
 
   addContest = async (setterId, title) => {
@@ -206,8 +235,8 @@ class ContestRepository extends Repository {
     const contestId = result.data[0].id;
 
     const query2 = `
-        INSERT INTO "ContestSetters" ("contestId", "setterId", "role")
-        VALUES ($1, $2, 'owner');
+        INSERT INTO "ContestSetters" ("contestId", "setterId", "role", "status")
+        VALUES ($1, $2, 'owner', 'accepted');
         `;
     const params2 = [contestId, setterId];
     const result2 = await this.query(query2, params2);
@@ -403,18 +432,19 @@ class ContestRepository extends Repository {
     const query = `
         SELECT *
         FROM "ContestSetters"
-        WHERE "contestId" = $1 AND "role" = 'collaborator';
+        WHERE "contestId" = $1 AND "role" = 'collaborator' AND "status" = 'accepted';
         `;
     const query2 = `
         SELECT
         "S"."setterId",
+        "S"."status",
         "U"."username",
         "U"."image"
         FROM
         "ContestSetters" "S"
         JOIN
         "Users" "U" ON "S"."setterId" = "U"."id"
-        WHERE "S"."contestId" = $1;
+        WHERE "S"."contestId" = $1 ;
         `;
     const params = [contestId];
     const result = await this.query(query2, params);
@@ -532,6 +562,7 @@ class ContestRepository extends Repository {
         SELECT
         "U"."id",
         "U"."username",
+        "U"."image",
         SUM("CS"."points") AS "points"
         FROM
         "ContestSubmissions" "CS"

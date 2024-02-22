@@ -56,7 +56,7 @@ const Collaborators = () => {
     showSuccess(
         "Invitation sent successfully", res
       );
-    setContestCollaborators([...ContestCollaborators, ...selectedCollaborators]);
+    //setContestCollaborators([...ContestCollaborators, ...selectedCollaborators]);
 
     setSelectedCollaborators([]);
 
@@ -75,21 +75,30 @@ const Collaborators = () => {
       </button>
 
       <div className="max-h-[60vh] overflow-y-auto">
-          {ContestCollaborators?.map((setter) => (
-            <div
-              key={setter.id}
-              className="flex flex-row items-center mb-4 hover:bg-gray-100 p-4 rounded-md cursor-pointer"
-            >
-              <img
-                src={setter.image}
-                alt={`${setter.username}'s profile`}
-                className="ml-4 w-10 h-10 rounded-full"
-              />
-              <span className="ml-4 font-medium text-gray-800 text-lg hover:underline">
-                {setter.username}
-              </span>
-            </div>))}
-        </div>
+        {ContestCollaborators?.map((setter) => (
+          <div
+            key={setter.id}
+            className="flex flex-row items-center mb-4 hover:bg-gray-100 p-4 rounded-md cursor-pointer relative"
+          >
+            <img
+              src={setter.image}
+              alt={`${setter.username}'s profile`}
+              className="ml-4 w-10 h-10 rounded-full"
+            />
+            <span className="ml-4 font-medium text-gray-800 text-lg hover:underline">
+              {setter.username}
+            </span>
+
+            {/* Conditionally render the "Requested" text */}
+            {setter.status !== 'accepted' && (
+              <div className="absolute bottom-0 right-1">
+                <span className="text-xs text-red-500">Requested</span>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
 
       {isListOpen && (
         <div className="max-h-[60vh] overflow-y-auto">

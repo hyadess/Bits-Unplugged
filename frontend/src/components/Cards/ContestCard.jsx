@@ -34,6 +34,7 @@ const ContestCard = ({
 
   useEffect(() => {
     setLoading(false);
+    console.log("start end Time", startDate, endDate);
   }, []);
 
   return (
@@ -55,10 +56,10 @@ const ContestCard = ({
         <div className="flex justify-between mt-4">
           <div className="flex flex-col gap-2 items-start">
             <div className="bu-text-subtitle font-semibold">
-              {startDate ? `Start Date: ${getTimeStamp(startDate)}` : 'Start Date: Yet to be added'}
+              {startDate ? `Start Date: ${new Date(startDate)}` : 'Start Date: Yet to be added'}
             </div>
             <div className="bu-text-subtitle font-semibold">
-              {endDate ? `End Date: ${getTimeStamp(endDate)}` : 'End Date: Yet to be added'}
+              {endDate ? `End Date: ${new Date(endDate)}` : 'End Date: Yet to be added'}
             </div>
           </div>
 
@@ -70,7 +71,7 @@ const ContestCard = ({
               {updatedAt && `Last Updated: ${getTimeStamp(updatedAt)}`}
             </div>
           </div>
-
+          {new Date(startDate).getTime() < Date.now() && (
           <div className="flex gap-4 items-center">
             <div className="flex w-full cursor-pointer items-center justify-center">
               <div
@@ -83,7 +84,7 @@ const ContestCard = ({
                 </h5>
               </div>
             </div>
-          </div>
+          </div>)}
         </div>
       </div>
 

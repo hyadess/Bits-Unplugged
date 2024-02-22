@@ -280,7 +280,7 @@ const CanvasContainer = (props, ref) => {
             style={{
               position: "absolute",
               top: "1rem",
-              right: "6rem",
+              right: "1rem",
               backgroundColor: "rgba(17, 24, 39, 0.9)",
             }}
           >
@@ -500,7 +500,7 @@ const CanvasContainer = (props, ref) => {
           </Tooltip>
         )} */}
 
-        {props.mode !== "preview" && (
+        {props.mode !== "preview" && props.canvasId !== null && (
           <Tooltip
             title={<h1 className="text-lg text-white">Clear Canvas</h1>}
             placement="top"
@@ -525,7 +525,7 @@ const CanvasContainer = (props, ref) => {
             </div>
           </Tooltip>
         )}
-        {props.mode !== "preview" && (
+        {props.mode !== "preview" && props.canvasId !== null && (
           <Tooltip
             title={
               <h1 className="text-lg text-white">
@@ -556,29 +556,31 @@ const CanvasContainer = (props, ref) => {
             </div>
           </Tooltip>
         )}
-        <Tooltip
-          title={<h1 className="text-lg text-white">Canvas Info</h1>}
-          placement="top"
-          // TransitionComponent={Zoom}
-          arrow
-          size="large"
-        >
-          <div className="flex flex-col items-center bu-text-primary font-bold">
-            <IconButton
-              sx={{
-                fontSize: "2rem",
-                width: "3rem",
-                height: "3rem",
-              }}
-              onClick={() => alert(canvasInfo)}
-            >
-              <div className="flex items-center bu-text-primary">
-                <InfoIcon sx={{ fontSize: "2rem" }} />
-              </div>
-            </IconButton>
-            <div className="transform translate-y-[-50%] text-sm">Info</div>
-          </div>
-        </Tooltip>
+        {props.canvasId !== null && (
+          <Tooltip
+            title={<h1 className="text-lg text-white">Canvas Info</h1>}
+            placement="top"
+            // TransitionComponent={Zoom}
+            arrow
+            size="large"
+          >
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem",
+                }}
+                onClick={() => alert(canvasInfo)}
+              >
+                <div className="flex items-center bu-text-primary">
+                  <InfoIcon sx={{ fontSize: "2rem" }} />
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">Info</div>
+            </div>
+          </Tooltip>
+        )}
       </div>
     </div>
   );

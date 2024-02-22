@@ -126,17 +126,17 @@ const SolutionCheckerTab = () => {
                 <SaveIcon />
               </div>
             </div>
+            <button
+              className="bu-button-secondary rounded-l-full px-7 py-2 text-center text-2xl  text-white absolute bottom-0 right-0 font-bold"
+              onClick={() => setCheckerType((prev) => !prev)}
+            >
+              <FontAwesomeIcon icon={checkerType ? faCode : faObjectGroup} />
+            </button>
           </>
         )
       ) : (
         <></>
       )}
-      <button
-        className="bu-button-secondary rounded-l-full px-7 py-2 text-center text-2xl  text-white absolute bottom-0 right-0 font-bold"
-        onClick={() => setCheckerType((prev) => !prev)}
-      >
-        <FontAwesomeIcon icon={checkerType ? faCode : faObjectGroup} />
-      </button>
     </div>
   );
 };

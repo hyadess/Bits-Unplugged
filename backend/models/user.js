@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       User.hasMany(models.Activity, { foreignKey: "userId" });
       User.hasMany(models.Submission, { foreignKey: "userId" });
+      User.hasMany(models.UserRating, { foreignKey: "userId" });
     }
   }
   User.init(

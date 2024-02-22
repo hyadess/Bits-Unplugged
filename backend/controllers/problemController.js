@@ -10,7 +10,7 @@ class ProblemController extends Controller {
 
   getAllProblems = async (req, res) => {
     this.handleRequest(res, async () => {
-      console.log("GEEEEEEEEET");
+      // console.log("GEEEEEEEEET");
       let problems =
         req.user.type === 0
           ? await problemRepository.getAllLiveProblems(req.user.userId)

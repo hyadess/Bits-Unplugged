@@ -82,11 +82,22 @@ class ContestController extends Controller {
     }
   };
   isContestProblemSolved = async (req, res) => {
-    console.log("problem id ==>", req.body.problemId);
     let result = await contestRepository.isContestProblemSolved(
       req.user.userId,
       req.params.contestId,
       req.params.problemId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
+  totalProblemSolved = async (req, res) => {
+    let result = await contestRepository.totalProblemSolved(
+      req.params.userId,
+      req.params.contestId,
     );
     if (result.success) {
       res.status(200).json(result.data);
@@ -119,6 +130,17 @@ class ContestController extends Controller {
   };
   getAllProblemsByContest = async (req, res) => {
     let result = await contestRepository.getAllProblemsByContest(
+      req.params.contestId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
+  totalProblemCountByContest = async (req, res) => {
+    let result = await contestRepository.totalProblemCountByContest(
       req.params.contestId
     );
     if (result.success) {

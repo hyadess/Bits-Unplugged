@@ -10,7 +10,7 @@ import ProblemContextProvider, {
 } from "../store/ProblemContextProvider";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-function ContestProblemController() {
+function ContestProblemController( endTime ) {
   const { type } = useContext(GlobalContext);
   const { id } = useParams();
   const { problemid } = useParams();
@@ -179,11 +179,11 @@ function ContestProblemController() {
   );
 }
 
-const ContestProblem = () => {
+const ContestProblem = ( endTime ) => {
   return (
     <ProblemContextProvider>
       <DndProvider backend={HTML5Backend}>
-        <ContestProblemController />
+        <ContestProblemController endTime={endTime} />
       </DndProvider>
     </ProblemContextProvider>
   );

@@ -99,18 +99,18 @@ export default function AdminArticles() {
 
       <CardContainer col={2}>
         {articleList &&
-          articleList.map((problem, index) => (
+          articleList.map((article, index) => (
             <AdminArticleCard
               key={index}
               idx={index + 1}
-              id={problem.id}
-              name={problem.title}
-              image={problem.logo}
-              problem={problem}
-              path={`/admin/articles/${problem.id}`}
+              id={article.id}
+              name={article.title}
+              image={article.logo}
+              article={article}
+              path={`/admin/articles/${article.id}`}
               action="Get Started"
-              canvas={problem.canvas?.name}
-              timestamp={problem.updatedAt}
+              canvas={article.canvas?.name}
+              timestamp={article.updatedAt}
               topicList={topicList}
               seriesList={seriesList}
               deleteAction={deleteArticle}

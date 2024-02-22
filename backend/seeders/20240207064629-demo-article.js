@@ -103,6 +103,16 @@ module.exports = {
             },
           ]),
           isLive: true,
+          serialNo: 2,
+        },
+        {
+          // id: 2
+          seriesId: 1,
+          title: "The Golden Ratio",
+          subtitle: "A Mathematical Marvel in Art and Nature",
+          content: JSON.stringify([]),
+          isLive: false,
+          serialNo: 1,
         },
       ],
       {}

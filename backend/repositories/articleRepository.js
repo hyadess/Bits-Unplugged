@@ -10,11 +10,10 @@ class ArticleRepository extends Repository {
     return await db.Article.findAll();
   };
 
-  getArticlesBySeries = async (seriesId, isLive) => {
+  getArticlesBySeries = async (seriesId) => {
     return await db.Article.findAll({
       where: {
         seriesId,
-        isLive,
       },
     });
   };
@@ -45,6 +44,7 @@ class ArticleRepository extends Repository {
   };
 
   updateArticle = async (id, data) => {
+    console.log("Update: ", id, data);
     const [updatedRowsCount, [updatedArticle]] = await db.Article.update(data, {
       returning: true,
       where: {
@@ -90,6 +90,108 @@ class ArticleRepository extends Repository {
     }
 
     return updatedArticle;
+  };
+
+  updateArticlesBySeries = async (seriesId, data) => {
+    // const transaction = await db.sequelize.transaction();
+    // try {
+    //   // find all series by topicId
+    //   const existingSeries = await db.Series.findAll({
+    //     where: {
+    //       topicId,
+    //     },
+    //     transaction,
+    //   });
+    //   const existingSeriesIds = existingSeries.map((series) => series.id);
+    //   const dataSeriesIds = data.map((series) => series.id);
+    //   const seriesToDelete = existingSeriesIds.filter(
+    //     (id) => !dataSeriesIds.includes(id)
+    //   );
+    //   const seriesToUpdate = existingSeriesIds.filter((id) =>
+    //     dataSeriesIds.includes(id)
+    //   );
+    //   const seriesToCreate = dataSeriesIds.filter(
+    //     (id) => !existingSeriesIds.includes(id)
+    //   );
+    //   const deletedSeries = await db.Series.update(
+    //     { topicId: null },
+    //     {
+    //       returning: true,
+    //       where: {
+    //         id: seriesToDelete,
+    //       },
+    //       transaction,
+    //     }
+    //   );
+    //   console.log(seriesToUpdate);
+    //   for (const series of data) {
+    //     const recordToUpdate = await db.Series.update(series, {
+    //       returning: true,
+    //       where: {
+    //         id: series.id,
+    //       },
+    //     });
+    //   }
+    //   const createdSeries = await db.Series.bulkCreate(seriesToCreate, {
+    //     transaction,
+    //   });
+    //   await transaction.commit();
+    //   return createdSeries;
+    // } catch (error) {
+    //   await transaction.rollback();
+    //   throw error;
+    // }
+
+    const transaction = await db.sequelize.transaction();
+    try {
+      // find all articles by seriesId
+      const existingArticles = await db.Article.findAll({
+        where: {
+          seriesId,
+        },
+        transaction,
+      });
+
+      const existingArticleIds = existingArticles.map((article) => article.id);
+      const dataArticleIds = data.map((article) => article.id);
+      const articlesToDelete = existingArticleIds.filter(
+        (id) => !dataArticleIds.includes(id)
+      );
+      const articlesToUpdate = existingArticleIds.filter((id) =>
+        dataArticleIds.includes(id)
+      );
+      const articlesToCreate = dataArticleIds.filter(
+        (id) => !existingArticleIds.includes(id)
+      );
+      const deletedArticles = await db.Article.update(
+        { seriesId: null },
+        {
+          returning: true,
+          where: {
+            id: articlesToDelete,
+          },
+          transaction,
+        }
+      );
+
+      console.log(articlesToUpdate);
+      for (const article of data) {
+        const recordToUpdate = await db.Article.update(article, {
+          returning: true,
+          where: {
+            id: article.id,
+          },
+        });
+      }
+      // const createdArticles = await db.Article.bulkCreate(data, {
+      //   transaction,
+      // });
+      await transaction.commit();
+      return { success: true };
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
   };
 }
 

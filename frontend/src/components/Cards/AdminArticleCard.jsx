@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../ProbSetTab";
 import { setLoading, showSuccess } from "../../App";
-import { problemApi } from "../../api";
+import { articleApi, problemApi } from "../../api";
 import Confirmation from "../Confirmation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,7 +18,7 @@ import {
   faXmark,
   faCheck,
   faFloppyDisk,
-  faEdit
+  faEdit,
   // far,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -38,8 +38,8 @@ export default function AdminArticleCard({
   deleteAction,
   isLive,
   canvas,
-  problem,
-  setProblem,
+  article,
+  setArticle,
   isEdit,
   timestamp,
   seriesList,
@@ -54,9 +54,9 @@ export default function AdminArticleCard({
   }, []);
 
   useEffect(() => {
-    if (seriesList.length > 0 && problem.seriesId) {
+    if (seriesList.length > 0 && article.seriesId) {
       setSeries(
-        seriesList.filter((series) => series.id == problem.seriesId)[0]
+        seriesList.filter((series) => series.id == article.seriesId)[0]
       );
     }
   }, [seriesList]);
@@ -68,7 +68,6 @@ export default function AdminArticleCard({
   }, [topicList, series]);
 
   const navigate = useNavigate();
-
 
   return (
     <div className="w-full h-full relative" key={id}>
@@ -141,12 +140,12 @@ export default function AdminArticleCard({
           {/* <button
             className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-save"
             // onClick={async () => {
-            //   const res = await problemApi.updateProblem(problem.id, {
-            //     ...problem,
+            //   const res = await problemApi.updateProblem(article.id, {
+            //     ...article,
             //     seriesId: series?.id,
             //   });
             //   showSuccess("Problem updated successfully", res);
-            //   // setProblem((prev) => ({ ...prev, seriesId: series?.id }));
+            //   // setArticle((prev) => ({ ...prev, seriesId: series?.id }));
             // }}
           >
             Publish
@@ -154,12 +153,12 @@ export default function AdminArticleCard({
           <button
             className="font-medium rounded-lg text-lg px-10 py-2 text-center w-full bu-button-primary"
             onClick={async () => {
-              const res = await problemApi.updateProblem(problem.id, {
-                ...problem,
+              const res = await articleApi.updateArticle(article.id, {
+                ...article,
                 seriesId: series?.id,
               });
-              showSuccess("Problem updated successfully", res);
-              // setProblem((prev) => ({ ...prev, seriesId: series?.id }));
+              showSuccess("Article updated successfully", res);
+              // setArticle((prev) => ({ ...prev, seriesId: series?.id }));
             }}
           >
             <FontAwesomeIcon icon={faFloppyDisk} className="mr-2" />

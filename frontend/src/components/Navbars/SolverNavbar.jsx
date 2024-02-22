@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Avatar, InputAdornment, Typography } from "@mui/material";
 import Logo from "../Logo";
 import SearchBar from "../InputFields/SearchBar";
+import SearchModal from "../Modal/SearchModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBrain,
@@ -32,14 +33,44 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import NavButton from "./NavButton";
+import { Search } from "lucide-react";
+import { set } from "date-fns";
 
 const SolverNavbar = (props) => {
   const [user, setUser] = useState(null);
   const { type, setType, setColorMode } = useContext(GlobalContext);
   const [search, setSearch] = useState(false);
+  const [seachQuery, setSeachQuery] = useState("");
+  const [userList, setUserList] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [tab, setTab] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
+
+  const searchSubmit = async () => {
+    const isLoggedIn = localStorage.hasOwnProperty("token");
+    if (isLoggedIn) {
+      const res = await profileApi.searchProfileByQuery(seachQuery);
+      if (res.success) {
+        setUserList(res.data);
+        console.log(res.data);
+        // break;
+      } else {
+        // navigate("/login");
+      }
+    }
+  };
+
+  const searchUser = async (user) => {
+    setIsModalOpen(false);
+    setSeachQuery("");
+
+    if (user.role === 0) {
+      navigate("/user/" + user.username);
+    } else {
+      navigate("/setter/" + user.username);
+    }
+  };
 
   const setProfile = async () => {
     const isLoggedIn = localStorage.hasOwnProperty("token");
@@ -90,6 +121,11 @@ const SolverNavbar = (props) => {
     }
   }, [localStorage]);
 
+  useEffect(() => {
+    console.log("modal open");
+    setIsModalOpen(true);
+  }, [userList]);
+
   return (
     <>
       {type >= 0 && (
@@ -107,7 +143,13 @@ const SolverNavbar = (props) => {
               <Logo width={180} height={45} />
             </div>
 
-            <SearchBar label={"user name"} setSearch={setSearch} />
+            <SearchBar
+              searchQuery={seachQuery}
+              setSearchQuery={setSeachQuery}
+              label={"user name"}
+              setSearch={setSearch}
+              onSubmit={searchSubmit}
+            />
           </div>
           <div className="flex justify-start md:justify-center w-8/12 md:w-3/5">
             <>
@@ -264,6 +306,16 @@ const SolverNavbar = (props) => {
             </div>
           </div>
         </div>
+      )}
+      {isModalOpen && userList.length > 0 ? (
+        <SearchModal
+          label={"Search Results"}
+          list={userList}
+          onSearch={searchUser}
+          onClose={() => setIsModalOpen(false)}
+        />
+      ) : (
+        <></>
       )}
     </>
   );

@@ -57,8 +57,10 @@ class UserActivityController extends Controller {
     }
   };
 
+  
+
   successesByUser = async (req, res) => { 
-    let result = await userActivityRepository.successesByUser(req.user.userId);
+    let result = await userActivityRepository.successesByUser(req.params.username);
     if (result.success) {
       res.status(200).json(result.data);
     } else {
@@ -120,7 +122,7 @@ class UserActivityController extends Controller {
   };
   mostRecentFailsByUser = async (req, res) => {
     let result = await userActivityRepository.mostRecentFailsByUser(
-      req.user.userId
+      req.params.username
     );
     if (result.success) {
       res.status(200).json(result.data);

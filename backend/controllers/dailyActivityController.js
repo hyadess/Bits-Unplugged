@@ -8,8 +8,8 @@ class dailyActivityController extends Controller {
     super();
   }
   daywiseActivityByUser = async (req, res) => {
-    const userId = req.user.userId;
-    const result = await dailyActivityRepository.getDaywiseActivityByUser(userId);
+    
+    const result = await dailyActivityRepository.getDaywiseActivityByUser(req.params.username);
     if(result.success){
       res.status(200).json(result.data);
     }else{

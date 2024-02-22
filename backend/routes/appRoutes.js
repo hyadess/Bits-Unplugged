@@ -10,6 +10,7 @@ const userActivityRoutes = require("./userActivityRoutes");
 const contestRoutes = require("./contestRoutes");
 const articleRoutes = require("./articleRoutes");
 const seedRoutes = require("./seedRoutes");
+const setterActivityRoutes = require("./setterActivityRoutes");
 const storageRoutes = require("./storageRoutes");
 const base = require("../repositories/base");
 
@@ -35,5 +36,7 @@ router.use("/userActivity", userActivityRoutes);
 router.use("/contests", contestRoutes);
 router.use("/articles", articleRoutes);
 router.use("/seed", seedRoutes);
+router.use("/setterActivity", setterActivityRoutes);
 router.use("/storage", storageRoutes);
+
 module.exports = router;

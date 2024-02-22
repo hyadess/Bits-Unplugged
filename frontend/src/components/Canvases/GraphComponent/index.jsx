@@ -215,6 +215,7 @@ const GraphComponent = (props, ref) => {
     const resizeObserver = new ResizeObserver(() => {
       // Do what you want to do when the size of the element changes
       setWidth(windowRef.current.offsetWidth);
+      setHeight(windowRef.current.offsetHeight);
     });
     resizeObserver.observe(windowRef.current);
     return () => {
@@ -1000,7 +1001,7 @@ const GraphComponent = (props, ref) => {
           <Stage
             width={width} // small glitch // 1102
             // width={window.innerWidth * 0.57}
-            height={500} // 630
+            height={445} // 630
             onClick={handleCanvasClick}
             onMouseMove={handleMouseMove}
             ref={props.stageRef}

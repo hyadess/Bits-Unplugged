@@ -7,7 +7,7 @@ const CustomModal = ({ label, placeholder, onClose, onSubmit }) => {
   const [inputValue, setInputValue] = useState("");
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
-  };
+  }; 
   const handleSubmit = async (e) => {
     if (inputValue !== "") {
       onSubmit(inputValue);

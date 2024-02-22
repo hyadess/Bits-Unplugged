@@ -8,9 +8,11 @@ router.use(
 );
 
 router.get("/", profileController.getProfile);
+router.get("/:username", profileController.getProfileByUsername);
+router.get("/search/:seachQuery", profileController.searchProfileByQuery);
 router.post("/", profileController.setProfile);
 router.put("/", profileController.updateProfile);
-router.post("/upload", (req, res) => res.status(200).send()); // dihan - Upload profile picture
+router.post("/set/upload", (req, res) => res.status(200).send()); // dihan - Upload profile picture
 
 router.get("/users", profileController.getProfile);
 router.get("/setters", profileController.getProfile);

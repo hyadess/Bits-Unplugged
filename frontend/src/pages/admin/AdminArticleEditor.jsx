@@ -23,84 +23,14 @@ import ProblemContextProvider, {
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Header from "./articleSetEnv/Header";
-import ProbSetTab from "components/ProbSetTab";
+import ProbSetTab from "./articleSetEnv/ProbSetTab";
 import DetailsTab from "./articleSetEnv/DetailsTab";
 import CanvasDesignTab from "./articleSetEnv/CanvasDesignTab";
 import SolutionCheckerTab from "./articleSetEnv/SolutionCheckerTab";
-import TestTab from "./articleSetEnv/TestTab";
+import TestTab from "../setter/ProblemSetEnv/TestTab";
 import Confirmation from "components/Confirmation";
 import { Tooltip } from "@mui/material";
 import { IconButton } from "@mui/material";
-
-const Canvas = ({
-  index,
-  onSubmit,
-  content,
-  onReset,
-  articleBackup,
-  updateCanvas,
-  updateActivity,
-}) => {
-  const canvasRef = useRef(null);
-
-  const reset = () => {
-    onReset(index);
-    canvasRef?.current?.handleReset(
-      JSON.parse(
-        JSON.stringify(articleBackup.current.content[index].canvasData)
-      )
-    );
-  };
-
-  return (
-    content.canvasId && (
-      <div className="flex w-full flex-col gap-5">
-        <CanvasContainer
-          canvasId={content.canvasId}
-          input={content.canvasData}
-          setInput={(canvasData) => {
-            updateCanvas(index, canvasData);
-          }}
-          mode={"preview"}
-          ref={canvasRef}
-          editOptions={content.editOptions}
-          previewOptions={content.previewOptions}
-          activityData={content.activityData}
-          setActivityData={(activityData) => {
-            updateActivity(index, activityData);
-          }}
-        />
-        <div className="flex flex-row justify-between">
-          <Button
-            size="large"
-            variant="contained"
-            color="success"
-            onClick={() => {
-              reset();
-              // canvasRef.current.handleReset(); // Call this after reset
-            }}
-            startIcon={<RotateLeft sx={{ fontSize: "2rem", color: "white" }} />}
-          >
-            Reset
-          </Button>
-          <Button
-            size="large"
-            variant="contained"
-            onClick={() => {
-              console.log("inside submit");
-              console.log(content.activityData);
-
-              onSubmit(content);
-            }}
-            endIcon={<SendIcon sx={{ fontSize: "2rem", color: "white" }} />}
-          >
-            Submit
-          </Button>
-        </div>
-      </div>
-    )
-  );
-};
 
 const ArticleCanvas = ({ data, articleId, content, index }) => {
   const { state: problem, dispatch } = useProblemContext();
@@ -189,7 +119,7 @@ const ArticleCanvas = ({ data, articleId, content, index }) => {
         click={(tab) => {
           if (tab === "Test" && activeComponent !== "Test") {
             dispatch({
-              type: "UPDATE_TEST_CANVAS",
+              type: "SET_TEST_CANVAS",
               payload: deepCopy(problem.canvasData),
             });
             testRef?.current?.handleReset(deepCopy(problem.canvasData));
@@ -543,6 +473,7 @@ const WriteArticle = ({
                 <ProblemContextProvider>
                   <DndProvider backend={HTML5Backend}>
                     <div>
+                      l
                       <ArticleCanvas
                         articleId={article.id}
                         data={content}

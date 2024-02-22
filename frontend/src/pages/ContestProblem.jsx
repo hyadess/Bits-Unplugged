@@ -25,12 +25,15 @@ function ContestProblemController( endTime ) {
   useEffect(() => {
     const fetchData = async () => {
       renderProblem();
+      // fetch contest. We need the end time
     };
 
     fetchData();
   }, [problemid]);
   const deepCopy = (obj) => {
-    return JSON.parse(JSON.stringify(obj));
+    return typeof obj === "string"
+      ? JSON.parse(obj)
+      : JSON.parse(JSON.stringify(obj));
   };
 
   const renderProblem = async () => {
@@ -74,32 +77,33 @@ function ContestProblemController( endTime ) {
 
     if (res.output === "Accepted") {
       if (startTimeRef.current) {
-        const endTime = new Date();
-        const durationInSeconds = Math.floor(
-          (endTime - startTimeRef.current) / 1000
-        );
+        // const endTime = new Date();
+        // const durationInSeconds = Math.floor(
+        //   (endTime - startTimeRef.current) / 1000
+        // );
 
-        let result;
+        // let result;
 
-        if (durationInSeconds > 1 && type === 0) {
-          console.log("Duration:", durationInSeconds);
-          result = await submissionApi.submitSolution(
-            problem.canvasData,
-            res.output,
-            problemid,
-            durationInSeconds
-          );
-        } else {
-          result = await submissionApi.submitSolution(
-            problem.canvasData,
-            res.output,
-            problemid,
-            0
-          );
-        }
+        // if (durationInSeconds > 1 && type === 0) {
+        //   console.log("Duration:", durationInSeconds);
+        //   result = await submissionApi.submitSolution(
+        //     problem.canvasData,
+        //     res.output,
+        //     problemid,
+        //     durationInSeconds
+        //   );
+        // } else {
+        //   result = await submissionApi.submitSolution(
+        //     problem.canvasData,
+        //     res.output,
+        //     problemid,
+        //     0
+        //   );
+        // }
 
         const isSolved = await contestApi.isContestProblemSolved(id, problemid);
-        if (isSolved.data.length === 0 && endTime?.getTime() > Date.now()) {
+        console.log("submissions==>", isSolved);
+        if (isSolved.data.length === 0) {
           const res2 = await contestApi.getContestProblemById(id, problemid);
           await contestApi.addSubmissionToContest(
             id,
@@ -110,24 +114,25 @@ function ContestProblemController( endTime ) {
             res2.data[0].rating
           );
         }
+
       }
     } else {
-      const result = await submissionApi.submitSolution(
-        problem.canvasData,
-        res.output,
+      // const result = await submissionApi.submitSolution(
+      //   problem.canvasData,
+      //   res.output,
+      //   problemid,
+      //   0
+      // );
+      // const isSolved = await contestApi.isContestProblemSolved(id, problemid);
+      // console.log("submissions==>", isSolved);
+      await contestApi.addSubmissionToContest(
+        id,
         problemid,
+        res.output,
+        problem.canvasData,
+        problem.activityData,
         0
       );
-      if (endTime?.getTime() > Date.now()) {
-        await contestApi.addSubmissionToContest(
-          id,
-          problemid,
-          res.output,
-          problem.canvasData,
-          problem.activityData,
-          0
-        );
-      }
     }
   };
 
@@ -157,8 +162,8 @@ function ContestProblemController( endTime ) {
 
         //console.log("Duration:", durationInSeconds);
         // Send the duration to the backend
-        if (durationInSeconds > 1 && type == 0)
-          problemApi.trackDuration(problemid, durationInSeconds);
+        // if (durationInSeconds > 1 && type == 0)
+        //   problemApi.trackDuration(problemid, durationInSeconds);
       }
     };
   }, []);

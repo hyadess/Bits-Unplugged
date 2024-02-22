@@ -14,6 +14,10 @@ class ProfileController extends Controller {
     let result = await profileRepository.getProfileByUsername(req.params.username);
     this.handleResponse(result, res);
   };
+  searchProfileByQuery = async (req, res) => {
+    let result = await profileRepository.searchProfileByQuery(req.params.seachQuery);
+    this.handleResponse(result, res);
+  };
 
   setProfile = async (req, res) => {
     let result = await profileRepository.setProfile(req.body);

@@ -3,13 +3,11 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { setLoading } from "../../App";
 import { contestApi} from "../../api"; // Assuming you have an authApi to get user information
-import { jwtDecode } from 'jwt-decode';
 
 const SetterContests = () => {
   const navigate = useNavigate();
   const [contestList, setContestList] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [userId, setUserId] = useState(null); // New state to store user_id
 
   const deleteContest = async (contestID) => {
     const res = await contestApi.deleteContest(contestID);
@@ -19,7 +17,7 @@ const SetterContests = () => {
   };
 
   const getContestList = async () => {
-    const res = await contestApi.getAllContests();
+    const res = await contestApi.getMyContests();
     console.log(res.data);
     if (res.success) {
       if (res.data.length > 0)
@@ -50,16 +48,8 @@ const SetterContests = () => {
     setModalIsOpen(false);
   };
 
-  const fetchUser = async () => {
-    const decoded = jwtDecode(localStorage.getItem("token"));
-    if (decoded) {
-      setUserId(decoded);
-    }
-  };
-
   useEffect(() => {
     getContestList();
-    fetchUser();
   }, []);
 
   return (
@@ -70,7 +60,6 @@ const SetterContests = () => {
       createContest={createContest}
       contestList={contestList}
       modalIsOpen={modalIsOpen}
-      userId={userId} 
     />
   );
 };

@@ -32,6 +32,16 @@ router.get(
   contestController.getAllContestProblemsByContest
 );
 
+router.get(
+  "/:contestId/problemCount",
+  contestController.totalProblemCountByContest
+);
+
+router.get(
+  "/:contestId/solvedCount/:userId",
+  contestController.totalProblemSolved
+);
+
 router.post("/addContest", contestController.addContest);
 router.put("/:contestId/updateTitle", contestController.updateTitle);
 router.put(

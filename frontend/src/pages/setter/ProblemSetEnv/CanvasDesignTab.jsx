@@ -158,9 +158,15 @@ const CanvasDesignTab = ({ backupProblem }) => {
     console.log("Backup:", backupProblem?.current?.canvasData?.array);
   }, [problem.canvasData]);
 
+  // useEffect(() => {
+  //   if ((backupProblem?.current ?? false) && !problem.canvasId) {
+  //     changeCanvas(0);
+  //   }
+  //   console.log("Change:", problem.canvasId);
+  // }, [problem.canvasId]);
   return (
     <>
-      {problem.canvasId && (
+      {problem && (
         <>
           <CanvasContainer
             canvasId={problem.canvasId}
@@ -178,6 +184,7 @@ const CanvasDesignTab = ({ backupProblem }) => {
             }}
             ref={canvasRef}
             mode={mode}
+            onCanvasChange={changeCanvas}
             editOptions={problem.editOptions}
             setEditOptions={(data) => {
               dispatch({

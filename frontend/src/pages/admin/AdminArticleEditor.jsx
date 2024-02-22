@@ -177,7 +177,7 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="bu-card-primary pb-10 rounded-[30px] flex flex-col min-h-[25rem]">
+    <div className="bu-card-primary pb-10 rounded-[30px] flex flex-col min-h-[25rem]">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row p-4 items-start bu-text-primary text-2xl font-semibold">
             {serial + 1}/{images.length}

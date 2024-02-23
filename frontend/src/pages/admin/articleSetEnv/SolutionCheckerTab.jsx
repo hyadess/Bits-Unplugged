@@ -55,22 +55,19 @@ const SolutionCheckerTab = ({ onSave }) => {
   return (
     <div className="relative">
       {checkerType == 0 ? (
-        problem.canvasId && (
-          <SolutionChecker
-            code={problem.checkerCode}
-            setCode={(code) =>
-              dispatch({ type: "UPDATE_CHECKER_CODE", payload: code })
-            }
-            stdout={stdout}
-            output={output}
-            setOutput={setOutput}
-            setStdout={setStdout}
-            checkSubmit={onSubmit}
-            save={updateSolutionChecker}
-          />
-        )
+        <SolutionChecker
+          code={problem.checkerCode}
+          setCode={(code) =>
+            dispatch({ type: "UPDATE_CHECKER_CODE", payload: code })
+          }
+          stdout={stdout}
+          output={output}
+          setOutput={setOutput}
+          setStdout={setStdout}
+          checkSubmit={onSubmit}
+          save={updateSolutionChecker}
+        />
       ) : checkerType == 1 ? (
-        problem.canvasId &&
         canvasRef && (
           <>
             <CanvasContainer

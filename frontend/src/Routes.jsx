@@ -298,10 +298,18 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/admin/articles/:id"
+            path="/admin/articles/:id/edit"
             element={
               <LayoutMain>
                 <AdminArticleEditor />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/admin/articles/:id"
+            element={
+              <LayoutMain>
+                <Article />
               </LayoutMain>
             }
           />

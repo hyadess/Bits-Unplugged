@@ -25,7 +25,6 @@ const TestTab = (props, ref) => {
   const { state: problem, dispatch } = useProblemContext();
 
   return (
-    problem.canvasId &&
     ref && (
       <>
         <CanvasContainer

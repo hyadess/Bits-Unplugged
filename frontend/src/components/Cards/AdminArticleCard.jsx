@@ -82,7 +82,7 @@ export default function AdminArticleCard({
               className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title w-full cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full"
               onClick={() => {
                 setLoading(true);
-                navigate(path);
+                navigate(`/admin/articles/${article.id}`);
               }}
             >
               {name}
@@ -167,7 +167,7 @@ export default function AdminArticleCard({
           <button
             className="font-medium rounded-lg text-lg px-10 py-2 text-center w-full bu-button-primary"
             onClick={async () => {
-              navigate(path);
+              navigate(`/admin/articles/${article.id}/edit`);
             }}
           >
             <FontAwesomeIcon icon={faEdit} className="mr-2" />

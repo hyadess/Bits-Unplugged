@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { setLoading } from "../../App";
-const AdminNavButton = ({ label, path }) => {
+const AdminNavButton = ({ label, path, icon }) => {
   const navigate = useNavigate();
   const location = useLocation();
   return (
@@ -22,6 +22,7 @@ const AdminNavButton = ({ label, path }) => {
       <div
         className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3`}
       >
+        {icon}
         {label}
       </div>
       <div className="divider hidden md:flex "></div>

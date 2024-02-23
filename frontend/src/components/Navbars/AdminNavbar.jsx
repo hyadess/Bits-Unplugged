@@ -5,6 +5,17 @@ import { setLoading } from "../../App";
 import AdminNavButton from "./AdminNavButton";
 import AuthService from "../../services/authService";
 import GlobalContext from "../../store/GlobalContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBarsStaggered,
+  faHeadSideVirus,
+  faNewspaper,
+  faObjectUngroup,
+  faRightToBracket,
+  faTags,
+  faUserTie,
+} from "@fortawesome/free-solid-svg-icons";
+import { faTrello } from "@fortawesome/free-brands-svg-icons";
 
 const AdminNavbar = () => {
   const { setType } = useContext(GlobalContext);
@@ -65,31 +76,44 @@ const AdminNavbar = () => {
       </div>
       <div className="flex md:justify-center w-full md:w-3/5">
         <>
-          <AdminNavButton path="/admin/topics" label="Topics" />
-          <AdminNavButton path="/admin/series" label="Series" />
-          <AdminNavButton path="/admin/canvases" label="Canvases" />
-          <AdminNavButton path="/admin/problems" label="Problems" />
-          <AdminNavButton path="/admin/contests" label="Contests" />
-          <AdminNavButton path="/admin/articles" label="Articles" />
-          <AdminNavButton path="/admin/setters" label="Setters" />
-          <button
-            className="flex-grow-1 basis-1/3 md:basis-1/6 icon flex flex-col w-20 h-20 md:w-40 md:tooltip md:tooltip-right md:tooltip-info border-b-4 border-transparent items-center justify-center"
-            data-tip="Home"
-            onClick={async () => {
-              setLoading(true);
-              await AuthService.logout();
-              setType(0);
-              navigate("/login");
-            }}
-          >
-            <div className="text-xs md:text-lg md:font-bold md:text-white-800 bu-text-primary-hover">
-              Logout
-            </div>
-            <div className="divider hidden md:flex "></div>
-          </button>
+          <AdminNavButton
+            path="/admin/topics"
+            label="Topics"
+            icon={<FontAwesomeIcon icon={faTags} />}
+          />
+          <AdminNavButton
+            path="/admin/series"
+            label="Series"
+            icon={<FontAwesomeIcon icon={faBarsStaggered} />}
+          />
+          <AdminNavButton
+            path="/admin/canvases"
+            label="Canvases"
+            icon={<FontAwesomeIcon icon={faObjectUngroup} />}
+          />
+          <AdminNavButton
+            path="/admin/problems"
+            label="Problems"
+            icon={<FontAwesomeIcon icon={faHeadSideVirus} />}
+          />
+          <AdminNavButton
+            path="/admin/contests"
+            label="Contests"
+            icon={<FontAwesomeIcon icon={faTrello} />}
+          />
+          <AdminNavButton
+            path="/admin/articles"
+            label="Articles"
+            icon={<FontAwesomeIcon icon={faNewspaper} />}
+          />
+          <AdminNavButton
+            path="/admin/setters"
+            label="Setters"
+            icon={<FontAwesomeIcon icon={faUserTie} />}
+          />
         </>
       </div>
-      <div className="flex h-20 w-1/3 md:w-1/5 items-center justify-center">
+      <div className="flex flex-row h-20 w-1/3 md:w-1/5 items-center justify-end px-5 gap-5">
         <div
           className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
           onClick={() => toggleDarkMode()}
@@ -117,6 +141,18 @@ const AdminNavbar = () => {
             ></path>
           </svg>
         </div>
+        <button
+          className="font-semibold flex-row items-center gap-3 rounded-lg text-lg px-7 py-2 text-center bu-button-primary hidden md:flex"
+          onClick={async () => {
+            setLoading(true);
+            await AuthService.logout();
+            setType(0);
+            navigate("/login");
+          }}
+        >
+          <FontAwesomeIcon icon={faRightToBracket} />
+          <h1 className="align-middle">Log out</h1>
+        </button>
       </div>
     </div>
   );

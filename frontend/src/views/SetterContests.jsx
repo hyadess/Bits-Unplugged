@@ -23,7 +23,9 @@ const SetterContestsView = ({
 
       <ProblemAddButton onClick={openModal} />
 
-      <CardContainer col={1}>
+      <div
+        className={`grid grid-cols-1 justify-center items-center mx-auto max-w-screen-2xl gap-8 h-full w-full mb-3 md:grid-cols-1`}
+      >
         {contestList.map((contest, index) => (
           <ContestSetCard
             key={index}
@@ -40,7 +42,7 @@ const SetterContestsView = ({
             updatedAt={contest.updatedAt}
           />
         ))}
-      </CardContainer>
+      </div>
 
       {modalIsOpen && (
         <CustomModal

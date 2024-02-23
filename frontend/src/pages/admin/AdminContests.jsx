@@ -26,7 +26,6 @@ const AdminContests = () => {
 
   const getContestList = async () => {
     const res = await contestApi.getAllContests();
-    console.log(res.data);
     if (res.success) {
       if (res.data.length > 0)
         setContestList(res.data.sort((a, b) => a.id - b.id));
@@ -101,7 +100,8 @@ const AdminContests = () => {
       <CardContainer col={2}>
         {contestList.map(
           (contest, index) =>
-            contest.status == "upcoming" && (
+            contest.status !== "requested" &&
+            contest.status !== "edit" && (
               <ContestCard
                 key={index}
                 idx={index + 1}

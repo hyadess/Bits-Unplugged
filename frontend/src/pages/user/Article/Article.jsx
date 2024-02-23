@@ -4,6 +4,7 @@ import React, {
   Suspense,
   useRef,
   forwardRef,
+  useContext,
 } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { setLoading } from "../../../App";
@@ -34,6 +35,7 @@ import {
   faPlay,
   faRotateRight,
 } from "@fortawesome/free-solid-svg-icons";
+import GlobalContext from "store/GlobalContext";
 const Statement = ({ data }) => {
   const { colorMode } = useGlobalContext();
   return (
@@ -199,9 +201,10 @@ const SlideShow = (props) => {
 };
 export default function Article() {
   const { id } = useParams();
+  const { type } = useContext(GlobalContext);
   const articleBackup = useRef(null);
   const [article, setArticle] = useState({});
-
+  const navigate = useNavigate();
   function getColorModeFromLocalStorage() {
     return localStorage.getItem("color-theme") || "light";
   }
@@ -212,7 +215,7 @@ export default function Article() {
     if (res.success) {
       articleBackup.current = JSON.parse(JSON.stringify(res.data));
       setArticle(res.data);
-      console.log(article);
+      console.log(res.data);
       console.log("done");
     }
   };
@@ -264,7 +267,35 @@ export default function Article() {
 
   return (
     <div>
-      <Title title={article.title} />
+      <div className="flex flex-row justify-between">
+        <Title title={article.title} sub_title={article.subtitle} />
+        {type == 2 ? (
+          <div className="flex items-center">
+            <Tooltip
+              title={<h1 className="text-lg text-white">Edit</h1>}
+              placement="top"
+              arrow
+              size="large"
+            >
+              <IconButton>
+                <div
+                  data-tooltip-target="tooltip-default"
+                  className="bu-text-primary flex cursor-pointer items-center text-4xl"
+                  onClick={() => {
+                    setLoading(true);
+                    navigate(`/admin/articles/${article.id}/edit`);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faPenToSquare} />
+                </div>
+              </IconButton>
+            </Tooltip>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+
       <div className="flex flex-col gap-5">
         {article?.content?.length > 0 &&
           article?.content?.map((content, index) => {

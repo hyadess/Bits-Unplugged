@@ -12,10 +12,6 @@ module.exports = {
           title: "The Tower of Hanoi",
           subtitle: "A Fascinating Puzzle of Mathematical Beauty",
           content: JSON.stringify([
-            // {
-            //   type: "markdown",
-            //   data: `# The Tower of Hanoi: A Fascinating Puzzle of Mathematical Beauty.`,
-            // },
             {
               boxId: 1,
               type: "markdown",

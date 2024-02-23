@@ -9,6 +9,7 @@ import {
   faAdd,
   faArrowLeft,
   faArrowRight,
+  faArrowUpRightFromSquare,
   faFloppyDisk,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
@@ -836,6 +837,62 @@ const AdminArticleEditor = () => {
       <div>
         <div className="flex flex-row justify-between">
           <Title title={article.title} sub_title={article.subtitle} />
+          <div className="flex items-center">
+            <Tooltip
+              title={<h1 className="text-lg text-white">Preview</h1>}
+              placement="top"
+              arrow
+              size="large"
+            >
+              <IconButton>
+                <div
+                  data-tooltip-target="tooltip-default"
+                  className="bu-text-primary flex cursor-pointer items-center text-4xl"
+                  onClick={() => {
+                    setLoading(true);
+                    navigate(`/admin/articles/${article.id}`);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+                </div>
+              </IconButton>
+            </Tooltip>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-5 pb-10">
+          {/* <Title title={article.title} sub_title={article.subtitle} /> */}
+          {/* Take input for Title and Subtitle */}
+          <div className="flex flex-col gap-2">
+            <div className="bu-text-primary text-2xl font-medium">Title</div>
+            <input
+              value={article.title}
+              type="text"
+              name="title"
+              className="border text-[140%] rounded-lg block w-full p-2.5 px-5 bu-input-primary"
+              placeholder="Example Problem Name"
+              required
+              onChange={(e) => {
+                setArticle((prev) => {
+                  return { ...prev, title: e.target.value };
+                });
+              }}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="bu-text-primary text-2xl font-medium">Subtitle</div>
+            <textarea
+              value={article.subtitle}
+              name="details"
+              className="border rounded-lg block w-full p-2.5 px-5 bu-input-primary text-[140%]"
+              placeholder=""
+              onChange={(e) => {
+                setArticle((prev) => {
+                  return { ...prev, subtitle: e.target.value };
+                });
+              }}
+            />
+          </div>
         </div>
         <WriteArticle
           setArticle={setArticle}

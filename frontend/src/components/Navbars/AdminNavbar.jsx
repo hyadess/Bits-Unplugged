@@ -11,6 +11,7 @@ import {
   faHeadSideVirus,
   faNewspaper,
   faObjectUngroup,
+  faRightFromBracket,
   faRightToBracket,
   faTags,
   faUserTie,
@@ -150,7 +151,7 @@ const AdminNavbar = () => {
             navigate("/login");
           }}
         >
-          <FontAwesomeIcon icon={faRightToBracket} />
+          <FontAwesomeIcon icon={faRightFromBracket} />
           <h1 className="align-middle">Log out</h1>
         </button>
       </div>

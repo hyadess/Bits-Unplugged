@@ -39,9 +39,11 @@ const ArticleCanvas = ({ data, articleId, content, index }) => {
   const [activeComponent, setActiveComponent] = useState("Canvas"); // not related to database
   const testRef = useRef(null);
   const deepCopy = (obj) => {
-    return typeof obj === "string"
-      ? JSON.parse(obj)
-      : JSON.parse(JSON.stringify(obj));
+    return obj == null
+      ? null
+      : typeof obj === "string"
+        ? JSON.parse(obj)
+        : JSON.parse(JSON.stringify(obj));
   };
 
   const getProblem = async () => {
@@ -222,7 +224,7 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
             >
               <input
                 type="file"
-                id="fileInput"
+                id={"fileInput" + index}
                 style={{ display: "none" }}
                 onChange={(event) => {
                   const file = event.target.files[0];
@@ -251,7 +253,7 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
                     height: "3rem",
                   }}
                   onClick={() => {
-                    document.getElementById("fileInput").click();
+                    document.getElementById("fileInput" + index).click();
                   }}
                 >
                   <div className="flex items-center bu-text-primary text-3xl">
@@ -464,12 +466,18 @@ const WriteArticle = ({
                   icon={<FontAwesomeIcon icon={faAdd} />}
                   onClick={() => addContent(index, "video")}
                 />
-                <button
-                  className="flex flex-row items-center gap-2 bu-text-primary text-2xl"
+                <IconButton
+                  sx={{
+                    fontSize: "2rem",
+                    width: "3rem",
+                    height: "3rem",
+                  }}
                   onClick={() => deleteContent(index)}
                 >
-                  <FontAwesomeIcon icon={faTrashCan} />
-                </button>
+                  <div className="flex flex-row items-center gap-2 bu-text-primary text-2xl">
+                    <FontAwesomeIcon icon={faTrashCan} />
+                  </div>
+                </IconButton>
               </div>
               {content.type === "markdown" ? (
                 <MarkDownContainer
@@ -496,15 +504,12 @@ const WriteArticle = ({
               ) : content.type === "canvas" ? (
                 <ProblemContextProvider>
                   <DndProvider backend={HTML5Backend}>
-                    <div>
-                      l
-                      <ArticleCanvas
-                        articleId={article.id}
-                        data={content}
-                        content={article.content}
-                        index={index}
-                      />
-                    </div>
+                    <ArticleCanvas
+                      articleId={article.id}
+                      data={content}
+                      content={article.content}
+                      index={index}
+                    />
                   </DndProvider>
                 </ProblemContextProvider>
               ) : (
@@ -532,7 +537,7 @@ const AdminArticleEditor = () => {
   const getArticleInfo = async () => {
     const res = await articleApi.getArticleById(id);
     if (res.success) {
-      articleBackup.current = JSON.parse(JSON.stringify(res.data));
+      articleBackup.current = deepCopy(res.data);
       setArticle(res.data);
       //set box count as the max box id
       let max = 0;
@@ -561,7 +566,7 @@ const AdminArticleEditor = () => {
   const saveArticle = async () => {
     const res = await articleApi.updateArticle(id, article);
     if (res.success) {
-      console.log("Article Updated");
+      showSuccess("Article saved successfully", res);
     }
   };
 
@@ -589,11 +594,31 @@ const AdminArticleEditor = () => {
   const addContent = (index, type) => {
     setArticle((prev) => {
       let newContent = [...prev.content];
-      newContent.splice(index, 0, {
-        boxId: boxCount + 1,
-        data: "type here",
-        type: type,
-      });
+      if (type === "markdown") {
+        newContent.splice(index, 0, {
+          boxId: boxCount + 1,
+          data: "type here",
+          type: type,
+        });
+      } else if (type === "canvas") {
+        newContent.splice(index, 0, {
+          boxId: boxCount + 1,
+          type: type,
+          canvasId: null,
+          canvasData: null,
+          checkerCode:
+            "function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}",
+          editOptions: {},
+          previewOptions: {},
+          checkerCanvas: null,
+        });
+      } else if (type === "slideshow") {
+        newContent.splice(index, 0, {
+          boxId: boxCount + 1,
+          type: type,
+          images: [],
+        });
+      }
       setBoxCount((prev) => prev + 1);
       return { ...prev, content: newContent };
     });
@@ -666,12 +691,18 @@ const AdminArticleEditor = () => {
             icon={<FontAwesomeIcon icon={faAdd} />}
             onClick={() => addContent(article.content.length, "video")}
           />
-          <button
-            className="flex flex-row items-center gap-2 bu-text-primary text-2xl"
+          <IconButton
+            sx={{
+              fontSize: "2rem",
+              width: "3rem",
+              height: "3rem",
+            }}
             onClick={() => saveArticle()}
           >
-            <FontAwesomeIcon icon={faFloppyDisk} />
-          </button>
+            <div className="flex flex-row items-center gap-2 bu-text-primary text-2xl">
+              <FontAwesomeIcon icon={faFloppyDisk} />
+            </div>
+          </IconButton>
         </div>
         {/* 
         <div className="flex justify-center">

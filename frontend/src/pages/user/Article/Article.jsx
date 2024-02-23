@@ -283,7 +283,24 @@ export default function Article() {
                 />
               );
             } else if (content.type === "slideshow") {
-              return <SlideShow images={content.images} />;
+              return (
+                content.images.length && <SlideShow images={content.images} />
+              );
+            } else if (content.type === "image") {
+              return (
+                content.image && (
+                  <ImageLoader
+                    // key={i}
+                    src={content.image.url}
+                    // alt={image.caption}
+                    style={{
+                      width: "40rem",
+                      margin: "auto",
+                      pointerEvents: "none",
+                    }}
+                  />
+                )
+              );
             }
           })}
       </div>

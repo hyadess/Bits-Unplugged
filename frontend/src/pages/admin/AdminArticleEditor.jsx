@@ -31,6 +31,7 @@ import TestTab from "../setter/ProblemSetEnv/TestTab";
 import Confirmation from "components/Confirmation";
 import { Tooltip } from "@mui/material";
 import { IconButton } from "@mui/material";
+import ImageLoader from "components/ImageLoaders/ImageLoader";
 
 const ArticleCanvas = ({ data, articleId, content, index }) => {
   const { state: problem, dispatch } = useProblemContext();
@@ -162,6 +163,165 @@ const deepCopy = (obj) => {
     ? JSON.parse(obj)
     : JSON.parse(JSON.stringify(obj));
 };
+
+const ImageEditor = ({ data, articleId, content, index, onSave }) => {
+  const [image, setImage] = useState(null);
+
+  useState(() => {
+    setImage(data.image);
+  }, [data.image]);
+
+  return (
+    <div className="bu-card-primary pb-10 rounded-[30px] flex flex-col min-h-[25rem]">
+      <div className="flex flex-row justify-end">
+        <div className="flex flex-row p-2 items-center">
+          <Tooltip
+            title={<h1 className="text-lg text-white">Delete Image</h1>}
+            placement="top"
+            arrow
+            size="large"
+          >
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem",
+                }}
+                onClick={() => {
+                  setImage(null);
+                }}
+              >
+                <div className="flex items-center bu-text-primary text-3xl">
+                  <FontAwesomeIcon icon={faTrashCan} />
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">Delete</div>
+            </div>
+          </Tooltip>
+          <Tooltip
+            title={<h1 className="text-lg text-white">Add Image</h1>}
+            placement="top"
+            arrow
+            size="large"
+          >
+            <input
+              type="file"
+              id={"fileInput" + index}
+              style={{ display: "none" }}
+              onChange={(event) => {
+                const file = event.target.files[0];
+                setImage({
+                  url: URL.createObjectURL(file),
+                  caption: file.name,
+                  status: "new",
+                  file: file,
+                });
+              }}
+            />
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem",
+                }}
+                onClick={() => {
+                  document.getElementById("fileInput" + index).click();
+                }}
+              >
+                <div className="flex items-center bu-text-primary text-3xl">
+                  <FontAwesomeIcon icon={faAdd} />
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">Add</div>
+            </div>
+          </Tooltip>
+          <Tooltip
+            title={<h1 className="text-lg text-white">Save All</h1>}
+            placement="top"
+            arrow
+            size="large"
+          >
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem",
+                }}
+                onClick={async () => {
+                  // First list all the images.file that are new
+                  if (image?.status === "new") {
+                    const formData = new FormData();
+                    formData.append("file", image.file);
+                    const res = await storageApi.upload(formData);
+                    if (res.success) {
+                      const newImage = { ...image };
+                      newImage.url = res.data.path;
+                      delete newImage.status;
+                      delete newImage.file;
+                      const newContent = [...content];
+                      newContent[index] = {
+                        ...newContent[index],
+                        image: newImage,
+                      };
+                      setImage(newImage);
+                      const res2 = await articleApi.updateArticle(articleId, {
+                        content: newContent,
+                      });
+                      if (res2.success) {
+                        // console.log(res);
+                        showSuccess("Image updated successfully", res2);
+                        onSave(newImage);
+                      }
+                    }
+                  } else if (image === null && data.image !== null) {
+                    // images are deleted
+                    const newContent = [...content];
+                    newContent[index] = {
+                      ...newContent[index],
+                      image: image,
+                    };
+                    const res2 = await articleApi.updateArticle(articleId, {
+                      content: newContent,
+                    });
+                    if (res2.success) {
+                      // console.log(res);
+                      showSuccess("Image updated successfully", res2);
+                      console.log(await storageApi.remove(data.image.url));
+                      onSave(image);
+                    }
+
+                    // update the data.images with the new images
+                  }
+                }}
+              >
+                <div className="flex items-center bu-text-primary text-3xl">
+                  <FontAwesomeIcon icon={faFloppyDisk} />
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">Save</div>
+            </div>
+          </Tooltip>
+        </div>
+      </div>
+      {image && (
+        <ImageLoader
+          // key={i}
+          src={image.url}
+          // alt={image.caption}
+          style={{
+            width: "40rem",
+            margin: "auto",
+            pointerEvents: "none",
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
 const SlideShow = ({ data, articleId, content, index, onSave }) => {
   const [images, setImages] = useState([]);
   const [serial, setSerial] = useState(0);
@@ -340,18 +500,17 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
                       if (res2.success) {
                         // console.log(res);
                         showSuccess("Images saved successfully", res2);
+                        // Find which image was deleted by comparing url
+                        const deletedImages = data.images
+                          .filter((image) => {
+                            return !images.find((img) => img.url === image.url);
+                          })
+                          .map((image) => image.url);
+                        console.log(deletedImages);
+                        console.log(await storageApi.remove(deletedImages));
+                        onSave(images);
+                        // update the data.images with the new images
                       }
-
-                      // Find which image was deleted by comparing url
-                      const deletedImages = data.images
-                        .filter((image) => {
-                          return !images.find((img) => img.url === image.url);
-                        })
-                        .map((image) => image.url);
-                      console.log(deletedImages);
-                      console.log(await storageApi.remove(deletedImages));
-                      onSave(images);
-                      // update the data.images with the new images
                     }
                   }}
                 >
@@ -367,7 +526,7 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
 
         {images?.map((image, i) => {
           return (
-            <img
+            <ImageLoader
               key={i}
               src={image.url}
               alt={image.caption}
@@ -461,11 +620,11 @@ const WriteArticle = ({
                   icon={<FontAwesomeIcon icon={faAdd} />}
                   onClick={() => addContent(index, "image")}
                 />
-                <CustomButton
+                {/* <CustomButton
                   label="Video"
                   icon={<FontAwesomeIcon icon={faAdd} />}
                   onClick={() => addContent(index, "video")}
-                />
+                /> */}
                 <IconButton
                   sx={{
                     fontSize: "2rem",
@@ -512,6 +671,22 @@ const WriteArticle = ({
                     />
                   </DndProvider>
                 </ProblemContextProvider>
+              ) : content.type === "image" ? (
+                <ImageEditor
+                  articleId={article.id}
+                  data={content}
+                  content={article.content}
+                  index={index}
+                  onSave={(image) =>
+                    setArticle((prev) => {
+                      const newContent = [...prev.content];
+                      newContent[index].image = image;
+                      return { ...prev, content: newContent };
+                    })
+                  }
+                />
+              ) : content.type === "video" ? (
+                <></>
               ) : (
                 <></>
               )}
@@ -618,6 +793,12 @@ const AdminArticleEditor = () => {
           type: type,
           images: [],
         });
+      } else if (type === "image") {
+        newContent.splice(index, 0, {
+          boxId: boxCount + 1,
+          type: type,
+          image: null,
+        });
       }
       setBoxCount((prev) => prev + 1);
       return { ...prev, content: newContent };
@@ -686,11 +867,11 @@ const AdminArticleEditor = () => {
             icon={<FontAwesomeIcon icon={faAdd} />}
             onClick={() => addContent(article.content.length, "image")}
           />
-          <CustomButton
+          {/* <CustomButton
             label="Video"
             icon={<FontAwesomeIcon icon={faAdd} />}
             onClick={() => addContent(article.content.length, "video")}
-          />
+          /> */}
           <IconButton
             sx={{
               fontSize: "2rem",

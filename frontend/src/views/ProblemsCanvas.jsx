@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import CanvasContainer from "../components/Canvases/CanvasContainer";
 import { Button, IconButton, Tooltip } from "@mui/material";
@@ -18,6 +18,8 @@ import {
   faPlay,
   faRotateRight,
 } from "@fortawesome/free-solid-svg-icons";
+import html2canvas from "html2canvas";
+import { storageApi } from "api";
 const Title = ({ problem }) => {
   return (
     <div className="flex max-w-screen-xl flex-col gap-3 py-4 sm:pt-12">
@@ -112,6 +114,60 @@ const Statement = ({ colorMode }) => {
 
 const Canvas = forwardRef(({ onReset, onSubmit }, ref) => {
   const { state: problem, dispatch } = useProblemContext();
+  const stageRef = useRef(null);
+  const saveCanvasAsImage = async () => {
+    const stage = stageRef.current;
+
+    // check if the stage is canvas or canvas = await html2canvas(element), then use canvas.toDataURL()
+    let image;
+    try {
+      image = stage.toDataURL();
+    } catch (error) {
+      const canvas = await html2canvas(stage, { backgroundColor: null });
+      image = canvas.toDataURL("image/png");
+    }
+
+    // Create a temporary link element
+    const link = document.createElement("a");
+    link.href = image;
+    link.download = "canvas_image.png";
+
+    // Trigger the download
+    document.body.appendChild(link);
+    link.click();
+
+    // Clean up
+    document.body.removeChild(link);
+  };
+
+  const canvasToImage = async () => {
+    // Convert canvas to image file
+    // Then send the image file to the server
+    // Then get the response from the server
+    // Then return the link to the image
+    const stage = stageRef.current;
+    let image;
+    try {
+      image = stage.toDataURL();
+    } catch (error) {
+      const canvas = await html2canvas(stage, { backgroundColor: null });
+      image = canvas.toDataURL("image/png");
+    }
+    const response = await fetch(image);
+    const blob = await response.blob();
+
+    // Create FormData
+    const formData = new FormData();
+    formData.append("file", blob, "canvas_image.png");
+
+    const res = await storageApi.upload(formData);
+    if (res.success) {
+      return res.data.path;
+    } else {
+      return null;
+    }
+  };
+
   return (
     problem.canvasId &&
     ref && (
@@ -141,6 +197,7 @@ const Canvas = forwardRef(({ onReset, onSubmit }, ref) => {
               payload: { ...data },
             });
           }}
+          stageRef={stageRef}
         />
         <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
           <div
@@ -153,16 +210,14 @@ const Canvas = forwardRef(({ onReset, onSubmit }, ref) => {
 
           <div
             className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
-            onClick={onSubmit}
+            onClick={async () => onSubmit(await canvasToImage())}
           >
             <FontAwesomeIcon icon={faPlay} />
             {/* RUN */}
           </div>
           <div
             className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
-            onClick={() => {
-              // updateSolutionChecker();
-            }}
+            onClick={saveCanvasAsImage}
           >
             {/* SAVE */}
             <FontAwesomeIcon icon={faCameraRetro} />

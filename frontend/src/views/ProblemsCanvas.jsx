@@ -160,7 +160,7 @@ const Canvas = forwardRef(({ onReset, onSubmit }, ref) => {
     const formData = new FormData();
     formData.append("file", blob, "canvas_image.png");
 
-    const res = await storageApi.upload(formData);
+    const res = await storageApi.trimmedUpload(formData);
     if (res.success) {
       return res.data.path;
     } else {

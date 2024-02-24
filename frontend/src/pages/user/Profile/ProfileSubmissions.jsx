@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Title from "../../../components/Title";
 import { setLoading } from "../../../App";
 import { submissionApi } from "../../../api";
@@ -13,9 +13,10 @@ import "./heatmap.scss";
 export default function ProfileSubmissions() {
   const navigate = useNavigate();
   const [submissions, setSubmissions] = useState([]);
+  const {username}=useParams();
 
   const getSubmissions = async () => {
-    const res = await submissionApi.getAllSubmissionsByUser();
+    const res = await submissionApi.getAllSubmissionsByUser(username);
     if (res.success) {
       setSubmissions(res.data);
       //console.log(submissions);

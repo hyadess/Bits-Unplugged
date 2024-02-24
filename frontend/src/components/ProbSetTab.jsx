@@ -1,7 +1,7 @@
 import React from "react";
 
 const ProbSetTab = (props) => {
-  const tabs = ["Canvas", "Solution", "Test"];
+  const tabs = ["Details", "Canvas", "Solution", "Test"];
 
   return (
     <div className="flex w-full mx-auto justify-between">

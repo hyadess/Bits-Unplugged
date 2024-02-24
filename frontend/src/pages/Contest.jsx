@@ -52,7 +52,7 @@ const UserContest = () => {
     };
   }, []); // Removed 'id' from the dependency array
 
-  return <>{problemid && <ContestProblem />}</>;
+  return <>{problemid && <ContestProblem endTime={endTime}/>}</>;
 };
 
 export default UserContest;

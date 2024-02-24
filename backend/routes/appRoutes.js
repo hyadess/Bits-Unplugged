@@ -10,7 +10,9 @@ const userActivityRoutes = require("./userActivityRoutes");
 const contestRoutes = require("./contestRoutes");
 const articleRoutes = require("./articleRoutes");
 const seedRoutes = require("./seedRoutes");
+const setterActivityRoutes = require("./setterActivityRoutes");
 const storageRoutes = require("./storageRoutes");
+const ratingRoutes = require("./ratingRoutes");
 const base = require("../repositories/base");
 
 require("../services/passport");
@@ -35,5 +37,9 @@ router.use("/userActivity", userActivityRoutes);
 router.use("/contests", contestRoutes);
 router.use("/articles", articleRoutes);
 router.use("/seed", seedRoutes);
+router.use("/setterActivity", setterActivityRoutes);
 router.use("/storage", storageRoutes);
+router.use("/ratings", ratingRoutes);
+
+
 module.exports = router;

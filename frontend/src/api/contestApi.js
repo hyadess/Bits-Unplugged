@@ -49,6 +49,14 @@ class ContestApi extends Api {
     return await this.get("/contests/" + contestId + "/problems/userView");
   };
 
+  totalProblemCount = async (contestId) => {
+    return await this.get("/contests/" + contestId + "/problemCount");
+  };
+  
+  totalProblemSolved = async (contestId, userId) => {
+    return await this.get("/contests/" + contestId + "/solvedCount/" + userId);
+  };
+
   isContestProblemSolved = async (contestId,problemId) => {
     // console.log("problem id ==>", problemId);
     return await this.get("/contests/" + contestId + "/isSolved/" + problemId);

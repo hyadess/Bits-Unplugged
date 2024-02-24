@@ -44,7 +44,7 @@ module.exports = {
       },
       {
         problemId: 5,
-        seriesId: 3,
+        seriesId: 2,
         isLive: true,
         approvalStatus: 1,
         serialNo: 2,
@@ -58,7 +58,7 @@ module.exports = {
       },
       {
         problemId: 13,
-        seriesId: 2,
+        seriesId: 3,
         isLive: true,
         approvalStatus: 1,
         serialNo: 1,

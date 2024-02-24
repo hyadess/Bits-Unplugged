@@ -25,8 +25,11 @@ function ProblemsCanvasController() {
     renderProblem();
   }, []);
   const deepCopy = (obj) => {
-    return JSON.parse(JSON.stringify(obj));
+    return typeof obj === "string"
+      ? JSON.parse(obj)
+      : JSON.parse(JSON.stringify(obj));
   };
+
   const renderProblem = async () => {
     const res = await problemApi.getProblemById(id);
     if (res.success) {
@@ -56,7 +59,7 @@ function ProblemsCanvasController() {
 
   const startTimeRef = useRef(null);
 
-  const solutionSubmit = async (e) => {
+  const solutionSubmit = async (image) => {
     let res = await SubmissionService.checkSolution(
       problem.checkerCode,
       problem.checkerCanvas,
@@ -78,19 +81,27 @@ function ProblemsCanvasController() {
             problem.canvasData,
             res.output,
             id,
-            durationInSeconds
+            durationInSeconds,
+            image
           );
         } else {
           await submissionApi.submitSolution(
             problem.canvasData,
             res.output,
             id,
-            0
+            0,
+            image
           );
         }
       }
     } else {
-      await submissionApi.submitSolution(problem.canvasData, res.output, id, 0);
+      await submissionApi.submitSolution(
+        problem.canvasData,
+        res.output,
+        id,
+        0,
+        image
+      );
     }
   };
 

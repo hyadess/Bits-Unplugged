@@ -13,7 +13,7 @@ export default function ProfileInfo() {
     if (!isLoggedIn) {
       return;
     }
-    const res = await profileApi.getProfile();
+    const res = await profileApi.getProfileByUsername(username);
     if (res.success) setCurUser(res.data[0]);
     console.log(curUser);
     //console.log(res.data[0]);

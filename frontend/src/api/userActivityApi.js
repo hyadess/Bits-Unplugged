@@ -7,46 +7,47 @@ class UserActivityApi extends Api {
   updateOnFailedAttempt = async (problemId) => {
     return await this.post("/userActivity/" + problemId + "/failedAttempt");
   };
-  totalSolvedProblemsByUser =async() =>{
+  totalSolvedProblemsByUser = async () => {
     return await this.get("/userActivity/stat/series/successes/me");
   };
-  successesByUser =async() =>{
-    return await this.get("/userActivity/stat/successes/me");
+  successesByUser = async (username) => {
+    return await this.get("/userActivity/stat/" + username + "/successes/user");
   };
-  successesByProblem =async(problemId) =>{
-    return await this.get("/userActivity/stat/successes/"+problemId);
+  successesByProblem = async (problemId) => {
+    return await this.get("/userActivity/stat/successes/" + problemId);
   };
-  totalFailedProblemsByUser =async() =>{
+  totalFailedProblemsByUser = async () => {
     return await this.get("/userActivity/stat/fails/me");
   };
-  mostRecentFailsByUser =async() =>{
-    return await this.get("/userActivity/stat/recentfails/me");
+  mostRecentFailsByUser = async (username) => {
+    return await this.get(
+      "/userActivity/stat/" + username + "/recentfails/user"
+    );
   };
-  totalSolvedProblemCountByTopic =async(topicId) =>{
-    return await this.get("/userActivity/stat/"+topicId+"/solvedProblems");
+  totalSolvedProblemCountByTopic = async (topicId) => {
+    return await this.get("/userActivity/stat/" + topicId + "/solvedProblems");
   };
-  totalProblemCountByTopic =async(topicId) =>{
+  totalProblemCountByTopic = async (topicId) => {
     //console.log(topicId);
-    return await this.get("/userActivity/stat/"+topicId+"/problems");
+    return await this.get("/userActivity/stat/" + topicId + "/problems");
   };
-  daywiseActivityByUser =async() =>{
-    return await this.get("/userActivity/stat/activetime");
-  };
-
-
-
-  acceptanceByProblem =async(problemId) =>{
-    return await this.get("/userActivity/"+problemId+"/acceptance");
+  daywiseActivityByUser = async (username) => {
+    return await this.get("/userActivity/stat/" + username + "/activetime");
   };
 
+  acceptanceByProblem = async (problemId) => {
+    return await this.get("/userActivity/" + problemId + "/acceptance");
+  };
 
   //daily activity stat................................
 
-  recentlyViewedProblems =async() =>{
+  recentlyViewedProblems = async () => {
     return await this.get("/userActivity/stat/recentViews");
   };
 
-
+  getProblemDetails = async (id) => {
+    return await this.get("/userActivity/" + id);
+  };
 }
 
 export default UserActivityApi;

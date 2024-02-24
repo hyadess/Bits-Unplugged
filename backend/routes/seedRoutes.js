@@ -17,7 +17,7 @@ router.post("/submissions", async (req, res) => {
               Math.floor(Math.random() * 2)
             ],
             canvasData: {},
-            duration: Math.floor(Math.random() * 100),
+            duration: 3 + Math.floor(Math.random() * 100),
             userActivity: {},
             image: "",
             // pick a random date in the past year
@@ -46,7 +46,7 @@ router.post("/submissions/:id", async (req, res) => {
               Math.floor(Math.random() * 2)
             ],
             canvasData: {},
-            duration: Math.floor(Math.random() * 100),
+            duration: 3 + Math.floor(Math.random() * 100),
             userActivity: {},
             image: "",
             // pick a random date in the past year

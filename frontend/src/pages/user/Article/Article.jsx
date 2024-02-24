@@ -4,6 +4,7 @@ import React, {
   Suspense,
   useRef,
   forwardRef,
+  useContext,
 } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { setLoading } from "../../../App";
@@ -26,6 +27,16 @@ import {
 import SubmissionService from "services/submissionService";
 import ImageLoader from "components/ImageLoaders/ImageLoader";
 import { Save } from "@mui/icons-material";
+import {
+  faCamera,
+  faCameraRetro,
+  faCode,
+  faObjectGroup,
+  faPlay,
+  faRotateRight,
+} from "@fortawesome/free-solid-svg-icons";
+import GlobalContext from "store/GlobalContext";
+import html2canvas from "html2canvas";
 const Statement = ({ data }) => {
   const { colorMode } = useGlobalContext();
   return (
@@ -60,7 +71,31 @@ const Canvas = ({
   updateActivity,
 }) => {
   const canvasRef = useRef(null);
+  const stageRef = useRef(null);
+  const saveCanvasAsImage = async () => {
+    const stage = stageRef.current;
 
+    // check if the stage is canvas or canvas = await html2canvas(element), then use canvas.toDataURL()
+    let image;
+    try {
+      image = stage.toDataURL();
+    } catch (error) {
+      const canvas = await html2canvas(stage, { backgroundColor: null });
+      image = canvas.toDataURL("image/png");
+    }
+
+    // Create a temporary link element
+    const link = document.createElement("a");
+    link.href = image;
+    link.download = "canvas_image.png";
+
+    // Trigger the download
+    document.body.appendChild(link);
+    link.click();
+
+    // Clean up
+    document.body.removeChild(link);
+  };
   const reset = () => {
     onReset(index);
     canvasRef?.current?.handleReset(
@@ -72,7 +107,7 @@ const Canvas = ({
 
   return (
     content.canvasId && (
-      <div className="flex w-full flex-col gap-5">
+      <div className="flex w-full flex-col">
         <CanvasContainer
           canvasId={content.canvasId}
           input={content.canvasData}
@@ -87,35 +122,28 @@ const Canvas = ({
           setActivityData={(activityData) => {
             updateActivity(index, activityData);
           }}
+          stageRef={stageRef}
         />
-        <div className="flex flex-row justify-between">
-          <Button
-            size="large"
-            variant="contained"
-            color="success"
-            onClick={() => {
-              reset();
-              // canvasRef.current.handleReset(); // Call this after reset
-            }}
-            startIcon={
-              <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-            }
+        <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
+          <div
+            className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
+            onClick={reset}
           >
-            Reset
-          </Button>
-          <Button
-            size="large"
-            variant="contained"
-            onClick={() => {
-              console.log("inside submit");
-              console.log(content.activityData);
+            <FontAwesomeIcon icon={faRotateRight} />
+          </div>
 
-              onSubmit(content);
-            }}
-            endIcon={<SendIcon sx={{ fontSize: "2rem", color: "white" }} />}
+          <div
+            className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
+            onClick={() => onSubmit(content)}
           >
-            Submit
-          </Button>
+            <FontAwesomeIcon icon={faPlay} />
+          </div>
+          <div
+            className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
+            onClick={saveCanvasAsImage}
+          >
+            <FontAwesomeIcon icon={faCameraRetro} />
+          </div>
         </div>
       </div>
     )
@@ -138,7 +166,12 @@ const SlideShow = (props) => {
 
   return (
     <>
-      <div className="bu-card-primary rounded-[30px] py-10">
+      <div className="bu-card-primary pb-10 rounded-[30px] flex flex-col min-h-[25rem]">
+        <div className="flex flex-row justify-between">
+          <div className="flex flex-row p-4 items-start bu-text-primary text-2xl font-semibold">
+            {index + 1}/{images.length}
+          </div>
+        </div>
         {images.map((image, i) => {
           return (
             <img
@@ -189,9 +222,10 @@ const SlideShow = (props) => {
 };
 export default function Article() {
   const { id } = useParams();
+  const { type } = useContext(GlobalContext);
   const articleBackup = useRef(null);
   const [article, setArticle] = useState({});
-
+  const navigate = useNavigate();
   function getColorModeFromLocalStorage() {
     return localStorage.getItem("color-theme") || "light";
   }
@@ -202,7 +236,7 @@ export default function Article() {
     if (res.success) {
       articleBackup.current = JSON.parse(JSON.stringify(res.data));
       setArticle(res.data);
-      console.log(article);
+      console.log(res.data);
       console.log("done");
     }
   };
@@ -254,7 +288,35 @@ export default function Article() {
 
   return (
     <div>
-      <Title title={article.title} />
+      <div className="flex flex-row justify-between">
+        <Title title={article.title} sub_title={article.subtitle} />
+        {type == 2 ? (
+          <div className="flex items-center">
+            <Tooltip
+              title={<h1 className="text-lg text-white">Edit</h1>}
+              placement="top"
+              arrow
+              size="large"
+            >
+              <IconButton>
+                <div
+                  data-tooltip-target="tooltip-default"
+                  className="bu-text-primary flex cursor-pointer items-center text-4xl"
+                  onClick={() => {
+                    setLoading(true);
+                    navigate(`/admin/articles/${article.id}/edit`);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faPenToSquare} />
+                </div>
+              </IconButton>
+            </Tooltip>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+
       <div className="flex flex-col gap-5">
         {article?.content?.length > 0 &&
           article?.content?.map((content, index) => {
@@ -273,7 +335,24 @@ export default function Article() {
                 />
               );
             } else if (content.type === "slideshow") {
-              return <SlideShow images={content.images} />;
+              return (
+                content.images.length && <SlideShow images={content.images} />
+              );
+            } else if (content.type === "image") {
+              return (
+                content.image && (
+                  <ImageLoader
+                    // key={i}
+                    src={content.image.url}
+                    // alt={image.caption}
+                    style={{
+                      width: "40rem",
+                      margin: "auto",
+                      pointerEvents: "none",
+                    }}
+                  />
+                )
+              );
             }
           })}
       </div>

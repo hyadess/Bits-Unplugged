@@ -1,3 +1,4 @@
+
 const Repository = require("./base");
 
 class ProfileRepository extends Repository {
@@ -16,6 +17,30 @@ class ProfileRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+
+  getProfileByUsername = async (username) => {
+    const query = `
+      SELECT "U".*, "C"."email"
+      FROM "Users" "U"
+      JOIN "Credentials" "C" ON "U"."id" = "C"."userId"
+      WHERE "U"."username" = $1;
+    `;
+    const params = [username];
+    const result = await this.query(query, params);
+    return result;
+  }
+
+  searchProfileByQuery = async (seachQuery) => {
+    const query = `
+      SELECT "U".*, "C"."email","C"."role"
+      FROM "Users" AS "U"
+      JOIN "Credentials" AS "C" ON "U"."id" = "C"."userId"
+      WHERE "U"."username" LIKE '%' || $1 || '%';
+    `;
+    const params = [seachQuery];
+    const result = await this.query(query, params);
+    return result;
+  }
 
   setProfile = async (data) => {
     const query = `

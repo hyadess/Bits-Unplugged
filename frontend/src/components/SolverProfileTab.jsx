@@ -2,6 +2,7 @@ import { profileApi } from "api";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ImageLoader from "./ImageLoaders/ImageLoader";
+import { set } from "date-fns";
 
 const SolverProfileTab = (props) => {
   const tabs = ["Details", "Contests", "Submissions"];
@@ -13,14 +14,15 @@ const SolverProfileTab = (props) => {
     if (!isLoggedIn) {
       return;
     }
-    const res = await profileApi.getProfile();
+    const res = await profileApi.getProfileByUsername(username);
     if (res.success) setCurUser(res.data[0]);
     console.log(curUser);
     //console.log(res.data[0]);
   };
   useEffect(() => {
+    setCurUser(null);
     fetchUser();
-  }, []);
+  }, [username]);
 
   return (
     <div className="flex flex-col w-full mx-auto justify-start gap-10">

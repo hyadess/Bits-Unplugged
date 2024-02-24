@@ -12,11 +12,19 @@ module.exports = {
           contestId: 1,
           setterId: 1,
           role: "owner",
+          status: "accepted",
         },
         {
           contestId: 2,
           setterId: 1,
           role: "owner",
+          status: "accepted",
+        },
+        {
+          contestId: 1,
+          setterId: 3,
+          role: "collaborator",
+          status: "accepted",
         },
       ],
       {}

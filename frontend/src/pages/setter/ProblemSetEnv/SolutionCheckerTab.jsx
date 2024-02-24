@@ -9,6 +9,15 @@ import { useProblemContext } from "../../../store/ProblemContextProvider";
 import { problemApi } from "../../../api";
 import SubmissionService from "../../../services/submissionService";
 import { showSuccess } from "../../../App";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCode,
+  faObjectGroup,
+  faPlay,
+  faRotateRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { ToggleButton } from "@mui/material";
+import { Code } from "@mui/icons-material";
 const SolutionCheckerTab = () => {
   const { state: problem, dispatch } = useProblemContext();
   const [output, setOutput] = useState("");
@@ -23,7 +32,7 @@ const SolutionCheckerTab = () => {
       problem.testActivity
     );
     setOutput(result.output);
-    setStdout(result.stdout);
+    // setStdout(result.stdout);
   };
 
   const updateSolutionChecker = async () => {
@@ -56,7 +65,7 @@ const SolutionCheckerTab = () => {
   };
 
   return (
-    <>
+    <div className="relative">
       {checkerType == 0 ? (
         problem.canvasId && (
           <SolutionChecker
@@ -90,51 +99,45 @@ const SolutionCheckerTab = () => {
               previewOptions={problem.previewOptions}
               editOptions={problem.editOptions}
             />
-            <div
-              className="flex py-5"
-              style={{ justifyContent: "space-between", marginLeft: "auto" }}
-            >
-              <Button
-                variant="contained"
-                color="success"
-                size="large"
+            <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
+              <div
+                className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
                 onClick={() => {
                   resetChecker();
                 }}
-                startIcon={
-                  <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-                }
               >
-                Reset
-              </Button>
-              <Button
-                variant="contained"
+                <FontAwesomeIcon icon={faRotateRight} />
+              </div>
+
+              <div
+                className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
+                onClick={onSubmit}
+              >
+                <FontAwesomeIcon icon={faPlay} />
+                {/* RUN */}
+              </div>
+              <div
+                className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
                 onClick={() => {
                   updateSolutionChecker();
                 }}
-                size="large"
-                startIcon={
-                  <SaveIcon sx={{ fontSize: "2rem", color: "white" }} />
-                }
               >
-                Save
-              </Button>
+                {/* SAVE */}
+                <SaveIcon />
+              </div>
             </div>
+            <button
+              className="bu-button-secondary rounded-l-full px-7 py-2 text-center text-2xl  text-white absolute bottom-0 right-0 font-bold"
+              onClick={() => setCheckerType((prev) => !prev)}
+            >
+              <FontAwesomeIcon icon={checkerType ? faCode : faObjectGroup} />
+            </button>
           </>
         )
       ) : (
         <></>
       )}
-      <SelectionField
-        label="Choose Checker"
-        onChange={setCheckerType}
-        value={checkerType}
-        options={[
-          { label: "code", value: 0 },
-          { label: "canvas", value: 1 },
-        ]}
-      />
-    </>
+    </div>
   );
 };
 

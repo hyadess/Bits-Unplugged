@@ -71,10 +71,9 @@ class SeriesController extends Controller {
       const articles =
         req.user.type === 1
           ? null
-          : await articleRepository.getArticlesBySeries(
-              req.params.id,
-              req.user.type === 0
-            );
+          : req.user.type === 0
+          ? await articleRepository.getLiveArticlesBySeries(req.params.id)
+          : await articleRepository.getArticlesBySeries(req.params.id);
       res.status(200).send(articles);
     });
   };
@@ -108,6 +107,16 @@ class SeriesController extends Controller {
         req.body
       );
       res.status(200).send({ message: "Problems updated successfully" });
+    });
+  };
+
+  updateAllArticles = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const articles = await articleRepository.updateArticlesBySeries(
+        req.params.id,
+        req.body
+      );
+      res.status(200).send({ message: "Articles updated successfully" });
     });
   };
 

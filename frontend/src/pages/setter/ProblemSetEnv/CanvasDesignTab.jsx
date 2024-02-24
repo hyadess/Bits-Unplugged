@@ -2,18 +2,37 @@ import React, { useState, useEffect, useRef } from "react";
 import CanvasContainer from "../../../components/Canvases/CanvasContainer";
 import Button from "@mui/material/Button";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
-import SaveIcon from "@mui/icons-material/Save";
 import { SelectionField2 } from "../../../components/InputFields";
 import { useProblemContext } from "../../../store/ProblemContextProvider";
 import { canvasApi, problemApi } from "../../../api";
 import { showSuccess } from "../../../App";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import { Select, MenuItem } from "@mui/material";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEye,
+  faEyeSlash,
+  faPlay,
+  faRotateRight,
+} from "@fortawesome/free-solid-svg-icons";
+import SaveIcon from "@mui/icons-material/Save";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
+const deepCopy = (obj) => {
+  return typeof obj === "string"
+    ? JSON.parse(obj)
+    : JSON.parse(JSON.stringify(obj));
+};
+
 const CanvasDesignTab = ({ backupProblem }) => {
   const [canvasList, setCanvasList] = useState([]);
   const [canvasFullList, setCanvasFullList] = useState([]);
   const canvasRef = useRef();
-  const deepCopy = (obj) => {
-    return JSON.parse(JSON.stringify(obj));
-  };
+  const [mode, setMode] = useState("edit");
 
   const updateCanvas = async () => {
     dispatch({
@@ -102,9 +121,9 @@ const CanvasDesignTab = ({ backupProblem }) => {
           previewOptions: problem.previewOptions,
         },
       });
-      canvasRef?.current?.handleReset(
-        deepCopy(backupProblem.current.canvasData) // can be called from the child
-      );
+      // canvasRef?.current?.handleReset(
+      //   deepCopy(backupProblem.current.canvasData) // can be called from the child
+      // );
     } else {
       var res = canvasFullList.find((canvas) => {
         return canvas.id == canvasId;
@@ -121,8 +140,8 @@ const CanvasDesignTab = ({ backupProblem }) => {
             checkerCanvas: null,
             test: null,
             testActivity: {},
-            editOptions: res.editOptions,
-            previewOptions: res.previewOptions,
+            editOptions: deepCopy(res.editOptions),
+            previewOptions: deepCopy(res.previewOptions),
           },
         });
       }
@@ -139,84 +158,83 @@ const CanvasDesignTab = ({ backupProblem }) => {
     console.log("Backup:", backupProblem?.current?.canvasData?.array);
   }, [problem.canvasData]);
 
+  // useEffect(() => {
+  //   if ((backupProblem?.current ?? false) && !problem.canvasId) {
+  //     changeCanvas(0);
+  //   }
+  //   console.log("Change:", problem.canvasId);
+  // }, [problem.canvasId]);
   return (
     <>
-      {problem.canvasId && (
-        <CanvasContainer
-          canvasId={problem.canvasId}
-          input={problem.canvasData}
-          setInput={(dataOrFunction) => {
-            dispatch((prevState) => {
-              return {
-                type: "UPDATE_CANVAS",
-                payload:
-                  typeof dataOrFunction === "function"
-                    ? dataOrFunction(prevState.canvasData)
-                    : dataOrFunction,
-              };
-            });
-          }}
-          ref={canvasRef}
-          mode="edit"
-          editOptions={problem.editOptions}
-          setEditOptions={(data) => {
-            dispatch({
-              type: "UPDATE_EDIT_OPTIONS",
-              payload: data,
-            });
-          }}
-          previewOptions={problem.previewOptions}
-          setPreviewOptions={(data) => {
-            dispatch({
-              type: "UPDATE_PREVIEW_OPTIONS",
-              payload: data,
-            });
-          }}
-        />
-      )}
-
-      {problem.canvasId && (
-        <div
-          className="flex py-5"
-          style={{ justifyContent: "space-between", marginLeft: "auto" }}
-        >
-          <Button
-            variant="contained"
-            color="success"
-            size="large"
-            onClick={() => {
-              reset();
-              // canvasRef.current.handleReset();
+      {problem && (
+        <>
+          <CanvasContainer
+            canvasId={problem.canvasId}
+            input={problem.canvasData}
+            setInput={(dataOrFunction) => {
+              dispatch((prevState) => {
+                return {
+                  type: "UPDATE_CANVAS",
+                  payload:
+                    typeof dataOrFunction === "function"
+                      ? dataOrFunction(prevState.canvasData)
+                      : dataOrFunction,
+                };
+              });
             }}
-            startIcon={
-              <RotateLeftIcon sx={{ fontSize: "2rem", color: "white" }} />
-            }
-          >
-            Reset
-          </Button>
-          <Button
-            variant="contained"
-            onClick={async () => {
-              await updateCanvas();
-              backupProblem.current.canvasId = problem.canvasId;
-              backupProblem.current.editOptions = problem.editOptions;
-              backupProblem.current.previewOptions = problem.previewOptions;
+            ref={canvasRef}
+            mode={mode}
+            onCanvasChange={changeCanvas}
+            editOptions={problem.editOptions}
+            setEditOptions={(data) => {
+              dispatch({
+                type: "UPDATE_EDIT_OPTIONS",
+                payload: data,
+              });
             }}
-            size="large"
-            startIcon={<SaveIcon sx={{ fontSize: "2rem", color: "white" }} />}
-          >
-            Save
-          </Button>
-        </div>
-      )}
+            previewOptions={problem.previewOptions}
+            setPreviewOptions={(data) => {
+              dispatch({
+                type: "UPDATE_PREVIEW_OPTIONS",
+                payload: data,
+              });
+            }}
+          />
+          <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
+            <div
+              className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
+              onClick={() => {
+                reset();
+              }}
+            >
+              {/* <RotateLeftIcon /> */}
+              <FontAwesomeIcon icon={faRotateRight} />
+            </div>
 
-      <SelectionField2
-        label="Choose Canvas"
-        onChange={handleCanvasChange}
-        id="canvasId"
-        value={problem.canvasId == null ? "" : problem.canvasId}
-        options={canvasList}
-      />
+            <div
+              className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
+              onClick={() => {
+                setMode(mode === "edit" ? "edit_preview" : "edit");
+              }}
+            >
+              <FontAwesomeIcon icon={mode === "edit" ? faEye : faEyeSlash} />
+              {/* RUN */}
+            </div>
+            <div
+              className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
+              onClick={async () => {
+                await updateCanvas();
+                backupProblem.current.canvasId = problem.canvasId;
+                backupProblem.current.editOptions = problem.editOptions;
+                backupProblem.current.previewOptions = problem.previewOptions;
+              }}
+            >
+              {/* SAVE */}
+              <SaveIcon />
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

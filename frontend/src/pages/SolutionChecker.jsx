@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faPlay } from "@fortawesome/free-solid-svg-icons";
 import monaco_theme from "../themes/my_theme.json";
 import SaveIcon from "@mui/icons-material/Save";
 import Visibility from "@mui/icons-material/Visibility";
@@ -94,7 +94,7 @@ export default function SolutionChecker(props) {
 
   return (
     <div>
-      <div className="flex flex-col gap-0 md:gap-0 w-full bg-[#1F2531] mt-4 h-128">
+      <div className="flex flex-col gap-0 md:gap-0 w-full bg-[#1F2531] mt-4 h-[32.3rem]">
         <div
           className={
             "w-full bg-[#1F2531] " +
@@ -148,7 +148,7 @@ export default function SolutionChecker(props) {
             // setShowStdOut((prev) => !prev);
           }}
         >
-          {showStdOut ? <Visibility /> : <VisibilityOff />}
+          <FontAwesomeIcon icon={showStdOut ? faEye : faEyeSlash} />
         </div>
 
         <div

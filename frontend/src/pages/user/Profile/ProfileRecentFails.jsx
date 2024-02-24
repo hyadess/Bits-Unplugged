@@ -20,9 +20,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 export default function ProfileRecentFails() {
+  const { username } = useParams();
   const [recentFailList, setRecentFailList] = useState([]);
   const getRecentFailList = async () => {
-    const res = await userActivityApi.mostRecentFailsByUser();
+    const res = await userActivityApi.mostRecentFailsByUser(username);
     console.log(res);
     if (res.success) {
       setRecentFailList(res.data);
@@ -31,7 +32,7 @@ export default function ProfileRecentFails() {
 
   useEffect(() => {
     getRecentFailList();
-  }, []);
+  }, [username]);
 
   return (
     <>

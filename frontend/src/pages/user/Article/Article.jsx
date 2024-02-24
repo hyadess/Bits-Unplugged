@@ -36,6 +36,7 @@ import {
   faRotateRight,
 } from "@fortawesome/free-solid-svg-icons";
 import GlobalContext from "store/GlobalContext";
+import html2canvas from "html2canvas";
 const Statement = ({ data }) => {
   const { colorMode } = useGlobalContext();
   return (
@@ -70,7 +71,31 @@ const Canvas = ({
   updateActivity,
 }) => {
   const canvasRef = useRef(null);
+  const stageRef = useRef(null);
+  const saveCanvasAsImage = async () => {
+    const stage = stageRef.current;
 
+    // check if the stage is canvas or canvas = await html2canvas(element), then use canvas.toDataURL()
+    let image;
+    try {
+      image = stage.toDataURL();
+    } catch (error) {
+      const canvas = await html2canvas(stage, { backgroundColor: null });
+      image = canvas.toDataURL("image/png");
+    }
+
+    // Create a temporary link element
+    const link = document.createElement("a");
+    link.href = image;
+    link.download = "canvas_image.png";
+
+    // Trigger the download
+    document.body.appendChild(link);
+    link.click();
+
+    // Clean up
+    document.body.removeChild(link);
+  };
   const reset = () => {
     onReset(index);
     canvasRef?.current?.handleReset(
@@ -97,13 +122,13 @@ const Canvas = ({
           setActivityData={(activityData) => {
             updateActivity(index, activityData);
           }}
+          stageRef={stageRef}
         />
         <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
           <div
             className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
-            onClick={onReset}
+            onClick={reset}
           >
-            {/* <RotateLeftIcon /> */}
             <FontAwesomeIcon icon={faRotateRight} />
           </div>
 
@@ -112,15 +137,11 @@ const Canvas = ({
             onClick={() => onSubmit(content)}
           >
             <FontAwesomeIcon icon={faPlay} />
-            {/* RUN */}
           </div>
           <div
             className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
-            onClick={() => {
-              // updateSolutionChecker();
-            }}
+            onClick={saveCanvasAsImage}
           >
-            {/* SAVE */}
             <FontAwesomeIcon icon={faCameraRetro} />
           </div>
         </div>

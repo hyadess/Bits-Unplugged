@@ -5,6 +5,7 @@ import SubmissionCard from "../components/Cards/SubmissionCard";
 import { setLoading } from "../App";
 import { problemApi, submissionApi, userActivityApi } from "../api";
 import Chart from "react-apexcharts";
+import CardContainer from "containers/CardContainer2";
 export default function ProblemsSubmissions() {
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
@@ -22,6 +23,7 @@ export default function ProblemsSubmissions() {
   const renderProblem = async () => {
     const res = await submissionApi.getAllSubmissionsByUserAndProblem(id);
     if (res.success) {
+      console.log("Submissions:", res.data);
       setProblem(res.data);
     }
   };
@@ -65,7 +67,6 @@ export default function ProblemsSubmissions() {
       const numberOfRanges = 20;
       const rangeSize = (maxTimeTaken - minTimeTaken) / numberOfRanges;
 
-
       // Initialize an object to store the count of problems in each time range
       const timeRangeCounts = Array(numberOfRanges + 1).fill(0);
 
@@ -92,18 +93,79 @@ export default function ProblemsSubmissions() {
       setDistributionChartData({
         options: {
           chart: {
-            type: "histogram",
+            type: "bar",
+            height: 300,
+            toolbar: {
+              show: false,
+            },
           },
           xaxis: {
             title: {
               text: "Time Taken",
             },
           },
+          grid: {
+            show: false,
+          },
+          dataLabels: {
+            show: false,
+          },
           yaxis: {
             title: {
               text: "Total users Solved",
             },
           },
+          plotOptions: {
+            bar: {
+              horizontal: false,
+              columnWidth: "100%",
+              endingShape: "rounded",
+            },
+          },
+          tooltip: {
+            enabled: true,
+            enabledOnSeries: undefined,
+            shared: true,
+            followCursor: false,
+            intersect: false,
+            inverseOrder: false,
+            custom: undefined,
+            hideEmptySeries: true,
+            fillSeriesColor: false,
+            theme: "dark",
+            onDatasetHover: {
+              highlightDataSeries: false,
+            },
+            x: {
+              show: false,
+              format: "dd MMM",
+              formatter: function (val) {
+                return val + " seconds";
+              },
+            },
+            y: {
+              formatter: function (val) {
+                return val + " submissions";
+              },
+            },
+            style: {
+              fontSize: "12px",
+              colors: ["#000000"], // Add this line
+            },
+            marker: {
+              show: true,
+            },
+            items: {
+              display: "flex",
+            },
+            fixed: {
+              enabled: false,
+              position: "topRight",
+              offsetX: 0,
+              offsetY: 0,
+            },
+          },
+          colors: ["#aadfcf", "#ef9c9c"],
         },
         series: [{ data: formattedData }],
       });
@@ -145,7 +207,7 @@ export default function ProblemsSubmissions() {
           />
         )}
 
-        <TableContainer>
+        <CardContainer>
           {problem.submissions.map((submission, index) => (
             <SubmissionCard
               idx={index + 1}
@@ -153,9 +215,12 @@ export default function ProblemsSubmissions() {
               verdict={submission.verdict}
               problem_name={problem.title}
               path={`/problems/${problem.id}`}
+              timestamp={submission.createdAt}
+              image={submission.image}
+              activity={submission.userActivity}
             />
           ))}
-        </TableContainer>
+        </CardContainer>
       </>
     )
   );

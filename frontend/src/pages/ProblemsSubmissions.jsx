@@ -344,7 +344,7 @@ export default function ProblemsSubmissions() {
         )} */}
         {/* Show only if user has successful submission */}
         {isSolved && (
-          <div className="bu-card-primary px-5 rounded-lg">
+          <div className="bu-card-primary pr-5 pl-3 pt-3 rounded-lg shadow-md">
             <Chart
               options={distributionChartData.options}
               series={distributionChartData.series}

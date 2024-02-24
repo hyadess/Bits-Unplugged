@@ -9,11 +9,12 @@ import TableContainer from "../../../containers/TableContainer";
 import SubmissionCard from "../../../components/Cards/SubmissionCard";
 import "react-calendar-heatmap/dist/styles.css";
 import "./heatmap.scss";
+import CardContainer from "containers/CardContainer2";
 
 export default function ProfileSubmissions() {
   const navigate = useNavigate();
   const [submissions, setSubmissions] = useState([]);
-  const {username}=useParams();
+  const { username } = useParams();
 
   const getSubmissions = async () => {
     const res = await submissionApi.getAllSubmissionsByUser(username);
@@ -32,7 +33,7 @@ export default function ProfileSubmissions() {
 
   return (
     <div className="flex flex-col w-full pt-20">
-      <TableContainer>
+      <CardContainer>
         {submissions.map((submission, index) => (
           <div className="flex w-full">
             <SubmissionCard
@@ -40,10 +41,12 @@ export default function ProfileSubmissions() {
               submissionId={submission.id}
               verdict={submission.verdict}
               problem_name={submission.name}
+              timestamp={submission.createdAt}
+              image={submission.image}
             />
           </div>
         ))}
-      </TableContainer>
+      </CardContainer>
     </div>
   );
 }

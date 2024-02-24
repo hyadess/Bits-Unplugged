@@ -27,7 +27,7 @@ export default function SubmissionCard({
     <div class="items-center w-full">
       <div
         class={
-          "border rounded-lg shadow-lg bg-gray-700 bu-card-primary flex flex-col p-4 items-center gap-5 justify-between"
+          "border rounded-lg shadow-md bg-gray-700 bu-card-primary flex flex-col p-4 items-center gap-5 justify-between"
         }
       >
         <div className={`w-full h-52 flex-center`}>

@@ -10,7 +10,7 @@ const ProblemContextProvider = ({ children }) => {
       case "SET_INITIAL_STATE":
         return payload;
       case "UPDATE_PROBLEM":
-                return {
+        return {
           ...state,
           ...payload,
         };
@@ -50,7 +50,7 @@ const ProblemContextProvider = ({ children }) => {
         };
 
       case "UPDATE_CANVAS":
-                return {
+        return {
           ...state,
           canvasData: { ...state.canvasData, ...payload },
         };
@@ -71,6 +71,12 @@ const ProblemContextProvider = ({ children }) => {
         return {
           ...state,
           testActivity: { ...state.testActivity, ...payload },
+        };
+
+      case "UPDATE_USER_CANVAS":
+        return {
+          ...state,
+          test: { ...state.test, ...payload },
         };
       case "UPDATE_USER_ACTIVITY":
         return {

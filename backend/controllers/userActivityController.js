@@ -6,6 +6,21 @@ class UserActivityController extends Controller {
     super();
   }
 
+  getProblemDetails = async (req, res) => {
+    this.handleRequest(res, async () => {
+      let details = await userActivityRepository.getProblemDetails(
+        req.user.userId,
+        req.params.id
+      );
+
+      if (!details) {
+        res.status(404).json({ error: "Details not found" });
+      } else {
+        res.status(200).json(details);
+      }
+    });
+  };
+
   trackDuration = async (req, res) => {
     this.handleRequest(res, async () => {
       if (req.user.type !== 0) res.status(204).json();
@@ -57,14 +72,14 @@ class UserActivityController extends Controller {
     }
   };
 
-  
-
-  successesByUser = async (req, res) => { 
-    let result = await userActivityRepository.successesByUser(req.params.username);
+  successesByUser = async (req, res) => {
+    let result = await userActivityRepository.successesByUser(
+      req.params.username
+    );
     if (result.success) {
       res.status(200).json(result.data);
     } else {
-      res.status(404).json(result);   
+      res.status(404).json(result);
     }
   };
   successesByProblem = async (req, res) => {
@@ -77,7 +92,6 @@ class UserActivityController extends Controller {
       res.status(404).json(result);
     }
   };
-  
 
   totalSolvedProblemsByUser = async (req, res) => {
     let result = await userActivityRepository.totalSolvedProblemsByUser(
@@ -162,7 +176,7 @@ class UserActivityController extends Controller {
     } else {
       res.status(404).json(result);
     }
-  }
+  };
 }
 
 module.exports = UserActivityController;

@@ -108,10 +108,9 @@ export default function Problems() {
 
       {articleList.length > 0 && (
         <div className="flex flex-col gap-5 w-full mb-5">
-          <div className="w-full p-5 rounded-lg shadow-md flex flex-row bu-text-primary bg-[#AADFCF] dark:bg-pink-600 ">
+          {/* <div className="w-full p-5 rounded-lg shadow-md flex flex-row bu-text-primary bg-[#AADFCF] dark:bg-pink-600 ">
             <div className="text-xl w-[45%] font-medium">Articles</div>
             <div className="text-xl w-[20%] font-medium flex gap-2 items-center justify-center">
-              {/* <FontAwesomeIcon icon={faCheckDouble} /> */}
               <HowToRegIcon />
               Readers
             </div>
@@ -123,14 +122,15 @@ export default function Problems() {
               <FontAwesomeIcon icon={faHeartPulse} />
               Seen
             </div>
-          </div>
+          </div> */}
 
           <TableContainer>
             {articleList.map((article, index) => (
               <ArticleCard
                 idx={index + 1}
                 id={article.id}
-                name={article.title}
+                title={article.title}
+                subtitle={article.subtitle}
                 path={`/articles/${article.id}`}
                 // isSolved={
                 //   article.activities.length > 0

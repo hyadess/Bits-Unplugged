@@ -128,10 +128,32 @@ export default function ProblemsSubmissions() {
             },
             hover: {
               filter: {
-                type: "lighten",
+                type: "none",
                 value: 0.0001,
               },
             },
+          },
+          annotations: {
+            xaxis: [
+              {
+                x: myDuration,
+                strokeDashArray: 0,
+                borderColor: "#1c5b5f",
+                borderWidth: 2,
+                label: {
+                  orientation: "horizontal", // Add this line
+                  borderColor: "#1c5b5f",
+                  borderWidth: 2,
+                  style: {
+                    color: "#000",
+                    background: "#84cfb8",
+                    fontSize: "18px",
+                    fontWeight: 600,
+                  },
+                  text: "Your time (" + myDuration + "s)",
+                },
+              },
+            ],
           },
           chart: {
             type: "histogram",
@@ -139,10 +161,18 @@ export default function ProblemsSubmissions() {
             toolbar: {
               show: false,
             },
+            zoom: {
+              enabled: false,
+            },
           },
           xaxis: {
             title: {
-              text: "Time Taken",
+              text: "Time Taken (seconds)",
+              style: {
+                fontSize: "20px", // Replace with your desired font size
+                fontWeight: 600, // Replace with your desired font weight
+                fontFamily: "Arial", // Replace with your desired font family
+              },
             },
             tickAmount: numberOfRanges / 2,
             // categories: Array.from(
@@ -206,10 +236,15 @@ export default function ProblemsSubmissions() {
           yaxis: {
             title: {
               text: "Distribution (%)",
+              style: {
+                fontSize: "20px", // Replace with your desired font size
+                fontWeight: 600, // Replace with your desired font weight
+                fontFamily: "Arial", // Replace with your desired font family
+              },
             },
             // tickAmount: 4,
             min: 0,
-            max: yMax,
+            max: 1.2 * yMax,
             labels: {
               formatter: function (value) {
                 return Math.floor(value);
@@ -226,7 +261,7 @@ export default function ProblemsSubmissions() {
             },
           },
           tooltip: {
-            enabled: true,
+            enabled: false,
             enabledOnSeries: true,
             shared: true,
             followCursor: false,
@@ -282,7 +317,7 @@ export default function ProblemsSubmissions() {
 
   return (
     problem && (
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-8">
         <div className="flex flex-col py-4 max-w-screen-xl sm:pt-12 gap-3">
           <div className="mt-4 md:mt-0">
             <h2 className="text-left text-5xl tracking-tight font-extrabold ">
@@ -309,12 +344,14 @@ export default function ProblemsSubmissions() {
         )} */}
         {/* Show only if user has successful submission */}
         {isSolved && (
-          <Chart
-            options={distributionChartData.options}
-            series={distributionChartData.series}
-            type="bar"
-            height={300}
-          />
+          <div className="bu-card-primary px-5 rounded-lg">
+            <Chart
+              options={distributionChartData.options}
+              series={distributionChartData.series}
+              type="bar"
+              height={300}
+            />
+          </div>
         )}
         {/* <div className="relative">
           <Chart

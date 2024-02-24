@@ -10,6 +10,7 @@ export const getTime = (hours, minutes = 0, seconds = 0) => {
 };
 
 export const getTimeStamp = (timestamp) => {
+  if (timestamp === undefined) return "Invalid date";
   const curr_date = new Date();
   const curr_year = curr_date.getFullYear();
   const curr_month = curr_date.getMonth();

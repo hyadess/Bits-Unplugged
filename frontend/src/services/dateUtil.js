@@ -10,6 +10,7 @@ export const getTime = (hours, minutes = 0, seconds = 0) => {
 };
 
 export const getTimeStamp = (timestamp) => {
+  if (timestamp === undefined) return "Invalid date";
   const curr_date = new Date();
   const curr_year = curr_date.getFullYear();
   const curr_month = curr_date.getMonth();
@@ -23,6 +24,23 @@ export const getTimeStamp = (timestamp) => {
   const day = date.getDate();
   const hour = date.getHours();
   const minutes = date.getMinutes();
+
+  const diff = curr_date - date;
+  const diff_minutes = Math.floor(diff / 60000);
+  const diff_hours = Math.floor(diff_minutes / 60);
+  if (diff_hours < 24) {
+    if (diff_hours < 1) {
+      if (diff_minutes === 0) {
+        return "Just now";
+      } else {
+        return (
+          diff_minutes + " minute" + (diff_minutes > 1 ? "s" : "") + " ago"
+        );
+      }
+    } else {
+      return diff_hours + " hour" + (diff_hours > 1 ? "s" : "") + " ago";
+    }
+  }
 
   if (curr_year === year) {
     if (curr_month === month) {

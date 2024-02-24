@@ -56,6 +56,7 @@ class SubmissionRepository extends Repository {
       "Series" "Ss" ON "P"."seriesId" = "Ss"."id"
       WHERE 
       "U"."username" = $1
+      ORDER BY "S"."createdAt" DESC;
     `;
     const params = [username];
     const result = await this.query(query, params);

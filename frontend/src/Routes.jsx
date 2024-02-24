@@ -89,7 +89,15 @@ const SolverProfile = () => {
     <LayoutSecondary
       left={<SolverProfileTab activeTab={activeTab} click={click} />}
     >
-      {activeTab == "Details" ? <Profile /> : <ProfileSubmissions />}
+      {activeTab == "Details" ? (
+        <Profile />
+      ) : (
+        <div className="flex flex-row justify-start">
+          <div className="w-[75%]">
+            <ProfileSubmissions />
+          </div>
+        </div>
+      )}
     </LayoutSecondary>
   );
 };

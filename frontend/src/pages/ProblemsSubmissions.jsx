@@ -106,7 +106,7 @@ export default function ProblemsSubmissions() {
       }); // Replace '#FFFFFF' with your chart's background color
       const strokeColors = timeRangeCounts.map((count, index) => {
         const rangeIndex = Math.floor((myDuration - minTimeTaken) / rangeSize);
-        return index === rangeIndex ? "#ef9c9c" : false ? "#ebebeb" : "#84cfb8";
+        return index === rangeIndex ? "#ff8c8c" : false ? "#ebebeb" : "#84cfb8";
       });
       console.log(
         "Range:",
@@ -120,6 +120,19 @@ export default function ProblemsSubmissions() {
         ) * 5;
       setDistributionChartData({
         options: {
+          states: {
+            active: {
+              filter: {
+                type: "none" /* none, lighten, darken */,
+              },
+            },
+            hover: {
+              filter: {
+                type: "lighten",
+                value: 0.0001,
+              },
+            },
+          },
           chart: {
             type: "histogram",
             // height: 300,
@@ -214,7 +227,7 @@ export default function ProblemsSubmissions() {
           },
           tooltip: {
             enabled: true,
-            enabledOnSeries: undefined,
+            enabledOnSeries: true,
             shared: true,
             followCursor: false,
             intersect: false,

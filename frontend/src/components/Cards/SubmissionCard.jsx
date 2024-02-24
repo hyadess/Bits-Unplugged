@@ -30,8 +30,15 @@ export default function SubmissionCard({
           "border rounded-lg shadow-lg bg-gray-700 bu-card-primary flex flex-col p-4 items-center gap-5 justify-between"
         }
       >
-        <div className={`w-full`}>
-          <ImageLoader src={image} className={"max-h-52"} />
+        <div className={`w-full h-52 flex-center`}>
+          <ImageLoader
+            src={
+              image
+                ? image
+                : "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
+            }
+            className={"max-h-52"}
+          />
         </div>
         <Divider sx={{ bgcolor: "black", width: "100%", height: "3px" }} />
         {/* <h5 class="text-2xl text-center font-bold tracking-tight bu-text-primary w-10%">

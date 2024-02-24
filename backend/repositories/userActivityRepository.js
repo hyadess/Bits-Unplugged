@@ -6,6 +6,10 @@ class UserActivityRepository extends Repository {
   constructor() {
     super();
   }
+
+  getProblemDetails = async (userId, problemId) => {
+    return await db.Activity.findOne({ where: { userId, problemId } });
+  };
   trackDuration = async (userId, problemId, duration, timestamp) => {
     dailyActivityRepository.Entry(userId, problemId, duration, timestamp);
     const activity = db.Activity.findOne({ where: { userId, problemId } }).then(

@@ -1004,7 +1004,7 @@ const GraphComponent = (props, ref) => {
             height={445} // 630
             onClick={handleCanvasClick}
             onMouseMove={handleMouseMove}
-            ref={props.stageRef}
+            ref={props.stageRef ? props.stageRef : null}
             // scaleX={Math.min(width / 882, 1)}
             // scaleY={Math.min(width / 882, 1)}
           >

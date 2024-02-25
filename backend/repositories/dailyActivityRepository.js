@@ -74,7 +74,8 @@ class DailyActivityRepository extends Repository {
       WHERE
       "D"."userId" = $1 AND "PV"."isLive" = TRUE
       ORDER BY
-      "D"."activityDate" DESC;
+      "D"."activityDate" DESC
+      LIMIT 5;
       `;
     const params = [userId];
     const result = await this.query(query, params);

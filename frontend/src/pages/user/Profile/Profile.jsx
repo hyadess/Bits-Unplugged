@@ -619,7 +619,7 @@ export default function Profile() {
   }, [submissions]);
 
   return (
-    <div className="flex flex-col pr-5">
+    <div className="flex flex-col pr-20">
       {/* <ProfileInfo /> */}
       <Title title={"Profile statistics"} />
       <div className="grid grid-cols-2 items-end gap-x-8">

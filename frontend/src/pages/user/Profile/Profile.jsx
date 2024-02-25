@@ -694,7 +694,7 @@ export default function Profile() {
               if (!value) {
                 return "color-empty";
               }
-              return `color-scale-${Math.min(value.count, 11)}`;
+              return `color-scale-${Math.min(value.count, 5)}`;
             }}
             tooltipDataAttrs={(value) => {
               if (value) {

@@ -87,6 +87,10 @@ module.exports = {
               value: 0,
               type: "number",
             },
+            editLabel: {
+              value: false,
+              type: "switch",
+            },
           }),
           template:
             "function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}",

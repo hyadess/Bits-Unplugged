@@ -19,6 +19,7 @@ const ProblemSetCard = ({
   timestamp,
   canvas,
   cloneProblem,
+  isPublished,
 }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -84,8 +85,12 @@ const ProblemSetCard = ({
             </div>
 
             <div className="w-1/3 flex items-center justify-center">
-              <IconButton onClick={() => setOpen(true)}>
-                <div className="flex items-center bu-text-primary">
+              <IconButton onClick={() => setOpen(true)} disabled={isPublished}>
+                <div
+                  className={`flex items-center bu-text-${
+                    isPublished ? "disabled" : "primary"
+                  }`}
+                >
                   <FontAwesomeIcon icon={faTrashCan} size="sm" />
                 </div>
               </IconButton>

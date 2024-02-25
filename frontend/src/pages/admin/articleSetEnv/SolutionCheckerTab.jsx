@@ -24,6 +24,7 @@ const SolutionCheckerTab = ({ onSave }) => {
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
   const [checkerType, setCheckerType] = useState(1);
+  const stageRef = useRef(null);
   // const [test, setTest] = useState(null);
   const onSubmit = async () => {
     const result = await SubmissionService.checkSolution(
@@ -66,6 +67,7 @@ const SolutionCheckerTab = ({ onSave }) => {
           setStdout={setStdout}
           checkSubmit={onSubmit}
           save={updateSolutionChecker}
+          stageRef={stageRef}
         />
       ) : checkerType == 1 ? (
         canvasRef && (

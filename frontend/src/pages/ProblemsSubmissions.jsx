@@ -76,11 +76,11 @@ export default function ProblemsSubmissions() {
       let maxTimeTaken = Math.max(...res.data.map((item) => item.viewDuration));
       maxTimeTaken = Math.max(maxTimeTaken, 50);
       // maxTimeTaken = Math.ceil(maxTimeTaken / 10) * 10;
-      const numberOfRanges = 20;
+      const numberOfRanges = 21;
       const rangeSize = (maxTimeTaken + 1 - minTimeTaken) / numberOfRanges;
 
       // Initialize an object to store the count of problems in each time range
-      const timeRangeCounts = Array(numberOfRanges + 1).fill(0);
+      const timeRangeCounts = Array(numberOfRanges).fill(0);
 
       // Process the data to count the number of problems in each time range
       res.data.forEach((item) => {
@@ -89,7 +89,7 @@ export default function ProblemsSubmissions() {
         const rangeIndex = Math.floor((timeTaken - minTimeTaken) / rangeSize);
 
         // Increment the count for that time range
-        if (rangeIndex >= 0 && rangeIndex <= numberOfRanges) {
+        if (rangeIndex >= 0 && rangeIndex < numberOfRanges) {
           timeRangeCounts[rangeIndex]++;
         }
       });
@@ -235,7 +235,7 @@ export default function ProblemsSubmissions() {
           },
           yaxis: {
             title: {
-              text: "Distribution (%)",
+              text: "Users (%)",
               style: {
                 fontSize: "20px", // Replace with your desired font size
                 fontWeight: 600, // Replace with your desired font weight
@@ -244,7 +244,7 @@ export default function ProblemsSubmissions() {
             },
             // tickAmount: 4,
             min: 0,
-            max: 1.2 * yMax,
+            max: 1.25 * yMax,
             labels: {
               formatter: function (value) {
                 return Math.floor(value);

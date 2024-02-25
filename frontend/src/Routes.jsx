@@ -42,6 +42,7 @@ import ProblemsSubmissions from "./pages/ProblemsSubmissions";
 import SetterProfile from "./pages/setter/SetterProfile";
 import Profile from "./pages/user/Profile/Profile";
 import SetterContests from "./pages/setter/SetterContests";
+import ContestSubmissions from "./pages/ContestSubmissions";
 import Contest from "./pages/setter/Contest";
 import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
@@ -407,6 +408,10 @@ const AppRoutes = () => {
             <Route
               path="/contests/:id/problems/:problemid"
               element={<UserContest />}
+            />
+            <Route
+              path="/contests/:id/problems/:problemId/submissions"
+              element={<ContestSubmissions />}
             />
           </Route>
           <Route

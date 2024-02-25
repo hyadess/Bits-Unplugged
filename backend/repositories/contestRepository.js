@@ -130,10 +130,25 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+  getAllSubmissionsByContestAndProblem = async (contestId, problemId) => {
+    const query = `
+        SELECT "CS".*, "U".*
+        FROM "ContestSubmissions" "CS"
+        JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
+        JOIN "Users" "U" ON "P"."userId" = "U"."id"
+        JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
+        WHERE "P"."contestId" = $1 AND "CP"."problemId" = $2;
+        `;
+    const params = [contestId, problemId];
+    const result = await this.query(query, params);
+    return result;
+  };  
+
+
 
   isContestProblemSolved = async (userId, contestId, problemId) => {
     const query = `
-        SELECT "CS"."verdict"
+        SELECT "CS"."verdict", "CS"."duration"
         FROM "ContestSubmissions" "CS"
         JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
         JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
@@ -527,7 +542,8 @@ class ContestRepository extends Repository {
     verdict,
     canvasData,
     userActivity,
-    points
+    points,
+    duration
   ) => {
   
     // If not, proceed to check for participant and insert the submission
@@ -547,10 +563,10 @@ class ContestRepository extends Repository {
     const contestProblemId = contestProblemResult.data[0].id;
     // Then, insert the submission with the participantId
     const submissionQuery = `
-        INSERT INTO "ContestSubmissions" ("participantId", "contestProblemId", "verdict", "canvasData", "userActivity", "points")
-        VALUES ($1, $2, $3, $4, $5, $6);
+        INSERT INTO "ContestSubmissions" ("participantId", "contestProblemId", "verdict", "canvasData", "userActivity", "points", "duration")
+        VALUES ($1, $2, $3, $4, $5, $6, $7);
     `;
-    const submissionParams = [participantId, contestProblemId, verdict, canvasData, userActivity, points];
+    const submissionParams = [participantId, contestProblemId, verdict, canvasData, userActivity, points,duration];
     const result = await this.query(submissionQuery, submissionParams);
   
     return result;

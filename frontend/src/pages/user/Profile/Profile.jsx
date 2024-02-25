@@ -682,11 +682,7 @@ export default function Profile() {
         <div className="bu-card-primary p-5 rounded-lg shadow-md">
           <CalendarHeatmap
             startDate={
-              new Date(
-                new Date().getFullYear() - 1,
-                new Date().getMonth(),
-                new Date().getDate()
-              )
+              new Date(new Date().getTime() - 12 * 30 * 24 * 60 * 60 * 1000)
             }
             endDate={new Date()}
             values={heatmapData}
@@ -708,7 +704,7 @@ export default function Profile() {
               }
             }}
             gutterSize={2} // Adjust the spacing between months
-            gutterPx={10} // Adjust the pixel size of the gutter
+            gutterPx={5} // Adjust the pixel size of the gutter
           />
         </div>
       </div>

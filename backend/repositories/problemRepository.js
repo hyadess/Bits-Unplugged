@@ -146,7 +146,21 @@ class ProblemsRepository extends Repository {
       where: {
         setterId: setterId,
       },
+      attributes: {
+        include: [
+          [
+            db.Sequelize.literal(`(
+              SELECT COUNT(*)
+              FROM "ProblemVersions"
+              WHERE "ProblemVersions"."problemId" = "Problem".id
+              AND "ProblemVersions"."approvalStatus" = 1
+            ) > 0`),
+            "isPublished",
+          ],
+        ],
+      },
     });
+    console.log(JSON.stringify(problems[22], null, 2));
     return problems;
   };
 

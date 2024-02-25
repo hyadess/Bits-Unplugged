@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Problem.hasOne(models.ProblemVersion, {
         foreignKey: "problemId",
-        as: "version",
+        as: "versions",
       });
       Problem.belongsTo(models.Setter, {
         foreignKey: "setterId",

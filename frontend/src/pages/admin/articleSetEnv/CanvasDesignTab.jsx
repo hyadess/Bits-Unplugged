@@ -33,7 +33,7 @@ const CanvasDesignTab = ({ backupProblem, onSave }) => {
   const [canvasFullList, setCanvasFullList] = useState([]);
   const canvasRef = useRef();
   const [mode, setMode] = useState("edit");
-
+  const stageRef = useRef(null);
   const reset = async () => {
     dispatch({
       type: "UPDATE_PROBLEM",
@@ -179,6 +179,7 @@ const CanvasDesignTab = ({ backupProblem, onSave }) => {
             payload: data,
           });
         }}
+        stageRef={stageRef}
       />
       <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
         <div

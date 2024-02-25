@@ -23,6 +23,24 @@ class RatingRepository extends Repository {
         return result;
     };
 
+    // getUserRatingsAndAttemptsByProblem = async (problemId) => {
+    //     const query = `
+    //         SELECT "A"."userId", 
+    //         COALESCE("R"."rating", 800) AS "rating",
+    //         "A"."totalFailedAttempt" as "failed_submissions",
+    //         "A"."viewDuration" as "duration",
+    //         "A"."isSolved" as "isSolved"
+    //         FROM "Activities" "A"
+    //         LEFT JOIN "UserRatings" "R" ON "A"."userId" = "R"."userId"
+    //         WHERE "S"."problemId" = $1;
+    //     `;
+    //     const params = [problemId];
+    //     const result = await this.query(query, params);
+    //     return result;
+    // }
+
+
+
     getLatestProblemsWithRatings = async () => {
         const query = `
             SELECT "P"."id", "P"."rating"

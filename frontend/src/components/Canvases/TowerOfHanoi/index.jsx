@@ -81,7 +81,7 @@ const TowerOfHanoiView = ({
               height={
                 Math.min(window.innerWidth / 800, 1) * (280 + diskHeight * 1.2)
               }
-              ref={stageRef}
+              ref={stageRef ? stageRef : null}
               scaleX={Math.min(window.innerWidth / 970, 1)}
               scaleY={Math.min(window.innerWidth / 900, 1)}
             >

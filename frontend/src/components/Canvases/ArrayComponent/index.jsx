@@ -572,7 +572,7 @@ const ArrayComponent = (props, ref) => {
       {/* <DndProvider backend={HTML5Backend}> */}
       <div
         className="flex flex-col gap-5 p-5 pt-2 justify-center min-h-[24rem]"
-        ref={props.stageRef}
+        ref={props.stageRef ? props.stageRef : null}
       >
         {data?.array?.map((row, i) => (
           <div className="flex flex-row gap-5 items-center h-full my-auto">

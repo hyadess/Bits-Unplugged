@@ -344,7 +344,7 @@ const AppRoutes = () => {
 
         <Route element={<ProblemSetter />}>
           <Route
-            path="/home"
+            path="/setter/home"
             element={
               <LayoutMain>
                 <SetterHome />

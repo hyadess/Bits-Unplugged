@@ -67,7 +67,6 @@ const SolutionCheckerTab = ({ onSave }) => {
           setStdout={setStdout}
           checkSubmit={onSubmit}
           save={updateSolutionChecker}
-          stageRef={stageRef}
         />
       ) : checkerType == 1 ? (
         canvasRef && (
@@ -75,16 +74,22 @@ const SolutionCheckerTab = ({ onSave }) => {
             <CanvasContainer
               canvasId={problem.canvasId}
               input={problem.checkerCanvas}
-              setInput={(data) => {
-                dispatch({
-                  type: "UPDATE_CHECKER_CANVAS",
-                  payload: { ...data },
+              setInput={(dataOrFunction) => {
+                dispatch((prevState) => {
+                  return {
+                    type: "UPDATE_CHECKER_CANVAS",
+                    payload:
+                      typeof dataOrFunction === "function"
+                        ? dataOrFunction(prevState.checkerCanvas)
+                        : dataOrFunction,
+                  };
                 });
               }}
               ref={canvasRef}
               mode="preview"
               previewOptions={problem.previewOptions}
               editOptions={problem.editOptions}
+              stageRef={stageRef}
             />
             <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
               <div

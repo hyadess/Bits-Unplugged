@@ -86,10 +86,15 @@ const SolutionCheckerTab = () => {
             <CanvasContainer
               canvasId={problem.canvasId}
               input={problem.checkerCanvas}
-              setInput={(data) => {
-                dispatch({
-                  type: "UPDATE_CHECKER_CANVAS",
-                  payload: { ...data },
+              setInput={(dataOrFunction) => {
+                dispatch((prevState) => {
+                  return {
+                    type: "UPDATE_CHECKER_CANVAS",
+                    payload:
+                      typeof dataOrFunction === "function"
+                        ? dataOrFunction(prevState.checkerCanvas)
+                        : dataOrFunction,
+                  };
                 });
               }}
               ref={canvasRef}

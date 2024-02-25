@@ -20,6 +20,7 @@ router.get("/:id/versions", problemController.getAllVersions);
 router.post("/:id/clone", problemController.cloneProblem);
 router.put("/:id/approve", problemController.approveProblem);
 router.put("/:id/reject", problemController.rejectProblem);
+router.get("/setter/recentUpdate", problemController.recentlyUpdatedProblems);
 // User - Submission of his own
 // Admin - Submission of the problem
 

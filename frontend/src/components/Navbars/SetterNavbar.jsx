@@ -113,7 +113,7 @@ const SetterNavbar = (props) => {
                     Home
                   </>
                 }
-                path="/home"
+                path="/setter/home"
               />
               <NavButton
                 label={

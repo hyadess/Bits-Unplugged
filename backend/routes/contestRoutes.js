@@ -20,6 +20,7 @@ router.get(
   "/:contestId/submissions/me",
   contestController.getAllSubmissionsByUserAndContest
 );
+router.get("/:contestId/problems/:problemId/submissions", contestController.getAllSubmissionsByContestAndProblem);
 
 router.get("/:contestId/isSolved/:problemId", contestController.isContestProblemSolved);
 

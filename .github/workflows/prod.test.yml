@@ -11,9 +11,9 @@ jobs:
 
     env:
       JWT_SECRET: kuddusmia
-      DB_USER: postgres.iprmlpqzxsyxpfjmrakl
+      DB_USER_PROD: postgres.iprmlpqzxsyxpfjmrakl
       DB_PASS: "#include<D1h@n.h>"
-      DB_HOST: aws-0-ap-south-1.pooler.supabase.com
+      DB_HOST_PROD: aws-0-ap-south-1.pooler.supabase.com
       DB_PORT: 5432
       DB_DB: bitsunplugged
       PORT: 5000

@@ -64,6 +64,7 @@ import LayoutSecondary from "components/Layouts/LayoutSecondary";
 import { contestApi } from "api";
 import CountdownTimer from "pages/Timer";
 import ContestProblemList from "pages/ContestProblemList";
+import SetterHome from "pages/setter/SetterHome";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -342,6 +343,14 @@ const AppRoutes = () => {
         <Route path="/admin/login" element={<AdminLogin />} />
 
         <Route element={<ProblemSetter />}>
+          <Route
+            path="/home"
+            element={
+              <LayoutMain>
+                <SetterHome />
+              </LayoutMain>
+            }
+          />
           <Route
             path="/problems/:id/preview"
             element={

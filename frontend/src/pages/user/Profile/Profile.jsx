@@ -709,7 +709,7 @@ export default function Profile() {
         </div>
       </div>
 
-      <Title title={"You tried these problems recently"} />
+      
 
       <ProfileRecentFails />
       <Tooltip id="data-tip" />

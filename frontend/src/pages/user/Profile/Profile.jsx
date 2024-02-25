@@ -235,7 +235,7 @@ export default function Profile() {
             options={chart.options}
             series={chart.series}
             type="bar"
-            height={350}
+            height={300}
           />
         ) : (
           <> </>
@@ -300,7 +300,7 @@ export default function Profile() {
             options={chart.options}
             series={chart.series}
             type="pie"
-            height={350}
+            height={308}
           />
         ) : (
           <> </>
@@ -310,7 +310,7 @@ export default function Profile() {
   };
 
   const getSubmissions = async () => {
-    console.log("getSubmissions",username);
+    console.log("getSubmissions", username);
     const res = await submissionApi.getAllSubmissionsByUser(username);
     if (res.success) {
       setSubmissions(res.data);
@@ -369,12 +369,13 @@ export default function Profile() {
     },
     stroke: {
       curve: "smooth",
+      width: 0, // border
     },
     fill: {
       type: "gradient",
       gradient: {
-        shadeIntensity: 0.7,
-        opacityFrom: 0.9,
+        shadeIntensity: 0.6,
+        opacityFrom: 1,
         opacityTo: 1,
         stops: [0, 100],
       },
@@ -433,8 +434,8 @@ export default function Profile() {
   const [distributionChartData, setDistributionChartData] = useState({
     options: {
       chart: {
-        id: "daily-activity-chart",
-        type: "histogram",
+        id: "solve-time-chart",
+        type: "bar",
         toolbar: {
           show: false,
         },
@@ -459,8 +460,9 @@ export default function Profile() {
         colors: ["#000000"],
         fillColors: ["#000000"],
       },
-      colors: ["#aadfcf"],
-
+      fill: {
+        colors: ["#aadfcf"],
+      },
       tooltip: {
         enabled: true,
         enabledOnSeries: undefined,
@@ -620,15 +622,17 @@ export default function Profile() {
     <div className="flex flex-col pr-5">
       {/* <ProfileInfo /> */}
       <Title title={"Profile statistics"} />
-      <div className="flex flex-row items-end">
-        <div className="mb-6 px-10 py-6">
+      <div className="grid grid-cols-2 items-end gap-x-8">
+        <div className="">
           <Title
             title={""}
             sub_title={
               "chart shows your total successful and failed attempts accross all the topics"
             }
           />
-          <PieChart />
+          <div className="bu-card-primary pr-5 pl-3 pt-3 rounded-lg shadow-md">
+            <PieChart />
+          </div>
         </div>
 
         <div>
@@ -638,67 +642,75 @@ export default function Profile() {
               "Your fabourite series. Shows your total attempts accross different series"
             }
           />
-          <BarChart />
+          <div className="bu-card-primary pr-5 pl-3 pt-3 rounded-lg shadow-md">
+            <BarChart />
+          </div>
         </div>
-      </div>
-
-      <div className="flex flex-row w-full items-end">
-        <div className="px-10 py-6 w-1/2">
+        <div className="">
           <Title title={""} sub_title={"Time you spent solving problems"} />
-          <Chart
-            options={options}
-            series={[{ name: "Active Time", data: activityChartData }]}
-            type="area"
-            width="100%"
-          />
+          <div className="bu-card-primary pr-5 pl-3 pt-3 rounded-lg shadow-md">
+            <Chart
+              options={options}
+              series={[{ name: "Active Time", data: activityChartData }]}
+              type="area"
+              width="100%"
+              height={300}
+            />
+          </div>
         </div>
-
-        <div className="w-1/2">
+        <div className="">
           <Title
             title={""}
             sub_title={"Your Solve time for different problems"}
           />
-          <Chart
-            options={distributionChartData.options}
-            series={distributionChartData.series}
-            type="bar"
-            height={300}
-          />
+          <div className="bu-card-primary pr-5 pl-3 pt-3 rounded-lg shadow-md">
+            <Chart
+              options={distributionChartData.options}
+              series={distributionChartData.series}
+              type="bar"
+              height={300}
+              width="100%"
+            />
+          </div>
         </div>
       </div>
 
-      <div className="mb-6 px-10 py-6">
+      <div className="flex flex-row w-full items-end"></div>
+
+      <div className="mb-6 py-6">
         <Title title={""} sub_title={"Your activity heatmap"} />
-        <CalendarHeatmap
-          startDate={
-            new Date(
-              new Date().getFullYear() - 1,
-              new Date().getMonth(),
-              new Date().getDate()
-            )
-          }
-          endDate={new Date()}
-          values={heatmapData}
-          classForValue={(value) => {
-            if (!value) {
-              return "color-empty";
+        <div className="bu-card-primary p-5 rounded-lg shadow-md">
+          <CalendarHeatmap
+            startDate={
+              new Date(
+                new Date().getFullYear() - 1,
+                new Date().getMonth(),
+                new Date().getDate()
+              )
             }
-            return `color-scale-${Math.min(value.count, 4)}`;
-          }}
-          tooltipDataAttrs={(value) => {
-            if (value) {
-              return {
-                "data-tooltip": `has count: ${value.count}`,
-              };
-            } else {
-              return {
-                "data-tooltip": "has count: 0",
-              };
-            }
-          }}
-          gutterSize={2} // Adjust the spacing between months
-          gutterPx={10} // Adjust the pixel size of the gutter
-        />
+            endDate={new Date()}
+            values={heatmapData}
+            classForValue={(value) => {
+              if (!value) {
+                return "color-empty";
+              }
+              return `color-scale-${Math.min(value.count, 11)}`;
+            }}
+            tooltipDataAttrs={(value) => {
+              if (value) {
+                return {
+                  "data-tooltip": `has count: ${value.count}`,
+                };
+              } else {
+                return {
+                  "data-tooltip": "has count: 0",
+                };
+              }
+            }}
+            gutterSize={2} // Adjust the spacing between months
+            gutterPx={10} // Adjust the pixel size of the gutter
+          />
+        </div>
       </div>
 
       <Title title={"You tried these problems recently"} />

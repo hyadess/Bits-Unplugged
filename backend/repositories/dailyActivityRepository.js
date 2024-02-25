@@ -26,7 +26,7 @@ class DailyActivityRepository extends Repository {
     const query = `
       SELECT
       "D"."userId",
-      "D"."activityDate"::DATE AS "visitDate",
+      date_trunc('week', "D"."activityDate")::DATE AS "visitDate",
       SUM("D"."duration") AS "totalDuration"
       FROM
       "DailyActivities" "D"
@@ -34,6 +34,7 @@ class DailyActivityRepository extends Repository {
       "Users" "U" ON "D"."userId" = "U"."id"
       WHERE
       "U"."username" = $1
+      AND "D"."activityDate" >= (CURRENT_DATE - INTERVAL '3 months')
       GROUP BY
       "D"."userId","visitDate"
       ORDER BY

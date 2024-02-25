@@ -23,6 +23,7 @@ const SolutionCheckerTab = () => {
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
   const [checkerType, setCheckerType] = useState(1);
+  const stageRef = useRef(null);
   // const [test, setTest] = useState(null);
   const onSubmit = async () => {
     const result = await SubmissionService.checkSolution(
@@ -98,6 +99,7 @@ const SolutionCheckerTab = () => {
               mode="preview"
               previewOptions={problem.previewOptions}
               editOptions={problem.editOptions}
+              stageRef={stageRef}
             />
             <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
               <div

@@ -6,8 +6,46 @@ class RatingController extends Controller{
     constructor(){
         super();
     }
+    //user rating table................
+    getCurrentRating = async (req,res) => {
+        const result = await ratingRepository.getCurrentRating(req.user.userId);
+        if(result.success){
+            res.status(200).json(result.data);
+        }
+        else{
+            res.status(500).json(result);
+        }
+    };
+
+    getRatingHistory = async (req,res) => {
+        const result = await ratingRepository.getRatingHistory(req.user.userId);
+        if(result.success){
+            res.status(200).json(result.data);
+        }
+        else{
+            res.status(500).json(result);
+        }
+    };
+
+    updateRating = async (req,res) => {
+        const result = await ratingRepository.updateRating(req.user.userId, req.body.newRating);
+        if(result.success){
+            res.status(202).json({message: "Rating updated successfully"});
+        }
+        else{
+            res.status(500).json({message: "Rating update failed"});
+        }
+    };
+
+
+
+
+
+
 
     //userRating affecting problem rating.........................
+
+    
 
 
     getUserRatingsAndAttemptsByProblem = async (problemId) => {

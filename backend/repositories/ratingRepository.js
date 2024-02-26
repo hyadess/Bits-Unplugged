@@ -23,6 +23,57 @@ class RatingRepository extends Repository {
     //     return result;
     // };
 
+
+    //for user rating table............................................
+
+    getCurrentRating = async (userId) => {
+        const query = `
+        SELECT COALESCE(
+            (SELECT "rating" FROM "UserRatings" WHERE "userId" = $1 AND "isLatest" = TRUE),
+            800
+        ) as "rating"
+        `;
+        const params = [userId];
+        const result = await this.query(query, params);
+        return result;
+    };
+
+    getRatingHistory = async (userId) => {
+        const query = `
+            SELECT "rating"
+            FROM "UserRatings"
+            WHERE "userId" = $1
+            ORDER BY "createdAt" ASC
+        `;
+        const params = [userId];
+        const result = await this.query(query, params);
+        return result;
+    };
+
+    updateRating = async (userId, newRating) => {
+        const query = `
+            UPDATE "UserRatings"
+            SET "isLatest" = FALSE
+            WHERE "userId" = $1
+        `;
+        const params = [userId];
+        const result = await this.query(query, params);
+        if (!result.success) {
+            console.log("Error updating rating");
+        }
+        const query2 = `
+            INSERT INTO "UserRatings" ("userId", "rating", "isLatest")
+            VALUES ($1, $2, TRUE)
+        `;
+        const params2 = [userId, newRating];
+        const result2 = await this.query(query2, params2);
+        return result2;
+    };
+
+
+
+
+
     getUserRatingsAndAttemptsByProblem = async (problemId) => {
         const query = `
             SELECT "A"."userId", 

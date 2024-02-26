@@ -677,6 +677,21 @@ class ContestRepository extends Repository {
     return result;
 };
 
+ IsRegistered = async (userId, contestId) => {
+  const query = `
+    SELECT *
+    FROM "Participants"
+    WHERE "contestId" = $1
+      AND "userId" = $2
+      AND "type" = $3;
+  `;
+  const params = [contestId, userId, 0];
+  const result = await this.query(query, params);
+
+  return result;
+};
+
+
   leaveUpcomingContest = async (userId, contestId) => {
     const query = `
         DELETE FROM "Participants"

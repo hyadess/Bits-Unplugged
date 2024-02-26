@@ -84,6 +84,7 @@ router.post(
 
 router.get("/:contestId/Leaderboard", contestController.getLeaderboard);
 router.get("/:contestId/Timeline", contestController.getTimeline);
+router.get("/:contestId/isRegistered", contestController.IsRegistered);
 
 
 //new ones....

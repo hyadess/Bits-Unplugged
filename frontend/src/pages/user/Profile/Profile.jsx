@@ -205,8 +205,8 @@ const BarChart = ({ barChartData }) => {
               colors: [],
               fontSize: "0.8rem",
             },
-            rotate: 10,
-            offsetY: 20,
+            rotate: 20,
+            offsetY: 40,
             offsetX: 22,
             rotateAlways: true,
             tickPlacement: "on",
@@ -394,11 +394,28 @@ const SolveTimeGraph = () => {
         toolbar: {
           show: false,
         },
+        zoom: {
+          enabled: false,
+        },
+      },
+      states: {
+        active: {
+          filter: {
+            type: "none" /* none, lighten, darken */,
+          },
+        },
+        hover: {
+          filter: {
+            type: "none",
+            value: 0.0001,
+          },
+        },
       },
       xaxis: {
         title: {
           text: "Time Taken",
         },
+        tickAmounts: 5,
       },
       yaxis: {
         title: {
@@ -484,8 +501,8 @@ const SolveTimeGraph = () => {
         ...res.data.map((item) => item.viewDuration)
       );
 
-      const numberOfRanges = 10;
-      const rangeSize = (maxTimeTaken - minTimeTaken) / numberOfRanges;
+      const numberOfRanges = 11;
+      const rangeSize = (maxTimeTaken + 1 - minTimeTaken) / numberOfRanges;
 
       const timeRanges = Array.from({ length: numberOfRanges }, (_, index) => {
         const min = minTimeTaken + index * rangeSize;
@@ -494,7 +511,7 @@ const SolveTimeGraph = () => {
       });
 
       // Initialize an object to store the count of problems in each time range
-      const timeRangeCounts = Array(numberOfRanges + 1).fill(0);
+      const timeRangeCounts = Array(numberOfRanges).fill(0);
 
       // Process the data to count the number of problems in each time range
       res.data.forEach((item) => {
@@ -504,7 +521,7 @@ const SolveTimeGraph = () => {
         const rangeIndex = Math.floor((timeTaken - minTimeTaken) / rangeSize);
 
         // Increment the count for that time range
-        if (rangeIndex >= 0 && rangeIndex < numberOfRanges + 1) {
+        if (rangeIndex >= 0 && rangeIndex < numberOfRanges) {
           timeRangeCounts[rangeIndex]++;
         }
       });

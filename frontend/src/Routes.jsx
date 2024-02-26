@@ -15,6 +15,7 @@ import Signup from "./pages/auth/Signup";
 import ProblemsCanvas from "./pages/ProblemsCanvas";
 import Topics from "./pages/user/Topics";
 import Series from "./pages/user/Series";
+import ContestParticipant from "pages/ContestParticipant";
 import SetterProblems from "./pages/setter/SetterProblems";
 import ProblemSetEnv from "./pages/setter/ProblemSetEnv";
 import ContestSetEnv from "./pages/setter/ContestSetEnv";
@@ -412,6 +413,10 @@ const AppRoutes = () => {
             <Route
               path="/contests/:id/problems/:problemId/submissions"
               element={<ContestSubmissions />}
+            />
+            <Route
+              path="/contests/:id/:username"
+              element={<ContestParticipant />}
             />
           </Route>
           <Route

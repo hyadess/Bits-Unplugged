@@ -118,15 +118,17 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
-  getAllSubmissionsByUserAndContest = async (userId, contestId) => {
+  getAllSubmissionsByUserAndContest = async (contestId,username) => {
     const query = `
-        SELECT "CS".*, "U".*
+        SELECT "Pb"."title","CS".*
         FROM "ContestSubmissions" "CS"
         JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
+        JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
+        JOIN "Problems" "Pb" ON "CP"."problemId" = "Pb"."id"
         JOIN "Users" "U" ON "P"."userId" = "U"."id"
-        WHERE "P"."contestId" = $2 AND "P"."userId" = $1;
+        WHERE "P"."contestId" = $2 AND "U"."username" = $1;
         `;
-    const params = [userId, contestId];
+    const params = [username, contestId];
     const result = await this.query(query, params);
     return result;
   };

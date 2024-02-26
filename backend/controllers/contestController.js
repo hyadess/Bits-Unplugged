@@ -72,8 +72,8 @@ class ContestController extends Controller {
   };
   getAllSubmissionsByUserAndContest = async (req, res) => {
     let result = await contestRepository.getAllSubmissionsByUserAndContest(
-      req.user.userId,
-      req.params.contestId
+      req.params.contestId,
+      req.params.username
     );
     if (result.success) {
       res.status(200).json(result.data);

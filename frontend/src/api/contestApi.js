@@ -120,6 +120,12 @@ class ContestApi extends Api {
   getTimeline = async (contestId) => {
     return await this.get(`/contests/${contestId}/Timeline`);
   };
+  
+  isRegistered = async (contestId) => {
+    return await this.get(`/contests/${contestId}/isRegistered`);
+  };
+
+
   showAllCollaborators = async (contestId) => {
     // console.log("===>", contestId);
     return await this.get("/contests/" + contestId + "/showAllCollaborators");

@@ -13,6 +13,7 @@ const seedRoutes = require("./seedRoutes");
 const setterActivityRoutes = require("./setterActivityRoutes");
 const storageRoutes = require("./storageRoutes");
 const ratingRoutes = require("./ratingRoutes");
+const recommendationRoutes = require("./recommendationRoutes");
 const base = require("../repositories/base");
 
 require("../services/passport");
@@ -40,6 +41,7 @@ router.use("/seed", seedRoutes);
 router.use("/setterActivity", setterActivityRoutes);
 router.use("/storage", storageRoutes);
 router.use("/ratings", ratingRoutes);
+router.use("/recommendations", recommendationRoutes);
 
 
 module.exports = router;

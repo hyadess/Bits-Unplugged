@@ -4,7 +4,7 @@ const ContestTab = (props) => {
   const tabs = ["Details", "Leaderboard", "My Submissions"];
 
   return (
-    <div className="flex flex-col h-full mx-auto">
+    <div className="flex flex-col h-full mx-auto items-center">
       <div className="p-0 flex-grow">
         {tabs.map((tab, index) => (
           <div

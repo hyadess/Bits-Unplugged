@@ -156,7 +156,7 @@ const ContestWrapper = () => {
           setActiveComponent(tab);
           if(tab=="Details")navigate(`/contests/${id}`);
           else if(tab=="Leaderboard")navigate(`/contests/${id}/leaderboard`);
-          else if(tab=="My submissions")navigate(`/contests/${id}/${username}`);
+          else if(tab=="My Submissions")navigate(`/contests/${id}/${username}`);
         }}
       /></>
       }

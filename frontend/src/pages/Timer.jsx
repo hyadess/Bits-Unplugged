@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useCountdown } from "../hooks/useCountDown";
 import { contestApi } from "../api/";
 import { useParams } from "react-router-dom";
+import ContestProblemList from "./ContestProblemList";
 
 const ExpiredNotice = ({ flag }) => {
   useEffect(() => {
@@ -66,6 +67,8 @@ const CountdownTimer = ({ targetDate, flag, EndAction }) => {
           minutes={minutes}
           seconds={seconds}
         />
+      
+      <ContestProblemList></ContestProblemList>
       </>
     );
   }

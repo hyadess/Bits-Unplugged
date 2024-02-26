@@ -241,6 +241,7 @@ const ArrayComponent = (props, ref) => {
   // }, [array]);
 
   const moveCard = (dragRow, dragCol, hoverRow, hoverCol) => {
+    if (!props.previewOptions.drag.value) return;
     setData((prevState) => {
       // console.log(prevState);
       const dragCard = prevState.array[dragRow][dragCol];

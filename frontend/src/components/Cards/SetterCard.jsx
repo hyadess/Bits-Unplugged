@@ -12,32 +12,31 @@ const SetterCard = ({ name, image, position, detail }) => {
   };
 
   return (
-    <div className="items-center rounded shadow flex w-half h-half md:w-76 bu-card-secondary">
-      <div className="w-1/3">
-        <a href="#">
-          <ImageLoader
-            className="w-full h-full rounded-l"
-            style={{
-              objectFit: "cover",
-              aspectRatio: "1/1",
-            }}
-            src={image}
-            alt="Loading..."
-          />
-        </a>
+    <div className="items-center rounded shadow flex w-full h-full md:w-76 bu-card-secondary">
+      <div className="w-1/4 h-[100%]">
+        <ImageLoader
+          className="rounded-l"
+          style={{
+            height: "100%",
+            width: "100%",
+            objectFit: "cover",
+            aspectRatio: "1/1",
+          }}
+          src={image}
+          alt="Loading..."
+        />
       </div>
-      <div className="p-5 w-1/2 flex flex-col items-start justify-between">
-        <h3 className="text-l md:text-xl font-bold tracking-tight bu-text-primary">
+      <div className="p-3 w-3/4 flex flex-col items-start justify-start h-full">
+        <h3 className="text-l md:text-xl font-bold tracking-tight bu-text-primary whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
           <a href="#">{name}</a>
         </h3>
         <div className="flex flex-col items-start">
           <span className="text-sm md:text-base bu-text-subtitle text">
             {position}
           </span>
-
-          <p className="mt-3 mb-4 font-light bu-text-subtitle text-sm md:text-base">
+          {/* <p className="font-light bu-text-subtitle text-sm md:text-base">
             {detail}
-          </p>
+          </p> */}
         </div>
       </div>
     </div>

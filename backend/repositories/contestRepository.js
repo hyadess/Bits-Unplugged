@@ -602,6 +602,8 @@ class ContestRepository extends Repository {
         "C"."id" = $1
         GROUP BY
         "U"."id","U"."username"
+        ORDER BY
+        "points" DESC;
         `;
     const params = [contestId];
     const result = await this.query(query, params);

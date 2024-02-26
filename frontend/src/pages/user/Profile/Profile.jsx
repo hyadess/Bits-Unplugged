@@ -13,18 +13,289 @@ import "./heatmap.scss";
 import ProfileRecentFails from "./ProfileRecentFails";
 import ProfileInfo from "./ProfileInfo";
 import { set } from "date-fns";
+import { Divider } from "@mui/material";
 
 // https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.uplabs.com%2Fposts%2Ffatou-dashboard-design-applicant-profile-page-design-in-xd&psig=AOvVaw3GwoLsJspGKr0w1icxfd95&ust=1708193790479000&source=images&cd=vfe&opi=89978449&ved=0CBUQjhxqFwoTCOjQ1_K7sIQDFQAAAAAdAAAAABAY
 // https://www.google.com/url?sa=i&url=https%3A%2F%2Fuxplanet.org%2F50-free-profile-page-design-samples-templates-psd-sketch-for-inspiration-2f939aaee66b&psig=AOvVaw3GwoLsJspGKr0w1icxfd95&ust=1708193790479000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCOjQ1_K7sIQDFQAAAAAdAAAAABA5
-export default function Profile() {
-  const navigate = useNavigate();
-  let { username } = useParams();
-  const [submissions, setSubmissions] = useState([]);
-  //const [successes, setSuccesses] = useState([]);
-  //const [fails, setFails] = useState([]);
 
-  //for heatmap.......................
+const PieChart = ({ barChartData }) => {
+  const [chart, setChart] = useState(undefined);
 
+  //for barChartData, calculate total success count and fail count
+
+  //draw a pie chart
+  useEffect(() => {
+    let totalSuccessCount = 0;
+    let totalFailCount = 0;
+    barChartData.forEach((series) => {
+      totalSuccessCount += series.successCount;
+      totalFailCount += series.failCount;
+    });
+    setChart({
+      series: [totalFailCount, totalSuccessCount],
+      options: {
+        chart: {
+          type: "pie",
+          height: "100%",
+        },
+        plotOptions: {
+          pie: {
+            dataLabels: {
+              offset: -20,
+            },
+          },
+        },
+        labels: ["Fail", "Success"],
+        colors: ["#ef9c9c", "#96cdbf"],
+        dataLabels: {
+          position: "top",
+          offset: -50, // Adjust this value as needed
+          style: {
+            // colors: ["#222222", "#222222"], // Add this line. This will make the labels dark black.
+            offset: -50, // Adjust this value as needed
+            fontSize: "20px",
+            shadow: false,
+          },
+        },
+        stroke: {
+          width: 0, // Add this line. This will remove the border.
+        },
+        legend: {
+          position: "right", // or 'top', 'left', 'right'
+        },
+        // responsive: [
+        //   {
+        //     breakpoint: 480,
+        //     options: {
+        //       chart: {
+        //         width: 200,
+        //       },
+        //       legend: {
+        //         position: "bottom",
+        //       },
+        //     },
+        //   },
+        // ],
+      },
+    });
+  }, [barChartData]);
+  //return the pie chart
+  return (
+    <div className="bu-card-primary rounded-lg shadow-md h-[20rem] relative">
+      <h2 className="bu-text-primary py-2 px-5 font-semibold">
+        Success and fail distribution
+      </h2>
+      <Divider />
+      <div className="h-full p-3">
+        {chart !== undefined && barChartData.length > 0 && (
+          <ApexCharts
+            options={chart.options}
+            series={chart.series}
+            type="pie"
+            height="85%"
+          />
+        )}
+      </div>
+      <div className="absolute top-0 left-0 h-full w-full">
+        {chart === undefined ||
+          (barChartData.length == 0 && (
+            <div className="flex justify-center items-center h-full text-gray-300 dark:text-slate-600 text-3xl font-semibold">
+              No data available
+            </div>
+          ))}
+      </div>
+    </div>
+  );
+};
+
+const BarChart = ({ barChartData }) => {
+  // console.log(props.attempted);
+  const [chart, setChart] = useState(undefined);
+
+  useEffect(() => {
+    const sortedSeries = barChartData.sort(
+      (a, b) => b.successCount + b.failCount - (a.successCount + a.failCount)
+    );
+
+    // Extract top 5 series
+    const top5Series = sortedSeries.slice(0, 5);
+
+    // Create lists for series names, success counts, and fail counts
+    const seriesNames = top5Series.map((series) => series.name);
+    //console.log("series names",seriesNames);
+    const successCounts = top5Series.map((series) => series.successCount);
+    const failCounts = top5Series.map((series) => series.failCount);
+    while (seriesNames.length < 5) {
+      seriesNames.push("");
+      successCounts.push(0);
+      failCounts.push(0);
+    }
+    // console.log("Triggered");
+    setChart({
+      series: [
+        {
+          name: "wrong submissions",
+          data: failCounts,
+        },
+        {
+          name: "success",
+          data: successCounts,
+        },
+      ],
+      options: {
+        chart: {
+          type: "bar",
+          height: 300,
+          toolbar: {
+            show: false,
+          },
+        },
+        legend: {
+          position: "top", // or 'top', 'left', 'right'
+        },
+        states: {
+          active: {
+            filter: {
+              type: "none" /* none, lighten, darken */,
+            },
+          },
+          hover: {
+            filter: {
+              type: "none",
+              value: 0.0001,
+            },
+          },
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            columnWidth: "55%",
+            endingShape: "rounded",
+          },
+        },
+        grid: {
+          show: false,
+        },
+        dataLabels: {
+          show: true,
+        },
+        stroke: {
+          show: true,
+          width: 1,
+          colors: ["transparent"],
+        },
+        xaxis: {
+          categories: seriesNames,
+          labels: {
+            style: {
+              colors: [],
+              fontSize: "0.8rem",
+            },
+            rotate: 10,
+            offsetY: 20,
+            offsetX: 22,
+            rotateAlways: true,
+            tickPlacement: "on",
+            // tickAmount: top5Series.length + 2,
+          },
+        },
+        axisTicks: {
+          show: true,
+          borderType: "solid",
+          color: "#000000",
+          height: 6,
+          offsetX: 0,
+          offsetY: 0,
+        },
+        yaxis: {
+          title: {
+            text: "Number of problems",
+            style: {
+              color: undefined,
+              fontSize: "0.9rem",
+              fontWeight: "1px",
+            },
+          },
+          labels: {
+            formatter: function (val) {
+              return val.toFixed(0);
+            },
+          },
+        },
+        fill: {
+          opacity: 1,
+        },
+
+        tooltip: {
+          enabled: false,
+          enabledOnSeries: undefined,
+          shared: true,
+          followCursor: false,
+          intersect: false,
+          inverseOrder: false,
+          custom: undefined,
+          hideEmptySeries: true,
+          fillSeriesColor: false,
+          theme: "dark",
+          onDatasetHover: {
+            highlightDataSeries: false,
+          },
+          y: {
+            formatter: function (val) {
+              return val + " problems";
+            },
+          },
+          style: {
+            fontSize: "12px",
+            colors: ["#000000"], // Add this line
+          },
+          marker: {
+            show: true,
+          },
+          items: {
+            display: "flex",
+          },
+          fixed: {
+            enabled: false,
+            position: "topRight",
+            offsetX: 0,
+            offsetY: 0,
+          },
+        },
+        colors: ["#ef9c9c", "#96cdbf"],
+      },
+    });
+  }, [barChartData]);
+  //console.log(chart);
+  return (
+    <div className="bu-card-primary rounded-lg shadow-md h-[20rem] relative">
+      <h2 className="bu-text-primary py-2 px-5 font-semibold">
+        Top 5 favourite series
+      </h2>
+      <Divider />
+      <div className="h-full p-3 pl-2 pb-0">
+        {chart !== undefined && barChartData.length > 0 && (
+          <ApexCharts
+            options={chart.options}
+            series={chart.series}
+            type="bar"
+            height="85%"
+          />
+        )}
+      </div>
+      <div className="absolute top-0 left-0 h-full w-full">
+        {chart === undefined ||
+          (barChartData.length == 0 && (
+            <div className="flex justify-center items-center h-full text-gray-300 dark:text-slate-600 text-3xl font-semibold">
+              No data available
+            </div>
+          ))}
+      </div>
+    </div>
+  );
+};
+
+const Heatmap = ({ submissions }) => {
   const [heatmapData, setHeatmapData] = useState([]);
 
   const transformHeatmapData = () => {
@@ -61,376 +332,45 @@ export default function Profile() {
     setHeatmapData(data);
   };
 
-  // for barchart..........................
+  useEffect(() => {
+    transformHeatmapData();
+  }, [submissions]);
 
-  const [barChartData, setBarChartData] = useState([]);
+  return (
+    <div className="bu-card-primary p-5 rounded-lg shadow-md">
+      <CalendarHeatmap
+        startDate={
+          new Date(new Date().getTime() - 12 * 30 * 24 * 60 * 60 * 1000)
+        }
+        endDate={new Date()}
+        values={heatmapData}
+        classForValue={(value) => {
+          if (!value) {
+            return "color-empty";
+          }
+          return `color-scale-${Math.min(value.count, 11)}`;
+        }}
+        tooltipDataAttrs={(value) => {
+          if (value) {
+            return {
+              "data-tooltip": `has count: ${value.count}`,
+            };
+          } else {
+            return {
+              "data-tooltip": "has count: 0",
+            };
+          }
+        }}
+        gutterSize={2} // Adjust the spacing between months
+        gutterPx={5} // Adjust the pixel size of the gutter
+      />
+    </div>
+  );
+};
 
-  const calculateSeriesStats = () => {
-    const seriesStats = [];
-
-    submissions.forEach((submission) => {
-      const { seriesId, name, problemId, title, verdict } = submission;
-
-      if (!seriesStats[seriesId]) {
-        seriesStats[seriesId] = {
-          id: seriesId,
-          name: name,
-          successCount: 0,
-          failCount: 0,
-          uniqueAcceptedProblems: new Set(),
-        };
-      }
-
-      const series = seriesStats[seriesId];
-
-      if (
-        verdict === "Accepted" &&
-        !series.uniqueAcceptedProblems.has(problemId)
-      ) {
-        series.successCount++;
-        series.uniqueAcceptedProblems.add(problemId);
-      } else if (verdict === "Wrong answer") {
-        series.failCount++;
-      }
-    });
-
-    //console.log(Object.values(seriesStats));
-    setBarChartData(Object.values(seriesStats));
-  };
-
-  const BarChart = () => {
-    // console.log(props.attempted);
-    const [chart, setChart] = useState(undefined);
-
-    useEffect(() => {
-      const sortedSeries = barChartData.sort(
-        (a, b) => b.successCount + b.failCount - (a.successCount + a.failCount)
-      );
-
-      // Extract top 5 series
-      const top5Series = sortedSeries.slice(0, 5);
-
-      // Create lists for series names, success counts, and fail counts
-      const seriesNames = top5Series.map((series) => series.name);
-      //console.log("series names",seriesNames);
-      const successCounts = top5Series.map((series) => series.successCount);
-      const failCounts = top5Series.map((series) => series.failCount);
-
-      // console.log("Triggered");
-      setChart({
-        series: [
-          {
-            name: "wrong submissions",
-            data: failCounts,
-          },
-          {
-            name: "success",
-            data: successCounts,
-          },
-        ],
-        options: {
-          chart: {
-            type: "bar",
-            height: 300,
-            toolbar: {
-              show: false,
-            },
-          },
-
-          plotOptions: {
-            bar: {
-              horizontal: false,
-              columnWidth: "55%",
-              endingShape: "rounded",
-            },
-          },
-          grid: {
-            show: false,
-          },
-          dataLabels: {
-            show: true,
-          },
-          stroke: {
-            show: true,
-            width: 1,
-            colors: ["transparent"],
-          },
-          xaxis: {
-            categories: seriesNames,
-            labels: {
-              style: {
-                colors: [],
-                fontSize: "0.8rem",
-              },
-              rotate: 10,
-              offsetY: 20,
-              rotateAlways: true,
-              tickPlacement: "on",
-            },
-          },
-          yaxis: {
-            title: {
-              text: "Number of problems",
-              style: {
-                color: undefined,
-                fontSize: "0.9rem",
-                fontWeight: "1px",
-              },
-            },
-            labels: {
-              formatter: function (val) {
-                return val.toFixed(0);
-              },
-            },
-          },
-          fill: {
-            opacity: 1,
-          },
-
-          tooltip: {
-            enabled: true,
-            enabledOnSeries: undefined,
-            shared: true,
-            followCursor: false,
-            intersect: false,
-            inverseOrder: false,
-            custom: undefined,
-            hideEmptySeries: true,
-            fillSeriesColor: false,
-            theme: "dark",
-            onDatasetHover: {
-              highlightDataSeries: false,
-            },
-            y: {
-              formatter: function (val) {
-                return val + " problems";
-              },
-            },
-            style: {
-              fontSize: "12px",
-              colors: ["#000000"], // Add this line
-            },
-            marker: {
-              show: true,
-            },
-            items: {
-              display: "flex",
-            },
-            fixed: {
-              enabled: false,
-              position: "topRight",
-              offsetX: 0,
-              offsetY: 0,
-            },
-          },
-          colors: ["#ef9c9c", "#aadfcf"],
-        },
-      });
-    }, [barChartData]);
-    //console.log(chart);
-    return (
-      <>
-        {chart !== undefined && barChartData.length > 0 ? (
-          <ApexCharts
-            options={chart.options}
-            series={chart.series}
-            type="bar"
-            height={300}
-          />
-        ) : (
-          <> </>
-        )}
-      </>
-    );
-  };
-
-  // pie chart to show all success and fails submissisons
-  const PieChart = () => {
-    const [chart, setChart] = useState(undefined);
-
-    //for barChartData, calculate total success count and fail count
-    let totalSuccessCount = 0;
-    let totalFailCount = 0;
-    barChartData.forEach((series) => {
-      totalSuccessCount += series.successCount;
-      totalFailCount += series.failCount;
-    });
-    //draw a pie chart
-    useEffect(() => {
-      setChart({
-        series: [totalFailCount, totalSuccessCount],
-        options: {
-          chart: {
-            type: "pie",
-            height: 300,
-          },
-          labels: ["Fail", "Success"],
-          colors: ["#ef9c9c", "#aadfcf"],
-          dataLabels: {
-            style: {
-              colors: ["#222222", "#222222"], // Add this line. This will make the labels dark black.
-              fontSize: "20px",
-            },
-          },
-          stroke: {
-            width: 0, // Add this line. This will remove the border.
-          },
-
-          responsive: [
-            {
-              breakpoint: 480,
-              options: {
-                chart: {
-                  width: 200,
-                },
-                legend: {
-                  position: "bottom",
-                },
-              },
-            },
-          ],
-        },
-      });
-    }, [barChartData]);
-    //return the pie chart
-    return (
-      <>
-        {chart !== undefined && barChartData.length > 0 ? (
-          <ApexCharts
-            options={chart.options}
-            series={chart.series}
-            type="pie"
-            height={308}
-          />
-        ) : (
-          <> </>
-        )}
-      </>
-    );
-  };
-
-  const getSubmissions = async () => {
-    console.log("getSubmissions", username);
-    const res = await submissionApi.getAllSubmissionsByUser(username);
-    if (res.success) {
-      setSubmissions(res.data);
-      //console.log(submissions);
-
-      setLoading(false);
-    }
-  };
-
-  //for activity stats.....................
-  const [activityChartData, setActivityChartData] = useState([]);
-
-  const getRecentActivity = async () => {
-    const res = await userActivityApi.daywiseActivityByUser(username);
-    if (res.success) {
-      console.log("daywise activity");
-      console.log(res.data);
-      const chartData = res.data.map((entry) => ({
-        x: new Date(entry.visitDate), // Convert date string to Date object
-        y: entry.totalDuration,
-      }));
-      setActivityChartData(chartData);
-    }
-  };
-
-  const options = {
-    chart: {
-      id: "daily-activity-chart",
-      type: "area",
-      height: 400,
-      toolbar: {
-        show: false,
-      },
-    },
-    xaxis: {
-      type: "datetime",
-      labels: {
-        datetimeFormatter: {
-          year: "yyyy",
-          month: "MMM 'yy",
-          day: "dd MMM",
-          hour: "HH:mm",
-        },
-      },
-    },
-    yaxis: {
-      title: {
-        text: "Daily Active Time (seconds)",
-      },
-    },
-    grid: {
-      show: false,
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      curve: "smooth",
-      width: 0, // border
-    },
-    fill: {
-      type: "gradient",
-      gradient: {
-        shadeIntensity: 0.6,
-        opacityFrom: 1,
-        opacityTo: 1,
-        stops: [0, 100],
-      },
-    },
-    tooltip: {
-      enabled: true,
-      enabledOnSeries: undefined,
-      shared: true,
-      followCursor: false,
-      intersect: false,
-      inverseOrder: false,
-      custom: undefined,
-      hideEmptySeries: true,
-      fillSeriesColor: false,
-      theme: "dark",
-      style: {
-        fontSize: "12px",
-        fontFamily: undefined,
-      },
-      onDatasetHover: {
-        highlightDataSeries: false,
-      },
-      x: {
-        show: true,
-        format: "dd MMM",
-        formatter: undefined,
-      },
-      y: {
-        formatter: undefined,
-        title: {
-          formatter: (seriesName) => seriesName,
-        },
-      },
-      z: {
-        formatter: undefined,
-        title: "Size: ",
-      },
-      marker: {
-        show: true,
-      },
-      items: {
-        display: "flex",
-      },
-      fixed: {
-        enabled: false,
-        position: "topRight",
-        offsetX: 0,
-        offsetY: 0,
-      },
-    },
-    colors: ["#aadfcf"],
-  };
-
-  //submission distribution...............................
-
+const SolveTimeGraph = () => {
+  let { username } = useParams();
+  // const [visible, setVisible] = useState(false);
   const [distributionChartData, setDistributionChartData] = useState({
     options: {
       chart: {
@@ -454,17 +394,20 @@ export default function Profile() {
         show: false,
       },
       dataLabels: {
-        enabled: false,
+        enabled: true,
+        style: {
+          // colors: ["#000000"],
+        },
       },
       marker: {
         colors: ["#000000"],
         fillColors: ["#000000"],
       },
       fill: {
-        colors: ["#aadfcf"],
+        colors: ["#96cdbf"],
       },
       tooltip: {
-        enabled: true,
+        enabled: false,
         enabledOnSeries: undefined,
         shared: true,
         followCursor: false,
@@ -520,15 +463,13 @@ export default function Profile() {
 
   const getAllSusccessDuration = async () => {
     const res = await userActivityApi.successesByUser(username);
-    if (res.success) {
-      console.log(res.data);
-
+    if (res.success && res.data.length > 0) {
       const minTimeTaken = 0;
       const maxTimeTaken = Math.max(
         ...res.data.map((item) => item.viewDuration)
       );
 
-      const numberOfRanges = 20;
+      const numberOfRanges = 10;
       const rangeSize = (maxTimeTaken - minTimeTaken) / numberOfRanges;
 
       const timeRanges = Array.from({ length: numberOfRanges }, (_, index) => {
@@ -566,25 +507,415 @@ export default function Profile() {
       }));
 
       setDistributionChartData({
-        options: {
-          chart: {
-            type: "histogram",
-          },
-          xaxis: {
-            title: {
-              text: "Time Taken",
-            },
-          },
-          yaxis: {
-            title: {
-              text: "Total Problems Solved",
-            },
-          },
-        },
+        ...distributionChartData,
         series: [{ data: formattedData }],
       });
     }
   };
+  useEffect(() => {
+    getAllSusccessDuration();
+  }, []);
+  return (
+    <div className="bu-card-primary rounded-lg shadow-md h-[20rem] relative">
+      <h2 className="bu-text-primary py-2 px-5 font-semibold">
+        Distribution of time taken to solve problems
+      </h2>
+      <Divider />
+      <div className="h-full p-3 pl-2 pb-0">
+        {distributionChartData.series[0].data.length > 0 && (
+          <Chart
+            options={distributionChartData.options}
+            series={distributionChartData.series}
+            type="bar"
+            height="85%"
+            width="100%"
+          />
+        )}
+      </div>
+      <div className="absolute top-0 left-0 h-full w-full">
+        {distributionChartData.series[0].data.length === 0 && (
+          <div className="flex justify-center items-center h-full text-gray-300 dark:text-slate-600 text-3xl font-semibold">
+            No data available
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const ActivityGraph = () => {
+  let { username } = useParams();
+
+  const [activityChartData, setActivityChartData] = useState([]);
+  const [options, setOptions] = useState({
+    chart: {
+      id: "daily-activity-chart",
+      type: "area",
+      // height: 400,
+      toolbar: {
+        show: false,
+      },
+      zoom: {
+        enabled: false,
+      },
+    },
+    // title: {
+    //   text: "Activity Time",
+    //   align: "left",
+    //   margin: 10,
+    //   offsetX: 0,
+    //   offsetY: 0,
+    //   floating: false,
+    //   style: {
+    //     fontSize: "14px",
+    //     fontWeight: "bold",
+    //     fontFamily: undefined,
+    //     color: "#263238",
+    //   },
+    // },
+    xaxis: {
+      type: "datetime",
+      labels: {
+        datetimeFormatter: {
+          year: "yyyy",
+          month: "MMM 'yy",
+          day: "dd MMM",
+          hour: "HH:mm",
+        },
+      },
+    },
+    yaxis: {
+      title: {
+        text: "Time (seconds)",
+        style: {
+          fontSize: "0.9rem", // Replace with your desired font size
+          fontWeight: 600, // Replace with your desired font weight
+          fontFamily: "Arial", // Replace with your desired font family
+        },
+      },
+    },
+    grid: {
+      show: false,
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      curve: "smooth",
+      width: 3, // border
+    },
+    markers: {
+      size: activityChartData.length === 1 ? 5 : 0,
+      colors: ["#aadfcf"],
+      strokeColor: "#96cdbf",
+      strokeWidth: 3,
+    },
+    fill: {
+      type: "gradient",
+      gradient: {
+        shadeIntensity: 0.6,
+        opacityFrom: 0.9,
+        opacityTo: 0.9,
+        stops: [0, 100],
+      },
+    },
+    tooltip: {
+      enabled: false,
+      enabledOnSeries: undefined,
+      shared: true,
+      followCursor: false,
+      intersect: false,
+      inverseOrder: false,
+      custom: undefined,
+      hideEmptySeries: true,
+      fillSeriesColor: false,
+      theme: "dark",
+      style: {
+        fontSize: "12px",
+        fontFamily: undefined,
+      },
+      onDatasetHover: {
+        highlightDataSeries: false,
+      },
+      x: {
+        show: true,
+        format: "dd MMM",
+        formatter: undefined,
+      },
+      y: {
+        formatter: undefined,
+        title: {
+          formatter: (seriesName) => seriesName,
+        },
+      },
+      z: {
+        formatter: undefined,
+        title: "Size: ",
+      },
+      marker: {
+        show: true,
+      },
+      items: {
+        display: "flex",
+      },
+      fixed: {
+        enabled: false,
+        position: "topRight",
+        offsetX: 0,
+        offsetY: 0,
+      },
+    },
+    colors: ["#aadfcf"],
+  });
+  const getRecentActivity = async () => {
+    const res = await userActivityApi.daywiseActivityByUser(username);
+    if (res.success) {
+      console.log("daywise activity");
+      console.log(res.data);
+      const chartData = res.data.map((entry) => ({
+        x: new Date(entry.visitDate), // Convert date string to Date object
+        y: entry.totalDuration,
+      }));
+      setActivityChartData(chartData);
+    }
+  };
+
+  useEffect(() => {
+    getRecentActivity();
+  }, [username]);
+
+  useEffect(() => {
+    setOptions({
+      chart: {
+        id: "daily-activity-chart",
+        type: "area",
+        // height: 400,
+        toolbar: {
+          show: false,
+        },
+        zoom: {
+          enabled: false,
+        },
+      },
+      // annotations: {
+      //   xaxis: [
+      //     {
+      //       x: new Date(),
+      //       strokeDashArray: 0,
+      //       borderColor: "#000000",
+      //       borderWidth: 2,
+      //       label: {
+      //         orientation: "horizontal", // Add this line
+      //         borderColor: "#1c5b5f",
+      //         borderWidth: 2,
+      //         style: {
+      //           color: "#000",
+      //           background: "#84cfb8",
+      //           fontSize: "18px",
+      //           fontWeight: 600,
+      //         },
+      //       },
+      //     },
+      //   ],
+      // },
+      // title: {
+      //   text: "Activity Time",
+      //   align: "left",
+      //   margin: 10,
+      //   offsetX: 0,
+      //   offsetY: 0,
+      //   floating: false,
+      //   style: {
+      //     fontSize: "14px",
+      //     fontWeight: "bold",
+      //     fontFamily: undefined,
+      //     color: "#263238",
+      //   },
+      // },
+      xaxis: {
+        type: "datetime",
+        labels: {
+          datetimeFormatter: {
+            year: "yyyy",
+            month: "MMM 'yy",
+            day: "dd MMM",
+            hour: "HH:mm",
+          },
+        },
+      },
+      yaxis: {
+        title: {
+          text: "Time (seconds)",
+          style: {
+            fontSize: "0.9rem", // Replace with your desired font size
+            fontWeight: 600, // Replace with your desired font weight
+            fontFamily: "Arial", // Replace with your desired font family
+          },
+        },
+      },
+      grid: {
+        show: false,
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "smooth",
+        width: 0, // border
+      },
+      markers: {
+        size: activityChartData.length === 1 ? 5 : 0,
+        colors: ["#aadfcf"],
+        strokeColor: "#96cdbf",
+        strokeWidth: 3,
+      },
+      fill: {
+        type: "gradient",
+        gradient: {
+          shadeIntensity: 0.6,
+          opacityFrom: 1,
+          opacityTo: 1,
+          stops: [0, 100],
+        },
+      },
+      tooltip: {
+        enabled: false,
+        enabledOnSeries: undefined,
+        shared: true,
+        followCursor: false,
+        intersect: false,
+        inverseOrder: false,
+        custom: undefined,
+        hideEmptySeries: true,
+        fillSeriesColor: false,
+        theme: "dark",
+        style: {
+          fontSize: "12px",
+          fontFamily: undefined,
+        },
+        onDatasetHover: {
+          highlightDataSeries: false,
+        },
+        x: {
+          show: true,
+          format: "dd MMM",
+          formatter: undefined,
+        },
+        y: {
+          formatter: undefined,
+          title: {
+            formatter: (seriesName) => seriesName,
+          },
+        },
+        z: {
+          formatter: undefined,
+          title: "Size: ",
+        },
+        marker: {
+          show: true,
+        },
+        items: {
+          display: "flex",
+        },
+        fixed: {
+          enabled: false,
+          position: "topRight",
+          offsetX: 0,
+          offsetY: 0,
+        },
+      },
+      colors: ["#96cdbf"],
+    });
+  }, [activityChartData]);
+  return (
+    <div className="bu-card-primary rounded-lg shadow-md h-[20rem] relative">
+      <h2 className="bu-text-primary py-2 px-5 font-semibold">
+        Time spent on practice problems
+      </h2>
+      <Divider />
+      <div className="h-full p-3 pl-2">
+        {activityChartData.length > 0 && (
+          <Chart
+            options={options}
+            series={[{ name: "Active Time", data: activityChartData }]}
+            type="area"
+            width="100%"
+            height="85%"
+          />
+        )}
+      </div>
+
+      {activityChartData.length == 0 && (
+        <div className="absolute top-0 left-0 h-full w-full">
+          <div className="flex justify-center items-center h-full text-gray-300 dark:text-slate-600 text-3xl font-semibold">
+            No data available
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+export default function Profile() {
+  const navigate = useNavigate();
+  let { username } = useParams();
+  const [submissions, setSubmissions] = useState([]);
+  //const [successes, setSuccesses] = useState([]);
+  //const [fails, setFails] = useState([]);
+
+  //for heatmap.......................
+
+  // for barchart..........................
+
+  const [barChartData, setBarChartData] = useState([]);
+
+  const calculateSeriesStats = () => {
+    const seriesStats = [];
+
+    submissions.forEach((submission) => {
+      const { seriesId, name, problemId, title, verdict } = submission;
+
+      if (!seriesStats[seriesId]) {
+        seriesStats[seriesId] = {
+          id: seriesId,
+          name: name,
+          successCount: 0,
+          failCount: 0,
+          uniqueAcceptedProblems: new Set(),
+        };
+      }
+
+      const series = seriesStats[seriesId];
+
+      if (
+        verdict === "Accepted" &&
+        !series.uniqueAcceptedProblems.has(problemId)
+      ) {
+        series.successCount++;
+        series.uniqueAcceptedProblems.add(problemId);
+      } else if (verdict === "Wrong answer") {
+        series.failCount++;
+      }
+    });
+
+    //console.log(Object.values(seriesStats));
+    setBarChartData(Object.values(seriesStats));
+  };
+
+  // pie chart to show all success and fails submissisons
+
+  const getSubmissions = async () => {
+    console.log("getSubmissions", username);
+    const res = await submissionApi.getAllSubmissionsByUser(username);
+    if (res.success) {
+      setSubmissions(res.data);
+      //console.log(submissions);
+      setLoading(false);
+    }
+  };
+
+  //for activity stats.....................
+
+  //submission distribution...............................
 
   // const getTotalSuccesses = async () => {
   //   const res = await userActivityApi.totalSolvedProblemsByUser();
@@ -606,112 +937,58 @@ export default function Profile() {
   // };
 
   useEffect(() => {
-    setLoading(false);
     getSubmissions();
-    getRecentActivity();
+
     //setLoading(false);
   }, [username]);
   useEffect(() => {
-    transformHeatmapData();
     calculateSeriesStats();
-    getAllSusccessDuration();
     //setLoading(false);
   }, [submissions]);
 
   return (
     <div className="flex flex-col pr-20">
       {/* <ProfileInfo /> */}
-      <Title title={"Profile statistics"} />
-      <div className="grid grid-cols-2 items-end gap-x-8">
+      {/*<Title title={"Profile statistics"} />*/}
+      <div className="grid grid-cols-2 items-end gap-8 py-8">
         <div className="">
-          <Title
+          {/* <Title
             title={""}
             sub_title={
               "chart shows your total successful and failed attempts accross all the topics"
             }
-          />
-          <div className="bu-card-primary pr-5 pl-3 pt-3 rounded-lg shadow-md">
-            <PieChart />
-          </div>
+          /> */}
+          <PieChart barChartData={barChartData} />
         </div>
 
         <div>
-          <Title
+          {/* <Title
             title={""}
             sub_title={
               "Your fabourite series. Shows your total attempts accross different series"
             }
-          />
-          <div className="bu-card-primary pr-5 pl-3 pt-3 rounded-lg shadow-md">
-            <BarChart />
-          </div>
+          /> */}
+          <BarChart barChartData={barChartData} />
         </div>
-
 
         <div>
-          <Title title={""} sub_title={"Time you spent solving problems"} />
-          <div className="bu-card-primary pr-5 pl-3 pt-3 rounded-lg shadow-md">
-            <Chart
-              options={options}
-              series={[{ name: "Active Time", data: activityChartData }]}
-              type="area"
-              width="100%"
-              height={300}
-            />
-          </div>
+          {/* <Title title={""} sub_title={"Time you spent solving problems"} /> */}
+          <ActivityGraph />
         </div>
         <div className="">
-          <Title
+          {/* <Title
             title={""}
             sub_title={"Your Solve time for different problems"}
-          />
-          <div className="bu-card-primary pr-5 pl-3 pt-3 rounded-lg shadow-md">
-            <Chart
-              options={distributionChartData.options}
-              series={distributionChartData.series}
-              type="bar"
-              height={300}
-              width="100%"
-            />
-          </div>
+          /> */}
+          <SolveTimeGraph />
         </div>
       </div>
 
       <div className="flex flex-row w-full items-end"></div>
 
-      <div className="mb-6 py-6">
-        <Title title={""} sub_title={"Your activity heatmap"} />
-        <div className="bu-card-primary p-5 rounded-lg shadow-md">
-          <CalendarHeatmap
-            startDate={
-              new Date(new Date().getTime() - 12 * 30 * 24 * 60 * 60 * 1000)
-            }
-            endDate={new Date()}
-            values={heatmapData}
-            classForValue={(value) => {
-              if (!value) {
-                return "color-empty";
-              }
-              return `color-scale-${Math.min(value.count, 5)}`;
-            }}
-            tooltipDataAttrs={(value) => {
-              if (value) {
-                return {
-                  "data-tooltip": `has count: ${value.count}`,
-                };
-              } else {
-                return {
-                  "data-tooltip": "has count: 0",
-                };
-              }
-            }}
-            gutterSize={2} // Adjust the spacing between months
-            gutterPx={5} // Adjust the pixel size of the gutter
-          />
-        </div>
+      <div className="mb-6">
+        <Heatmap submissions={submissions} />
       </div>
-
-      
 
       <ProfileRecentFails />
       <Tooltip id="data-tip" />

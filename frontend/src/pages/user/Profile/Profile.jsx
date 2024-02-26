@@ -38,6 +38,19 @@ const PieChart = ({ barChartData }) => {
           type: "pie",
           height: "100%",
         },
+        states: {
+          active: {
+            filter: {
+              type: "none" /* none, lighten, darken */,
+            },
+          },
+          hover: {
+            filter: {
+              type: "lighten",
+              value: 0.0001,
+            },
+          },
+        },
         plotOptions: {
           pie: {
             dataLabels: {
@@ -96,14 +109,15 @@ const PieChart = ({ barChartData }) => {
           />
         )}
       </div>
-      <div className="absolute top-0 left-0 h-full w-full">
-        {chart === undefined ||
-          (barChartData.length == 0 && (
+
+      {chart === undefined ||
+        (barChartData.length == 0 && (
+          <div className="absolute top-0 left-0 h-full w-full">
             <div className="flex justify-center items-center h-full text-gray-300 dark:text-slate-600 text-3xl font-semibold">
               No data available
             </div>
-          ))}
-      </div>
+          </div>
+        ))}
     </div>
   );
 };
@@ -283,14 +297,15 @@ const BarChart = ({ barChartData }) => {
           />
         )}
       </div>
-      <div className="absolute top-0 left-0 h-full w-full">
-        {chart === undefined ||
-          (barChartData.length == 0 && (
+
+      {chart === undefined ||
+        (barChartData.length == 0 && (
+          <div className="absolute top-0 left-0 h-full w-full">
             <div className="flex justify-center items-center h-full text-gray-300 dark:text-slate-600 text-3xl font-semibold">
               No data available
             </div>
-          ))}
-      </div>
+          </div>
+        ))}
     </div>
   );
 };
@@ -532,13 +547,14 @@ const SolveTimeGraph = () => {
           />
         )}
       </div>
-      <div className="absolute top-0 left-0 h-full w-full">
-        {distributionChartData.series[0].data.length === 0 && (
+
+      {distributionChartData.series[0].data.length === 0 && (
+        <div className="absolute top-0 left-0 h-full w-full">
           <div className="flex justify-center items-center h-full text-gray-300 dark:text-slate-600 text-3xl font-semibold">
             No data available
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

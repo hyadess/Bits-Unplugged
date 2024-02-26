@@ -46,7 +46,7 @@ const DetailsTab = () => {
   };
 
   const getCollaborators = async () => {
-    const res = await contestApi.availableCollaborators();
+    const res = await contestApi.availableCollaborators(contest.id);
     if (res.success) {
       console.log(res.data);
       setCollaborators(res.data);

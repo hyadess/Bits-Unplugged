@@ -19,7 +19,7 @@ const Collaborators = () => {
 
 
   useEffect(() => {
-    if(contest !== undefined) getCollaborators();
+    if(contest.id !== undefined) getCollaborators();
   }, [contest]);
 
 

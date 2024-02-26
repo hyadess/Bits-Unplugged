@@ -38,6 +38,19 @@ const PieChart = ({ barChartData }) => {
           type: "pie",
           height: "100%",
         },
+        states: {
+          active: {
+            filter: {
+              type: "none" /* none, lighten, darken */,
+            },
+          },
+          hover: {
+            filter: {
+              type: "lighten",
+              value: 0.0001,
+            },
+          },
+        },
         plotOptions: {
           pie: {
             dataLabels: {
@@ -96,14 +109,15 @@ const PieChart = ({ barChartData }) => {
           />
         )}
       </div>
-      <div className="absolute top-0 left-0 h-full w-full">
-        {chart === undefined ||
-          (barChartData.length == 0 && (
+
+      {chart === undefined ||
+        (barChartData.length == 0 && (
+          <div className="absolute top-0 left-0 h-full w-full">
             <div className="flex justify-center items-center h-full text-gray-300 dark:text-slate-600 text-3xl font-semibold">
               No data available
             </div>
-          ))}
-      </div>
+          </div>
+        ))}
     </div>
   );
 };
@@ -191,8 +205,8 @@ const BarChart = ({ barChartData }) => {
               colors: [],
               fontSize: "0.8rem",
             },
-            rotate: 10,
-            offsetY: 20,
+            rotate: 20,
+            offsetY: 40,
             offsetX: 22,
             rotateAlways: true,
             tickPlacement: "on",
@@ -283,14 +297,15 @@ const BarChart = ({ barChartData }) => {
           />
         )}
       </div>
-      <div className="absolute top-0 left-0 h-full w-full">
-        {chart === undefined ||
-          (barChartData.length == 0 && (
+
+      {chart === undefined ||
+        (barChartData.length == 0 && (
+          <div className="absolute top-0 left-0 h-full w-full">
             <div className="flex justify-center items-center h-full text-gray-300 dark:text-slate-600 text-3xl font-semibold">
               No data available
             </div>
-          ))}
-      </div>
+          </div>
+        ))}
     </div>
   );
 };
@@ -379,11 +394,28 @@ const SolveTimeGraph = () => {
         toolbar: {
           show: false,
         },
+        zoom: {
+          enabled: false,
+        },
+      },
+      states: {
+        active: {
+          filter: {
+            type: "none" /* none, lighten, darken */,
+          },
+        },
+        hover: {
+          filter: {
+            type: "none",
+            value: 0.0001,
+          },
+        },
       },
       xaxis: {
         title: {
           text: "Time Taken",
         },
+        tickAmounts: 5,
       },
       yaxis: {
         title: {
@@ -469,8 +501,8 @@ const SolveTimeGraph = () => {
         ...res.data.map((item) => item.viewDuration)
       );
 
-      const numberOfRanges = 10;
-      const rangeSize = (maxTimeTaken - minTimeTaken) / numberOfRanges;
+      const numberOfRanges = 11;
+      const rangeSize = (maxTimeTaken + 1 - minTimeTaken) / numberOfRanges;
 
       const timeRanges = Array.from({ length: numberOfRanges }, (_, index) => {
         const min = minTimeTaken + index * rangeSize;
@@ -479,7 +511,7 @@ const SolveTimeGraph = () => {
       });
 
       // Initialize an object to store the count of problems in each time range
-      const timeRangeCounts = Array(numberOfRanges + 1).fill(0);
+      const timeRangeCounts = Array(numberOfRanges).fill(0);
 
       // Process the data to count the number of problems in each time range
       res.data.forEach((item) => {
@@ -489,7 +521,7 @@ const SolveTimeGraph = () => {
         const rangeIndex = Math.floor((timeTaken - minTimeTaken) / rangeSize);
 
         // Increment the count for that time range
-        if (rangeIndex >= 0 && rangeIndex < numberOfRanges + 1) {
+        if (rangeIndex >= 0 && rangeIndex < numberOfRanges) {
           timeRangeCounts[rangeIndex]++;
         }
       });
@@ -532,13 +564,14 @@ const SolveTimeGraph = () => {
           />
         )}
       </div>
-      <div className="absolute top-0 left-0 h-full w-full">
-        {distributionChartData.series[0].data.length === 0 && (
+
+      {distributionChartData.series[0].data.length === 0 && (
+        <div className="absolute top-0 left-0 h-full w-full">
           <div className="flex justify-center items-center h-full text-gray-300 dark:text-slate-600 text-3xl font-semibold">
             No data available
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

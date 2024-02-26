@@ -34,6 +34,7 @@ const ContestSetCard = ({
 
   useEffect(() => {
     fetchUser();
+    console.log("dekhi ", userId, owner?.id)
     setLoading(false);
   }, []);
 

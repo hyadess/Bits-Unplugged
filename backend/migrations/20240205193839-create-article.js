@@ -22,7 +22,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       subtitle: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       content: {
         type: Sequelize.JSONB,
@@ -37,12 +37,12 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },

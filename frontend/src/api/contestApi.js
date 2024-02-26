@@ -33,8 +33,14 @@ class ContestApi extends Api {
     return await this.get("/contests/" + contestId);
   };
 
-  getAllSubmissionsByUserAndContest = async (contestId) => {
-    return await this.get("/contests/" + contestId + "/submissions/me");
+  getAllSubmissionsByUserAndContest = async (contestId,username) => {
+    return await this.get("/contests/" + contestId + "/submissions/"+username);
+  };
+
+  getAllSubmissionsByContestAndProblem = async (contestId, problemId) => {
+    return await this.get(
+      "/contests/" + contestId + "/problems/" + problemId + "/submissions"
+    );
   };
 
   getAllProblemsByContest = async (contestId) => {
@@ -111,6 +117,15 @@ class ContestApi extends Api {
   getLeaderboard = async (contestId) => {
     return await this.get(`/contests/${contestId}/Leaderboard`);
   };
+  getTimeline = async (contestId) => {
+    return await this.get(`/contests/${contestId}/Timeline`);
+  };
+  
+  isRegistered = async (contestId) => {
+    return await this.get(`/contests/${contestId}/isRegistered`);
+  };
+
+
   showAllCollaborators = async (contestId) => {
     // console.log("===>", contestId);
     return await this.get("/contests/" + contestId + "/showAllCollaborators");
@@ -147,14 +162,16 @@ class ContestApi extends Api {
     verdict,
     canvasData,
     userActivity,
-    point
+    point,
+    duration
   ) => {
     return await this.post("/contests/" + contestId + "/addSubmission", {
       problemId,
       verdict,
       canvasData,
       userActivity,
-      point
+      point,
+      duration
     });
   };
 

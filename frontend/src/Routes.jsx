@@ -15,6 +15,7 @@ import Signup from "./pages/auth/Signup";
 import ProblemsCanvas from "./pages/ProblemsCanvas";
 import Topics from "./pages/user/Topics";
 import Series from "./pages/user/Series";
+import ContestParticipant from "pages/ContestParticipant";
 import SetterProblems from "./pages/setter/SetterProblems";
 import ProblemSetEnv from "./pages/setter/ProblemSetEnv";
 import ContestSetEnv from "./pages/setter/ContestSetEnv";
@@ -42,6 +43,7 @@ import ProblemsSubmissions from "./pages/ProblemsSubmissions";
 import SetterProfile from "./pages/setter/SetterProfile";
 import Profile from "./pages/user/Profile/Profile";
 import SetterContests from "./pages/setter/SetterContests";
+import ContestSubmissions from "./pages/ContestSubmissions";
 import Contest from "./pages/setter/Contest";
 import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
@@ -64,6 +66,7 @@ import LayoutSecondary from "components/Layouts/LayoutSecondary";
 import { contestApi } from "api";
 import CountdownTimer from "pages/Timer";
 import ContestProblemList from "pages/ContestProblemList";
+import SetterHome from "pages/setter/SetterHome";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -89,7 +92,15 @@ const SolverProfile = () => {
     <LayoutSecondary
       left={<SolverProfileTab activeTab={activeTab} click={click} />}
     >
-      {activeTab == "Details" ? <Profile /> : <ProfileSubmissions />}
+      {activeTab == "Details" ? (
+        <Profile />
+      ) : (
+        <div className="flex flex-row justify-start">
+          <div className="w-[75%]">
+            <ProfileSubmissions />
+          </div>
+        </div>
+      )}
     </LayoutSecondary>
   );
 };
@@ -298,10 +309,18 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/admin/articles/:id"
+            path="/admin/articles/:id/edit"
             element={
               <LayoutMain>
                 <AdminArticleEditor />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/admin/articles/:id"
+            element={
+              <LayoutMain>
+                <Article />
               </LayoutMain>
             }
           />
@@ -326,6 +345,14 @@ const AppRoutes = () => {
         <Route path="/admin/login" element={<AdminLogin />} />
 
         <Route element={<ProblemSetter />}>
+          <Route
+            path="/setter/home"
+            element={
+              <LayoutMain>
+                <SetterHome />
+              </LayoutMain>
+            }
+          />
           <Route
             path="/problems/:id/preview"
             element={
@@ -382,6 +409,14 @@ const AppRoutes = () => {
             <Route
               path="/contests/:id/problems/:problemid"
               element={<UserContest />}
+            />
+            <Route
+              path="/contests/:id/problems/:problemId/submissions"
+              element={<ContestSubmissions />}
+            />
+            <Route
+              path="/contests/:id/:username"
+              element={<ContestParticipant />}
             />
           </Route>
           <Route

@@ -25,16 +25,25 @@ const ContestCard = ({
 }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const [isRegistered, setRegistered] = useState(false);
+
 
   const handleButtonClick = async () => {
     const res = await contestApi.participateUpcomingContest(id);
     navigate(`/contests/${id}`);
   };
   
+  const getRegistrationInfo = async () => {
+
+    const res = await contestApi.isRegistered(id);
+    console.log("register", id, res);
+    if(res.data.length>0)setRegistered(true);
+    else setRegistered(false);
+  };
 
   useEffect(() => {
+    getRegistrationInfo();
     setLoading(false);
-    console.log("start end Time", startDate, endDate);
   }, []);
 
   return (
@@ -79,7 +88,7 @@ const ContestCard = ({
                 className="bu-button-secondary my-8 inline-flex  items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
               >
                 <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
-                  Enter   
+                {isRegistered ? 'Enter' : 'Register'}   
                   {/* <FontAwesomeIcon icon={faHandPointRight} /> */}
                 </h5>
               </div>

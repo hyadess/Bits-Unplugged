@@ -4,7 +4,11 @@ import { Avatar, InputAdornment, Typography } from "@mui/material";
 import Logo from "../Logo";
 import SearchBar from "../InputFields/SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHeadSideVirus,
+  faHouse,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
 import { faTrello } from "@fortawesome/free-brands-svg-icons";
 import { profileApi } from "../../api";
@@ -102,8 +106,33 @@ const SetterNavbar = (props) => {
           </div>
           <div className="flex justify-start md:justify-center w-8/12 md:w-3/5">
             <>
-              <NavButton label="Home" path="/problemSet" />
-              <NavButton label="Contests" path="/setter/contests" />
+              <NavButton
+                label={
+                  <>
+                    <FontAwesomeIcon icon={faHouse} />
+                    Home
+                  </>
+                }
+                path="/setter/home"
+              />
+              <NavButton
+                label={
+                  <>
+                    <FontAwesomeIcon icon={faHeadSideVirus} />
+                    Problems
+                  </>
+                }
+                path="/problemSet"
+              />
+              <NavButton
+                label={
+                  <>
+                    <FontAwesomeIcon icon={faTrello} />
+                    Contests
+                  </>
+                }
+                path="/setter/contests"
+              />
             </>
           </div>
           <div className="flex md:flex h-20 w-1/3 md:w-1/5 items-center justify-end">

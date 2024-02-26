@@ -118,22 +118,39 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
-  getAllSubmissionsByUserAndContest = async (userId, contestId) => {
+  getAllSubmissionsByUserAndContest = async (contestId,username) => {
+    const query = `
+        SELECT "Pb"."title","CS".*
+        FROM "ContestSubmissions" "CS"
+        JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
+        JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
+        JOIN "Problems" "Pb" ON "CP"."problemId" = "Pb"."id"
+        JOIN "Users" "U" ON "P"."userId" = "U"."id"
+        WHERE "P"."contestId" = $2 AND "U"."username" = $1;
+        `;
+    const params = [username, contestId];
+    const result = await this.query(query, params);
+    return result;
+  };
+  getAllSubmissionsByContestAndProblem = async (contestId, problemId) => {
     const query = `
         SELECT "CS".*, "U".*
         FROM "ContestSubmissions" "CS"
         JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
         JOIN "Users" "U" ON "P"."userId" = "U"."id"
-        WHERE "P"."contestId" = $2 AND "P"."userId" = $1;
+        JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
+        WHERE "P"."contestId" = $1 AND "CP"."problemId" = $2;
         `;
-    const params = [userId, contestId];
+    const params = [contestId, problemId];
     const result = await this.query(query, params);
     return result;
-  };
+  };  
+
+
 
   isContestProblemSolved = async (userId, contestId, problemId) => {
     const query = `
-        SELECT "CS"."verdict"
+        SELECT "CS"."verdict", "CS"."duration"
         FROM "ContestSubmissions" "CS"
         JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
         JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
@@ -527,7 +544,8 @@ class ContestRepository extends Repository {
     verdict,
     canvasData,
     userActivity,
-    points
+    points,
+    duration
   ) => {
   
     // If not, proceed to check for participant and insert the submission
@@ -547,10 +565,10 @@ class ContestRepository extends Repository {
     const contestProblemId = contestProblemResult.data[0].id;
     // Then, insert the submission with the participantId
     const submissionQuery = `
-        INSERT INTO "ContestSubmissions" ("participantId", "contestProblemId", "verdict", "canvasData", "userActivity", "points")
-        VALUES ($1, $2, $3, $4, $5, $6);
+        INSERT INTO "ContestSubmissions" ("participantId", "contestProblemId", "verdict", "canvasData", "userActivity", "points", "duration")
+        VALUES ($1, $2, $3, $4, $5, $6, $7);
     `;
-    const submissionParams = [participantId, contestProblemId, verdict, canvasData, userActivity, points];
+    const submissionParams = [participantId, contestProblemId, verdict, canvasData, userActivity, points,duration];
     const result = await this.query(submissionQuery, submissionParams);
   
     return result;
@@ -582,6 +600,30 @@ class ContestRepository extends Repository {
 
     return result;
   };  
+
+  getTimeline = async (contestId) => {
+    const query = `
+        SELECT
+        "U"."id",
+        "U"."username",
+        "CS"."points",
+        "CS"."createdAt"
+        FROM
+        "ContestSubmissions" "CS"
+        JOIN
+        "Participants" "CP" ON "CP"."id" = "CS"."participantId"
+        JOIN
+        "Contests" "C" ON "C"."id" = "CP"."contestId"
+        JOIN
+        "Users" "U" ON "U"."id" = "CP"."userId"
+        WHERE
+        "C"."id" = $1 AND "CS"."verdict" = 'Accepted'
+        `;  
+    const params = [contestId];
+    const result = await this.query(query, params);
+
+    return result;
+  };
     
 
   //new ones...........
@@ -634,6 +676,21 @@ class ContestRepository extends Repository {
 
     return result;
 };
+
+ IsRegistered = async (userId, contestId) => {
+  const query = `
+    SELECT *
+    FROM "Participants"
+    WHERE "contestId" = $1
+      AND "userId" = $2
+      AND "type" = $3;
+  `;
+  const params = [contestId, userId, 0];
+  const result = await this.query(query, params);
+
+  return result;
+};
+
 
   leaveUpcomingContest = async (userId, contestId) => {
     const query = `

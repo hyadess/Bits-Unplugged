@@ -3032,8 +3032,8 @@ module.exports = {
           }),
           previewOptions: JSON.stringify({
             drag: {
-              value: "0",
-              type: "number",
+              value: false,
+              type: "switch",
             },
             swap: {
               value: 0,
@@ -3050,6 +3050,10 @@ module.exports = {
             sort: {
               value: 0,
               type: "number",
+            },
+            editLabel: {
+              value: false,
+              type: "switch",
             },
           }),
           checkerCode:

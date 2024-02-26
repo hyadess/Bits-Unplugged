@@ -9,8 +9,7 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
 import { getTimeStamp } from "../../services/dateUtil";
 import Confirmation from "../Confirmation";
-import { jwtDecode } from 'jwt-decode';
-
+import { jwtDecode } from "jwt-decode";
 
 const ContestSetCard = ({
   id,
@@ -34,6 +33,7 @@ const ContestSetCard = ({
 
   useEffect(() => {
     fetchUser();
+    console.log("dekhi ", userId, owner?.id)
     setLoading(false);
   }, []);
 
@@ -64,15 +64,23 @@ const ContestSetCard = ({
         <div className="flex justify-between mt-4">
           <div className="flex flex-col gap-2 items-start">
             <div className="bu-text-subtitle font-semibold">
-              {startDate ? `Start Date: ${getTimeStamp(startDate)}` : 'Start Date: Yet to be added'}
+              {startDate
+                ? `Start Date: ${getTimeStamp(startDate)}`
+                : "Start Date: Yet to be added"}
             </div>
             <div className="bu-text-subtitle font-semibold">
-              {duration ? `Duration: ${duration} hours` : 'Duration : Yet to be added'}
+              {duration
+                ? `Duration: ${duration} hours`
+                : "Duration : Yet to be added"}
             </div>
           </div>
 
           <div className="flex flex-col gap-2 items-center">
-            <div className={`bu-text-subtitle font-semibold text-${status === "live" ? 'green' : 'blue'}-500`}>
+            <div
+              className={`bu-text-subtitle font-semibold text-${
+                status === "live" ? "green" : "blue"
+              }-500`}
+            >
               {`Status: ${status}`}
             </div>
             <div className="bu-text-subtitle font-semibold">
@@ -82,8 +90,12 @@ const ContestSetCard = ({
 
           <div className="flex gap-4 items-center">
             <IconButton
-              onClick={() =>(status==='edit')? navigate(`/contests/${id}/edit`): ""}
-              className={`text-blue-500 ${(status=='edit')? 'hover:text-blue-700' : ''}`}
+              onClick={() =>
+                status === "edit" ? navigate(`/contests/${id}/edit`) : ""
+              }
+              className={`text-blue-500 ${
+                status == "edit" ? "hover:text-blue-700" : ""
+              }`}
             >
               <div className="flex items-center">
                 <FontAwesomeIcon icon={faPenToSquare} size="sm" />
@@ -96,7 +108,7 @@ const ContestSetCard = ({
                 className="text-green-500 hover:text-green-700"
               >
                 <div className="flex items-center">
-                <FontAwesomeIcon icon={faEye} size="sm" />
+                  <FontAwesomeIcon icon={faEye} size="sm" />
                 </div>
               </IconButton>
             ) : (
@@ -105,14 +117,22 @@ const ContestSetCard = ({
                 className="text-blue-500 hover:text-blue-700"
               >
                 <div className="flex items-center">
-                <FontAwesomeIcon icon={faEye} size="sm" />
+                  <FontAwesomeIcon icon={faEye} size="sm" />
                 </div>
               </IconButton>
             )}
 
             <IconButton
-              onClick={() => (userId===owner.setterId && status==='edit')? setOpen(true) : ''}
-              className={`text-red-500 ${(userId===owner.setterId && status=='edit')? 'hover:text-red-700' : ''}`}
+              onClick={() =>
+                userId === owner.setterId && status === "edit"
+                  ? setOpen(true)
+                  : ""
+              }
+              className={`text-red-500 ${
+                userId === owner.setterId && status === "edit"
+                  ? "hover:text-red-700"
+                  : ""
+              }`}
             >
               <div className="flex items-center">
                 <FontAwesomeIcon icon={faTrashCan} size="sm" />
@@ -122,7 +142,12 @@ const ContestSetCard = ({
         </div>
       </div>
 
-      <Confirmation open={open} setOpen={setOpen} onConfirm={deleteAction} param={id} />
+      <Confirmation
+        open={open}
+        setOpen={setOpen}
+        onConfirm={deleteAction}
+        param={id}
+      />
     </div>
   );
 };

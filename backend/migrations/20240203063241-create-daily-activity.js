@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('DailyActivities', {
+    await queryInterface.createTable("DailyActivities", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -31,7 +31,7 @@ module.exports = {
       activityDate: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       duration: {
         allowNull: false,
@@ -41,21 +41,21 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
-      }
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
     });
     await queryInterface.addConstraint("DailyActivities", {
-      fields: ["userId", "problemId","activityDate"],
+      fields: ["userId", "problemId", "activityDate"],
       type: "unique",
       name: "DailyActivities_userId_problemId_activityDate_key",
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('DailyActivities');
-  }
+    await queryInterface.dropTable("DailyActivities");
+  },
 };

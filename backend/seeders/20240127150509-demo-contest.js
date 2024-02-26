@@ -14,7 +14,7 @@ module.exports = {
           endDate: "1/2/2025",
           startDateTime: new Date(),
           duration: "0.01",
-          status: "requested",
+          status: "edit",
         },
         {
           //id: 1,
@@ -24,7 +24,7 @@ module.exports = {
           endDate: "1/2/2025",
           startDateTime: new Date("February 27, 2024 15:05"),
           duration: "2.5",
-          status: "live",
+          status: "edit",
         },
       ],
       {}

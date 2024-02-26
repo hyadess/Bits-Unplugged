@@ -7,7 +7,9 @@ class SeriesRepository extends Repository {
   }
 
   getAllSeries = async () => {
-    const series = await db.Series.findAll();
+    const series = await db.Series.findAll({
+      order: [["updatedAt", "DESC"]],
+    });
     return series;
   };
 

@@ -47,6 +47,10 @@ module.exports = {
       duration: {
         type: Sequelize.INTEGER,
       },
+      submittedAt: {
+        allowNull: false,
+        type: Sequelize.BIGINT,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

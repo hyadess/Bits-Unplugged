@@ -157,7 +157,7 @@ export default function ContestParticipant() {
   return (
     submissions && (
       <>
-        <Title title={`submissions for ${username}`}>{username}</Title>
+        <Title title={`submissions for ${username}`}/>
         <div>
           <Title title={""} sub_title={"Submission trend"} />
           <div className="bu-card-primary pr-5 pl-3 pt-3 mb-10 rounded-lg shadow-md">

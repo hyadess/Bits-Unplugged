@@ -9,21 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Credential.belongsTo(models.User, { foreignKey: "userId" });
+      Credential.belongsTo(models.User, { foreignKey: "userId", as: "user" });
     }
   }
   Credential.init(
     {
-      userId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Users",
-          key: "id",
-        },
-
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
+      userId: DataTypes.INTEGER,
       email: { type: DataTypes.STRING, unique: "Credentials_userId_role_key" },
       hashpass: DataTypes.STRING,
       role: { type: DataTypes.INTEGER, unique: "Credentials_userId_role_key" },

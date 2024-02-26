@@ -11,7 +11,7 @@ import { getTimeStamp } from "../../services/dateUtil";
 import Confirmation from "../Confirmation";
 import { contestApi } from "api";
 // ... (previous imports)
-
+import { format } from "date-fns";
 const ContestCard = ({
   id,
   name,
@@ -65,10 +65,20 @@ const ContestCard = ({
         <div className="flex justify-between mt-4">
           <div className="flex flex-col gap-2 items-start">
             <div className="bu-text-subtitle font-semibold">
-              {startDate ? `Start Date: ${new Date(startDate)}` : 'Start Date: Yet to be added'}
+              {startDate
+                ? `Start Date: ${format(
+                    new Date(startDate),
+                    "d MMMM, yyyy 'at' h.mm a"
+                  )}`
+                : "Start Date: Yet to be added"}
             </div>
             <div className="bu-text-subtitle font-semibold">
-              {endDate ? `End Date: ${new Date(endDate)}` : 'End Date: Yet to be added'}
+              {endDate
+                ? `End Date: ${format(
+                    new Date(endDate),
+                    "d MMMM, yyyy 'at' h.mm a"
+                  )}`
+                : "End Date: Yet to be added"}
             </div>
           </div>
 

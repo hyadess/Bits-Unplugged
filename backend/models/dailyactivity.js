@@ -20,30 +20,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   DailyActivity.init(
     {
-      userId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Users",
-          key: "id",
-        },
-        unique: "DailyActivities_userId_problemId_activityDate_key",
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      problemId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "ProblemVersions",
-          key: "id",
-        },
-        unique: "DailyActivities_userId_problemId_activityDate_key",
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      activityDate: {
-        type: DataTypes.DATE,
-        unique: "DailyActivities_userId_problemId_activityDate_key",
-      },
+      userId: DataTypes.INTEGER,
+      problemId: DataTypes.INTEGER,
+      activityDate: DataTypes.DATE,
       duration: DataTypes.INTEGER,
     },
     {

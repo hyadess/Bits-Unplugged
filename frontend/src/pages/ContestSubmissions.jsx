@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import TableContainer from "../containers/TableContainer";
-import SubmissionCard from "../components/Cards/SubmissionCard";
+//import SubmissionCard from "../components/Cards/SubmissionCard";
+import SubmissionCard from "../components/Cards/ContestProblemSubmissionCard";
 import { setLoading } from "../App";
 import { problemApi, submissionApi, userActivityApi, contestApi } from "../api";
 import Chart from "react-apexcharts";
@@ -390,7 +391,7 @@ export default function ContestSubmissions() {
               idx={index + 1}
               submissionId={submission.id}
               verdict={submission.verdict}
-              problem_name={submission.username}
+              user_name={submission.username}
               // path={`/problems/${problem.id}`}
               timestamp={submission.createdAt}
               image={submission.image}

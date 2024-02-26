@@ -646,7 +646,9 @@ export default function Profile() {
             <BarChart />
           </div>
         </div>
-        <div className="">
+
+
+        <div>
           <Title title={""} sub_title={"Time you spent solving problems"} />
           <div className="bu-card-primary pr-5 pl-3 pt-3 rounded-lg shadow-md">
             <Chart

@@ -122,11 +122,10 @@ class ContestApi extends Api {
   getTimeline = async (contestId) => {
     return await this.get(`/contests/${contestId}/Timeline`);
   };
-  
+
   isRegistered = async (contestId) => {
     return await this.get(`/contests/${contestId}/isRegistered`);
   };
-
 
   showAllCollaborators = async (contestId) => {
     // console.log("===>", contestId);
@@ -166,6 +165,7 @@ class ContestApi extends Api {
     userActivity,
     point,
     duration,
+    image,
     submittedAt
   ) => {
     return await this.post("/contests/" + contestId + "/addSubmission", {
@@ -175,6 +175,7 @@ class ContestApi extends Api {
       userActivity,
       point,
       duration,
+      image,
       submittedAt,
     });
   };

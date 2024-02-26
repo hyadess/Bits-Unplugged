@@ -65,7 +65,7 @@ function ContestProblemController(endTime) {
 
   const startTimeRef = useRef(null);
 
-  const solutionSubmit = async (e) => {
+  const solutionSubmit = async (image) => {
     let res = await SubmissionService.checkSolution(
       problem.checkerCode,
       problem.checkerCanvas,
@@ -112,7 +112,9 @@ function ContestProblemController(endTime) {
             problem.canvasData,
             problem.activityData,
             res2.data[0].rating,
-            durationInSeconds
+            durationInSeconds,
+            image,
+            new Date() - startTimeRef.current
           );
         }
       }
@@ -138,6 +140,7 @@ function ContestProblemController(endTime) {
           problem.activityData,
           0,
           durationInSeconds,
+          image,
           new Date() - startTimeRef.current
         );
       }

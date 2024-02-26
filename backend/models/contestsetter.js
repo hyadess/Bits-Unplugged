@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "contestId",
         as: "contest",
       });
-      ContestSetter.belongsTo(models.Setter, {
-        foreignKey: "userId",
+      ContestSetter.belongsTo(models.User, {
+        foreignKey: "setterId",
         as: "setter",
       });
     }

@@ -11,16 +11,16 @@ module.exports = {
           title: "Demo Contest 1",
           description: "Demo contest description",
           startDateTime: new Date(),
-          duration: "0.01",
+          duration: "0.1",
           status: "edit",
         },
         {
           //id: 2,
           title: "Demo Contest 2",
           description: "Demo contest description",
-          startDateTime: new Date("February 27, 2024 15:05"),
+          startDateTime: new Date("February 28, 2024 15:05"),
           duration: "2.5",
-          status: "edit",
+          status: "requested",
         },
         {
           //id: 3,
@@ -28,7 +28,7 @@ module.exports = {
           description: "Demo contest description",
           startDateTime: new Date(),
           duration: "0.01",
-          status: "edit",
+          status: "approved",
         },
         {
           //id: 4,
@@ -36,7 +36,7 @@ module.exports = {
           description: "Demo contest description",
           startDateTime: new Date(),
           duration: "0.01",
-          status: "edit",
+          status: "scheduled",
         },
         {
           //id: 5,

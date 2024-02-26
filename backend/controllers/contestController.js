@@ -364,6 +364,7 @@ class ContestController extends Controller {
       req.body.userActivity,
       req.body.point,
       req.body.duration,
+      req.body.image,
       req.body.submittedAt
     );
     if (result.success) {
@@ -383,7 +384,10 @@ class ContestController extends Controller {
   };
 
   IsRegistered = async (req, res) => {
-    let result = await contestRepository.IsRegistered(req.user.userId , req.params.contestId);
+    let result = await contestRepository.IsRegistered(
+      req.user.userId,
+      req.params.contestId
+    );
     console.log("register", result);
 
     if (result.success) {

@@ -17,7 +17,8 @@ class ContestRepository extends Repository {
     JOIN
     "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
     JOIN
-    "Setters" "S" ON "CS"."setterId" = "S"."userId"
+    "Setters" "S"
+    ON  "S"."userId" = "CS"."setterId"
     JOIN
     "Users" "U" ON "S"."userId" = "U"."id"
     GROUP BY
@@ -58,7 +59,8 @@ class ContestRepository extends Repository {
     JOIN
     "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
     JOIN
-    "Setters" "S" ON "CS"."setterId" = "S"."userId"
+    "Setters" "S"
+    ON "S"."userId" = "CS"."setterId" 
     JOIN
     "Users" "U" ON "S"."userId" = "U"."id"
     WHERE 
@@ -92,7 +94,8 @@ class ContestRepository extends Repository {
         JOIN
         "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
         JOIN
-        "Setters" "S" ON "CS"."setterId" = "S"."userId"
+        "Setters" "S"
+        ON "S"."userId" = "CS"."setterId" 
         JOIN
         "Users" "U" ON "S"."userId" = "U"."id"
         WHERE
@@ -112,7 +115,8 @@ class ContestRepository extends Repository {
         FROM "ContestSubmissions" "CS"
         JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
         JOIN "Users" "U" ON "P"."userId" = "U"."id"
-        WHERE "P"."contestId" = $1;
+        WHERE "P"."contestId" = $1
+        ORDER BY "CS"."submittedAt" DESC;
         `;
     const params = [contestId];
     const result = await this.query(query, params);
@@ -126,7 +130,8 @@ class ContestRepository extends Repository {
         JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
         JOIN "Problems" "Pb" ON "CP"."problemId" = "Pb"."id"
         JOIN "Users" "U" ON "P"."userId" = "U"."id"
-        WHERE "P"."contestId" = $2 AND "U"."username" = $1;
+        WHERE "P"."contestId" = $2 AND "U"."username" = $1
+        ORDER BY "CS"."submittedAt" DESC;
         `;
     const params = [username, contestId];
     const result = await this.query(query, params);
@@ -134,12 +139,13 @@ class ContestRepository extends Repository {
   };
   getAllSubmissionsByContestAndProblem = async (contestId, problemId) => {
     const query = `
-        SELECT "CS".*, "U".*
+        SELECT "CS".*, "U".username, "U".fullname
         FROM "ContestSubmissions" "CS"
         JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
         JOIN "Users" "U" ON "P"."userId" = "U"."id"
         JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
-        WHERE "P"."contestId" = $1 AND "CP"."problemId" = $2;
+        WHERE "P"."contestId" = $1 AND "CP"."problemId" = $2
+        ORDER BY "CS"."submittedAt" DESC;
         `;
     const params = [contestId, problemId];
     const result = await this.query(query, params);
@@ -344,13 +350,13 @@ class ContestRepository extends Repository {
   availableCollaborators = async (id, contestId) => {
     const query = `
       SELECT
-        "S"."userId",
+        "U"."id",
         "U"."username",
         "U"."image"
       FROM
         "Setters" "S"
-        JOIN
-        "Users" "U" ON "S"."userId" = "U"."id"
+        JOIN "Users" "U"
+        ON "S"."userId" = "U"."id"
       WHERE
         "S"."isApproved" = true
         AND "S"."userId" != $1
@@ -541,6 +547,7 @@ class ContestRepository extends Repository {
     userActivity,
     points,
     duration,
+    image,
     submittedAt
   ) => {
     // If not, proceed to check for participant and insert the submission
@@ -566,8 +573,8 @@ class ContestRepository extends Repository {
     const contestProblemId = contestProblemResult.data[0].id;
     // Then, insert the submission with the participantId
     const submissionQuery = `
-        INSERT INTO "ContestSubmissions" ("participantId", "contestProblemId", "verdict", "canvasData", "userActivity", "points", "duration", "submittedAt")
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
+        INSERT INTO "ContestSubmissions" ("participantId", "contestProblemId", "verdict", "canvasData", "userActivity", "points", "duration","image", "submittedAt")
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);
     `;
     const submissionParams = [
       participantId,
@@ -577,6 +584,7 @@ class ContestRepository extends Repository {
       userActivity,
       points,
       duration,
+      image,
       submittedAt,
     ];
     const result = await this.query(submissionQuery, submissionParams);
@@ -686,20 +694,19 @@ class ContestRepository extends Repository {
     return result;
   };
 
- IsRegistered = async (userId, contestId) => {
-  const query = `
+  IsRegistered = async (userId, contestId) => {
+    const query = `
     SELECT *
     FROM "Participants"
     WHERE "contestId" = $1
       AND "userId" = $2
       AND "type" = $3;
   `;
-  const params = [contestId, userId, 0];
-  const result = await this.query(query, params);
+    const params = [contestId, userId, 0];
+    const result = await this.query(query, params);
 
-  return result;
-};
-
+    return result;
+  };
 
   leaveUpcomingContest = async (userId, contestId) => {
     const query = `
@@ -789,7 +796,7 @@ class ContestRepository extends Repository {
   approveContest = async (contestId) => {
     const query = `
         UPDATE "Contests"
-        SET "status" = 'upcoming'
+        SET "status" = 'approved'
         WHERE "id" = $1;
         `;
     const params = [contestId];

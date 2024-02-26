@@ -20,6 +20,12 @@ module.exports = {
           role: "owner",
           status: "accepted",
         },
+        {
+          contestId: 1,
+          setterId: 3,
+          role: "collaborator",
+          status: "accepted",
+        },
       ],
       {}
     );

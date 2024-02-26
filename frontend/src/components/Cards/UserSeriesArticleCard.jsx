@@ -23,7 +23,8 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 
 export default function ArticleCard({
   id,
-  name,
+  title,
+  subtitle,
   path,
   rating,
   deleteAction,
@@ -52,9 +53,15 @@ export default function ArticleCard({
         </h5> */}
 
         <div className="flex flex-row">
-          <h5 className="text-xl md:text-2xl tracking-tight bu-text-primary w-[45%] cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
-            {name}
-          </h5>
+          <div className="flex flex-col gap-2 w-[85%]">
+            <h5 className="text-xl md:text-2xl tracking-tight bu-text-primary cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full font-semibold">
+              {title}
+            </h5>
+            <h5 className="text-sm md:text-lg tracking-tight bu-text-subtitle cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
+              {subtitle}
+            </h5>
+          </div>
+
           <div className="text-center w-[15%] text-2xl font-bold">
             {isSolved === 1 ? (
               <FontAwesomeIcon icon={faCircleCheck} color="green" />

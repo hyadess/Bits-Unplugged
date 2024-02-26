@@ -36,7 +36,7 @@ import {
 import { canvasApi } from "../../api";
 import { Camera } from "@mui/icons-material";
 import GlobalContext from "store/GlobalContext";
-import html2canvas from "html2canvas";
+
 const CanvasContainer = (props, ref) => {
   const [DynamicComponent, setDynamicComponent] = useState(null);
   const [componentPath, setComponentPath] = useState(null);
@@ -56,32 +56,7 @@ const CanvasContainer = (props, ref) => {
   ];
 
   const [canvasContainerMode, setCanvasContainerMode] = useState(props.mode);
-  const stageRef = useRef(null);
 
-  const saveCanvasAsImage = async () => {
-    const stage = stageRef.current;
-
-    // check if the stage is canvas or canvas = await html2canvas(element), then use canvas.toDataURL()
-    let image;
-    try {
-      image = stage.toDataURL();
-    } catch (error) {
-      const canvas = await html2canvas(stage, { backgroundColor: null });
-      image = canvas.toDataURL("image/png");
-    }
-
-    // Create a temporary link element
-    const link = document.createElement("a");
-    link.href = image;
-    link.download = "canvas_image.png";
-
-    // Trigger the download
-    document.body.appendChild(link);
-    link.click();
-
-    // Clean up
-    document.body.removeChild(link);
-  };
   const loadComponent = async (name) => {
     try {
       const module = await import(/* @vite-ignore */ `./${name}`);
@@ -280,7 +255,7 @@ const CanvasContainer = (props, ref) => {
             style={{
               position: "absolute",
               top: "1rem",
-              right: "6rem",
+              right: "1rem",
               backgroundColor: "rgba(17, 24, 39, 0.9)",
             }}
           >
@@ -391,7 +366,7 @@ const CanvasContainer = (props, ref) => {
             previewOptions={previewOptions}
             ref={ref}
             mode={props.mode === "edit" ? "edit" : "preview"}
-            stageRef={stageRef}
+            stageRef={props.stageRef}
           />
         )}
       </div>
@@ -435,33 +410,6 @@ const CanvasContainer = (props, ref) => {
             </div>
           </Tooltip>
         )}
-        {type !== 0 && props.mode === "preview" && (
-          <Tooltip
-            title={<h1 className="text-lg text-white">Take Snapshot</h1>}
-            placement="top"
-            arrow
-            size="large"
-          >
-            <div className="flex flex-col items-center bu-text-primary font-bold">
-              <IconButton
-                sx={{
-                  fontSize: "2rem",
-                  width: "3rem",
-                  height: "3rem",
-                }}
-                onClick={saveCanvasAsImage}
-              >
-                <div className="flex items-center bu-text-primary text-3xl">
-                  <FontAwesomeIcon icon={faCameraRetro} />
-                  {/* <Camera /> */}
-                </div>
-              </IconButton>
-              <div className="transform translate-y-[-50%] text-sm">
-                Capture
-              </div>
-            </div>
-          </Tooltip>
-        )}
 
         {/* {props.mode !== "preview" && (
           <Tooltip
@@ -500,7 +448,7 @@ const CanvasContainer = (props, ref) => {
           </Tooltip>
         )} */}
 
-        {props.mode !== "preview" && (
+        {props.mode !== "preview" && props.canvasId !== null && (
           <Tooltip
             title={<h1 className="text-lg text-white">Clear Canvas</h1>}
             placement="top"
@@ -525,7 +473,7 @@ const CanvasContainer = (props, ref) => {
             </div>
           </Tooltip>
         )}
-        {props.mode !== "preview" && (
+        {props.mode !== "preview" && props.canvasId !== null && (
           <Tooltip
             title={
               <h1 className="text-lg text-white">
@@ -556,29 +504,31 @@ const CanvasContainer = (props, ref) => {
             </div>
           </Tooltip>
         )}
-        <Tooltip
-          title={<h1 className="text-lg text-white">Canvas Info</h1>}
-          placement="top"
-          // TransitionComponent={Zoom}
-          arrow
-          size="large"
-        >
-          <div className="flex flex-col items-center bu-text-primary font-bold">
-            <IconButton
-              sx={{
-                fontSize: "2rem",
-                width: "3rem",
-                height: "3rem",
-              }}
-              onClick={() => alert(canvasInfo)}
-            >
-              <div className="flex items-center bu-text-primary">
-                <InfoIcon sx={{ fontSize: "2rem" }} />
-              </div>
-            </IconButton>
-            <div className="transform translate-y-[-50%] text-sm">Info</div>
-          </div>
-        </Tooltip>
+        {props.canvasId !== null && (
+          <Tooltip
+            title={<h1 className="text-lg text-white">Canvas Info</h1>}
+            placement="top"
+            // TransitionComponent={Zoom}
+            arrow
+            size="large"
+          >
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem",
+                }}
+                onClick={() => alert(canvasInfo)}
+              >
+                <div className="flex items-center bu-text-primary">
+                  <InfoIcon sx={{ fontSize: "2rem" }} />
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">Info</div>
+            </div>
+          </Tooltip>
+        )}
       </div>
     </div>
   );

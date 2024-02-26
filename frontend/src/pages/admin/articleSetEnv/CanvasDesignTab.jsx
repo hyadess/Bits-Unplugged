@@ -33,7 +33,7 @@ const CanvasDesignTab = ({ backupProblem, onSave }) => {
   const [canvasFullList, setCanvasFullList] = useState([]);
   const canvasRef = useRef();
   const [mode, setMode] = useState("edit");
-
+  const stageRef = useRef(null);
   const reset = async () => {
     dispatch({
       type: "UPDATE_PROBLEM",
@@ -135,9 +135,9 @@ const CanvasDesignTab = ({ backupProblem, onSave }) => {
 
   const { state: problem, dispatch } = useProblemContext();
 
-  useEffect(() => {
-    console.log("Backup:", backupProblem?.current?.canvasData.array);
-  }, [problem.canvasData]);
+  // useEffect(() => {
+  //   console.log("Backup:", backupProblem?.current?.canvasData.array);
+  // }, [problem.canvasData]);
 
   // useEffect(() => {
   //   console.log("Handle reset called");
@@ -147,76 +147,73 @@ const CanvasDesignTab = ({ backupProblem, onSave }) => {
   // }, [problem.canvasId]);
   return (
     <>
-      {problem.canvasId && (
-        <>
-          <CanvasContainer
-            canvasId={problem.canvasId}
-            input={problem.canvasData}
-            setInput={(dataOrFunction) => {
-              console.log("Updating from here");
-              dispatch((prevState) => {
-                return {
-                  type: "UPDATE_CANVAS",
-                  payload:
-                    typeof dataOrFunction === "function"
-                      ? dataOrFunction(prevState.canvasData)
-                      : dataOrFunction,
-                };
-              });
-            }}
-            onCanvasChange={(value) => changeCanvas(value)}
-            ref={canvasRef}
-            mode={mode}
-            editOptions={problem.editOptions}
-            setEditOptions={(data) => {
-              dispatch({
-                type: "UPDATE_EDIT_OPTIONS",
-                payload: data,
-              });
-            }}
-            previewOptions={problem.previewOptions}
-            setPreviewOptions={(data) => {
-              dispatch({
-                type: "UPDATE_PREVIEW_OPTIONS",
-                payload: data,
-              });
-            }}
-          />
-          <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
-            <div
-              className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
-              onClick={() => {
-                reset();
-              }}
-            >
-              {/* <RotateLeftIcon /> */}
-              <FontAwesomeIcon icon={faRotateRight} />
-            </div>
+      <CanvasContainer
+        canvasId={problem.canvasId}
+        input={problem.canvasData}
+        setInput={(dataOrFunction) => {
+          console.log("Updating from here");
+          dispatch((prevState) => {
+            return {
+              type: "UPDATE_CANVAS",
+              payload:
+                typeof dataOrFunction === "function"
+                  ? dataOrFunction(prevState.canvasData)
+                  : dataOrFunction,
+            };
+          });
+        }}
+        onCanvasChange={(value) => changeCanvas(value)}
+        ref={canvasRef}
+        mode={mode}
+        editOptions={problem.editOptions}
+        setEditOptions={(data) => {
+          dispatch({
+            type: "UPDATE_EDIT_OPTIONS",
+            payload: data,
+          });
+        }}
+        previewOptions={problem.previewOptions}
+        setPreviewOptions={(data) => {
+          dispatch({
+            type: "UPDATE_PREVIEW_OPTIONS",
+            payload: data,
+          });
+        }}
+        stageRef={stageRef}
+      />
+      <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
+        <div
+          className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
+          onClick={() => {
+            reset();
+          }}
+        >
+          {/* <RotateLeftIcon /> */}
+          <FontAwesomeIcon icon={faRotateRight} />
+        </div>
 
-            <div
-              className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
-              onClick={() => {
-                setMode(mode === "edit" ? "edit_preview" : "edit");
-              }}
-            >
-              <FontAwesomeIcon icon={mode === "edit" ? faEye : faEyeSlash} />
-              {/* RUN */}
-            </div>
-            <div
-              className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
-              onClick={async () => {
-                await onSave();
-                backupProblem.current.canvasId = problem.canvasId;
-                backupProblem.current.editOptions = problem.editOptions;
-                backupProblem.current.previewOptions = problem.previewOptions;
-              }}
-            >
-              {/* SAVE */}
-              <SaveIcon />
-            </div>
-          </div>
-        </>
-      )}
+        <div
+          className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
+          onClick={() => {
+            setMode(mode === "edit" ? "edit_preview" : "edit");
+          }}
+        >
+          <FontAwesomeIcon icon={mode === "edit" ? faEye : faEyeSlash} />
+          {/* RUN */}
+        </div>
+        <div
+          className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
+          onClick={async () => {
+            await onSave();
+            backupProblem.current.canvasId = problem.canvasId;
+            backupProblem.current.editOptions = problem.editOptions;
+            backupProblem.current.previewOptions = problem.previewOptions;
+          }}
+        >
+          {/* SAVE */}
+          <SaveIcon />
+        </div>
+      </div>
     </>
   );
 };

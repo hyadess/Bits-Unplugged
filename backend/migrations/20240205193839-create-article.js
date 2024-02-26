@@ -22,7 +22,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       subtitle: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       content: {
         type: Sequelize.JSONB,

@@ -9,6 +9,7 @@ import {
   faAdd,
   faArrowLeft,
   faArrowRight,
+  faArrowUpRightFromSquare,
   faFloppyDisk,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
@@ -31,6 +32,7 @@ import TestTab from "../setter/ProblemSetEnv/TestTab";
 import Confirmation from "components/Confirmation";
 import { Tooltip } from "@mui/material";
 import { IconButton } from "@mui/material";
+import ImageLoader from "components/ImageLoaders/ImageLoader";
 
 const ArticleCanvas = ({ data, articleId, content, index }) => {
   const { state: problem, dispatch } = useProblemContext();
@@ -39,9 +41,11 @@ const ArticleCanvas = ({ data, articleId, content, index }) => {
   const [activeComponent, setActiveComponent] = useState("Canvas"); // not related to database
   const testRef = useRef(null);
   const deepCopy = (obj) => {
-    return typeof obj === "string"
-      ? JSON.parse(obj)
-      : JSON.parse(JSON.stringify(obj));
+    return obj == null
+      ? null
+      : typeof obj === "string"
+        ? JSON.parse(obj)
+        : JSON.parse(JSON.stringify(obj));
   };
 
   const getProblem = async () => {
@@ -160,6 +164,165 @@ const deepCopy = (obj) => {
     ? JSON.parse(obj)
     : JSON.parse(JSON.stringify(obj));
 };
+
+const ImageEditor = ({ data, articleId, content, index, onSave }) => {
+  const [image, setImage] = useState(null);
+
+  useState(() => {
+    setImage(data.image);
+  }, [data.image]);
+
+  return (
+    <div className="bu-card-primary pb-10 rounded-[30px] flex flex-col min-h-[25rem]">
+      <div className="flex flex-row justify-end">
+        <div className="flex flex-row p-2 items-center">
+          <Tooltip
+            title={<h1 className="text-lg text-white">Delete Image</h1>}
+            placement="top"
+            arrow
+            size="large"
+          >
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem",
+                }}
+                onClick={() => {
+                  setImage(null);
+                }}
+              >
+                <div className="flex items-center bu-text-primary text-3xl">
+                  <FontAwesomeIcon icon={faTrashCan} />
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">Delete</div>
+            </div>
+          </Tooltip>
+          <Tooltip
+            title={<h1 className="text-lg text-white">Add Image</h1>}
+            placement="top"
+            arrow
+            size="large"
+          >
+            <input
+              type="file"
+              id={"fileInput" + index}
+              style={{ display: "none" }}
+              onChange={(event) => {
+                const file = event.target.files[0];
+                setImage({
+                  url: URL.createObjectURL(file),
+                  caption: file.name,
+                  status: "new",
+                  file: file,
+                });
+              }}
+            />
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem",
+                }}
+                onClick={() => {
+                  document.getElementById("fileInput" + index).click();
+                }}
+              >
+                <div className="flex items-center bu-text-primary text-3xl">
+                  <FontAwesomeIcon icon={faAdd} />
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">Add</div>
+            </div>
+          </Tooltip>
+          <Tooltip
+            title={<h1 className="text-lg text-white">Save All</h1>}
+            placement="top"
+            arrow
+            size="large"
+          >
+            <div className="flex flex-col items-center bu-text-primary font-bold">
+              <IconButton
+                sx={{
+                  fontSize: "2rem",
+                  width: "3rem",
+                  height: "3rem",
+                }}
+                onClick={async () => {
+                  // First list all the images.file that are new
+                  if (image?.status === "new") {
+                    const formData = new FormData();
+                    formData.append("file", image.file);
+                    const res = await storageApi.upload(formData);
+                    if (res.success) {
+                      const newImage = { ...image };
+                      newImage.url = res.data.path;
+                      delete newImage.status;
+                      delete newImage.file;
+                      const newContent = [...content];
+                      newContent[index] = {
+                        ...newContent[index],
+                        image: newImage,
+                      };
+                      setImage(newImage);
+                      const res2 = await articleApi.updateArticle(articleId, {
+                        content: newContent,
+                      });
+                      if (res2.success) {
+                        // console.log(res);
+                        showSuccess("Image updated successfully", res2);
+                        onSave(newImage);
+                      }
+                    }
+                  } else if (image === null && data.image !== null) {
+                    // images are deleted
+                    const newContent = [...content];
+                    newContent[index] = {
+                      ...newContent[index],
+                      image: image,
+                    };
+                    const res2 = await articleApi.updateArticle(articleId, {
+                      content: newContent,
+                    });
+                    if (res2.success) {
+                      // console.log(res);
+                      showSuccess("Image updated successfully", res2);
+                      console.log(await storageApi.remove(data.image.url));
+                      onSave(image);
+                    }
+
+                    // update the data.images with the new images
+                  }
+                }}
+              >
+                <div className="flex items-center bu-text-primary text-3xl">
+                  <FontAwesomeIcon icon={faFloppyDisk} />
+                </div>
+              </IconButton>
+              <div className="transform translate-y-[-50%] text-sm">Save</div>
+            </div>
+          </Tooltip>
+        </div>
+      </div>
+      {image && (
+        <ImageLoader
+          // key={i}
+          src={image.url}
+          // alt={image.caption}
+          style={{
+            width: "40rem",
+            margin: "auto",
+            pointerEvents: "none",
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
 const SlideShow = ({ data, articleId, content, index, onSave }) => {
   const [images, setImages] = useState([]);
   const [serial, setSerial] = useState(0);
@@ -222,7 +385,7 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
             >
               <input
                 type="file"
-                id="fileInput"
+                id={"fileInput" + index}
                 style={{ display: "none" }}
                 onChange={(event) => {
                   const file = event.target.files[0];
@@ -251,7 +414,7 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
                     height: "3rem",
                   }}
                   onClick={() => {
-                    document.getElementById("fileInput").click();
+                    document.getElementById("fileInput" + index).click();
                   }}
                 >
                   <div className="flex items-center bu-text-primary text-3xl">
@@ -338,18 +501,17 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
                       if (res2.success) {
                         // console.log(res);
                         showSuccess("Images saved successfully", res2);
+                        // Find which image was deleted by comparing url
+                        const deletedImages = data.images
+                          .filter((image) => {
+                            return !images.find((img) => img.url === image.url);
+                          })
+                          .map((image) => image.url);
+                        console.log(deletedImages);
+                        console.log(await storageApi.remove(deletedImages));
+                        onSave(images);
+                        // update the data.images with the new images
                       }
-
-                      // Find which image was deleted by comparing url
-                      const deletedImages = data.images
-                        .filter((image) => {
-                          return !images.find((img) => img.url === image.url);
-                        })
-                        .map((image) => image.url);
-                      console.log(deletedImages);
-                      console.log(await storageApi.remove(deletedImages));
-                      onSave(images);
-                      // update the data.images with the new images
                     }
                   }}
                 >
@@ -365,7 +527,7 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
 
         {images?.map((image, i) => {
           return (
-            <img
+            <ImageLoader
               key={i}
               src={image.url}
               alt={image.caption}
@@ -413,37 +575,69 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
   );
 };
 
+const CustomButton = ({ onClick, label, icon }) => {
+  return (
+    <button
+      className="flex flex-row items-center gap-2 px-5 bu-text-primary border-2 border-black dark:border-white rounded-full hover:bg-[#aadfcf] dark:hover:bg-pink-700 transition-colors duration-500  font-medium"
+      onClick={onClick}
+    >
+      {label}
+      {icon}
+    </button>
+  );
+};
 const WriteArticle = ({
   article,
   setArticle,
   colorMode,
   updateMarkdown,
-  addMarkdown,
-  deleteMarkdown,
+  addContent,
+  deleteContent,
 }) => {
   return (
     <div className="flex flex-col justify-between gap-10">
       {article?.content?.length > 0 &&
         article?.content?.map((content, index) => {
           return (
-            <div>
-              <div className="flex justify-center items-center ">
-                <div className="mx-6">
-                  <button
-                    className="flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400"
-                    onClick={() => deleteMarkdown(index)}
-                  >
+            <>
+              <div className="flex flex-row justify-center items-center gap-5">
+                <CustomButton
+                  label="Markdown"
+                  icon={<FontAwesomeIcon icon={faAdd} />}
+                  onClick={() => addContent(index, "markdown")}
+                />
+                <CustomButton
+                  label="Problem"
+                  icon={<FontAwesomeIcon icon={faAdd} />}
+                  onClick={() => addContent(index, "canvas")}
+                />
+                <CustomButton
+                  label="Solution"
+                  icon={<FontAwesomeIcon icon={faAdd} />}
+                  onClick={() => addContent(index, "slideshow")}
+                />
+                <CustomButton
+                  label="Image"
+                  icon={<FontAwesomeIcon icon={faAdd} />}
+                  onClick={() => addContent(index, "image")}
+                />
+                {/* <CustomButton
+                  label="Video"
+                  icon={<FontAwesomeIcon icon={faAdd} />}
+                  onClick={() => addContent(index, "video")}
+                /> */}
+                <IconButton
+                  sx={{
+                    fontSize: "2rem",
+                    width: "3rem",
+                    height: "3rem",
+                  }}
+                  onClick={() => deleteContent(index)}
+                >
+                  <div className="flex flex-row items-center gap-2 bu-text-primary text-2xl">
                     <FontAwesomeIcon icon={faTrashCan} />
-                  </button>
-                </div>
-                <div className="mx-6 pd-2">
-                  <button
-                    className="flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400"
-                    onClick={() => addMarkdown(index)}
-                  >
-                    <FontAwesomeIcon icon={faAdd} />
-                  </button>
-                </div>
+                  </div>
+                </IconButton>
               </div>
               {content.type === "markdown" ? (
                 <MarkDownContainer
@@ -452,8 +646,6 @@ const WriteArticle = ({
                   colorMode={colorMode}
                   text={content.data}
                   setText={updateMarkdown}
-                  onAdd={() => addMarkdown(index)}
-                  onDelete={() => deleteMarkdown(index)}
                 />
               ) : content.type === "slideshow" ? (
                 <SlideShow
@@ -472,21 +664,34 @@ const WriteArticle = ({
               ) : content.type === "canvas" ? (
                 <ProblemContextProvider>
                   <DndProvider backend={HTML5Backend}>
-                    <div>
-                      l
-                      <ArticleCanvas
-                        articleId={article.id}
-                        data={content}
-                        content={article.content}
-                        index={index}
-                      />
-                    </div>
+                    <ArticleCanvas
+                      articleId={article.id}
+                      data={content}
+                      content={article.content}
+                      index={index}
+                    />
                   </DndProvider>
                 </ProblemContextProvider>
+              ) : content.type === "image" ? (
+                <ImageEditor
+                  articleId={article.id}
+                  data={content}
+                  content={article.content}
+                  index={index}
+                  onSave={(image) =>
+                    setArticle((prev) => {
+                      const newContent = [...prev.content];
+                      newContent[index].image = image;
+                      return { ...prev, content: newContent };
+                    })
+                  }
+                />
+              ) : content.type === "video" ? (
+                <></>
               ) : (
                 <></>
               )}
-            </div>
+            </>
           );
         })}
     </div>
@@ -508,7 +713,7 @@ const AdminArticleEditor = () => {
   const getArticleInfo = async () => {
     const res = await articleApi.getArticleById(id);
     if (res.success) {
-      articleBackup.current = JSON.parse(JSON.stringify(res.data));
+      articleBackup.current = deepCopy(res.data);
       setArticle(res.data);
       //set box count as the max box id
       let max = 0;
@@ -537,7 +742,7 @@ const AdminArticleEditor = () => {
   const saveArticle = async () => {
     const res = await articleApi.updateArticle(id, article);
     if (res.success) {
-      console.log("Article Updated");
+      showSuccess("Article saved successfully", res);
     }
   };
 
@@ -562,7 +767,54 @@ const AdminArticleEditor = () => {
     });
   };
 
+  const addContent = (index, type) => {
+    setArticle((prev) => {
+      let newContent = [...prev.content];
+      if (type === "markdown") {
+        newContent.splice(index, 0, {
+          boxId: boxCount + 1,
+          data: "type here",
+          type: type,
+        });
+      } else if (type === "canvas") {
+        newContent.splice(index, 0, {
+          boxId: boxCount + 1,
+          type: type,
+          canvasId: null,
+          canvasData: null,
+          checkerCode:
+            "function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}",
+          editOptions: {},
+          previewOptions: {},
+          checkerCanvas: null,
+        });
+      } else if (type === "slideshow") {
+        newContent.splice(index, 0, {
+          boxId: boxCount + 1,
+          type: type,
+          images: [],
+        });
+      } else if (type === "image") {
+        newContent.splice(index, 0, {
+          boxId: boxCount + 1,
+          type: type,
+          image: null,
+        });
+      }
+      setBoxCount((prev) => prev + 1);
+      return { ...prev, content: newContent };
+    });
+  };
+
   const deleteMarkdown = (index) => {
+    setArticle((prev) => {
+      let newContent = [...prev.content];
+      newContent.splice(index, 1);
+      return { ...prev, content: newContent };
+    });
+  };
+
+  const deleteContent = (index) => {
     setArticle((prev) => {
       let newContent = [...prev.content];
       newContent.splice(index, 1);
@@ -585,16 +837,112 @@ const AdminArticleEditor = () => {
       <div>
         <div className="flex flex-row justify-between">
           <Title title={article.title} sub_title={article.subtitle} />
+          <div className="flex items-center">
+            <Tooltip
+              title={<h1 className="text-lg text-white">Preview</h1>}
+              placement="top"
+              arrow
+              size="large"
+            >
+              <IconButton>
+                <div
+                  data-tooltip-target="tooltip-default"
+                  className="bu-text-primary flex cursor-pointer items-center text-4xl"
+                  onClick={() => {
+                    setLoading(true);
+                    navigate(`/admin/articles/${article.id}`);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+                </div>
+              </IconButton>
+            </Tooltip>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-5 pb-10">
+          {/* <Title title={article.title} sub_title={article.subtitle} /> */}
+          {/* Take input for Title and Subtitle */}
+          <div className="flex flex-col gap-2">
+            <div className="bu-text-primary text-2xl font-medium">Title</div>
+            <input
+              value={article.title}
+              type="text"
+              name="title"
+              className="border text-[140%] rounded-lg block w-full p-2.5 px-5 bu-input-primary"
+              placeholder="Example Problem Name"
+              required
+              onChange={(e) => {
+                setArticle((prev) => {
+                  return { ...prev, title: e.target.value };
+                });
+              }}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="bu-text-primary text-2xl font-medium">Subtitle</div>
+            <textarea
+              value={article.subtitle}
+              name="details"
+              className="border rounded-lg block w-full p-2.5 px-5 bu-input-primary text-[140%]"
+              placeholder=""
+              onChange={(e) => {
+                setArticle((prev) => {
+                  return { ...prev, subtitle: e.target.value };
+                });
+              }}
+            />
+          </div>
         </div>
         <WriteArticle
           setArticle={setArticle}
           article={article}
           colorMode={colorMode}
           updateMarkdown={updateMarkdown}
-          addMarkdown={addMarkdown}
-          deleteMarkdown={deleteMarkdown}
+          addContent={addContent}
+          deleteContent={deleteContent}
         />
 
+        <div className="flex flex-row justify-center items-center gap-5 m-10">
+          <CustomButton
+            label="Markdown"
+            icon={<FontAwesomeIcon icon={faAdd} />}
+            onClick={() => addContent(article.content.length, "markdown")}
+          />
+          <CustomButton
+            label="Problem"
+            icon={<FontAwesomeIcon icon={faAdd} />}
+            onClick={() => addContent(article.content.length, "canvas")}
+          />
+          <CustomButton
+            label="Solution"
+            icon={<FontAwesomeIcon icon={faAdd} />}
+            onClick={() => addContent(article.content.length, "slideshow")}
+          />
+          <CustomButton
+            label="Image"
+            icon={<FontAwesomeIcon icon={faAdd} />}
+            onClick={() => addContent(article.content.length, "image")}
+          />
+          {/* <CustomButton
+            label="Video"
+            icon={<FontAwesomeIcon icon={faAdd} />}
+            onClick={() => addContent(article.content.length, "video")}
+          /> */}
+          <IconButton
+            sx={{
+              fontSize: "2rem",
+              width: "3rem",
+              height: "3rem",
+            }}
+            onClick={() => saveArticle()}
+          >
+            <div className="flex flex-row items-center gap-2 bu-text-primary text-2xl">
+              <FontAwesomeIcon icon={faFloppyDisk} />
+            </div>
+          </IconButton>
+        </div>
+        {/* 
         <div className="flex justify-center">
           <div className="mx-6 pd-2">
             <button
@@ -612,7 +960,7 @@ const AdminArticleEditor = () => {
               <FontAwesomeIcon icon={faFloppyDisk} />
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     )
   );

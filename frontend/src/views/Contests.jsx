@@ -1,7 +1,7 @@
 import CustomModal from "../components/Modal/CustomModal";
 import Title from "../components/Title";
 import ContestCard from "../components/Cards/ContestCard";
-import CardContainer from "../containers/CardContainer";
+import CardContainer from "../containers/CardContainer2";
 import ProblemAddButton from "../components/Buttons/ProblemAddButton";
 import { useEffect } from "react";
 
@@ -24,8 +24,9 @@ const ContestsView = ({
         sub_title={`Participate in contests with various problems right on our site`}
       />
 
-
-      <CardContainer col={1}>
+      <div
+        className={`grid grid-cols-1 justify-center items-center mx-auto max-w-screen-2xl gap-8 h-full w-full mb-3 md:grid-cols-1`}
+      >
         {contestList.map((contest, index) => (
           <ContestCard
             key={index}
@@ -37,13 +38,16 @@ const ContestsView = ({
             timestamp={contest.updatedAt}
             owner={contest.ContestSetters[0]}
             startDate={contest.startDateTime}
-            endDate={new Date(contest.startDateTime).getTime() + contest.duration*3600*1000}
+            endDate={
+              new Date(contest.startDateTime).getTime() +
+              contest.duration * 3600 * 1000
+            }
             status={contest.status}
             updatedAt={contest.updatedAt}
             userID={userID}
           />
         ))}
-      </CardContainer>
+      </div>
     </div>
   );
 };

@@ -23,6 +23,7 @@ const SolutionCheckerTab = () => {
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
   const [checkerType, setCheckerType] = useState(1);
+  const stageRef = useRef(null);
   // const [test, setTest] = useState(null);
   const onSubmit = async () => {
     const result = await SubmissionService.checkSolution(
@@ -67,37 +68,40 @@ const SolutionCheckerTab = () => {
   return (
     <div className="relative">
       {checkerType == 0 ? (
-        problem.canvasId && (
-          <SolutionChecker
-            code={problem.checkerCode}
-            setCode={(code) =>
-              dispatch({ type: "UPDATE_CHECKER_CODE", payload: code })
-            }
-            stdout={stdout}
-            output={output}
-            setOutput={setOutput}
-            setStdout={setStdout}
-            checkSubmit={onSubmit}
-            save={updateSolutionChecker}
-          />
-        )
+        <SolutionChecker
+          code={problem.checkerCode}
+          setCode={(code) =>
+            dispatch({ type: "UPDATE_CHECKER_CODE", payload: code })
+          }
+          stdout={stdout}
+          output={output}
+          setOutput={setOutput}
+          setStdout={setStdout}
+          checkSubmit={onSubmit}
+          save={updateSolutionChecker}
+        />
       ) : checkerType == 1 ? (
-        problem.canvasId &&
         canvasRef && (
           <>
             <CanvasContainer
               canvasId={problem.canvasId}
               input={problem.checkerCanvas}
-              setInput={(data) => {
-                dispatch({
-                  type: "UPDATE_CHECKER_CANVAS",
-                  payload: { ...data },
+              setInput={(dataOrFunction) => {
+                dispatch((prevState) => {
+                  return {
+                    type: "UPDATE_CHECKER_CANVAS",
+                    payload:
+                      typeof dataOrFunction === "function"
+                        ? dataOrFunction(prevState.checkerCanvas)
+                        : dataOrFunction,
+                  };
                 });
               }}
               ref={canvasRef}
               mode="preview"
               previewOptions={problem.previewOptions}
               editOptions={problem.editOptions}
+              stageRef={stageRef}
             />
             <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
               <div
@@ -135,7 +139,7 @@ const SolutionCheckerTab = () => {
         className="bu-button-secondary rounded-l-full px-7 py-2 text-center text-2xl  text-white absolute bottom-0 right-0 font-bold"
         onClick={() => setCheckerType((prev) => !prev)}
       >
-        <FontAwesomeIcon icon={checkerType ? faCode : faObjectGroup} />
+        <FontAwesomeIcon icon={checkerType == 1 ? faCode : faObjectGroup} />
       </button>
     </div>
   );

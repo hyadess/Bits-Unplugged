@@ -33,7 +33,7 @@ const CanvasDesignTab = ({ backupProblem }) => {
   const [canvasFullList, setCanvasFullList] = useState([]);
   const canvasRef = useRef();
   const [mode, setMode] = useState("edit");
-
+  const stageRef = useRef(null);
   const updateCanvas = async () => {
     dispatch({
       type: "UPDATE_CHECKER_CANVAS",
@@ -158,9 +158,15 @@ const CanvasDesignTab = ({ backupProblem }) => {
     console.log("Backup:", backupProblem?.current?.canvasData?.array);
   }, [problem.canvasData]);
 
+  // useEffect(() => {
+  //   if ((backupProblem?.current ?? false) && !problem.canvasId) {
+  //     changeCanvas(0);
+  //   }
+  //   console.log("Change:", problem.canvasId);
+  // }, [problem.canvasId]);
   return (
     <>
-      {problem.canvasId && (
+      {problem && (
         <>
           <CanvasContainer
             canvasId={problem.canvasId}
@@ -178,6 +184,7 @@ const CanvasDesignTab = ({ backupProblem }) => {
             }}
             ref={canvasRef}
             mode={mode}
+            onCanvasChange={changeCanvas}
             editOptions={problem.editOptions}
             setEditOptions={(data) => {
               dispatch({
@@ -192,6 +199,7 @@ const CanvasDesignTab = ({ backupProblem }) => {
                 payload: data,
               });
             }}
+            stageRef={stageRef}
           />
           <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
             <div

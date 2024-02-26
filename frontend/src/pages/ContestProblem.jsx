@@ -10,7 +10,7 @@ import ProblemContextProvider, {
 } from "../store/ProblemContextProvider";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-function ContestProblemController( endTime ) {
+function ContestProblemController(endTime) {
   const { type } = useContext(GlobalContext);
   const { id } = useParams();
   const { problemid } = useParams();
@@ -77,10 +77,10 @@ function ContestProblemController( endTime ) {
 
     if (res.output === "Accepted") {
       if (startTimeRef.current) {
-        // const endTime = new Date();
-        // const durationInSeconds = Math.floor(
-        //   (endTime - startTimeRef.current) / 1000
-        // );
+        const endTime = new Date();
+        const durationInSeconds = Math.floor(
+          (endTime - startTimeRef.current) / 1000
+        );
 
         // let result;
 
@@ -111,10 +111,10 @@ function ContestProblemController( endTime ) {
             res.output,
             problem.canvasData,
             problem.activityData,
-            res2.data[0].rating
+            res2.data[0].rating,
+            durationInSeconds
           );
         }
-
       }
     } else {
       // const result = await submissionApi.submitSolution(
@@ -125,14 +125,21 @@ function ContestProblemController( endTime ) {
       // );
       // const isSolved = await contestApi.isContestProblemSolved(id, problemid);
       // console.log("submissions==>", isSolved);
-      await contestApi.addSubmissionToContest(
-        id,
-        problemid,
-        res.output,
-        problem.canvasData,
-        problem.activityData,
-        0
-      );
+      if (startTimeRef.current) {
+        const endTime = new Date();
+        const durationInSeconds = Math.floor(
+          (endTime - startTimeRef.current) / 1000
+        );
+        await contestApi.addSubmissionToContest(
+          id,
+          problemid,
+          res.output,
+          problem.canvasData,
+          problem.activityData,
+          0,
+          durationInSeconds
+        );
+      }
     }
   };
 
@@ -179,7 +186,7 @@ function ContestProblemController( endTime ) {
   );
 }
 
-const ContestProblem = ( endTime ) => {
+const ContestProblem = (endTime) => {
   return (
     <ProblemContextProvider>
       <DndProvider backend={HTML5Backend}>

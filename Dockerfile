@@ -28,6 +28,7 @@ COPY --from=client /app/frontend/build/ ./frontend/build/
 WORKDIR /app/backend/
 COPY backend/package*.json .
 RUN npm install
+RUN npm audit fix 
 COPY backend/ . 
 
 ARG DB_USER

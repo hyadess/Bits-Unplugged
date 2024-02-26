@@ -6,6 +6,10 @@ class UserActivityRepository extends Repository {
   constructor() {
     super();
   }
+
+  getProblemDetails = async (userId, problemId) => {
+    return await db.Activity.findOne({ where: { userId, problemId } });
+  };
   trackDuration = async (userId, problemId, duration, timestamp) => {
     dailyActivityRepository.Entry(userId, problemId, duration, timestamp);
     const activity = db.Activity.findOne({ where: { userId, problemId } }).then(
@@ -321,15 +325,24 @@ class UserActivityRepository extends Repository {
   acceptanceByProblem = async (problemId) => {
     const query = `
     SELECT
-    "S"."problemId",
-    COUNT(DISTINCT CASE WHEN "S"."verdict" = 'Accepted' THEN 1 END) AS "successful_submissions",
-    SUM(CASE WHEN "S"."verdict" = 'Wrong answer' THEN 1 ELSE 0 END) AS "failed_submissions"
+    "problemId",
+    SUM("successful_submission") AS "successful_submissions",
+    SUM("failed_submission") AS "failed_submissions"
+    FROM (
+    SELECT
+        "S"."problemId",
+        "S"."userId",
+        COUNT(DISTINCT CASE WHEN "S"."verdict" = 'Accepted' THEN 1 END) AS "successful_submission",
+        SUM(CASE WHEN "S"."verdict" = 'Wrong answer' THEN 1 ELSE 0 END) AS "failed_submission"
     FROM
-    "Submissions" "S"
+        "Submissions" "S"
     WHERE
-    "S"."problemId"= $1
+        "S"."problemId" = $1
     GROUP BY
-    "S"."problemId";
+        "S"."problemId", "S"."userId"
+    ) AS subquery
+    GROUP BY
+    "problemId";
     `;
     const params = [problemId];
     const result = await this.query(query, params);

@@ -60,5 +60,9 @@ class ProblemApi extends Api {
   getRecommendations = async () => {
     return await this.get("/problems/recommendation");
   };
+
+  getRecentyUpdatedProblems = async () => {
+    return await this.get("/problems/setter/recentUpdate");
+  };
 }
 export default ProblemApi;

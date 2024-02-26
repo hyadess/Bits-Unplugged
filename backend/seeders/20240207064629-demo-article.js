@@ -12,10 +12,6 @@ module.exports = {
           title: "The Tower of Hanoi",
           subtitle: "A Fascinating Puzzle of Mathematical Beauty",
           content: JSON.stringify([
-            // {
-            //   type: "markdown",
-            //   data: `# The Tower of Hanoi: A Fascinating Puzzle of Mathematical Beauty.`,
-            // },
             {
               boxId: 1,
               type: "markdown",
@@ -101,8 +97,28 @@ module.exports = {
                 { url: "/images/toh_8.png", caption: "Caption 8" },
               ]),
             },
+            // {
+            //   boxId: 9,
+            //   type: "video",
+            //   url: "https://www.youtube.com/watch?v=2SUvWfNJSsM",
+            // },
+            // {
+            //   boxId: 9,
+            //   type: "image",
+            //   image: { url: "/images/toh_8.png", caption: "Caption 1" },
+            // },
           ]),
           isLive: true,
+          serialNo: 2,
+        },
+        {
+          // id: 2
+          seriesId: 1,
+          title: "The Golden Ratio",
+          subtitle: "A Mathematical Marvel in Art and Nature",
+          content: JSON.stringify([]),
+          isLive: false,
+          serialNo: 1,
         },
       ],
       {}

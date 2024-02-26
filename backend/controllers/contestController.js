@@ -382,6 +382,17 @@ class ContestController extends Controller {
     }
   };
 
+  IsRegistered = async (req, res) => {
+    let result = await contestRepository.IsRegistered(req.user.userId , req.params.contestId);
+    console.log("register", result);
+
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
   getTimeline = async (req, res) => {
     let result = await contestRepository.getTimeline(req.params.contestId);
     if (result.success) {

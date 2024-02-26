@@ -168,7 +168,9 @@ class UserActivityRepository extends Repository {
         "Activities" "A" ON "P"."id" = "A"."problemId"
         WHERE "A"."userId" = $1
         GROUP BY
-        "S"."id";
+        "S"."id","S"."name"
+        ORDER BY "totalSuccessfulAttemptsPerSeries" DESC;
+        ;
         `;
     const params = [userId];
     const result = await this.query(query, params);
@@ -189,7 +191,8 @@ class UserActivityRepository extends Repository {
         "Activities" "A" ON "P"."id" = "A"."problemId"
         WHERE "A"."userId" = $1
         GROUP BY
-        "S"."id";
+        "S"."id","S"."name"
+        ORDER BY "totalFailedAttemptsPerSeries" DESC;
         `;
     const params = [userId];
     const result = await this.query(query, params);

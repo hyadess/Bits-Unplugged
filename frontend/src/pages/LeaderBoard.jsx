@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import SetterCard from "components/Cards/SetterCard";
 import LeaderBoardCard from "components/Cards/LeaderBoardCard";
 
@@ -20,7 +21,7 @@ const Leaderboard = ({ leaderboard, contest_id }) => {
               name={user.username}
               points={user.points}
               image={user.image}
-              path={`/user/${user.username}`}
+              path={`/contests/${contest_id}/${user.username}`}
             />
           ))}
         </div>

@@ -48,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       image: DataTypes.TEXT,
       
       points: DataTypes.INTEGER,
+      duration: DataTypes.INTEGER,
     },
     {
       sequelize,

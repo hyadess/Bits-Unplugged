@@ -570,6 +570,20 @@ class ProblemsRepository extends Repository {
     );
     return updatedProblem;
   };
+  getRecentlyUpdatedProblems = async (userId) => {
+    const query = `
+    SELECT "P".*
+    FROM "Problems" "P"
+    JOIN "Setters" "S" ON "P"."setterId" = "S"."id"
+    JOIN "Users" "U" ON "S"."userId" = "U"."id"
+    WHERE "U"."id" = $1
+    ORDER BY "P"."updatedAt" DESC
+    LIMIT 5;
+    `;
+    const params = [userId];
+    const result = await this.query(query, params);
+    return result;
+  }
 }
 
 module.exports = ProblemsRepository;

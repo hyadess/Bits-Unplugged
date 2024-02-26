@@ -15,6 +15,7 @@ import Signup from "./pages/auth/Signup";
 import ProblemsCanvas from "./pages/ProblemsCanvas";
 import Topics from "./pages/user/Topics";
 import Series from "./pages/user/Series";
+import ContestParticipant from "pages/ContestParticipant";
 import SetterProblems from "./pages/setter/SetterProblems";
 import ProblemSetEnv from "./pages/setter/ProblemSetEnv";
 import ContestSetEnv from "./pages/setter/ContestSetEnv";
@@ -42,6 +43,7 @@ import ProblemsSubmissions from "./pages/ProblemsSubmissions";
 import SetterProfile from "./pages/setter/SetterProfile";
 import Profile from "./pages/user/Profile/Profile";
 import SetterContests from "./pages/setter/SetterContests";
+import ContestSubmissions from "./pages/ContestSubmissions";
 import Contest from "./pages/setter/Contest";
 import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
@@ -407,6 +409,14 @@ const AppRoutes = () => {
             <Route
               path="/contests/:id/problems/:problemid"
               element={<UserContest />}
+            />
+            <Route
+              path="/contests/:id/problems/:problemId/submissions"
+              element={<ContestSubmissions />}
+            />
+            <Route
+              path="/contests/:id/:username"
+              element={<ContestParticipant />}
             />
           </Route>
           <Route

@@ -1,5 +1,5 @@
 import React, { forwardRef, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 import CanvasContainer from "../components/Canvases/CanvasContainer";
 import { Button, IconButton, Tooltip } from "@mui/material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
@@ -38,6 +38,7 @@ const Title = ({ problem }) => {
 
 const Header = ({ type }) => {
   const navigate = useNavigate();
+  const {id} = useParams();
   const { state: problem, dispatch } = useProblemContext();
   return (
     <div className="flex flex-row justify-between">
@@ -75,7 +76,7 @@ const Header = ({ type }) => {
             onClick={() => {
               setLoading(true);
               console.log(problem);
-              navigate(`/submissions/${problem.id}`);
+              navigate(`/contests/${id}/problems/${problem.id}/submissions`);
             }}
           >
             <div className="flex flex-row items-center gap-4">SUBMISSIONS</div>

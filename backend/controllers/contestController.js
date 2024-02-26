@@ -383,6 +383,15 @@ class ContestController extends Controller {
     }
   };
 
+  getTimeline = async (req, res) => {
+    let result = await contestRepository.getTimeline(req.params.contestId);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
   //new ones...
 
   deleteProblem = async (req, res) => {

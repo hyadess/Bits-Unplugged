@@ -600,6 +600,30 @@ class ContestRepository extends Repository {
 
     return result;
   };  
+
+  getTimeline = async (contestId) => {
+    const query = `
+        SELECT
+        "U"."id",
+        "U"."username",
+        "CS"."points",
+        "CS"."createdAt"
+        FROM
+        "ContestSubmissions" "CS"
+        JOIN
+        "Participants" "CP" ON "CP"."id" = "CS"."participantId"
+        JOIN
+        "Contests" "C" ON "C"."id" = "CP"."contestId"
+        JOIN
+        "Users" "U" ON "U"."id" = "CP"."userId"
+        WHERE
+        "C"."id" = $1 AND "CS"."verdict" = 'Accepted'
+        `;  
+    const params = [contestId];
+    const result = await this.query(query, params);
+
+    return result;
+  };
     
 
   //new ones...........

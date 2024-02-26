@@ -4,7 +4,7 @@ import SetterCard from "components/Cards/SetterCard";
 import LeaderBoardCard from "components/Cards/LeaderBoardCard";
 import Timeline from "./Timeline"; // Import the ApexChart component
 
-const Leaderboard = ({ leaderboard, contest_id }) => {
+const Leaderboard = ({ leaderboard, contest_id, timeline }) => {
 
   function mergeMultipleLists(lists) {
     // Combine categories from all lists and remove duplicates

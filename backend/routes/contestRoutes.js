@@ -83,6 +83,8 @@ router.post(
 );
 
 router.get("/:contestId/Leaderboard", contestController.getLeaderboard);
+router.get("/:contestId/Timeline", contestController.getTimeline);
+
 
 //new ones....
 

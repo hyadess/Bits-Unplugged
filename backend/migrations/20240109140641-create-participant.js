@@ -28,17 +28,17 @@ module.exports = {
         onDelete: "CASCADE",
       },
       type: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER, // 0 - live, 1 - virtual
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },

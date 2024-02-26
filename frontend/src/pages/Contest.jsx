@@ -16,7 +16,7 @@ import ContestProblemList from "./ContestProblemList";
 const UserContest = () => {
   const { id } = useParams();
   const { problemid } = useParams();
-  const [endTime, setendTime] = useState();
+  const [endTime, setendTime] = useState(null);
   const navigate = useNavigate();
   const EndAction = async () => {
     navigate("/contests/" + id);

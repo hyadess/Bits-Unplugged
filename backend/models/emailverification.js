@@ -14,20 +14,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   EmailVerification.init(
     {
-      userId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Users",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
+      userId: DataTypes.INTEGER,
       token: DataTypes.TEXT,
-      isVerified: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
+      isVerified: DataTypes.BOOLEAN,
     },
     {
       sequelize,

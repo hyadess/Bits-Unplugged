@@ -53,23 +53,23 @@ const AdminProblems = () => {
       <CardContainer col={2}>
         {problemList &&
           problemList.map(
-            (problem, index) =>
-              problem.approvalStatus == 2 && (
+            (version, index) =>
+              version.approvalStatus == 2 && (
                 <PendingProblemCard
                   key={index}
                   idx={index + 1}
-                  id={problem.id}
-                  name={problem.title}
-                  image={problem.logo}
-                  path={`/admin/problems/${problem.id}`}
+                  id={version.id}
+                  name={version.title}
+                  image={version.logo}
+                  path={`/admin/problems/${version.id}`}
                   action="Get Started"
-                  canvas={problem.canvas?.name}
-                  timestamp={problem.updatedAt}
+                  canvas={version.canvas?.name}
+                  timestamp={version.updatedAt}
                   reject={() => {
-                    setProblemId(problem.id);
+                    setProblemId(version.id);
                     setOpen(true);
                   }}
-                  setter={problem.problem.setter.user}
+                  setter={version.problem.setter}
                 />
               )
           )}

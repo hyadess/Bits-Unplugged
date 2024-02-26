@@ -8,32 +8,21 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-
       // define association here
-      ContestSetter.belongsTo(models.Contest, { foreignKey: "contestId",  as: "contest"});
-      ContestSetter.belongsTo(models.Setter, { foreignKey: "userId", as: "setter" });
+      ContestSetter.belongsTo(models.Contest, {
+        foreignKey: "contestId",
+        as: "contest",
+      });
+      ContestSetter.belongsTo(models.User, {
+        foreignKey: "setterId",
+        as: "setter",
+      });
     }
   }
   ContestSetter.init(
     {
-      contestId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Contests",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      setterId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Setters",
-          key: "userId",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
+      contestId: DataTypes.INTEGER,
+      setterId: DataTypes.INTEGER,
       role: DataTypes.STRING,
     },
     {

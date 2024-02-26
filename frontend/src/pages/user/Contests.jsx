@@ -9,7 +9,7 @@ const Contests = () => {
   const navigate = useNavigate();
   const [contestList, setContestList] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [userId, setUserId] = useState(null); // New state to store user_id
+  const [userId, setUserId] = useState(null);
 
   const deleteContest = async (contestID) => {
     const res = await contestApi.deleteContest(contestID);

@@ -11,7 +11,7 @@ import { getTimeStamp } from "../../services/dateUtil";
 import Confirmation from "../Confirmation";
 import { contestApi } from "api";
 // ... (previous imports)
-
+import { format } from "date-fns";
 const ContestCard = ({
   id,
   name,
@@ -25,16 +25,29 @@ const ContestCard = ({
 }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const [isRegistered, setRegistered] = useState(false);
+
 
   const handleButtonClick = async () => {
-    const res = await contestApi.participateUpcomingContest(id);
     navigate(`/contests/${id}`);
   };
+
+  const handleButtonClick2 = async () => {
+    const res = await contestApi.participateUpcomingContest(id);
+    if(res.success)setRegistered(true);
+  };
   
+  const getRegistrationInfo = async () => {
+
+    const res = await contestApi.isRegistered(id);
+    console.log("register", id, res);
+    if(res.data.length>0)setRegistered(true);
+    else setRegistered(false);
+  };
 
   useEffect(() => {
+    getRegistrationInfo();
     setLoading(false);
-    console.log("start end Time", startDate, endDate);
   }, []);
 
   return (
@@ -56,10 +69,20 @@ const ContestCard = ({
         <div className="flex justify-between mt-4">
           <div className="flex flex-col gap-2 items-start">
             <div className="bu-text-subtitle font-semibold">
-              {startDate ? `Start Date: ${new Date(startDate)}` : 'Start Date: Yet to be added'}
+              {startDate
+                ? `Start Date: ${format(
+                    new Date(startDate),
+                    "d MMMM, yyyy 'at' h.mm a"
+                  )}`
+                : "Start Date: Yet to be added"}
             </div>
             <div className="bu-text-subtitle font-semibold">
-              {endDate ? `End Date: ${new Date(endDate)}` : 'End Date: Yet to be added'}
+              {endDate
+                ? `End Date: ${format(
+                    new Date(endDate),
+                    "d MMMM, yyyy 'at' h.mm a"
+                  )}`
+                : "End Date: Yet to be added"}
             </div>
           </div>
 
@@ -71,7 +94,22 @@ const ContestCard = ({
               {updatedAt && `Last Updated: ${getTimeStamp(updatedAt)}`}
             </div>
           </div>
-          {new Date(startDate).getTime() < Date.now() && (
+          {new Date(startDate).getTime() > Date.now() && (
+          <div className="flex gap-4 items-center">
+            <div className="flex w-full cursor-pointer items-center justify-center">
+              <div
+                onClick={() => handleButtonClick2()}
+                className="bu-button-secondary my-8 inline-flex  items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
+              >
+                <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
+                    {isRegistered? 'Registered' : 'Register'}
+                  {/* <FontAwesomeIcon icon={faHandPointRight} /> */}
+                </h5>
+              </div>
+            </div>
+          </div>)}
+
+          {new Date(startDate).getTime() < Date.now() && isRegistered && (
           <div className="flex gap-4 items-center">
             <div className="flex w-full cursor-pointer items-center justify-center">
               <div
@@ -79,7 +117,7 @@ const ContestCard = ({
                 className="bu-button-secondary my-8 inline-flex  items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
               >
                 <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
-                  Enter   
+                      Enter    
                   {/* <FontAwesomeIcon icon={faHandPointRight} /> */}
                 </h5>
               </div>

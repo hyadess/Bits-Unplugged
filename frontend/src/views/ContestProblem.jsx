@@ -1,5 +1,5 @@
 import React, { forwardRef, useRef } from "react";
-import { useNavigate,useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CanvasContainer from "../components/Canvases/CanvasContainer";
 import { Button, IconButton, Tooltip } from "@mui/material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
@@ -19,6 +19,7 @@ import {
   faRotateRight,
 } from "@fortawesome/free-solid-svg-icons";
 import html2canvas from "html2canvas";
+import { storageApi } from "api";
 const Title = ({ problem }) => {
   return (
     <div className="flex max-w-screen-xl flex-col gap-3 py-4 sm:pt-12">
@@ -38,7 +39,7 @@ const Title = ({ problem }) => {
 
 const Header = ({ type }) => {
   const navigate = useNavigate();
-  const {id} = useParams();
+  const { id } = useParams();
   const { state: problem, dispatch } = useProblemContext();
   return (
     <div className="flex flex-row justify-between">
@@ -139,6 +140,35 @@ const Canvas = forwardRef(({ onReset, onSubmit }, ref) => {
     // Clean up
     document.body.removeChild(link);
   };
+
+  const canvasToImage = async () => {
+    // Convert canvas to image file
+    // Then send the image file to the server
+    // Then get the response from the server
+    // Then return the link to the image
+    const stage = stageRef.current;
+    let image;
+    try {
+      image = stage.toDataURL();
+    } catch (error) {
+      const canvas = await html2canvas(stage, { backgroundColor: null });
+      image = canvas.toDataURL("image/png");
+    }
+    const response = await fetch(image);
+    const blob = await response.blob();
+
+    // Create FormData
+    const formData = new FormData();
+    formData.append("file", blob, "canvas_image.png");
+
+    const res = await storageApi.trimmedUpload(formData);
+    if (res.success) {
+      return res.data.path;
+    } else {
+      return null;
+    }
+  };
+
   return (
     problem.canvasId &&
     ref && (
@@ -181,7 +211,7 @@ const Canvas = forwardRef(({ onReset, onSubmit }, ref) => {
 
           <div
             className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
-            onClick={onSubmit}
+            onClick={async () => onSubmit(await canvasToImage())}
           >
             <FontAwesomeIcon icon={faPlay} />
             {/* RUN */}

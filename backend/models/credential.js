@@ -14,16 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Credential.init(
     {
-      userId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Users",
-          key: "id",
-        },
-
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
+      userId: DataTypes.INTEGER,
       email: { type: DataTypes.STRING, unique: "Credentials_userId_role_key" },
       hashpass: DataTypes.STRING,
       role: { type: DataTypes.INTEGER, unique: "Credentials_userId_role_key" },

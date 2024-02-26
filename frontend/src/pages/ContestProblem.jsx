@@ -137,7 +137,8 @@ function ContestProblemController(endTime) {
           problem.canvasData,
           problem.activityData,
           0,
-          durationInSeconds
+          durationInSeconds,
+          new Date() - startTimeRef.current
         );
       }
     }

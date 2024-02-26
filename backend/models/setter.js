@@ -18,17 +18,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Setter.init(
     {
-      userId: {
-        type: DataTypes.INTEGER,
-        unique: true, // Ensure uniqueness
-        references: {
-          model: "Users",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      isApproved: { type: DataTypes.BOOLEAN, defaultValue: false },
+      userId: DataTypes.INTEGER,
+      isApproved: DataTypes.BOOLEAN,
     },
     {
       sequelize,

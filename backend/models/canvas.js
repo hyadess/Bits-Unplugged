@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Canvas extends Model {
     /**
@@ -17,27 +15,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   Canvas.init(
     {
-      name: {
-        type: DataTypes.STRING,
-      },
-      classname: {
-        type: DataTypes.STRING,
-      },
-      info: {
-        type: DataTypes.TEXT,
-      },
-      logo: {
-        type: DataTypes.TEXT,
-      },
-      editOptions: {
-        type: DataTypes.JSON,
-      },
-      previewOptions: {
-        type: DataTypes.JSON,
-      },
-      template: {
-        type: DataTypes.TEXT,
-      },
+      name: DataTypes.STRING,
+      classname: DataTypes.STRING,
+      info: DataTypes.TEXT,
+      logo: DataTypes.TEXT,
+      editOptions: DataTypes.JSON,
+      previewOptions: DataTypes.JSON,
+      template: DataTypes.TEXT,
     },
     {
       sequelize,

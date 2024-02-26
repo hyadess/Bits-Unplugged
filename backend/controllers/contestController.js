@@ -93,8 +93,6 @@ class ContestController extends Controller {
     }
   };
 
-
-
   isContestProblemSolved = async (req, res) => {
     let result = await contestRepository.isContestProblemSolved(
       req.user.userId,
@@ -111,7 +109,7 @@ class ContestController extends Controller {
   totalProblemSolved = async (req, res) => {
     let result = await contestRepository.totalProblemSolved(
       req.params.userId,
-      req.params.contestId,
+      req.params.contestId
     );
     if (result.success) {
       res.status(200).json(result.data);
@@ -131,7 +129,6 @@ class ContestController extends Controller {
     }
   };
   getContestProblemById = async (req, res) => {
-    
     let result = await contestRepository.getContestProblemById(
       req.params.contestId,
       req.params.problemId
@@ -287,7 +284,10 @@ class ContestController extends Controller {
       console.log(req.params);
       const contestId = req.params.contestId;
       const setterId = req.user.userId;
-      const result = await contestRepository.acceptInvitation(contestId, setterId);
+      const result = await contestRepository.acceptInvitation(
+        contestId,
+        setterId
+      );
 
       res.status(200).json({ success: true, result });
     } catch (error) {
@@ -359,13 +359,12 @@ class ContestController extends Controller {
       req.body.problemId,
       req.params.contestId,
       req.user.userId,
-     
       req.body.verdict,
       req.body.canvasData,
       req.body.userActivity,
       req.body.point,
-      req.body.duration
-
+      req.body.duration,
+      req.body.submittedAt
     );
     if (result.success) {
       res.status(204).json(result.data);
@@ -437,7 +436,6 @@ class ContestController extends Controller {
       res.status(500).json(result);
     }
   };
-
 
   participateVirtualContest = async (req, res) => {
     let result = await contestRepository.participateVirtualContest(

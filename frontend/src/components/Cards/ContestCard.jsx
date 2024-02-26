@@ -29,8 +29,12 @@ const ContestCard = ({
 
 
   const handleButtonClick = async () => {
-    const res = await contestApi.participateUpcomingContest(id);
     navigate(`/contests/${id}`);
+  };
+
+  const handleButtonClick2 = async () => {
+    const res = await contestApi.participateUpcomingContest(id);
+    if(res.success)setRegistered(true);
   };
   
   const getRegistrationInfo = async () => {
@@ -80,7 +84,22 @@ const ContestCard = ({
               {updatedAt && `Last Updated: ${getTimeStamp(updatedAt)}`}
             </div>
           </div>
-          {new Date(startDate).getTime() < Date.now() && (
+          {new Date(startDate).getTime() > Date.now() && (
+          <div className="flex gap-4 items-center">
+            <div className="flex w-full cursor-pointer items-center justify-center">
+              <div
+                onClick={() => handleButtonClick2()}
+                className="bu-button-secondary my-8 inline-flex  items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
+              >
+                <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
+                    {isRegistered? 'Registered' : 'Register'}
+                  {/* <FontAwesomeIcon icon={faHandPointRight} /> */}
+                </h5>
+              </div>
+            </div>
+          </div>)}
+
+          {new Date(startDate).getTime() < Date.now() && isRegistered && (
           <div className="flex gap-4 items-center">
             <div className="flex w-full cursor-pointer items-center justify-center">
               <div
@@ -88,7 +107,7 @@ const ContestCard = ({
                 className="bu-button-secondary my-8 inline-flex  items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
               >
                 <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
-                {isRegistered ? 'Enter' : 'Register'}   
+                      Enter    
                   {/* <FontAwesomeIcon icon={faHandPointRight} /> */}
                 </h5>
               </div>

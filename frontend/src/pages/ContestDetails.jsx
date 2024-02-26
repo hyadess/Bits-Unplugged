@@ -9,6 +9,8 @@ const UserContestDetails = () => {
   const [endTime, setEndTime] = useState();
   const [contest, setContest] = useState(null);
   const [leaderboard, setLeaderboard] = useState(null);
+  const [timeline, setTimeline] = useState(null);
+
   const navigate = useNavigate();
 
   const getContest = async () => {
@@ -28,9 +30,14 @@ const UserContestDetails = () => {
 
   const fetchLeaderboard = async () => {
     const leaderboardRes = await contestApi.getLeaderboard(id);
-    console.log("leaderboard =>", leaderboardRes);
     if (leaderboardRes.success) setLeaderboard(leaderboardRes.data);
     return leaderboardRes;
+  };
+  const fetchTimeline = async () => {
+    const timelineRes = await contestApi.getTimeline(id);
+    console.log("Timeline =>", timelineRes);
+    if (timelineRes.success) setTimeline(timelineRes.data);
+    return timelineRes;
   };
 
   useEffect(() => {
@@ -38,6 +45,7 @@ const UserContestDetails = () => {
       await getContest();
       await fetchContestDetails();
       await fetchLeaderboard();
+      await fetchTimeline();
     };
 
     fetchData();
@@ -52,7 +60,7 @@ const UserContestDetails = () => {
 
   return (
     <>
-      {leaderboard && <Leaderboard leaderboard={leaderboard} contest_id={id} />}
+      {leaderboard && <Leaderboard leaderboard={leaderboard} contest_id={id} timeline={timeline}/>}
       <ContestSettersList setterList={contest?.ContestSetters} />
       
     </>

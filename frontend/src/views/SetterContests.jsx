@@ -13,7 +13,8 @@ const SetterContestsView = ({
   createContest,
   modalIsOpen,
 }) => {
-  useEffect(() => {});
+  useEffect(() => {
+  });
   return (
     <div>
       <Title
@@ -30,16 +31,16 @@ const SetterContestsView = ({
           <ContestSetCard
             key={index}
             idx={index + 1}
-            id={contest.id}
-            name={contest.title}
+            id={contest?.id}
+            name={contest?.title}
             deleteAction={deleteContest}
-            isLive={contest.isLive}
-            timestamp={contest.updatedAt}
-            owner={contest.ContestSetters[0]}
-            startDate={contest.startDateTime}
-            duration={contest.duration}
-            status={contest.status}
-            updatedAt={contest.updatedAt}
+            isLive={contest?.isLive}
+            timestamp={contest?.updatedAt}
+            owner={contest?.ContestSetters[0]}
+            startDate={contest?.startDateTime}
+            duration={contest?.duration}
+            status={contest?.status}
+            updatedAt={contest?.updatedAt}
           />
         ))}
       </div>

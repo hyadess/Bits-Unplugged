@@ -52,10 +52,10 @@ const ContestProblemList = () => {
           className={`flex flex-col items-left mb-4 hover:bg-gray-100 p-4 rounded-md cursor-pointer relative w-[15vw] h-[10vh] ${
             problemid === "details" ? "bg-gray-100" : ""
           } ${selectedProblemId === "details" ? "bg-gray-100" : ""}`}
-          onClick={() => handleProblemClick("details")}
+          //onClick={() => handleProblemClick("details")}
         >
           <h2 className="text-left text-3xl font-extrabold tracking-tight ">
-            <span className="bu-text-title">{contest?.title}</span>
+            <span className="bu-text-title"> Problems </span>
           </h2>
         </div>
         {problems?.map((problem) => (

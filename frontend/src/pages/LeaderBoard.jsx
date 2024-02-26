@@ -1,10 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SetterCard from "components/Cards/SetterCard";
 import LeaderBoardCard from "components/Cards/LeaderBoardCard";
 import Timeline from "./Timeline"; // Import the ApexChart component
+import { contestApi } from "api";
 
-const Leaderboard = ({ leaderboard, contest_id, timeline }) => {
+const Leaderboard = ({ }) => {
+  const { id } = useParams();
+  const [endTime, setEndTime] = useState();
+  const [contest, setContest] = useState(null);
+  const [leaderboard, setLeaderboard] = useState(null);
+  const [timeline, setTimeline] = useState(null);
+
+  const fetchLeaderboard = async () => {
+    const leaderboardRes = await contestApi.getLeaderboard(id);
+    if (leaderboardRes.success) setLeaderboard(leaderboardRes.data);
+    return leaderboardRes;
+  };
+  const fetchTimeline = async () => {
+    const timelineRes = await contestApi.getTimeline(id);
+    console.log("Timeline =>", timelineRes);
+    if (timelineRes.success) setTimeline(timelineRes.data);
+    return timelineRes;
+  };
 
   function mergeMultipleLists(lists) {
     // Combine categories from all lists and remove duplicates
@@ -59,10 +77,9 @@ const Leaderboard = ({ leaderboard, contest_id, timeline }) => {
   const list5 = { data: [15, 20, 25], categories: ['0', '1', '2'] };
 
   useEffect(() => {
-    const mergedLists = mergeAndMakeIncreasing([list1, list2, list3, list4, list5]);
-
-    console.log("mergedLists increased", mergedLists);
-  }, []);
+    fetchLeaderboard();
+    fetchTimeline();
+  }, [id]);
 
   return (
     <div>
@@ -84,11 +101,11 @@ const Leaderboard = ({ leaderboard, contest_id, timeline }) => {
         {leaderboard?.map((user) => (
           <LeaderBoardCard
             id={user.id}
-            contest_id={contest_id}
+            contest_id={id}
             name={user.username}
             points={user.points}
             image={user.image}
-            path={`/contests/${contest_id}/${user.username}`}
+            path={`/contests/${id}/${user.username}`}
           />
         ))}
       </div>

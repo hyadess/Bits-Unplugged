@@ -10,7 +10,7 @@ import ProblemContextProvider, {
 } from "../store/ProblemContextProvider";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-function ContestProblemController(endTime) {
+function ContestProblemController(endDate) {
   const { type } = useContext(GlobalContext);
   const { id } = useParams();
   const { problemid } = useParams();
@@ -102,8 +102,8 @@ function ContestProblemController(endTime) {
         // }
 
         const isSolved = await contestApi.isContestProblemSolved(id, problemid);
-        console.log("submissions==>", isSolved);
-        if (isSolved.data.length === 0) {
+        console.log("endTime==>", endDate);
+        if (isSolved.data.length === 0 && endDate?.endDate.endTime.getTime() > Date.now() ) {
           const res2 = await contestApi.getContestProblemById(id, problemid);
           await contestApi.addSubmissionToContest(
             id,
@@ -194,7 +194,7 @@ const ContestProblem = (endTime) => {
   return (
     <ProblemContextProvider>
       <DndProvider backend={HTML5Backend}>
-        <ContestProblemController endTime={endTime} />
+        <ContestProblemController endDate={endTime} />
       </DndProvider>
     </ProblemContextProvider>
   );

@@ -60,7 +60,7 @@ const UserContestDetails = () => {
 
   return (
     <>
-      {leaderboard && <Leaderboard leaderboard={leaderboard} contest_id={id} timeline={timeline}/>}
+      {/* {leaderboard && <Leaderboard leaderboard={leaderboard} contest_id={id} timeline={timeline}/>} */}
       <ContestSettersList setterList={contest?.ContestSetters} />
       
     </>

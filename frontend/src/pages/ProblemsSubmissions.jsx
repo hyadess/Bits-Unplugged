@@ -74,8 +74,8 @@ export default function ProblemsSubmissions() {
 
       const minTimeTaken = 1;
       let maxTimeTaken = Math.max(...res.data.map((item) => item.viewDuration));
-      maxTimeTaken = Math.max(maxTimeTaken, 50);
-      // maxTimeTaken = Math.ceil(maxTimeTaken / 10) * 10;
+      maxTimeTaken = Math.max(maxTimeTaken, 100);
+      maxTimeTaken = Math.ceil(maxTimeTaken / 100) * 100;
       const numberOfRanges = 21;
       const rangeSize = (maxTimeTaken + 1 - minTimeTaken) / numberOfRanges;
 
@@ -115,9 +115,8 @@ export default function ProblemsSubmissions() {
         formattedData.length
       );
       const yMax =
-        Math.ceil(
-          Math.max((Math.max(...timeRangeCounts) * 100) / sum, 10) / 5
-        ) * 5;
+        Math.ceil(Math.max((Math.max(...timeRangeCounts) * 100) / sum, 5) / 5) *
+        5;
       setDistributionChartData({
         options: {
           states: {
@@ -147,14 +146,16 @@ export default function ProblemsSubmissions() {
                   style: {
                     color: "#000",
                     background: "#84cfb8",
-                    fontSize: "18px",
+                    fontSize: "15px",
                     fontWeight: 600,
+                    // padding: 5,
                   },
                   text: "Your time (" + myDuration + "s)",
                 },
               },
             ],
           },
+
           chart: {
             type: "histogram",
             // height: 300,
@@ -169,7 +170,7 @@ export default function ProblemsSubmissions() {
             title: {
               text: "Time Taken (seconds)",
               style: {
-                fontSize: "20px", // Replace with your desired font size
+                fontSize: "18px", // Replace with your desired font size
                 fontWeight: 600, // Replace with your desired font weight
                 fontFamily: "Arial", // Replace with your desired font family
               },
@@ -198,6 +199,7 @@ export default function ProblemsSubmissions() {
             // max: maxTimeTaken,
           },
           grid: {
+            strokeDashArray: 5,
             borderColor: "#cccccc",
             show: true,
             yaxis: {
@@ -237,7 +239,7 @@ export default function ProblemsSubmissions() {
             title: {
               text: "Users (%)",
               style: {
-                fontSize: "20px", // Replace with your desired font size
+                fontSize: "18px", // Replace with your desired font size
                 fontWeight: 600, // Replace with your desired font weight
                 fontFamily: "Arial", // Replace with your desired font family
               },

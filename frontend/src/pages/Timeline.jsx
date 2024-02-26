@@ -11,15 +11,39 @@ import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
 const Timeline = () => {
   // Data and category pairs for each line
   const lineData = [
-    { name: "Line 1", data: [50, 100, 150, 200, 250, 275, 300], categories: ["0h", "0h30m", "1h", "1h30m", "2h", "2h30m", "3h"] },
-    { name: "Line 2", data: [30, 80, 120, 180, 220, 260, 290], categories: ["0h", "0h30m", "1h", "1h30m", "2h", "2h30m", "3h"] },
+    {
+      name: "Line 1",
+      data: [
+        { x: 0, y: 50 },
+        { x: 10, y: 100 },
+        { x: 20, y: 150 },
+        { x: 30, y: 200 },
+        { x: 40, y: 250 },
+        { x: 50, y: 275 },
+        { x: 60, y: 300 },
+      ],
+      // categories: ["0h", "0h30m", "1h", "1h30m", "2h", "2h30m", "3h"],
+    },
+    {
+      name: "Line 2",
+      data: [
+        { x: 5, y: 50 },
+        { x: 15, y: 100 },
+        { x: 25, y: 150 },
+        { x: 35, y: 200 },
+        { x: 45, y: 250 },
+        { x: 55, y: 275 },
+        { x: 65, y: 300 },
+      ],
+      // categories: ["0h", "0h30m", "1h", "1h30m", "2h", "2h30m", "3h"],
+    },
     // Add more data and category pairs as needed
   ];
 
   const chartConfig = {
     type: "line",
     height: 240,
-    series: lineData.map(line => ({ name: line.name, data: line.data })),
+    series: lineData.map((line) => ({ name: line.name, data: line.data })),
     options: {
       chart: {
         toolbar: {
@@ -85,6 +109,7 @@ const Timeline = () => {
         opacity: 0.8,
       },
       tooltip: {
+        enabled: false,
         theme: "dark",
       },
     },
@@ -92,28 +117,6 @@ const Timeline = () => {
 
   return (
     <Card>
-      <CardHeader
-        floated={false}
-        shadow={false}
-        color="transparent"
-        className="flex flex-col gap-4 rounded-none md:flex-row md:items-center"
-      >
-        <div className="w-max rounded-lg bg-gray-900 p-5 text-white">
-          <Square3Stack3DIcon className="h-6 w-6" />
-        </div>
-        <div>
-          <Typography variant="h6" color="blue-gray">
-            Line Chart
-          </Typography>
-          <Typography
-            variant="small"
-            color="gray"
-            className="max-w-sm font-normal"
-          >
-            Visualize your data in a simple way using the @material-tailwind/react chart plugin.
-          </Typography>
-        </div>
-      </CardHeader>
       <CardBody className="px-2 pb-0">
         <Chart {...chartConfig} />
       </CardBody>

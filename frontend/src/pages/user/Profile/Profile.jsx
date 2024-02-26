@@ -125,7 +125,7 @@ const PieChart = ({ barChartData }) => {
 const BarChart = ({ barChartData }) => {
   // console.log(props.attempted);
   const [chart, setChart] = useState(undefined);
-
+  // const [yMax, setYMax] = useState(0);
   useEffect(() => {
     const sortedSeries = barChartData.sort(
       (a, b) => b.successCount + b.failCount - (a.successCount + a.failCount)
@@ -144,6 +144,8 @@ const BarChart = ({ barChartData }) => {
       successCounts.push(0);
       failCounts.push(0);
     }
+
+    const yMax = Math.ceil(Math.max(...successCounts, ...failCounts) / 5) * 5;
     // console.log("Triggered");
     setChart({
       series: [
@@ -235,6 +237,9 @@ const BarChart = ({ barChartData }) => {
               return val.toFixed(0);
             },
           },
+          min: 0,
+          max: yMax,
+          tickAmount: 5,
         },
         fill: {
           opacity: 1,
@@ -385,105 +390,107 @@ const Heatmap = ({ submissions }) => {
 
 const SolveTimeGraph = () => {
   let { username } = useParams();
+  const [yMax, setYMax] = useState(0);
   // const [visible, setVisible] = useState(false);
   const [distributionChartData, setDistributionChartData] = useState({
     options: {
-      chart: {
-        id: "solve-time-chart",
-        type: "bar",
-        toolbar: {
-          show: false,
-        },
-        zoom: {
-          enabled: false,
-        },
-      },
-      states: {
-        active: {
-          filter: {
-            type: "none" /* none, lighten, darken */,
-          },
-        },
-        hover: {
-          filter: {
-            type: "none",
-            value: 0.0001,
-          },
-        },
-      },
-      xaxis: {
-        title: {
-          text: "Time Taken",
-        },
-        tickAmounts: 5,
-      },
-      yaxis: {
-        title: {
-          text: "Total Problems Solved",
-        },
-      },
-      grid: {
-        show: false,
-      },
-      dataLabels: {
-        enabled: true,
-        style: {
-          // colors: ["#000000"],
-        },
-      },
-      marker: {
-        colors: ["#000000"],
-        fillColors: ["#000000"],
-      },
-      fill: {
-        colors: ["#96cdbf"],
-      },
-      tooltip: {
-        enabled: false,
-        enabledOnSeries: undefined,
-        shared: true,
-        followCursor: false,
-        intersect: false,
-        inverseOrder: false,
-        custom: undefined,
-        hideEmptySeries: true,
-        fillSeriesColor: false,
-        theme: "dark",
-        style: {
-          fontSize: "12px",
-          fontFamily: undefined,
-        },
-        onDatasetHover: {
-          highlightDataSeries: false,
-        },
-        x: {
-          show: true,
-          format: "dd MMM",
-          formatter: undefined,
-        },
-        y: {
-          formatter: undefined,
-          title: {
-            formatter: (seriesName) => seriesName,
-          },
-        },
-        z: {
-          formatter: undefined,
-          title: "Size: ",
-        },
-        marker: {
-          show: true,
-        },
-        items: {
-          display: "flex",
-        },
-        fixed: {
-          enabled: false,
-          position: "topRight",
-          offsetX: 0,
-          offsetY: 0,
-        },
-      },
+      // chart: {
+      //   id: "solve-time-chart",
+      //   type: "bar",
+      //   toolbar: {
+      //     show: false,
+      //   },
+      //   zoom: {
+      //     enabled: false,
+      //   },
+      // },
+      // states: {
+      //   active: {
+      //     filter: {
+      //       type: "none" /* none, lighten, darken */,
+      //     },
+      //   },
+      //   hover: {
+      //     filter: {
+      //       type: "none",
+      //       value: 0.0001,
+      //     },
+      //   },
+      // },
+      // xaxis: {
+      //   title: {
+      //     text: "Time Taken",
+      //   },
+      //   tickAmount: 5,
+      // },
+      // yaxis: {
+      //   title: {
+      //     text: "Total Problems Solved",
+      //   },
+      //   tickAmount: 5,
+      // },
+      // grid: {
+      //   show: false,
+      // },
+      // dataLabels: {
+      //   enabled: true,
+      //   style: {
+      //     // colors: ["#000000"],
+      //   },
+      // },
+      // marker: {
+      //   colors: ["#000000"],
+      //   fillColors: ["#000000"],
+      // },
+      // fill: {
+      //   colors: ["#96cdbf"],
+      // },
+      // tooltip: {
+      //   enabled: false,
+      //   enabledOnSeries: undefined,
+      //   shared: true,
+      //   followCursor: false,
+      //   intersect: false,
+      //   inverseOrder: false,
+      //   custom: undefined,
+      //   hideEmptySeries: true,
+      //   fillSeriesColor: false,
+      //   theme: "dark",
+      //   style: {
+      //     fontSize: "12px",
+      //     fontFamily: undefined,
+      //   },
+      //   onDatasetHover: {
+      //     highlightDataSeries: false,
+      //   },
+      //   x: {
+      //     show: true,
+      //     format: "dd MMM",
+      //     formatter: undefined,
+      //   },
+      //   y: {
+      //     formatter: undefined,
+      //     title: {
+      //       formatter: (seriesName) => seriesName,
+      //     },
+      //   },
+      //   z: {
+      //     formatter: undefined,
+      //     title: "Size: ",
+      //   },
+      //   marker: {
+      //     show: true,
+      //   },
+      //   items: {
+      //     display: "flex",
+      //   },
+      //   fixed: {
+      //     enabled: false,
+      //     position: "topRight",
+      //     offsetX: 0,
+      //     offsetY: 0,
+      //   },
+      // },
     },
     series: [
       {
@@ -537,9 +544,114 @@ const SolveTimeGraph = () => {
           2,
         y: count,
       }));
-
+      setYMax(
+        Math.ceil(Math.max(...formattedData.map((entry) => entry.y)) / 5) * 5
+      );
       setDistributionChartData({
-        ...distributionChartData,
+        options: {
+          chart: {
+            id: "solve-time-chart",
+            type: "bar",
+            toolbar: {
+              show: false,
+            },
+            zoom: {
+              enabled: false,
+            },
+          },
+          states: {
+            active: {
+              filter: {
+                type: "none" /* none, lighten, darken */,
+              },
+            },
+            hover: {
+              filter: {
+                type: "none",
+                value: 0.0001,
+              },
+            },
+          },
+          xaxis: {
+            title: {
+              text: "Time Taken",
+            },
+            tickAmount: 5,
+          },
+          yaxis: {
+            title: {
+              text: "Total Problems Solved",
+            },
+            tickAmount: 5,
+            min: 0,
+            max:
+              Math.ceil(
+                Math.max(...formattedData.map((entry) => entry.y)) / 5
+              ) * 5,
+          },
+          grid: {
+            show: false,
+          },
+          dataLabels: {
+            enabled: true,
+            style: {
+              // colors: ["#000000"],
+            },
+          },
+          marker: {
+            colors: ["#000000"],
+            fillColors: ["#000000"],
+          },
+          fill: {
+            colors: ["#96cdbf"],
+          },
+          tooltip: {
+            enabled: false,
+            enabledOnSeries: undefined,
+            shared: true,
+            followCursor: false,
+            intersect: false,
+            inverseOrder: false,
+            custom: undefined,
+            hideEmptySeries: true,
+            fillSeriesColor: false,
+            theme: "dark",
+            style: {
+              fontSize: "12px",
+              fontFamily: undefined,
+            },
+            onDatasetHover: {
+              highlightDataSeries: false,
+            },
+            x: {
+              show: true,
+              format: "dd MMM",
+              formatter: undefined,
+            },
+            y: {
+              formatter: undefined,
+              title: {
+                formatter: (seriesName) => seriesName,
+              },
+            },
+            z: {
+              formatter: undefined,
+              title: "Size: ",
+            },
+            marker: {
+              show: true,
+            },
+            items: {
+              display: "flex",
+            },
+            fixed: {
+              enabled: false,
+              position: "topRight",
+              offsetX: 0,
+              offsetY: 0,
+            },
+          },
+        },
         series: [{ data: formattedData }],
       });
     }
@@ -578,7 +690,7 @@ const SolveTimeGraph = () => {
 
 const ActivityGraph = () => {
   let { username } = useParams();
-
+  const [yMax, setYMax] = useState(0);
   const [activityChartData, setActivityChartData] = useState([]);
   const [options, setOptions] = useState({
     chart: {
@@ -626,6 +738,7 @@ const ActivityGraph = () => {
           fontFamily: "Arial", // Replace with your desired font family
         },
       },
+      tickAmount: 5,
     },
     grid: {
       show: false,
@@ -709,6 +822,10 @@ const ActivityGraph = () => {
         x: new Date(entry.visitDate), // Convert date string to Date object
         y: entry.totalDuration,
       }));
+
+      setYMax(
+        Math.ceil(Math.max(...chartData.map((entry) => entry.y)) / 10) * 10
+      );
       setActivityChartData(chartData);
     }
   };
@@ -718,148 +835,152 @@ const ActivityGraph = () => {
   }, [username]);
 
   useEffect(() => {
-    setOptions({
-      chart: {
-        id: "daily-activity-chart",
-        type: "area",
-        // height: 400,
-        toolbar: {
+    if (yMax)
+      setOptions({
+        chart: {
+          id: "daily-activity-chart",
+          type: "area",
+          // height: 400,
+          toolbar: {
+            show: false,
+          },
+          zoom: {
+            enabled: false,
+          },
+        },
+        // annotations: {
+        //   xaxis: [
+        //     {
+        //       x: new Date(),
+        //       strokeDashArray: 0,
+        //       borderColor: "#000000",
+        //       borderWidth: 2,
+        //       label: {
+        //         orientation: "horizontal", // Add this line
+        //         borderColor: "#1c5b5f",
+        //         borderWidth: 2,
+        //         style: {
+        //           color: "#000",
+        //           background: "#84cfb8",
+        //           fontSize: "18px",
+        //           fontWeight: 600,
+        //         },
+        //       },
+        //     },
+        //   ],
+        // },
+        // title: {
+        //   text: "Activity Time",
+        //   align: "left",
+        //   margin: 10,
+        //   offsetX: 0,
+        //   offsetY: 0,
+        //   floating: false,
+        //   style: {
+        //     fontSize: "14px",
+        //     fontWeight: "bold",
+        //     fontFamily: undefined,
+        //     color: "#263238",
+        //   },
+        // },
+        xaxis: {
+          type: "datetime",
+          labels: {
+            datetimeFormatter: {
+              year: "yyyy",
+              month: "MMM 'yy",
+              day: "dd MMM",
+              hour: "HH:mm",
+            },
+          },
+        },
+        yaxis: {
+          title: {
+            text: "Time (seconds)",
+            style: {
+              fontSize: "0.9rem", // Replace with your desired font size
+              fontWeight: 600, // Replace with your desired font weight
+              fontFamily: "Arial", // Replace with your desired font family
+            },
+          },
+          tickAmount: 5,
+          min: 0,
+          max: yMax,
+        },
+        grid: {
           show: false,
         },
-        zoom: {
+        dataLabels: {
           enabled: false,
         },
-      },
-      // annotations: {
-      //   xaxis: [
-      //     {
-      //       x: new Date(),
-      //       strokeDashArray: 0,
-      //       borderColor: "#000000",
-      //       borderWidth: 2,
-      //       label: {
-      //         orientation: "horizontal", // Add this line
-      //         borderColor: "#1c5b5f",
-      //         borderWidth: 2,
-      //         style: {
-      //           color: "#000",
-      //           background: "#84cfb8",
-      //           fontSize: "18px",
-      //           fontWeight: 600,
-      //         },
-      //       },
-      //     },
-      //   ],
-      // },
-      // title: {
-      //   text: "Activity Time",
-      //   align: "left",
-      //   margin: 10,
-      //   offsetX: 0,
-      //   offsetY: 0,
-      //   floating: false,
-      //   style: {
-      //     fontSize: "14px",
-      //     fontWeight: "bold",
-      //     fontFamily: undefined,
-      //     color: "#263238",
-      //   },
-      // },
-      xaxis: {
-        type: "datetime",
-        labels: {
-          datetimeFormatter: {
-            year: "yyyy",
-            month: "MMM 'yy",
-            day: "dd MMM",
-            hour: "HH:mm",
+        stroke: {
+          curve: "smooth",
+          width: 0, // border
+        },
+        markers: {
+          size: activityChartData.length === 1 ? 5 : 0,
+          colors: ["#aadfcf"],
+          strokeColor: "#96cdbf",
+          strokeWidth: 3,
+        },
+        fill: {
+          type: "gradient",
+          gradient: {
+            shadeIntensity: 0.6,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100],
           },
         },
-      },
-      yaxis: {
-        title: {
-          text: "Time (seconds)",
+        tooltip: {
+          enabled: false,
+          enabledOnSeries: undefined,
+          shared: true,
+          followCursor: false,
+          intersect: false,
+          inverseOrder: false,
+          custom: undefined,
+          hideEmptySeries: true,
+          fillSeriesColor: false,
+          theme: "dark",
           style: {
-            fontSize: "0.9rem", // Replace with your desired font size
-            fontWeight: 600, // Replace with your desired font weight
-            fontFamily: "Arial", // Replace with your desired font family
+            fontSize: "12px",
+            fontFamily: undefined,
+          },
+          onDatasetHover: {
+            highlightDataSeries: false,
+          },
+          x: {
+            show: true,
+            format: "dd MMM",
+            formatter: undefined,
+          },
+          y: {
+            formatter: undefined,
+            title: {
+              formatter: (seriesName) => seriesName,
+            },
+          },
+          z: {
+            formatter: undefined,
+            title: "Size: ",
+          },
+          marker: {
+            show: true,
+          },
+          items: {
+            display: "flex",
+          },
+          fixed: {
+            enabled: false,
+            position: "topRight",
+            offsetX: 0,
+            offsetY: 0,
           },
         },
-      },
-      grid: {
-        show: false,
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: "smooth",
-        width: 0, // border
-      },
-      markers: {
-        size: activityChartData.length === 1 ? 5 : 0,
-        colors: ["#aadfcf"],
-        strokeColor: "#96cdbf",
-        strokeWidth: 3,
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-          shadeIntensity: 0.6,
-          opacityFrom: 1,
-          opacityTo: 1,
-          stops: [0, 100],
-        },
-      },
-      tooltip: {
-        enabled: false,
-        enabledOnSeries: undefined,
-        shared: true,
-        followCursor: false,
-        intersect: false,
-        inverseOrder: false,
-        custom: undefined,
-        hideEmptySeries: true,
-        fillSeriesColor: false,
-        theme: "dark",
-        style: {
-          fontSize: "12px",
-          fontFamily: undefined,
-        },
-        onDatasetHover: {
-          highlightDataSeries: false,
-        },
-        x: {
-          show: true,
-          format: "dd MMM",
-          formatter: undefined,
-        },
-        y: {
-          formatter: undefined,
-          title: {
-            formatter: (seriesName) => seriesName,
-          },
-        },
-        z: {
-          formatter: undefined,
-          title: "Size: ",
-        },
-        marker: {
-          show: true,
-        },
-        items: {
-          display: "flex",
-        },
-        fixed: {
-          enabled: false,
-          position: "topRight",
-          offsetX: 0,
-          offsetY: 0,
-        },
-      },
-      colors: ["#96cdbf"],
-    });
-  }, [activityChartData]);
+        colors: ["#96cdbf"],
+      });
+  }, [activityChartData, yMax]);
   return (
     <div className="bu-card-primary rounded-lg shadow-md h-[20rem] relative">
       <h2 className="bu-text-primary py-2 px-5 font-semibold">

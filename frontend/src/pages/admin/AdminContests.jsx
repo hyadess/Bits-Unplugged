@@ -10,6 +10,7 @@ import CardContainer from "containers/CardContainer2";
 import ContestCard from "components/Cards/AdminContestCard";
 import CustomModal from "components/Modal/CustomModal";
 import PendingContestCard from "components/Cards/PendingContestCard";
+import ScheduledContestCard from "components/Cards/ScheduledContestCard";
 
 const AdminContests = () => {
   const navigate = useNavigate();
@@ -76,7 +77,7 @@ const AdminContests = () => {
       <CardContainer col={2}>
         {contestList.map(
           (contest, index) =>
-            contest.status == "requested" && (
+            contest.status === "requested" && (
               <PendingContestCard
                 key={index}
                 idx={index + 1}
@@ -100,9 +101,34 @@ const AdminContests = () => {
       <CardContainer col={2}>
         {contestList.map(
           (contest, index) =>
-            contest.status !== "requested" &&
-            contest.status !== "edit" && (
+            contest.status === "approved" && (
               <ContestCard
+                key={index}
+                idx={index + 1}
+                id={contest.id}
+                name={contest.title}
+                deleteAction={deleteContest}
+                isLive={contest.isLive}
+                timestamp={contest.updatedAt}
+                owner={contest.ContestSetters[0]}
+                startDate={contest.startDate}
+                startDateTime={contest.startDateTime}
+                duration={contest.duration}
+                endDate={contest.endDate}
+                status={contest.status}
+                updatedAt={contest.updatedAt}
+                // userID={userID}
+              />
+            )
+        )}
+      </CardContainer>
+
+      <Title title={`Scheduled Contests`} sub_title={`Contests`} />
+      <CardContainer col={2}>
+        {contestList.map(
+          (contest, index) =>
+            contest.status === "scheduled" && (
+              <ScheduledContestCard
                 key={index}
                 idx={index + 1}
                 id={contest.id}

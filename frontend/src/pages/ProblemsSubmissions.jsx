@@ -127,7 +127,7 @@ export default function ProblemsSubmissions() {
             },
             hover: {
               filter: {
-                type: "none",
+                type: "lighten",
                 value: 0.0001,
               },
             },
@@ -140,6 +140,12 @@ export default function ProblemsSubmissions() {
                 borderColor: "#1c5b5f",
                 borderWidth: 2,
                 label: {
+                  offsetX:
+                    myDuration >= maxTimeTaken - rangeSize
+                      ? -40
+                      : myDuration <= rangeSize
+                        ? 40
+                        : 0,
                   orientation: "horizontal", // Add this line
                   borderColor: "#1c5b5f",
                   borderWidth: 2,
@@ -263,7 +269,7 @@ export default function ProblemsSubmissions() {
             },
           },
           tooltip: {
-            enabled: false,
+            enabled: true,
             enabledOnSeries: true,
             shared: true,
             followCursor: false,

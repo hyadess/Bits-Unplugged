@@ -90,7 +90,6 @@ class ProblemsRepository extends Repository {
   };
 
   getSubmittedProblems = async () => {
-    console.log("Get all admin problem");
     const latestProblems = await db.ProblemVersion.findAll({
       where: {
         approvalStatus: {
@@ -111,19 +110,10 @@ class ProblemsRepository extends Repository {
           attributes: ["setterId"],
           include: [
             {
-              model: db.Setter,
+              model: db.User,
               as: "setter",
               required: true,
-              attributes: ["isApproved"],
-              // Include all attributes of Setter or specify the ones you need
-              include: [
-                {
-                  model: db.User,
-                  as: "user",
-                  required: true,
-                  // Include all attributes of User or specify the ones you need
-                },
-              ],
+              // Include all attributes of User or specify the ones you need
             },
           ],
         },
@@ -570,20 +560,18 @@ class ProblemsRepository extends Repository {
     );
     return updatedProblem;
   };
-  getRecentlyUpdatedProblems = async (userId) => {
+  getRecentlyUpdatedProblems = async (setterId) => {
     const query = `
     SELECT "P".*
     FROM "Problems" "P"
-    JOIN "Setters" "S" ON "P"."setterId" = "S"."id"
-    JOIN "Users" "U" ON "S"."userId" = "U"."id"
-    WHERE "U"."id" = $1
+    WHERE "P"."setterId" = $1
     ORDER BY "P"."updatedAt" DESC
     LIMIT 5;
     `;
-    const params = [userId];
+    const params = [setterId];
     const result = await this.query(query, params);
     return result;
-  }
+  };
 }
 
 module.exports = ProblemsRepository;

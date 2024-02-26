@@ -45,46 +45,45 @@ class RatingController extends Controller{
                 //console.log(userActivity);
                 if(userActivity.length>0){
                     //console.log(problem.id,problem.rating,userActivity.length);
-                    let newRating=800;
+                    let newRating=0;
+                    let sum=0;
                     userActivity.forEach((activity)=>{
                         const userRating=activity.rating;
-                        const dif=newRating-userRating;
-                        const att=activity.successful_submissions-activity.failed_submissions;
-                        if(dif<0)
+                        console.log("userRating",userRating);
+                        let dif=Math.abs(problem.rating-userRating);
+                        const wa=activity.failed_submissions;
+                        const duration=activity.duration;
+                        console.log("wa and duration and dif",wa,duration,dif);
+                        let cur=0.3*(800+wa*50)+0.7*(800+Math.max(duration-10,0))
+                        console.log("cur",cur);
+                        //cur=(3500.0-800.0) / (1.0 + Math.exp(-0.1 *cur))+800.0;
+                        if(cur<800.0)
                         {
-                            if(att<0)
-                            {
-                                newRating+=Math.floor(dif*att);
-                            }
-                            else{
-                                newRating+=Math.floor(-att*100/dif);
-                            }
+                            cur=800.0;
                         }
-                        else if(dif>0)
+                        if(cur>3500.0)
                         {
-                            if(att<0)
-                            {
-                                newRating+=Math.floor(-dif*att);
-                            }
-                            else{
-                                newRating+=Math.floor(-att*100/dif);
-                            }
+                            cur=3500.0;
                         }
-                        else{
-                            if(att<0)
-                            {
-                                newRating+=Math.floor(-att*100);
-                            }
-                            else{
-                                newRating+=Math.floor(att*100);
-                            }
-                        }
+
+                        dif=4000-dif;
+                        console.log("rating difference and cur",dif,cur);
+                        sum+=dif;
+                        newRating+=dif*cur;
+
+
                         
                     });
+                    if(sum!=0)
+                    {
+                        newRating/=sum;
+                        newRating=Math.round(newRating);
+                        console.log(problem.id,problem.rating,newRating)
+                        const res=await ratingRepository.updateProblemRating(problem.id,newRating);
+                        if(!res.success) flag=false;
 
-                    console.log(problem.id,problem.rating,newRating)
-                    const res=await ratingRepository.updateProblemRating(problem.id,newRating);
-                    if(!res.success) flag=false;
+                    }
+                        
 
                 }
             })
@@ -102,6 +101,7 @@ class RatingController extends Controller{
        
 
     };
+
 
 
     // contest affecting user rating...............................

@@ -45,7 +45,7 @@ export default function SubmissionCard({
           {idx}
         </h5> */}
         <div className="flex flex-row justify-between items-start w-full">
-          <h5
+          {/* <h5
             class="text-sm md:text-lg tracking-tight bu-text-subtitle flex-center"
             // onClick={() => {
             //   setLoading(true);
@@ -53,7 +53,7 @@ export default function SubmissionCard({
             // }}
           >
             {user_name}
-          </h5>
+          </h5> */}
           <div
             class="text-sm md:text-lg tracking-tight bu-text-subtitle flex-center"
             // onClick={() => {

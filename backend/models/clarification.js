@@ -14,15 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Clarification.init(
     {
-      contestId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Contests",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
+      contestId: DataTypes.INTEGER,
       title: DataTypes.STRING,
       details: DataTypes.TEXT,
       postTime: DataTypes.DATE,

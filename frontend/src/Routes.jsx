@@ -215,6 +215,25 @@ const Admin = () => {
   );
 };
 
+const User = () => {
+  const { type } = useContext(GlobalContext);
+  return type == 0 ? (
+    <Layout2 nav={<SolverNavbar />}>
+      <Outlet />
+    </Layout2>
+  ) : type == 1 ? (
+    <Layout2 nav={<SetterNavbar />}>
+      <Outlet />
+    </Layout2>
+  ) : type == 2 ? (
+    <Layout2 nav={<AdminNavbar />}>
+      <Outlet />
+    </Layout2>
+  ) : (
+    <></>
+  );
+};
+
 const Public = () => {
   return localStorage.hasOwnProperty("token") ? (
     <Navigate
@@ -411,8 +430,6 @@ const AppRoutes = () => {
             }
           />
 
-          <Route path="/setter/:username" element={<ProfileForSetter />} />
-
           <Route path="/contests/:id/edit" element={<ContestSetEnv />} />
 
           <Route
@@ -572,7 +589,6 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
-          <Route path="/user/:username" element={<SolverProfile />} />
         </Route>
 
         {/* <Route
@@ -590,6 +606,10 @@ const AppRoutes = () => {
           <Route path="/verify-email" element={<EmailVerification />} />
         </Route>
 
+        <Route element={<User />}>
+          <Route path="/user/:username" element={<SolverProfile />} />
+          <Route path="/setter/:username" element={<ProfileForSetter />} />
+        </Route>
         {type >= 0 && (
           <Route
             path="/"

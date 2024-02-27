@@ -177,6 +177,17 @@ class UserActivityController extends Controller {
       res.status(404).json(result);
     }
   };
+  isSolvedByUser = async (req, res) => {
+    let result = await userActivityRepository.isSolvedByUser(
+      req.user.userId,
+      req.params.problemId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  }
 }
 
 module.exports = UserActivityController;

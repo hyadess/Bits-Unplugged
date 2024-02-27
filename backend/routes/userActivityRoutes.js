@@ -74,5 +74,6 @@ router.put("/:problemId/track-duration", userActivityController.trackDuration);
 router.get("/stat/recentViews", dailyActivityController.recentlyViewedProblems);
 
 router.get("/:id", userActivityController.getProblemDetails);
+router.get("/isSolved/:problemId", userActivityController.isSolvedByUser);
 
 module.exports = router;

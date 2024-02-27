@@ -625,7 +625,7 @@ class ContestRepository extends Repository {
         "U"."id",
         "U"."username",
         "CS"."points",
-        "CS"."createdAt"
+        "CS"."submittedAt"
         FROM
         "ContestSubmissions" "CS"
         JOIN
@@ -636,6 +636,7 @@ class ContestRepository extends Repository {
         "Users" "U" ON "U"."id" = "CP"."userId"
         WHERE
         "C"."id" = $1 AND "CS"."verdict" = 'Accepted'
+        
         `;
     const params = [contestId];
     const result = await this.query(query, params);

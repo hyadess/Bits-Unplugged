@@ -73,7 +73,8 @@ export default function ContestSubmissions() {
     const result = await contestApi.isContestProblemSolved(id, problemId);
     let myDuration = -1; // Replace with the actual duration
     if (result.success && result.data.length > 0) {
-      setIsSolved(result.data[0].isSolved);
+      setIsSolved(result.data[0].verdict);
+      console.log("isSolved",result)
       //if (!result.data[0].isSolved) return;
       myDuration = result.data[0].duration;
     }
@@ -152,7 +153,7 @@ export default function ContestSubmissions() {
             //show: myDuration === -1 ? false : true,
             xaxis: [
               {
-                x: myDuration == -1 ? -10 : myDuration,
+                x: myDuration === -1 ? -10 : myDuration,
                 strokeDashArray: 0,
                 borderColor: "#1c5b5f",
                 borderWidth: 2,
@@ -366,14 +367,16 @@ export default function ContestSubmissions() {
         )} */}
         {/* Show only if user has successful submission */}
 
-        <div className="bu-card-primary pr-5 pl-3 pt-3 mt-10 rounded-lg shadow-md">
-          <Chart
-            options={distributionChartData.options}
-            series={distributionChartData.series}
-            type="bar"
-            height={300}
-          />
-        </div>
+        {isSolved==="Accepted" && (
+          <div className="bu-card-primary pr-5 pl-3 pt-3 mt-10 rounded-lg shadow-md">
+            <Chart
+              options={distributionChartData.options}
+              series={distributionChartData.series}
+              type="bar"
+              height={300}
+            />
+          </div>
+        )}
 
         {/* <div className="relative">
           <Chart

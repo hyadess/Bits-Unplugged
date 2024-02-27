@@ -71,7 +71,8 @@ const UserContestDetails = () => {
       <>
         {/* {leaderboard && <Leaderboard leaderboard={leaderboard} contest_id={id} timeline={timeline}/>} */}
         <ContestSettersList
-          setterList={[contest?.owner, ...contestCollaborators]}
+          owner={contest?.owner}
+          collaborators={contestCollaborators}
         />
       </>
     )

@@ -18,8 +18,8 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 
 export default function UserHome() {
   const [problems, setProblems] = useState([]);
-  const [recomType, setRecomType] = useState("series-hunter");
-  const tags = ["series-hunter", "rating-burner"];
+  const [recomType, setRecomType] = useState("rating-burner");
+  const tags = ["rating-burner", "series-hunter"];
 
   const getRecommendedProblems = async () => {
     if (recomType === "series-hunter") {
@@ -48,7 +48,7 @@ export default function UserHome() {
 
   return (
     <div>
-      {problems.length > 0 && (
+      {
         <div className="flex flex-col w-full">
           <div className="flex flex-col">
             <Title
@@ -81,39 +81,41 @@ export default function UserHome() {
             )}
           </div>
 
-          <div className="flex flex-col gap-5 w-full">
-            <div className="w-full p-5 rounded-lg shadow-md flex flex-row bu-text-primary bg-[#AADFCF] dark:bg-pink-600">
-              <div className="text-xl w-[45%] font-medium">Name</div>
-              <div className="text-xl w-[20%] font-medium flex gap-2 items-center justify-center">
-                {/* <FontAwesomeIcon icon={faCheckDouble} /> */}
-                <HowToRegIcon />
-                Acceptance
-              </div>
-              <div className="text-xl w-20% font-medium flex gap-2 items-center justify-center">
-                <FontAwesomeIcon icon={faFire} />
-                Difficulty
-              </div>
-              <div className="text-xl w-15% font-medium flex gap-2 items-center justify-center">
-                <FontAwesomeIcon icon={faHeartPulse} />
-                Status
-              </div>
-            </div>
-            <TableContainer>
-              {problems.map((problem, index) => (
-                <div className="flex w-full">
-                  <RecommendationCard
-                    idx={index + 1}
-                    id={problem.id}
-                    name={problem.title}
-                    path={`/problems/${problem.id}`}
-                    rating={problem.rating}
-                  />
+          {problems.length > 0 && (
+            <div className="flex flex-col gap-5 w-full">
+              <div className="w-full p-5 rounded-lg shadow-md flex flex-row bu-text-primary bg-[#AADFCF] dark:bg-pink-600">
+                <div className="text-xl w-[45%] font-medium">Name</div>
+                <div className="text-xl w-[20%] font-medium flex gap-2 items-center justify-center">
+                  {/* <FontAwesomeIcon icon={faCheckDouble} /> */}
+                  <HowToRegIcon />
+                  Acceptance
                 </div>
-              ))}
-            </TableContainer>
-          </div>
+                <div className="text-xl w-20% font-medium flex gap-2 items-center justify-center">
+                  <FontAwesomeIcon icon={faFire} />
+                  Difficulty
+                </div>
+                <div className="text-xl w-15% font-medium flex gap-2 items-center justify-center">
+                  <FontAwesomeIcon icon={faHeartPulse} />
+                  Status
+                </div>
+              </div>
+              <TableContainer>
+                {problems.map((problem, index) => (
+                  <div className="flex w-full">
+                    <RecommendationCard
+                      idx={index + 1}
+                      id={problem.id}
+                      name={problem.title}
+                      path={`/problems/${problem.id}`}
+                      rating={problem.rating}
+                    />
+                  </div>
+                ))}
+              </TableContainer>
+            </div>
+          )}
         </div>
-      )}
+      }
       <RecentProblems />
     </div>
   );

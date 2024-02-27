@@ -4,7 +4,11 @@ import { Button, IconButton } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHandPointRight, faTag, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHandPointRight,
+  faTag,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
 import { getTimeStamp } from "../../services/dateUtil";
@@ -27,21 +31,19 @@ const ContestCard = ({
   const navigate = useNavigate();
   const [isRegistered, setRegistered] = useState(false);
 
-
   const handleButtonClick = async () => {
     navigate(`/contests/${id}`);
   };
 
   const handleButtonClick2 = async () => {
     const res = await contestApi.participateUpcomingContest(id);
-    if(res.success)setRegistered(true);
+    if (res.success) setRegistered(true);
   };
-  
-  const getRegistrationInfo = async () => {
 
+  const getRegistrationInfo = async () => {
     const res = await contestApi.isRegistered(id);
     console.log("register", id, res);
-    if(res.data.length>0)setRegistered(true);
+    if (res.data.length > 0) setRegistered(true);
     else setRegistered(false);
   };
 
@@ -55,7 +57,7 @@ const ContestCard = ({
       <div className="border rounded-lg shadow-lg bg-gray-700 bu-card-primary flex flex-col p-5">
         <div
           className="cursor-pointer"
-          onClick={() => navigate(`/contests/${id}/preview`)}
+          // onClick={() => navigate(`/contests/${id}/preview`)}
         >
           <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title">
             {name}
@@ -87,7 +89,11 @@ const ContestCard = ({
           </div>
 
           <div className="flex flex-col gap-2 items-center">
-            <div className={`bu-text-subtitle font-semibold text-${status === "Live" ? 'green' : 'blue'}-500`}>
+            <div
+              className={`bu-text-subtitle font-semibold text-${
+                status === "Live" ? "green" : "blue"
+              }-500`}
+            >
               {`Status: ${status}`}
             </div>
             <div className="bu-text-subtitle font-semibold">
@@ -95,38 +101,45 @@ const ContestCard = ({
             </div>
           </div>
           {new Date(startDate).getTime() > Date.now() && (
-          <div className="flex gap-4 items-center">
-            <div className="flex w-full cursor-pointer items-center justify-center">
-              <div
-                onClick={() => handleButtonClick2()}
-                className="bu-button-secondary my-8 inline-flex  items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
-              >
-                <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
-                    {isRegistered? 'Registered' : 'Register'}
-                  {/* <FontAwesomeIcon icon={faHandPointRight} /> */}
-                </h5>
+            <div className="flex gap-4 items-center">
+              <div className="flex w-full cursor-pointer items-center justify-center">
+                <div
+                  onClick={() => handleButtonClick2()}
+                  className="bu-button-secondary my-8 inline-flex  items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
+                >
+                  <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
+                    {isRegistered ? "Registered" : "Register"}
+                    {/* <FontAwesomeIcon icon={faHandPointRight} /> */}
+                  </h5>
+                </div>
               </div>
             </div>
-          </div>)}
+          )}
 
           {new Date(startDate).getTime() < Date.now() && isRegistered && (
-          <div className="flex gap-4 items-center">
-            <div className="flex w-full cursor-pointer items-center justify-center">
-              <div
-                onClick={() => handleButtonClick()}
-                className="bu-button-secondary my-8 inline-flex  items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
-              >
-                <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
-                      Enter    
-                  {/* <FontAwesomeIcon icon={faHandPointRight} /> */}
-                </h5>
+            <div className="flex gap-4 items-center">
+              <div className="flex w-full cursor-pointer items-center justify-center">
+                <div
+                  onClick={() => handleButtonClick()}
+                  className="bu-button-secondary my-8 inline-flex  items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"
+                >
+                  <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
+                    Enter
+                    {/* <FontAwesomeIcon icon={faHandPointRight} /> */}
+                  </h5>
+                </div>
               </div>
             </div>
-          </div>)}
+          )}
         </div>
       </div>
 
-      <Confirmation open={open} setOpen={setOpen} onConfirm={registerAction} param={id} />
+      <Confirmation
+        open={open}
+        setOpen={setOpen}
+        onConfirm={registerAction}
+        param={id}
+      />
     </div>
   );
 };

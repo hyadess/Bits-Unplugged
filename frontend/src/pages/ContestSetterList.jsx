@@ -21,7 +21,7 @@ const ContestSettersList = ({ setterList }) => {
         <div className="mx-auto grid h-full w-full grid-cols-1 place-items-center gap-8 md:w-full md:grid-cols-3">
           {setterList?.map((setter) => (
             <SetterCard
-              key={setter.id}
+              key={setter.userId}
               name={setter.username}
               position={setter.role}
               image={setter.image}

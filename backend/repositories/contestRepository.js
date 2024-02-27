@@ -417,14 +417,17 @@ class ContestRepository extends Repository {
   showAllCollaborators = async (contestId) => {
     const query2 = `
           SELECT
-          "S"."setterId",
+          "Cr"."userId",
           "S"."status",
           "U"."username",
-          "U"."image"
+          "U"."image",
+          "Cr"."email"
           FROM
           "Collaborators" "S"
           JOIN
           "Users" "U" ON "S"."setterId" = "U"."id"
+          JOIN
+          "Credentials" "Cr" ON "U"."id" = "Cr"."userId"
           WHERE "S"."contestId" = $1 ;
         `;
 

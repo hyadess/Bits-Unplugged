@@ -48,6 +48,9 @@ class UserActivityApi extends Api {
   getProblemDetails = async (id) => {
     return await this.get("/userActivity/" + id);
   };
+  isSolvedByUser = async (problemId) => {
+    return await this.get("/userActivity/isSolved/" + problemId);
+  };
 }
 
 export default UserActivityApi;

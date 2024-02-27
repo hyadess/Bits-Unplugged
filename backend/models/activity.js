@@ -21,26 +21,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Activity.init(
     {
-      userId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Users",
-          key: "id",
-        },
-        unique: "Activities_userId_problemId_key",
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      problemId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "ProblemVersions",
-          key: "id",
-        },
-        unique: "Activities_userId_problemId_key",
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
+      userId: DataTypes.INTEGER,
+      problemId: DataTypes.INTEGER,
       conseqFailedAttempt: DataTypes.INTEGER,
       isSolved: DataTypes.BOOLEAN,
       lastSolveTimestamp: DataTypes.DATE,

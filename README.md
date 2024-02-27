@@ -31,3 +31,4 @@
 ## Packages
 
 Time picker: https://time.openstatus.dev/
+https://github.com/leandrocfe/filament-apex-charts

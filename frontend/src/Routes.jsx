@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { jwtDecode } from 'jwt-decode';
 import {
   BrowserRouter as Router,
   Routes,
@@ -67,6 +68,8 @@ import { contestApi } from "api";
 import CountdownTimer from "pages/Timer";
 import ContestProblemList from "pages/ContestProblemList";
 import SetterHome from "pages/setter/SetterHome";
+import ContestTab from "components/ContestTab";
+import Leaderboard from "pages/LeaderBoard";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -122,15 +125,19 @@ const ProfileForSetter = () => {
 const ContestWrapper = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [username, setUsername] = useState();
   const [endTime, setendTime] = useState();
+  const [activeComponent, setActiveComponent] = useState("Details");
   const fetchContestDetails = async () => {
     try {
       const contest = await contestApi.getContestById(id);
+      const decoded = jwtDecode(localStorage.getItem("token")).username;
+      setUsername(decoded);
+      console.log("username", decoded);
       if (contest.success) {
         const contestDuration = contest.data[0].duration * 60 * 60 * 1000;
         const startDateTime = new Date(contest.data[0].startDateTime);
         setendTime(new Date(startDateTime.getTime() + contestDuration));
-        console.log("Contest end time : ", startDateTime, endTime);
       }
     } catch (error) {
       console.error("Error fetching contest details", error);
@@ -143,17 +150,32 @@ const ContestWrapper = () => {
     <LayoutMain
       left={
         <>
-          <ContestProblemList />
-        </>
+      <ContestTab
+        activeTab={activeComponent}
+        click={(tab) => {
+          setActiveComponent(tab);
+          if(tab=="Details")navigate(`/contests/${id}`);
+          else if(tab=="Leaderboard")navigate(`/contests/${id}/leaderboard`);
+          else if(tab=="My Submissions")navigate(`/contests/${id}/${username}`);
+        }}
+      /></>
       }
       right={
-        endTime?.getTime() > Date.now() && (
-          <CountdownTimer
-            targetDate={endTime}
-            flag={"end"}
-            EndAction={() => navigate("/contests/" + id)}
-          />
-        )
+        <div>
+          <div>
+            {endTime?.getTime() > Date.now() && (
+              <CountdownTimer
+                targetDate={endTime}
+                flag={"end"}
+                EndAction={() => navigate("/contests/" + id)}
+              />
+            )}
+          </div>
+
+          <div> {/* Add left margin for spacing */}
+            <ContestProblemList />
+          </div>
+        </div>
       }
     >
       <Outlet />
@@ -190,6 +212,25 @@ const Admin = () => {
     )
   ) : (
     <Navigate to="/admin/login" />
+  );
+};
+
+const User = () => {
+  const { type } = useContext(GlobalContext);
+  return type == 0 ? (
+    <Layout2 nav={<SolverNavbar />}>
+      <Outlet />
+    </Layout2>
+  ) : type == 1 ? (
+    <Layout2 nav={<SetterNavbar />}>
+      <Outlet />
+    </Layout2>
+  ) : type == 2 ? (
+    <Layout2 nav={<AdminNavbar />}>
+      <Outlet />
+    </Layout2>
+  ) : (
+    <></>
   );
 };
 
@@ -389,8 +430,6 @@ const AppRoutes = () => {
             }
           />
 
-          <Route path="/setter/:username" element={<ProfileForSetter />} />
-
           <Route path="/contests/:id/edit" element={<ContestSetEnv />} />
 
           <Route
@@ -417,6 +456,10 @@ const AppRoutes = () => {
             <Route
               path="/contests/:id/:username"
               element={<ContestParticipant />}
+            />
+            <Route
+              path="/contests/:id/leaderboard"
+              element={<Leaderboard />}
             />
           </Route>
           <Route
@@ -546,7 +589,6 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
-          <Route path="/user/:username" element={<SolverProfile />} />
         </Route>
 
         {/* <Route
@@ -564,6 +606,10 @@ const AppRoutes = () => {
           <Route path="/verify-email" element={<EmailVerification />} />
         </Route>
 
+        <Route element={<User />}>
+          <Route path="/user/:username" element={<SolverProfile />} />
+          <Route path="/setter/:username" element={<ProfileForSetter />} />
+        </Route>
         {type >= 0 && (
           <Route
             path="/"

@@ -12,7 +12,7 @@ const ProblemCard = ({ contestId, problem, selectedId ,onClick }) => {
     
       const getIsSolved = async () => {
         const res = await contestApi.isContestProblemSolved(contestId,problem.id);
-        if (res.data.length>0) {
+        if (res.data && res.data.length>0) {
           setIsSolved(true);
         }else{
             setIsSolved(false);

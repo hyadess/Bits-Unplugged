@@ -159,7 +159,9 @@ class ContestApi extends Api {
     canvasData,
     userActivity,
     point,
-    duration
+    duration,
+    image,
+    submittedAt
   ) => {
     return await this.post("/contests/" + contestId + "/addSubmission", {
       problemId,
@@ -168,6 +170,8 @@ class ContestApi extends Api {
       userActivity,
       point,
       duration,
+      image,
+      submittedAt,
     });
   };
 

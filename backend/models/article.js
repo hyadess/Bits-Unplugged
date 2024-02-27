@@ -17,15 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Article.init(
     {
-      seriesId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Series",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
-      },
+      seriesId: DataTypes.INTEGER,
       title: DataTypes.STRING,
       subtitle: DataTypes.TEXT,
       content: DataTypes.JSONB,

@@ -163,12 +163,15 @@ class UserActivityRepository extends Repository {
         FROM
         "Series" "S"
         JOIN
-        "Problems" "P" ON "S"."id" = "P"."seriesId"
+        "ProblemVersions" "P" ON "S"."id" = "P"."seriesId"
         JOIN
         "Activities" "A" ON "P"."id" = "A"."problemId"
         WHERE "A"."userId" = $1
         GROUP BY
-        "S"."id";
+        "S"."id","S"."name"
+        HAVING SUM(CASE WHEN "A"."isSolved" THEN 1 ELSE 0 END) > 0
+        ORDER BY "totalSuccessfulAttemptsPerSeries" DESC
+        ;
         `;
     const params = [userId];
     const result = await this.query(query, params);
@@ -184,12 +187,14 @@ class UserActivityRepository extends Repository {
         FROM
         "Series" "S"
         JOIN
-        "Problems" "P" ON "S"."id" = "P"."seriesId"
+        "ProblemVersions" "P" ON "S"."id" = "P"."seriesId"
         JOIN
         "Activities" "A" ON "P"."id" = "A"."problemId"
-        WHERE "A"."userId" = $1
+        WHERE "A"."userId" = $1 
         GROUP BY
-        "S"."id";
+        "S"."id","S"."name"
+        HAVING SUM("A"."totalFailedAttempt") > 0
+        ORDER BY "totalFailedAttemptsPerSeries" DESC;
         `;
     const params = [userId];
     const result = await this.query(query, params);
@@ -205,7 +210,7 @@ class UserActivityRepository extends Repository {
         FROM
         "Series" "S"
         JOIN
-        "Problems" "P" ON "S"."id" = "P"."seriesId"
+        "ProblemVersions" "P" ON "S"."id" = "P"."seriesId"
         JOIN
         "Activities" "A" ON "P"."id" = "A"."problemId"
         WHERE "S"."id" = $1
@@ -226,7 +231,7 @@ class UserActivityRepository extends Repository {
         FROM
         "Series" "S"
         JOIN
-        "Problems" "P" ON "S"."id" = "P"."seriesId"
+        "ProblemVersions" "P" ON "S"."id" = "P"."seriesId"
         JOIN
         "Activities" "A" ON "P"."id" = "A"."problemId"
         WHERE "S"."id" = $1
@@ -348,6 +353,20 @@ class UserActivityRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+
+  isSolvedByUser = async (userId, problemId) => {
+    const query = `
+    SELECT
+    "isSolved"
+    FROM
+    "Activities"
+    WHERE
+    "userId" = $1 AND "problemId" = $2;
+    `;
+    const params = [userId, problemId];
+    const result = await this.query(query, params);
+    return result;
+  }
 }
 
 module.exports = UserActivityRepository;

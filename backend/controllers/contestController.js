@@ -346,12 +346,13 @@ class ContestController extends Controller {
       req.body.problemId,
       req.params.contestId,
       req.user.userId,
-
       req.body.verdict,
       req.body.canvasData,
       req.body.userActivity,
       req.body.point,
-      req.body.duration
+      req.body.duration,
+      req.body.image,
+      req.body.submittedAt
     );
     if (result.success) {
       res.status(204).json(result.data);

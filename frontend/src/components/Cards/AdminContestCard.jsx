@@ -42,6 +42,8 @@ import DateTimePicker from "components/Date/DateTimePicker";
 // import "react-times/css/classic/default.css";
 import { faCalendarCheck } from "@fortawesome/free-regular-svg-icons";
 import { contestApi } from "api";
+import { Avatar } from "@mui/material";
+import { format } from "date-fns";
 
 // export function DateTimePickerDemo() {
 //   const [date, setDate] = useState();
@@ -153,45 +155,59 @@ const ContestCard = ({
   return (
     <div className="w-full h-full" key={id}>
       <div className="border rounded-lg shadow-lg bg-gray-700 bu-card-primary flex flex-col gap-5 p-5">
-        <div
-          className="cursor-pointer"
-          // onClick={() => navigate(`/contests/${id}/preview`)}
-        >
-          <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title">
-            {name}
-          </h5>
-          <div className="flex flex-row items-center gap-2 text-[#ba3030] dark:text-blue-400">
-            <FontAwesomeIcon icon={faTag} />
-            <h3 className="bu-text-primary font-semibold">{owner.username}</h3>
+        <div>
+          <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-col cursor-pointer w-[80%]">
+              <h5
+                className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis w-full max-w-full"
+                onClick={() => {
+                  setLoading(true);
+                  navigate(`/admin/contests/${id}/preview`);
+                }}
+              >
+                {name}
+              </h5>
+            </div>
+            <div className="flex flex-col items-end gap-2 cursor-pointer">
+              <Avatar
+                alt={owner?.username}
+                src={
+                  owner != null
+                    ? owner.image
+                    : "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Solid_black.svg/2048px-Solid_black.svg.png"
+                }
+                onClick={() => {
+                  setLoading(true);
+                  navigate("/setter/" + owner.username);
+                }}
+                style={{ height: "3rem", width: "3rem" }} // Change the size here
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-between items-end">
+            <div className="bu-text-subtitle">
+              Approved at {format(updatedAt, "dd/MM/yy h.mm a")}
+            </div>
+            <h1
+              className="bu-text-subtitle cursor-pointer hover:underline"
+              onClick={() => {
+                setLoading(true);
+                navigate("/setter/" + owner.username);
+              }}
+            >
+              @{owner.username}
+            </h1>
           </div>
         </div>
 
-        {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <MobileDatePicker
-            label="Start Date"
-            inputFormat="MM/dd/yyyy"
-            // value={}
-            // onChange={(date) => {
-            //   console.log(date);
-            //   setUser({ ...user, dob: date });
-            // }}
-            // renderInput={(params) => (
-            //   <TextField
-            //     {...params}
-            //     sx={{
-            //       width: "100%",
-            //     }}
-            //   />
-            // )}
-            className="date-picker"
-          />
-        </LocalizationProvider> */}
         <DateTimePicker date={date} setDate={setDate} />
         <button
           className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-primary"
           onClick={async () => {
             const res = await contestApi.updateContest(id, {
               startDateTime: date,
+              status: "scheduled",
             });
             showSuccess("Contest scheduled successfully", res);
             // setProblem((prev) => ({ ...prev, seriesId: series?.id }));

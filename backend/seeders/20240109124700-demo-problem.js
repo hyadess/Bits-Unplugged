@@ -43,7 +43,7 @@ module.exports = {
         },
         {
           // 2
-          setterId: 2,
+          setterId: 3,
           canvasId: 2,
           title: "Min 3 Disks",
           statement:
@@ -69,7 +69,7 @@ module.exports = {
         },
         {
           // 3
-          setterId: 2,
+          setterId: 4,
           canvasId: 2,
           title: "Min 4 Disks",
           statement:

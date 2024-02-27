@@ -2,7 +2,7 @@ import React from "react";
 import SetterCard from "../components/Cards/SetterCard";
 
 const ContestSettersList = ({ setterList }) => {
-  console.log(setterList);
+  console.log("Setter List", setterList);
   return (
     <section>
       <div
@@ -14,18 +14,19 @@ const ContestSettersList = ({ setterList }) => {
             Our Problem Setters
           </h2>
 
-          <p className="bu-text-subtitle font-light sm:text-xl lg:mb-8">
-            Meet our dynamic team who are here to help you at each step of your
-            journey
-          </p>
+          {/* <p className="bu-text-subtitle font-light sm:text-xl lg:mb-8">
+            Meet our problem setter team
+          </p> */}
         </div>
-        <div className="mx-auto grid h-full w-full grid-cols-1 place-items-center gap-8 md:w-80% md:grid-cols-2">
+        <div className="mx-auto grid h-full w-full grid-cols-1 place-items-center gap-8 md:w-full md:grid-cols-3">
           {setterList?.map((setter) => (
             <SetterCard
-              key={setter.id}
+              key={setter.userId}
               name={setter.username}
               position={setter.role}
               image={setter.image}
+              email={setter.email}
+              setterId={setter.userId}
             />
           ))}
         </div>

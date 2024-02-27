@@ -24,7 +24,9 @@ class AuthRepository extends Repository {
       where: {
         role,
       },
-      include: [{ model: db.User, required: true, where: { username } }],
+      include: [
+        { model: db.User, required: true, where: { username }, as: "user" },
+      ],
     });
     return credential;
   };

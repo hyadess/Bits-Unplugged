@@ -86,7 +86,7 @@ const AdminContests = () => {
                 deleteAction={deleteContest}
                 isLive={contest.isLive}
                 timestamp={contest.updatedAt}
-                owner={contest.ContestSetters[0]}
+                owner={contest.owner[0]}
                 status={contest.status}
                 updatedAt={contest.updatedAt}
               />
@@ -107,7 +107,7 @@ const AdminContests = () => {
                 deleteAction={deleteContest}
                 isLive={contest.isLive}
                 timestamp={contest.updatedAt}
-                owner={contest.ContestSetters[0]}
+                owner={contest.owner[0]}
                 startDateTime={contest.startDateTime}
                 duration={contest.duration}
                 endDate={contest.endDate}
@@ -132,7 +132,7 @@ const AdminContests = () => {
                 deleteAction={deleteContest}
                 isLive={contest.isLive}
                 timestamp={contest.updatedAt}
-                owner={contest.ContestSetters[0]}
+                owner={contest.owner[0]}
                 startDateTime={contest.startDateTime}
                 duration={contest.duration}
                 endDate={contest.endDate}

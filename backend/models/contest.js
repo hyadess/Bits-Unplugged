@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Contest.hasMany(models.ContestSetter, {
+      Contest.hasMany(models.Collaborator, {
         foreignKey: "contestId",
         as: "setters",
       });

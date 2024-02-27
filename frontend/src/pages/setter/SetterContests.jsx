@@ -2,7 +2,7 @@ import SetterContestsView from "../../views/SetterContests";
 import React, { useState, useEffect, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { setLoading } from "../../App";
-import { contestApi} from "../../api"; // Assuming you have an authApi to get user information
+import { contestApi } from "../../api"; // Assuming you have an authApi to get user information
 
 const SetterContests = () => {
   const navigate = useNavigate();
@@ -17,7 +17,8 @@ const SetterContests = () => {
   };
 
   const getContestList = async () => {
-    const res = await contestApi.getMyContests();
+    const res = await contestApi.getMyOwnContests(); // owner contests
+    // write a api to get collab contests
     console.log(res.data);
     if (res.success) {
       if (res.data.length > 0)

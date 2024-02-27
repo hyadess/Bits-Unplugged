@@ -13,6 +13,7 @@ module.exports = {
           startDateTime: new Date(),
           duration: "0.1",
           status: "scheduled",
+          ownerId: 2,
         },
         {
           //id: 2,
@@ -21,6 +22,7 @@ module.exports = {
           startDateTime: new Date("February 27, 2024 13:31"),
           duration: "2.5",
           status: "scheduled",
+          ownerId: 2,
         },
         {
           //id: 3,
@@ -29,6 +31,7 @@ module.exports = {
           startDateTime: new Date(),
           duration: "0.01",
           status: "approved",
+          ownerId: 2,
         },
         {
           //id: 4,
@@ -37,6 +40,7 @@ module.exports = {
           startDateTime: new Date(),
           duration: "0.01",
           status: "scheduled",
+          ownerId: 2,
         },
         {
           //id: 5,
@@ -45,6 +49,7 @@ module.exports = {
           startDateTime: new Date(),
           duration: "0.01",
           status: "edit",
+          ownerId: 2,
         },
         {
           //id: 6,
@@ -53,6 +58,7 @@ module.exports = {
           startDateTime: new Date(),
           duration: "0.01",
           status: "edit",
+          ownerId: 2,
         },
         {
           //id: 7,
@@ -61,6 +67,7 @@ module.exports = {
           startDateTime: new Date(),
           duration: "0.01",
           status: "edit",
+          ownerId: 2,
         },
         {
           //id: 8,
@@ -69,6 +76,7 @@ module.exports = {
           startDateTime: new Date(),
           duration: "0.01",
           status: "edit",
+          ownerId: 2,
         },
       ],
       {}

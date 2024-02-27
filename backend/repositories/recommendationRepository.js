@@ -32,7 +32,7 @@ class RecommendationRepository extends Repository {
         SELECT "P"."id", "P"."seriesId", "P"."title", "P"."rating"
         FROM "ProblemVersions" "P"
         WHERE "P"."rating" BETWEEN ($1 - 100) AND ($1 + 100) AND "P"."id" NOT IN (
-        SELECT "A"."problemId" FROM "Activities" "A" WHERE "A"."userId"=$2 AND "A"."isSolved"=FALSE
+        SELECT "A"."problemId" FROM "Activities" "A" WHERE "A"."userId"=$2 AND "A"."isSolved"=TRUE
         )
         LIMIT 5
         `;

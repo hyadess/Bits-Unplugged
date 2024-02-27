@@ -112,5 +112,44 @@ class RatingRepository extends Repository {
         const result = await this.query(query, params);
         return result;
     };
+
+
+    //for changing rating of a user............................................
+
+
+    getAllContestParticipantWithRating = async (contestId) => {
+        const query = `
+            SELECT "CP"."userId", 
+            "R"."rating",
+            FROM "Participants" "CP"
+            JOIN "UserRatings" "R" ON "CP"."userId" = "R"."userId"
+            WHERE "CP"."contestId" = $1 AND "CP"."type" = 0 
+            AND "CP"."id" IN (SELECT "participantId" FROM "ContestSubmissions");
+            ORDER BY "R"."rating" DESC;
+        `;
+        const params = [contestId];
+        const result = await this.query(query, params);
+        return result;
+    }
+    getAllContestParticipants = async (contestId) => {
+        const query = `
+            SELECT "userId"
+            FROM "Participants"
+            WHERE "contestId" = $1 AND "type" = 0
+            AND "id" IN (SELECT "participantId" FROM "ContestSubmissions");
+        `;
+        const params = [contestId];
+        const result = await this.query(query, params);
+        return result;
+    }
+
+
+
+
+
+
+
+
+
 }
 module.exports = RatingRepository;

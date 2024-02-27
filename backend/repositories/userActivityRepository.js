@@ -353,6 +353,20 @@ class UserActivityRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+
+  isSolvedByUser = async (userId, problemId) => {
+    const query = `
+    SELECT
+    "isSolved"
+    FROM
+    "Activities"
+    WHERE
+    "userId" = $1 AND "problemId" = $2;
+    `;
+    const params = [userId, problemId];
+    const result = await this.query(query, params);
+    return result;
+  }
 }
 
 module.exports = UserActivityRepository;

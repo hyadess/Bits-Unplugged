@@ -1,6 +1,8 @@
 const Controller = require("./base");
 const RatingRepository = require("../repositories/ratingRepository");
 const ratingRepository = new RatingRepository();
+const ContestRepository = require("../repositories/contestRepository");
+const contestRepository = new ContestRepository();
 
 class RatingController extends Controller{
     constructor(){
@@ -36,9 +38,6 @@ class RatingController extends Controller{
             res.status(500).json({message: "Rating update failed"});
         }
     };
-
-
-
 
 
 
@@ -142,7 +141,76 @@ class RatingController extends Controller{
 
 
 
+
     // contest affecting user rating...............................
+
+    getAllContestParticipants = async (contestId) => {
+        const result = await ratingRepository.getAllContestParticipants(contestId);
+        if(result.success){
+            return result.data;
+        }
+        else{
+            return [];
+        }
+    };
+
+    getAllContestParticipantWithRating = async (contestId) => {
+        const result = await ratingRepository.getAllContestParticipantWithRating(contestId);
+        if(result.success){
+            return result.data;
+        }
+        else{
+            return [];
+        }
+    };
+
+
+    changeUserRatings = async(req,res) => {
+        const contestId=req.body.contestId;
+        const participants=await this.getAllContestParticipants(contestId);
+        const participantsWithRating=await this.getAllContestParticipantWithRating(contestId);
+        const defaultPlace=participantsWithRating.length/2+1;
+        const defaultPlaceHolder=participants.length-participantsWithRating.length;
+        const LeaderBoard=await contestRepository.getLeaderboard(contestId);
+        let flag=true;
+        if(participants.length>0){
+            participants.forEach(async (participant)=>{
+                const haveRating=participantsWithRating.find((p)=>p.userId===participant.userId);
+                let place;
+                if(haveRating){
+                    place = participantsWithRating.findIndex((p)=>p.userId===participant.userId)+1;
+                    if(place>=defaultPlace){
+                        place=defaultPlaceHolder+place;
+                    }
+                }
+                else{
+                    place=defaultPlace;
+                }
+                let contestPlace=LeaderBoard.findIndex((p)=>p.id===participant.userId)+1;
+                let rating=await ratingRepository.getCurrentRating(participant.userId);
+                if(contestPlace<place)
+                {
+                    ratingRepository.updateRating(participant.userId,rating+10*(place-contestPlace));
+                }
+                else
+                {
+                    ratingRepository.updateRating(participant.userId,rating-10*(contestPlace-place));
+                }
+
+            });
+        }
+        if (flag) {
+            res.status(202).json({message: "Rating updated successfully"});
+          } else {
+            res.status(500).json({ message: "Rating update failed" });
+          }
+    }
+
+
+
+
+
+    
 
     
 }

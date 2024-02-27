@@ -77,11 +77,11 @@ class RecommendationController extends Controller{
         let problems=[];
         for(let i=0;i<result.length;i++){
             const r=await this.getFamousProblemsBySeries(result[i].id);
-           // console.log("r",r);
-            problems.push(r);
+            console.log("r",r);
+            problems=problems.concat(r);
         }
         //console.log("problems",problems);
-        res.status(200).json({success:true,data:problems});
+        res.status(200).json(problems);
 
 
 

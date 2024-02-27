@@ -21,9 +21,10 @@ class ContestRepository extends Repository {
     ON  "S"."userId" = "CS"."setterId"
     JOIN
     "Users" "U" ON "S"."userId" = "U"."id"
+    WHERE "C"."status"='scheduled'
     GROUP BY
     "C"."id";
-        `;
+    `;
     const params = [];
     const result = await this.query(query, params);
     return result;
@@ -308,6 +309,8 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+
+  // Deprecated
   // I am setting default duration 2 hr for now............
   // upcoming -> running
   startContest = async (contestId) => {

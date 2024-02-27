@@ -87,11 +87,8 @@ const AdminContests = () => {
                 isLive={contest.isLive}
                 timestamp={contest.updatedAt}
                 owner={contest.ContestSetters[0]}
-                startDate={contest.startDate}
-                endDate={contest.endDate}
                 status={contest.status}
                 updatedAt={contest.updatedAt}
-                // userID={userID}
               />
             )
         )}
@@ -111,7 +108,6 @@ const AdminContests = () => {
                 isLive={contest.isLive}
                 timestamp={contest.updatedAt}
                 owner={contest.ContestSetters[0]}
-                startDate={contest.startDate}
                 startDateTime={contest.startDateTime}
                 duration={contest.duration}
                 endDate={contest.endDate}
@@ -137,7 +133,6 @@ const AdminContests = () => {
                 isLive={contest.isLive}
                 timestamp={contest.updatedAt}
                 owner={contest.ContestSetters[0]}
-                startDate={contest.startDate}
                 startDateTime={contest.startDateTime}
                 duration={contest.duration}
                 endDate={contest.endDate}

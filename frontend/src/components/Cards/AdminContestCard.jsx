@@ -216,29 +216,6 @@ const ContestCard = ({
           <FontAwesomeIcon icon={faCalendarCheck} className="mr-2" />
           Schedule
         </button>
-        {/* <div className="grid grid-cols-2">
-          <TimePicker
-            showTimezone // show the timezone, default false
-            focused // whether to show timepicker modal after rendered. default false
-            withoutIcon // whether to has time icon on button, default false
-            colorPalette="light" // main color, default "light"
-            time="13:05" // initial time, default current time
-            theme="material"
-            // or
-            // theme="classic"
-            timeMode="12" // use 24 or 12 hours mode, default 24
-            timezone="America/New_York" // what timezone to use, detects the user's local timezone by default
-          />
-        </div>
-
-        <DateTimePicker granularity={"minute"} />
-        <DatePickerDemo granularity={"minute"} /> */}
-        {/* <DateTimePicker /> */}
-        {/* <DateTimePicker
-          label="Controlled picker"
-          value={startDate}
-          //   onChange={(newValue) => setValue(newValue)}
-        /> */}
       </div>
 
       <Confirmation

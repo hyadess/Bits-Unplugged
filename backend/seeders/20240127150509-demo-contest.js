@@ -12,15 +12,15 @@ module.exports = {
           description: "Demo contest description",
           startDateTime: new Date(),
           duration: "0.1",
-          status: "edit",
+          status: "scheduled",
         },
         {
           //id: 2,
           title: "Demo Contest 2",
           description: "Demo contest description",
-          startDateTime: new Date("February 28, 2024 15:05"),
+          startDateTime: new Date("February 27, 2024 13:31"),
           duration: "2.5",
-          status: "requested",
+          status: "scheduled",
         },
         {
           //id: 3,

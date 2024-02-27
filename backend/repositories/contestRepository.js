@@ -21,9 +21,10 @@ class ContestRepository extends Repository {
     ON  "S"."userId" = "CS"."setterId"
     JOIN
     "Users" "U" ON "S"."userId" = "U"."id"
+    WHERE "C"."status"='scheduled'
     GROUP BY
     "C"."id";
-        `;
+    `;
     const params = [];
     const result = await this.query(query, params);
     return result;
@@ -244,8 +245,8 @@ class ContestRepository extends Repository {
 
   addContest = async (setterId, title) => {
     const query = `
-        INSERT INTO "Contests" ("title", "description", "startDate", "endDate", "status", "updatedAt")
-        VALUES ($1, NULL, NULL, NULL, 'edit', $2)
+        INSERT INTO "Contests" ("title", "description", "status", "updatedAt")
+        VALUES ($1, NULL, 'edit', $2)
         RETURNING "id";          
         `;
     const params = [title, new Date("February 1, 2024 11:13:00")];
@@ -308,6 +309,8 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+
+  // Deprecated
   // I am setting default duration 2 hr for now............
   // upcoming -> running
   startContest = async (contestId) => {
@@ -330,19 +333,6 @@ class ContestRepository extends Repository {
         WHERE "id" = $1;
         `;
     const params = [contestId, Date.now()];
-    const result = await this.query(query, params);
-    return result;
-  };
-
-  updateDates = async (contestId, startDateString, endDateString) => {
-    const startDate = new Date(startDateString);
-    const endDate = new Date(endDateString);
-    const query = `
-        UPDATE "Contests" 
-        SET "startDate" = $2, "endDate" = $3
-        WHERE "id" = $1;
-        `;
-    const params = [contestId, startDate, endDate];
     const result = await this.query(query, params);
     return result;
   };

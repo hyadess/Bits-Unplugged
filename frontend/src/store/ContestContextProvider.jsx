@@ -34,16 +34,6 @@ const ContestContextProvider = ({ children }) => {
           ...state,
           description: payload,
         };
-      case "UPDATE_START_DATE":
-        return {
-          ...state,
-          startDate: payload,
-        };
-      case "UPDATE_END_DATE":
-        return {
-          ...state,
-          endDate: payload,
-        };
       case "DELETE_PROBLEM":
         return {
           ...state,

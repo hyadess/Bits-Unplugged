@@ -42,14 +42,15 @@ export default function ContestParticipant() {
 
     const data = sortedSubmissions.map((submission) => {
       return {
-        x: new Date(submission.submittedAt),
+        x: parseInt(submission.submittedAt),
         y: submission.points,
       };
     });
     setGraphData(data);
+    console.log("dihan: ", graphData);
   };
 
-  const options = {
+  const [options, setOptions] = useState({
     chart: {
       id: "daily-activity-chart",
       type: "line",
@@ -75,14 +76,15 @@ export default function ContestParticipant() {
       },
     },
     grid: {
-      show: false,
+      show: true,
+      // strokeDashArray: 5,
     },
     dataLabels: {
       enabled: false,
     },
     stroke: {
       curve: "straight",
-      width:5, // border
+      width: 5, // border
     },
     // fill: {
     //   type: "gradient",
@@ -140,10 +142,7 @@ export default function ContestParticipant() {
       },
     },
     colors: ["#aadfcf"],
-  };
-
-
-
+  });
 
   useEffect(() => {
     getUserSubmissions();
@@ -157,17 +156,19 @@ export default function ContestParticipant() {
   return (
     submissions && (
       <>
-        <Title title={`submissions for ${username}`}/>
+        <Title title={`submissions for ${username}`} />
         <div>
           <Title title={""} sub_title={"Submission trend"} />
           <div className="bu-card-primary pr-5 pl-3 pt-3 mb-10 rounded-lg shadow-md">
-            <Chart
-              options={options}
-              series={[{ name: "Submission history", data: graphData }]}
-              type="line"
-              width="100%"
-              height={300}
-            />
+            {graphData.length > 0 && (
+              <Chart
+                options={options}
+                series={[{ name: "Submission history", data: graphData }]}
+                type="line"
+                width="100%"
+                height={300}
+              />
+            )}
           </div>
         </div>
         <CardContainer>
@@ -184,7 +185,6 @@ export default function ContestParticipant() {
             />
           ))}
         </CardContainer>
-
       </>
     )
   );

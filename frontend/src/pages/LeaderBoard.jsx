@@ -61,7 +61,7 @@ const Leaderboard = ({}) => {
       });
       sortedSubmissions.forEach((submission) => {
         dat.data.push({
-          x: Math.floor(parseInt(submission.submittedAt) / 1000),
+          x: parseInt(submission.submittedAt),
           y: submission.points,
         });
       });
@@ -104,6 +104,15 @@ const Leaderboard = ({}) => {
         },
         axisBorder: {
           show: false,
+        },
+        type: "datetime",
+        labels: {
+          datetimeFormatter: {
+            year: "yyyy",
+            month: "MMM 'yy",
+            day: "dd MMM",
+            hour: "HH:mm",
+          },
         },
         // labels: {
         //   style: {

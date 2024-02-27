@@ -31,7 +31,7 @@ const SetterCard = ({ setterId, name, image, position, detail, email }) => {
     );
   };
   useEffect(() => {
-    getAllProblems();
+    if (setterId !== undefined) getAllProblems();
   }, [setterId]);
   return (
     <div className="items-center rounded shadow flex flex-col  w-75% h-full md:w-64 bu-card-secondary">

@@ -27,7 +27,7 @@ const DetailsTab = () => {
   useEffect(() => {
     getCollaborators();
     fetchUser();
-  }, []);
+  }, [contest]);
 
   useEffect(() => {
     const date = new Date(contest.startDateTime);
@@ -44,6 +44,7 @@ const DetailsTab = () => {
   };
 
   const getCollaborators = async () => {
+    if (contest.id === undefined) return;
     const res = await contestApi.availableCollaborators(contest.id);
     if (res.success) {
       console.log(res.data);

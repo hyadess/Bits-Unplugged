@@ -29,11 +29,11 @@ const ContestSetCard = ({
   const fetchUser = async () => {
     const decoded = jwtDecode(localStorage.getItem("token")).userId;
     setUserId(decoded);
+    console.log("dekhi ", decoded, owner?.userId);
   };
 
   useEffect(() => {
     fetchUser();
-    console.log("dekhi ", userId, owner?.id)
     setLoading(false);
   }, []);
 
@@ -124,12 +124,12 @@ const ContestSetCard = ({
 
             <IconButton
               onClick={() =>
-                userId === owner.setterId && status === "edit"
+                userId === owner.userId && status === "edit"
                   ? setOpen(true)
                   : ""
               }
               className={`text-red-500 ${
-                userId === owner.setterId && status === "edit"
+                userId === owner.userId && status === "edit"
                   ? "hover:text-red-700"
                   : ""
               }`}

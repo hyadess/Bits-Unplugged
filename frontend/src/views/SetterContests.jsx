@@ -13,8 +13,7 @@ const SetterContestsView = ({
   createContest,
   modalIsOpen,
 }) => {
-  useEffect(() => {
-  });
+  useEffect(() => {});
   return (
     <div>
       <Title
@@ -36,7 +35,7 @@ const SetterContestsView = ({
             deleteAction={deleteContest}
             isLive={contest?.isLive}
             timestamp={contest?.updatedAt}
-            owner={contest?.ContestSetters[0]}
+            owner={contest?.owner[0]}
             startDate={contest?.startDateTime}
             duration={contest?.duration}
             status={contest?.status}

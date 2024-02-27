@@ -10,13 +10,21 @@ const UserContestDetails = () => {
   const [contest, setContest] = useState(null);
   const [leaderboard, setLeaderboard] = useState(null);
   const [timeline, setTimeline] = useState(null);
-
+  const [contestCollaborators, setContestCollaborators] = useState([]);
   const navigate = useNavigate();
 
   const getContest = async () => {
     const res = await contestApi.getContestById(id);
-    console.log("contest in details =>", res);
-    if (res.success) setContest(res.data[0]);
+    console.log("Owner", res.data);
+    if (res.success) {
+      setContest(res.data[0]);
+      console.log("Owner", res.data[0].owner[0]);
+    }
+    const res2 = await contestApi.showAllCollaborators(id);
+    if (res2.success) {
+      console.log("collaborators: ", res2.data);
+      setContestCollaborators(res2.data);
+    }
     return res;
   };
 
@@ -59,11 +67,14 @@ const UserContestDetails = () => {
   }, [contest]);
 
   return (
-    <>
-      {/* {leaderboard && <Leaderboard leaderboard={leaderboard} contest_id={id} timeline={timeline}/>} */}
-      <ContestSettersList setterList={contest?.ContestSetters} />
-      
-    </>
+    contest && (
+      <>
+        {/* {leaderboard && <Leaderboard leaderboard={leaderboard} contest_id={id} timeline={timeline}/>} */}
+        <ContestSettersList
+          setterList={[contest?.owner[0], ...contestCollaborators]}
+        />
+      </>
+    )
   );
 };
 

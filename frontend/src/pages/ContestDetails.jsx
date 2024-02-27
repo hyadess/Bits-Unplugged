@@ -18,7 +18,7 @@ const UserContestDetails = () => {
     console.log("Owner", res.data);
     if (res.success) {
       setContest(res.data[0]);
-      console.log("Owner", res.data[0].owner[0]);
+      console.log("Owner", res.data[0].owner);
     }
     const res2 = await contestApi.showAllCollaborators(id);
     if (res2.success) {
@@ -71,7 +71,7 @@ const UserContestDetails = () => {
       <>
         {/* {leaderboard && <Leaderboard leaderboard={leaderboard} contest_id={id} timeline={timeline}/>} */}
         <ContestSettersList
-          setterList={[contest?.owner[0], ...contestCollaborators]}
+          setterList={[contest?.owner, ...contestCollaborators]}
         />
       </>
     )

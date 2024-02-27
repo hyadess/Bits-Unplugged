@@ -1,4 +1,4 @@
-import { profileApi } from "api";
+import { profileApi, ratingApi } from "api";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ImageLoader from "./ImageLoaders/ImageLoader";
@@ -7,6 +7,9 @@ import { set } from "date-fns";
 const SolverProfileTab = (props) => {
   const tabs = ["Details", "Contests", "Submissions"];
   const [curUser, setCurUser] = useState(null);
+  const [rating, setRating] = useState(null);
+
+    
 
   const { username } = useParams();
   const fetchUser = async () => {
@@ -17,6 +20,10 @@ const SolverProfileTab = (props) => {
     const res = await profileApi.getProfileByUsername(username);
     if (res.success) setCurUser(res.data[0]);
     console.log(curUser);
+
+    const res2 = await ratingApi.getRating();
+    setRating(res2.data[0]);
+
     //console.log(res.data[0]);
   };
   useEffect(() => {
@@ -48,6 +55,9 @@ const SolverProfileTab = (props) => {
         </p>
         <p className="mb-8 text-center md:text-left  font-light  md:text-lg bu-text-subtitle">
           {curUser?.fullname}
+        </p>
+        <p className="mb-8 text-center md:text-left  font-light  md:text-lg bu-text-subtitle">
+          {"Rating : " + rating?.rating}
         </p>
       </div>
 

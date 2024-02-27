@@ -21,7 +21,7 @@ class ContestRepository extends Repository {
     ON  "S"."userId" = "CS"."setterId"
     JOIN
     "Users" "U" ON "S"."userId" = "U"."id"
-    WHERE "C"."status"='scheduled'
+        WHERE "C"."status"='scheduled'
     GROUP BY
     "C"."id";
     `;
@@ -89,7 +89,7 @@ class ContestRepository extends Repository {
     const query = `
         SELECT
         "C".*,
-        jsonb_agg(jsonb_build_object('setterId', "S"."id", 'role', "CS"."role", 'username', "U"."username", 'image', "U"."image")) AS "ContestSetters"
+        jsonb_agg(jsonb_build_object('userId', "S"."userId", 'setterId', "S"."id", 'role', "CS"."role", 'username', "U"."username", 'image', "U"."image", 'email', "Cr".email)) AS "ContestSetters"
         FROM
         "Contests" "C"
         JOIN
@@ -99,6 +99,8 @@ class ContestRepository extends Repository {
         ON "S"."userId" = "CS"."setterId" 
         JOIN
         "Users" "U" ON "S"."userId" = "U"."id"
+        JOIN
+        "Credentials" "Cr" ON "U"."id" = "Cr"."userId"
         WHERE
         "C"."id" = $1
         GROUP BY

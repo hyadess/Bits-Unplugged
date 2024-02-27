@@ -18,5 +18,6 @@ router.use(
 // );
 
 router.post("/updateAllproblemRating", ratingController.updateAllproblemRating);
+router.post("/updateAllUserRating", ratingController.changeUserRatings);
 
 module.exports = router;

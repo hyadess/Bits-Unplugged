@@ -29,7 +29,7 @@ export default function ContestParticipant() {
     let sortedSubmissions = [...submissions];
 
     // Sort the copied submissions array based on createdAt in ascending order
-    sortedSubmissions.sort((a, b) => a.createdAt - b.createdAt);
+    sortedSubmissions.sort((a, b) => a.submittedAt - b.submittedAt);
 
     // Initialize a variable to keep track of cumulative points
     let cumulativePoints = 0;
@@ -40,9 +40,9 @@ export default function ContestParticipant() {
       submission.points = cumulativePoints;
     });
 
-    const data = submissions.map((submission) => {
+    const data = sortedSubmissions.map((submission) => {
       return {
-        x: new Date(submission.createdAt),
+        x: new Date(submission.submittedAt),
         y: submission.points,
       };
     });
@@ -52,7 +52,7 @@ export default function ContestParticipant() {
   const options = {
     chart: {
       id: "daily-activity-chart",
-      type: "area",
+      type: "line",
       height: 400,
       toolbar: {
         show: false,
@@ -81,18 +81,18 @@ export default function ContestParticipant() {
       enabled: false,
     },
     stroke: {
-      curve: "smooth",
-      width: 0, // border
+      curve: "straight",
+      width:5, // border
     },
-    fill: {
-      type: "gradient",
-      gradient: {
-        shadeIntensity: 0.6,
-        opacityFrom: 1,
-        opacityTo: 1,
-        stops: [0, 100],
-      },
-    },
+    // fill: {
+    //   type: "gradient",
+    //   gradient: {
+    //     shadeIntensity: 0.6,
+    //     opacityFrom: 1,
+    //     opacityTo: 1,
+    //     stops: [0, 100],
+    //   },
+    // },
     tooltip: {
       enabled: true,
       enabledOnSeries: undefined,
@@ -164,7 +164,7 @@ export default function ContestParticipant() {
             <Chart
               options={options}
               series={[{ name: "Submission history", data: graphData }]}
-              type="area"
+              type="line"
               width="100%"
               height={300}
             />

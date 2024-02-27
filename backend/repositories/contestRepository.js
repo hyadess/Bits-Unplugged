@@ -12,14 +12,12 @@ class ContestRepository extends Repository {
     const query = `
       SELECT
       "C".*,
-      jsonb_agg(jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image")) AS "owner"
+      jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image") AS "owner"
       FROM
       "Contests" "C"
       JOIN
       "Users" "U" ON "C"."ownerId" = "U"."id"
-      WHERE "C"."status"='scheduled'
-      GROUP BY
-      "C"."id";
+      WHERE "C"."status"='scheduled';
     `;
     const params = [];
     const result = await this.query(query, params);
@@ -70,12 +68,10 @@ class ContestRepository extends Repository {
   getMyOwnContests = async (setterId) => {
     const query = `
       SELECT "C".*,
-      jsonb_agg(jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image")) AS "owner"
+      jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image") AS "owner"
       FROM "Contests" "C"
       JOIN "Users" "U" ON "C"."ownerId" = "U"."id"
-      WHERE "C"."ownerId" = $1
-      GROUP BY
-      "C"."id";
+      WHERE "C"."ownerId" = $1;
     `;
 
     const params = [setterId];
@@ -86,7 +82,7 @@ class ContestRepository extends Repository {
     const query = `
         SELECT
         "C".*,
-        jsonb_agg(jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image", 'email', "Cr".email)) AS "owner"
+        jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image", 'email', "Cr".email) AS "owner"
         FROM
         "Contests" "C"
         JOIN
@@ -94,9 +90,7 @@ class ContestRepository extends Repository {
         JOIN
         "Credentials" "Cr" ON "U"."id" = "Cr"."userId"
         WHERE
-        "C"."id" = $1
-        GROUP BY
-        "C"."id";
+        "C"."id" = $1;
     `;
     const params = [contestId];
     const result = await this.query(query, params);

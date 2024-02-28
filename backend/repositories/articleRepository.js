@@ -10,6 +10,15 @@ class ArticleRepository extends Repository {
     return await db.Article.findAll();
   };
 
+  getMyArticles = async (setterId) => {
+    return await db.Article.findAll({
+      where: {
+        setterId,
+      },
+    order: [["createdAt", "DESC"]],
+    });
+  };
+
   getArticlesBySeries = async (seriesId) => {
     return await db.Article.findAll({
       where: {
@@ -39,8 +48,8 @@ class ArticleRepository extends Repository {
     return await db.Article.findByPk(id);
   };
 
-  createArticle = async (data) => {
-    return await db.Article.create(data);
+  createArticle = async (setterId, data) => {
+    return await db.Article.create({ setterId, ...data });
   };
 
   updateArticle = async (id, data) => {

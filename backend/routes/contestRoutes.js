@@ -20,9 +20,15 @@ router.get(
   "/:contestId/submissions/:username",
   contestController.getAllSubmissionsByUserAndContest
 );
-router.get("/:contestId/problems/:problemId/submissions", contestController.getAllSubmissionsByContestAndProblem);
+router.get(
+  "/:contestId/problems/:problemId/submissions",
+  contestController.getAllSubmissionsByContestAndProblem
+);
 
-router.get("/:contestId/isSolved/:problemId", contestController.isContestProblemSolved);
+router.get(
+  "/:contestId/isSolved/:problemId",
+  contestController.isContestProblemSolved
+);
 
 router.get(
   "/:contestId/problems/setterView",
@@ -51,13 +57,14 @@ router.put(
 );
 router.get("/:contestId/showSetters", contestController.availableCollaborators);
 router.get("/:contestId", contestController.getContestInfo);
-router.get("/:contestId/problem/:problemId", contestController.getContestProblemById);
+router.get(
+  "/:contestId/problem/:problemId",
+  contestController.getContestProblemById
+);
 
 router.put("/:contestId/publish", contestController.publishContest);
 router.put("/:contestId/start", contestController.startContest);
 router.put("/:contestId/end", contestController.endContest);
-
-router.post("/:contestId/updateDates", contestController.updateDates);
 
 router.post("/:contestId/addCollaborator", contestController.addCollaborator);
 router.post(
@@ -85,7 +92,6 @@ router.post(
 router.get("/:contestId/Leaderboard", contestController.getLeaderboard);
 router.get("/:contestId/Timeline", contestController.getTimeline);
 router.get("/:contestId/isRegistered", contestController.IsRegistered);
-
 
 //new ones....
 

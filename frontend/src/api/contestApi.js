@@ -73,12 +73,7 @@ class ContestApi extends Api {
   addContest = async (title) => {
     return await this.post("/contests/addContest", { title });
   };
-  updateDates = async (contestId, startDate, endDate) => {
-    return await this.post("/contests/" + contestId + "/updateDates", {
-      startDate,
-      endDate,
-    });
-  };
+
   availableCollaborators = async (contestId) => {
     return await this.get("/contests/" + contestId + "/showSetters");
   };

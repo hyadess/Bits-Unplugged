@@ -18,12 +18,6 @@ module.exports = {
       startDateTime: {
         type: Sequelize.DATE,
       },
-      startDate: {
-        type: Sequelize.DATE,
-      },
-      endDate: {
-        type: Sequelize.DATE,
-      },
       duration: {
         type: Sequelize.FLOAT,
       },

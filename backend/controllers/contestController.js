@@ -220,19 +220,6 @@ class ContestController extends Controller {
     }
   };
 
-  updateDates = async (req, res) => {
-    let result = await contestRepository.updateDates(
-      req.params.contestId,
-      req.body.startDate,
-      req.body.endDate
-    );
-    if (result.success) {
-      res.status(204).json(result.data);
-    } else {
-      res.status(500).json(result);
-    }
-  };
-
   availableCollaborators = async (req, res) => {
     let result = await contestRepository.availableCollaborators(
       req.user.userId,

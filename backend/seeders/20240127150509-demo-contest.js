@@ -12,7 +12,7 @@ module.exports = {
           description: "Demo contest description",
           startDateTime: new Date(),
           duration: "0.1",
-          status: "edit",
+          status: "scheduled",
           ownerId: 2,
           editorial: JSON.stringify([
             {
@@ -40,7 +40,7 @@ module.exports = {
           //id: 2,
           title: "Demo Contest 2",
           description: "Demo contest description",
-          startDateTime: new Date("February 27, 2024 13:31"),
+          startDateTime: new Date("February 29, 2024 1:00"),
           duration: "2.5",
           status: "scheduled",
           ownerId: 2,

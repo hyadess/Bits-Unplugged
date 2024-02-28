@@ -54,7 +54,6 @@ import UserContestDetails from "./pages/ContestDetails";
 import History from "./pages/setter/ProblemSetEnv/History";
 import TopicStat from "./pages/user/TopicStat";
 import AdminArticles from "./pages/admin/AdminArticles";
-import AdminArticleEditor from "./pages/admin/AdminArticleEditor";
 import Article from "./pages/user/Article/Article";
 import SolverNavbar from "./components/Navbars/SolverNavbar";
 import RecentProblems from "./pages/user/RecentProblems";
@@ -166,7 +165,7 @@ const ContestWrapper = () => {
         </>
       }
       right={
-        <div>
+        <div className="flex flex-col gap-5 w-full">
           <div>
             {endTime?.getTime() > Date.now() && (
               <CountdownTimer
@@ -177,9 +176,7 @@ const ContestWrapper = () => {
             )}
           </div>
 
-          <div>
-            {" "}
-            {/* Add left margin for spacing */}
+          <div className="w-full">
             <ContestProblemList />
           </div>
         </div>
@@ -356,14 +353,7 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
-          <Route
-            path="/admin/articles/:id/edit"
-            element={
-              <LayoutMain>
-                <AdminArticleEditor />
-              </LayoutMain>
-            }
-          />
+
           <Route
             path="/admin/articles/:id"
             element={

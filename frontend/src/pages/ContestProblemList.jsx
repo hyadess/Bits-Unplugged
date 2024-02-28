@@ -46,24 +46,19 @@ const ContestProblemList = () => {
   };
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="max-h-[80vh] overflow-y-auto">
-        <div
-          className={`flex flex-col items-left mb-4 hover:bg-gray-100 p-4 rounded-md cursor-pointer relative w-[15vw] h-[10vh] ${
-            problemid === "details" ? "bg-gray-100" : ""
-          } ${selectedProblemId === "details" ? "bg-gray-100" : ""}`}
-          //onClick={() => handleProblemClick("details")}
-        >
-          <h2 className="text-left text-3xl font-extrabold tracking-tight ">
-            <span className="bu-text-title"> Problems </span>
-          </h2>
+    <div className="flex flex-col gap-5 w-full">
+      <div className="flex flex-col gap-3 overflow-y-auto w-full px-3">
+        <div className="w-full p-5 py-4 rounded-lg shadow-md flex flex-row bu-text-primary bg-[#AADFCF] dark:bg-pink-600">
+          <h2 className="text-3xl font-extrabold">Problems</h2>
         </div>
-        {problems?.map((problem) => (
+        {problems?.map((problem, index) => (
           <ProblemCard
+            index={index}
             contestId={id}
             problem={problem}
             onClick={handleProblemClick}
             selectedId={selectedProblemId}
+            isSolved={problem.isSolved}
           ></ProblemCard>
         ))}
       </div>

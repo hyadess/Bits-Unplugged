@@ -9,19 +9,32 @@ class ContestRepository extends Repository {
   //*************ABOUT CONTEST****************** */
   // user side. get contest info.
   getAllContests = async () => {
-    const query = `
-      SELECT
-      "C".*,
-      jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image") AS "owner"
-      FROM
-      "Contests" "C"
-      JOIN
-      "Users" "U" ON "C"."ownerId" = "U"."id"
-      WHERE "C"."status"='scheduled';
-    `;
-    const params = [];
-    const result = await this.query(query, params);
-    return result;
+    // write a sequelize query to get all contests with owner and collaboratos
+    return await db.Contest.findAll({
+      where: {
+        status: "scheduled",
+      },
+      include: [
+        {
+          model: db.User,
+          as: "owner",
+        },
+        {
+          model: db.Collaborator,
+          as: "collaborators",
+          required: false,
+          where: {
+            status: "accepted",
+          },
+          include: [
+            {
+              model: db.User,
+              as: "setter",
+            },
+          ],
+        },
+      ],
+    });
   };
   updateContest = async (id, data) => {
     const [updatedRowsCount, [updatedContest]] = await db.Contest.update(data, {
@@ -49,16 +62,15 @@ class ContestRepository extends Repository {
   // only be visible to collaborators
   getMyContests = async (setterId) => {
     const query = `
-      SELECT
-      "C".*
+      SELECT "C".*,
+      jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image") AS "owner"
       FROM
       "Contests" "C"
       JOIN
       "Collaborators" "CB" ON "C"."id" = "CB"."contestId"
+      JOIN "Users" "U" ON "C"."ownerId" = "U"."id"
       WHERE 
-      "CB"."setterId" = $1 AND "CB"."status"='accepted'
-      GROUP BY
-      "C"."id";
+      "CB"."setterId" = $1 AND "CB"."status"='accepted';
     `;
     const params = [setterId];
     const result = await this.query(query, params);
@@ -195,24 +207,34 @@ class ContestRepository extends Repository {
     return result;
   };
   // it is for setters....................
-  getAllProblemsByContest = async (contestId) => {
+  getAllProblemsByContest = async (userId, contestId) => {
     const query = `
     SELECT "P".*, "CP"."status", "CP"."rating",
-        CASE WHEN EXISTS (
+    CASE 
+        WHEN EXISTS (
             SELECT *
             FROM "ContestSubmissions" "CS"
-            JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
+            JOIN "Participants" "Pc" ON "CS"."participantId" = "Pc"."id"
             JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
-            WHERE "P"."contestId" = $1 AND "CP"."problemId" = "P"."id" AND "CS"."verdict" = 'Accepted'
-        ) THEN true ELSE false END AS "isSolved"
+            WHERE "Pc"."contestId" = $1 AND "Pc"."userId" = $2 AND "CP"."problemId" = "P"."id" AND "CS"."verdict" = 'Accepted'
+        ) THEN true 
+        WHEN EXISTS (
+            SELECT *
+            FROM "ContestSubmissions" "CS"
+            JOIN "Participants" "Pc" ON "CS"."participantId" = "Pc"."id"
+            JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
+            WHERE "Pc"."contestId" = $1 AND "Pc"."userId" = $2 AND "CP"."problemId" = "P"."id" AND "CS"."verdict" = 'Wrong answer'
+        ) THEN false 
+        ELSE null 
+    END AS "isSolved"
     FROM "Problems" "P"
     JOIN "ContestProblems" "CP" ON "P"."id" = "CP"."problemId"
     RIGHT JOIN "Canvases" "C" ON "P"."canvasId" = "C"."id"
     WHERE "CP"."contestId" = $1;
-`;
-    const params = [contestId];
+    `;
+    const params = [contestId, userId];
     const result = await this.query(query, params);
-    // console.log("==>", result.data[0]);
+    console.log("==>", result.data[0]);
     return result;
   };
 

@@ -133,7 +133,7 @@ const CanvasDesignTab = ({ backupProblem, onSave }) => {
   //   );
   // }, [problem.canvasId]);
   return (
-    <div className="rounded-[30px] pb-[0.3rem] bg-[#fbfbfb]">
+    <div className="rounded-[30px] pb-[0.25rem] bg-[#fbfbfb]">
       <CanvasContainer
         canvasId={problem.canvasId}
         input={problem.canvasData}

@@ -23,16 +23,14 @@ import ProblemContextProvider, {
 } from "store/ProblemContextProvider";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import Header from "./articleSetEnv/Header";
-import ProbSetTab from "./articleSetEnv/ProbSetTab";
-import DetailsTab from "./articleSetEnv/DetailsTab";
-import CanvasDesignTab from "./articleSetEnv/CanvasDesignTab";
-import SolutionCheckerTab from "./articleSetEnv/SolutionCheckerTab";
-import TestTab from "../setter/ProblemSetEnv/TestTab";
-import Confirmation from "components/Confirmation";
+import ProbSetTab from "../ProbSetTab";
+import CanvasDesignTab from "../CanvasDesignTab";
+import SolutionCheckerTab from "../SolutionCheckerTab";
 import { Tooltip } from "@mui/material";
 import { IconButton } from "@mui/material";
 import ImageLoader from "components/ImageLoaders/ImageLoader";
+import CanvasPreview from "pages/CanvasPreview";
+import SubmissionService from "services/submissionService";
 
 const ArticleCanvas = ({ data, articleId, content, index }) => {
   const { state: problem, dispatch } = useProblemContext();
@@ -64,6 +62,14 @@ const ArticleCanvas = ({ data, articleId, content, index }) => {
     });
   };
 
+  const onSubmit = async () => {
+    await SubmissionService.checkSolution(
+      problem.checkerCode,
+      problem.checkerCanvas,
+      problem.test,
+      problem.testActivity
+    );
+  };
   const updateCanvas = async () => {
     console.log("UPDATE CANVAS  ");
     dispatch({
@@ -131,6 +137,7 @@ const ArticleCanvas = ({ data, articleId, content, index }) => {
           setActiveComponent(tab);
           // document.body.style.cursor = "default";
         }}
+        tabs={["Canvas", "Solution", "Test"]}
       />
 
       <div className="component-container relative">
@@ -152,7 +159,11 @@ const ArticleCanvas = ({ data, articleId, content, index }) => {
           <SolutionCheckerTab onSave={updateSolutionChecker} />
         </div>
         <div className={activeComponent === "Test" ? "block" : "hidden"}>
-          <TestTab ref={testRef} />
+          <CanvasPreview
+            ref={testRef}
+            onSubmit={onSubmit}
+            takeSnapshot={false}
+          />
         </div>
       </div>
       {/* <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} /> */}

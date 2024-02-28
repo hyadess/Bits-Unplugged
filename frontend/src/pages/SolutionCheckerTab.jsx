@@ -1,14 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import CanvasContainer from "../../../components/Canvases/CanvasContainer";
-import SolutionChecker from "../../SolutionChecker";
-import Button from "@mui/material/Button";
-import RotateLeftIcon from "@mui/icons-material/RotateLeft";
+import CanvasContainer from "../components/Canvases/CanvasContainer";
+import SolutionChecker from "./SolutionChecker";
 import SaveIcon from "@mui/icons-material/Save";
-import { SelectionField } from "../../../components/InputFields";
-import { useProblemContext } from "../../../store/ProblemContextProvider";
-import { problemApi } from "../../../api";
-import SubmissionService from "../../../services/submissionService";
-import { showSuccess } from "../../../App";
+import { useProblemContext } from "../store/ProblemContextProvider";
+import SubmissionService from "../services/submissionService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCode,
@@ -16,9 +11,8 @@ import {
   faPlay,
   faRotateRight,
 } from "@fortawesome/free-solid-svg-icons";
-import { ToggleButton } from "@mui/material";
-import { Code } from "@mui/icons-material";
-const SolutionCheckerTab = () => {
+// import SaveIcon from "@mui/icons-material/Save";
+const SolutionCheckerTab = ({ onSave }) => {
   const { state: problem, dispatch } = useProblemContext();
   const [output, setOutput] = useState("");
   const [stdout, setStdout] = useState([]);
@@ -37,20 +31,7 @@ const SolutionCheckerTab = () => {
   };
 
   const updateSolutionChecker = async () => {
-    if (checkerType == 0 && problem.checkerCode == null) return;
-    if (checkerType == 1 && problem.checkerCanvas == null) return;
-    const res = await problemApi.updateProblem(problem.id, {
-      ...(checkerType == 0 && {
-        checkerCode: problem.checkerCode,
-      }),
-      ...(checkerType == 1 && {
-        checkerCanvas: problem.checkerCanvas,
-      }),
-    });
-    if (res.success) {
-      // console.log(res);
-      showSuccess("Checker saved successfully", res);
-    }
+    onSave(checkerType);
   };
 
   const canvasRef = useRef();
@@ -66,7 +47,10 @@ const SolutionCheckerTab = () => {
   };
 
   return (
-    <div className="relative">
+    <div
+      className={`rounded-[30px] pb-[0.3rem]`}
+      style={{ backgroundColor: checkerType == 1 ? "#fbfbfb" : "#1F2531" }}
+    >
       {checkerType == 0 ? (
         <SolutionChecker
           code={problem.checkerCode}
@@ -79,6 +63,7 @@ const SolutionCheckerTab = () => {
           setStdout={setStdout}
           checkSubmit={onSubmit}
           save={updateSolutionChecker}
+          setCheckerType={setCheckerType}
         />
       ) : checkerType == 1 ? (
         canvasRef && (
@@ -103,31 +88,42 @@ const SolutionCheckerTab = () => {
               editOptions={problem.editOptions}
               stageRef={stageRef}
             />
-            <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
-              <div
-                className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
-                onClick={() => {
-                  resetChecker();
-                }}
+            {/* <Divider sx={{ height: "4px", width: "100%" }} /> */}
+            <div className="w-full h-[.2rem] bg-gray-200"></div>
+            <div className="relative">
+              <button
+                className="bu-button-secondary rounded-l-full px-7 py-2 text-center text-2xl  text-white absolute bottom-0 right-0 font-bold"
+                onClick={() => setCheckerType((prev) => !prev)}
               >
-                <FontAwesomeIcon icon={faRotateRight} />
-              </div>
+                <FontAwesomeIcon icon={checkerType ? faCode : faObjectGroup} />
+              </button>
+              <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4 ">
+                <div
+                  className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
+                  onClick={() => {
+                    resetChecker();
+                  }}
+                >
+                  {/* <RotateLeftIcon /> */}
+                  <FontAwesomeIcon icon={faRotateRight} />
+                </div>
 
-              <div
-                className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
-                onClick={onSubmit}
-              >
-                <FontAwesomeIcon icon={faPlay} />
-                {/* RUN */}
-              </div>
-              <div
-                className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
-                onClick={() => {
-                  updateSolutionChecker();
-                }}
-              >
-                {/* SAVE */}
-                <SaveIcon />
+                <div
+                  className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
+                  onClick={onSubmit}
+                >
+                  <FontAwesomeIcon icon={faPlay} />
+                  {/* RUN */}
+                </div>
+                <div
+                  className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
+                  onClick={() => {
+                    updateSolutionChecker();
+                  }}
+                >
+                  {/* SAVE */}
+                  <SaveIcon />
+                </div>
               </div>
             </div>
           </>
@@ -135,12 +131,6 @@ const SolutionCheckerTab = () => {
       ) : (
         <></>
       )}
-      <button
-        className="bu-button-secondary rounded-l-full px-7 py-2 text-center text-2xl  text-white absolute bottom-0 right-0 font-bold"
-        onClick={() => setCheckerType((prev) => !prev)}
-      >
-        <FontAwesomeIcon icon={checkerType == 1 ? faCode : faObjectGroup} />
-      </button>
     </div>
   );
 };

@@ -230,7 +230,7 @@ export default function Article() {
     <div>
       <div className="flex flex-row justify-between">
         <Title title={article.title} sub_title={article.subtitle} />
-        {type == 2 ? (
+        {type != 0 ? (
           <div className="flex items-center">
             <Tooltip
               title={<h1 className="text-lg text-white">Edit</h1>}
@@ -244,7 +244,11 @@ export default function Article() {
                   className="bu-text-primary flex cursor-pointer items-center text-4xl"
                   onClick={() => {
                     setLoading(true);
-                    navigate(`/admin/articles/${article.id}/edit`);
+                    navigate(
+                      `/${type == 1 ? "setter" : "admin"}/articles/${
+                        article.id
+                      }/edit`
+                    );
                   }}
                 >
                   <FontAwesomeIcon icon={faPenToSquare} />

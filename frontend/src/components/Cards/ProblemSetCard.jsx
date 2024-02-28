@@ -25,16 +25,8 @@ const ProblemSetCard = ({
   const navigate = useNavigate();
   useEffect(() => {
     setLoading(false);
-    console.log(parseInt(timestamp, 10)); // Convert the string to a number
-    const date = new Date(parseInt(timestamp, 10));
-    console.log(canvas);
   }, []);
-  const publishProblem = async () => {
-    // await problemController.publishProblem(id);
-  };
-  const unpublishProblem = async () => {
-    // await problemController.unpublishProblem(id);
-  };
+
   return (
     <div className="w-full" key={id}>
       <div

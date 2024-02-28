@@ -6,22 +6,33 @@ import Title from "../../components/Title";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "../../components/Modal";
 import { articleApi, seriesApi, topicApi } from "../../api";
-import { setLoading } from "../../App";
+import { setLoading, showSuccess } from "../../App";
 
 import AdminArticleCard from "../../components/Cards/AdminArticleCard";
+import PendingArticleCard from "components/Cards/PendingArticleCard";
 
 export default function AdminArticles() {
   const navigate = useNavigate();
+  const [pendingList, setPendingList] = useState([]);
+  const [approvedList, setApprovedList] = useState([]);
   const [articleList, setArticleList] = useState([]);
   const [topicList, setTopicList] = useState([]);
   const [seriesList, setSeriesList] = useState([]);
-
   const getArticles = async () => {
     const res = await articleApi.getAllArticles();
 
     if (res.success) {
+      // based on approval status put "pending" and "approved" articles in different lists
+      const pending = res.data.filter(
+        (article) => article.approvalStatus === "pending"
+      );
+      const approved = res.data.filter(
+        (article) => article.approvalStatus === "approved"
+      );
+      setPendingList(pending);
+      setApprovedList(approved);
+
       setArticleList(res.data);
-      console.log(res.data);
       setLoading(false);
     }
   };
@@ -47,36 +58,38 @@ export default function AdminArticles() {
     getTopicList();
   }, []);
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
-  const getArticleId = async (name) => {
-    const res = await articleApi.createArticle(name);
-    if (res.success) {
-      return res.data.id;
-    }
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (inputValue !== "") {
-      setLoading(true);
-      closeModal();
-      const articleId = await getArticleId(inputValue);
-      navigate(`/admin/articles/${articleId}`);
-    }
-  };
-
   const deleteArticle = async (articleId) => {
-    const res = await articleApi.deleteArticle(articleId);
+    const res = await articleApi.updateArticle(articleId, {
+      approvalStatus: "deleted",
+    });
     if (res.success) {
-      setArticleList((prev) =>
+      setApprovedList((prev) =>
+        prev.filter((article) => article.id !== articleId)
+      );
+    }
+  };
+
+  const approve = async (articleId) => {
+    const res = await articleApi.updateArticle(articleId, {
+      approvalStatus: "approved",
+    });
+    if (res.success) {
+      showSuccess("Article approved", res);
+      setApprovedList((prev) =>
+        prev.concat(pendingList.filter((article) => article.id === articleId))
+      );
+      setPendingList((prev) =>
+        prev.filter((article) => article.id !== articleId)
+      );
+    }
+  };
+
+  const reject = async (articleId) => {
+    const res = await articleApi.updateArticle(articleId, {
+      approvalStatus: "rejected",
+    });
+    if (res.success) {
+      setPendingList((prev) =>
         prev.filter((article) => article.id !== articleId)
       );
     }
@@ -84,32 +97,40 @@ export default function AdminArticles() {
 
   return (
     <div>
-      <Title title={`Articles`} sub_title={`Add/Delete/Update Article`} />
-
-      <div className="fixed bottom-10 z-10 right-10 hidden md:flex items-center justify-center ">
-        <div
-          onClick={openModal}
-          className="w-16 h-16 rounded-full justify-center inline-flex items-center text-white font-medium text-sm p-4 text-center ursor-pointer shadow-lg cursor-pointer bu-button-secondary "
-        >
-          <div className="text-[#ebebeb] dark:text-gray-900">
-            <AddIcon sx={{ fontSize: "4rem" }} />
-          </div>
-        </div>
-      </div>
+      <Title title={`Pending Articles`} sub_title={`Accept/Reject Articles`} />
 
       <CardContainer col={2}>
-        {articleList &&
-          articleList.map((article, index) => (
+        {pendingList &&
+          pendingList.map((article, index) => (
+            <PendingArticleCard
+              key={index}
+              idx={index + 1}
+              id={article.id}
+              title={article.title}
+              path={`/admin/articles/${article.id}`}
+              timestamp={article.updatedAt}
+              reject={() => reject(article.id)}
+              approve={() => approve(article.id)}
+              setter={article.setter}
+            />
+          ))}
+      </CardContainer>
+
+      <Title
+        title={`Approved Articles`}
+        sub_title={`Add/Delete/Update Article`}
+      />
+
+      <CardContainer col={2}>
+        {approvedList &&
+          approvedList.map((article, index) => (
             <AdminArticleCard
               key={index}
               idx={index + 1}
               id={article.id}
-              name={article.title}
-              image={article.logo}
+              title={article.title}
               article={article}
               path={`/admin/articles/${article.id}`}
-              action="Get Started"
-              canvas={article.canvas?.name}
               timestamp={article.updatedAt}
               topicList={topicList}
               seriesList={seriesList}
@@ -117,18 +138,6 @@ export default function AdminArticles() {
             />
           ))}
       </CardContainer>
-
-      <Modal
-        placeholder={"Article title"}
-        label={"Enter Article title"}
-        isOpen={modalIsOpen}
-        onClose={closeModal}
-        onSubmit={handleSubmit}
-        onChange={(e) => {
-          setInputValue(e.target.value);
-        }}
-        value={inputValue}
-      />
     </div>
   );
 }

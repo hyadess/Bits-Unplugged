@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "seriesId",
         as: "series",
       });
+      Article.belongsTo(models.User, {
+        foreignKey: "setterId",
+        as: "setter",
+      });
     }
   }
   Article.init(

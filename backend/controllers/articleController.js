@@ -11,7 +11,7 @@ class ArticleController extends Controller {
         req.user.type === 0
           ? null
           : req.user.type === 2
-          ? await articleRepository.getAllArticles()
+          ? await articleRepository.getSubmittedArticles()
           : await articleRepository.getMyArticles(req.user.userId);
       res.status(200).json(articles);
     });

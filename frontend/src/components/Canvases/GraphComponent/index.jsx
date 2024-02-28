@@ -95,8 +95,8 @@ const GraphComponent = (props, ref) => {
   const [isDragging, setIsDragging] = useState(-1);
   const [addNodeMode, setAddNodeMode] = useState(false);
   const [addEdgeMode, setAddEdgeMode] = useState(false);
-  const [selectedEdge, setSelectedEdge] = useState(null);
-  const [selectedNode, setSelectedNode] = useState(null);
+  // const [selectedEdge, setSelectedEdge] = useState(null);
+  // const [selectedNode, setSelectedNode] = useState(null);
   //custom sets................................................................................................
 
   const setNodes = (nodes) => {
@@ -279,7 +279,6 @@ const GraphComponent = (props, ref) => {
 
   // at start..............
   useEffect(() => {
-    const cookies = new Cookies();
     setUserType(localStorage.getItem("type"));
     importGraphData(props.input);
     setLoading(false);
@@ -658,7 +657,7 @@ const GraphComponent = (props, ref) => {
   };
 
   const importGraphData = (newData) => {
-    if (newData?.nodes ?? false) {
+        if (newData?.nodes ?? false) {
       let maxIndex = findMaxKey(newData.nodes);
       // Assuming nodes is an array of objects with an 'index' property
       setNodeIndex(maxIndex + 1);

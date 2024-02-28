@@ -16,7 +16,6 @@ function ProblemsCanvasController() {
   const backup = useRef(null);
   // const [problem, setProblem] = useState(null);
   // const [canvasData, setCanvasData] = useState(null);
-  // const [activityData, setActivityData] = useState({});
   const canvasRef = useRef();
 
   const { state: problem, dispatch } = useProblemContext();
@@ -33,13 +32,14 @@ function ProblemsCanvasController() {
   const renderProblem = async () => {
     const res = await problemApi.getProblemById(id);
     if (res.success) {
-      backup.current = res.data.canvasData;
+      backup.current = res.data.test;
       dispatch({
         type: "SET_INITIAL_STATE",
         payload: JSON.parse(
           JSON.stringify({
             ...res.data,
-            activityData: {},
+            test: deepCopy(res.data.canvasData),
+            testActivity: {},
           })
         ),
       });
@@ -49,26 +49,17 @@ function ProblemsCanvasController() {
   };
 
   const reset = async () => {
-    console.log(backup.current);
     dispatch({
-      type: "UPDATE_CANVAS",
-      payload: deepCopy(backup.current),
+      type: "SET_TEST_CANVAS",
+      payload: deepCopy(problem.canvasData),
     });
-    canvasRef?.current?.handleReset(JSON.parse(JSON.stringify(backup.current)));
+    canvasRef?.current?.handleReset(deepCopy(problem.canvasData));
   };
 
   const startTimeRef = useRef(null);
 
-  const solutionSubmit = async (image) => {
-    let res = await SubmissionService.checkSolution(
-      problem.checkerCode,
-      problem.checkerCanvas,
-      problem.canvasData,
-      problem.activityData
-    );
-    console.log("output " + res.output);
-
-    if (res.output === "Accepted") {
+  const solutionSubmit = async (verdict, image) => {
+    if (verdict === "Accepted") {
       if (startTimeRef.current) {
         const endTime = new Date();
         const durationInSeconds = Math.floor(
@@ -78,16 +69,16 @@ function ProblemsCanvasController() {
         if (durationInSeconds > 1 && type == 0) {
           console.log("Duration:", durationInSeconds);
           await submissionApi.submitSolution(
-            problem.canvasData,
-            res.output,
+            problem.test,
+            verdict,
             id,
             durationInSeconds,
             image
           );
         } else {
           await submissionApi.submitSolution(
-            problem.canvasData,
-            res.output,
+            problem.test,
+            verdict,
             id,
             0,
             image
@@ -95,13 +86,7 @@ function ProblemsCanvasController() {
         }
       }
     } else {
-      await submissionApi.submitSolution(
-        problem.canvasData,
-        res.output,
-        id,
-        0,
-        image
-      );
+      await submissionApi.submitSolution(problem.test, verdict, id, 0, image);
     }
   };
 

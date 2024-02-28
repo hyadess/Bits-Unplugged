@@ -350,7 +350,7 @@ const CanvasContainer = (props, ref) => {
     );
   };
   return (
-    <div className="relative mt-5">
+    <div className="relative">
       {/* <Zoom in={true}> */}
       <div
         className="rounded-[30px] bg-[#fbfbfb] dark:bg-[#1F2531] min-h-[32rem]"

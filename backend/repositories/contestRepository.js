@@ -1,5 +1,6 @@
 const db = require("../models");
 const Repository = require("./base");
+const { Op } = require("sequelize");
 const sendMail = require("../services/email");
 
 class ContestRepository extends Repository {
@@ -14,6 +15,38 @@ class ContestRepository extends Repository {
       where: {
         status: "scheduled",
       },
+      order: [["updatedAt", "DESC"]],
+      include: [
+        {
+          model: db.User,
+          as: "owner",
+        },
+        {
+          model: db.Collaborator,
+          as: "collaborators",
+          required: false,
+          where: {
+            status: "accepted",
+          },
+          include: [
+            {
+              model: db.User,
+              as: "setter",
+            },
+          ],
+        },
+      ],
+    });
+  };
+  getSubmittedContests = async () => {
+    // write a sequelize query to get all contests with owner and collaboratos
+    return await db.Contest.findAll({
+      where: {
+        status: {
+          [Op.or]: ["requested", "approved", "scheduled"],
+        },
+      },
+      order: [["updatedAt", "DESC"]],
       include: [
         {
           model: db.User,
@@ -234,7 +267,7 @@ class ContestRepository extends Repository {
     `;
     const params = [contestId, userId];
     const result = await this.query(query, params);
-    console.log("==>", result.data[0]);
+    // console.log("==>", result.data[0]);
     return result;
   };
 

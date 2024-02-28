@@ -40,6 +40,7 @@ export default function PendingContestCard({
   timestamp,
   reject,
   owner,
+  approve,
 }) {
   const [date, setDate] = useState();
   const [open, setOpen] = useState(false);
@@ -112,24 +113,14 @@ export default function PendingContestCard({
         <div className="flex flex-row justify-center gap-4 w-full mt-5">
           <button
             className="flex flex-row gap-2 flex-center font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-delete"
-            onClick={async () => {
-              const res = await contestApi.rejectContest(id);
-              if (res.success) {
-                showSuccess("Contest rejected", res);
-              }
-            }}
+            onClick={reject}
           >
             Reject
             <FontAwesomeIcon icon={faXmark} size="sm" />
           </button>
           <button
             className="flex flex-row gap-2 flex-center  font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-primary"
-            onClick={async () => {
-              const res = await contestApi.approveContest(id);
-              if (res.success) {
-                showSuccess("Contest approved", res);
-              }
-            }}
+            onClick={approve}
           >
             Approve
             <FontAwesomeIcon icon={faCheck} size="sm" />

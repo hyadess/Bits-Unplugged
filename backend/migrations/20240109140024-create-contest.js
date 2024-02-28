@@ -33,6 +33,11 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
+      editorial: {
+        type: Sequelize.JSONB,
+        // set default value to empty array
+        defaultValue: [],
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

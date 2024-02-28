@@ -27,6 +27,8 @@ module.exports = (sequelize, DataTypes) => {
       startDateTime: DataTypes.DATE,
       duration: DataTypes.FLOAT,
       status: DataTypes.STRING,
+      ownerId: DataTypes.INTEGER,
+      editorial: DataTypes.JSONB,
     },
     {
       sequelize,

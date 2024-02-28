@@ -371,6 +371,7 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
                     height: "3rem",
                   }}
                   onClick={() => {
+                    if (serial === -1) return;
                     setImages((prev) => {
                       const newImages = [...prev];
                       newImages.splice(serial, 1);

@@ -48,7 +48,7 @@ const SolutionCheckerTab = ({ onSave }) => {
 
   return (
     <div
-      className={`rounded-[30px] pb-[0.3rem]`}
+      className={`rounded-[30px] pb-[0.25rem]`}
       style={{ backgroundColor: checkerType == 1 ? "#fbfbfb" : "#1F2531" }}
     >
       {checkerType == 0 ? (

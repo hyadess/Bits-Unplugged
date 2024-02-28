@@ -729,7 +729,7 @@ const SetterArticleEditor = () => {
       setArticle(res.data);
       //set box count as the max box id
       let max = 0;
-      res.data.content.forEach((content) => {
+      res.data.content?.forEach((content) => {
         if (content.boxId > max) {
           max = content.boxId;
         }

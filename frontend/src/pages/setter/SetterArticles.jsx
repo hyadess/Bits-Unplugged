@@ -70,7 +70,7 @@ export default function SetterArticles() {
       setLoading(true);
       closeModal();
       const articleId = await getArticleId(inputValue);
-      navigate(`/admin/articles/${articleId}`);
+      navigate(`/setter/articles/${articleId}/edit`);
     }
   };
 

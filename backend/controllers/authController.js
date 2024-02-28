@@ -68,6 +68,16 @@ class AuthController extends Controller {
     });
   };
 
+  rejectSetter = async (req, res) => {
+    this.handleRequest(res, async () => {
+      const rejected = await authService.rejectSetter(req.params.id);
+      if (!rejected) {
+        res.status(404).json({ error: "User not found" });
+      }
+      res.status(200).json({ message: "User rejected successfully" });
+    });
+  };
+
   deleteAccount = async (req, res) => {
     this.handleRequest(res, async () => {
       console.log(req.params);

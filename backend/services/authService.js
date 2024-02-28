@@ -106,6 +106,19 @@ class AuthService extends Service {
     return { success: false };
   };
 
+  rejectSetter = async (id) => {
+    const setter = await authRepository.rejectSetter(id);
+    if (setter) {
+      sendMail(
+        setter.user.credential.email,
+        "Registration Rejected",
+        `Your application is rejected. Please contact the admin for further details.`
+      );
+      return { success: true };
+    }
+    return { success: false };
+  };
+
   verifyEmail = async (token) => {
     try {
       const payload = await verifyTokenAsync(token, JWT_SECRET);

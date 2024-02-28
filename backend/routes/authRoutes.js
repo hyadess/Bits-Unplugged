@@ -25,6 +25,12 @@ router.post(
   requiresAdmin,
   authController.approveSetter
 ); // dihan - Admin approval of problem setter registration
+router.post(
+  "/reject-setter/:id",
+  authenticateJWT,
+  requiresAdmin,
+  authController.rejectSetter
+); // dihan - Admin approval of problem setter registration
 router.get(
   "/setter-requests",
   authenticateJWT,

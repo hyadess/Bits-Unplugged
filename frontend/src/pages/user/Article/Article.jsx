@@ -22,6 +22,7 @@ import {
   faArrowLeft,
   faArrowRight,
   faCaretRight,
+  faPause,
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import SubmissionService from "services/submissionService";
@@ -109,33 +110,46 @@ const ArticleCanvas = ({ data }) => {
 const SlideShow = (props) => {
   const [images, setImages] = useState([]);
   const [index, setIndex] = useState(0);
-
+  const [autoPlay, setAutoPlay] = useState(false);
   useState(() => {
     setImages(deepCopy(props.images));
   }, [props.images]);
 
+  // If autoPlay is true, then set a timeout to change the index
+  useEffect(() => {
+    if (autoPlay) {
+      const interval = setInterval(() => {
+        if (index === images.length - 1) setAutoPlay(false);
+        else setIndex((prev) => Math.min(prev + 1, images.length - 1));
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [autoPlay, index]);
+
   return (
-    <>
-      <div className="bu-card-primary pb-10 rounded-[30px] flex flex-col min-h-[25rem]">
+    <div className="flex flex-col bg-[#fbfbfb] rounded-[30px]">
+      <div className="bg-[#fbfbfb] rounded-[30px] flex flex-col h-[32rem]">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row p-4 items-start bu-text-primary text-2xl font-semibold">
             {index + 1}/{images.length}
           </div>
         </div>
-        {images.map((image, i) => {
-          return (
-            <img
-              key={i}
-              src={image.url}
-              alt={image.caption}
-              style={{
-                width: "40rem",
-                margin: "auto",
-                display: index === i ? "block" : "none",
-              }}
-            />
-          );
-        })}
+        <div className="h-full flex-center">
+          {images.map((image, i) => {
+            return (
+              <img
+                key={i}
+                src={image.url}
+                alt={image.caption}
+                style={{
+                  width: "40rem",
+                  margin: "auto",
+                  display: index === i ? "block" : "none",
+                }}
+              />
+            );
+          })}
+        </div>
         {/* <img
           key={index}
           src={images[index]?.url}
@@ -143,31 +157,39 @@ const SlideShow = (props) => {
           style={{ width: "40rem", margin: "auto" }}
         /> */}
       </div>
-      <div className="flex flex-row justify-between w-full">
-        <button
-          className="text-white font-semibold rounded-lg px-5 py-2 text-center bu-button-primary cursor-pointer flex flex-row gap-3 items-center text-2xl"
-          style={{ visibility: index === 0 ? "hidden" : "visible" }}
+      <div className="w-full h-[.2rem] bg-gray-200"></div>
+      <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
+        <div
+          className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
+          // style={{ visibility: serial === 0 ? "hidden" : "visible" }}
           onClick={() => {
             setIndex((prev) => Math.max(prev - 1, 0));
           }}
         >
           <FontAwesomeIcon icon={faArrowLeft} />
-          Prev
-        </button>
-        <button
-          className="text-white font-semibold rounded-lg px-5 py-2 text-center bu-button-primary cursor-pointer flex flex-row gap-3 items-center text-2xl"
+        </div>
+
+        <div
+          className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
+          onClick={() => {
+            setAutoPlay((prev) => !prev);
+          }}
+        >
+          <FontAwesomeIcon icon={autoPlay ? faPause : faPlay} />
+        </div>
+        <div
+          className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
           onClick={() => {
             setIndex((prev) => Math.min(prev + 1, images.length - 1));
           }}
-          style={{
-            visibility: index === images.length - 1 ? "hidden" : "visible",
-          }}
+          // style={{
+          //   visibility: serial === images.length - 1 ? "hidden" : "visible",
+          // }}
         >
-          Next
           <FontAwesomeIcon icon={faArrowRight} />
-        </button>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 export default function Article() {

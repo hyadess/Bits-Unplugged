@@ -52,6 +52,26 @@ class SetterActivityRepository extends Repository {
     const result = this.query(query, params);
     return result;
   };
+
+  getSetterInfo = async (setterId) => {
+    const query =`
+    SELECT 
+    "S"."id" AS "setterId",
+    "C"."email" AS "email",
+    COUNT("P"."id") AS "totalProblems"
+    FROM "Setters" "S"
+    JOIN "Users" "U" ON "S"."userId" = "U"."id"
+    JOIN "Problems" "P" ON "U"."id" = "P"."setterId"
+    JOIN "Credentials" "C" ON "S"."userId" = "C"."userId"
+    
+    WHERE "S"."id" = $1
+    GROUP BY "S"."id","C"."email"
+    `
+    const params = [setterId];
+    const result = this.query(query, params);
+    return result;
+  };
+
 }
 
 module.exports = SetterActivityRepository;

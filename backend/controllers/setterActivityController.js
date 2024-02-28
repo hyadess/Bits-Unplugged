@@ -40,6 +40,16 @@ class SetterActivityController extends Controller{
         }
     }
 
+    getSetterInfo = async (req, res) => {
+        let result = await setterActivityRepository.getSetterInfo(req.params.setterId);
+        if(result.success){
+            res.status(200).json(result.data);
+        }
+        else{
+            res.status(404).json(result);
+        }
+    }
+
 
 }
 module.exports=SetterActivityController;

@@ -10,6 +10,9 @@ class SetterActivityApi extends Api {
   approvalStatusStat = async (setterId) => {
     return await this.get("/setterActivity/" + setterId + "/approvalStatus");
   };
+  getSetterInfo = async (setterId) => {
+    return await this.get("/setterActivity/" + setterId + "/info");
+  };
 }
 
 

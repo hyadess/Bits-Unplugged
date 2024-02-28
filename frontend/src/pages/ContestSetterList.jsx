@@ -4,7 +4,7 @@ import SetterCard from "../components/Cards/SetterCard";
 const ContestSettersList = ({ setterList }) => {
   console.log(setterList);
   return (
-    <section>
+    <section> 
       <div
         id="aboutus"
         className="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-24 mb-20 md:mb-0"
@@ -19,14 +19,18 @@ const ContestSettersList = ({ setterList }) => {
             journey
           </p>
         </div>
-        <div className="mx-auto grid h-full w-full grid-cols-1 place-items-center gap-8 md:w-80% md:grid-cols-2">
+        <div className="mx-auto grid h-full w-full grid-cols-1 place-items-center gap-8 md:w-100% md:grid-cols-2">
           {setterList?.map((setter) => (
+            
             <SetterCard
               key={setter.id}
+              setterId={setter.setterId}
               name={setter.username}
               position={setter.role}
               image={setter.image}
+              email={setter.email}
             />
+           
           ))}
         </div>
       </div>

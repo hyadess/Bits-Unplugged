@@ -33,7 +33,7 @@ import { getTimeStamp } from "../../services/dateUtil";
 import { SelectionField2, SelectionField3 } from "../InputFields";
 export default function AdminArticleCard({
   id,
-  name,
+  title,
   path,
   deleteAction,
   isLive,
@@ -85,7 +85,7 @@ export default function AdminArticleCard({
                 navigate(`/admin/articles/${article.id}`);
               }}
             >
-              {name}
+              {title}
             </h5>
             <IconButton onClick={() => setOpen(true)}>
               <div className="flex items-center bu-text-primary">
@@ -164,7 +164,7 @@ export default function AdminArticleCard({
             <FontAwesomeIcon icon={faFloppyDisk} className="mr-2" />
             Save
           </button>
-          <button
+          {/* <button
             className="font-medium rounded-lg text-lg px-10 py-2 text-center w-full bu-button-primary"
             onClick={async () => {
               navigate(`/admin/articles/${article.id}/edit`);
@@ -172,7 +172,7 @@ export default function AdminArticleCard({
           >
             <FontAwesomeIcon icon={faEdit} className="mr-2" />
             edit
-          </button>
+          </button> */}
         </div>
       </div>
 

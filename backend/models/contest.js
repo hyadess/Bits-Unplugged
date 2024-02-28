@@ -11,11 +11,15 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Contest.hasMany(models.Collaborator, {
         foreignKey: "contestId",
-        as: "setters",
+        as: "collaborators",
       });
       Contest.hasMany(models.ContestProblem, {
         foreignKey: "contestId",
         as: "problems",
+      });
+      Contest.belongsTo(models.User, {
+        foreignKey: "ownerId",
+        as: "owner",
       });
       // Contest.hasMany(models.Clarification);
     }

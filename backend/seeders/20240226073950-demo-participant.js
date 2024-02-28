@@ -58,6 +58,7 @@ module.exports = {
         { contestId: 1, userId: 46, type: 0 },
         { contestId: 1, userId: 47, type: 0 },
         { contestId: 1, userId: 48, type: 0 },
+        { contestId: 2, userId: 7, type: 0 },
       ],
       {}
     );

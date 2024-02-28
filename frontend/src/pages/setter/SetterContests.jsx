@@ -7,6 +7,7 @@ import { contestApi } from "../../api"; // Assuming you have an authApi to get u
 const SetterContests = () => {
   const navigate = useNavigate();
   const [contestList, setContestList] = useState([]);
+  const [collabContestList, setCollabContestList] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const deleteContest = async (contestID) => {
@@ -19,11 +20,12 @@ const SetterContests = () => {
   const getContestList = async () => {
     const res = await contestApi.getMyOwnContests(); // owner contests
     // write a api to get collab contests
+    const res2 = await contestApi.getMyContests();
     console.log(res.data);
-    if (res.success) {
-      if (res.data.length > 0)
-        setContestList(res.data.sort((a, b) => a.id - b.id));
-      else setLoading(false);
+    if (res.success && res2.success) {
+      setContestList(res.data);
+      setCollabContestList(res2.data);
+      if (res.data.length == 0 && res2.data.length == 0) setLoading(false);
     }
   };
 
@@ -60,6 +62,7 @@ const SetterContests = () => {
       deleteContest={deleteContest}
       createContest={createContest}
       contestList={contestList}
+      collabContestList={collabContestList}
       modalIsOpen={modalIsOpen}
     />
   );

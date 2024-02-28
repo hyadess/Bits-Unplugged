@@ -21,6 +21,8 @@ module.exports = (sequelize, DataTypes) => {
       // Setter
       User.hasOne(models.Setter, { foreignKey: "userId" });
       User.hasMany(models.Problem, { foreignKey: "setterId" });
+      User.hasMany(models.Article, { foreignKey: "setterId" });
+      User.hasMany(models.Contest, { foreignKey: "ownerId" });
       User.hasMany(models.Collaborator, {
         foreignKey: "setterId",
       });

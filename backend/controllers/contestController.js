@@ -7,12 +7,10 @@ class ContestController extends Controller {
     super();
   }
   getAllContests = async (req, res) => {
-    let result = await contestRepository.getAllContests();
-    if (result.success) {
-      res.status(200).json(result.data);
-    } else {
-      res.status(404).json(result);
-    }
+    this.handleRequest(res, async () => {
+      let contests = await contestRepository.getAllContests();
+      res.status(200).json(contests);
+    });
   };
   updateContest = async (req, res) => {
     this.handleRequest(res, async () => {
@@ -141,6 +139,7 @@ class ContestController extends Controller {
   };
   getAllProblemsByContest = async (req, res) => {
     let result = await contestRepository.getAllProblemsByContest(
+      req.user.userId,
       req.params.contestId
     );
     if (result.success) {

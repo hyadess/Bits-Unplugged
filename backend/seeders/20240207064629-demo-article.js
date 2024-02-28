@@ -12,7 +12,7 @@ module.exports = {
           setterId: 2,
           title: "The Tower of Hanoi",
           subtitle: "A Fascinating Puzzle of Mathematical Beauty",
-          approvalStatus: "approved",
+          approvalStatus: "pending",
           content: JSON.stringify([
             {
               boxId: 1,

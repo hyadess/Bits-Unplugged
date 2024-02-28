@@ -12,13 +12,14 @@ import ContestHeader from "./ContestHeader"; // Import your ContestHeader compon
 import DetailsTab from "./ContestDetails";
 import ProblemsTab from "./ContestProblems"; // Import your ProblemsTab component
 import Collaborators from "./ContestCollaborators"; // Import your ProblemsTab component
+import EditorialEditor from "./EditorialEditor";
 
 const ContestSetEnvView = () => {
   const backupContest = useRef(null);
   const { id } = useParams();
   const [isFormDirty, setFormDirty] = useState(false);
   const navigate = useNavigate();
-  const { dispatch } = useContestContext();
+  const { state: contest, dispatch } = useContestContext();
   const [activeComponent, setActiveComponent] = useState("Details");
   const deepCopy = (obj) => JSON.parse(JSON.stringify(obj));
 
@@ -89,6 +90,16 @@ const ContestSetEnvView = () => {
         >
           <ProblemsTab />
         </div>
+
+        {contest?.editorial !== undefined && (
+          <div
+            className={`mt-5 flex flex-col gap-5 ${
+              activeComponent === "Editorial" ? "block" : "hidden"
+            }`}
+          >
+            <EditorialEditor />
+          </div>
+        )}
       </div>
     </div>
   );

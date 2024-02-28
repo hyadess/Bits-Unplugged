@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 import {
   BrowserRouter as Router,
   Routes,
@@ -70,6 +70,8 @@ import ContestProblemList from "pages/ContestProblemList";
 import SetterHome from "pages/setter/SetterHome";
 import ContestTab from "components/ContestTab";
 import Leaderboard from "pages/LeaderBoard";
+import SetterArticles from "pages/setter/SetterArticles";
+import SetterArticleEditor from "pages/setter/SetterArticleEditor";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -150,15 +152,18 @@ const ContestWrapper = () => {
     <LayoutMain
       left={
         <>
-      <ContestTab
-        activeTab={activeComponent}
-        click={(tab) => {
-          setActiveComponent(tab);
-          if(tab=="Details")navigate(`/contests/${id}`);
-          else if(tab=="Leaderboard")navigate(`/contests/${id}/leaderboard`);
-          else if(tab=="My Submissions")navigate(`/contests/${id}/${username}`);
-        }}
-      /></>
+          <ContestTab
+            activeTab={activeComponent}
+            click={(tab) => {
+              setActiveComponent(tab);
+              if (tab == "Details") navigate(`/contests/${id}`);
+              else if (tab == "Leaderboard")
+                navigate(`/contests/${id}/leaderboard`);
+              else if (tab == "My Submissions")
+                navigate(`/contests/${id}/${username}`);
+            }}
+          />
+        </>
       }
       right={
         <div>
@@ -172,7 +177,9 @@ const ContestWrapper = () => {
             )}
           </div>
 
-          <div> {/* Add left margin for spacing */}
+          <div>
+            {" "}
+            {/* Add left margin for spacing */}
             <ContestProblemList />
           </div>
         </div>
@@ -395,6 +402,30 @@ const AppRoutes = () => {
             }
           />
           <Route
+            path="/setter/articles"
+            element={
+              <LayoutMain>
+                <SetterArticles />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/setter/articles/:id/edit"
+            element={
+              <LayoutMain>
+                <SetterArticleEditor />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/setter/articles/:id"
+            element={
+              <LayoutMain>
+                <Article />
+              </LayoutMain>
+            }
+          />
+          <Route
             path="/problems/:id/preview"
             element={
               <LayoutMain>
@@ -457,10 +488,7 @@ const AppRoutes = () => {
               path="/contests/:id/:username"
               element={<ContestParticipant />}
             />
-            <Route
-              path="/contests/:id/leaderboard"
-              element={<Leaderboard />}
-            />
+            <Route path="/contests/:id/leaderboard" element={<Leaderboard />} />
           </Route>
           <Route
             path="/problems/:id"

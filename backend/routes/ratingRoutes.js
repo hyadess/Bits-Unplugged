@@ -17,6 +17,10 @@ router.use(
 //   ratingController.getUserRatingsAndAttemptsByProblem
 // );
 
+router.get("/currentRating", ratingController.getCurrentRating);
+
+
+
 router.post("/updateAllproblemRating", ratingController.updateAllproblemRating);
 router.post("/updateAllUserRating", ratingController.changeUserRatings);
 

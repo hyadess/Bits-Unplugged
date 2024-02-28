@@ -18,6 +18,15 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
+      setterId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
       title: {
         type: Sequelize.STRING,
       },
@@ -29,6 +38,10 @@ module.exports = {
       },
       isLive: {
         type: Sequelize.BOOLEAN,
+      },
+      approvalStatus: {
+        type: Sequelize.STRING, // none, pending, approved, rejected
+        defaultValue: "none",
       },
       serialNo: {
         type: Sequelize.INTEGER,

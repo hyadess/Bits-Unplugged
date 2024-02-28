@@ -18,11 +18,13 @@ module.exports = (sequelize, DataTypes) => {
   Article.init(
     {
       seriesId: DataTypes.INTEGER,
+      setterId: DataTypes.INTEGER,
       title: DataTypes.STRING,
       subtitle: DataTypes.TEXT,
       content: DataTypes.JSONB,
       isLive: DataTypes.BOOLEAN,
       serialNo: DataTypes.INTEGER,
+      approvalStatus: DataTypes.STRING,
     },
     {
       sequelize,

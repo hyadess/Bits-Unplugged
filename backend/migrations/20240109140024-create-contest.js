@@ -24,6 +24,20 @@ module.exports = {
       status: {
         type: Sequelize.STRING,
       },
+      ownerId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      editorial: {
+        type: Sequelize.JSONB,
+        // set default value to empty array
+        defaultValue: [],
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

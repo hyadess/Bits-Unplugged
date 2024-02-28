@@ -1,8 +1,7 @@
-
 import React from "react";
 
 const ContestSetTab = (props) => {
-  const tabs = ["Details", "Problems"];
+  const tabs = ["Details", "Problems", "Editorial"];
 
   return (
     <div className="flex w-full mx-auto justify-between">

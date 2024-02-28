@@ -11,6 +11,7 @@ import {
 } from "@material-tailwind/react";
 import Chart from "react-apexcharts";
 import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
+import Timeline from "./Timeline";
 
 const Leaderboard = ({}) => {
   const { id } = useParams();
@@ -40,8 +41,8 @@ const Leaderboard = ({}) => {
 
   const calculateData = async () => {
     console.log("leaderboard", leaderboard);
-    setTimelineData([]);
-    
+
+    const list = [];
     for (let i = 0; i < Math.min(leaderboard?.length, 10); i++) {
       const user = leaderboard[i];
       console.log("->", user);
@@ -50,7 +51,7 @@ const Leaderboard = ({}) => {
       let cumulativePoints = 0;
       let dat = {
         name: user.username,
-        data: [],
+        data: [{ x: 0, y: 0 }],
       };
       let sortedSubmissions = [...submissions];
       sortedSubmissions.sort((a, b) => a.submittedAt - b.submittedAt);
@@ -60,17 +61,18 @@ const Leaderboard = ({}) => {
       });
       sortedSubmissions.forEach((submission) => {
         dat.data.push({
-          x: submission.submittedAt,
+          x: parseInt(submission.submittedAt),
           y: submission.points,
         });
       });
-      setTimelineData((prev) => [...prev, dat]);
+      list.push(dat);
     }
+    setTimelineData(list);
   };
 
   const chartConfig = {
     type: "line",
-    height: 240,
+    height: 300,
     series: timelineData.map((line) => ({ name: line.name, data: line.data })),
     options: {
       chart: {
@@ -81,16 +83,20 @@ const Leaderboard = ({}) => {
       title: {
         show: "",
       },
+      markers: {
+        size: 5,
+      },
       dataLabels: {
         enabled: false,
       },
-      colors: ["#020617", "#FF5733", "#008000"], // Add more colors as needed
+      colors: ["#020617", "#FF5733", "#008000", "#abcdef", "#dedcba"], // Add more colors as needed
       stroke: {
         lineCap: "round",
-        curve: "smooth",
+        curve: "straight",
+        width: 2,
       },
       markers: {
-        size: 0,
+        size: 5,
       },
       xaxis: {
         axisTicks: {
@@ -98,6 +104,15 @@ const Leaderboard = ({}) => {
         },
         axisBorder: {
           show: false,
+        },
+        type: "datetime",
+        labels: {
+          datetimeFormatter: {
+            year: "yyyy",
+            month: "MMM 'yy",
+            day: "dd MMM",
+            hour: "HH:mm",
+          },
         },
         // labels: {
         //   style: {
@@ -107,6 +122,7 @@ const Leaderboard = ({}) => {
         //     fontWeight: 400,
         //   },
         // },
+        min: 0,
       },
       yaxis: {
         labels: {
@@ -136,7 +152,7 @@ const Leaderboard = ({}) => {
         opacity: 0.8,
       },
       tooltip: {
-        enabled: false,
+        enabled: true,
         theme: "dark",
       },
     },
@@ -156,18 +172,19 @@ const Leaderboard = ({}) => {
 
   return (
     <div>
-      {/* <div className="mx-auto mb-8 max-w-screen-sm text-center lg:mb-16">
+      <div className="mx-auto mb-8 max-w-screen-sm text-center lg:mb-16">
         <h2 className="bu-text-primary mb-4 text-4xl font-extrabold tracking-tight">
           TIMELINE
         </h2>
-      </div> */}
+      </div>
 
-      {/* <Card>
+      <Card>
         <CardBody className="px-2 pb-0">
           <Chart {...chartConfig} />
         </CardBody>
-      </Card> */}
+      </Card>
 
+      {/* <Timeline /> */}
       <div className="mx-auto mb-8 max-w-screen-sm text-center lg:mb-16">
         <h2 className="bu-text-primary mb-4 text-4xl font-extrabold tracking-tight">
           LEADERBOARD

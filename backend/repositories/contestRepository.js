@@ -7,23 +7,17 @@ class ContestRepository extends Repository {
     super();
   }
   //*************ABOUT CONTEST****************** */
+  // user side. get contest info.
   getAllContests = async () => {
     const query = `
-    SELECT
-    "C".*,
-    jsonb_agg(jsonb_build_object('setterId', "S"."id", 'role', "CS"."role", 'username', "U"."username", 'image', "U"."image")) AS "ContestSetters"
-    FROM
-    "Contests" "C"
-    JOIN
-    "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
-    JOIN
-    "Setters" "S"
-    ON  "S"."userId" = "CS"."setterId"
-    JOIN
-    "Users" "U" ON "S"."userId" = "U"."id"
-    WHERE "C"."status"='scheduled'
-    GROUP BY
-    "C"."id";
+      SELECT
+      "C".*,
+      jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image") AS "owner"
+      FROM
+      "Contests" "C"
+      JOIN
+      "Users" "U" ON "C"."ownerId" = "U"."id"
+      WHERE "C"."status"='scheduled';
     `;
     const params = [];
     const result = await this.query(query, params);
@@ -41,6 +35,8 @@ class ContestRepository extends Repository {
     }
     return updatedContest.get();
   };
+
+  // decrecated
   getAllPublishedContests = async () => {
     const query = `
         SELECT * FROM "Contests" WHERE "status" IN ('upcoming','running', 'completed');
@@ -49,25 +45,20 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
-  // will also be visible to collaborators
+
+  // only be visible to collaborators
   getMyContests = async (setterId) => {
     const query = `
-    SELECT
-    "C".*,
-    jsonb_agg(jsonb_build_object('setterId', "S"."id", 'role', "CS"."role", 'username', "U"."username", 'image', "U"."image")) AS "ContestSetters"
-    FROM
-    "Contests" "C"
-    JOIN
-    "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
-    JOIN
-    "Setters" "S"
-    ON "S"."userId" = "CS"."setterId" 
-    JOIN
-    "Users" "U" ON "S"."userId" = "U"."id"
-    WHERE 
-    "CS"."setterId" = $1 AND "CS"."status"='accepted'
-    GROUP BY
-    "C"."id";
+      SELECT
+      "C".*
+      FROM
+      "Contests" "C"
+      JOIN
+      "Collaborators" "CB" ON "C"."id" = "CB"."contestId"
+      WHERE 
+      "CB"."setterId" = $1 AND "CB"."status"='accepted'
+      GROUP BY
+      "C"."id";
     `;
     const params = [setterId];
     const result = await this.query(query, params);
@@ -76,11 +67,13 @@ class ContestRepository extends Repository {
   // only contests where I am the OWNER
   getMyOwnContests = async (setterId) => {
     const query = `
-        SELECT "C".*, "CS"."role" AS "role"
-        FROM "Contests" "C"
-        JOIN "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
-        WHERE "CS"."setterId" = $1 AND "CS"."role" = 'owner';
-        `;
+      SELECT "C".*,
+      jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image") AS "owner"
+      FROM "Contests" "C"
+      JOIN "Users" "U" ON "C"."ownerId" = "U"."id"
+      WHERE "C"."ownerId" = $1;
+    `;
+
     const params = [setterId];
     const result = await this.query(query, params);
     return result;
@@ -89,22 +82,16 @@ class ContestRepository extends Repository {
     const query = `
         SELECT
         "C".*,
-        jsonb_agg(jsonb_build_object('setterId', "S"."id", 'role', "CS"."role", 'username', "U"."username", 'image', "U"."image",'email',"Ch"."email")) AS "ContestSetters"
+        jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image", 'email', "Cr".email) AS "owner"
         FROM
         "Contests" "C"
         JOIN
-        "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
+        "Users" "U" ON "C"."ownerId" = "U"."id"
         JOIN
-        "Setters" "S"
-        ON "S"."userId" = "CS"."setterId" 
-        JOIN
-        "Users" "U" ON "S"."userId" = "U"."id"
-        JOIN
-        "Credentials" "Ch" ON "U"."id" = "Ch"."userId"
+
+        "Credentials" "Cr" ON "U"."id" = "Cr"."userId"
         WHERE
-        "C"."id" = $1
-        GROUP BY
-        "C"."id";
+        "C"."id" = $1;
     `;
     const params = [contestId];
     const result = await this.query(query, params);
@@ -247,21 +234,13 @@ class ContestRepository extends Repository {
 
   addContest = async (setterId, title) => {
     const query = `
-        INSERT INTO "Contests" ("title", "description", "status", "updatedAt")
-        VALUES ($1, NULL, 'edit', $2)
+        INSERT INTO "Contests" ("title", "description", "status", "ownerId", "updatedAt")
+        VALUES ($1, NULL, 'edit', $2, $3)
         RETURNING "id";          
         `;
-    const params = [title, new Date("February 1, 2024 11:13:00")];
+    const params = [title, setterId, new Date()];
     const result = await this.query(query, params);
     const contestId = result.data[0].id;
-
-    const query2 = `
-        INSERT INTO "ContestSetters" ("contestId", "setterId", "role", "status")
-        VALUES ($1, $2, 'owner', 'accepted');
-        `;
-    const params2 = [contestId, setterId];
-    const result2 = await this.query(query2, params2);
-
     return result;
   };
 
@@ -348,15 +327,14 @@ class ContestRepository extends Repository {
       FROM
         "Setters" "S"
         JOIN "Users" "U"
-        ON "S"."userId" = "U"."id"
+        ON "S"."userId" = "U"."id" AND "U".id != $1
       WHERE
         "S"."isApproved" = true
-        AND "S"."userId" != $1
         AND NOT EXISTS (
           SELECT 1
-          FROM "ContestSetters" "CS"
-          WHERE "CS"."setterId" = "S"."userId"
-            AND "CS"."contestId" = $2
+          FROM "Collaborators" "CB"
+          WHERE "CB"."setterId" = "U"."id"
+            AND "CB"."contestId" = $2
         );
     `;
     const params = [id, contestId];
@@ -393,20 +371,19 @@ class ContestRepository extends Repository {
 
   addCollaborator = async (contestId, collaboratorIds, url) => {
     const valuesPart = collaboratorIds
-      .map(
-        (collaboratorId) => `(${contestId}, ${collaboratorId}, 'collaborator')`
-      )
+      .map((collaboratorId) => `(${contestId}, ${collaboratorId})`)
       .join(", ");
 
     // Construct the full query
     const query = `
-    INSERT INTO "ContestSetters" ("contestId", "setterId", "role")
+    INSERT INTO "Collaborators" ("contestId", "setterId")
     VALUES
       ${valuesPart};
     `;
+
     const result = await this.query(query);
 
-    const hudai = await this.accessContest(contestId);
+    const hudai_na = await this.accessContest(contestId);
     collaboratorIds.map(async (collaboratorId) => {
       const query2 = `SELECT "C"."email"
                     FROM "Credentials" "C"
@@ -427,10 +404,10 @@ class ContestRepository extends Repository {
 
   acceptInvitation = async (contestId, setterId) => {
     const query = `
-        UPDATE "ContestSetters"
-        SET "status" = 'accepted'
-        WHERE "contestId" = $1 AND "setterId" = $2;
-        `;
+      UPDATE "Collaborators"
+      SET "status" = 'accepted'
+      WHERE "contestId" = $1 AND "setterId" = $2;
+    `;
 
     const params = [contestId, setterId];
     const result = await this.query(query, params);
@@ -439,23 +416,22 @@ class ContestRepository extends Repository {
   };
 
   showAllCollaborators = async (contestId) => {
-    const query = `
-        SELECT *
-        FROM "ContestSetters"
-        WHERE "contestId" = $1 AND "role" = 'collaborator' AND "status" = 'accepted';
-        `;
     const query2 = `
-        SELECT
-        "S"."setterId",
-        "S"."status",
-        "U"."username",
-        "U"."image"
-        FROM
-        "ContestSetters" "S"
-        JOIN
-        "Users" "U" ON "S"."setterId" = "U"."id"
-        WHERE "S"."contestId" = $1 ;
+          SELECT
+          "Cr"."userId",
+          "S"."status",
+          "U"."username",
+          "U"."image",
+          "Cr"."email"
+          FROM
+          "Collaborators" "S"
+          JOIN
+          "Users" "U" ON "S"."setterId" = "U"."id"
+          JOIN
+          "Credentials" "Cr" ON "U"."id" = "Cr"."userId"
+          WHERE "S"."contestId" = $1 ;
         `;
+
     const params = [contestId];
     const result = await this.query(query2, params);
 
@@ -465,7 +441,7 @@ class ContestRepository extends Repository {
   // getMyRole = async (userId, contestId) => {
   //   const query = `
   //       SELECT *
-  //       FROM "ContestSetters"
+  //       FROM "Collaborators"
   //       WHERE "contestId" = $1 AND "role" = 'collaborator';
   //       `;
   //   const params = [userId, contestId];
@@ -799,13 +775,12 @@ class ContestRepository extends Repository {
 
   rejectContest = async (contestId) => {
     const query = `
-        UPDATE "Contests"
-        SET "status" = 'rejected'
-        WHERE "id" = $1;
-        `;
+      UPDATE "Contests"
+      SET "status" = 'rejected'
+      WHERE "id" = $1;
+    `;
     const params = [contestId];
     const result = await this.query(query, params);
-
     return result;
   };
 }

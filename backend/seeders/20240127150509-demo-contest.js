@@ -12,7 +12,29 @@ module.exports = {
           description: "Demo contest description",
           startDateTime: new Date(),
           duration: "0.1",
-          status: "scheduled",
+          status: "edit",
+          ownerId: 2,
+          editorial: JSON.stringify([
+            {
+              boxId: 1,
+              type: "markdown",
+              data: "# Introduction \n The Tower of Hanoi is a classic mathematical puzzle that has captivated minds for centuries. Initially invented by the French mathematician Édouard Lucas in the late 19th century, the Tower of Hanoi has since become a popular problem in the realms of computer science, recreational mathematics, and even psychology.",
+            },
+            {
+              boxId: 2,
+              type: "slideshow",
+              images: JSON.stringify([
+                { url: "/images/toh_1.png", caption: "Caption 1" },
+                { url: "/images/toh_2.png", caption: "Caption 2" },
+                { url: "/images/toh_3.png", caption: "Caption 3" },
+                { url: "/images/toh_4.png", caption: "Caption 4" },
+                { url: "/images/toh_5.png", caption: "Caption 5" },
+                { url: "/images/toh_6.png", caption: "Caption 6" },
+                { url: "/images/toh_7.png", caption: "Caption 7" },
+                { url: "/images/toh_8.png", caption: "Caption 8" },
+              ]),
+            },
+          ]),
         },
         {
           //id: 2,
@@ -21,6 +43,8 @@ module.exports = {
           startDateTime: new Date("February 27, 2024 13:31"),
           duration: "2.5",
           status: "scheduled",
+          ownerId: 2,
+          editorial: JSON.stringify([]),
         },
         {
           //id: 3,
@@ -29,6 +53,8 @@ module.exports = {
           startDateTime: new Date(),
           duration: "0.01",
           status: "approved",
+          ownerId: 2,
+          editorial: JSON.stringify([]),
         },
         {
           //id: 4,
@@ -37,6 +63,8 @@ module.exports = {
           startDateTime: new Date(),
           duration: "0.01",
           status: "scheduled",
+          ownerId: 2,
+          editorial: JSON.stringify([]),
         },
         {
           //id: 5,
@@ -45,6 +73,8 @@ module.exports = {
           startDateTime: new Date(),
           duration: "0.01",
           status: "edit",
+          ownerId: 2,
+          editorial: JSON.stringify([]),
         },
         {
           //id: 6,
@@ -53,6 +83,8 @@ module.exports = {
           startDateTime: new Date(),
           duration: "0.01",
           status: "edit",
+          ownerId: 2,
+          editorial: JSON.stringify([]),
         },
         {
           //id: 7,
@@ -61,6 +93,8 @@ module.exports = {
           startDateTime: new Date(),
           duration: "0.01",
           status: "edit",
+          ownerId: 2,
+          editorial: JSON.stringify([]),
         },
         {
           //id: 8,
@@ -69,6 +103,8 @@ module.exports = {
           startDateTime: new Date(),
           duration: "0.01",
           status: "edit",
+          ownerId: 2,
+          editorial: JSON.stringify([]),
         },
       ],
       {}

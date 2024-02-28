@@ -36,7 +36,7 @@ const ContestsView = ({
             deleteAction={deleteContest}
             isLive={contest.isLive}
             timestamp={contest.updatedAt}
-            owner={contest.ContestSetters[0]}
+            owner={contest.owner}
             startDate={contest.startDateTime}
             endDate={
               new Date(contest.startDateTime).getTime() +

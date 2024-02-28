@@ -2,7 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash, faPlay } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEye,
+  faEyeSlash,
+  faObjectGroup,
+  faPlay,
+} from "@fortawesome/free-solid-svg-icons";
 import monaco_theme from "../themes/my_theme.json";
 import SaveIcon from "@mui/icons-material/Save";
 import Visibility from "@mui/icons-material/Visibility";
@@ -139,31 +144,39 @@ export default function SolutionChecker(props) {
         )}
       </div>
 
-      <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
-        <div
-          className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
-          onClick={() => {
-            if (showStdOut) setShowStdOut(false);
-            else if (stdout.length > 0) setShowStdOut(true);
-            // setShowStdOut((prev) => !prev);
-          }}
+      <div className="relative">
+        <button
+          className="bu-button-secondary rounded-l-full px-7 py-2 text-center text-2xl  text-white absolute bottom-0 right-0 font-bold"
+          onClick={() => props.setCheckerType((prev) => !prev)}
         >
-          <FontAwesomeIcon icon={showStdOut ? faEye : faEyeSlash} />
-        </div>
+          <FontAwesomeIcon icon={faObjectGroup} />
+        </button>
+        <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
+          <div
+            className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
+            onClick={() => {
+              if (showStdOut) setShowStdOut(false);
+              else if (stdout.length > 0) setShowStdOut(true);
+              // setShowStdOut((prev) => !prev);
+            }}
+          >
+            <FontAwesomeIcon icon={showStdOut ? faEye : faEyeSlash} />
+          </div>
 
-        <div
-          className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
-          onClick={handleCheckSolution}
-        >
-          <FontAwesomeIcon icon={faPlay} />
-          {/* RUN */}
-        </div>
-        <div
-          className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
-          onClick={async () => await props.save()}
-        >
-          {/* SAVE */}
-          <SaveIcon />
+          <div
+            className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
+            onClick={handleCheckSolution}
+          >
+            <FontAwesomeIcon icon={faPlay} />
+            {/* RUN */}
+          </div>
+          <div
+            className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
+            onClick={async () => await props.save()}
+          >
+            {/* SAVE */}
+            <SaveIcon />
+          </div>
         </div>
       </div>
     </div>

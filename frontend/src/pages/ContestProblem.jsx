@@ -45,7 +45,8 @@ function ContestProblemController(endDate) {
         payload: JSON.parse(
           JSON.stringify({
             ...res.data,
-            activityData: {},
+            test: deepCopy(res.data.canvasData),
+            testActivity: {},
           })
         ),
       });
@@ -54,28 +55,19 @@ function ContestProblemController(endDate) {
     }
   };
 
-  const reset = async () => {
-    console.log(backup.current);
-    dispatch({
-      type: "UPDATE_CANVAS",
-      payload: deepCopy(backup.current),
-    });
-    canvasRef?.current?.handleReset(JSON.parse(JSON.stringify(backup.current)));
-  };
+  // const reset = async () => {
+  //   console.log(backup.current);
+  //   dispatch({
+  //     type: "UPDATE_CANVAS",
+  //     payload: deepCopy(backup.current),
+  //   });
+  //   canvasRef?.current?.handleReset(JSON.parse(JSON.stringify(backup.current)));
+  // };
 
   const startTimeRef = useRef(null);
 
-  const solutionSubmit = async (image) => {
-    let res = await SubmissionService.checkSolution(
-      problem.checkerCode,
-      problem.checkerCanvas,
-      problem.canvasData,
-      problem.activityData
-    );
-
-    console.log("output " + res.output);
-
-    if (res.output === "Accepted") {
+  const solutionSubmit = async (verdict, image) => {
+    if (verdict === "Accepted") {
       if (startTimeRef.current) {
         const endTime = new Date();
         const durationInSeconds = Math.floor(
@@ -103,14 +95,17 @@ function ContestProblemController(endDate) {
 
         const isSolved = await contestApi.isContestProblemSolved(id, problemid);
         console.log("endTime==>", endDate);
-        if (isSolved.data.length === 0 && endDate?.endDate.endTime.getTime() > Date.now() ) {
+        if (
+          isSolved.data.length === 0 &&
+          endDate?.endDate.endTime.getTime() > Date.now()
+        ) {
           const res2 = await contestApi.getContestProblemById(id, problemid);
           await contestApi.addSubmissionToContest(
             id,
             problemid,
-            res.output,
-            problem.canvasData,
-            problem.activityData,
+            verdict,
+            problem.test,
+            problem.testActivity,
             res2.data[0].rating,
             durationInSeconds,
             image,
@@ -135,9 +130,9 @@ function ContestProblemController(endDate) {
         await contestApi.addSubmissionToContest(
           id,
           problemid,
-          res.output,
-          problem.canvasData,
-          problem.activityData,
+          verdict,
+          problem.test,
+          problem.testActivity,
           0,
           durationInSeconds,
           image,
@@ -183,7 +178,7 @@ function ContestProblemController(endDate) {
     <ContestProblemView
       ref={canvasRef}
       onSubmit={solutionSubmit}
-      onReset={reset}
+      // onReset={reset}
       type={type}
       colorMode={colorMode}
     />

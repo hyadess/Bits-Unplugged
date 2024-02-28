@@ -5,3 +5,4 @@ bugs.txt
 dist/
 .env*
 *.local.*
+backend/public/uploads

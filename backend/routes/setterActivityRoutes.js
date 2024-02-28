@@ -12,6 +12,6 @@ router.get("/:setterId/problems", setterActivityController.getAllProblems);
 router.get("/:setterId/series", setterActivityController.setterActivityBySeries);
 router.get("/:setterId/famousProblem", setterActivityController.famousProblemBySetter);
 router.get("/:setterId/approvalStatus", setterActivityController.approvalStatusStat);
-
+router.get("/:setterId/info", setterActivityController.getSetterInfo);
 
 module.exports = router;

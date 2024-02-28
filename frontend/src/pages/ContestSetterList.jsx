@@ -3,7 +3,7 @@ import SetterCard from "../components/Cards/SetterCard";
 
 const ContestSettersList = ({ owner, collaborators }) => {
   return (
-    <section>
+    <section> 
       <div
         id="aboutus"
         className="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-24 mb-20 md:mb-0"
@@ -17,6 +17,7 @@ const ContestSettersList = ({ owner, collaborators }) => {
             Meet our problem setter team
           </p> */}
         </div>
+
         <div className="mx-auto grid h-full w-full grid-cols-1 place-items-center gap-8 md:w-full md:grid-cols-3">
           <SetterCard
             key={owner.userId}
@@ -35,6 +36,7 @@ const ContestSettersList = ({ owner, collaborators }) => {
               email={setter.email}
               setterId={setter.userId}
             />
+           
           ))}
         </div>
       </div>

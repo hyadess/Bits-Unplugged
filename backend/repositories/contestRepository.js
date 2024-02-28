@@ -88,6 +88,7 @@ class ContestRepository extends Repository {
         JOIN
         "Users" "U" ON "C"."ownerId" = "U"."id"
         JOIN
+
         "Credentials" "Cr" ON "U"."id" = "Cr"."userId"
         WHERE
         "C"."id" = $1;

@@ -32,7 +32,7 @@ const Team = ({ setNav }, ref) => {
           <TeamCard
             name="Sayem Shahad Soummo"
             position="1905064"
-            detail="Frontend Developer"
+            detail="Backend Developer"
             image="/images/sayem.jpg"
           />
           <TeamCard
@@ -44,7 +44,7 @@ const Team = ({ setNav }, ref) => {
           <TeamCard
             name="Souvik Ghosh"
             position="1905073"
-            detail="Backend Developer"
+            detail="Frontend Developer"
             image="/images/souvik.jpg"
           />
         </div>

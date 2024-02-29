@@ -13,6 +13,8 @@ import Chart from "react-apexcharts";
 import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
 import Timeline from "./Timeline";
 import "./LeaderBoard.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChartArea, faChartLine } from "@fortawesome/free-solid-svg-icons";
 const Leaderboard = ({}) => {
   const { id } = useParams();
   const [endTime, setEndTime] = useState();
@@ -53,6 +55,11 @@ const Leaderboard = ({}) => {
         name: user.username,
         data: [{ x: 0, y: 0 }],
       };
+      // Only choose the "Accepted" submissions
+
+      // let sortedSubmissions = submissions.filter(
+      //   (submission) => submission.verdict === "Accepted"
+      // );
       let sortedSubmissions = [...submissions];
       sortedSubmissions.sort((a, b) => a.submittedAt - b.submittedAt);
       sortedSubmissions.forEach((submission) => {
@@ -171,18 +178,30 @@ const Leaderboard = ({}) => {
   }, [timelineData]);
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="mx-auto mb-8 w-full text-center lg:mb-16">
-        <h2 className="bu-text-primary mb-4 text-4xl font-extrabold tracking-tight">
-          TIMELINE
-        </h2>
-      </div>
+    <div className="flex flex-col gap-8 mt-10">
+      <div className="flex flex-col">
+        <div className="mx-auto w-full text-right p-8 bg-[#aadfcf] rounded-t-[15px]">
+          <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-col w-full items-start gap-1">
+              <h2 className="bu-text-primary text-2xl font-semibold tracking-wider uppercase">
+                Top 10 Contestants
+              </h2>
+              <h3 className="opacity-[65%] bu-text-primary text-[13px] font-medium tracking-[3.4px] uppercase">
+                Timeline graph
+              </h3>
+            </div>
+            <div className="bu-text-primary text-4xl">
+              <FontAwesomeIcon icon={faChartLine} />
+            </div>
+          </div>
+        </div>
 
-      <Card>
-        <CardBody className="px-2 pb-0">
-          <Chart {...chartConfig} />
-        </CardBody>
-      </Card>
+        <Card>
+          <CardBody className="px-2 pb-0">
+            <Chart {...chartConfig} />
+          </CardBody>
+        </Card>
+      </div>
 
       <article class="leaderboard mx-auto shadow-lg">
         <header className="flex flex-row justify-between w-full">
@@ -329,7 +348,7 @@ const Leaderboard = ({}) => {
       </article>
 
       {/* <Timeline /> */}
-      <div className="mx-auto mb-8 max-w-screen-sm text-center lg:mb-16">
+      {/* <div className="mx-auto mb-8 max-w-screen-sm text-center lg:mb-16">
         <h2 className="bu-text-primary mb-4 text-4xl font-extrabold tracking-tight">
           LEADERBOARD
         </h2>
@@ -346,7 +365,7 @@ const Leaderboard = ({}) => {
             path={`/contests/${id}/${user.username}`}
           />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

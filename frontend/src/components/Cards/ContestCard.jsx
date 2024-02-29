@@ -16,7 +16,7 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { setLoading } from "../../App";
+import { setLoading, showMessage, showToast } from "../../App";
 import { getTimeStamp } from "../../services/dateUtil";
 import Confirmation from "../Confirmation";
 import { contestApi } from "api";
@@ -49,8 +49,15 @@ const ContestCard = ({
   };
 
   const handleButtonClick2 = async () => {
-    const res = await contestApi.participateUpcomingContest(id);
-    if (res.success) setRegistered(true);
+    if (new Date(startDate).getTime() < Date.now()) {
+      showToast("Registration closed", "error");
+    } else {
+      const res = await contestApi.participateUpcomingContest(id);
+      if (res.success) {
+        setRegistered(true);
+        showToast("Successfully registered to " + name, "success");
+      }
+    }
   };
 
   const getRegistrationInfo = async () => {
@@ -156,7 +163,7 @@ const ContestCard = ({
                 ) : (
                   <button
                     className="bu-button-save flex flex-row gap-1 justify-center items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium w-full cursor-pointer"
-                    onClick={() => handleButtonClick2()}
+                    onClick={async () => await handleButtonClick2()}
                   >
                     <HowToReg />
                     <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
@@ -184,12 +191,17 @@ const ContestCard = ({
               <div className="text-lg">
                 <FontAwesomeIcon icon={faDoorOpen} />
               </div>
-              <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
-                {/* {new Date(startDate).getTime() < Date.now() && isRegistered
-                ? "Participate"
-                : "Preview"} */}
-                Enter
-              </h5>
+              {new Date(startDate).getTime() < Date.now() &&
+              new Date(endDate).getTime() > Date.now() &&
+              isRegistered ? (
+                <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
+                  Participate
+                </h5>
+              ) : (
+                <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
+                  Enter
+                </h5>
+              )}
             </div>
           </div>
         </div>

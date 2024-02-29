@@ -120,11 +120,11 @@ class RatingRepository extends Repository {
     getAllContestParticipantWithRating = async (contestId) => {
         const query = `
             SELECT "CP"."userId", 
-            "R"."rating",
+            "R"."rating"
             FROM "Participants" "CP"
             JOIN "UserRatings" "R" ON "CP"."userId" = "R"."userId"
             WHERE "CP"."contestId" = $1 AND "CP"."type" = 0 
-            AND "CP"."id" IN (SELECT "participantId" FROM "ContestSubmissions");
+            AND "CP"."id" IN (SELECT "participantId" FROM "ContestSubmissions")
             ORDER BY "R"."rating" DESC;
         `;
         const params = [contestId];

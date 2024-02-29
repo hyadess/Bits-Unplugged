@@ -138,6 +138,7 @@ const ContestCard = ({
   updatedAt,
   registerAction,
   userID,
+  schedule,
 }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -205,12 +206,7 @@ const ContestCard = ({
         <button
           className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-primary"
           onClick={async () => {
-            const res = await contestApi.updateContest(id, {
-              startDateTime: date,
-              status: "scheduled",
-            });
-            showSuccess("Contest scheduled successfully", res);
-            // setProblem((prev) => ({ ...prev, seriesId: series?.id }));
+            schedule(id, date);
           }}
         >
           <FontAwesomeIcon icon={faCalendarCheck} className="mr-2" />

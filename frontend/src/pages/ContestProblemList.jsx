@@ -28,7 +28,7 @@ const ContestProblemList = () => {
       const sortedProblems = res.data.sort((a, b) => a.rating - b.rating);
       setProblems(sortedProblems);
     }
-    console.log("contest problems ===>", problems);
+    // console.log("contest problems ===>", problems);
     return res;
   };
 
@@ -46,7 +46,7 @@ const ContestProblemList = () => {
   };
 
   return (
-    <div className="flex flex-col gap-5 w-full">
+    <div className="flex flex-col gap-4 w-full">
       <div className="flex flex-col gap-3 overflow-y-auto w-full px-3">
         <div className="w-full p-5 py-4 rounded-lg shadow-md flex flex-row bu-text-primary bg-[#AADFCF] dark:bg-pink-600">
           <h2 className="text-3xl font-extrabold">Problems</h2>

@@ -620,6 +620,7 @@ class ContestRepository extends Repository {
         "U"."id",
         "U"."username",
         "U"."image",
+        "U"."fullname",
         SUM("CS"."points") AS "points"
         FROM
         "ContestSubmissions" "CS"

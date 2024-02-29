@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SetterCard from "components/Cards/SetterCard";
 import LeaderBoardCard from "components/Cards/LeaderBoardCard";
 import { contestApi } from "api";
@@ -15,13 +15,14 @@ import Timeline from "./Timeline";
 import "./LeaderBoard.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartArea, faChartLine } from "@fortawesome/free-solid-svg-icons";
+import { setLoading } from "App";
 const Leaderboard = ({}) => {
   const { id } = useParams();
   const [endTime, setEndTime] = useState();
   const [contest, setContest] = useState(null);
   const [leaderboard, setLeaderboard] = useState(null);
   const [timelineData, setTimelineData] = useState([]);
-
+  const navigate = useNavigate();
   const fetchLeaderboard = async () => {
     const leaderboardRes = await contestApi.getLeaderboard(id);
     if (leaderboardRes.success) {
@@ -45,7 +46,7 @@ const Leaderboard = ({}) => {
     console.log("leaderboard", leaderboard);
 
     const list = [];
-    for (let i = 0; i < Math.min(leaderboard?.length, 10); i++) {
+    for (let i = 0; i < Math.min(leaderboard?.length, 5); i++) {
       const user = leaderboard[i];
       console.log("->", user);
       const submissions = await getUserSubmissions(user.username);
@@ -184,7 +185,7 @@ const Leaderboard = ({}) => {
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-col w-full items-start gap-1">
               <h2 className="bu-text-primary text-2xl font-semibold tracking-wider uppercase">
-                Top 10 Contestants
+                Top 5 Contestants
               </h2>
               <h3 className="opacity-[65%] bu-text-primary text-[13px] font-medium tracking-[3.4px] uppercase">
                 Timeline graph
@@ -266,7 +267,13 @@ const Leaderboard = ({}) => {
 
         <main class="leaderboard__profiles">
           {leaderboard?.map((user) => (
-            <article class="leaderboard__profile">
+            <article
+              class="leaderboard__profile"
+              onClick={() => {
+                setLoading(true);
+                navigate(`/contests/${id}/${user.username}`);
+              }}
+            >
               <div className="flex flex-row w-[70%] items-center gap-10">
                 <img
                   src={

@@ -28,6 +28,30 @@ import {
   faClock,
 } from "@fortawesome/free-regular-svg-icons";
 import { HowToReg } from "@mui/icons-material";
+
+const DifficultyTag = ({ difficultyTag }) => {
+  const [difficulty, setDifficulty] = useState(null);
+  useEffect(() => {
+    setDifficulty(["Easy", "Medium", "Hard"][Math.floor(Math.random() * 3)]);
+  }, [difficultyTag]);
+
+  return (
+    difficulty && (
+      <div
+        className={`flex flex-row justify-center font-semibold items-center border-2 rounded-full px-2 w-[5rem] pb-[0.1rem] ${
+          difficulty === "Easy"
+            ? "text-green-500 border-green-500"
+            : difficulty === "Medium"
+              ? "text-[#FF981E] border-[#FF981E]"
+              : "text-red-500 border-red-500"
+        }`}
+      >
+        {difficulty}
+      </div>
+    )
+  );
+};
+
 const ContestCard = ({
   id,
   name,
@@ -101,9 +125,12 @@ const ContestCard = ({
                   </div>
                 )
             } */}
-            <div className="bu-text-primary">
+            {/* Randomly choose between Easy, Medium and Hard tag for contest */}
+            <DifficultyTag />
+
+            {/* <div className="bu-text-primary">
               {isRegistered && <HowToReg />}
-            </div>
+            </div> */}
           </div>
 
           <div className="flex flex-row justify-between items-center w-full">
@@ -180,6 +207,7 @@ const ContestCard = ({
                 <div className="text-green-500 flex flex-row gap-1 justify-center items-center rounded-lg px-5 py-2.5 text-center text-lg font-medium w-full pointer-events-none">
                   <FontAwesomeIcon icon={faCheckCircle} />
                   Finished
+                  {/* If participated - show Participated */}
                 </div>
               )}
             </div>

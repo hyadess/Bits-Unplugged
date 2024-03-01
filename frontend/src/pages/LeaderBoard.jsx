@@ -79,6 +79,11 @@ const Leaderboard = ({}) => {
           y: submission.points,
         });
       });
+
+      // dat.data.push({
+      //   x: contest.duration * 60 * 60 * 1000,
+      //   y: cumulativePoints,
+      // });
       list.push(dat);
     }
     setTimelineData(list);
@@ -86,7 +91,7 @@ const Leaderboard = ({}) => {
 
   const chartConfig = {
     type: "line",
-    height: 300,
+    height: 400,
     series: timelineData.map((line) => ({ name: line.name, data: line.data })),
     options: {
       chart: {
@@ -110,6 +115,7 @@ const Leaderboard = ({}) => {
       stroke: {
         curve: "straight",
         width: 5, // border
+        lineCap: "round",
       },
       markers: {
         size: 0,

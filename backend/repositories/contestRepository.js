@@ -166,7 +166,7 @@ class ContestRepository extends Repository {
         JOIN "Problems" "Pb" ON "CP"."problemId" = "Pb"."id"
         JOIN "Users" "U" ON "P"."userId" = "U"."id"
         WHERE "P"."contestId" = $2 AND "U"."username" = $1
-        ORDER BY "CS"."submittedAt" DESC;
+        ORDER BY "CS"."submittedAt" ASC;
         `;
     const params = [username, contestId];
     const result = await this.query(query, params);

@@ -11,7 +11,7 @@ module.exports = {
           title: "Demo Contest 1",
           description: "Demo contest description",
           startDateTime: new Date(),
-          duration: "0.1",
+          duration: "1",
           status: "scheduled",
           ownerId: 2,
           editorial: JSON.stringify([

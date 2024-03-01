@@ -50,7 +50,9 @@ export default function ContestParticipant() {
     console.log("dihan: ", graphData);
   };
 
-  const [options, setOptions] = useState({
+  const [options, setOptions] = useState(
+    
+    {
     chart: {
       id: "daily-activity-chart",
       type: "line",

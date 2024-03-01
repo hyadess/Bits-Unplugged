@@ -43,6 +43,20 @@ module.exports = {
         },
         {
           //id: 1,
+          contestId: 1,
+          problemId: 13,
+          status: "published",
+          rating: 1200,
+        },
+        {
+          //id: 1,
+          contestId: 1,
+          problemId: 4,
+          status: "published",
+          rating: 1400,
+        },
+        {
+          //id: 1,
           contestId: 2,
           problemId: 16,
           status: "published",

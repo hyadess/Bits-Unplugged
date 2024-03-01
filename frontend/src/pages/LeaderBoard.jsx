@@ -56,7 +56,7 @@ const Leaderboard = ({}) => {
       const user = leaderboard[i];
       console.log("->", user);
       const submissions = await getUserSubmissions(user.username);
-      console.log(submissions);
+      console.log("Submission", submissions);
       let cumulativePoints = 0;
       let dat = {
         name: user.username,
@@ -64,10 +64,10 @@ const Leaderboard = ({}) => {
       };
       // Only choose the "Accepted" submissions
 
-      // let sortedSubmissions = submissions.filter(
-      //   (submission) => submission.verdict === "Accepted"
-      // );
-      let sortedSubmissions = [...submissions];
+      let sortedSubmissions = submissions.filter(
+        (submission) => submission.verdict === "Accepted"
+      );
+      // let sortedSubmissions = [...submissions];
       sortedSubmissions.sort((a, b) => a.submittedAt - b.submittedAt);
       sortedSubmissions.forEach((submission) => {
         cumulativePoints += submission.points;
@@ -105,9 +105,7 @@ const Leaderboard = ({}) => {
       title: {
         show: "",
       },
-      markers: {
-        size: 5,
-      },
+
       dataLabels: {
         enabled: false,
       },
@@ -118,7 +116,7 @@ const Leaderboard = ({}) => {
         lineCap: "round",
       },
       markers: {
-        size: 0,
+        size: 5,
       },
       xaxis: {
         axisTicks: {

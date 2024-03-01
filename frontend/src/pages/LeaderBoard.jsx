@@ -24,10 +24,16 @@ const Leaderboard = ({}) => {
   const [timelineData, setTimelineData] = useState([]);
   const navigate = useNavigate();
   const fetchLeaderboard = async () => {
+    const res = await contestApi.getContestById(id);
+    if (res.success) {
+      setContest(res.data[0]);
+      console.log("contest: ", res.data[0]);
+    }
     const leaderboardRes = await contestApi.getLeaderboard(id);
     if (leaderboardRes.success) {
       console.log(leaderboardRes);
       setLeaderboard(leaderboardRes.data);
+      setLoading(false);
     }
     return leaderboardRes;
   };
@@ -84,6 +90,9 @@ const Leaderboard = ({}) => {
     series: timelineData.map((line) => ({ name: line.name, data: line.data })),
     options: {
       chart: {
+        id: "daily-activity-chart",
+        type: "line",
+        height: 400,
         toolbar: {
           show: false,
         },
@@ -97,19 +106,19 @@ const Leaderboard = ({}) => {
       dataLabels: {
         enabled: false,
       },
-      colors: ["#020617", "#FF5733", "#008000", "#abcdef", "#dedcba"], // Add more colors as needed
+      colors: ["#aadfcf", "#ef9c9c", "#af7be3", "#839192", "#74cde9"], // Add more colors as needed
       stroke: {
-        lineCap: "round",
         curve: "straight",
-        width: 2,
+        width: 5, // border
       },
       markers: {
-        size: 5,
+        size: 0,
       },
       xaxis: {
         axisTicks: {
           show: false,
         },
+        tickAmount: 6,
         axisBorder: {
           show: false,
         },
@@ -130,7 +139,9 @@ const Leaderboard = ({}) => {
         //     fontWeight: 400,
         //   },
         // },
+
         min: 0,
+        max: contest?.duration * 60 * 60 * 1000,
       },
       yaxis: {
         labels: {
@@ -144,17 +155,17 @@ const Leaderboard = ({}) => {
       },
       grid: {
         show: true,
-        borderColor: "#dddddd",
-        strokeDashArray: 5,
-        xaxis: {
-          lines: {
-            show: true,
-          },
-        },
-        padding: {
-          top: 5,
-          right: 20,
-        },
+        // borderColor: "#dddddd",
+        // strokeDashArray: 5,
+        // xaxis: {
+        //   lines: {
+        //     show: true,
+        //   },
+        // },
+        // padding: {
+        //   top: 5,
+        //   right: 20,
+        // },
       },
       fill: {
         opacity: 0.8,
@@ -171,8 +182,8 @@ const Leaderboard = ({}) => {
   }, [id]);
 
   useEffect(() => {
-    if (leaderboard?.length) calculateData();
-  }, [leaderboard]);
+    if (leaderboard?.length && contest) calculateData();
+  }, [leaderboard, contest]);
 
   useEffect(() => {
     console.log("timeline data", timelineData);
@@ -260,7 +271,7 @@ const Leaderboard = ({}) => {
           </svg>
 
           <h1 class="leaderboard__title flex flex-col items-end">
-            <span class="leaderboard__title--top">Demo Contest</span>
+            <span class="leaderboard__title--top">{contest?.title}</span>
             <span class="leaderboard__title--bottom">Leaderboard</span>
           </h1>
         </header>

@@ -81,7 +81,15 @@ class ContestRepository extends Repository {
     }
     return updatedContest.get();
   };
+  getEditorial = async (id) => {
+    // get editorial column of contest table
+    const contest = await db.Contest.findByPk(id, {
+      attributes: ["editorial"],
+    });
 
+    // Return just the editorial attribute
+    return contest ? contest.editorial : null;
+  };
   // decrecated
   getAllPublishedContests = async () => {
     const query = `

@@ -16,10 +16,13 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "problemId",
         as: "problem",
       });
+
       ContestProblem.hasMany(models.ContestSubmission, {
         foreignKey: "contestProblemId",
         as: "submissions",
       });
+      ContestProblem.hasMany(models.ContestActivity);
+ 
     }
   }
   ContestProblem.init(

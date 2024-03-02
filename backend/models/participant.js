@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       });
       Participant.hasMany(models.ContestSubmission);
+      Participant.hasMany(models.ContestActivity);
     }
   }
   Participant.init(

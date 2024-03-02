@@ -39,6 +39,7 @@ export default function ScheduledContestCard({
   duration,
   owner,
   startDateTime,
+  difficulty,
 }) {
   const [date, setDate] = useState();
   const [open, setOpen] = useState(false);

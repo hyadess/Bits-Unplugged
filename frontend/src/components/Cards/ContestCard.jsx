@@ -32,13 +32,14 @@ import { HowToReg } from "@mui/icons-material";
 const DifficultyTag = ({ difficultyTag }) => {
   const [difficulty, setDifficulty] = useState(null);
   useEffect(() => {
-    setDifficulty(["Easy", "Medium", "Hard"][Math.floor(Math.random() * 3)]);
+    setDifficulty(difficultyTag);
+    // setDifficulty(["Easy", "Medium", "Hard"][Math.floor(Math.random() * 3)]);
   }, [difficultyTag]);
 
   return (
     difficulty && (
       <div
-        className={`flex flex-row justify-center font-semibold items-center border-2 rounded-full px-2 w-[5rem] pb-[0.1rem] ${
+        className={`flex flex-row justify-center font-semibold items-center border-2 rounded-full px-2 w-[6rem] pb-[0.1rem] ${
           difficulty === "Easy"
             ? "text-green-500 border-green-500"
             : difficulty === "Medium"
@@ -63,6 +64,7 @@ const ContestCard = ({
   updatedAt,
   registerAction,
   userID,
+  difficulty,
 }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -126,7 +128,7 @@ const ContestCard = ({
                 )
             } */}
             {/* Randomly choose between Easy, Medium and Hard tag for contest */}
-            <DifficultyTag />
+            <DifficultyTag difficultyTag={difficulty} />
 
             {/* <div className="bu-text-primary">
               {isRegistered && <HowToReg />}

@@ -199,7 +199,7 @@ const Leaderboard = ({}) => {
         <div className="mx-auto w-full text-right p-8 bg-[#aadfcf] rounded-t-[15px]">
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-col w-full items-start gap-1">
-              <h2 className="bu-text-primary text-2xl font-semibold tracking-wider uppercase">
+              <h2 className="bu-text-primary text-2xl font-extrabold tracking-wider uppercase">
                 Top 5 Contestants
               </h2>
               <h3 className="opacity-[65%] bu-text-primary text-[13px] font-medium tracking-[3.4px] uppercase">

@@ -44,6 +44,7 @@ import { faCalendarCheck } from "@fortawesome/free-regular-svg-icons";
 import { contestApi } from "api";
 import { Avatar } from "@mui/material";
 import { format } from "date-fns";
+import { SelectionField3 } from "components/InputFields";
 
 // export function DateTimePickerDemo() {
 //   const [date, setDate] = useState();
@@ -143,7 +144,7 @@ const ContestCard = ({
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const [date, setDate] = useState();
-
+  const [difficulty, setDifficulty] = useState("");
   useEffect(() => {
     setLoading(false);
     if (startDateTime) setDate(new Date(startDateTime));
@@ -203,10 +204,21 @@ const ContestCard = ({
         </div>
 
         <DateTimePicker date={date} setDate={setDate} />
+        <SelectionField3
+          label="Difficulty"
+          onChange={(e) => setDifficulty(e.target.value)}
+          id="difficulty"
+          value={difficulty}
+          options={[
+            { value: "Easy", label: "Easy" },
+            { value: "Medium", label: "Medium" },
+            { value: "Hard", label: "Hard" },
+          ]}
+        />
         <button
           className="font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-primary"
           onClick={async () => {
-            schedule(id, date);
+            schedule(id, date, difficulty);
           }}
         >
           <FontAwesomeIcon icon={faCalendarCheck} className="mr-2" />

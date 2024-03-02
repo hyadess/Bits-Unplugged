@@ -17,6 +17,7 @@ class ContestController extends Controller {
       res.status(200).json(contests);
     });
   };
+
   updateContest = async (req, res) => {
     this.handleRequest(res, async () => {
       const updatedContest = await contestRepository.updateContest(
@@ -28,6 +29,14 @@ class ContestController extends Controller {
       } else {
         res.status(200).json(updatedContest);
       }
+    });
+  };
+  getEditorial = async (req, res) => {
+    this.handleRequest(res, async () => {
+      let editorial = await contestRepository.getEditorial(
+        req.params.contestId
+      );
+      res.status(200).json(editorial);
     });
   };
   getAllPublishedContests = async (req, res) => {

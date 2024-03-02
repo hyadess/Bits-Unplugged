@@ -53,7 +53,7 @@ module.exports = {
           title: "Demo Contest 3",
           description: "Demo contest description",
           startDateTime: new Date(new Date().getTime() + 60 * 1000),
-          duration: "0.1",
+          duration: "0.01",
           status: "scheduled",
           ownerId: 2,
           difficulty: "Easy",

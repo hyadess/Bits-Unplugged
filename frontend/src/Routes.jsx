@@ -131,6 +131,16 @@ const ProfileForSetter = () => {
   );
 };
 
+const ExpiredNotice = (props) => {
+  return (
+    <div className="expired-notice-container">
+      <div className="expired-notice">
+        <span>{props.msg}</span>
+      </div>
+    </div>
+  );
+};
+
 const ContestWrapper = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -184,17 +194,22 @@ const ContestWrapper = () => {
       right={
         <div className="flex flex-col gap-5 w-full">
           <div>
-            {endTime?.getTime() > Date.now() && (
-              <CountdownTimer
-                targetDate={endTime}
-                flag={"end"}
-                EndAction={() => navigate("/contests/" + id)}
-              />
+            {endTime !== null ? (
+              new Date().getTime() < startTime ? (
+                <>
+                  <ExpiredNotice msg="Contest starts in" />
+                  <CountdownTimer targetDate={startTime} flag={"start"} />
+                </>
+              ) : (
+                <CountdownTimer targetDate={endTime} flag={"end"} />
+              )
+            ) : (
+              <div />
             )}
           </div>
 
           <div className="w-full">
-            <ContestProblemList />
+            {new Date().getTime() >= startTime && <ContestProblemList />}
           </div>
         </div>
       }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { setLoading } from "../App";
+import { setLoading, showToast } from "../App";
 import ContestProblemView from "../views/ContestProblem";
 import { contestApi, problemApi, submissionApi, userActivityApi } from "../api";
 import SubmissionService from "../services/submissionService";
@@ -95,7 +95,9 @@ function ContestProblemController(endDate) {
 
         const isSolved = await contestApi.isContestProblemSolved(id, problemid);
         console.log("endTime==>", endDate);
-        if (
+        if (endDate?.endDate.endTime.getTime() < Date.now()) {
+          showToast("Contest has ended", "error");
+        } else if (
           isSolved.data.length === 0 &&
           endDate?.endDate.endTime.getTime() > Date.now()
         ) {

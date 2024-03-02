@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       ContestSubmission.belongsTo(models.ContestProblem, {
         foreignKey: "contestProblemId",
-        as: "contestProblem",
+        as: "problem",
       });
     }
   }

@@ -38,6 +38,37 @@ class ContestRepository extends Repository {
       ],
     });
   };
+
+  getAllParticipatedContests = async (userId) => {
+    // write a sequelize query to get all contests that the user has submissions in
+    return await db.Contest.findAll({
+      include: [
+        {
+          model: db.ContestProblem,
+          attributes: ["id"],
+          required: true,
+          as: "problems",
+          include: [
+            {
+              model: db.ContestSubmission,
+              attributes: ["id"], // We don't need to return any attributes from the ContestSubmission table
+              required: true,
+              as: "submissions",
+              include: {
+                model: db.Participant,
+                as: "participant",
+                attributes: ["userId"], // We don't need to return any attributes from the Participant table
+                required: true,
+                where: {
+                  userId: userId,
+                },
+              },
+            },
+          ],
+        },
+      ],
+    });
+  };
   getSubmittedContests = async () => {
     // write a sequelize query to get all contests with owner and collaboratos
     return await db.Contest.findAll({
@@ -568,6 +599,50 @@ class ContestRepository extends Repository {
 
   //**********************UPDATING CONTEST PARTICIPATION TABLE****************** */
 
+  calculateAdjustedPoints = (
+    actualPoints,
+    submissionTime,
+    numWrongAnswers,
+    contestDuration
+  ) => {
+    // Calculate time penalty
+    // console.log(submissionTime, contestDuration);
+    const timePenaltyFactor = 0.9 * actualPoints; // Adjust this factor as needed
+    // we need to keep 10% points remaining at the end of contest
+    // so we can decrease 0.9 * actual_points in contestDuration window
+    // contestDuration -> 0.9 * actual_points
+    // 1 -> 0.9 * actual_points / contestDuration
+    // submissionTime -> 0.9 * actual_points *
+    const timePenalty =
+      Math.max(0, submissionTime / contestDuration) * timePenaltyFactor;
+
+    // Calculate wrong answer penalty based on actual points
+    const wrongAnswerPenaltyFactor = 0.05; // Adjust this factor as needed
+    const wrongAnswerPenalty =
+      actualPoints * wrongAnswerPenaltyFactor * numWrongAnswers;
+
+    console.log(
+      "Submitted at",
+      submissionTime,
+      "Contest time",
+      contestDuration,
+      "Time penalty",
+      timePenalty,
+      "WA Penalty",
+      wrongAnswerPenalty
+    );
+    // const wrong_answer_penalty = num_wrong_answers * 5;
+    // Adjusted points
+    // console.log(timePenalty, wrongAnswerPenalty);
+    let adjustedPoints = actualPoints - timePenalty - wrongAnswerPenalty;
+
+    // Ensure adjusted points are not negative
+    adjustedPoints = Math.max(0.1 * actualPoints, adjustedPoints);
+
+    // return Math.round(adjustedPoints / 10) * 10;
+    return Math.round(adjustedPoints);
+  };
+
   // assuming that this submission is added in submissions table.......
   addSubmissionToContest = async (
     problemId,
@@ -577,7 +652,7 @@ class ContestRepository extends Repository {
     canvasData,
     userActivity,
     points,
-    duration,
+    timeTaken,
     image,
     submittedAt
   ) => {
@@ -602,6 +677,32 @@ class ContestRepository extends Repository {
       contestProblemParams
     );
     const contestProblemId = contestProblemResult.data[0].id;
+
+    // get contest total time
+    const contestQuery = `
+      SELECT duration
+      FROM "Contests"
+      WHERE id = $1;
+    `;
+    const contestQueryResult = await this.query(contestQuery, [contestId]);
+
+    // get number of "Wrong answer" submissions
+    const waQuery = `
+      SELECT CAST(COUNT("CS".*) AS INTEGER) as "nWa"
+      FROM "Contests" "C"
+      JOIN "ContestProblems" "CP"
+      ON "C".id = "CP"."contestId" AND "C"."id" = $1
+      JOIN "ContestSubmissions" "CS"
+      ON "CP".id = "CS"."contestProblemId" AND "CP".id = $2
+      JOIN "Participants" "P"
+      ON "CS"."participantId" = "P".id AND "P"."userId" = $3;
+    `;
+    const waQueryResult = await this.query(waQuery, [
+      contestId,
+      contestProblemId,
+      userId,
+    ]);
+    console.log("WA: ", waQueryResult.data);
     // Then, insert the submission with the participantId
     const submissionQuery = `
         INSERT INTO "ContestSubmissions" ("participantId", "contestProblemId", "verdict", "canvasData", "userActivity", "points", "duration","image", "submittedAt")
@@ -613,8 +714,13 @@ class ContestRepository extends Repository {
       verdict,
       canvasData,
       userActivity,
-      points,
-      duration,
+      this.calculateAdjustedPoints(
+        points,
+        submittedAt,
+        waQueryResult.data[0].nWa,
+        contestQueryResult.data[0].duration * 60 * 60 * 1000
+      ),
+      timeTaken,
       image,
       submittedAt,
     ];

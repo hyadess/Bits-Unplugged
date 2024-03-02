@@ -57,7 +57,7 @@ module.exports = {
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
-    await queryInterface.addConstraint("Activities", {
+    await queryInterface.addConstraint("ContestActivities", {
       fields: ["participantId", "contestProblemId"],
       type: "unique",
       name: "contestActivity_participantId_contestProblemId_key",

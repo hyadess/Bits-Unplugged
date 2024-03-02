@@ -18,6 +18,18 @@ class ContestController extends Controller {
     });
   };
 
+  getAllParticipatedContests = async (req, res) => {
+    this.handleRequest(res, async () => {
+      let contests =
+        req.user.type === 0
+          ? await contestRepository.getAllParticipatedContests(req.user.userId)
+          : req.user.type === 2
+          ? null
+          : null;
+      res.status(200).json(contests);
+    });
+  };
+
   updateContest = async (req, res) => {
     this.handleRequest(res, async () => {
       const updatedContest = await contestRepository.updateContest(

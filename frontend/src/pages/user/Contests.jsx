@@ -2,8 +2,8 @@ import ContestsView from "../../views/Contests";
 import React, { useState, useEffect, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { setLoading } from "../../App";
-import { contestApi} from "../../api"; // Assuming you have an authApi to get user information
-import { jwtDecode } from 'jwt-decode';
+import { contestApi } from "../../api"; // Assuming you have an authApi to get user information
+import { jwtDecode } from "jwt-decode";
 
 const Contests = () => {
   const navigate = useNavigate();
@@ -70,7 +70,7 @@ const Contests = () => {
       createContest={createContest}
       contestList={contestList}
       modalIsOpen={modalIsOpen}
-      userId={userId} 
+      userId={userId}
     />
   );
 };

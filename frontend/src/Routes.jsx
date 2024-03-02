@@ -71,6 +71,8 @@ import ContestTab from "components/ContestTab";
 import Leaderboard from "pages/LeaderBoard";
 import SetterArticles from "pages/setter/SetterArticles";
 import SetterArticleEditor from "pages/setter/SetterArticleEditor";
+import EditorialPreview from "pages/EditorialPreview";
+import ProfileContests from "pages/user/Profile/ProfileContests";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -98,10 +100,16 @@ const SolverProfile = () => {
     >
       {activeTab == "Details" ? (
         <Profile />
-      ) : (
+      ) : activeTab == "Submissions" ? (
         <div className="flex flex-row justify-start">
           <div className="w-[75%]">
             <ProfileSubmissions />
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-row justify-start">
+          <div className="w-[75%]">
+            <ProfileContests />
           </div>
         </div>
       )}
@@ -160,6 +168,8 @@ const ContestWrapper = () => {
                 navigate(`/contests/${id}/leaderboard`);
               else if (tab == "My Submissions")
                 navigate(`/contests/${id}/${username}`);
+              else if (tab == "Editorial")
+                navigate(`/contests/${id}/editorial`);
             }}
           />
         </>
@@ -469,6 +479,10 @@ const AppRoutes = () => {
             <Route
               path="/contests/:id/problems/:problemid"
               element={<UserContest />}
+            />
+            <Route
+              path="/contests/:id/editorial"
+              element={<EditorialPreview />}
             />
             <Route
               path="/contests/:id/problems/:problemId/submissions"

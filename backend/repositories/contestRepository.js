@@ -38,6 +38,37 @@ class ContestRepository extends Repository {
       ],
     });
   };
+
+  getAllParticipatedContests = async (userId) => {
+    // write a sequelize query to get all contests that the user has submissions in
+    return await db.Contest.findAll({
+      include: [
+        {
+          model: db.ContestProblem,
+          attributes: ["id"],
+          required: true,
+          as: "problems",
+          include: [
+            {
+              model: db.ContestSubmission,
+              attributes: ["id"], // We don't need to return any attributes from the ContestSubmission table
+              required: true,
+              as: "submissions",
+              include: {
+                model: db.Participant,
+                as: "participant",
+                attributes: ["userId"], // We don't need to return any attributes from the Participant table
+                required: true,
+                where: {
+                  userId: userId,
+                },
+              },
+            },
+          ],
+        },
+      ],
+    });
+  };
   getSubmittedContests = async () => {
     // write a sequelize query to get all contests with owner and collaboratos
     return await db.Contest.findAll({

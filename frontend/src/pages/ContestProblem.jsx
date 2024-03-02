@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { setLoading } from "../App";
+import { setLoading, showToast } from "../App";
 import ContestProblemView from "../views/ContestProblem";
 import { contestApi, problemApi, submissionApi, userActivityApi } from "../api";
 import SubmissionService from "../services/submissionService";
@@ -10,7 +10,7 @@ import ProblemContextProvider, {
 } from "../store/ProblemContextProvider";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-function ContestProblemController(endDate) {
+function ContestProblemController({ endDate }) {
   const { type } = useContext(GlobalContext);
   const { id } = useParams();
   const { problemid } = useParams();
@@ -67,6 +67,11 @@ function ContestProblemController(endDate) {
   const startTimeRef = useRef(null);
 
   const solutionSubmit = async (verdict, image) => {
+    console.log("-->", endDate);
+    if (endDate?.endTime.getTime() < Date.now()) {
+      showToast("Contest has ended", "error");
+      return;
+    }
     if (verdict === "Accepted") {
       if (startTimeRef.current) {
         const endTime = new Date();
@@ -97,7 +102,7 @@ function ContestProblemController(endDate) {
         console.log("endTime==>", endDate);
         if (
           isSolved.data.length === 0 &&
-          endDate?.endDate.endTime.getTime() > Date.now()
+          endDate?.endTime.getTime() > Date.now()
         ) {
           const res2 = await contestApi.getContestProblemById(id, problemid);
           await contestApi.addSubmissionToContest(

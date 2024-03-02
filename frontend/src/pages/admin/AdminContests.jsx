@@ -64,10 +64,11 @@ const AdminContests = () => {
     }
   };
 
-  const schedule = async (contestId, date) => {
+  const schedule = async (contestId, date, difficulty) => {
     const res = await contestApi.updateContest(contestId, {
       startDateTime: date,
       status: "scheduled",
+      difficulty: difficulty,
     });
     if (res.success) {
       showSuccess("Contest scheduled successfully", res);
@@ -124,6 +125,7 @@ const AdminContests = () => {
             status={contest.status}
             updatedAt={contest.updatedAt}
             schedule={schedule}
+            // difficulty={contest.difficulty}
             // userID={userID}
           />
         ))}
@@ -145,6 +147,7 @@ const AdminContests = () => {
             endDate={contest.endDate}
             status={contest.status}
             updatedAt={contest.updatedAt}
+            difficulty={contest.difficulty}
             // userID={userID}
           />
         ))}

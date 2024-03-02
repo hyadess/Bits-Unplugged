@@ -3410,6 +3410,70 @@ module.exports = {
             selectedNodes: [],
           }),
         },
+        {
+          setterId: 2,
+          canvasId: 1,
+          title: "Maximal Planar Graph",
+          statement: "Draw the maximal planar graph of 5 vertices.",
+          canvasData: JSON.stringify({
+            edges: [],
+            nodes: {},
+            selectedEdges: [],
+            selectedNodes: [],
+          }),
+          editOptions: JSON.stringify({
+            directedEdge: {
+              value: false,
+              type: "switch",
+            },
+            weightedEdge: {
+              value: false,
+              type: "switch",
+            },
+          }),
+          previewOptions: JSON.stringify({
+            addNode: {
+              value: false,
+              type: "switch",
+            },
+            deleteNode: {
+              value: false,
+              type: "switch",
+            },
+            dragNode: {
+              value: true,
+              type: "switch",
+            },
+            addEdge: {
+              value: false,
+              type: "switch",
+            },
+            deleteEdge: {
+              value: false,
+              type: "switch",
+            },
+            editWeight: {
+              value: false,
+              type: "switch",
+            },
+            editColor: {
+              value: false,
+              type: "switch",
+            },
+            editLabel: {
+              value: false,
+              type: "switch",
+            },
+          }),
+          checkerCode:
+            "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({
+            edges: [],
+            nodes: {},
+            selectedEdges: [],
+            selectedNodes: [],
+          }),
+        },
       ],
       {}
     );

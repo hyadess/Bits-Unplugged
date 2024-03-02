@@ -14,16 +14,17 @@ const UserContestDetails = () => {
   const navigate = useNavigate();
 
   const getContest = async () => {
+    const res2 = await contestApi.showAllCollaborators(id);
+    if (res2.success) {
+      console.log("collaborators: ", res2.data);
+      setContestCollaborators(res2.data);
+    }
+
     const res = await contestApi.getContestById(id);
     console.log("Owner", res.data);
     if (res.success) {
       setContest(res.data[0]);
       console.log("Owner", res.data[0].owner);
-    }
-    const res2 = await contestApi.showAllCollaborators(id);
-    if (res2.success) {
-      console.log("collaborators: ", res2.data);
-      setContestCollaborators(res2.data);
     }
     return res;
   };

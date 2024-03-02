@@ -71,6 +71,8 @@ import ContestTab from "components/ContestTab";
 import Leaderboard from "pages/LeaderBoard";
 import SetterArticles from "pages/setter/SetterArticles";
 import SetterArticleEditor from "pages/setter/SetterArticleEditor";
+import EditorialPreview from "pages/EditorialPreview";
+import ProfileContests from "pages/user/Profile/ProfileContests";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -98,10 +100,16 @@ const SolverProfile = () => {
     >
       {activeTab == "Details" ? (
         <Profile />
-      ) : (
+      ) : activeTab == "Submissions" ? (
         <div className="flex flex-row justify-start">
           <div className="w-[75%]">
             <ProfileSubmissions />
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-row justify-start">
+          <div className="w-[75%]">
+            <ProfileContests />
           </div>
         </div>
       )}
@@ -123,11 +131,22 @@ const ProfileForSetter = () => {
   );
 };
 
+const ExpiredNotice = (props) => {
+  return (
+    <div className="expired-notice-container">
+      <div className="expired-notice">
+        <span>{props.msg}</span>
+      </div>
+    </div>
+  );
+};
+
 const ContestWrapper = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [username, setUsername] = useState();
   const [endTime, setendTime] = useState();
+  const [startTime, setstartTime] = useState();
   const [activeComponent, setActiveComponent] = useState("Details");
   const fetchContestDetails = async () => {
     try {
@@ -139,6 +158,7 @@ const ContestWrapper = () => {
         const contestDuration = contest.data[0].duration * 60 * 60 * 1000;
         const startDateTime = new Date(contest.data[0].startDateTime);
         setendTime(new Date(startDateTime.getTime() + contestDuration));
+        setstartTime(startDateTime);
       }
     } catch (error) {
       console.error("Error fetching contest details", error);
@@ -160,24 +180,36 @@ const ContestWrapper = () => {
                 navigate(`/contests/${id}/leaderboard`);
               else if (tab == "My Submissions")
                 navigate(`/contests/${id}/${username}`);
+              else if (tab == "Editorial")
+                navigate(`/contests/${id}/editorial`);
             }}
+            tabs={
+              endTime?.getTime() < Date.now()
+                ? ["Details", "Leaderboard", "My Submissions", "Editorial"]
+                : ["Details", "Leaderboard", "My Submissions"]
+            }
           />
         </>
       }
       right={
         <div className="flex flex-col gap-5 w-full">
           <div>
-            {endTime?.getTime() > Date.now() && (
-              <CountdownTimer
-                targetDate={endTime}
-                flag={"end"}
-                EndAction={() => navigate("/contests/" + id)}
-              />
+            {endTime !== null ? (
+              new Date().getTime() < startTime ? (
+                <>
+                  <ExpiredNotice msg="Contest starts in" />
+                  <CountdownTimer targetDate={startTime} flag={"start"} />
+                </>
+              ) : (
+                <CountdownTimer targetDate={endTime} flag={"end"} />
+              )
+            ) : (
+              <div />
             )}
           </div>
 
           <div className="w-full">
-            <ContestProblemList />
+            {new Date().getTime() >= startTime && <ContestProblemList />}
           </div>
         </div>
       }
@@ -469,6 +501,10 @@ const AppRoutes = () => {
             <Route
               path="/contests/:id/problems/:problemid"
               element={<UserContest />}
+            />
+            <Route
+              path="/contests/:id/editorial"
+              element={<EditorialPreview />}
             />
             <Route
               path="/contests/:id/problems/:problemId/submissions"

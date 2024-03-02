@@ -9,12 +9,19 @@ class ContestApi extends Api {
     return await this.put("/contests/" + contestId, contest);
   };
 
+  getEditorial = async (contestId) => {
+    return await this.get("/contests/" + contestId + "/editorial");
+  };
+
   getAllContests = async () => {
     return await this.get("/contests");
   };
 
   getAllPublishedContests = async () => {
     return await this.get("/contests/published");
+  };
+  getAllParticipatedContests = async () => {
+    return await this.get("/contests/participated");
   };
 
   getMyContests = async () => {

@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       duration: DataTypes.FLOAT,
       status: DataTypes.STRING,
       ownerId: DataTypes.INTEGER,
+      difficulty: DataTypes.STRING,
       editorial: DataTypes.JSONB,
     },
     {

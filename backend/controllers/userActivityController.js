@@ -134,6 +134,18 @@ class UserActivityController extends Controller {
       res.status(404).json(result);
     }
   };
+
+  mostRecentFails = async (req, res) => {
+    let result = await userActivityRepository.mostRecentFailsByUser(
+      req.user.username
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
   mostRecentFailsByUser = async (req, res) => {
     let result = await userActivityRepository.mostRecentFailsByUser(
       req.params.username
@@ -187,7 +199,7 @@ class UserActivityController extends Controller {
     } else {
       res.status(404).json(result);
     }
-  }
+  };
 }
 
 module.exports = UserActivityController;

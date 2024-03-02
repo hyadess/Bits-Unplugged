@@ -18,6 +18,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import ArticleCard from "../../components/Cards/UserSeriesArticleCard";
+import RecentProblems from "./RecentProblems";
 export default function ProblemList() {
   const { id } = useParams();
   const [problemList, setProblemList] = useState([]);
@@ -48,6 +49,7 @@ export default function ProblemList() {
 
   return (
     <>
+      <RecentProblems />
       <div>
         <Title
           title={"Practice Problems"}

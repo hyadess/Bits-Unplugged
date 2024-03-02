@@ -5,6 +5,8 @@ import { setLoading } from "../../App";
 import { problemApi, userActivityApi } from "../../api";
 import Confirmation from "../Confirmation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DonutLargeIcon from "@mui/icons-material/DonutLarge";
+import InsertChartIcon from "@mui/icons-material/InsertChart";
 import {
   // faCircleCheck,
   // faCircleXmark,
@@ -13,6 +15,7 @@ import {
   fas,
   fa,
   faS,
+  faFire,
   // far,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -20,6 +23,7 @@ import {
   faCircleXmark,
 } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
+import PersonIcon from "@mui/icons-material/Person";
 
 export default function RecommendationCard({
   id,
@@ -29,6 +33,8 @@ export default function RecommendationCard({
   deleteAction,
   isLive,
   setProblem,
+  series,
+  topic,
 }) {
   const [isSolved, setIsSolved] = useState(null);
   const [acceptance, setAcceptance] = useState(0);
@@ -76,45 +82,60 @@ export default function RecommendationCard({
     <div className="w-full h-full" key={id}>
       <div
         className={
-          "border rounded-lg shadow-md bg-gray-700 bu-card-primary flex flex-col p-5 h-full cursor-pointer"
+          "border rounded-lg shadow-md bg-gray-700 bu-card-primary flex flex-col p-5 pl-4 h-full cursor-pointer"
         }
         onClick={() => {
           setLoading(true);
           navigate(path);
         }}
       >
-        {/* <h5 className="text-2xl text-center font-bold tracking-tight bu-text-primary w-10%">
-          {idx}
-        </h5> */}
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col">
+            <div className="flex flex-row justify-between pl-1">
+              <h5 className="text-xl md:text-xl font-semibold tracking-tight bu-text-primary w-4/5 cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
+                {name}
+              </h5>
 
-        <div className="flex flex-row">
-          <h5 className="text-xl md:text-2xl tracking-tight bu-text-primary w-[45%] cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
-            {name}
-          </h5>
-          <h3
-            className={`text-center w-[20%] text-lg ${
-              acceptance > 70
-                ? "text-green-500 font-sm"
-                : acceptance > 40
-                  ? "text-[#FF981E] font-medium"
-                  : "text-red-500 font-bold"
-            }`}
-          >
-            {acceptance}%
-          </h3>
+              <div
+                className={`flex flex-row items-center gap-2 ${
+                  difficulty < 1100
+                    ? "text-green-500 font-sm"
+                    : difficulty < 1800
+                      ? "text-[#FF981E] font-medium"
+                      : "text-red-500 font-extrabold"
+                }`}
+              >
+                <FontAwesomeIcon icon={faFire} />
+                <h3 className={`font-semibold text-sm`}>{difficulty}</h3>
+              </div>
+            </div>
+            {/* <div className="pl-1 flex flex-row items-center gap-1 text-[#ba3030] dark:text-blue-400 text-xs">
+              <FontAwesomeIcon icon={faTag} />
+              <div className="bu-text-subtitle ">{`${topic} > ${series}`}</div>
+            </div> */}
+            <div className="bu-text-subtitle text-xs pl-1">{`${topic} > ${series}`}</div>
+          </div>
 
-          <h3
-            className={`text-center w-[20%] text-lg ${
-              difficulty === "Medium"
-                ? "text-[#FF981E] font-medium"
-                : difficulty === "Easy"
-                  ? "text-green-500 font-sm"
-                  : "text-red-500 font-extrabold"
-            }`}
-          >
-            {difficulty}
-          </h3>
-          <div className="text-center w-[15%] text-2xl font-bold">
+          <div className="flex flex-row justify-between">
+            <div className="flex flex-row gap-1 items-center">
+              <div className="text-black text-xs">
+                <PersonIcon sx={{ fontSize: "1.3rem" }} />
+              </div>
+              <div class="w-41 font-poppins font-medium text-sm text-black">
+                4,145
+              </div>
+            </div>
+            <div className="flex flex-row gap-1 items-center">
+              <div className="text-black text-lg font-bold">
+                <InsertChartIcon sx={{ fontSize: "1.1rem" }} />
+              </div>
+              <div class="w-41 font-poppins font-medium text-sm text-black pt-[0.1rem]">
+                {acceptance}%
+              </div>
+            </div>
+          </div>
+
+          {/* <div className="text-center w-[15%] text-2xl font-bold">
             {isSolved === true ? (
               <FontAwesomeIcon icon={faCircleCheck} color="green" />
             ) : isSolved === false ? (
@@ -122,7 +143,7 @@ export default function RecommendationCard({
             ) : (
               <></>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

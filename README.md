@@ -32,4 +32,5 @@
 
 Time picker: https://time.openstatus.dev/
 https://github.com/leandrocfe/filament-apex-charts
-https://github.com/uiwjs/react-markdown-preview 
+https://github.com/uiwjs/react-markdown-preview
+https://manuarora.in/boxshadows

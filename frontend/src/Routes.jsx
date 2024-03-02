@@ -136,6 +136,7 @@ const ContestWrapper = () => {
   const { id } = useParams();
   const [username, setUsername] = useState();
   const [endTime, setendTime] = useState();
+  const [startTime, setstartTime] = useState();
   const [activeComponent, setActiveComponent] = useState("Details");
   const fetchContestDetails = async () => {
     try {
@@ -147,6 +148,7 @@ const ContestWrapper = () => {
         const contestDuration = contest.data[0].duration * 60 * 60 * 1000;
         const startDateTime = new Date(contest.data[0].startDateTime);
         setendTime(new Date(startDateTime.getTime() + contestDuration));
+        setstartTime(startDateTime);
       }
     } catch (error) {
       console.error("Error fetching contest details", error);
@@ -171,6 +173,11 @@ const ContestWrapper = () => {
               else if (tab == "Editorial")
                 navigate(`/contests/${id}/editorial`);
             }}
+            tabs={
+              endTime?.getTime() < Date.now()
+                ? ["Details", "Leaderboard", "My Submissions", "Editorial"]
+                : ["Details", "Leaderboard", "My Submissions"]
+            }
           />
         </>
       }

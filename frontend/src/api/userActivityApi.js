@@ -19,6 +19,9 @@ class UserActivityApi extends Api {
   totalFailedProblemsByUser = async () => {
     return await this.get("/userActivity/stat/fails/me");
   };
+  mostRecentFails = async () => {
+    return await this.get("/userActivity/stat/recentfails/me");
+  };
   mostRecentFailsByUser = async (username) => {
     return await this.get(
       "/userActivity/stat/" + username + "/recentfails/user"

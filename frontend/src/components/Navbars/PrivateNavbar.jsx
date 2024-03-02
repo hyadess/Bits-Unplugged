@@ -111,7 +111,7 @@ const PrivateNavbar = (props) => {
               >
                 <div
                   className={`text-xs md:text-lg md:font-bold  flex flex-row items-center gap-3 ${
-                    (type == 0 && location.pathname === "/topics") ||
+                    (type == 0 && location.pathname === "/home") ||
                     (type == 1 && location.pathname === "/problemSet")
                       ? "bu-text-title"
                       : "bu-text-primary-hover"

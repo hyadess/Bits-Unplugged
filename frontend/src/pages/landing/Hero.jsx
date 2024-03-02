@@ -279,7 +279,7 @@ const Hero = ({ nav, setNav }, ref) => {
                   : type == 1
                     ? navigate("/problemSet")
                     : type == 0
-                      ? navigate("/topics")
+                      ? navigate("/home")
                       : navigate("/login");
               }}
               className="bu-button-secondary bu-text-primary cursor-pointer rounded-lg px-5 py-2.5 text-center font-semibold text-xl hidden md:flex flex-row justify-center w-[13rem]"
@@ -372,7 +372,7 @@ const Hero = ({ nav, setNav }, ref) => {
               : type == 1
                 ? navigate("/problemSet")
                 : type == 0
-                  ? navigate("/topics")
+                  ? navigate("/home")
                   : navigate("/login");
           }}
           className="bu-button-secondary bu-text-primary cursor-pointer items-center rounded-lg px-5 py-2.5 text-center font-semibold capitalize text-xl flex md:hidden w-[12rem] justify-center"

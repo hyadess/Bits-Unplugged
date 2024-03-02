@@ -246,10 +246,12 @@ class UserActivityRepository extends Repository {
   mostRecentFailsByUser = async (username) => {
     const query = `
     SELECT A.*, PV."title",
-    PV."rating"
+    PV."rating", S."name" AS "series", T."name" AS "topic"
     FROM "Activities" A
     JOIN "ProblemVersions" PV ON A."problemId" = PV."id"
     JOIN "Users" U ON A."userId" = U."id"
+    JOIN "Series" S ON PV."seriesId" = S."id"
+    JOIN "Topics" T ON S."topicId" = T."id"
     WHERE U."username" = $1 AND A."isSolved" = FALSE
     ORDER BY A."lastSolveTimestamp" DESC;
     `;
@@ -366,7 +368,7 @@ class UserActivityRepository extends Repository {
     const params = [userId, problemId];
     const result = await this.query(query, params);
     return result;
-  }
+  };
 }
 
 module.exports = UserActivityRepository;

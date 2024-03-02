@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-  Activity.init(
+  ContestActivity.init(
     {
       participantId: DataTypes.INTEGER,
       contestProblemId: DataTypes.INTEGER,

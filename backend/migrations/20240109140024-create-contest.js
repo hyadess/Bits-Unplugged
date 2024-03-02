@@ -24,6 +24,9 @@ module.exports = {
       status: {
         type: Sequelize.STRING,
       },
+      difficulty: {
+        type: Sequelize.STRING, // Easy, Medium, Hard
+      },
       ownerId: {
         type: Sequelize.INTEGER,
         references: {

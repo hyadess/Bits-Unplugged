@@ -14,6 +14,7 @@ module.exports = {
           duration: "1",
           status: "scheduled",
           ownerId: 2,
+          difficulty: "Medium",
           editorial: JSON.stringify([
             {
               boxId: 1,
@@ -43,6 +44,7 @@ module.exports = {
           startDateTime: new Date(new Date().getTime() + 60 * 1000),
           duration: "2.5",
           status: "scheduled",
+          difficulty: "Hard",
           ownerId: 2,
           editorial: JSON.stringify([]),
         },
@@ -54,6 +56,7 @@ module.exports = {
           duration: "0.1",
           status: "scheduled",
           ownerId: 2,
+          difficulty: "Easy",
           editorial: JSON.stringify([]),
         },
         {
@@ -64,6 +67,7 @@ module.exports = {
           duration: "0.01",
           status: "scheduled",
           ownerId: 2,
+          difficulty: "Medium",
           editorial: JSON.stringify([]),
         },
         {
@@ -72,7 +76,7 @@ module.exports = {
           description: "Demo contest description",
           startDateTime: new Date(),
           duration: "0.01",
-          status: "edit",
+          status: "approved",
           ownerId: 2,
           editorial: JSON.stringify([]),
         },

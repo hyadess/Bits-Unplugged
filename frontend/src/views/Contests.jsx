@@ -15,7 +15,7 @@ const ContestsView = ({
   userID,
 }) => {
   useEffect(() => {
-    console.log(contestList);
+    console.log("Contest List:", contestList);
   });
   return (
     <div>
@@ -46,6 +46,7 @@ const ContestsView = ({
             status={contest.status}
             updatedAt={contest.updatedAt}
             userID={userID}
+            difficulty={contest.difficulty}
           />
         ))}
       </div>

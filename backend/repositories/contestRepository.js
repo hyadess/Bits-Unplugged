@@ -213,7 +213,7 @@ class ContestRepository extends Repository {
   };
   getAllSubmissionsByContestAndProblem = async (contestId, problemId) => {
     const query = `
-        SELECT "CS".*, "U".username, "U".fullname
+        SELECT "CS".*, "P"."userId", "U".username, "U".fullname
         FROM "ContestSubmissions" "CS"
         JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
         JOIN "Users" "U" ON "P"."userId" = "U"."id"

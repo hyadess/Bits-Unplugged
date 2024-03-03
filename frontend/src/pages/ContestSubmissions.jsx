@@ -8,6 +8,7 @@ import { problemApi, submissionApi, userActivityApi, contestApi } from "../api";
 import Chart from "react-apexcharts";
 import CardContainer from "containers/CardContainer2";
 import { ScissorsSquareDashedBottomIcon } from "lucide-react";
+import { jwtDecode } from "jwt-decode";
 export default function ContestSubmissions() {
   const { id, problemId } = useParams();
   const [submissions, setSubmissions] = useState([]);
@@ -32,7 +33,10 @@ export default function ContestSubmissions() {
     );
     if (res.success) {
       console.log("Submissions:", res.data);
-      setSubmissions(res.data);
+      const decoded = jwtDecode(localStorage.getItem("token")).userId;
+      setSubmissions(
+        res.data.filter((submission) => submission.userId == decoded)
+      );
       setSuccessfulSubmissions(
         res.data.filter((submission) => submission.verdict === "Accepted")
       );

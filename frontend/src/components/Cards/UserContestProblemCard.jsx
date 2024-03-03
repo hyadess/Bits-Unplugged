@@ -35,8 +35,10 @@ const ProblemCard = ({
   return (
     <div
       key={problem.id}
-      className={`flex flex-row justify-between bg-gray-100 hover:shadow hover:bg-white p-4 rounded-md cursor-pointer w-full ${
-        selectedId == problem.id ? "bg-white shadow-md" : "opacity-[80%]"
+      className={`flex flex-row justify-between p-4 cursor-pointer w-full  border-l-4 ${
+        selectedId == problem.id
+          ? "bg-white shadow-md border-[#1c5b5f]"
+          : "hover:bg-gray-200 hover:border-[#1c5b5f]"
       }`}
       onClick={() => onClick(problem.id)}
     >

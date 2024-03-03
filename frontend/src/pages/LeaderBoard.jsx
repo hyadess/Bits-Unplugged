@@ -29,7 +29,7 @@ const Leaderboard = ({}) => {
       setContest(res.data[0]);
       console.log("contest: ", res.data[0]);
     }
-    const leaderboardRes = await contestApi.getLeaderboard(id);
+    const leaderboardRes = await contestApi.getLeaderboard(id,0);
     if (leaderboardRes.success) {
       console.log(leaderboardRes);
       setLeaderboard(leaderboardRes.data);

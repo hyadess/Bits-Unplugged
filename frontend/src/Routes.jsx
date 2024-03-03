@@ -160,7 +160,7 @@ const ContestWrapper = () => {
       if (contest.success) {
         const contestDuration = contest.data[0].duration * 60 * 60 * 1000;
         const startDateTime = new Date(contest.data[0].startDateTime);
-        if(new Date().getTime()<startDateTime.getTime() + contestDuration){
+        if(virtualParticipant.data.length>0){
           setstartTime(startDateTime);
           setendTime(new Date(startDateTime.getTime() + contestDuration));
         }

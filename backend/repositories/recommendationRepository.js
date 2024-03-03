@@ -8,13 +8,13 @@ class RecommendationRepository extends Repository {
   getFamousProblemsBySeries = async (seriesId) => {
     const query = `
         SELECT "P"."id", "P"."seriesId", "P"."title", "P"."rating", 
-        SUM("A"."totalFailedAttempt" + CASE WHEN "A"."isSolved" THEN 1 ELSE 0 END) AS "totalAttempts", "S".name AS "seriesName", "T".name AS "topicName"
+        SUM("A"."totalFailedAttempt" + CASE WHEN "A"."isSolved" THEN 1 ELSE 0 END) AS "totalAttempts", "S"."name" AS "seriesName", "T"."name" AS "topicName"
         FROM "Activities" "A"
         JOIN "ProblemVersions" "P" ON "A"."problemId"="P"."id"
         JOIN "Series" "S" ON "P"."seriesId"="S"."id"
         JOIN "Topics" "T" ON "S"."topicId"="T"."id"
         WHERE "P"."seriesId"=$1
-        GROUP BY "P"."id", "P"."seriesId", "P"."title", "P"."rating"
+        GROUP BY "P"."id", "P"."seriesId", "P"."title", "P"."rating","S"."name", "T"."name"
         ORDER BY "totalAttempts" DESC
         LIMIT 5
         `;
@@ -30,7 +30,7 @@ class RecommendationRepository extends Repository {
     }
 
     const query = `
-        SELECT "P"."id", "P"."seriesId", "P"."title", "P"."rating", "S".name AS "seriesName", "T".name AS "topicName"
+        SELECT "P"."id", "P"."seriesId", "P"."title", "P"."rating", "S"."name" AS "seriesName", "T"."name" AS "topicName"
         FROM "ProblemVersions" "P"
         JOIN "Series" "S" ON "P"."seriesId"="S"."id"
         JOIN "Topics" "T" ON "S"."topicId"="T"."id"

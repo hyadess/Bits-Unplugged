@@ -131,6 +131,11 @@ router.get(
 );
 
 router.get(
+  "/:contestId/participant/virtual",
+  contestController.showVirtualParticipant
+);
+
+router.get(
   "/:contestId/clarifications",
   contestController.showAllClarifications
 );

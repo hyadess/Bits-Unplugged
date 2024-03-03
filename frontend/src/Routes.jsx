@@ -156,14 +156,23 @@ const ContestWrapper = () => {
   const fetchContestDetails = async () => {
     try {
       const contest = await contestApi.getContestById(id);
+      const virtualParticipant = await contestApi.showVirtualParticipant(id);
+      console.log("virtualParticipant ==>", virtualParticipant);
       const decoded = jwtDecode(localStorage.getItem("token")).username;
       setUsername(decoded);
       console.log("username", decoded);
       if (contest.success) {
         const contestDuration = contest.data[0].duration * 60 * 60 * 1000;
         const startDateTime = new Date(contest.data[0].startDateTime);
-        setendTime(new Date(startDateTime.getTime() + contestDuration));
-        setstartTime(startDateTime);
+        if(new Date().getTime()<startDateTime.getTime() + contestDuration){
+          setstartTime(startDateTime);
+          setendTime(new Date(startDateTime.getTime() + contestDuration));
+        }
+        else{
+          setstartTime(new Date(virtualParticipant.data[0].createdAt));
+          setendTime(new Date(virtualParticipant.data[0].createdAt + contestDuration));
+          console.log("virtualParticipant ==>", virtualParticipant, startTime, endTime);
+        }
       }
     } catch (error) {
       console.error("Error fetching contest details", error);

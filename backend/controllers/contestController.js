@@ -529,6 +529,18 @@ class ContestController extends Controller {
     }
   };
 
+  showVirtualParticipant = async (req, res) => {
+    let result = await contestRepository.showVirtualParticipant(
+      req.params.contestId,
+      req.user.userId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
   addClarification = async (req, res) => {
     let result = await contestRepository.addClarification(
       req.params.contestId,

@@ -229,6 +229,10 @@ class ContestApi extends Api {
     return await this.get("/contests/" + contestId + "/participants/virtual");
   };
 
+  showVirtualParticipant = async (contestId) => {
+    return await this.get("/contests/" + contestId + "/participant/virtual");
+  };
+
   showAllClarifications = async (contestId) => {
     return await this.get("/contests/" + contestId + "/clarifications");
   };

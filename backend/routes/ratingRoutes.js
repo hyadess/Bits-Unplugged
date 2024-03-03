@@ -17,12 +17,13 @@ router.use(
 //   ratingController.getUserRatingsAndAttemptsByProblem
 // );
 
-router.get("/:userId/current", ratingController.getCurrentRating);
-router.get("/:userId/history", ratingController.getRatingHistory);
+router.get("/current/:userId", ratingController.getCurrentRating);
+router.get("/history/:userId", ratingController.getRatingHistory);
 
 
 
 router.post("/updateAllproblemRating", ratingController.updateAllproblemRating);
-router.post("/updateAllUserRating", ratingController.changeUserRatings);
+router.post("/updateAllUserRating/:contestId", ratingController.changeUserRatings);
+router.get("/showAll", ratingController.showAllUserRatings);
 
 module.exports = router;

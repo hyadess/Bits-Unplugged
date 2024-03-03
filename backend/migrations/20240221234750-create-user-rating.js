@@ -29,6 +29,29 @@ module.exports = {
         allowNull: false,
         defaultValue: true,
       },
+      contestId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Contests",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      change: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      prevRating: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      rank: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

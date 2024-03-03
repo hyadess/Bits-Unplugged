@@ -208,7 +208,7 @@ class ContestRepository extends Repository {
         "Users" "U" ON "C"."ownerId" = "U"."id"
         JOIN
         "Credentials" "Cr" ON "U"."id" = "Cr"."userId"
-        JOIN 
+        LEFT JOIN 
         "ContestProblems" "CP" ON "C"."id" = "CP"."contestId"
         WHERE
         "C"."id" = $1
@@ -1023,7 +1023,7 @@ class ContestRepository extends Repository {
     return result;
   };
 
-  showVirtualParticipant = async (contestId , userId) => {
+  showVirtualParticipant = async (contestId, userId) => {
     const query = `
         SELECT P.*
         FROM "Participants" P

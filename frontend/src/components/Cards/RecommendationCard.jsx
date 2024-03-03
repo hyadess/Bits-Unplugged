@@ -33,6 +33,7 @@ export default function RecommendationCard({
   deleteAction,
   isLive,
   setProblem,
+  userCount,
   series,
   topic,
 }) {
@@ -122,7 +123,7 @@ export default function RecommendationCard({
                 <PersonIcon sx={{ fontSize: "1.3rem" }} />
               </div>
               <div class="w-41 font-poppins font-medium text-sm text-black">
-                4,145
+                {userCount}
               </div>
             </div>
             <div className="flex flex-row gap-1 items-center">

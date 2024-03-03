@@ -153,6 +153,7 @@ const ContestWrapper = () => {
   const [endTime, setendTime] = useState(null);
   const [startTime, setstartTime] = useState(null);
   const [activeComponent, setActiveComponent] = useState("Details");
+  const isPreview = window.location.href.includes("/preview");
   const fetchContestDetails = async () => {
     try {
       const contest = await contestApi.getContestById(id);
@@ -227,7 +228,7 @@ const ContestWrapper = () => {
           </div>
 
           <div className="w-full">
-            {new Date().getTime() >= startTime && <ContestProblemList />}
+            {new Date().getTime() >= startTime && <ContestProblemList preview={isPreview}/>}
           </div>
         </div>
       }
@@ -515,7 +516,12 @@ const AppRoutes = () => {
 
         <Route element={<ProblemSolver />}>
           <Route element={<ContestWrapper />}>
+          <Route path="/contests/:id/preview" element={<UserContestDetails preview/>} />
             <Route path="/contests/:id" element={<UserContestDetails />} />
+            <Route
+              path="/contests/:id/problems/:problemid/preview"
+              element={<UserContest preview/>}
+            />
             <Route
               path="/contests/:id/problems/:problemid"
               element={<UserContest />}

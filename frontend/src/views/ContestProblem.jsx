@@ -231,7 +231,7 @@ const Header = ({ type }) => {
 //   );
 // });
 
-const ContestProblemView = ({ onSubmit, onReset, colorMode, type }, ref) => {
+const ContestProblemView = ({ onSubmit, onReset, colorMode, type , preview}, ref) => {
   const { state: problem, dispatch } = useProblemContext();
   return (
     <div>
@@ -244,7 +244,7 @@ const ContestProblemView = ({ onSubmit, onReset, colorMode, type }, ref) => {
               colorMode={colorMode}
             />
           </div>
-          <CanvasPreview ref={ref} onSubmit={onSubmit} takeSnapshot={true} />
+          <CanvasPreview ref={ref} onSubmit={onSubmit} takeSnapshot={true} preview={preview} />
           {/* <Canvas
             ref={ref}
             onSubmit={onSubmit}

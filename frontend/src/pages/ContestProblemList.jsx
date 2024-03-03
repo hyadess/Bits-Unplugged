@@ -9,7 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ProblemCard from "components/Cards/UserContestProblemCard";
 // ... other imports
 
-const ContestProblemList = () => {
+const ContestProblemList = ({preview}) => {
   const [problems, setProblems] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -39,8 +39,8 @@ const ContestProblemList = () => {
   };
 
   const handleProblemClick = (problemId) => {
-    problemId == "details"
-      ? navigate(`/contests/${id}`)
+    preview
+      ? navigate(`/contests/${id}/problems/${problemId}/preview`)
       : navigate(`/contests/${id}/problems/${problemId}`);
     setSelectedProblemId(problemId);
   };

@@ -183,15 +183,15 @@ const ContestWrapper = () => {
               if (tab == "Details") navigate(`/contests/${id}`);
               else if (tab == "Leaderboard")
                 navigate(`/contests/${id}/leaderboard`);
-              else if (tab == "My Submissions")
+              else if (tab == "Submissions")
                 navigate(`/contests/${id}/${username}`);
               else if (tab == "Editorial")
                 navigate(`/contests/${id}/editorial`);
             }}
             tabs={
               endTime?.getTime() < Date.now()
-                ? ["Details", "Leaderboard", "My Submissions", "Editorial"]
-                : ["Details", "Leaderboard", "My Submissions"]
+                ? ["Details", "Leaderboard", "Submissions", "Editorial"]
+                : ["Details", "Leaderboard", "Submissions"]
             }
           />
         </>

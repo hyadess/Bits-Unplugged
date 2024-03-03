@@ -51,7 +51,7 @@ export default function HomeRecentFails() {
             </div>
           </div> */}
           {recentFailList.length && (
-            <div className="grid grid-cols-1 justify-center items-center mx-auto max-w-screen-2xl gap-8 h-full w-full mb-3 md:grid-cols-3">
+            <div className="grid grid-cols-1 justify-center items-center mx-auto max-w-screen-2xl gap-8 h-full w-full mb-3 md:grid-cols-2">
               {recentFailList.map((problem, index) => (
                 <UnsolvedProblemCard
                   idx={index + 1}
@@ -61,6 +61,7 @@ export default function HomeRecentFails() {
                   action="Get Started"
                   attempts={problem.totalFailedAttempt}
                   difficulty={problem.rating}
+                  duration={problem.viewDuration}
                   last_tried={problem.lastSolveTimestamp}
                   series={problem.series}
                   topic={problem.topic}

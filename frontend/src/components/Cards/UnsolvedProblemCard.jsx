@@ -17,6 +17,7 @@ export default function UnsolvedProblemCard({
   attempts,
   difficulty,
   last_tried,
+  duration,
   topic,
   series,
 }) {
@@ -54,10 +55,10 @@ export default function UnsolvedProblemCard({
               </h5>
 
               <div
-                className={`flex flex-row items-center gap-2 ${
-                  difficulty < 1100
+                className={`flex flex-row items-center gap-2 pt-1 pb-2 ${
+                  difficulty < 1400
                     ? "text-green-500 font-sm"
-                    : difficulty < 1800
+                    : difficulty < 2000
                       ? "text-[#FF981E] font-medium"
                       : "text-red-500 font-extrabold"
                 }`}
@@ -74,7 +75,7 @@ export default function UnsolvedProblemCard({
           </div>
           {/* <h3 className="text-red-500 w-[10%] font-bold">{attempts}</h3> */}
 
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-row justify-between pt-5">
             <div className="flex flex-row items-center text-sm gap-1 bu-text-primary font-medium">
               <FontAwesomeIcon icon={faClockRotateLeft} />
               {getTimeStamp(last_tried)}
@@ -82,7 +83,7 @@ export default function UnsolvedProblemCard({
             <div>
               <div className="text-sm text-red-500 flex flex-row gap-1 items-center font-medium">
                 <TimerOutlinedIcon sx={{ fontSize: "1.2rem" }} />
-                <div className="text-sm">{formatDuration(45)}</div>
+                <div className="text-sm">{formatDuration(duration)}</div>
                 {/* <FontAwesomeIcon icon={faClock} /> */}
               </div>
             </div>

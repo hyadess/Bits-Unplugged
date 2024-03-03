@@ -23,7 +23,7 @@ import HomeRecentFails from "./HomeRecentFails";
 import { Pie } from "react-chartjs-2";
 import { DonutLarge } from "@mui/icons-material";
 
-const PieChart = () => {
+const PieChart = ({topicStats}) => {
   const [chart, setChart] = useState(undefined);
 
   //for barChartData, calculate total success count and fail count
@@ -38,10 +38,7 @@ const PieChart = () => {
     //   totalFailCount += series.failCount;
     // });
     setChart({
-      series: [44, 55, 13, 33],
-      chartOptions: {
-        labels: ["Apple", "Mango", "Orange", "Watermelon"],
-      },
+      series: topicStats.map((topic) => parseInt(topic.total_solved_problems)),
       options: {
         chart: {
           type: "donut",
@@ -67,7 +64,7 @@ const PieChart = () => {
             },
           },
         },
-        labels: ["Graph", "Tree", "Recursion", "Sorting"],
+        labels: topicStats.map((topic) => topic.name),
         colors: ["#e62092", "#ea7202", "#1472ea", "#fbab05"],
         dataLabels: {
           position: "top",
@@ -100,7 +97,7 @@ const PieChart = () => {
         // ],
       },
     });
-  }, []);
+  }, [topicStats]);
   //return the pie chart
   return (
     <div className="h-full p-3">
@@ -119,6 +116,7 @@ const PieChart = () => {
 export default function UserHome() {
   const [problems, setProblems] = useState([]);
   const [recomType, setRecomType] = useState("rating-burner");
+  const [topicStats, setTopicStats] = useState([]);
   const tags = ["rating-burner", "series-hunter"];
 
   const getRecommendedProblems = async () => {
@@ -138,9 +136,18 @@ export default function UserHome() {
       }
     }
   };
+  const getSolveCountByTopic = async () => {
+    const res = await userActivityApi.totalSolvedProblemCount();
+    if (res.success) {
+      console.log("topic stats", res);
+      setTopicStats(res.data);
+      //setLoading(false);
+    }
+  };
 
   useEffect(() => {
     getRecommendedProblems();
+    getSolveCountByTopic();
   }, []);
   useEffect(() => {
     getRecommendedProblems();
@@ -238,7 +245,7 @@ export default function UserHome() {
           <div class="w-155 font-poppins font-medium text-base leading-140 text-black">
             Problem Solving Stats
           </div>
-          <PieChart />
+          <PieChart topicStats={topicStats} />
         </div>
       </div>
     </div>

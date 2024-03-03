@@ -106,7 +106,7 @@ const PieChart = ({ topicStats }) => {
           options={chart.options}
           series={chart.series}
           type="donut"
-          height="400"
+          height="300"
         />
       )}
     </div>
@@ -258,7 +258,7 @@ export default function UserHome() {
             </div>
           ))}
 
-        <div class="bg-[#F0F0F0] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded-lg p-5">
+        <div class="bg-[#F0F0F0] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded-lg p-5 min-h-[10rem]">
           <div class="w-155 font-poppins font-medium text-base leading-140 text-black">
             Problem Solving Stats
           </div>

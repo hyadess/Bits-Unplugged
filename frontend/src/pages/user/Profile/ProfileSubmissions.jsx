@@ -10,6 +10,19 @@ import SubmissionCard from "../../../components/Cards/SubmissionCard";
 import "react-calendar-heatmap/dist/styles.css";
 import "./heatmap.scss";
 import CardContainer from "containers/CardContainer2";
+import ProfileSubmissionCard from "components/Cards/ProfileSubmissionCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCheckDouble,
+  faCheckToSlot,
+  faFire,
+  faHeartPulse,
+  faXmark,
+  faClock,
+  faStopwatch,
+  faGavel,
+} from "@fortawesome/free-solid-svg-icons";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 
 export default function ProfileSubmissions() {
   const navigate = useNavigate();
@@ -32,21 +45,34 @@ export default function ProfileSubmissions() {
   }, []);
 
   return (
-    <div className="flex flex-col w-full pt-20">
-      <CardContainer>
-        {submissions.map((submission, index) => (
-          <div className="flex w-full">
-            <SubmissionCard
+    <>
+      <Title title={"My Submissions"} />
+      <div className="flex flex-col w-full gap-5">
+        <div className="w-full p-5 rounded-lg shadow-md flex flex-row bu-text-primary bg-[#AADFCF] dark:bg-pink-600">
+          <div className="text-xl w-[50%] font-medium">Problem name</div>
+          <div className="text-xl w-30% font-medium flex gap-2 items-center justify-center">
+            <FontAwesomeIcon icon={faClock} />
+            When
+          </div>
+          <div className="text-xl w-20% font-medium flex gap-2 items-center justify-center">
+            <FontAwesomeIcon icon={faGavel} />
+            Verdict
+          </div>
+        </div>
+        <TableContainer>
+          {submissions?.map((submission, index) => (
+            <ProfileSubmissionCard
               idx={index + 1}
               submissionId={submission.id}
               verdict={submission.verdict}
-              problem_name={submission.name}
+              name={submission.name}
               timestamp={submission.createdAt}
               image={submission.image}
+              duration={submission.duration ?? 30}
             />
-          </div>
-        ))}
-      </CardContainer>
-    </div>
+          ))}
+        </TableContainer>
+      </div>
+    </>
   );
 }

@@ -1,16 +1,16 @@
 import React from "react";
 
 const ContestTab = (props) => {
-  const tabs = ["Details", "Leaderboard", "My Submissions", "Editorial"];
+  const tabs = ["Details", "Leaderboard", "Submissions", "Editorial"];
 
   return (
-    <div className="flex flex-col h-full mx-auto items-center">
+    <div className="flex flex-col mx-auto items-center my-auto">
       <div className="p-0 flex-grow">
         {props.tabs.map((tab, index) => (
           <div
-            className={`cursor-pointer flex-grow px-5 py-2 text-center font-bold text-2xl ${
+            className={`cursor-pointer flex-grow px-5 py-2 text-right font-bold text-2xl hover:bg-gray-200 ${
               tab === props.activeTab
-                ? "border-l-4 bu-text-title"
+                ? "border-r-4 bu-text-title bg-gray-200"
                 : "bu-text-disable"
             }`}
             onClick={() => props.click(tab)}

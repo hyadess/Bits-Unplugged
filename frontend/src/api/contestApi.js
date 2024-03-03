@@ -121,8 +121,8 @@ class ContestApi extends Api {
     return await this.post(`/contests/${contestId}/accept-invitation`);
   };
 
-  getLeaderboard = async (contestId) => {
-    return await this.get(`/contests/${contestId}/Leaderboard`);
+  getLeaderboard = async (contestId, type) => {
+    return await this.get(`/contests/${contestId}/Leaderboard/${type}`);
   };
   getTimeline = async (contestId) => {
     return await this.get(`/contests/${contestId}/Timeline`);
@@ -230,6 +230,10 @@ class ContestApi extends Api {
 
   showVirtualParticipantList = async (contestId) => {
     return await this.get("/contests/" + contestId + "/participants/virtual");
+  };
+
+  showVirtualParticipant = async (contestId) => {
+    return await this.get("/contests/" + contestId + "/participant/virtual");
   };
 
   showAllClarifications = async (contestId) => {

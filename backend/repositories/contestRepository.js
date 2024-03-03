@@ -166,16 +166,19 @@ class ContestRepository extends Repository {
     const query = `
         SELECT
         "C".*,
-        jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image", 'email', "Cr".email) AS "owner"
+        jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image", 'email', "Cr".email) AS "owner", SUM("CP"."rating") AS "totalPoints"
         FROM
         "Contests" "C"
         JOIN
         "Users" "U" ON "C"."ownerId" = "U"."id"
         JOIN
-
         "Credentials" "Cr" ON "U"."id" = "Cr"."userId"
+        JOIN 
+        "ContestProblems" "CP" ON "C"."id" = "CP"."contestId"
         WHERE
-        "C"."id" = $1;
+        "C"."id" = $1
+        GROUP BY "C".id, "owner";
+        ;
     `;
     const params = [contestId];
     const result = await this.query(query, params);
@@ -198,14 +201,14 @@ class ContestRepository extends Repository {
   };
   getAllSubmissionsByUserAndContest = async (contestId, username) => {
     const query = `
-        SELECT "Pb"."title","CS".*
+        SELECT "Pb"."title","CS".*, "Pb".title as "problemName"
         FROM "ContestSubmissions" "CS"
         JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
         JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
         JOIN "Problems" "Pb" ON "CP"."problemId" = "Pb"."id"
         JOIN "Users" "U" ON "P"."userId" = "U"."id"
         WHERE "P"."contestId" = $2 AND "U"."username" = $1
-        ORDER BY "CS"."submittedAt" ASC;
+        ORDER BY "CS"."submittedAt" DESC;
         `;
     const params = [username, contestId];
     const result = await this.query(query, params);

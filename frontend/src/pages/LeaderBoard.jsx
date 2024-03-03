@@ -156,6 +156,9 @@ const Leaderboard = ({}) => {
             fontWeight: 400,
           },
         },
+        tickAmount: 8,
+        min: 0,
+        // max: parseInt(contest?.totalPoints),
       },
       grid: {
         show: true,
@@ -203,7 +206,7 @@ const Leaderboard = ({}) => {
                 Top 5 Contestants
               </h2>
               <h3 className="opacity-[65%] bu-text-primary text-[13px] font-medium tracking-[3.4px] uppercase">
-                Timeline graph
+                Score Timeline graph
               </h3>
             </div>
             <div className="bu-text-primary text-4xl">

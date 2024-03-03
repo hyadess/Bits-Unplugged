@@ -31,6 +31,9 @@ class ContestApi extends Api {
   getMyOwnContests = async () => {
     return await this.get("/contests/owned");
   };
+  getRunningContests = async () => {  
+    return await this.get("/contests/running");
+  };
 
   getAllSubmissionsByContest = async (contestId) => {
     return await this.get("/contests/" + contestId + "/submissions");

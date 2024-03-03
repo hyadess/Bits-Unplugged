@@ -162,6 +162,41 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+  getRunningContests = async () => {
+    const query = `
+      SELECT "C".*,
+      COUNT("P"."id") as "totalParticipants"
+      FROM "Contests" "C"
+      JOIN "Participants" "P" ON "P"."contestId" = "C"."id"
+      WHERE "C"."startDateTime" <= CURRENT_TIMESTAMP 
+      AND ("C"."startDateTime" + INTERVAL '1 hour' * "C"."duration") >= CURRENT_TIMESTAMP
+      AND "C"."status" = 'scheduled'
+      AND "P"."type" = 0
+      GROUP BY "C"."id";
+      `;
+    const params = [];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  getUpcomingContests = async () => {
+    const query = `
+      SELECT "C".*,
+      COUNT("P"."id") as "totalParticipants"
+      FROM "Contests" "C"
+      JOIN "Participants" "P" ON "P"."contestId" = "C"."id"
+      WHERE "C"."startDateTime" > CURRENT_TIMESTAMP
+      AND "C"."status" = 'scheduled'
+      AND "P"."type" = 0
+      GROUP BY "C"."id"
+      ORDER BY "C"."startDateTime" ASC
+      LIMIT 1;
+      `;
+    const params = [];
+    const result = await this.query(query, params);
+    return result;
+  };
+
   getContestInfo = async (contestId) => {
     const query = `
         SELECT
@@ -173,7 +208,7 @@ class ContestRepository extends Repository {
         "Users" "U" ON "C"."ownerId" = "U"."id"
         JOIN
         "Credentials" "Cr" ON "U"."id" = "Cr"."userId"
-        JOIN 
+        LEFT JOIN 
         "ContestProblems" "CP" ON "C"."id" = "CP"."contestId"
         WHERE
         "C"."id" = $1
@@ -302,11 +337,14 @@ class ContestRepository extends Repository {
             WHERE "Pc"."contestId" = $1 AND "Pc"."userId" = $2 AND "CP"."problemId" = "P"."id" AND "CS"."verdict" = 'Wrong answer'
         ) THEN false 
         ELSE null 
-    END AS "isSolved"
+    END AS "isSolved",
+    COUNT("CS"."id") as "solveCount"
     FROM "Problems" "P"
     JOIN "ContestProblems" "CP" ON "P"."id" = "CP"."problemId"
+    JOIN "ContestSubmissions" "CS" ON "CP"."id" = "CS"."contestProblemId"
     RIGHT JOIN "Canvases" "C" ON "P"."canvasId" = "C"."id"
-    WHERE "CP"."contestId" = $1;
+    WHERE "CP"."contestId" = $1 AND "CS"."verdict" = 'Accepted'
+    GROUP BY "P"."id", "CP"."status", "CP"."rating", "isSolved";
     `;
     const params = [contestId, userId];
     const result = await this.query(query, params);
@@ -1001,7 +1039,7 @@ class ContestRepository extends Repository {
     return result;
   };
 
-  showVirtualParticipant = async (contestId , userId) => {
+  showVirtualParticipant = async (contestId, userId) => {
     const query = `
         SELECT P.*
         FROM "Participants" P

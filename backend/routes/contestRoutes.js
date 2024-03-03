@@ -131,6 +131,11 @@ router.get(
   contestController.showVirtualParticipantList
 );
 
+router.delete(
+  "/:contestId/participant/virtual",
+  contestController.deleteVirtualParticipant
+);
+
 router.get(
   "/:contestId/participant/virtual",
   contestController.showVirtualParticipant

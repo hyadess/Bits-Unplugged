@@ -381,6 +381,7 @@ export default function ProblemsSubmissions() {
           {problem.submissions.map((submission, index) => (
             <SubmissionCard
               idx={index + 1}
+              problemId={id}
               submissionId={submission.id}
               verdict={submission.verdict}
               problem_name={problem.title}

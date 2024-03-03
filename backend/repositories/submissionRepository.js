@@ -89,6 +89,10 @@ class SubmissionRepository extends Repository {
     });
     return submission.id; // Return the newly created submission's ID
   };
+
+  getSubmissionById = async (id) => {
+    return await db.Submission.findByPk(id);
+  };
 }
 
 module.exports = SubmissionRepository;

@@ -18,6 +18,17 @@ class ProfileRepository extends Repository {
     return result;
   };
 
+  getIdByUsername = async (username) => { 
+    const query = `
+      SELECT "id"
+      FROM "Users"
+      WHERE "username" = $1;
+    `;
+    const params = [username];
+    const result = await this.query(query, params);
+    return result;
+  };
+
   getProfileByUsername = async (username) => {
     const query = `
       SELECT "U".*, "C"."email"

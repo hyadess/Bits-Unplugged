@@ -21,8 +21,8 @@ const SolverProfileTab = (props) => {
     if (res.success) setCurUser(res.data[0]);
     console.log(curUser);
 
-    const res2 = await ratingApi.getRating();
-    setRating(res2.data[0]);
+    // const res2 = await ratingApi.getRating();
+    // setRating(res2.data[0]);
 
     //console.log(res.data[0]);
   };
@@ -56,9 +56,9 @@ const SolverProfileTab = (props) => {
         <p className="mb-8 text-center md:text-left  font-light  md:text-lg bu-text-subtitle">
           {curUser?.fullname}
         </p>
-        <p className="mb-8 text-center md:text-left  font-light  md:text-lg bu-text-subtitle">
+        {/* <p className="mb-8 text-center md:text-left  font-light  md:text-lg bu-text-subtitle">
           {"Rating : " + rating?.rating}
-        </p>
+        </p> */}
       </div>
 
       {/* <img

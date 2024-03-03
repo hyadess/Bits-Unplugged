@@ -73,6 +73,7 @@ import SetterArticles from "pages/setter/SetterArticles";
 import SetterArticleEditor from "pages/setter/SetterArticleEditor";
 import EditorialPreview from "pages/EditorialPreview";
 import ProfileContests from "pages/user/Profile/ProfileContests";
+import HomeRight from "pages/user/HomeRight";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -554,7 +555,9 @@ const AppRoutes = () => {
           <Route
             path="/home"
             element={
+
               <div className="min-h-screen w-full p-5 pb-5 pt-0 md:w-4/5 md:p-5 md:pt-20 lg:mx-auto lg:w-5/6">
+
                 <UserHome />
               </div>
             }

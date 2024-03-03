@@ -64,6 +64,11 @@ router.get(
   "/stat/:topicId/solvedProblems",
   userActivityController.totalSolvedProblemCountByTopic
 );
+
+router.get(
+  "/stat/topics/successes/me",
+  userActivityController.totalSolvedProblemCount
+);
 router.get(
   "/stat/:username/activetime",
   dailyActivityController.daywiseActivityByUser

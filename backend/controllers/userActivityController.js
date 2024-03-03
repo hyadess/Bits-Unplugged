@@ -168,6 +168,20 @@ class UserActivityController extends Controller {
       res.status(404).json(result);
     }
   };
+
+  totalSolvedProblemCount = async (req, res) => {
+    let result = await userActivityRepository.totalSolvedProblemCount(
+      req.user.userId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
+
+
   totalProblemCountByTopic = async (req, res) => {
     //console.log("topic id"+req.params.topicId);
     let result = await userActivityRepository.totalProblemCountByTopic(

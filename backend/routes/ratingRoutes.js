@@ -23,6 +23,7 @@ router.get("/:userId/history", ratingController.getRatingHistory);
 
 
 router.post("/updateAllproblemRating", ratingController.updateAllproblemRating);
-router.post("/updateAllUserRating", ratingController.changeUserRatings);
+router.post("/updateAllUserRating/:contestId", ratingController.changeUserRatings);
+router.get("/showAll", ratingController.showAllUserRatings);
 
 module.exports = router;

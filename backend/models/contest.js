@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "ownerId",
         as: "owner",
       });
+      Contest.hasMany(models.UserRating, {
+        foreignKey: "contestId",
+        as: "ratings",
+      });
       // Contest.hasMany(models.Clarification);
     }
   }

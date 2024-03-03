@@ -3,6 +3,16 @@ import { contestApi } from "../api";
 import { useNavigate, useParams } from "react-router-dom";
 import ContestSettersList from "./ContestSetterList";
 import Leaderboard from "./LeaderBoard";
+import ProblemCard from "components/Cards/UserContestProblemCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCheckDouble,
+  faCheckToSlot,
+  faFire,
+  faHeartPulse,
+} from "@fortawesome/free-solid-svg-icons";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import ContestProblemListCard from "components/Cards/ContestProblemListCard";
 
 const UserContestDetails = () => {
   const { id } = useParams();
@@ -12,6 +22,7 @@ const UserContestDetails = () => {
   const [timeline, setTimeline] = useState(null);
   const [contestCollaborators, setContestCollaborators] = useState([]);
   const navigate = useNavigate();
+  const [problems, setProblems] = useState([]);
 
   const getContest = async () => {
     const res2 = await contestApi.showAllCollaborators(id);
@@ -49,9 +60,26 @@ const UserContestDetails = () => {
     return timelineRes;
   };
 
+  const handleProblemClick = (problemId) => {
+    problemId == "details"
+      ? navigate(`/contests/${id}`)
+      : navigate(`/contests/${id}/problems/${problemId}`);
+  };
+
+  const getProblems = async () => {
+    const res = await contestApi.getAllProblemsByContest(id);
+    if (res.success) {
+      const sortedProblems = res.data.sort((a, b) => a.rating - b.rating);
+      setProblems(sortedProblems);
+    }
+    // console.log("contest problems ===>", problems);
+    return res;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       await getContest();
+      await getProblems();
       await fetchContestDetails();
       await fetchLeaderboard();
       await fetchTimeline();
@@ -69,13 +97,42 @@ const UserContestDetails = () => {
 
   return (
     contest && (
-      <>
-        {/* {leaderboard && <Leaderboard leaderboard={leaderboard} contest_id={id} timeline={timeline}/>} */}
+      <div className="mt-10">
+        <div className="flex flex-col gap-3 overflow-y-auto w-full px-3">
+          <div className="w-full p-5 rounded-lg shadow-md flex flex-row bu-text-primary bg-[#AADFCF] dark:bg-pink-600">
+            <div className="text-xl w-[5%] font-medium">#</div>
+            <div className="text-xl w-[40%] font-medium">Problem</div>
+            <div className="text-xl w-[20%] font-medium flex gap-2 items-center justify-center">
+              {/* <FontAwesomeIcon icon={faCheckDouble} /> */}
+              <HowToRegIcon />
+              Solve Count
+            </div>
+            <div className="text-xl w-20% font-medium flex gap-2 items-center justify-center">
+              <FontAwesomeIcon icon={faFire} />
+              Points
+            </div>
+            <div className="text-xl w-15% font-medium flex gap-2 items-center justify-center">
+              <FontAwesomeIcon icon={faHeartPulse} />
+              Status
+            </div>
+          </div>
+          {problems?.map((problem, index) => (
+            <ContestProblemListCard
+              index={index}
+              contestId={id}
+              problem={problem}
+              onClick={handleProblemClick}
+              isSolved={problem.isSolved}
+              path={`/contests/${id}/problems/${problem.id}`}
+              count={problem.solveCount ?? 39}
+            ></ContestProblemListCard>
+          ))}
+        </div>
         <ContestSettersList
           owner={contest?.owner}
           collaborators={contestCollaborators}
         />
-      </>
+      </div>
     )
   );
 };

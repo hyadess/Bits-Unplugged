@@ -162,6 +162,41 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+  getRunningContests = async () => {
+    const query = `
+      SELECT "C".*,
+      COUNT("P"."id") as "totalParticipants"
+      FROM "Contests" "C"
+      JOIN "Participants" "P" ON "P"."contestId" = "C"."id"
+      WHERE "C"."startDateTime" <= CURRENT_TIMESTAMP 
+      AND ("C"."startDateTime" + INTERVAL '1 hour' * "C"."duration") >= CURRENT_TIMESTAMP
+      AND "C"."status" = 'scheduled'
+      AND "P"."type" = 0
+      GROUP BY "C"."id";
+      `;
+    const params = [];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  getUpcomingContests = async () => {
+    const query = `
+      SELECT "C".*,
+      COUNT("P"."id") as "totalParticipants"
+      FROM "Contests" "C"
+      JOIN "Participants" "P" ON "P"."contestId" = "C"."id"
+      WHERE "C"."startDateTime" > CURRENT_TIMESTAMP
+      AND "C"."status" = 'scheduled'
+      AND "P"."type" = 0
+      GROUP BY "C"."id"
+      ORDER BY "C"."startDateTime" ASC
+      LIMIT 1;
+      `;
+    const params = [];
+    const result = await this.query(query, params);
+    return result;
+  };
+
   getContestInfo = async (contestId) => {
     const query = `
         SELECT

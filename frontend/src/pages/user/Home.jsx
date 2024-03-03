@@ -3,7 +3,7 @@ import RecentProblems from "./RecentProblems";
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { setLoading } from "../../App";
-import { userActivityApi, recommendationApi } from "../../api";
+import { userActivityApi, recommendationApi, contestApi } from "../../api";
 import RecommendationCard from "components/Cards/RecommendationCard";
 import Title from "../../components/Title";
 import TableContainer from "../../containers/TableContainer";
@@ -117,7 +117,10 @@ export default function UserHome() {
   const [problems, setProblems] = useState([]);
   const [recomType, setRecomType] = useState("rating-burner");
   const [topicStats, setTopicStats] = useState([]);
+  const [runningContests, setRunningContests] = useState([]);
   const tags = ["rating-burner", "series-hunter"];
+  const navigate = useNavigate();
+  
 
   const getRecommendedProblems = async () => {
     if (recomType === "series-hunter") {
@@ -144,10 +147,19 @@ export default function UserHome() {
       //setLoading(false);
     }
   };
+  const getRunningContests = async () => {
+    const res = await contestApi.getRunningContests();
+    if (res.success) {
+      console.log("running contests", res);
+      setRunningContests(res.data);
+      //setLoading(false);
+    }
+  };
 
   useEffect(() => {
     getRecommendedProblems();
     getSolveCountByTopic();
+    getRunningContests();
   }, []);
   useEffect(() => {
     getRecommendedProblems();
@@ -224,23 +236,27 @@ export default function UserHome() {
 
         <HomeRecentFails />
       </div>
-      <div className="flex flex-col gap-8 w-1/4">
-        <div className="flex flex-col text-white font-medium rounded-lg text-lg p-7 text-left bu-button-primary w-full mt-20 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] cursor-pointer">
-          <div class="font-poppins font-medium text-xl leading-36 text-red-500 opacity-80">
-            Currently Running
-          </div>
-          <div class="font-poppins font-medium text-3xl leading-54 text-black">
-            Contest 1
-          </div>
-          <div className="flex flex-row gap-2 items-center">
-            <div className="text-black">
-              <PersonIcon />
+      <div className="flex flex-col gap-3 w-1/4 mt-10 mb-8">
+        {runningContests.length > 0 &&
+          runningContests.map((contest, index) => (
+            <div className="flex flex-col text-white font-medium rounded-lg text-lg p-7 text-left bu-button-primary w-full mt-3 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] cursor-pointer"
+            onClick={()=>navigate(`/contests/${contest.id}`)}>
+              <div class="font-poppins font-medium text-xl leading-36 text-red-500 opacity-80">
+                Currently Running
+              </div>
+              <div class="font-poppins font-medium text-3xl leading-54 text-black">
+                {contest.title}
+              </div>
+              <div className="flex flex-row gap-2 items-center">
+                <div className="text-black">
+                  <PersonIcon />
+                </div>
+                <div class="w-41 font-poppins font-medium text-base leading-24 text-black">
+                  {contest.totalParticipants}
+                </div>
+              </div>
             </div>
-            <div class="w-41 font-poppins font-medium text-base leading-24 text-black">
-              4,145
-            </div>
-          </div>
-        </div>
+          ))}
 
         <div class="bg-[#F0F0F0] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded-lg p-5">
           <div class="w-155 font-poppins font-medium text-base leading-140 text-black">

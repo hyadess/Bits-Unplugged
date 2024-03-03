@@ -22,14 +22,18 @@ const Leaderboard = ({}) => {
   const [contest, setContest] = useState(null);
   const [leaderboard, setLeaderboard] = useState(null);
   const [timelineData, setTimelineData] = useState([]);
+  const [leaderboardMode, setLeaderboardMode] = useState(0);
+
+
   const navigate = useNavigate();
-  const fetchLeaderboard = async () => {
+
+  const fetchLeaderboard = async (type) => {
     const res = await contestApi.getContestById(id);
     if (res.success) {
       setContest(res.data[0]);
       console.log("contest: ", res.data[0]);
     }
-    const leaderboardRes = await contestApi.getLeaderboard(id,0);
+    const leaderboardRes = await contestApi.getLeaderboard(id,type);
     if (leaderboardRes.success) {
       console.log(leaderboardRes);
       setLeaderboard(leaderboardRes.data);
@@ -37,6 +41,12 @@ const Leaderboard = ({}) => {
     }
     return leaderboardRes;
   };
+
+  // const handleLeaderboardModeChange = async (mode) => {
+  //   setLeaderboardMode(mode);
+  //   setLoading(true);
+  //   fetchLeaderboard(mode);
+  // };
 
   const getUserSubmissions = async (username) => {
     const result = await contestApi.getAllSubmissionsByUserAndContest(
@@ -185,7 +195,7 @@ const Leaderboard = ({}) => {
   };
 
   useEffect(() => {
-    fetchLeaderboard();
+    fetchLeaderboard(0);
   }, [id]);
 
   useEffect(() => {
@@ -221,6 +231,29 @@ const Leaderboard = ({}) => {
           </CardBody>
         </Card>
       </div>
+
+      {/* <div className="flex flex-row justify-center items-center space-x-4">
+          <label className="cursor-pointer">
+            <input
+              type="radio"
+              name="leaderboardMode"
+              value={0}
+              checked={leaderboardMode === 0}
+              onChange={() => handleLeaderboardModeChange(0)}
+            />
+            Live
+          </label>
+          <label className="cursor-pointer">
+            <input
+              type="radio"
+              name="leaderboardMode"
+              value={1}
+              checked={leaderboardMode === 1}
+              onChange={() => handleLeaderboardModeChange(1)}
+            />
+            Virtual
+          </label>
+        </div> */}
 
       <article class="leaderboard mx-auto shadow-lg">
         <header className="flex flex-row justify-between w-full">

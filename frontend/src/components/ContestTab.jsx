@@ -1,7 +1,7 @@
 import React from "react";
 
 const ContestTab = (props) => {
-  const tabs = ["Details", "Leaderboard", "My Submissions", "Editorial"];
+  const tabs = ["Details", "Leaderboard", "Submissions", "Editorial"];
 
   return (
     <div className="flex flex-col h-full mx-auto items-center">

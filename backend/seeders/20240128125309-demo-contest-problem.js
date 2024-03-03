@@ -51,7 +51,7 @@ module.exports = {
         {
           //id: 1,
           contestId: 1,
-          problemId: 4,
+          problemId: 18,
           status: "published",
           rating: 1400,
         },

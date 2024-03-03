@@ -166,16 +166,19 @@ class ContestRepository extends Repository {
     const query = `
         SELECT
         "C".*,
-        jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image", 'email', "Cr".email) AS "owner"
+        jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image", 'email', "Cr".email) AS "owner", SUM("CP"."rating") AS "totalPoints"
         FROM
         "Contests" "C"
         JOIN
         "Users" "U" ON "C"."ownerId" = "U"."id"
         JOIN
-
         "Credentials" "Cr" ON "U"."id" = "Cr"."userId"
+        JOIN 
+        "ContestProblems" "CP" ON "C"."id" = "CP"."contestId"
         WHERE
-        "C"."id" = $1;
+        "C"."id" = $1
+        GROUP BY "C".id, "owner";
+        ;
     `;
     const params = [contestId];
     const result = await this.query(query, params);
@@ -198,14 +201,14 @@ class ContestRepository extends Repository {
   };
   getAllSubmissionsByUserAndContest = async (contestId, username) => {
     const query = `
-        SELECT "Pb"."title","CS".*
+        SELECT "Pb"."title","CS".*, "Pb".title as "problemName"
         FROM "ContestSubmissions" "CS"
         JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
         JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
         JOIN "Problems" "Pb" ON "CP"."problemId" = "Pb"."id"
         JOIN "Users" "U" ON "P"."userId" = "U"."id"
         WHERE "P"."contestId" = $2 AND "U"."username" = $1
-        ORDER BY "CS"."submittedAt" ASC;
+        ORDER BY "CS"."submittedAt" DESC;
         `;
     const params = [username, contestId];
     const result = await this.query(query, params);
@@ -213,7 +216,7 @@ class ContestRepository extends Repository {
   };
   getAllSubmissionsByContestAndProblem = async (contestId, problemId) => {
     const query = `
-        SELECT "CS".*, "U".username, "U".fullname
+        SELECT "CS".*, "P"."userId", "U".username, "U".fullname
         FROM "ContestSubmissions" "CS"
         JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
         JOIN "Users" "U" ON "P"."userId" = "U"."id"
@@ -608,18 +611,25 @@ class ContestRepository extends Repository {
     // Calculate time penalty
     // console.log(submissionTime, contestDuration);
     const timePenaltyFactor = 0.9 * actualPoints; // Adjust this factor as needed
+    console.log(timePenaltyFactor);
     // we need to keep 10% points remaining at the end of contest
     // so we can decrease 0.9 * actual_points in contestDuration window
     // contestDuration -> 0.9 * actual_points
     // 1 -> 0.9 * actual_points / contestDuration
     // submissionTime -> 0.9 * actual_points *
-    const timePenalty =
+    let timePenalty =
       Math.max(0, submissionTime / contestDuration) * timePenaltyFactor;
+    console.log(timePenalty);
+    timePenalty = isNaN(timePenalty) ? 0 : timePenalty;
 
     // Calculate wrong answer penalty based on actual points
     const wrongAnswerPenaltyFactor = 0.05; // Adjust this factor as needed
-    const wrongAnswerPenalty =
+    console.log(wrongAnswerPenaltyFactor);
+    let wrongAnswerPenalty =
       actualPoints * wrongAnswerPenaltyFactor * numWrongAnswers;
+
+    console.log(wrongAnswerPenalty);
+    wrongAnswerPenalty = isNaN(wrongAnswerPenalty) ? 0 : wrongAnswerPenalty;
 
     console.log(
       "Submitted at",
@@ -641,6 +651,69 @@ class ContestRepository extends Repository {
 
     // return Math.round(adjustedPoints / 10) * 10;
     return Math.round(adjustedPoints);
+  };
+  addSubmissionToContestFromParticipant = async (
+    contestProblemId,
+    contestId,
+    participantId,
+    verdict,
+    canvasData,
+    userActivity,
+    points,
+    timeTaken,
+    image,
+    submittedAt
+  ) => {
+    // get contest total time
+    const contestQuery = `
+      SELECT duration
+      FROM "Contests"
+      WHERE id = $1;
+    `;
+    const contestQueryResult = await this.query(contestQuery, [contestId]);
+
+    // get number of "Wrong answer" submissions
+    const waQuery = `
+      SELECT CAST(COUNT("CS".*) AS INTEGER) as "nWa"
+      FROM "Contests" "C"
+      JOIN "ContestProblems" "CP"
+      ON "C".id = "CP"."contestId" AND "C"."id" = $1
+      JOIN "ContestSubmissions" "CS"
+      ON "CP".id = "CS"."contestProblemId" AND "CP".id = $2
+      JOIN "Participants" "P"
+      ON "CS"."participantId" = $3;
+    `;
+    const waQueryResult = await this.query(waQuery, [
+      contestId,
+      contestProblemId,
+      participantId,
+    ]);
+    console.log("WA: ", waQueryResult.data);
+    // Then, insert the submission with the participantId
+    const submissionQuery = `
+        INSERT INTO "ContestSubmissions" ("participantId", "contestProblemId", "verdict", "canvasData", "userActivity", "points", "duration","image", "submittedAt")
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);
+    `;
+    const submissionParams = [
+      participantId,
+      contestProblemId,
+      verdict,
+      canvasData,
+      userActivity,
+      verdict === "Accepted"
+        ? this.calculateAdjustedPoints(
+            points,
+            submittedAt,
+            waQueryResult.data[0].nWa,
+            contestQueryResult.data[0].duration * 60 * 60 * 1000
+          )
+        : 0,
+      timeTaken,
+      image,
+      submittedAt,
+    ];
+    const result = await this.query(submissionQuery, submissionParams);
+    return result;
   };
 
   // assuming that this submission is added in submissions table.......
@@ -665,6 +738,8 @@ class ContestRepository extends Repository {
       participantQuery,
       participantParams
     );
+
+    console.log("->", problemId, contestId, userId, participantResult);
     const participantId = participantResult.data[0].id;
 
     //get contest problem id....this part will not be needed if the provided problem id is contest problem id

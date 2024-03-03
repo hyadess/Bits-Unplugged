@@ -74,6 +74,7 @@ import SetterArticleEditor from "pages/setter/SetterArticleEditor";
 import EditorialPreview from "pages/EditorialPreview";
 import ProfileContests from "pages/user/Profile/ProfileContests";
 import HomeRight from "pages/user/HomeRight";
+import SubmissionsRight from "components/Pane/SubmissionsRight";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -105,6 +106,9 @@ const SolverProfile = () => {
         <div className="flex flex-row justify-start">
           <div className="w-[75%]">
             <ProfileSubmissions />
+          </div>
+          <div className="fixed bottom-0 right-0 top-0 hidden w-1/5 p-5 md:mt-20 md:flex overflow-auto scroll-smooth">
+            <SubmissionsRight />
           </div>
         </div>
       ) : (
@@ -146,8 +150,8 @@ const ContestWrapper = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [username, setUsername] = useState();
-  const [endTime, setendTime] = useState();
-  const [startTime, setstartTime] = useState();
+  const [endTime, setendTime] = useState(null);
+  const [startTime, setstartTime] = useState(null);
   const [activeComponent, setActiveComponent] = useState("Details");
   const fetchContestDetails = async () => {
     try {
@@ -160,14 +164,23 @@ const ContestWrapper = () => {
       if (contest.success) {
         const contestDuration = contest.data[0].duration * 60 * 60 * 1000;
         const startDateTime = new Date(contest.data[0].startDateTime);
-        if(virtualParticipant.data.length>0){
+        if (new Date().getTime() < startDateTime.getTime() + contestDuration) {
           setstartTime(startDateTime);
           setendTime(new Date(startDateTime.getTime() + contestDuration));
-        }
-        else{
+        } else {
           setstartTime(new Date(virtualParticipant.data[0].createdAt));
-          setendTime(new Date(virtualParticipant.data[0].createdAt + contestDuration));
-          console.log("virtualParticipant ==>", virtualParticipant, startTime, endTime);
+          setendTime(
+            new Date(
+              new Date(virtualParticipant.data[0].createdAt).getTime() +
+                contestDuration
+            )
+          );
+          console.log(
+            "virtualParticipant ==>",
+            virtualParticipant,
+            startTime,
+            endTime
+          );
         }
       }
     } catch (error) {
@@ -177,6 +190,7 @@ const ContestWrapper = () => {
   useEffect(() => {
     fetchContestDetails();
   }, [id]);
+
   return (
     <LayoutMain
       left={
@@ -188,15 +202,15 @@ const ContestWrapper = () => {
               if (tab == "Details") navigate(`/contests/${id}`);
               else if (tab == "Leaderboard")
                 navigate(`/contests/${id}/leaderboard`);
-              else if (tab == "My Submissions")
+              else if (tab == "Submissions")
                 navigate(`/contests/${id}/${username}`);
               else if (tab == "Editorial")
                 navigate(`/contests/${id}/editorial`);
             }}
             tabs={
               endTime?.getTime() < Date.now()
-                ? ["Details", "Leaderboard", "My Submissions", "Editorial"]
-                : ["Details", "Leaderboard", "My Submissions"]
+                ? ["Details", "Leaderboard", "Submissions", "Editorial"]
+                : ["Details", "Leaderboard", "Submissions"]
             }
           />
         </>
@@ -204,7 +218,7 @@ const ContestWrapper = () => {
       right={
         <div className="flex flex-col gap-5 w-full">
           <div>
-            {endTime !== null ? (
+            {startTime !== null && endTime !== null ? (
               new Date().getTime() < startTime ? (
                 <>
                   <ExpiredNotice msg="Contest starts in" />
@@ -564,9 +578,7 @@ const AppRoutes = () => {
           <Route
             path="/home"
             element={
-
               <div className="min-h-screen w-full p-5 pb-5 pt-0 md:w-4/5 md:p-5 md:pt-20 lg:mx-auto lg:w-5/6">
-
                 <UserHome />
               </div>
             }

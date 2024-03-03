@@ -76,7 +76,7 @@ const ContestCard = ({
       const res = await contestApi.participateVirtualContest(id);
       if (res.success) {
         setRegistered(true);
-        showToast("Successfully registered to virtual" + name, "success");
+        showToast("You are in virtual " + name, "success");
       }
     }
   };

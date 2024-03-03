@@ -8,8 +8,7 @@ import { showSuccess } from "../../../App";
 import InviteButton from "../../../components/Buttons/InviteButton";
 import SetterListModal from "../../../components/Modal/ColaboratorSelectModal";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
-import { jwtDecode } from 'jwt-decode';
-
+import { jwtDecode } from "jwt-decode";
 
 const DetailsTab = () => {
   const [isAddModalOpen, setAddModalOpen] = useState(false);
@@ -28,8 +27,7 @@ const DetailsTab = () => {
   useEffect(() => {
     getCollaborators();
     fetchUser();
-    console.log(contest.startDate, contest.endDate);
-  }, []);
+  }, [contest]);
 
   useEffect(() => {
     const date = new Date(contest.startDateTime);
@@ -46,7 +44,8 @@ const DetailsTab = () => {
   };
 
   const getCollaborators = async () => {
-    const res = await contestApi.availableCollaborators();
+    if (contest.id === undefined) return;
+    const res = await contestApi.availableCollaborators(contest.id);
     if (res.success) {
       console.log(res.data);
       setCollaborators(res.data);
@@ -54,7 +53,7 @@ const DetailsTab = () => {
   };
 
   const publish = async () => {
-      await contestApi.publishContest(contest.id);
+    await contestApi.publishContest(contest.id);
   };
 
   return (
@@ -105,22 +104,6 @@ const DetailsTab = () => {
           }
         />
       </div>
-
-      {/* <div className="flex flex-col gap-2">
-        <div className="bu-text-primary text-2xl font-medium">Start Date</div>
-        <input
-          value={contest.startDate}
-          type="datetime-local"
-          name="startDate"
-          className="border text-[140%] rounded-lg block w-full p-2.5 px-5 bu-input-primary"
-          onChange={(e) =>
-            dispatch({
-              type: "UPDATE_START_DATE",
-              payload: e.target.value,
-            })
-          }
-        />
-      </div> */}
 
       <div className="flex flex-col gap-2">
         <div className="bu-text-primary text-2xl font-medium">Start Date</div>
@@ -205,7 +188,7 @@ const DetailsTab = () => {
       <button
         className="bu-button-primary flex flex-row items-center justify-center gap-2 rounded-lg px-7 py-3.5 text-center text-lg font-semibold focus:outline-none"
         onClick={async () => {
-const result = await contestApi.updateContest(contest.id, contest);
+          const result = await contestApi.updateContest(contest.id, contest);
           showSuccess("Details saved successfully", result);
         }}
       >

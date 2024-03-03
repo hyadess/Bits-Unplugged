@@ -44,15 +44,15 @@ const AdminSetters = () => {
             <div className="flex flex-row gap-3 w-full">
               <div
                 className="text-white font-medium rounded-lg text-sm px-5 py-2 text-center bu-button-delete mt-5 cursor-pointer w-50%"
-                // onClick={async () => {
-                //   const result = await authApi.approveSetter(user.id);
-                //   if (result.success) {
-                //     showSuccess("Setter approved", result);
-                //     setSetterList((prevSetterList) =>
-                //       prevSetterList.filter((setter) => setter.id !== user.id)
-                //     );
-                //   }
-                // }}
+                onClick={async () => {
+                  const result = await authApi.rejectSetter(user.id);
+                  if (result.success) {
+                    showSuccess("Setter rejected", result);
+                    setSetterList((prevSetterList) =>
+                      prevSetterList.filter((setter) => setter.id !== user.id)
+                    );
+                  }
+                }}
               >
                 REJECT
               </div>

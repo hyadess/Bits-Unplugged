@@ -11,9 +11,9 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Problem.hasOne(models.ProblemVersion, {
         foreignKey: "problemId",
-        as: "version",
+        as: "versions",
       });
-      Problem.belongsTo(models.Setter, {
+      Problem.belongsTo(models.User, {
         foreignKey: "setterId",
         as: "setter",
       });
@@ -21,11 +21,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "canvasId",
         as: "canvas",
       });
-      // Problem.belongsToMany(models.Activity, {
-      //   foreignKey: "problemId",
-      //   as: "activity",
-      // });
-      // Problem.hasMany(models.Submission, { foreignKey: "problemId" });
       Problem.hasMany(models.ContestProblem, {
         foreignKey: "problemId",
       });

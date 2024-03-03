@@ -207,6 +207,19 @@ class ProblemController extends Controller {
   // rateProblem = async (req, res) => {};
   // getProblemRating = async (req, res) => {};
   // getProblemAvgRating = async (req, res) => {};
+
+  recentlyUpdatedProblems = async (req, res) => {
+    console.log("recentlyUpdatedProblems", req.user.userId);
+    this.handleRequest(res, async () => {
+      let problems = await problemRepository.getRecentlyUpdatedProblems(req.user.userId);
+      if(problems.success){
+        res.status(200).json(problems.data);
+      }
+      else{
+        res.status(400).json(problems);
+      }
+    });
+  }
 }
 
 module.exports = ProblemController;

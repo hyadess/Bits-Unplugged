@@ -134,6 +134,18 @@ class UserActivityController extends Controller {
       res.status(404).json(result);
     }
   };
+
+  mostRecentFails = async (req, res) => {
+    let result = await userActivityRepository.mostRecentFailsByUser(
+      req.user.username
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
   mostRecentFailsByUser = async (req, res) => {
     let result = await userActivityRepository.mostRecentFailsByUser(
       req.params.username
@@ -156,6 +168,20 @@ class UserActivityController extends Controller {
       res.status(404).json(result);
     }
   };
+
+  totalSolvedProblemCount = async (req, res) => {
+    let result = await userActivityRepository.totalSolvedProblemCount(
+      req.user.userId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
+
+
   totalProblemCountByTopic = async (req, res) => {
     //console.log("topic id"+req.params.topicId);
     let result = await userActivityRepository.totalProblemCountByTopic(
@@ -169,6 +195,17 @@ class UserActivityController extends Controller {
   };
   acceptanceByProblem = async (req, res) => {
     let result = await userActivityRepository.acceptanceByProblem(
+      req.params.problemId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+  isSolvedByUser = async (req, res) => {
+    let result = await userActivityRepository.isSolvedByUser(
+      req.user.userId,
       req.params.problemId
     );
     if (result.success) {

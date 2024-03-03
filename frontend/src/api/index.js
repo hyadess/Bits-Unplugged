@@ -10,6 +10,8 @@ import ContestApi from "./contestApi";
 import ArticleApi from "./articleApi";
 import SetterActivityApi from "./setterActivityApi";
 import StorageApi from "./storageApi";
+import RecommendationApi from "./recommendationApi";
+import RatingApi from "./ratingApi";
 
 export const authApi = new AuthApi();
 export const canvasApi = new CanvasApi();
@@ -23,3 +25,5 @@ export const contestApi = new ContestApi();
 export const articleApi = new ArticleApi();
 export const setterActivityApi = new SetterActivityApi();
 export const storageApi = new StorageApi();
+export const recommendationApi = new RecommendationApi();
+export const ratingApi = new RatingApi();

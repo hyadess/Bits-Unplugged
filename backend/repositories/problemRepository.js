@@ -90,7 +90,6 @@ class ProblemsRepository extends Repository {
   };
 
   getSubmittedProblems = async () => {
-    console.log("Get all admin problem");
     const latestProblems = await db.ProblemVersion.findAll({
       where: {
         approvalStatus: {
@@ -111,19 +110,10 @@ class ProblemsRepository extends Repository {
           attributes: ["setterId"],
           include: [
             {
-              model: db.Setter,
+              model: db.User,
               as: "setter",
               required: true,
-              attributes: ["isApproved"],
-              // Include all attributes of Setter or specify the ones you need
-              include: [
-                {
-                  model: db.User,
-                  as: "user",
-                  required: true,
-                  // Include all attributes of User or specify the ones you need
-                },
-              ],
+              // Include all attributes of User or specify the ones you need
             },
           ],
         },
@@ -146,7 +136,21 @@ class ProblemsRepository extends Repository {
       where: {
         setterId: setterId,
       },
+      attributes: {
+        include: [
+          [
+            db.Sequelize.literal(`(
+              SELECT COUNT(*)
+              FROM "ProblemVersions"
+              WHERE "ProblemVersions"."problemId" = "Problem".id
+              AND "ProblemVersions"."approvalStatus" = 1
+            ) > 0`),
+            "isPublished",
+          ],
+        ],
+      },
     });
+    console.log(JSON.stringify(problems[22], null, 2));
     return problems;
   };
 
@@ -555,6 +559,18 @@ class ProblemsRepository extends Repository {
       }
     );
     return updatedProblem;
+  };
+  getRecentlyUpdatedProblems = async (setterId) => {
+    const query = `
+    SELECT "P".*
+    FROM "Problems" "P"
+    WHERE "P"."setterId" = $1
+    ORDER BY "P"."updatedAt" DESC
+    LIMIT 5;
+    `;
+    const params = [setterId];
+    const result = await this.query(query, params);
+    return result;
   };
 }
 

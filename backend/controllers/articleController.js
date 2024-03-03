@@ -7,7 +7,12 @@ class ArticleController extends Controller {
   }
   getAllArticles = async (req, res) => {
     this.handleRequest(res, async () => {
-      const articles = await articleRepository.getAllArticles();
+      const articles =
+        req.user.type === 0
+          ? null
+          : req.user.type === 2
+          ? await articleRepository.getSubmittedArticles()
+          : await articleRepository.getMyArticles(req.user.userId);
       res.status(200).json(articles);
     });
   };
@@ -23,7 +28,10 @@ class ArticleController extends Controller {
   };
   createArticle = async (req, res) => {
     this.handleRequest(res, async () => {
-      const newArticle = await articleRepository.createArticle(req.body);
+      const newArticle = await articleRepository.createArticle(
+        req.user.userId,
+        req.body
+      );
       res.status(201).json(newArticle);
     });
   };

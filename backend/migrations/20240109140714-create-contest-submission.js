@@ -44,15 +44,22 @@ module.exports = {
       points: {
         type: Sequelize.INTEGER,
       },
+      duration: {
+        type: Sequelize.INTEGER,
+      },
+      submittedAt: {
+        allowNull: false,
+        type: Sequelize.BIGINT,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },

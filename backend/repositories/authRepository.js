@@ -14,7 +14,7 @@ class AuthRepository extends Repository {
         email,
         role,
       },
-      include: [{ model: db.User, required: true }],
+      include: [{ model: db.User, required: true, as: "user" }],
     });
     return credential;
   };
@@ -24,7 +24,9 @@ class AuthRepository extends Repository {
       where: {
         role,
       },
-      include: [{ model: db.User, required: true, where: { username } }],
+      include: [
+        { model: db.User, required: true, where: { username }, as: "user" },
+      ],
     });
     return credential;
   };
@@ -106,6 +108,31 @@ class AuthRepository extends Repository {
     if (setter) {
       setter.isApproved = true;
       await setter.save();
+      return setter;
+    }
+    return setter;
+  };
+
+  rejectSetter = async (id) => {
+    const setter = await db.Setter.findOne({
+      where: {
+        userId: id,
+      },
+      include: [
+        {
+          model: db.User,
+          required: true,
+          as: "user",
+          include: [{ model: db.Credential, required: true, as: "credential" }],
+        },
+      ],
+    });
+    if (setter) {
+      await db.User.destroy({
+        where: {
+          id,
+        },
+      });
       return setter;
     }
     return setter;

@@ -10,6 +10,9 @@ class UserActivityApi extends Api {
   totalSolvedProblemsByUser = async () => {
     return await this.get("/userActivity/stat/series/successes/me");
   };
+  totalSolvedProblemCount = async () => {
+    return await this.get("/userActivity/stat/topics/successes/me");
+  };
   successesByUser = async (username) => {
     return await this.get("/userActivity/stat/" + username + "/successes/user");
   };
@@ -18,6 +21,9 @@ class UserActivityApi extends Api {
   };
   totalFailedProblemsByUser = async () => {
     return await this.get("/userActivity/stat/fails/me");
+  };
+  mostRecentFails = async () => {
+    return await this.get("/userActivity/stat/recentfails/me");
   };
   mostRecentFailsByUser = async (username) => {
     return await this.get(
@@ -47,6 +53,9 @@ class UserActivityApi extends Api {
 
   getProblemDetails = async (id) => {
     return await this.get("/userActivity/" + id);
+  };
+  isSolvedByUser = async (problemId) => {
+    return await this.get("/userActivity/isSolved/" + problemId);
   };
 }
 

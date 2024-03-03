@@ -16,29 +16,19 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "problemId",
         as: "problem",
       });
+
+      ContestProblem.hasMany(models.ContestSubmission, {
+        foreignKey: "contestProblemId",
+        as: "submissions",
+      });
+      ContestProblem.hasMany(models.ContestActivity);
+ 
     }
   }
   ContestProblem.init(
     {
-      contestId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Contests",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      problemId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Problems",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
+      contestId: DataTypes.INTEGER,
+      problemId: DataTypes.INTEGER,
       status: DataTypes.STRING,
       rating: DataTypes.INTEGER,
     },

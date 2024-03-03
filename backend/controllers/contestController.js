@@ -7,13 +7,29 @@ class ContestController extends Controller {
     super();
   }
   getAllContests = async (req, res) => {
-    let result = await contestRepository.getAllContests();
-    if (result.success) {
-      res.status(200).json(result.data);
-    } else {
-      res.status(404).json(result);
-    }
+    this.handleRequest(res, async () => {
+      let contests =
+        req.user.type === 0
+          ? await contestRepository.getAllContests()
+          : req.user.type === 2
+          ? await contestRepository.getSubmittedContests()
+          : null;
+      res.status(200).json(contests);
+    });
   };
+
+  getAllParticipatedContests = async (req, res) => {
+    this.handleRequest(res, async () => {
+      let contests =
+        req.user.type === 0
+          ? await contestRepository.getAllParticipatedContests(req.user.userId)
+          : req.user.type === 2
+          ? null
+          : null;
+      res.status(200).json(contests);
+    });
+  };
+
   updateContest = async (req, res) => {
     this.handleRequest(res, async () => {
       const updatedContest = await contestRepository.updateContest(
@@ -25,6 +41,14 @@ class ContestController extends Controller {
       } else {
         res.status(200).json(updatedContest);
       }
+    });
+  };
+  getEditorial = async (req, res) => {
+    this.handleRequest(res, async () => {
+      let editorial = await contestRepository.getEditorial(
+        req.params.contestId
+      );
+      res.status(200).json(editorial);
     });
   };
   getAllPublishedContests = async (req, res) => {
@@ -43,6 +67,25 @@ class ContestController extends Controller {
       res.status(404).json(result);
     }
   };
+  getRunningContests = async (req, res) => {
+    let result = await contestRepository.getRunningContests();
+    if (result.success) {
+      // res.status(200).json(result.data);
+      if (result.data.length == 0) {
+        let result2 = await contestRepository.getUpcomingContests();
+        if (result2.success) {
+          res.status(200).json(result2.data);
+        } else {
+          res.status(404).json(result2);
+        }
+      } else {
+        res.status(200).json(result.data);
+      }
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
   getContestInfo = async (req, res) => {
     let result = await contestRepository.getContestInfo(req.params.contestId);
     if (result.success) {
@@ -72,8 +115,8 @@ class ContestController extends Controller {
   };
   getAllSubmissionsByUserAndContest = async (req, res) => {
     let result = await contestRepository.getAllSubmissionsByUserAndContest(
-      req.user.userId,
-      req.params.contestId
+      req.params.contestId,
+      req.params.username
     );
     if (result.success) {
       res.status(200).json(result.data);
@@ -81,6 +124,18 @@ class ContestController extends Controller {
       res.status(404).json(result);
     }
   };
+  getAllSubmissionsByContestAndProblem = async (req, res) => {
+    let result = await contestRepository.getAllSubmissionsByContestAndProblem(
+      req.params.contestId,
+      req.params.problemId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
   isContestProblemSolved = async (req, res) => {
     let result = await contestRepository.isContestProblemSolved(
       req.user.userId,
@@ -97,7 +152,7 @@ class ContestController extends Controller {
   totalProblemSolved = async (req, res) => {
     let result = await contestRepository.totalProblemSolved(
       req.params.userId,
-      req.params.contestId,
+      req.params.contestId
     );
     if (result.success) {
       res.status(200).json(result.data);
@@ -117,7 +172,6 @@ class ContestController extends Controller {
     }
   };
   getContestProblemById = async (req, res) => {
-    
     let result = await contestRepository.getContestProblemById(
       req.params.contestId,
       req.params.problemId
@@ -130,6 +184,7 @@ class ContestController extends Controller {
   };
   getAllProblemsByContest = async (req, res) => {
     let result = await contestRepository.getAllProblemsByContest(
+      req.user.userId,
       req.params.contestId
     );
     if (result.success) {
@@ -209,19 +264,6 @@ class ContestController extends Controller {
     }
   };
 
-  updateDates = async (req, res) => {
-    let result = await contestRepository.updateDates(
-      req.params.contestId,
-      req.body.startDate,
-      req.body.endDate
-    );
-    if (result.success) {
-      res.status(204).json(result.data);
-    } else {
-      res.status(500).json(result);
-    }
-  };
-
   availableCollaborators = async (req, res) => {
     let result = await contestRepository.availableCollaborators(
       req.user.userId,
@@ -273,7 +315,10 @@ class ContestController extends Controller {
       console.log(req.params);
       const contestId = req.params.contestId;
       const setterId = req.user.userId;
-      const result = await contestRepository.acceptInvitation(contestId, setterId);
+      const result = await contestRepository.acceptInvitation(
+        contestId,
+        setterId
+      );
 
       res.status(200).json({ success: true, result });
     } catch (error) {
@@ -345,12 +390,13 @@ class ContestController extends Controller {
       req.body.problemId,
       req.params.contestId,
       req.user.userId,
-     
       req.body.verdict,
       req.body.canvasData,
       req.body.userActivity,
-      req.body.point
-
+      req.body.point,
+      req.body.duration,
+      req.body.image,
+      req.body.submittedAt
     );
     if (result.success) {
       res.status(204).json(result.data);
@@ -361,6 +407,29 @@ class ContestController extends Controller {
 
   getLeaderboard = async (req, res) => {
     let result = await contestRepository.getLeaderboard(req.params.contestId);
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
+  IsRegistered = async (req, res) => {
+    let result = await contestRepository.IsRegistered(
+      req.user.userId,
+      req.params.contestId
+    );
+    console.log("register", result);
+
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
+  getTimeline = async (req, res) => {
+    let result = await contestRepository.getTimeline(req.params.contestId);
     if (result.success) {
       res.status(200).json(result.data);
     } else {
@@ -414,7 +483,6 @@ class ContestController extends Controller {
     }
   };
 
-
   participateVirtualContest = async (req, res) => {
     let result = await contestRepository.participateVirtualContest(
       req.user.userId,
@@ -426,6 +494,20 @@ class ContestController extends Controller {
       res.status(500).json(result);
     }
   };
+
+  deleteVirtualParticipant = async (req, res) => {
+    let result = await contestRepository.deleteVirtualParticipant(
+      req.user.userId,
+      req.params.contestId
+    );
+    if (result.success) {
+      res.status(201).json(result.data);
+    } else {
+      res.status(500).json(result);
+    }
+  };
+
+
   leaveVirtualContest = async (req, res) => {
     let result = await contestRepository.leaveVirtualContest(
       req.user.userId,
@@ -472,6 +554,18 @@ class ContestController extends Controller {
   showVirtualParticipantList = async (req, res) => {
     let result = await contestRepository.showVirtualParticipantList(
       req.params.contestId
+    );
+    if (result.success) {
+      res.status(200).json(result.data);
+    } else {
+      res.status(404).json(result);
+    }
+  };
+
+  showVirtualParticipant = async (req, res) => {
+    let result = await contestRepository.showVirtualParticipant(
+      req.params.contestId,
+      req.user.userId
     );
     if (result.success) {
       res.status(200).json(result.data);

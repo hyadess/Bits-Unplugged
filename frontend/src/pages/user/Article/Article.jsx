@@ -22,6 +22,7 @@ import {
   faArrowLeft,
   faArrowRight,
   faCaretRight,
+  faPause,
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import SubmissionService from "services/submissionService";
@@ -37,6 +38,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import GlobalContext from "store/GlobalContext";
 import html2canvas from "html2canvas";
+import StatementPreview from "components/StatementPreview";
+import CanvasPreview from "pages/CanvasPreview";
+import ProblemContextProvider, {
+  useProblemContext,
+} from "store/ProblemContextProvider";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
+const deepCopy = (obj) => {
+  return typeof obj === "string"
+    ? JSON.parse(obj)
+    : JSON.parse(JSON.stringify(obj));
+};
+
 const Statement = ({ data }) => {
   const { colorMode } = useGlobalContext();
   return (
@@ -61,131 +76,80 @@ const Statement = ({ data }) => {
     </div>
   );
 };
-const Canvas = ({
-  index,
-  onSubmit,
-  content,
-  onReset,
-  articleBackup,
-  updateCanvas,
-  updateActivity,
-}) => {
-  const canvasRef = useRef(null);
-  const stageRef = useRef(null);
-  const saveCanvasAsImage = async () => {
-    const stage = stageRef.current;
 
-    // check if the stage is canvas or canvas = await html2canvas(element), then use canvas.toDataURL()
-    let image;
-    try {
-      image = stage.toDataURL();
-    } catch (error) {
-      const canvas = await html2canvas(stage, { backgroundColor: null });
-      image = canvas.toDataURL("image/png");
-    }
+const ArticleCanvas = ({ data }) => {
+  const { state: problem, dispatch } = useProblemContext();
+  const canvasRef = useRef();
 
-    // Create a temporary link element
-    const link = document.createElement("a");
-    link.href = image;
-    link.download = "canvas_image.png";
-
-    // Trigger the download
-    document.body.appendChild(link);
-    link.click();
-
-    // Clean up
-    document.body.removeChild(link);
-  };
-  const reset = () => {
-    onReset(index);
-    canvasRef?.current?.handleReset(
-      JSON.parse(
-        JSON.stringify(articleBackup.current.content[index].canvasData)
-      )
-    );
+  const setProblem = async () => {
+    dispatch({
+      type: "SET_INITIAL_STATE",
+      payload: deepCopy({
+        canvasId: data.canvasId,
+        test: deepCopy(data.canvasData),
+        testActivity: {},
+        checkerCanvas: deepCopy(data.checkerCanvas),
+        canvasData: deepCopy(data.canvasData),
+        editOptions: deepCopy(data.editOptions),
+        previewOptions: deepCopy(data.previewOptions),
+        checkerCode: data.checkerCode,
+      }),
+    });
   };
 
+  useEffect(() => {
+    setProblem();
+  }, [data]);
   return (
-    content.canvasId && (
-      <div className="flex w-full flex-col">
-        <CanvasContainer
-          canvasId={content.canvasId}
-          input={content.canvasData}
-          setInput={(canvasData) => {
-            updateCanvas(index, canvasData);
-          }}
-          mode={"preview"}
-          ref={canvasRef}
-          editOptions={content.editOptions}
-          previewOptions={content.previewOptions}
-          activityData={content.activityData}
-          setActivityData={(activityData) => {
-            updateActivity(index, activityData);
-          }}
-          stageRef={stageRef}
-        />
-        <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
-          <div
-            className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
-            onClick={reset}
-          >
-            <FontAwesomeIcon icon={faRotateRight} />
-          </div>
-
-          <div
-            className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
-            onClick={() => onSubmit(content)}
-          >
-            <FontAwesomeIcon icon={faPlay} />
-          </div>
-          <div
-            className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
-            onClick={saveCanvasAsImage}
-          >
-            <FontAwesomeIcon icon={faCameraRetro} />
-          </div>
-        </div>
-      </div>
+    data.canvasId && (
+      <CanvasPreview ref={canvasRef} onSubmit={() => {}} takeSnapshot={false} />
     )
   );
-};
-
-const deepCopy = (obj) => {
-  return typeof obj === "string"
-    ? JSON.parse(obj)
-    : JSON.parse(JSON.stringify(obj));
 };
 
 const SlideShow = (props) => {
   const [images, setImages] = useState([]);
   const [index, setIndex] = useState(0);
-
+  const [autoPlay, setAutoPlay] = useState(false);
   useState(() => {
     setImages(deepCopy(props.images));
   }, [props.images]);
 
+  // If autoPlay is true, then set a timeout to change the index
+  useEffect(() => {
+    if (autoPlay) {
+      const interval = setInterval(() => {
+        if (index === images.length - 1) setAutoPlay(false);
+        else setIndex((prev) => Math.min(prev + 1, images.length - 1));
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [autoPlay, index]);
+
   return (
-    <>
-      <div className="bu-card-primary pb-10 rounded-[30px] flex flex-col min-h-[25rem]">
+    <div className="flex flex-col bg-[#fbfbfb] rounded-[30px]">
+      <div className="bg-[#fbfbfb] rounded-[30px] flex flex-col h-[32rem]">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row p-4 items-start bu-text-primary text-2xl font-semibold">
             {index + 1}/{images.length}
           </div>
         </div>
-        {images.map((image, i) => {
-          return (
-            <img
-              key={i}
-              src={image.url}
-              alt={image.caption}
-              style={{
-                width: "40rem",
-                margin: "auto",
-                display: index === i ? "block" : "none",
-              }}
-            />
-          );
-        })}
+        <div className="h-full flex-center">
+          {images.map((image, i) => {
+            return (
+              <img
+                key={i}
+                src={image.url}
+                alt={image.caption}
+                style={{
+                  width: "40rem",
+                  margin: "auto",
+                  display: index === i ? "block" : "none",
+                }}
+              />
+            );
+          })}
+        </div>
         {/* <img
           key={index}
           src={images[index]?.url}
@@ -193,31 +157,39 @@ const SlideShow = (props) => {
           style={{ width: "40rem", margin: "auto" }}
         /> */}
       </div>
-      <div className="flex flex-row justify-between w-full">
-        <button
-          className="text-white font-semibold rounded-lg px-5 py-2 text-center bu-button-primary cursor-pointer flex flex-row gap-3 items-center text-2xl"
-          style={{ visibility: index === 0 ? "hidden" : "visible" }}
+      <div className="w-full h-[.2rem] bg-gray-200"></div>
+      <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
+        <div
+          className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
+          // style={{ visibility: serial === 0 ? "hidden" : "visible" }}
           onClick={() => {
             setIndex((prev) => Math.max(prev - 1, 0));
           }}
         >
           <FontAwesomeIcon icon={faArrowLeft} />
-          Prev
-        </button>
-        <button
-          className="text-white font-semibold rounded-lg px-5 py-2 text-center bu-button-primary cursor-pointer flex flex-row gap-3 items-center text-2xl"
+        </div>
+
+        <div
+          className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
+          onClick={() => {
+            setAutoPlay((prev) => !prev);
+          }}
+        >
+          <FontAwesomeIcon icon={autoPlay ? faPause : faPlay} />
+        </div>
+        <div
+          className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
           onClick={() => {
             setIndex((prev) => Math.min(prev + 1, images.length - 1));
           }}
-          style={{
-            visibility: index === images.length - 1 ? "hidden" : "visible",
-          }}
+          // style={{
+          //   visibility: serial === images.length - 1 ? "hidden" : "visible",
+          // }}
         >
-          Next
           <FontAwesomeIcon icon={faArrowRight} />
-        </button>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 export default function Article() {
@@ -240,18 +212,8 @@ export default function Article() {
       console.log("done");
     }
   };
-  const solutionSubmit = async (content) => {
-    let res = await SubmissionService.checkSolution(
-      content.checkerCode,
-      typeof content.checkerCanvas === "string"
-        ? JSON.parse(content.checkerCanvas)
-        : content.checkerCanvas,
-      typeof content.canvasData === "string"
-        ? JSON.parse(content.canvasData)
-        : content.canvasData,
-      content.activityData ?? {}
-    );
-    await submissionApi.submitSolution(content.canvasData, res.output, id);
+  const solutionSubmit = async (verdict) => {
+    // await submissionApi.submitSolution(content.canvasData, res.output, id);
   };
 
   const updateCanvas = (index, canvasData) => {
@@ -290,7 +252,7 @@ export default function Article() {
     <div>
       <div className="flex flex-row justify-between">
         <Title title={article.title} sub_title={article.subtitle} />
-        {type == 2 ? (
+        {type != 0 ? (
           <div className="flex items-center">
             <Tooltip
               title={<h1 className="text-lg text-white">Edit</h1>}
@@ -304,7 +266,11 @@ export default function Article() {
                   className="bu-text-primary flex cursor-pointer items-center text-4xl"
                   onClick={() => {
                     setLoading(true);
-                    navigate(`/admin/articles/${article.id}/edit`);
+                    navigate(
+                      `/${type == 1 ? "setter" : "admin"}/articles/${
+                        article.id
+                      }/edit`
+                    );
                   }}
                 >
                   <FontAwesomeIcon icon={faPenToSquare} />
@@ -321,18 +287,14 @@ export default function Article() {
         {article?.content?.length > 0 &&
           article?.content?.map((content, index) => {
             if (content.type === "markdown") {
-              return <Statement colorMode={colorMode} data={content.data} />;
+              return <Statement data={content.data} />;
             } else if (content.type === "canvas") {
               return (
-                <Canvas
-                  index={index}
-                  content={content}
-                  onReset={reset}
-                  onSubmit={solutionSubmit}
-                  articleBackup={articleBackup}
-                  updateCanvas={updateCanvas}
-                  updateActivity={updateActivity}
-                />
+                <ProblemContextProvider>
+                  <DndProvider backend={HTML5Backend}>
+                    <ArticleCanvas data={content} />
+                  </DndProvider>
+                </ProblemContextProvider>
               );
             } else if (content.type === "slideshow") {
               return (

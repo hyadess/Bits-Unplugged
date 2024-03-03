@@ -40,6 +40,7 @@ export default function PendingProblemCard({
   timestamp,
   reject,
   setter,
+  approve,
 }) {
   const [open, setOpen] = useState(false);
   const [acceptance, setAcceptance] = useState(Math.round(Math.random() * 100));
@@ -50,12 +51,7 @@ export default function PendingProblemCard({
     setLoading(false);
   }, []);
   const navigate = useNavigate();
-  const publishProblem = async () => {
-    await problemApi.publishProblem(id);
-  };
-  const unpublishProblem = async () => {
-    await problemApi.unpublishProblem(id);
-  };
+
   return (
     <div className="w-full h-full relative" key={id}>
       <div
@@ -152,12 +148,7 @@ export default function PendingProblemCard({
           </button>
           <button
             className="flex flex-row gap-2 flex-center  font-medium rounded-lg text-lg px-7 py-2 text-center w-full bu-button-primary"
-            onClick={async () => {
-              const res = await problemApi.approveProblem(id);
-              if (res.success) {
-                showSuccess("Problem approved", res);
-              }
-            }}
+            onClick={approve}
           >
             Approve
             <FontAwesomeIcon icon={faCheck} size="sm" />

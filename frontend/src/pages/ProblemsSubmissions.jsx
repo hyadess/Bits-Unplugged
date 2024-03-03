@@ -74,8 +74,8 @@ export default function ProblemsSubmissions() {
 
       const minTimeTaken = 1;
       let maxTimeTaken = Math.max(...res.data.map((item) => item.viewDuration));
-      maxTimeTaken = Math.max(maxTimeTaken, 50);
-      // maxTimeTaken = Math.ceil(maxTimeTaken / 10) * 10;
+      maxTimeTaken = Math.max(maxTimeTaken, 100);
+      maxTimeTaken = Math.ceil(maxTimeTaken / 100) * 100;
       const numberOfRanges = 21;
       const rangeSize = (maxTimeTaken + 1 - minTimeTaken) / numberOfRanges;
 
@@ -115,9 +115,8 @@ export default function ProblemsSubmissions() {
         formattedData.length
       );
       const yMax =
-        Math.ceil(
-          Math.max((Math.max(...timeRangeCounts) * 100) / sum, 10) / 5
-        ) * 5;
+        Math.ceil(Math.max((Math.max(...timeRangeCounts) * 100) / sum, 5) / 5) *
+        5;
       setDistributionChartData({
         options: {
           states: {
@@ -128,7 +127,7 @@ export default function ProblemsSubmissions() {
             },
             hover: {
               filter: {
-                type: "none",
+                type: "lighten",
                 value: 0.0001,
               },
             },
@@ -141,20 +140,28 @@ export default function ProblemsSubmissions() {
                 borderColor: "#1c5b5f",
                 borderWidth: 2,
                 label: {
+                  offsetX:
+                    myDuration >= maxTimeTaken - rangeSize
+                      ? -40
+                      : myDuration <= rangeSize
+                        ? 40
+                        : 0,
                   orientation: "horizontal", // Add this line
                   borderColor: "#1c5b5f",
                   borderWidth: 2,
                   style: {
                     color: "#000",
                     background: "#84cfb8",
-                    fontSize: "18px",
+                    fontSize: "15px",
                     fontWeight: 600,
+                    // padding: 5,
                   },
                   text: "Your time (" + myDuration + "s)",
                 },
               },
             ],
           },
+
           chart: {
             type: "histogram",
             // height: 300,
@@ -169,7 +176,7 @@ export default function ProblemsSubmissions() {
             title: {
               text: "Time Taken (seconds)",
               style: {
-                fontSize: "20px", // Replace with your desired font size
+                fontSize: "18px", // Replace with your desired font size
                 fontWeight: 600, // Replace with your desired font weight
                 fontFamily: "Arial", // Replace with your desired font family
               },
@@ -198,6 +205,7 @@ export default function ProblemsSubmissions() {
             // max: maxTimeTaken,
           },
           grid: {
+            strokeDashArray: 5,
             borderColor: "#cccccc",
             show: true,
             yaxis: {
@@ -237,7 +245,7 @@ export default function ProblemsSubmissions() {
             title: {
               text: "Users (%)",
               style: {
-                fontSize: "20px", // Replace with your desired font size
+                fontSize: "18px", // Replace with your desired font size
                 fontWeight: 600, // Replace with your desired font weight
                 fontFamily: "Arial", // Replace with your desired font family
               },
@@ -261,7 +269,7 @@ export default function ProblemsSubmissions() {
             },
           },
           tooltip: {
-            enabled: false,
+            enabled: true,
             enabledOnSeries: true,
             shared: true,
             followCursor: false,
@@ -373,6 +381,7 @@ export default function ProblemsSubmissions() {
           {problem.submissions.map((submission, index) => (
             <SubmissionCard
               idx={index + 1}
+              problemId={id}
               submissionId={submission.id}
               verdict={submission.verdict}
               problem_name={problem.title}

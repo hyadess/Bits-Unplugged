@@ -15,7 +15,7 @@ const ContestsView = ({
   userID,
 }) => {
   useEffect(() => {
-    console.log(contestList);
+    console.log("Contest List:", contestList);
   });
   return (
     <div>
@@ -25,7 +25,7 @@ const ContestsView = ({
       />
 
       <div
-        className={`grid grid-cols-1 justify-center items-center mx-auto max-w-screen-2xl gap-8 h-full w-full mb-3 md:grid-cols-1`}
+        className={`grid grid-cols-1 justify-center items-center mx-auto max-w-screen-2xl gap-8 h-full w-full mb-3 md:grid-cols-2`}
       >
         {contestList.map((contest, index) => (
           <ContestCard
@@ -36,15 +36,17 @@ const ContestsView = ({
             deleteAction={deleteContest}
             isLive={contest.isLive}
             timestamp={contest.updatedAt}
-            owner={contest.ContestSetters[0]}
+            owner={contest.owner}
             startDate={contest.startDateTime}
             endDate={
               new Date(contest.startDateTime).getTime() +
               contest.duration * 3600 * 1000
             }
+            duration={contest.duration}
             status={contest.status}
             updatedAt={contest.updatedAt}
             userID={userID}
+            difficulty={contest.difficulty}
           />
         ))}
       </div>

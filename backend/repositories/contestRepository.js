@@ -1,5 +1,6 @@
 const db = require("../models");
 const Repository = require("./base");
+const { Op } = require("sequelize");
 const sendMail = require("../services/email");
 
 class ContestRepository extends Repository {
@@ -7,25 +8,97 @@ class ContestRepository extends Repository {
     super();
   }
   //*************ABOUT CONTEST****************** */
+  // user side. get contest info.
   getAllContests = async () => {
-    const query = `
-    SELECT
-    "C".*,
-    jsonb_agg(jsonb_build_object('setterId', "S"."id", 'role', "CS"."role", 'username', "U"."username", 'image', "U"."image")) AS "ContestSetters"
-    FROM
-    "Contests" "C"
-    JOIN
-    "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
-    JOIN
-    "Setters" "S" ON "CS"."setterId" = "S"."userId"
-    JOIN
-    "Users" "U" ON "S"."userId" = "U"."id"
-    GROUP BY
-    "C"."id";
-        `;
-    const params = [];
-    const result = await this.query(query, params);
-    return result;
+    // write a sequelize query to get all contests with owner and collaboratos
+    return await db.Contest.findAll({
+      where: {
+        status: "scheduled",
+      },
+      order: [["updatedAt", "DESC"]],
+      include: [
+        {
+          model: db.User,
+          as: "owner",
+        },
+        {
+          model: db.Collaborator,
+          as: "collaborators",
+          required: false,
+          where: {
+            status: "accepted",
+          },
+          include: [
+            {
+              model: db.User,
+              as: "setter",
+            },
+          ],
+        },
+      ],
+    });
+  };
+
+  getAllParticipatedContests = async (userId) => {
+    // write a sequelize query to get all contests that the user has submissions in
+    return await db.Contest.findAll({
+      include: [
+        {
+          model: db.ContestProblem,
+          attributes: ["id"],
+          required: true,
+          as: "problems",
+          include: [
+            {
+              model: db.ContestSubmission,
+              attributes: ["id"], // We don't need to return any attributes from the ContestSubmission table
+              required: true,
+              as: "submissions",
+              include: {
+                model: db.Participant,
+                as: "participant",
+                attributes: ["userId"], // We don't need to return any attributes from the Participant table
+                required: true,
+                where: {
+                  userId: userId,
+                },
+              },
+            },
+          ],
+        },
+      ],
+    });
+  };
+  getSubmittedContests = async () => {
+    // write a sequelize query to get all contests with owner and collaboratos
+    return await db.Contest.findAll({
+      where: {
+        status: {
+          [Op.or]: ["requested", "approved", "scheduled"],
+        },
+      },
+      order: [["updatedAt", "DESC"]],
+      include: [
+        {
+          model: db.User,
+          as: "owner",
+        },
+        {
+          model: db.Collaborator,
+          as: "collaborators",
+          required: false,
+          where: {
+            status: "accepted",
+          },
+          include: [
+            {
+              model: db.User,
+              as: "setter",
+            },
+          ],
+        },
+      ],
+    });
   };
   updateContest = async (id, data) => {
     const [updatedRowsCount, [updatedContest]] = await db.Contest.update(data, {
@@ -39,6 +112,16 @@ class ContestRepository extends Repository {
     }
     return updatedContest.get();
   };
+  getEditorial = async (id) => {
+    // get editorial column of contest table
+    const contest = await db.Contest.findByPk(id, {
+      attributes: ["editorial"],
+    });
+
+    // Return just the editorial attribute
+    return contest ? contest.editorial : null;
+  };
+  // decrecated
   getAllPublishedContests = async () => {
     const query = `
         SELECT * FROM "Contests" WHERE "status" IN ('upcoming','running', 'completed');
@@ -47,24 +130,19 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
-  // will also be visible to collaborators
+
+  // only be visible to collaborators
   getMyContests = async (setterId) => {
     const query = `
-    SELECT
-    "C".*,
-    jsonb_agg(jsonb_build_object('setterId', "S"."id", 'role', "CS"."role", 'username', "U"."username", 'image', "U"."image")) AS "ContestSetters"
-    FROM
-    "Contests" "C"
-    JOIN
-    "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
-    JOIN
-    "Setters" "S" ON "CS"."setterId" = "S"."userId"
-    JOIN
-    "Users" "U" ON "S"."userId" = "U"."id"
-    WHERE 
-    "CS"."setterId" = $1 AND "CS"."status"='accepted'
-    GROUP BY
-    "C"."id";
+      SELECT "C".*,
+      jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image") AS "owner"
+      FROM
+      "Contests" "C"
+      JOIN
+      "Collaborators" "CB" ON "C"."id" = "CB"."contestId"
+      JOIN "Users" "U" ON "C"."ownerId" = "U"."id"
+      WHERE 
+      "CB"."setterId" = $1 AND "CB"."status"='accepted';
     `;
     const params = [setterId];
     const result = await this.query(query, params);
@@ -73,32 +151,69 @@ class ContestRepository extends Repository {
   // only contests where I am the OWNER
   getMyOwnContests = async (setterId) => {
     const query = `
-        SELECT "C".*, "CS"."role" AS "role"
-        FROM "Contests" "C"
-        JOIN "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
-        WHERE "CS"."setterId" = $1 AND "CS"."role" = 'owner';
-        `;
+      SELECT "C".*,
+      jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image") AS "owner"
+      FROM "Contests" "C"
+      JOIN "Users" "U" ON "C"."ownerId" = "U"."id"
+      WHERE "C"."ownerId" = $1;
+    `;
+
     const params = [setterId];
     const result = await this.query(query, params);
     return result;
   };
+  getRunningContests = async () => {
+    const query = `
+      SELECT "C".*,
+      COUNT("P"."id") as "totalParticipants"
+      FROM "Contests" "C"
+      JOIN "Participants" "P" ON "P"."contestId" = "C"."id"
+      WHERE "C"."startDateTime" <= CURRENT_TIMESTAMP 
+      AND ("C"."startDateTime" + INTERVAL '1 hour' * "C"."duration") >= CURRENT_TIMESTAMP
+      AND "C"."status" = 'scheduled'
+      AND "P"."type" = 0
+      GROUP BY "C"."id";
+      `;
+    const params = [];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  getUpcomingContests = async () => {
+    const query = `
+      SELECT "C".*,
+      COUNT("P"."id") as "totalParticipants"
+      FROM "Contests" "C"
+      JOIN "Participants" "P" ON "P"."contestId" = "C"."id"
+      WHERE "C"."startDateTime" > CURRENT_TIMESTAMP
+      AND "C"."status" = 'scheduled'
+      AND "P"."type" = 0
+      GROUP BY "C"."id"
+      ORDER BY "C"."startDateTime" ASC
+      LIMIT 1;
+      `;
+    const params = [];
+    const result = await this.query(query, params);
+    return result;
+  };
+
   getContestInfo = async (contestId) => {
     const query = `
         SELECT
         "C".*,
-        jsonb_agg(jsonb_build_object('setterId', "S"."id", 'role', "CS"."role", 'username', "U"."username", 'image', "U"."image")) AS "ContestSetters"
+        jsonb_build_object('userId', "U".id, 'username', "U"."username", 'image', "U"."image", 'email', "Cr".email) AS "owner", SUM("CP"."rating") AS "totalPoints"
         FROM
         "Contests" "C"
         JOIN
-        "ContestSetters" "CS" ON "C"."id" = "CS"."contestId"
+        "Users" "U" ON "C"."ownerId" = "U"."id"
         JOIN
-        "Setters" "S" ON "CS"."setterId" = "S"."userId"
-        JOIN
-        "Users" "U" ON "S"."userId" = "U"."id"
+        "Credentials" "Cr" ON "U"."id" = "Cr"."userId"
+        LEFT JOIN 
+        "ContestProblems" "CP" ON "C"."id" = "CP"."contestId"
         WHERE
         "C"."id" = $1
-        GROUP BY
-        "C"."id";
+        GROUP BY "C".id, "owner";
+        ;
     `;
     const params = [contestId];
     const result = await this.query(query, params);
@@ -112,28 +227,46 @@ class ContestRepository extends Repository {
         FROM "ContestSubmissions" "CS"
         JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
         JOIN "Users" "U" ON "P"."userId" = "U"."id"
-        WHERE "P"."contestId" = $1;
+        WHERE "P"."contestId" = $1
+        ORDER BY "CS"."submittedAt" DESC;
         `;
     const params = [contestId];
     const result = await this.query(query, params);
     return result;
   };
-  getAllSubmissionsByUserAndContest = async (userId, contestId) => {
+  getAllSubmissionsByUserAndContest = async (contestId, username) => {
     const query = `
-        SELECT "CS".*, "U".*
+        SELECT "Pb"."title","CS".*, "Pb".title as "problemName"
+        FROM "ContestSubmissions" "CS"
+        JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
+        JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
+        JOIN "Problems" "Pb" ON "CP"."problemId" = "Pb"."id"
+        JOIN "Users" "U" ON "P"."userId" = "U"."id"
+        WHERE "P"."contestId" = $2 AND "U"."username" = $1
+        ORDER BY "CS"."submittedAt" DESC;
+        `;
+    const params = [username, contestId];
+    const result = await this.query(query, params);
+    return result;
+  };
+  getAllSubmissionsByContestAndProblem = async (contestId, problemId) => {
+    const query = `
+        SELECT "CS".*, "P"."userId", "U".username, "U".fullname
         FROM "ContestSubmissions" "CS"
         JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
         JOIN "Users" "U" ON "P"."userId" = "U"."id"
-        WHERE "P"."contestId" = $2 AND "P"."userId" = $1;
+        JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
+        WHERE "P"."contestId" = $1 AND "CP"."problemId" = $2
+        ORDER BY "CS"."submittedAt" DESC;
         `;
-    const params = [userId, contestId];
+    const params = [contestId, problemId];
     const result = await this.query(query, params);
     return result;
   };
 
   isContestProblemSolved = async (userId, contestId, problemId) => {
     const query = `
-        SELECT "CS"."verdict"
+        SELECT "CS"."verdict", "CS"."duration"
         FROM "ContestSubmissions" "CS"
         JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
         JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
@@ -155,11 +288,9 @@ class ContestRepository extends Repository {
     `;
     const params = [contestId, userId];
     const result = await this.query(query, params);
-  
+
     return result;
   };
-  
-
 
   //*************GETTING PROBLEMS*********************** */
 
@@ -187,22 +318,39 @@ class ContestRepository extends Repository {
     return result;
   };
   // it is for setters....................
-  getAllProblemsByContest = async (contestId) => {
+  getAllProblemsByContest = async (userId, contestId) => {
     const query = `
     SELECT "P".*, "CP"."status", "CP"."rating",
-        CASE WHEN EXISTS (
+    CASE 
+        WHEN EXISTS (
             SELECT *
             FROM "ContestSubmissions" "CS"
-            JOIN "Participants" "P" ON "CS"."participantId" = "P"."id"
+            JOIN "Participants" "Pc" ON "CS"."participantId" = "Pc"."id"
             JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
-            WHERE "P"."contestId" = $1 AND "CP"."problemId" = "P"."id" AND "CS"."verdict" = 'Accepted'
-        ) THEN true ELSE false END AS "isSolved"
+            WHERE "Pc"."contestId" = $1 AND "Pc"."userId" = $2 AND "CP"."problemId" = "P"."id" AND "CS"."verdict" = 'Accepted'
+        ) THEN true 
+        WHEN EXISTS (
+            SELECT *
+            FROM "ContestSubmissions" "CS"
+            JOIN "Participants" "Pc" ON "CS"."participantId" = "Pc"."id"
+            JOIN "ContestProblems" "CP" ON "CS"."contestProblemId" = "CP"."id"
+            WHERE "Pc"."contestId" = $1 AND "Pc"."userId" = $2 AND "CP"."problemId" = "P"."id" AND "CS"."verdict" = 'Wrong answer'
+        ) THEN false 
+        ELSE null 
+    END AS "isSolved",
+    "AcceptedSubmissionsCount"."acceptedCount" AS "solveCount"
     FROM "Problems" "P"
     JOIN "ContestProblems" "CP" ON "P"."id" = "CP"."problemId"
-    RIGHT JOIN "Canvases" "C" ON "P"."canvasId" = "C"."id"
+    LEFT JOIN (
+      SELECT "CP"."id", COUNT(*) AS "acceptedCount"
+      FROM "ContestProblems" "CP"
+      JOIN "ContestSubmissions" "CS" ON "CP"."id" = "CS"."contestProblemId"
+      WHERE "CP"."contestId" = $1 AND "CS"."verdict" = 'Accepted'
+      GROUP BY "CP"."id"
+    ) AS "AcceptedSubmissionsCount" ON "CP"."id" = "AcceptedSubmissionsCount"."id"
     WHERE "CP"."contestId" = $1;
-`;
-    const params = [contestId];
+    `;
+    const params = [contestId, userId];
     const result = await this.query(query, params);
     // console.log("==>", result.data[0]);
     return result;
@@ -220,27 +368,18 @@ class ContestRepository extends Repository {
 
     return result;
   };
-  
 
   //*****************UPDATING CONTEST TABLE************* */
 
   addContest = async (setterId, title) => {
     const query = `
-        INSERT INTO "Contests" ("title", "description", "startDate", "endDate", "status", "updatedAt")
-        VALUES ($1, NULL, NULL, NULL, 'edit', $2)
+        INSERT INTO "Contests" ("title", "description", "status", "ownerId", "updatedAt")
+        VALUES ($1, NULL, 'edit', $2, $3)
         RETURNING "id";          
         `;
-    const params = [title, new Date("February 1, 2024 11:13:00")];
+    const params = [title, setterId, new Date()];
     const result = await this.query(query, params);
     const contestId = result.data[0].id;
-
-    const query2 = `
-        INSERT INTO "ContestSetters" ("contestId", "setterId", "role", "status")
-        VALUES ($1, $2, 'owner', 'accepted');
-        `;
-    const params2 = [contestId, setterId];
-    const result2 = await this.query(query2, params2);
-
     return result;
   };
 
@@ -290,6 +429,8 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+
+  // Deprecated
   // I am setting default duration 2 hr for now............
   // upcoming -> running
   startContest = async (contestId) => {
@@ -316,37 +457,23 @@ class ContestRepository extends Repository {
     return result;
   };
 
-  updateDates = async (contestId, startDateString, endDateString) => {
-    const startDate = new Date(startDateString);
-    const endDate = new Date(endDateString);
-    const query = `
-        UPDATE "Contests" 
-        SET "startDate" = $2, "endDate" = $3
-        WHERE "id" = $1;
-        `;
-    const params = [contestId, startDate, endDate];
-    const result = await this.query(query, params);
-    return result;
-  };
-
   availableCollaborators = async (id, contestId) => {
     const query = `
       SELECT
-        "S"."userId",
+        "U"."id",
         "U"."username",
         "U"."image"
       FROM
         "Setters" "S"
-        JOIN
-        "Users" "U" ON "S"."userId" = "U"."id"
+        JOIN "Users" "U"
+        ON "S"."userId" = "U"."id" AND "U".id != $1
       WHERE
         "S"."isApproved" = true
-        AND "S"."userId" != $1
         AND NOT EXISTS (
           SELECT 1
-          FROM "ContestSetters" "CS"
-          WHERE "CS"."setterId" = "S"."userId"
-            AND "CS"."contestId" = $2
+          FROM "Collaborators" "CB"
+          WHERE "CB"."setterId" = "U"."id"
+            AND "CB"."contestId" = $2
         );
     `;
     const params = [id, contestId];
@@ -383,20 +510,19 @@ class ContestRepository extends Repository {
 
   addCollaborator = async (contestId, collaboratorIds, url) => {
     const valuesPart = collaboratorIds
-      .map(
-        (collaboratorId) => `(${contestId}, ${collaboratorId}, 'collaborator')`
-      )
+      .map((collaboratorId) => `(${contestId}, ${collaboratorId})`)
       .join(", ");
 
     // Construct the full query
     const query = `
-    INSERT INTO "ContestSetters" ("contestId", "setterId", "role")
+    INSERT INTO "Collaborators" ("contestId", "setterId")
     VALUES
       ${valuesPart};
     `;
+
     const result = await this.query(query);
 
-    const hudai = await this.accessContest(contestId);
+    const hudai_na = await this.accessContest(contestId);
     collaboratorIds.map(async (collaboratorId) => {
       const query2 = `SELECT "C"."email"
                     FROM "Credentials" "C"
@@ -417,10 +543,10 @@ class ContestRepository extends Repository {
 
   acceptInvitation = async (contestId, setterId) => {
     const query = `
-        UPDATE "ContestSetters"
-        SET "status" = 'accepted'
-        WHERE "contestId" = $1 AND "setterId" = $2;
-        `;
+      UPDATE "Collaborators"
+      SET "status" = 'accepted'
+      WHERE "contestId" = $1 AND "setterId" = $2;
+    `;
 
     const params = [contestId, setterId];
     const result = await this.query(query, params);
@@ -429,23 +555,22 @@ class ContestRepository extends Repository {
   };
 
   showAllCollaborators = async (contestId) => {
-    const query = `
-        SELECT *
-        FROM "ContestSetters"
-        WHERE "contestId" = $1 AND "role" = 'collaborator' AND "status" = 'accepted';
-        `;
     const query2 = `
-        SELECT
-        "S"."setterId",
-        "S"."status",
-        "U"."username",
-        "U"."image"
-        FROM
-        "ContestSetters" "S"
-        JOIN
-        "Users" "U" ON "S"."setterId" = "U"."id"
-        WHERE "S"."contestId" = $1 ;
+          SELECT
+          "Cr"."userId",
+          "S"."status",
+          "U"."username",
+          "U"."image",
+          "Cr"."email"
+          FROM
+          "Collaborators" "S"
+          JOIN
+          "Users" "U" ON "S"."setterId" = "U"."id"
+          JOIN
+          "Credentials" "Cr" ON "U"."id" = "Cr"."userId"
+          WHERE "S"."contestId" = $1 ;
         `;
+
     const params = [contestId];
     const result = await this.query(query2, params);
 
@@ -455,7 +580,7 @@ class ContestRepository extends Repository {
   // getMyRole = async (userId, contestId) => {
   //   const query = `
   //       SELECT *
-  //       FROM "ContestSetters"
+  //       FROM "Collaborators"
   //       WHERE "contestId" = $1 AND "role" = 'collaborator';
   //       `;
   //   const params = [userId, contestId];
@@ -519,6 +644,120 @@ class ContestRepository extends Repository {
 
   //**********************UPDATING CONTEST PARTICIPATION TABLE****************** */
 
+  calculateAdjustedPoints = (
+    actualPoints,
+    submissionTime,
+    numWrongAnswers,
+    contestDuration
+  ) => {
+    // Calculate time penalty
+    // console.log(submissionTime, contestDuration);
+    const timePenaltyFactor = 0.9 * actualPoints; // Adjust this factor as needed
+    console.log(timePenaltyFactor);
+    // we need to keep 10% points remaining at the end of contest
+    // so we can decrease 0.9 * actual_points in contestDuration window
+    // contestDuration -> 0.9 * actual_points
+    // 1 -> 0.9 * actual_points / contestDuration
+    // submissionTime -> 0.9 * actual_points *
+    let timePenalty =
+      Math.max(0, submissionTime / contestDuration) * timePenaltyFactor;
+    console.log(timePenalty);
+    timePenalty = isNaN(timePenalty) ? 0 : timePenalty;
+
+    // Calculate wrong answer penalty based on actual points
+    const wrongAnswerPenaltyFactor = 0.05; // Adjust this factor as needed
+    console.log(wrongAnswerPenaltyFactor);
+    let wrongAnswerPenalty =
+      actualPoints * wrongAnswerPenaltyFactor * numWrongAnswers;
+
+    console.log(wrongAnswerPenalty);
+    wrongAnswerPenalty = isNaN(wrongAnswerPenalty) ? 0 : wrongAnswerPenalty;
+
+    console.log(
+      "Submitted at",
+      submissionTime,
+      "Contest time",
+      contestDuration,
+      "Time penalty",
+      timePenalty,
+      "WA Penalty",
+      wrongAnswerPenalty
+    );
+    // const wrong_answer_penalty = num_wrong_answers * 5;
+    // Adjusted points
+    // console.log(timePenalty, wrongAnswerPenalty);
+    let adjustedPoints = actualPoints - timePenalty - wrongAnswerPenalty;
+
+    // Ensure adjusted points are not negative
+    adjustedPoints = Math.max(0.1 * actualPoints, adjustedPoints);
+
+    // return Math.round(adjustedPoints / 10) * 10;
+    return Math.round(adjustedPoints);
+  };
+  addSubmissionToContestFromParticipant = async (
+    contestProblemId,
+    contestId,
+    participantId,
+    verdict,
+    canvasData,
+    userActivity,
+    points,
+    timeTaken,
+    image,
+    submittedAt
+  ) => {
+    // get contest total time
+    const contestQuery = `
+      SELECT duration
+      FROM "Contests"
+      WHERE id = $1;
+    `;
+    const contestQueryResult = await this.query(contestQuery, [contestId]);
+
+    // get number of "Wrong answer" submissions
+    const waQuery = `
+      SELECT CAST(COUNT("CS".*) AS INTEGER) as "nWa"
+      FROM "Contests" "C"
+      JOIN "ContestProblems" "CP"
+      ON "C".id = "CP"."contestId" AND "C"."id" = $1
+      JOIN "ContestSubmissions" "CS"
+      ON "CP".id = "CS"."contestProblemId" AND "CP".id = $2
+      JOIN "Participants" "P"
+      ON "CS"."participantId" = $3;
+    `;
+    const waQueryResult = await this.query(waQuery, [
+      contestId,
+      contestProblemId,
+      participantId,
+    ]);
+    console.log("WA: ", waQueryResult.data);
+    // Then, insert the submission with the participantId
+    const submissionQuery = `
+        INSERT INTO "ContestSubmissions" ("participantId", "contestProblemId", "verdict", "canvasData", "userActivity", "points", "duration","image", "submittedAt")
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);
+    `;
+    const submissionParams = [
+      participantId,
+      contestProblemId,
+      verdict,
+      canvasData,
+      userActivity,
+      verdict === "Accepted"
+        ? this.calculateAdjustedPoints(
+            points,
+            submittedAt,
+            waQueryResult.data[0].nWa,
+            contestQueryResult.data[0].duration * 60 * 60 * 1000
+          )
+        : 0,
+      timeTaken,
+      image,
+      submittedAt,
+    ];
+    const result = await this.query(submissionQuery, submissionParams);
+    return result;
+  };
+
   // assuming that this submission is added in submissions table.......
   addSubmissionToContest = async (
     problemId,
@@ -527,35 +766,84 @@ class ContestRepository extends Repository {
     verdict,
     canvasData,
     userActivity,
-    points
+    points,
+    timeTaken,
+    image,
+    submittedAt
   ) => {
-  
     // If not, proceed to check for participant and insert the submission
     const participantQuery = `
       SELECT "P"."id" FROM "Participants" "P" WHERE "P"."contestId" = $1 AND "P"."userId" = $2;
     `;
     const participantParams = [contestId, userId];
-    const participantResult = await this.query(participantQuery, participantParams);
-    const participantId = participantResult.data[0].id; 
+    const participantResult = await this.query(
+      participantQuery,
+      participantParams
+    );
+
+    console.log("->", problemId, contestId, userId, participantResult);
+    const participantId = participantResult.data[0].id;
 
     //get contest problem id....this part will not be needed if the provided problem id is contest problem id
     const contestProblemQuery = `
         SELECT "CP"."id" FROM "ContestProblems" "CP" WHERE "CP"."contestId" = $1 AND "CP"."problemId" = $2;
     `;
     const contestProblemParams = [contestId, problemId];
-    const contestProblemResult = await this.query(contestProblemQuery, contestProblemParams);
+    const contestProblemResult = await this.query(
+      contestProblemQuery,
+      contestProblemParams
+    );
     const contestProblemId = contestProblemResult.data[0].id;
+
+    // get contest total time
+    const contestQuery = `
+      SELECT duration
+      FROM "Contests"
+      WHERE id = $1;
+    `;
+    const contestQueryResult = await this.query(contestQuery, [contestId]);
+
+    // get number of "Wrong answer" submissions
+    const waQuery = `
+      SELECT CAST(COUNT("CS".*) AS INTEGER) as "nWa"
+      FROM "Contests" "C"
+      JOIN "ContestProblems" "CP"
+      ON "C".id = "CP"."contestId" AND "C"."id" = $1
+      JOIN "ContestSubmissions" "CS"
+      ON "CP".id = "CS"."contestProblemId" AND "CP".id = $2
+      JOIN "Participants" "P"
+      ON "CS"."participantId" = "P".id AND "P"."userId" = $3;
+    `;
+    const waQueryResult = await this.query(waQuery, [
+      contestId,
+      contestProblemId,
+      userId,
+    ]);
+    console.log("WA: ", waQueryResult.data);
     // Then, insert the submission with the participantId
     const submissionQuery = `
-        INSERT INTO "ContestSubmissions" ("participantId", "contestProblemId", "verdict", "canvasData", "userActivity", "points")
-        VALUES ($1, $2, $3, $4, $5, $6);
+        INSERT INTO "ContestSubmissions" ("participantId", "contestProblemId", "verdict", "canvasData", "userActivity", "points", "duration","image", "submittedAt")
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);
     `;
-    const submissionParams = [participantId, contestProblemId, verdict, canvasData, userActivity, points];
+    const submissionParams = [
+      participantId,
+      contestProblemId,
+      verdict,
+      canvasData,
+      userActivity,
+      this.calculateAdjustedPoints(
+        points,
+        submittedAt,
+        waQueryResult.data[0].nWa,
+        contestQueryResult.data[0].duration * 60 * 60 * 1000
+      ),
+      timeTaken,
+      image,
+      submittedAt,
+    ];
     const result = await this.query(submissionQuery, submissionParams);
-  
     return result;
   };
-  
 
   getLeaderboard = async (contestId) => {
     const query = `
@@ -563,6 +851,8 @@ class ContestRepository extends Repository {
         "U"."id",
         "U"."username",
         "U"."image",
+        "U"."fullname",
+        "CP"."type",
         SUM("CS"."points") AS "points"
         FROM
         "ContestSubmissions" "CS"
@@ -575,14 +865,40 @@ class ContestRepository extends Repository {
         WHERE
         "C"."id" = $1
         GROUP BY
-        "U"."id","U"."username"
-        `;  
+        "U"."id","U"."username","CP"."type"
+        ORDER BY
+        "points" DESC;
+        `;
     const params = [contestId];
     const result = await this.query(query, params);
 
     return result;
-  };  
-    
+  };
+
+  getTimeline = async (contestId) => {
+    const query = `
+        SELECT
+        "U"."id",
+        "U"."username",
+        "CS"."points",
+        "CS"."submittedAt"
+        FROM
+        "ContestSubmissions" "CS"
+        JOIN
+        "Participants" "CP" ON "CP"."id" = "CS"."participantId"
+        JOIN
+        "Contests" "C" ON "C"."id" = "CP"."contestId"
+        JOIN
+        "Users" "U" ON "U"."id" = "CP"."userId"
+        WHERE
+        "C"."id" = $1 AND "CS"."verdict" = 'Accepted'
+        
+        `;
+    const params = [contestId];
+    const result = await this.query(query, params);
+
+    return result;
+  };
 
   //new ones...........
 
@@ -633,7 +949,21 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
 
     return result;
-};
+  };
+
+  IsRegistered = async (userId, contestId) => {
+    const query = `
+    SELECT *
+    FROM "Participants"
+    WHERE "contestId" = $1
+      AND "userId" = $2
+      AND "type" = $3;
+  `;
+    const params = [contestId, userId, 0];
+    const result = await this.query(query, params);
+
+    return result;
+  };
 
   leaveUpcomingContest = async (userId, contestId) => {
     const query = `
@@ -648,19 +978,38 @@ class ContestRepository extends Repository {
 
   participateVirtualContest = async (userId, contestId) => {
     const query = `
-        INSERT INTO "Participants" ("contestId", "participantId", "type")
-        VALUES ($1 ,$2, $3);
+        INSERT INTO "Participants" ("contestId", "userId", "type")
+        SELECT $1, $2, $3
+        WHERE NOT EXISTS (
+          SELECT 1 FROM "Participants" 
+          WHERE "contestId" = $1
+          AND "userId" = $2
+          AND "type" = $3
+      );
         `;
     const params = [contestId, userId, 1];
     const result = await this.query(query, params);
     return result;
   };
+
+  deleteVirtualParticipant = async (userId, contestId) => {
+    const query = `
+        DELETE FROM "Participants"
+        WHERE "contestId" = $1
+          AND "userId" = $2
+          AND "type" = $3;
+    `;
+
+    const params = [contestId, userId, 1];
+    const result = await this.query(query, params);
+    return result;
+};
   showAllVirtualContestByUser = async (userId) => {
     const query = `
         SELECT C.*
         FROM "Contests" C
         JOIN "Participants" CP ON C."contestId" = CP."contestId"
-        WHERE CP."participantId"= $1 AND CP.type = $2;
+        WHERE CP."participantId"= $1 AND CP."type" = $2;
 
         `;
     const params = [userId, 1];
@@ -674,7 +1023,7 @@ class ContestRepository extends Repository {
         SELECT P.*
         FROM "Profile" P
         JOIN "Participants" CP ON P."userId" = CP."participantId"
-        WHERE CP."contestId" = $1 AND CP.type = $2;
+        WHERE CP."contestId" = $1 AND CP."type" = $2;
         `;
     const params = [contestId, 0];
     const result = await this.query(query, params);
@@ -686,9 +1035,21 @@ class ContestRepository extends Repository {
         SELECT P.*
         FROM "Profile" P
         JOIN "Participants" CP ON P."userId" = CP."participantId"
-        WHERE CP."contestId" = $1 AND CP.type = $2;
+        WHERE CP."contestId" = $1 AND CP."type" = $2;
         `;
     const params = [contestId, 1];
+    const result = await this.query(query, params);
+
+    return result;
+  };
+
+  showVirtualParticipant = async (contestId, userId) => {
+    const query = `
+        SELECT P.*
+        FROM "Participants" P
+        WHERE P."contestId" = $1 AND P."type" = $2 AND P."userId" = $3;
+        `;
+    const params = [contestId, 1, userId];
     const result = await this.query(query, params);
 
     return result;
@@ -723,7 +1084,7 @@ class ContestRepository extends Repository {
   approveContest = async (contestId) => {
     const query = `
         UPDATE "Contests"
-        SET "status" = 'upcoming'
+        SET "status" = 'approved'
         WHERE "id" = $1;
         `;
     const params = [contestId];
@@ -733,13 +1094,12 @@ class ContestRepository extends Repository {
 
   rejectContest = async (contestId) => {
     const query = `
-        UPDATE "Contests"
-        SET "status" = 'rejected'
-        WHERE "id" = $1;
-        `;
+      UPDATE "Contests"
+      SET "status" = 'rejected'
+      WHERE "id" = $1;
+    `;
     const params = [contestId];
     const result = await this.query(query, params);
-
     return result;
   };
 }

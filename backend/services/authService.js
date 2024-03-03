@@ -18,6 +18,7 @@ class AuthService extends Service {
   getAccessToken = (payload) => {
     const token = jwt.sign(
       {
+        username: payload.username,
         userId: payload.userId,
         email: payload.email,
         pass: payload.pass,
@@ -35,6 +36,7 @@ class AuthService extends Service {
   getRefreshToken = (payload) => {
     const token = jwt.sign(
       {
+        username: payload.username,
         userId: payload.userId,
         email: payload.email,
         pass: payload.pass,
@@ -57,6 +59,7 @@ class AuthService extends Service {
     if (data.type == 0) {
       const token = this.getAccessToken(
         {
+          username: data.username,
           userId: user.userId,
           email: data.email,
           pass: user.hashpass,
@@ -83,6 +86,7 @@ class AuthService extends Service {
     if (setter) {
       const token = this.getAccessToken(
         {
+          username: setter.user.username,
           userId: setter.userId,
           email: setter.user.credential.email,
           pass: setter.user.credential.hashpass,
@@ -97,6 +101,19 @@ class AuthService extends Service {
         `Please verify your email: ${url}/verify-email?type=1&token=${token}`
       );
       console.log("Email sent");
+      return { success: true };
+    }
+    return { success: false };
+  };
+
+  rejectSetter = async (id) => {
+    const setter = await authRepository.rejectSetter(id);
+    if (setter) {
+      sendMail(
+        setter.user.credential.email,
+        "Registration Rejected",
+        `Your application is rejected. Please contact the admin for further details.`
+      );
       return { success: true };
     }
     return { success: false };
@@ -201,12 +218,14 @@ class AuthService extends Service {
           return {
             success: true,
             refreshToken: this.getRefreshToken({
+              username: credential.user.username,
               userId: credential.userId,
               email: data.email,
               pass: credential.hashpass,
               type: data.type,
             }),
             accessToken: this.getAccessToken({
+              username: credential.user.username,
               userId: credential.userId,
               email: data.email,
               pass: credential.hashpass,

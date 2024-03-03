@@ -17,28 +17,13 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       });
       Participant.hasMany(models.ContestSubmission);
+      Participant.hasMany(models.ContestActivity);
     }
   }
   Participant.init(
     {
-      contestId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Contests",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      userId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Users",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
+      contestId: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
       type: DataTypes.INTEGER,
     },
     {

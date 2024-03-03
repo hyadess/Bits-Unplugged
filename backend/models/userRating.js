@@ -8,25 +8,23 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-        UserRating.belongsTo(models.User, {
-            foreignKey: "userId",
-        });
-        
+      UserRating.belongsTo(models.User, {
+        foreignKey: "userId",
+      });
+      UserRating.belongsTo(models.Contest, {
+        foreignKey: "contestId",
+      });
     }
   }
   UserRating.init(
     {
-        userId: {
-            type: DataTypes.INTEGER,
-            references: {
-            model: "Users",
-            key: "id",
-            },
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
-        },
-        rating: DataTypes.INTEGER,
-        isLatest: DataTypes.BOOLEAN,
+      userId: DataTypes.INTEGER,
+      rating: DataTypes.INTEGER,
+      isLatest: DataTypes.BOOLEAN,
+      contestId: DataTypes.INTEGER,
+      change: DataTypes.INTEGER,
+      prevRating: DataTypes.INTEGER,
+      rank: DataTypes.INTEGER,
     },
     {
       sequelize,

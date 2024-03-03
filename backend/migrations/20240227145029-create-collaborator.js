@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("ContestSetters", {
+    await queryInterface.createTable("Collaborators", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -21,32 +21,29 @@ module.exports = {
       setterId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Setters",
-          key: "userId",
+          model: "Users",
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      role: {
-        type: Sequelize.STRING,
-      },
       status: {
         type: Sequelize.STRING,
-        defaultValue: "Pending"
+        defaultValue: "Pending",
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("ContestSetters");
+    await queryInterface.dropTable("Collaborators");
   },
 };

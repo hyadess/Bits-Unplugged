@@ -1,7 +1,7 @@
 import ContestsView from "../../views/Contests";
 import React, { useState, useEffect, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
-import { setLoading } from "../../App";
+import { setLoading, showSuccess } from "../../App";
 import { contestApi } from "../../api"; // Assuming you have an authApi to get user information
 import { jwtDecode } from "jwt-decode";
 import Title from "components/Title";
@@ -10,61 +10,78 @@ import CardContainer from "containers/CardContainer2";
 import ContestCard from "components/Cards/AdminContestCard";
 import CustomModal from "components/Modal/CustomModal";
 import PendingContestCard from "components/Cards/PendingContestCard";
+import ScheduledContestCard from "components/Cards/ScheduledContestCard";
 
 const AdminContests = () => {
   const navigate = useNavigate();
-  const [contestList, setContestList] = useState([]);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  // const [userId, setUserId] = useState(null); // New state to store user_id
+  const [pendingList, setPendingList] = useState([]);
+  const [approvedList, setApprovedList] = useState([]);
+  const [scheduledList, setScheduledList] = useState([]);
 
-  const deleteContest = async (contestID) => {
-    const res = await contestApi.deleteContest(contestID);
-    if (res.success) {
-      setContestList(contestList.filter((contest) => contest.id !== contestID));
-    }
-  };
+  const [contestList, setContestList] = useState([]);
 
   const getContestList = async () => {
     const res = await contestApi.getAllContests();
     if (res.success) {
-      if (res.data.length > 0)
+      if (res.data.length > 0) {
+        setPendingList(
+          res.data.filter((contest) => contest.status === "requested")
+        );
+        setApprovedList(
+          res.data.filter((contest) => contest.status === "approved")
+        );
+        setScheduledList(
+          res.data.filter((contest) => contest.status === "scheduled")
+        );
         setContestList(res.data.sort((a, b) => a.id - b.id));
-      else setLoading(false);
+      } else setLoading(false);
     }
   };
 
-  const getContestId = async (title) => {
-    const res = await contestApi.addContest(title);
+  const approve = async (contestId) => {
+    const res = await contestApi.updateContest(contestId, {
+      status: "approved",
+    });
     if (res.success) {
-      console.log(res.data[0].id);
-      return res.data[0].id;
+      showSuccess("Contest approved", res);
+      setApprovedList((prev) =>
+        prev.concat(pendingList.filter((contest) => contest.id === contestId))
+      );
+      setPendingList((prev) =>
+        prev.filter((contest) => contest.id !== contestId)
+      );
     }
   };
 
-  const createContest = async (title) => {
-    closeModal();
-    const contestID = await getContestId(title);
-    navigate(`/AdminContests/${contestID}/edit`);
+  const reject = async (contestId) => {
+    const res = await contestApi.updateContest(contestId, {
+      status: "rejected",
+    });
+    if (res.success) {
+      setPendingList((prev) =>
+        prev.filter((contest) => contest.id !== contestId)
+      );
+    }
   };
 
-  const openModal = () => {
-    setModalIsOpen(true);
+  const schedule = async (contestId, date, difficulty) => {
+    const res = await contestApi.updateContest(contestId, {
+      startDateTime: date,
+      status: "scheduled",
+      difficulty: difficulty,
+    });
+    if (res.success) {
+      showSuccess("Contest scheduled successfully", res);
+      setApprovedList((prev) =>
+        prev.filter((contest) => contest.id !== contestId)
+      );
+      setScheduledList((prev) =>
+        prev.concat(approvedList.filter((contest) => contest.id === contestId))
+      );
+    }
   };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
-  // const fetchUser = async () => {
-  //   const decoded = jwtDecode(localStorage.getItem("token"));
-  //   if (decoded) {
-  //     setUserId(decoded);
-  //   }
-  // };
-
   useEffect(() => {
     getContestList();
-    // fetchUser();
   }, []);
 
   return (
@@ -74,63 +91,67 @@ const AdminContests = () => {
       {/* <ProblemAddButton onClick={openModal} /> */}
 
       <CardContainer col={2}>
-        {contestList.map(
-          (contest, index) =>
-            contest.status == "requested" && (
-              <PendingContestCard
-                key={index}
-                idx={index + 1}
-                id={contest.id}
-                name={contest.title}
-                deleteAction={deleteContest}
-                isLive={contest.isLive}
-                timestamp={contest.updatedAt}
-                owner={contest.ContestSetters[0]}
-                startDate={contest.startDate}
-                endDate={contest.endDate}
-                status={contest.status}
-                updatedAt={contest.updatedAt}
-                // userID={userID}
-              />
-            )
-        )}
+        {pendingList.map((contest, index) => (
+          <PendingContestCard
+            key={index}
+            idx={index + 1}
+            id={contest.id}
+            name={contest.title}
+            isLive={contest.isLive}
+            timestamp={contest.updatedAt}
+            owner={contest.owner}
+            status={contest.status}
+            updatedAt={contest.updatedAt}
+            reject={() => reject(contest.id)}
+            approve={() => approve(contest.id)}
+          />
+        ))}
       </CardContainer>
 
       <Title title={`Approved Contests`} sub_title={`Schedule Contests`} />
       <CardContainer col={2}>
-        {contestList.map(
-          (contest, index) =>
-            contest.status !== "requested" &&
-            contest.status !== "edit" && (
-              <ContestCard
-                key={index}
-                idx={index + 1}
-                id={contest.id}
-                name={contest.title}
-                deleteAction={deleteContest}
-                isLive={contest.isLive}
-                timestamp={contest.updatedAt}
-                owner={contest.ContestSetters[0]}
-                startDate={contest.startDate}
-                startDateTime={contest.startDateTime}
-                duration={contest.duration}
-                endDate={contest.endDate}
-                status={contest.status}
-                updatedAt={contest.updatedAt}
-                // userID={userID}
-              />
-            )
-        )}
+        {approvedList.map((contest, index) => (
+          <ContestCard
+            key={index}
+            idx={index + 1}
+            id={contest.id}
+            name={contest.title}
+            isLive={contest.isLive}
+            timestamp={contest.updatedAt}
+            owner={contest.owner}
+            startDateTime={contest.startDateTime}
+            duration={contest.duration}
+            endDate={contest.endDate}
+            status={contest.status}
+            updatedAt={contest.updatedAt}
+            schedule={schedule}
+            // difficulty={contest.difficulty}
+            // userID={userID}
+          />
+        ))}
       </CardContainer>
 
-      {modalIsOpen && (
-        <CustomModal
-          label={"Enter Contest Title"}
-          placeholder={"Contest Title"}
-          onClose={closeModal}
-          onSubmit={createContest}
-        />
-      )}
+      <Title title={`Scheduled Contests`} sub_title={`Contests`} />
+      <CardContainer col={2}>
+        {scheduledList.map((contest, index) => (
+          <ScheduledContestCard
+            key={index}
+            idx={index + 1}
+            id={contest.id}
+            name={contest.title}
+            isLive={contest.isLive}
+            timestamp={contest.updatedAt}
+            owner={contest.owner}
+            startDateTime={contest.startDateTime}
+            duration={contest.duration}
+            endDate={contest.endDate}
+            status={contest.status}
+            updatedAt={contest.updatedAt}
+            difficulty={contest.difficulty}
+            // userID={userID}
+          />
+        ))}
+      </CardContainer>
     </div>
   );
 };

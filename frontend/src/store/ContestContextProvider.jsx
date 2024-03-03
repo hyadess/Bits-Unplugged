@@ -17,6 +17,43 @@ const ContestContextProvider = ({ children }) => {
           title: payload,
         };
 
+      case "UPDATE_EDITORIAL":
+        return {
+          ...state,
+          editorial: payload,
+        };
+
+      case "UPDATE_EDITORIAL_IMAGES": {
+        const newEditorial = [...state.editorial];
+        newEditorial[payload.index].images = payload.images;
+        return { ...state, editorial: newEditorial };
+      }
+
+      case "ADD_EDITORIAL_SECTION": {
+        console.log("Adding new section");
+        let newEditorial = [...state.editorial];
+        if (payload.type === "markdown") {
+          newEditorial.splice(payload.index, 0, {
+            boxId: payload.id,
+            data: "type here",
+            type: "markdown",
+          });
+        } else if (payload.type === "slideshow") {
+          newEditorial.splice(payload.index, 0, {
+            boxId: payload.id,
+            type: "slideshow",
+            images: [],
+          });
+        }
+        return { ...state, editorial: newEditorial };
+      }
+
+      case "UPDATE_EDITORIAL_MARKDOWN": {
+        const newEditorial = [...state.editorial];
+        newEditorial[payload.index].data = payload.textData;
+        return { ...state, editorial: newEditorial };
+      }
+
       case "UPDATE_DURATION":
         return {
           ...state,
@@ -34,21 +71,17 @@ const ContestContextProvider = ({ children }) => {
           ...state,
           description: payload,
         };
-      case "UPDATE_START_DATE":
-        return {
-          ...state,
-          startDate: payload,
-        };
-      case "UPDATE_END_DATE":
-        return {
-          ...state,
-          endDate: payload,
-        };
       case "DELETE_PROBLEM":
         return {
           ...state,
           problems: state.problems.filter((problem) => problem.id !== payload),
         };
+
+      case "DELETE_EDITORIAL_SECTION":
+        let newEditorial = [...state.editorial];
+        newEditorial.splice(payload, 1);
+        return { ...state, editorial: newEditorial };
+
       case "ADD_PROBLEM":
         console.log("ADD_PROBLEM", [...state.problems, ...payload]);
         return {

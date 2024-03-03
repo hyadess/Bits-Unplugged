@@ -18,6 +18,15 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
+      setterId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
       title: {
         type: Sequelize.STRING,
       },
@@ -30,6 +39,10 @@ module.exports = {
       isLive: {
         type: Sequelize.BOOLEAN,
       },
+      approvalStatus: {
+        type: Sequelize.STRING, // none, pending, approved, rejected
+        defaultValue: "none",
+      },
       serialNo: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
@@ -37,12 +50,12 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },

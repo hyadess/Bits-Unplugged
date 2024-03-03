@@ -18,27 +18,38 @@ module.exports = {
       startDateTime: {
         type: Sequelize.DATE,
       },
-      startDate: {
-        type: Sequelize.DATE,
-      },
-      endDate: {
-        type: Sequelize.DATE,
-      },
       duration: {
         type: Sequelize.FLOAT,
       },
       status: {
         type: Sequelize.STRING,
       },
+      difficulty: {
+        type: Sequelize.STRING, // Easy, Medium, Hard
+      },
+      ownerId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      editorial: {
+        type: Sequelize.JSONB,
+        // set default value to empty array
+        defaultValue: [],
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },

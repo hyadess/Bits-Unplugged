@@ -10,25 +10,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Setter.belongsTo(models.User, { foreignKey: "userId", as: "user" });
-      Setter.hasMany(models.Problem, { foreignKey: "setterId" });
-      Setter.hasMany(models.ContestSetter, {
-        foreignKey: "setterId",
-      });
     }
   }
   Setter.init(
     {
-      userId: {
-        type: DataTypes.INTEGER,
-        unique: true, // Ensure uniqueness
-        references: {
-          model: "Users",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      isApproved: { type: DataTypes.BOOLEAN, defaultValue: false },
+      userId: DataTypes.INTEGER,
+      isApproved: DataTypes.BOOLEAN,
     },
     {
       sequelize,

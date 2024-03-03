@@ -1,27 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import CanvasContainer from "../../../components/Canvases/CanvasContainer";
-import Button from "@mui/material/Button";
-import RotateLeftIcon from "@mui/icons-material/RotateLeft";
-import { SelectionField2 } from "../../../components/InputFields";
-import { useProblemContext } from "../../../store/ProblemContextProvider";
-import { canvasApi, problemApi } from "../../../api";
-import { showSuccess } from "../../../App";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import { Select, MenuItem } from "@mui/material";
-import SelectionField from "./SelectionField";
+import CanvasContainer from "../components/Canvases/CanvasContainer";
+import { useProblemContext } from "../store/ProblemContextProvider";
+import { canvasApi, problemApi } from "../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEye,
   faEyeSlash,
-  faPlay,
   faRotateRight,
 } from "@fortawesome/free-solid-svg-icons";
 import SaveIcon from "@mui/icons-material/Save";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
 const deepCopy = (obj) => {
   return typeof obj === "string"
     ? JSON.parse(obj)
@@ -146,7 +133,7 @@ const CanvasDesignTab = ({ backupProblem, onSave }) => {
   //   );
   // }, [problem.canvasId]);
   return (
-    <>
+    <div className="rounded-[30px] pb-[0.25rem] bg-[#fbfbfb]">
       <CanvasContainer
         canvasId={problem.canvasId}
         input={problem.canvasData}
@@ -162,7 +149,7 @@ const CanvasDesignTab = ({ backupProblem, onSave }) => {
             };
           });
         }}
-        onCanvasChange={(value) => changeCanvas(value)}
+        onCanvasChange={changeCanvas}
         ref={canvasRef}
         mode={mode}
         editOptions={problem.editOptions}
@@ -181,6 +168,7 @@ const CanvasDesignTab = ({ backupProblem, onSave }) => {
         }}
         stageRef={stageRef}
       />
+      <div className="w-full h-[.2rem] bg-gray-200"></div>
       <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
         <div
           className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
@@ -214,7 +202,7 @@ const CanvasDesignTab = ({ backupProblem, onSave }) => {
           <SaveIcon />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

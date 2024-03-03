@@ -9,12 +9,19 @@ class ContestApi extends Api {
     return await this.put("/contests/" + contestId, contest);
   };
 
+  getEditorial = async (contestId) => {
+    return await this.get("/contests/" + contestId + "/editorial");
+  };
+
   getAllContests = async () => {
     return await this.get("/contests");
   };
 
   getAllPublishedContests = async () => {
     return await this.get("/contests/published");
+  };
+  getAllParticipatedContests = async () => {
+    return await this.get("/contests/participated");
   };
 
   getMyContests = async () => {
@@ -23,6 +30,9 @@ class ContestApi extends Api {
 
   getMyOwnContests = async () => {
     return await this.get("/contests/owned");
+  };
+  getRunningContests = async () => {  
+    return await this.get("/contests/running");
   };
 
   getAllSubmissionsByContest = async (contestId) => {
@@ -33,8 +43,16 @@ class ContestApi extends Api {
     return await this.get("/contests/" + contestId);
   };
 
-  getAllSubmissionsByUserAndContest = async (contestId) => {
-    return await this.get("/contests/" + contestId + "/submissions/me");
+  getAllSubmissionsByUserAndContest = async (contestId, username) => {
+    return await this.get(
+      "/contests/" + contestId + "/submissions/" + username
+    );
+  };
+
+  getAllSubmissionsByContestAndProblem = async (contestId, problemId) => {
+    return await this.get(
+      "/contests/" + contestId + "/problems/" + problemId + "/submissions"
+    );
   };
 
   getAllProblemsByContest = async (contestId) => {
@@ -52,12 +70,12 @@ class ContestApi extends Api {
   totalProblemCount = async (contestId) => {
     return await this.get("/contests/" + contestId + "/problemCount");
   };
-  
+
   totalProblemSolved = async (contestId, userId) => {
     return await this.get("/contests/" + contestId + "/solvedCount/" + userId);
   };
 
-  isContestProblemSolved = async (contestId,problemId) => {
+  isContestProblemSolved = async (contestId, problemId) => {
     // console.log("problem id ==>", problemId);
     return await this.get("/contests/" + contestId + "/isSolved/" + problemId);
   };
@@ -65,12 +83,7 @@ class ContestApi extends Api {
   addContest = async (title) => {
     return await this.post("/contests/addContest", { title });
   };
-  updateDates = async (contestId, startDate, endDate) => {
-    return await this.post("/contests/" + contestId + "/updateDates", {
-      startDate,
-      endDate,
-    });
-  };
+
   availableCollaborators = async (contestId) => {
     return await this.get("/contests/" + contestId + "/showSetters");
   };
@@ -108,9 +121,17 @@ class ContestApi extends Api {
     return await this.post(`/contests/${contestId}/accept-invitation`);
   };
 
-  getLeaderboard = async (contestId) => {
+  getLeaderboard = async (contestId, type) => {
     return await this.get(`/contests/${contestId}/Leaderboard`);
   };
+  getTimeline = async (contestId) => {
+    return await this.get(`/contests/${contestId}/Timeline`);
+  };
+
+  isRegistered = async (contestId) => {
+    return await this.get(`/contests/${contestId}/isRegistered`);
+  };
+
   showAllCollaborators = async (contestId) => {
     // console.log("===>", contestId);
     return await this.get("/contests/" + contestId + "/showAllCollaborators");
@@ -147,14 +168,20 @@ class ContestApi extends Api {
     verdict,
     canvasData,
     userActivity,
-    point
+    point,
+    duration,
+    image,
+    submittedAt
   ) => {
     return await this.post("/contests/" + contestId + "/addSubmission", {
       problemId,
       verdict,
       canvasData,
       userActivity,
-      point
+      point,
+      duration,
+      image,
+      submittedAt,
     });
   };
 
@@ -185,6 +212,13 @@ class ContestApi extends Api {
     );
   };
 
+  deleteVirtualParticipant = async (contestId) => {
+    return await this.delete(
+      "/contests/" + contestId + "/participant/virtual",
+      {}
+    );
+  };
+
   leaveVirtualContest = async (contestId) => {
     return await this.delete("/contests/" + contestId + "/leave/virtual", {});
   };
@@ -203,6 +237,10 @@ class ContestApi extends Api {
 
   showVirtualParticipantList = async (contestId) => {
     return await this.get("/contests/" + contestId + "/participants/virtual");
+  };
+
+  showVirtualParticipant = async (contestId) => {
+    return await this.get("/contests/" + contestId + "/participant/virtual");
   };
 
   showAllClarifications = async (contestId) => {

@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { setLoading } from "../../../App";
+import { setLoading, showSuccess } from "../../../App";
 import { problemApi } from "../../../api";
 import ProblemContextProvider, {
   useProblemContext,
 } from "../../../store/ProblemContextProvider";
-import ProbSetTab from "../../../components/ProbSetTab";
+import ProbSetTab from "../../ProbSetTab";
 import Confirmation from "../../../components/Confirmation";
-import TestTab from "./TestTab";
-import SolutionCheckerTab from "./SolutionCheckerTab";
-import CanvasDesignTab from "./CanvasDesignTab";
+import SolutionCheckerTab from "../../SolutionCheckerTab";
+import CanvasDesignTab from "../../CanvasDesignTab";
 import DetailsTab from "./DetailsTab";
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import CanvasPreview from "pages/CanvasPreview";
 
 const ProblemSetEnvView = () => {
   const backupProblem = useRef(null);
@@ -28,6 +28,28 @@ const ProblemSetEnvView = () => {
     return JSON.parse(JSON.stringify(obj));
   };
   const testRef = useRef(null);
+
+  const updateCanvas = async () => {
+    dispatch({
+      type: "UPDATE_CHECKER_CANVAS",
+      payload: deepCopy(problem.canvasData),
+    });
+    console.log("Canvas Updated");
+    backupProblem.current.canvasData = deepCopy(problem.canvasData);
+    const res = await problemApi.updateProblem(problem.id, {
+      canvasId: problem.canvasId,
+      canvasData: problem.canvasData,
+      editOptions: problem.editOptions,
+      previewOptions: problem.previewOptions,
+      checkerCode: problem.checkerCode,
+      checkerCanvas: problem.checkerCanvas,
+    });
+    if (res.success) {
+      // console.log(res);
+      showSuccess("Canvas saved successfully", res);
+    }
+  };
+
   const deleteProblem = async () => {
     const res = await problemApi.deleteProblem(problem.id);
     if (res.success) {
@@ -55,6 +77,22 @@ const ProblemSetEnvView = () => {
     }
   };
 
+  const updateSolutionChecker = async (checkerType) => {
+    if (checkerType == 0 && problem.checkerCode == null) return;
+    if (checkerType == 1 && problem.checkerCanvas == null) return;
+    const res = await problemApi.updateProblem(problem.id, {
+      ...(checkerType == 0 && {
+        checkerCode: problem.checkerCode,
+      }),
+      ...(checkerType == 1 && {
+        checkerCanvas: problem.checkerCanvas,
+      }),
+    });
+    if (res.success) {
+      showSuccess("Checker saved successfully", res);
+    }
+  };
+
   useEffect(() => {
     const handleBeforeUnload = (event) => {
       if (isFormDirty) {
@@ -75,6 +113,7 @@ const ProblemSetEnvView = () => {
       getProblem();
     }
   }, [problemid]);
+  const onSubmit = async () => {};
 
   return (
     <div>
@@ -92,6 +131,7 @@ const ProblemSetEnvView = () => {
           setActiveComponent(tab);
           // document.body.style.cursor = "default";
         }}
+        tabs={["Details", "Canvas", "Solution", "Test"]}
       />
 
       <div className="component-container relative">
@@ -104,13 +144,20 @@ const ProblemSetEnvView = () => {
           <DetailsTab />
         </div>
         <div className={activeComponent === "Canvas" ? "block" : "hidden"}>
-          <CanvasDesignTab backupProblem={backupProblem} />
+          <CanvasDesignTab
+            backupProblem={backupProblem}
+            onSave={updateCanvas}
+          />
         </div>
         <div className={activeComponent === "Solution" ? "block" : "hidden"}>
-          <SolutionCheckerTab />
+          <SolutionCheckerTab onSave={updateSolutionChecker} />
         </div>
         <div className={activeComponent === "Test" ? "block" : "hidden"}>
-          <TestTab ref={testRef} />
+          <CanvasPreview
+            ref={testRef}
+            onSubmit={onSubmit}
+            takeSnapshot={false}
+          />
         </div>
       </div>
       <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} />

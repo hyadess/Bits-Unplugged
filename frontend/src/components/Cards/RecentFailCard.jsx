@@ -11,6 +11,7 @@ export default function RecentFailCard({
   action,
   attempts,
   difficulty,
+  duration,
   last_tried,
 }) {
   useEffect(() => {
@@ -31,7 +32,7 @@ export default function RecentFailCard({
 
         <div className="flex flex-row cursor-pointer">
           <h5
-            className="text-xl md:text-2xl tracking-tight bu-text-primary w-[35%] cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full"
+            className="text-xl md:text-2xl tracking-tight bu-text-primary w-[30%] cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full"
             onClick={() => {
               setLoading(true);
               navigate(path);
@@ -39,20 +40,21 @@ export default function RecentFailCard({
           >
             {name}
           </h5>
+          <h3 className="text-red-500 w-[15%] font-bold">{duration}s</h3>
           <h3 className="text-red-500 w-[10%] font-bold">{attempts}</h3>
 
           <h3
             className={`text-center w-[15%] text-lg ${
-              difficulty === "Medium"
+              difficulty > 1400 && difficulty < 2000
                 ? "text-[#FF981E] font-medium"
-                : difficulty === "Easy"
+                : difficulty < 1400
                   ? "text-green-500 font-sm"
                   : "text-red-500 font-extrabold"
             }`}
           >
             {difficulty}
           </h3>
-          <div className="text-center w-[40%] text-xl bu-text-primary">
+          <div className="text-center w-[30%] text-xl bu-text-primary">
             {getTimeStamp(last_tried)}
           </div>
         </div>

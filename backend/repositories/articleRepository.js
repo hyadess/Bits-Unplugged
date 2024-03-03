@@ -1,5 +1,6 @@
 const Repository = require("./base");
 const db = require("../models/index");
+const { Op } = require("sequelize");
 
 class ArticleRepository extends Repository {
   constructor() {
@@ -8,6 +9,31 @@ class ArticleRepository extends Repository {
 
   getAllArticles = async () => {
     return await db.Article.findAll();
+  };
+
+  getSubmittedArticles = async () => {
+    return await db.Article.findAll({
+      where: {
+        approvalStatus: {
+          [Op.or]: ["pending", "approved"],
+        },
+      },
+      include: [
+        {
+          model: db.User,
+          as: "setter",
+        },
+      ],
+    });
+  };
+
+  getMyArticles = async (setterId) => {
+    return await db.Article.findAll({
+      where: {
+        setterId,
+      },
+      order: [["createdAt", "DESC"]],
+    });
   };
 
   getArticlesBySeries = async (seriesId) => {
@@ -23,6 +49,7 @@ class ArticleRepository extends Repository {
       where: {
         seriesId,
         isLive: true,
+        approvalStatus: "approved",
       },
     });
   };
@@ -31,6 +58,7 @@ class ArticleRepository extends Repository {
     return await db.Article.findAll({
       where: {
         isLive: true,
+        approvalStatus: "approved",
       },
     });
   };
@@ -39,8 +67,8 @@ class ArticleRepository extends Repository {
     return await db.Article.findByPk(id);
   };
 
-  createArticle = async (data) => {
-    return await db.Article.create(data);
+  createArticle = async (setterId, data) => {
+    return await db.Article.create({ setterId, ...data });
   };
 
   updateArticle = async (id, data) => {

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -29,15 +29,38 @@ module.exports = {
         allowNull: false,
         defaultValue: true,
       },
+      contestId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Contests",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      change: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      prevRating: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      rank: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },

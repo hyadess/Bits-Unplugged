@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeadSideVirus,
   faHouse,
+  faNewspaper,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../App";
@@ -113,7 +114,7 @@ const SetterNavbar = (props) => {
                     Home
                   </>
                 }
-                path="/home"
+                path="/setter/home"
               />
               <NavButton
                 label={
@@ -132,6 +133,15 @@ const SetterNavbar = (props) => {
                   </>
                 }
                 path="/setter/contests"
+              />
+              <NavButton
+                label={
+                  <>
+                    <FontAwesomeIcon icon={faNewspaper} />
+                    Articles
+                  </>
+                }
+                path="/setter/articles"
               />
             </>
           </div>

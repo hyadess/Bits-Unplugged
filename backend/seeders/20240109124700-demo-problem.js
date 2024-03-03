@@ -17,7 +17,7 @@ module.exports = {
       [
         {
           // 1
-          setterId: 1,
+          setterId: 2,
           canvasId: 2,
           title: "3 Disks",
           statement:
@@ -43,7 +43,7 @@ module.exports = {
         },
         {
           // 2
-          setterId: 1,
+          setterId: 3,
           canvasId: 2,
           title: "Min 3 Disks",
           statement:
@@ -69,7 +69,7 @@ module.exports = {
         },
         {
           // 3
-          setterId: 1,
+          setterId: 4,
           canvasId: 2,
           title: "Min 4 Disks",
           statement:
@@ -95,7 +95,7 @@ module.exports = {
         },
         {
           // 4,
-          setterId: 1,
+          setterId: 2,
           canvasId: 2,
           title: "Double TOH",
           statement: "Move the disks from left peg to right peg.",
@@ -120,7 +120,7 @@ module.exports = {
         },
         {
           // 5
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "Road Construction",
           statement:
@@ -186,7 +186,7 @@ module.exports = {
         },
         {
           // 6
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "Road Construction 2",
           statement: "Similar to version 1.",
@@ -275,7 +275,7 @@ module.exports = {
         },
         {
           // 7
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "Coloring",
           statement:
@@ -338,7 +338,7 @@ module.exports = {
         },
         {
           // 8
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "Bipartition",
           canvasData: null,
@@ -367,65 +367,293 @@ module.exports = {
           checkerCanvas: null,
         },
         {
-          // 9
-          setterId: 1,
+          // id: 9,
+          setterId: 2,
           canvasId: 1,
           title: "Rearrange",
+          statement:
+            "Drag the nodes to make the graph a plane graph. In a plane graph there is no crossing edges.",
           canvasData: JSON.stringify({
             edges: [
-              { start: "0", end: "1", weight: "0" },
-              { start: "1", end: "3", weight: "0" },
-              { start: "3", end: "2", weight: "0" },
-              { start: "2", end: "0", weight: "0" },
-              { start: "4", end: "5", weight: "0" },
-              { start: "5", end: "7", weight: "0" },
-              { start: "7", end: "6", weight: "0" },
-              { start: "6", end: "4", weight: "0" },
-              { start: "1", end: "5", weight: "0" },
-              { start: "4", end: "0", weight: "0" },
-              { start: "2", end: "6", weight: "0" },
-              { start: "3", end: "7", weight: "0" },
+              {
+                start: "0",
+                end: "1",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "3",
+                weight: "0",
+              },
+              {
+                start: "3",
+                end: "2",
+                weight: "0",
+              },
+              {
+                start: "2",
+                end: "0",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "5",
+                weight: "0",
+              },
+              {
+                start: "5",
+                end: "7",
+                weight: "0",
+              },
+              {
+                start: "7",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "6",
+                end: "4",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "5",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "0",
+                weight: "0",
+              },
+              {
+                start: "2",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "3",
+                end: "7",
+                weight: "0",
+              },
             ],
             nodes: {
-              0: { x: 281, y: 30, label: 0, color: "Default" },
-              1: { x: 610, y: 32, label: 1, color: "Default" },
-              2: { x: 278, y: 276, label: 2, color: "Default" },
-              3: { x: 615, y: 278, label: 3, color: "Default" },
-              4: { x: 444, y: 156, label: 4, color: "Default" },
-              5: { x: 796, y: 156, label: 5, color: "Default" },
-              6: { x: 448, y: 447, label: 6, color: "Default" },
-              7: { x: 812, y: 449, label: 7, color: "Default" },
+              0: {
+                x: 281,
+                y: 30,
+                label: 0,
+                color: "Default",
+              },
+              1: {
+                x: 563,
+                y: 31,
+                label: 1,
+                color: "Default",
+              },
+              2: {
+                x: 281,
+                y: 222,
+                label: 2,
+                color: "Default",
+              },
+              3: {
+                x: 566,
+                y: 226,
+                label: 3,
+                color: "Default",
+              },
+              4: {
+                x: 424,
+                y: 148,
+                label: 4,
+                color: "Default",
+              },
+              5: {
+                x: 703,
+                y: 146,
+                label: 5,
+                color: "Default",
+              },
+              6: {
+                x: 429,
+                y: 364,
+                label: 6,
+                color: "Default",
+              },
+              7: {
+                x: 702,
+                y: 366,
+                label: 7,
+                color: "Default",
+              },
             },
             selectedEdges: [],
             selectedNodes: [],
           }),
-          statement:
-            "Drag the nodes to make the graph a plane graph. In a plane graph there is no crossing edges.",
-          checkerCode: `/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction isIntersecting(a, b, c, d) {\n    // Returns true if line segment (a, b) intersects with line segment (c, d)\n    function ccw(a, b, c) {\n        return (c.y - a.y) * (b.x - a.x) > (b.y - a.y) * (c.x - a.x);\n    }\n\n    return (\n        ccw(a, c, d) !== ccw(b, c, d) &&\n        ccw(a, b, c) !== ccw(a, b, d)\n    );\n}\n\n\nfunction hasCommonNode(edgeA, edgeB) {\n    return (\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.end) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.end)\n    );\n}\n\nfunction solutionChecker(data) {\n    const nodes = data.nodes;\n    const edges = data.edges;\n\n    for (let i = 0; i < edges.length; i++) {\n        const edgeA = edges[i];\n        \n        const startA = nodes[edgeA.start];\n        const endA = nodes[edgeA.end];\n\n        for (let j = i + 1; j < edges.length; j++) {\n            const edgeB = edges[j];\n\n            const startB = nodes[edgeB.start];\n            const endB = nodes[edgeB.end];\n\n            if (\n                isIntersecting(startA, endA, startB, endB) &&\n                !hasCommonNode(edgeA, edgeB)\n            ) {\n                // console.log(startA.x,startA.y,  startB.x, startB.y, endA.x, endA.y, endB.x, endB.y)\n                return false;\n            }\n        }\n    }\n\n    // No intersections found, it's a plane graph\n    return true;\n}`,
           editOptions: JSON.stringify({
-            // variant: {
-            //   value: "simple_graph",
-            //   type: "select",
-            //   list: ["simple_graph", "tree"],
-            // },
-            directedEdge: { value: false, type: "switch" },
-            weightedEdge: { value: false, type: "switch" },
+            directedEdge: {
+              value: false,
+              type: "switch",
+            },
+            weightedEdge: {
+              value: false,
+              type: "switch",
+            },
           }),
           previewOptions: JSON.stringify({
-            addNode: { value: true, type: "switch" },
-            deleteNode: { value: true, type: "switch" },
-            dragNode: { value: true, type: "switch" },
-            addEdge: { value: true, type: "switch" },
-            deleteEdge: { value: true, type: "switch" },
-            editWeight: { value: false, type: "switch" },
-            editColor: { value: false, type: "switch" },
-            editLabel: { value: false, type: "switch" },
+            addNode: {
+              value: false,
+              type: "switch",
+            },
+            deleteNode: {
+              value: false,
+              type: "switch",
+            },
+            dragNode: {
+              value: true,
+              type: "switch",
+            },
+            addEdge: {
+              value: false,
+              type: "switch",
+            },
+            deleteEdge: {
+              value: false,
+              type: "switch",
+            },
+            editWeight: {
+              value: false,
+              type: "switch",
+            },
+            editColor: {
+              value: false,
+              type: "switch",
+            },
+            editLabel: {
+              value: false,
+              type: "switch",
+            },
           }),
-          checkerCanvas: null,
+          checkerCode: `/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\n\nfunction isIntersecting(a, b, c, d) {\n    // Returns true if line segment (a, b) intersects with line segment (c, d)\n    function ccw(a, b, c) {\n        return (c.y - a.y) * (b.x - a.x) > (b.y - a.y) * (c.x - a.x);\n    }\n\n    return (\n        ccw(a, c, d) !== ccw(b, c, d) &&\n        ccw(a, b, c) !== ccw(a, b, d)\n    );\n}\n\n\nfunction hasCommonNode(edgeA, edgeB) {\n    return (\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.start) === JSON.stringify(edgeB.end) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.start) ||\n        JSON.stringify(edgeA.end) === JSON.stringify(edgeB.end)\n    );\n}\n\nfunction solutionChecker(data) {\n    const nodes = data.nodes;\n    const edges = data.edges;\n\n    for (let i = 0; i < edges.length; i++) {\n        const edgeA = edges[i];\n        \n        const startA = nodes[edgeA.start];\n        const endA = nodes[edgeA.end];\n\n        for (let j = i + 1; j < edges.length; j++) {\n            const edgeB = edges[j];\n\n            const startB = nodes[edgeB.start];\n            const endB = nodes[edgeB.end];\n\n            if (\n                isIntersecting(startA, endA, startB, endB) &&\n                !hasCommonNode(edgeA, edgeB)\n            ) {\n                // console.log(startA.x,startA.y,  startB.x, startB.y, endA.x, endA.y, endB.x, endB.y)\n                return false;\n            }\n        }\n    }\n\n    // No intersections found, it's a plane graph\n    return true;\n}`,
+          checkerCanvas: JSON.stringify({
+            edges: [
+              {
+                start: "0",
+                end: "1",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "3",
+                weight: "0",
+              },
+              {
+                start: "3",
+                end: "2",
+                weight: "0",
+              },
+              {
+                start: "2",
+                end: "0",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "5",
+                weight: "0",
+              },
+              {
+                start: "5",
+                end: "7",
+                weight: "0",
+              },
+              {
+                start: "7",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "6",
+                end: "4",
+                weight: "0",
+              },
+              {
+                start: "1",
+                end: "5",
+                weight: "0",
+              },
+              {
+                start: "4",
+                end: "0",
+                weight: "0",
+              },
+              {
+                start: "2",
+                end: "6",
+                weight: "0",
+              },
+              {
+                start: "3",
+                end: "7",
+                weight: "0",
+              },
+            ],
+            nodes: {
+              0: {
+                x: 281,
+                y: 30,
+                label: 0,
+                color: "Default",
+              },
+              1: {
+                x: 563,
+                y: 31,
+                label: 1,
+                color: "Default",
+              },
+              2: {
+                x: 281,
+                y: 222,
+                label: 2,
+                color: "Default",
+              },
+              3: {
+                x: 566,
+                y: 226,
+                label: 3,
+                color: "Default",
+              },
+              4: {
+                x: 424,
+                y: 148,
+                label: 4,
+                color: "Default",
+              },
+              5: {
+                x: 703,
+                y: 146,
+                label: 5,
+                color: "Default",
+              },
+              6: {
+                x: 429,
+                y: 364,
+                label: 6,
+                color: "Default",
+              },
+              7: {
+                x: 702,
+                y: 366,
+                label: 7,
+                color: "Default",
+              },
+            },
+            selectedEdges: [],
+            selectedNodes: [],
+          }),
         },
         {
           // 10
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "Shorter Path",
           statement:
@@ -577,7 +805,7 @@ module.exports = {
         },
         {
           // 11
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "Round n Round",
           statement: `Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city exactly once and returns to the origin city?`,
@@ -741,7 +969,7 @@ module.exports = {
           }),
         },
         {
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "Pentagon and Pentagram",
           statement: "Convert the Pentagram to a Pentagon.",
@@ -812,7 +1040,7 @@ module.exports = {
         },
         {
           // id: 13,
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "Dijkstra",
           statement: "Find shortest path from A to F.",
@@ -1041,7 +1269,7 @@ module.exports = {
         },
         {
           // id: 14,
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "Wandering Merchant Dilemma",
           statement:
@@ -1237,7 +1465,7 @@ module.exports = {
         },
         {
           // id: 15,
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "Red Black",
           statement: "Delete 5.",
@@ -1373,7 +1601,7 @@ module.exports = {
         },
         {
           // id: 16,
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "Police Check Posts",
           statement:
@@ -1677,7 +1905,7 @@ module.exports = {
         },
         {
           // id: 17,
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "Independent Set",
           statement: "Find the maximum independent set of the given graph.",
@@ -1949,7 +2177,7 @@ module.exports = {
         },
         {
           // id: 18,
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "Fire Stations",
           statement:
@@ -2254,7 +2482,7 @@ module.exports = {
         },
         {
           // id: 19,
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "Factor",
           statement: "Find 1-factor of the given graph.",
@@ -2626,7 +2854,7 @@ module.exports = {
         },
         {
           // id: 20,
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "Peterson Dominating",
           statement: "Find minimum dominating set.",
@@ -2961,8 +3189,8 @@ module.exports = {
           }),
         },
         {
-          // id: 23,
-          setterId: 1,
+          // id: 21,
+          setterId: 2,
           canvasId: 3,
           title: "Drag Sort",
           statement: "Sort the array in ascending order by simply dragging.",
@@ -3032,8 +3260,8 @@ module.exports = {
           }),
           previewOptions: JSON.stringify({
             drag: {
-              value: "0",
-              type: "number",
+              value: true,
+              type: "switch",
             },
             swap: {
               value: 0,
@@ -3050,6 +3278,10 @@ module.exports = {
             sort: {
               value: 0,
               type: "number",
+            },
+            editLabel: {
+              value: false,
+              type: "switch",
             },
           }),
           checkerCode:
@@ -3114,7 +3346,7 @@ module.exports = {
         },
         {
           // id: 22,
-          setterId: 1,
+          setterId: 2,
           canvasId: 1,
           title: "BST",
           statement:
@@ -3177,6 +3409,656 @@ module.exports = {
             selectedEdges: [],
             selectedNodes: [],
           }),
+        },
+        {
+          // id: 23
+          setterId: 2,
+          canvasId: 1,
+          title: "Maximal Planar Graph",
+          statement: "Draw the maximal planar graph of 5 vertices.",
+          canvasData: JSON.stringify({
+            edges: [],
+            nodes: {},
+            selectedEdges: [],
+            selectedNodes: [],
+          }),
+          editOptions: JSON.stringify({
+            directedEdge: {
+              value: false,
+              type: "switch",
+            },
+            weightedEdge: {
+              value: false,
+              type: "switch",
+            },
+          }),
+          previewOptions: JSON.stringify({
+            addNode: {
+              value: false,
+              type: "switch",
+            },
+            deleteNode: {
+              value: false,
+              type: "switch",
+            },
+            dragNode: {
+              value: true,
+              type: "switch",
+            },
+            addEdge: {
+              value: false,
+              type: "switch",
+            },
+            deleteEdge: {
+              value: false,
+              type: "switch",
+            },
+            editWeight: {
+              value: false,
+              type: "switch",
+            },
+            editColor: {
+              value: false,
+              type: "switch",
+            },
+            editLabel: {
+              value: false,
+              type: "switch",
+            },
+          }),
+          checkerCode:
+            "/**\n *\n * @param {Object} data - An object containing nodes and edges properties.\n * @param {Array} data.nodes - Array of nodes. Where each node is an object with x,y properties.\n * @param {Array} data.edges - Array of edges. Where each edge is an object with start, end properties.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({
+            edges: [],
+            nodes: {},
+            selectedEdges: [],
+            selectedNodes: [],
+          }),
+        },
+        {
+          // id: 24
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 1",
+          statement: "Demo Statement 1",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 25
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 2",
+          statement: "Demo Statement 2",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 26
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 3",
+          statement: "Demo Statement 3",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 27
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 4",
+          statement: "Demo Statement 4",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 28
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 5",
+          statement: "Demo Statement 5",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 29
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 6",
+          statement: "Demo Statement 6",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 30
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 7",
+          statement: "Demo Statement 7",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 31
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 8",
+          statement: "Demo Statement 8",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 32
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 9",
+          statement: "Demo Statement 9",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 33
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 10",
+          statement: "Demo Statement 10",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 34
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 11",
+          statement: "Demo Statement 11",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 35
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 12",
+          statement: "Demo Statement 12",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 36
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 13",
+          statement: "Demo Statement 13",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 37
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 14",
+          statement: "Demo Statement 14",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 38
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 15",
+          statement: "Demo Statement 15",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 39
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 16",
+          statement: "Demo Statement 16",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 40
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 17",
+          statement: "Demo Statement 17",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 41
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 18",
+          statement: "Demo Statement 18",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 42
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 19",
+          statement: "Demo Statement 19",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 43
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 20",
+          statement: "Demo Statement 20",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 44
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 21",
+          statement: "Demo Statement 21",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 45
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 22",
+          statement: "Demo Statement 22",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 46
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 23",
+          statement: "Demo Statement 23",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 47
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 24",
+          statement: "Demo Statement 24",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 48
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 25",
+          statement: "Demo Statement 25",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 49
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 26",
+          statement: "Demo Statement 26",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 50
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 27",
+          statement: "Demo Statement 27",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 51
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 28",
+          statement: "Demo Statement 28",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 52
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 29",
+          statement: "Demo Statement 29",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 53
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 30",
+          statement: "Demo Statement 30",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 54
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 31",
+          statement: "Demo Statement 31",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 55
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 32",
+          statement: "Demo Statement 32",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 56
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 33",
+          statement: "Demo Statement 33",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 57
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 34",
+          statement: "Demo Statement 34",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 58
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 35",
+          statement: "Demo Statement 35",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 59
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 36",
+          statement: "Demo Statement 36",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 60
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 37",
+          statement: "Demo Statement 37",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 61
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 38",
+          statement: "Demo Statement 38",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 62
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 39",
+          statement: "Demo Statement 39",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 63
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 40",
+          statement: "Demo Statement 40",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 64
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 41",
+          statement: "Demo Statement 41",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 65
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 42",
+          statement: "Demo Statement 42",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 66
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 43",
+          statement: "Demo Statement 43",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 67
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 44",
+          statement: "Demo Statement 44",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 68
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 45",
+          statement: "Demo Statement 45",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
         },
       ],
       {}

@@ -9,13 +9,21 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Contest.hasMany(models.ContestSetter, {
+      Contest.hasMany(models.Collaborator, {
         foreignKey: "contestId",
-        as: "setters",
+        as: "collaborators",
       });
       Contest.hasMany(models.ContestProblem, {
         foreignKey: "contestId",
         as: "problems",
+      });
+      Contest.belongsTo(models.User, {
+        foreignKey: "ownerId",
+        as: "owner",
+      });
+      Contest.hasMany(models.UserRating, {
+        foreignKey: "contestId",
+        as: "ratings",
       });
       // Contest.hasMany(models.Clarification);
     }
@@ -24,11 +32,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       title: DataTypes.STRING,
       description: DataTypes.TEXT,
-      startDate: DataTypes.DATE,
-      endDate: DataTypes.DATE,
       startDateTime: DataTypes.DATE,
       duration: DataTypes.FLOAT,
       status: DataTypes.STRING,
+      ownerId: DataTypes.INTEGER,
+      difficulty: DataTypes.STRING,
+      editorial: DataTypes.JSONB,
     },
     {
       sequelize,

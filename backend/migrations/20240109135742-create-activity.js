@@ -41,19 +41,19 @@ module.exports = {
       },
       totalFailedAttempt: {
         type: Sequelize.INTEGER,
-      },
+      },     
       viewDuration: {
         type: Sequelize.INTEGER,
-      },
+      },     
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
     await queryInterface.addConstraint("Activities", {

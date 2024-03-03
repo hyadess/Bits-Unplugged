@@ -7,9 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useContestContext } from "../../../store/ContestContextProvider";
 
-
-
-
 const Collaborators = () => {
   const [selectedCollaborators, setSelectedCollaborators] = useState([]);
   const [ContestCollaborators, setContestCollaborators] = useState([]);
@@ -17,11 +14,9 @@ const Collaborators = () => {
   const [collaborators, setCollaborators] = useState(false);
   const { state: contest, dispatch } = useContestContext();
 
-
   useEffect(() => {
-    if(contest !== undefined) getCollaborators();
+    if (contest.id !== undefined) getCollaborators();
   }, [contest]);
-
 
   const getCollaborators = async () => {
     const res = await contestApi.availableCollaborators(contest.id);
@@ -34,14 +29,16 @@ const Collaborators = () => {
     return res;
   };
 
-  const handleListToggle = async() => {
-    const res= await getCollaborators();
+  const handleListToggle = async () => {
+    const res = await getCollaborators();
     setListOpen(!isListOpen);
   };
 
   const handleCollaboratorSelect = (collaborator) => {
     if (selectedCollaborators.includes(collaborator)) {
-      setSelectedCollaborators(selectedCollaborators.filter((userId) => userId !== collaborator.userId));
+      setSelectedCollaborators(
+        selectedCollaborators.filter((userId) => userId !== collaborator.id)
+      );
     } else {
       setSelectedCollaborators([...selectedCollaborators, collaborator]);
     }
@@ -50,12 +47,12 @@ const Collaborators = () => {
   const handleAddButtonClick = async () => {
     // Add your logic to handle adding collaborators
     console.log("Selected Collaborators:", selectedCollaborators);
-    const collaboratorIds = selectedCollaborators.map(collaborator => collaborator.userId);
+    const collaboratorIds = selectedCollaborators.map(
+      (collaborator) => collaborator.id
+    );
 
-    const res = await contestApi.addCollaborator(contest.id,collaboratorIds);
-    showSuccess(
-        "Invitation sent successfully", res
-      );
+    const res = await contestApi.addCollaborator(contest.id, collaboratorIds);
+    showSuccess("Invitation sent successfully", res);
     //setContestCollaborators([...ContestCollaborators, ...selectedCollaborators]);
 
     setSelectedCollaborators([]);
@@ -90,7 +87,7 @@ const Collaborators = () => {
             </span>
 
             {/* Conditionally render the "Requested" text */}
-            {setter.status !== 'accepted' && (
+            {setter.status !== "accepted" && (
               <div className="absolute bottom-0 right-1">
                 <span className="text-xs text-red-500">Requested</span>
               </div>
@@ -98,7 +95,6 @@ const Collaborators = () => {
           </div>
         ))}
       </div>
-
 
       {isListOpen && (
         <div className="max-h-[60vh] overflow-y-auto">

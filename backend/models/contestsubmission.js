@@ -14,40 +14,21 @@ module.exports = (sequelize, DataTypes) => {
       });
       ContestSubmission.belongsTo(models.ContestProblem, {
         foreignKey: "contestProblemId",
-        as: "contestProblem",
+        as: "problem",
       });
     }
   }
   ContestSubmission.init(
     {
-      participantId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Participants",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      contestProblemId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "ContestProblems",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
+      participantId: DataTypes.INTEGER,
+      contestProblemId: DataTypes.INTEGER,
       verdict: DataTypes.STRING,
       canvasData: DataTypes.JSON,
-      userActivity: {
-        type: DataTypes.JSON,
-        defaultValue: {},
-      },
+      userActivity: DataTypes.JSON,
       image: DataTypes.TEXT,
-      
       points: DataTypes.INTEGER,
+      duration: DataTypes.INTEGER,
+      submittedAt: DataTypes.BIGINT,
     },
     {
       sequelize,

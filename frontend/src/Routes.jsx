@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 import {
   BrowserRouter as Router,
   Routes,
@@ -15,6 +16,7 @@ import Signup from "./pages/auth/Signup";
 import ProblemsCanvas from "./pages/ProblemsCanvas";
 import Topics from "./pages/user/Topics";
 import Series from "./pages/user/Series";
+import ContestParticipant from "pages/ContestParticipant";
 import SetterProblems from "./pages/setter/SetterProblems";
 import ProblemSetEnv from "./pages/setter/ProblemSetEnv";
 import ContestSetEnv from "./pages/setter/ContestSetEnv";
@@ -42,6 +44,7 @@ import ProblemsSubmissions from "./pages/ProblemsSubmissions";
 import SetterProfile from "./pages/setter/SetterProfile";
 import Profile from "./pages/user/Profile/Profile";
 import SetterContests from "./pages/setter/SetterContests";
+import ContestSubmissions from "./pages/ContestSubmissions";
 import Contest from "./pages/setter/Contest";
 import GlobalContext from "./store/GlobalContext";
 import EmailVerification from "./pages/auth/EmailVerification";
@@ -51,7 +54,6 @@ import UserContestDetails from "./pages/ContestDetails";
 import History from "./pages/setter/ProblemSetEnv/History";
 import TopicStat from "./pages/user/TopicStat";
 import AdminArticles from "./pages/admin/AdminArticles";
-import AdminArticleEditor from "./pages/admin/AdminArticleEditor";
 import Article from "./pages/user/Article/Article";
 import SolverNavbar from "./components/Navbars/SolverNavbar";
 import RecentProblems from "./pages/user/RecentProblems";
@@ -64,6 +66,15 @@ import LayoutSecondary from "components/Layouts/LayoutSecondary";
 import { contestApi } from "api";
 import CountdownTimer from "pages/Timer";
 import ContestProblemList from "pages/ContestProblemList";
+import SetterHome from "pages/setter/SetterHome";
+import ContestTab from "components/ContestTab";
+import Leaderboard from "pages/LeaderBoard";
+import SetterArticles from "pages/setter/SetterArticles";
+import SetterArticleEditor from "pages/setter/SetterArticleEditor";
+import EditorialPreview from "pages/EditorialPreview";
+import ProfileContests from "pages/user/Profile/ProfileContests";
+import HomeRight from "pages/user/HomeRight";
+import SubmissionsRight from "components/Pane/SubmissionsRight";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -91,10 +102,19 @@ const SolverProfile = () => {
     >
       {activeTab == "Details" ? (
         <Profile />
-      ) : (
+      ) : activeTab == "Submissions" ? (
         <div className="flex flex-row justify-start">
           <div className="w-[75%]">
             <ProfileSubmissions />
+          </div>
+          <div className="fixed bottom-0 right-0 top-0 hidden w-1/5 p-5 md:mt-20 md:flex overflow-auto scroll-smooth">
+            <SubmissionsRight />
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-row justify-start">
+          <div className="w-[75%]">
+            <ProfileContests />
           </div>
         </div>
       )}
@@ -116,18 +136,47 @@ const ProfileForSetter = () => {
   );
 };
 
+const ExpiredNotice = (props) => {
+  return (
+    <div className="expired-notice-container">
+      <div className="expired-notice">
+        <span>{props.msg}</span>
+      </div>
+    </div>
+  );
+};
+
 const ContestWrapper = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [endTime, setendTime] = useState();
+  const [username, setUsername] = useState();
+  const [endTime, setendTime] = useState(null);
+  const [startTime, setstartTime] = useState(null);
+  const [activeComponent, setActiveComponent] = useState("Details");
+  const isPreview = window.location.href.includes("/preview");
   const fetchContestDetails = async () => {
     try {
       const contest = await contestApi.getContestById(id);
+      const virtualParticipant = await contestApi.showVirtualParticipant(id);
+      const decoded = jwtDecode(localStorage.getItem("token")).username;
+      setUsername(decoded);
+      console.log("username", decoded);
       if (contest.success) {
         const contestDuration = contest.data[0].duration * 60 * 60 * 1000;
         const startDateTime = new Date(contest.data[0].startDateTime);
-        setendTime(new Date(startDateTime.getTime() + contestDuration));
-        console.log("Contest end time : ", startDateTime, endTime);
+        if (new Date().getTime() < startDateTime.getTime() + contestDuration) {
+          setstartTime(startDateTime);
+          setendTime(new Date(startDateTime.getTime() + contestDuration));
+        } else {
+          setstartTime(new Date(virtualParticipant.data[0].createdAt));
+          setendTime(
+            new Date(
+              new Date(virtualParticipant.data[0].createdAt).getTime() +
+                contestDuration
+            )
+          );
+          
+        }
       }
     } catch (error) {
       console.error("Error fetching contest details", error);
@@ -136,21 +185,52 @@ const ContestWrapper = () => {
   useEffect(() => {
     fetchContestDetails();
   }, [id]);
+
   return (
     <LayoutMain
       left={
         <>
-          <ContestProblemList />
+          <ContestTab
+            activeTab={activeComponent}
+            click={(tab) => {
+              setActiveComponent(tab);
+              if (tab == "Details") isPreview? navigate(`/contests/${id}/preview`) : navigate(`/contests/${id}`);
+              else if (tab == "Leaderboard")
+              isPreview? navigate(`/contests/${id}/leaderboard/preview`) : navigate(`/contests/${id}/leaderboard`);
+              else if (tab == "Submissions")
+              isPreview? navigate(`/contests/${id}/${username}/preview`) : navigate(`/contests/${id}/${username}`);
+              else if (tab == "Editorial")
+              isPreview? navigate(`/contests/${id}/editorial/preview`) : navigate(`/contests/${id}/editorial`);
+            }}
+            tabs={
+              endTime?.getTime() < Date.now()
+                ? ["Details", "Leaderboard", "Submissions", "Editorial"]
+                : ["Details", "Leaderboard", "Submissions"]
+            }
+          />
         </>
       }
       right={
-        endTime?.getTime() > Date.now() && (
-          <CountdownTimer
-            targetDate={endTime}
-            flag={"end"}
-            EndAction={() => navigate("/contests/" + id)}
-          />
-        )
+        <div className="flex flex-col gap-5 w-full">
+          <div>
+            {startTime !== null && endTime !== null ? (
+              new Date().getTime() < startTime ? (
+                <>
+                  <ExpiredNotice msg="Contest starts in" />
+                  <CountdownTimer targetDate={startTime} flag={"start"} />
+                </>
+              ) : (
+                <CountdownTimer targetDate={endTime} flag={"end"} />
+              )
+            ) : (
+              <div />
+            )}
+          </div>
+
+          <div className="w-full">
+            {new Date().getTime() >= startTime && <ContestProblemList preview={isPreview}/>}
+          </div>
+        </div>
       }
     >
       <Outlet />
@@ -190,12 +270,31 @@ const Admin = () => {
   );
 };
 
+const User = () => {
+  const { type } = useContext(GlobalContext);
+  return type == 0 ? (
+    <Layout2 nav={<SolverNavbar />}>
+      <Outlet />
+    </Layout2>
+  ) : type == 1 ? (
+    <Layout2 nav={<SetterNavbar />}>
+      <Outlet />
+    </Layout2>
+  ) : type == 2 ? (
+    <Layout2 nav={<AdminNavbar />}>
+      <Outlet />
+    </Layout2>
+  ) : (
+    <></>
+  );
+};
+
 const Public = () => {
   return localStorage.hasOwnProperty("token") ? (
     <Navigate
       to={
         localStorage.getItem("type") == 0
-          ? "/topics"
+          ? "/home"
           : localStorage.getItem("type") == 1
             ? "/problemSet"
             : localStorage.getItem("type") == 2
@@ -305,14 +404,7 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
-          <Route
-            path="/admin/articles/:id/edit"
-            element={
-              <LayoutMain>
-                <AdminArticleEditor />
-              </LayoutMain>
-            }
-          />
+
           <Route
             path="/admin/articles/:id"
             element={
@@ -342,6 +434,38 @@ const AppRoutes = () => {
         <Route path="/admin/login" element={<AdminLogin />} />
 
         <Route element={<ProblemSetter />}>
+          <Route
+            path="/setter/home"
+            element={
+              <LayoutMain>
+                <SetterHome />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/setter/articles"
+            element={
+              <LayoutMain>
+                <SetterArticles />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/setter/articles/:id/edit"
+            element={
+              <LayoutMain>
+                <SetterArticleEditor />
+              </LayoutMain>
+            }
+          />
+          <Route
+            path="/setter/articles/:id"
+            element={
+              <LayoutMain>
+                <Article />
+              </LayoutMain>
+            }
+          />
           <Route
             path="/problems/:id/preview"
             element={
@@ -378,8 +502,6 @@ const AppRoutes = () => {
             }
           />
 
-          <Route path="/setter/:username" element={<ProfileForSetter />} />
-
           <Route path="/contests/:id/edit" element={<ContestSetEnv />} />
 
           <Route
@@ -390,15 +512,88 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
+
+          <Route element={<ContestWrapper />}>
+            <Route path="/contests/:id/preview" element={<UserContestDetails preview/>} />
+              <Route path="/contests/:id" element={<UserContestDetails />} />
+              <Route
+                path="/contests/:id/problems/:problemid/preview"
+                element={<UserContest preview/>}
+              />
+              <Route
+                path="/contests/:id/problems/:problemid"
+                element={<UserContest />}
+              />
+              <Route
+                path="/contests/:id/editorial/preview"
+                element={<EditorialPreview />}
+              />
+              <Route
+                path="/contests/:id/editorial"
+                element={<EditorialPreview />}
+              />
+              <Route
+                path="/contests/:id/problems/:problemId/submissions/preview"
+                element={<ContestSubmissions />}
+              />
+              <Route
+                path="/contests/:id/problems/:problemId/submissions"
+                element={<ContestSubmissions />}
+              />
+              <Route
+                path="/contests/:id/:username/preview"
+                element={<ContestParticipant />}
+              />
+              <Route
+                path="/contests/:id/:username"
+                element={<ContestParticipant />}
+              />
+              <Route path="/contests/:id/leaderboard/preview" element={<Leaderboard />} />
+            <Route path="/contests/:id/leaderboard" element={<Leaderboard />} />
+          </Route>
+
+
+
         </Route>
 
         <Route element={<ProblemSolver />}>
           <Route element={<ContestWrapper />}>
+          <Route path="/contests/:id/preview" element={<UserContestDetails preview/>} />
             <Route path="/contests/:id" element={<UserContestDetails />} />
+            <Route
+              path="/contests/:id/problems/:problemid/preview"
+              element={<UserContest preview/>}
+            />
             <Route
               path="/contests/:id/problems/:problemid"
               element={<UserContest />}
             />
+            <Route
+              path="/contests/:id/editorial/preview"
+              element={<EditorialPreview />}
+            />
+            <Route
+              path="/contests/:id/editorial"
+              element={<EditorialPreview />}
+            />
+            <Route
+              path="/contests/:id/problems/:problemId/submissions/preview"
+              element={<ContestSubmissions />}
+            />
+            <Route
+              path="/contests/:id/problems/:problemId/submissions"
+              element={<ContestSubmissions />}
+            />
+            <Route
+              path="/contests/:id/:username/preview"
+              element={<ContestParticipant />}
+            />
+            <Route
+              path="/contests/:id/:username"
+              element={<ContestParticipant />}
+            />
+            <Route path="/contests/:id/leaderboard/preview" element={<Leaderboard />} />
+            <Route path="/contests/:id/leaderboard" element={<Leaderboard />} />
           </Route>
           <Route
             path="/problems/:id"
@@ -438,9 +633,9 @@ const AppRoutes = () => {
           <Route
             path="/home"
             element={
-              <LayoutMain>
+              <div className="min-h-screen w-full p-5 pb-5 pt-0 md:w-4/5 md:p-5 md:pt-20 lg:mx-auto lg:w-5/6">
                 <UserHome />
-              </LayoutMain>
+              </div>
             }
           />
           <Route
@@ -527,7 +722,6 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
-          <Route path="/user/:username" element={<SolverProfile />} />
         </Route>
 
         {/* <Route
@@ -545,6 +739,10 @@ const AppRoutes = () => {
           <Route path="/verify-email" element={<EmailVerification />} />
         </Route>
 
+        <Route element={<User />}>
+          <Route path="/user/:username" element={<SolverProfile />} />
+          <Route path="/setter/:username" element={<ProfileForSetter />} />
+        </Route>
         {type >= 0 && (
           <Route
             path="/"
@@ -553,7 +751,7 @@ const AppRoutes = () => {
                 replace
                 to={
                   type == 0
-                    ? "/topics"
+                    ? "/home"
                     : type == 1
                       ? "/problemSet"
                       : type == 2

@@ -11,6 +11,9 @@ import ApprovedProblemCard from "../../components/Cards/ApprovedProblemCard";
 import { setLoading, showSuccess } from "../../App";
 import CustomModal from "../../components/Modal/CustomModal";
 const AdminProblems = () => {
+  const [pendingList, setPendingList] = useState([]);
+  const [approvedList, setApprovedList] = useState([]);
+
   const [problemList, setProblemList] = useState([]);
   const [topicList, setTopicList] = useState([]);
   const [seriesList, setSeriesList] = useState([]);
@@ -20,7 +23,13 @@ const AdminProblems = () => {
     const res = await problemApi.getAllProblems();
     if (res.success) {
       setProblemList(res.data);
-      console.log(res);
+
+      setPendingList(
+        res.data.filter((problem) => problem.approvalStatus === 2)
+      );
+      setApprovedList(
+        res.data.filter((problem) => problem.approvalStatus === 1)
+      );
       setLoading(false);
     }
   };
@@ -40,6 +49,20 @@ const AdminProblems = () => {
       console.log(res);
     }
   };
+
+  const approve = async (problemId) => {
+    const res = await problemApi.approveProblem(problemId);
+    if (res.success) {
+      showSuccess("Problem approved", res);
+      setApprovedList((prev) =>
+        prev.concat(pendingList.filter((problem) => problem.id === problemId))
+      );
+      setPendingList((prev) =>
+        prev.filter((problem) => problem.id !== problemId)
+      );
+    }
+  };
+
   useEffect(() => {
     getProblemList();
     getSeriesList();
@@ -51,28 +74,25 @@ const AdminProblems = () => {
       <Title title={`Pending Problems`} sub_title={`Accept/Reject Problems`} />
 
       <CardContainer col={2}>
-        {problemList &&
-          problemList.map(
-            (problem, index) =>
-              problem.approvalStatus == 2 && (
-                <PendingProblemCard
-                  key={index}
-                  idx={index + 1}
-                  id={problem.id}
-                  name={problem.title}
-                  image={problem.logo}
-                  path={`/admin/problems/${problem.id}`}
-                  action="Get Started"
-                  canvas={problem.canvas?.name}
-                  timestamp={problem.updatedAt}
-                  reject={() => {
-                    setProblemId(problem.id);
-                    setOpen(true);
-                  }}
-                  setter={problem.problem.setter.user}
-                />
-              )
-          )}
+        {pendingList?.map((version, index) => (
+          <PendingProblemCard
+            key={index}
+            idx={index + 1}
+            id={version.id}
+            name={version.title}
+            image={version.logo}
+            path={`/admin/problems/${version.id}`}
+            action="Get Started"
+            canvas={version.canvas?.name}
+            timestamp={version.updatedAt}
+            reject={() => {
+              setProblemId(version.id);
+              setOpen(true);
+            }}
+            approve={() => approve(version.id)}
+            setter={version.problem.setter}
+          />
+        ))}
       </CardContainer>
 
       <Title
@@ -81,26 +101,21 @@ const AdminProblems = () => {
       />
 
       <CardContainer col={2}>
-        {problemList &&
-          problemList.map(
-            (problem, index) =>
-              problem.approvalStatus == 1 && (
-                <ApprovedProblemCard
-                  key={index}
-                  idx={index + 1}
-                  id={problem.id}
-                  name={problem.title}
-                  image={problem.logo}
-                  problem={problem}
-                  path={`/admin/problems/${problem.id}`}
-                  action="Get Started"
-                  canvas={problem.canvas?.name}
-                  timestamp={problem.updatedAt}
-                  topicList={topicList}
-                  seriesList={seriesList}
-                />
-              )
-          )}
+        {approvedList?.map((problem, index) => (
+          <ApprovedProblemCard
+            key={index}
+            idx={index + 1}
+            id={problem.id}
+            name={problem.title}
+            image={problem.logo}
+            problem={problem}
+            path={`/admin/problems/${problem.id}`}
+            canvas={problem.canvas?.name}
+            timestamp={problem.updatedAt}
+            topicList={topicList}
+            seriesList={seriesList}
+          />
+        ))}
       </CardContainer>
       {open && (
         <CustomModal
@@ -113,6 +128,9 @@ const AdminProblems = () => {
             setOpen(false);
             if (res.success) {
               showSuccess("Problem rejected", res);
+              setPendingList((prev) =>
+                prev.filter((problem) => problem.id !== problemId)
+              );
             }
           }}
         />

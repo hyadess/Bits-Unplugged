@@ -163,12 +163,15 @@ class UserActivityRepository extends Repository {
         FROM
         "Series" "S"
         JOIN
-        "Problems" "P" ON "S"."id" = "P"."seriesId"
+        "ProblemVersions" "P" ON "S"."id" = "P"."seriesId"
         JOIN
         "Activities" "A" ON "P"."id" = "A"."problemId"
         WHERE "A"."userId" = $1
         GROUP BY
-        "S"."id";
+        "S"."id","S"."name"
+        HAVING SUM(CASE WHEN "A"."isSolved" THEN 1 ELSE 0 END) > 0
+        ORDER BY "totalSuccessfulAttemptsPerSeries" DESC
+        ;
         `;
     const params = [userId];
     const result = await this.query(query, params);
@@ -184,12 +187,14 @@ class UserActivityRepository extends Repository {
         FROM
         "Series" "S"
         JOIN
-        "Problems" "P" ON "S"."id" = "P"."seriesId"
+        "ProblemVersions" "P" ON "S"."id" = "P"."seriesId"
         JOIN
         "Activities" "A" ON "P"."id" = "A"."problemId"
-        WHERE "A"."userId" = $1
+        WHERE "A"."userId" = $1 
         GROUP BY
-        "S"."id";
+        "S"."id","S"."name"
+        HAVING SUM("A"."totalFailedAttempt") > 0
+        ORDER BY "totalFailedAttemptsPerSeries" DESC;
         `;
     const params = [userId];
     const result = await this.query(query, params);
@@ -205,7 +210,7 @@ class UserActivityRepository extends Repository {
         FROM
         "Series" "S"
         JOIN
-        "Problems" "P" ON "S"."id" = "P"."seriesId"
+        "ProblemVersions" "P" ON "S"."id" = "P"."seriesId"
         JOIN
         "Activities" "A" ON "P"."id" = "A"."problemId"
         WHERE "S"."id" = $1
@@ -226,7 +231,7 @@ class UserActivityRepository extends Repository {
         FROM
         "Series" "S"
         JOIN
-        "Problems" "P" ON "S"."id" = "P"."seriesId"
+        "ProblemVersions" "P" ON "S"."id" = "P"."seriesId"
         JOIN
         "Activities" "A" ON "P"."id" = "A"."problemId"
         WHERE "S"."id" = $1
@@ -241,10 +246,12 @@ class UserActivityRepository extends Repository {
   mostRecentFailsByUser = async (username) => {
     const query = `
     SELECT A.*, PV."title",
-    PV."rating"
+    PV."rating", S."name" AS "series", T."name" AS "topic"
     FROM "Activities" A
     JOIN "ProblemVersions" PV ON A."problemId" = PV."id"
     JOIN "Users" U ON A."userId" = U."id"
+    JOIN "Series" S ON PV."seriesId" = S."id"
+    JOIN "Topics" T ON S."topicId" = T."id"
     WHERE U."username" = $1 AND A."isSolved" = FALSE
     ORDER BY A."lastSolveTimestamp" DESC;
     `;
@@ -303,6 +310,7 @@ class UserActivityRepository extends Repository {
     const query = `
       SELECT
       T."id",
+      T."name",
       COUNT(P."problemId") AS total_solved_problems
       FROM
       "Topics" T
@@ -318,6 +326,29 @@ class UserActivityRepository extends Repository {
       T."id"
       `;
     const params = [topicId, userId];
+    const result = await this.query(query, params);
+    return result;
+  };
+  totalSolvedProblemCount = async (userId) => {
+    const query = `
+      SELECT
+      T."id",
+      T."name",
+      COUNT(P."problemId") AS total_solved_problems
+      FROM
+      "Topics" T
+      JOIN
+      "Series" S ON T."id" = S."topicId"
+      JOIN
+      "ProblemVersions" P ON S."id" = P."seriesId"
+      JOIN
+      "Activities" A ON P."id" = A."problemId"
+      WHERE
+      A."userId" = $1 AND A."isSolved" = TRUE
+      GROUP BY
+      T."id", T."name"
+      `;
+    const params = [userId];
     const result = await this.query(query, params);
     return result;
   };
@@ -345,6 +376,20 @@ class UserActivityRepository extends Repository {
     "problemId";
     `;
     const params = [problemId];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  isSolvedByUser = async (userId, problemId) => {
+    const query = `
+    SELECT
+    "isSolved"
+    FROM
+    "Activities"
+    WHERE
+    "userId" = $1 AND "problemId" = $2;
+    `;
+    const params = [userId, problemId];
     const result = await this.query(query, params);
     return result;
   };

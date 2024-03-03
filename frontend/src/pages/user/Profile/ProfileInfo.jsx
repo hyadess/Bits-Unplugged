@@ -3,9 +3,11 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { Avatar, InputAdornment, Typography } from "@mui/material";
 import { profileApi } from "../../../api";
 import Title from "../../../components/Title";
+import { ratingApi } from "../../../api";
 
 export default function ProfileInfo() {
   const [curUser, setCurUser] = useState(null);
+
 
   const { username } = useParams();
   const fetchUser = async () => {
@@ -16,7 +18,7 @@ export default function ProfileInfo() {
     const res = await profileApi.getProfileByUsername(username);
     if (res.success) setCurUser(res.data[0]);
     console.log(curUser);
-    //console.log(res.data[0]);
+    
   };
   useEffect(() => {
     fetchUser();

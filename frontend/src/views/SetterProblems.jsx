@@ -62,6 +62,7 @@ const SetterProblemsView = ({
             timestamp={prob.updatedAt}
             canvas={prob.canvas?.name}
             cloneProblem={cloneProblem}
+            isPublished={prob.isPublished}
           />
         ))}
       </CardContainer>

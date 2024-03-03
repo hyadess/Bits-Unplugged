@@ -1,23 +1,49 @@
 /* MyHeatmap.css */
 
 /* Color for cells with submissions */
+// https://cssgradient.io/
+// #d9f1ea
+// #c9ebe1
+// #bee7db
 .react-calendar-heatmap .color-scale-1 {
-  fill: #ccffcc; /* Your desired color for submissions count 1 */
+  fill: #aadfcf; /* Your desired color for submissions count 1 */
 }
 
 .react-calendar-heatmap .color-scale-2 {
-  fill: #83c277; /* Your desired color for submissions count 2 */
+  fill: #96cdbf; /* Your desired color for submissions count 2 */
 }
 
 .react-calendar-heatmap .color-scale-3 {
-  fill: #56a156; /* Your desired color for submissions count 3 */
+  fill: #85bdb2; /* Your desired color for submissions count 4 and above */
+}
+.react-calendar-heatmap .color-scale-4 {
+  fill: #74ada5; /* Your desired color for submissions count 3 */
 }
 
-.react-calendar-heatmap .color-scale-4 {
-  fill: #375027; /* Your desired color for submissions count 4 and above */
+.react-calendar-heatmap .color-scale-5 {
+  fill: #629c96; /* Your desired color for submissions count 4 and above */
+}
+
+.react-calendar-heatmap .color-scale-6 {
+  fill: #518c89; /* Your desired color for submissions count 4 and above */
+}
+.react-calendar-heatmap .color-scale-7 {
+  fill: #417d7d; /* Your desired color for submissions count 4 and above */
+}
+.react-calendar-heatmap .color-scale-8 {
+  fill: #347173; /* Your desired color for submissions count 4 and above */
+}
+.react-calendar-heatmap .color-scale-9 {
+  fill: #29676a; /* Your desired color for submissions count 4 and above */
+}
+.react-calendar-heatmap .color-scale-10 {
+  fill: #236265; /* Your desired color for submissions count 4 and above */
+}
+.react-calendar-heatmap .color-scale-11 {
+  fill: #1c5b5f; /* Your desired color for submissions count 4 and above */
 }
 
 /* Color for empty cells */
 .react-calendar-heatmap .color-empty {
-  fill: #c0c0c0; /* Your desired color for empty cells */
+  fill: #d0d0d0; /* Your desired color for empty cells */
 }

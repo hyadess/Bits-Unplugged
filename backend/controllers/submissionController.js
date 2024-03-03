@@ -36,7 +36,7 @@ class SubmissionController extends Controller {
   // getProblemStats = async (req, res) => {};
   submitSolution = async (req, res) => {
     this.handleRequest(res, async () => {
-      const result = submissionService.submitSolution(
+      const result = await submissionService.submitSolution(
         req.user.userId,
         req.params.problemId,
         req.body
@@ -45,6 +45,15 @@ class SubmissionController extends Controller {
     });
   };
 
+  getSubmissionById = async (req, res) => {
+    console.log("Getting Submission");
+    this.handleRequest(res, async () => {
+      const result = await submissionRepository.getSubmissionById(
+        req.params.submissionId
+      );
+      res.status(201).json(result);
+    });
+  };
   // checkSolution = async (req, res) => {};
   // rateUser = async (req, res) => {};
 }

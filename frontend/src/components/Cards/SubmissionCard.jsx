@@ -18,6 +18,7 @@ export default function SubmissionCard({
   path,
   timestamp,
   image,
+  problemId,
 }) {
   useEffect(() => {
     setLoading(false);
@@ -27,8 +28,12 @@ export default function SubmissionCard({
     <div class="items-center w-full">
       <div
         class={
-          "border rounded-lg shadow-md bg-gray-700 bu-card-primary flex flex-col p-4 items-center gap-5 justify-between"
+          "border rounded-lg shadow-md bg-gray-700 bu-card-primary flex flex-col p-4 items-center gap-5 justify-between cursor-pointer"
         }
+        onClick={() => {
+          console.log("problems/" + problemId + "?submission=" + submissionId);
+          navigate("/problems/" + problemId + "?submission=" + submissionId);
+        }}
       >
         <div className={`w-full h-52 flex-center`}>
           <ImageLoader

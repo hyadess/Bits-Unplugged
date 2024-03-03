@@ -4,13 +4,14 @@ import { articleApi, storageApi } from "../../api";
 import { setLoading, showSuccess } from "../../App";
 import { useGlobalContext } from "store/GlobalContextProvider";
 import Title from "../../components/Title";
-import MarkDownContainer from "./MarkDownContainer";
+
 import {
   faAdd,
   faArrowLeft,
   faArrowRight,
   faArrowUpRightFromSquare,
   faFloppyDisk,
+  faPlay,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,16 +24,15 @@ import ProblemContextProvider, {
 } from "store/ProblemContextProvider";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import Header from "./articleSetEnv/Header";
-import ProbSetTab from "./articleSetEnv/ProbSetTab";
-import DetailsTab from "./articleSetEnv/DetailsTab";
-import CanvasDesignTab from "./articleSetEnv/CanvasDesignTab";
-import SolutionCheckerTab from "./articleSetEnv/SolutionCheckerTab";
-import TestTab from "../setter/ProblemSetEnv/TestTab";
-import Confirmation from "components/Confirmation";
+import ProbSetTab from "../ProbSetTab";
+import CanvasDesignTab from "../CanvasDesignTab";
+import SolutionCheckerTab from "../SolutionCheckerTab";
 import { Tooltip } from "@mui/material";
 import { IconButton } from "@mui/material";
 import ImageLoader from "components/ImageLoaders/ImageLoader";
+import CanvasPreview from "pages/CanvasPreview";
+import SubmissionService from "services/submissionService";
+import MarkDownContainer from "pages/admin/MarkDownContainer";
 
 const ArticleCanvas = ({ data, articleId, content, index }) => {
   const { state: problem, dispatch } = useProblemContext();
@@ -64,6 +64,14 @@ const ArticleCanvas = ({ data, articleId, content, index }) => {
     });
   };
 
+  const onSubmit = async () => {
+    await SubmissionService.checkSolution(
+      problem.checkerCode,
+      problem.checkerCanvas,
+      problem.test,
+      problem.testActivity
+    );
+  };
   const updateCanvas = async () => {
     console.log("UPDATE CANVAS  ");
     dispatch({
@@ -131,6 +139,7 @@ const ArticleCanvas = ({ data, articleId, content, index }) => {
           setActiveComponent(tab);
           // document.body.style.cursor = "default";
         }}
+        tabs={["Canvas", "Solution", "Test"]}
       />
 
       <div className="component-container relative">
@@ -152,7 +161,11 @@ const ArticleCanvas = ({ data, articleId, content, index }) => {
           <SolutionCheckerTab onSave={updateSolutionChecker} />
         </div>
         <div className={activeComponent === "Test" ? "block" : "hidden"}>
-          <TestTab ref={testRef} />
+          <CanvasPreview
+            ref={testRef}
+            onSubmit={onSubmit}
+            takeSnapshot={false}
+          />
         </div>
       </div>
       {/* <Confirmation open={open} setOpen={setOpen} onConfirm={deleteProblem} /> */}
@@ -339,8 +352,8 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
   }, [data.images]);
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="bu-card-primary pb-10 rounded-[30px] flex flex-col min-h-[25rem]">
+    <div className="flex flex-col bg-[#fbfbfb] rounded-[30px]">
+      <div className="bg-[#fbfbfb] rounded-[30px] flex flex-col h-[32rem]">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row p-4 items-start bu-text-primary text-2xl font-semibold">
             {serial + 1}/{images.length}
@@ -360,6 +373,7 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
                     height: "3rem",
                   }}
                   onClick={() => {
+                    if (serial === -1) return;
                     setImages((prev) => {
                       const newImages = [...prev];
                       newImages.splice(serial, 1);
@@ -525,21 +539,23 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
           </div>
         </div>
 
-        {images?.map((image, i) => {
-          return (
-            <ImageLoader
-              key={i}
-              src={image.url}
-              alt={image.caption}
-              style={{
-                width: "40rem",
-                margin: "auto",
-                display: serial === i ? "block" : "none",
-                pointerEvents: "none",
-              }}
-            />
-          );
-        })}
+        <div className="h-full flex-center">
+          {images?.map((image, i) => {
+            return (
+              <ImageLoader
+                key={i}
+                src={image.url}
+                alt={image.caption}
+                style={{
+                  width: "40rem",
+                  margin: "auto",
+                  display: serial === i ? "block" : "none",
+                  pointerEvents: "none",
+                }}
+              />
+            );
+          })}
+        </div>
         {/* <img
           key={index}
           src={images[index]?.url}
@@ -547,7 +563,37 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
           style={{ width: "40rem", margin: "auto" }}
         /> */}
       </div>
-      <div className="flex flex-row justify-between w-full">
+      <div className="w-full h-[.2rem] bg-gray-200"></div>
+      <div className=" rounded-full w-80 mx-auto h-12 flex items-center justify-between gap-1 my-4">
+        <div
+          className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-l-full text-2xl"
+          // style={{ visibility: serial === 0 ? "hidden" : "visible" }}
+          onClick={() => {
+            setSerial((prev) => Math.max(prev - 1, 0));
+          }}
+        >
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </div>
+
+        <div
+          className="flex gap-2 items-center justify-center bu-button-secondary w-full h-full text-2xl "
+          // onClick={solutionSubmit}
+        >
+          <FontAwesomeIcon icon={faPlay} />
+        </div>
+        <div
+          className="flex gap-2 items-center justify-center bu-text-primary bu-button-secondary w-full h-full rounded-r-full text-2xl"
+          onClick={() => {
+            setSerial((prev) => Math.min(prev + 1, images.length - 1));
+          }}
+          // style={{
+          //   visibility: serial === images.length - 1 ? "hidden" : "visible",
+          // }}
+        >
+          <FontAwesomeIcon icon={faArrowRight} />
+        </div>
+      </div>
+      {/* <div className="flex flex-row justify-between w-full p-5">
         <button
           className="text-white font-semibold rounded-lg px-5 py-2 text-center bu-button-primary cursor-pointer flex flex-row gap-3 items-center text-2xl"
           style={{ visibility: serial === 0 ? "hidden" : "visible" }}
@@ -570,7 +616,7 @@ const SlideShow = ({ data, articleId, content, index, onSave }) => {
           Next
           <FontAwesomeIcon icon={faArrowRight} />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
@@ -698,7 +744,7 @@ const WriteArticle = ({
   );
 };
 
-const AdminArticleEditor = () => {
+const SetterArticleEditor = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [article, setArticle] = useState(null);
@@ -717,7 +763,7 @@ const AdminArticleEditor = () => {
       setArticle(res.data);
       //set box count as the max box id
       let max = 0;
-      res.data.content.forEach((content) => {
+      res.data.content?.forEach((content) => {
         if (content.boxId > max) {
           max = content.boxId;
         }
@@ -850,7 +896,7 @@ const AdminArticleEditor = () => {
                   className="bu-text-primary flex cursor-pointer items-center text-4xl"
                   onClick={() => {
                     setLoading(true);
-                    navigate(`/admin/articles/${article.id}`);
+                    navigate(`/setter/articles/${article.id}`);
                   }}
                 >
                   <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
@@ -966,4 +1012,4 @@ const AdminArticleEditor = () => {
   );
 };
 
-export default AdminArticleEditor;
+export default SetterArticleEditor;

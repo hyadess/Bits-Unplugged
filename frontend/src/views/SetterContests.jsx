@@ -7,6 +7,7 @@ import { useEffect } from "react";
 
 const SetterContestsView = ({
   contestList,
+  collabContestList,
   deleteContest,
   openModal,
   closeModal,
@@ -17,12 +18,11 @@ const SetterContestsView = ({
   return (
     <div>
       <Title
-        title={`Previous Contests`}
+        title={`Owned Contests`}
         sub_title={`Set contests with particular problems right on our site`}
       />
 
       <ProblemAddButton onClick={openModal} />
-
       <div
         className={`grid grid-cols-1 justify-center items-center mx-auto max-w-screen-2xl gap-8 h-full w-full mb-3 md:grid-cols-1`}
       >
@@ -30,19 +30,47 @@ const SetterContestsView = ({
           <ContestSetCard
             key={index}
             idx={index + 1}
-            id={contest.id}
-            name={contest.title}
+            id={contest?.id}
+            name={contest?.title}
             deleteAction={deleteContest}
-            isLive={contest.isLive}
-            timestamp={contest.updatedAt}
-            owner={contest.ContestSetters[0]}
-            startDate={contest.startDateTime}
-            duration={contest.duration}
-            status={contest.status}
-            updatedAt={contest.updatedAt}
+            isLive={contest?.isLive}
+            timestamp={contest?.updatedAt}
+            owner={contest?.owner}
+            startDate={contest?.startDateTime}
+            duration={contest?.duration}
+            status={contest?.status}
+            updatedAt={contest?.updatedAt}
           />
         ))}
       </div>
+      {collabContestList.length > 0 && (
+        <>
+          <Title
+            title={`Collaborative Contests`}
+            sub_title={`Set contests with particular problems right on our site`}
+          />
+          <div
+            className={`grid grid-cols-1 justify-center items-center mx-auto max-w-screen-2xl gap-8 h-full w-full mb-3 md:grid-cols-1`}
+          >
+            {collabContestList.map((contest, index) => (
+              <ContestSetCard
+                key={index}
+                idx={index + 1}
+                id={contest?.id}
+                name={contest?.title}
+                deleteAction={deleteContest}
+                isLive={contest?.isLive}
+                timestamp={contest?.updatedAt}
+                owner={contest?.owner}
+                startDate={contest?.startDateTime}
+                duration={contest?.duration}
+                status={contest?.status}
+                updatedAt={contest?.updatedAt}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
       {modalIsOpen && (
         <CustomModal

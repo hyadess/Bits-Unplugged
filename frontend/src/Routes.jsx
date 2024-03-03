@@ -74,6 +74,7 @@ import SetterArticleEditor from "pages/setter/SetterArticleEditor";
 import EditorialPreview from "pages/EditorialPreview";
 import ProfileContests from "pages/user/Profile/ProfileContests";
 import HomeRight from "pages/user/HomeRight";
+import SubmissionsRight from "components/Pane/SubmissionsRight";
 const ProblemSolver = () => {
   const isLoggedIn = localStorage.hasOwnProperty("token");
   const type = localStorage.getItem("type");
@@ -105,6 +106,9 @@ const SolverProfile = () => {
         <div className="flex flex-row justify-start">
           <div className="w-[75%]">
             <ProfileSubmissions />
+          </div>
+          <div className="fixed bottom-0 right-0 top-0 hidden w-1/5 p-5 md:mt-20 md:flex overflow-auto scroll-smooth">
+            <SubmissionsRight />
           </div>
         </div>
       ) : (
@@ -555,9 +559,7 @@ const AppRoutes = () => {
           <Route
             path="/home"
             element={
-
               <div className="min-h-screen w-full p-5 pb-5 pt-0 md:w-4/5 md:p-5 md:pt-20 lg:mx-auto lg:w-5/6">
-
                 <UserHome />
               </div>
             }

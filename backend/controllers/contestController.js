@@ -70,7 +70,7 @@ class ContestController extends Controller {
   getRunningContests = async (req, res) => {
     let result = await contestRepository.getRunningContests();
     if (result.success) {
-      res.status(200).json(result.data);
+      //res.status(200).json(result.data);
       if(result.data.length==0){
         let result2=await contestRepository.getUpcomingContests();
         if(result2.success){
@@ -80,6 +80,10 @@ class ContestController extends Controller {
           res.status(404).json(result2);
         
         }
+      }
+      else
+      {
+        res.status(200).json(result.data);
       }
     } else {
       res.status(404).json(result);

@@ -137,12 +137,12 @@ const ContestCard = ({
   }
   return (
     <Zoom in={true}>
-      <div className="w-full h-full" key={id}>
+      <div className="w-full h-full" key={id} >
         <div className="border rounded-lg shadow-lg bg-gray-700 bu-card-primary flex flex-col p-5 gap-3">
           <div className="flex flex-row justify-between items-center">
             <div
               className="cursor-pointer"
-              // onClick={() => navigate(`/contests/${id}/preview`)}
+              onClick={() => navigate(`/contests/${id}/preview`)}
             >
               <h5 className="text-2xl md:text-3xl font-bold tracking-tight bu-text-title">
                 {name}

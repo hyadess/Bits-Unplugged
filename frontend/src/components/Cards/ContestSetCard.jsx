@@ -37,12 +37,8 @@ const ContestSetCard = ({
     setLoading(false);
   }, []);
 
-  const publishContest = async () => {
-    // Implement your logic for publishing the contest
-  };
-
-  const unpublishContest = async () => {
-    // Implement your logic for unpublishing the contest
+  const previewContest = async () => {
+    navigate(`/contests/${id}/preview`)
   };
 
   return (
@@ -104,7 +100,7 @@ const ContestSetCard = ({
 
             {status === "Live" ? (
               <IconButton
-                onClick={unpublishContest}
+                onClick={previewContest}
                 className="text-green-500 hover:text-green-700"
               >
                 <div className="flex items-center">
@@ -113,7 +109,7 @@ const ContestSetCard = ({
               </IconButton>
             ) : (
               <IconButton
-                onClick={publishContest}
+                onClick={previewContest}
                 className="text-blue-500 hover:text-blue-700"
               >
                 <div className="flex items-center">

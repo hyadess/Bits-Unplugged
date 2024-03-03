@@ -13,7 +13,7 @@ import CountdownTimer from "./Timer";
 import ContestProblemList from "./ContestProblemList";
 
 // Inside the UserContest component
-const UserContest = () => {
+const UserContest = ({preview}) => {
   const { id } = useParams();
   const { problemid } = useParams();
   const [endTime, setendTime] = useState(null);
@@ -52,7 +52,7 @@ const UserContest = () => {
     };
   }, []); // Removed 'id' from the dependency array
 
-  return <>{problemid && <ContestProblem endTime={endTime}/>}</>;
+  return <>{problemid && <ContestProblem endTime={endTime} preview={preview}/>}</>;
 };
 
 export default UserContest;

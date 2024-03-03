@@ -735,6 +735,7 @@ class ContestRepository extends Repository {
         "U"."username",
         "U"."image",
         "U"."fullname",
+        "CP"."type",
         SUM("CS"."points") AS "points"
         FROM
         "ContestSubmissions" "CS"
@@ -747,7 +748,7 @@ class ContestRepository extends Repository {
         WHERE
         "C"."id" = $1
         GROUP BY
-        "U"."id","U"."username"
+        "U"."id","U"."username","CP"."type"
         ORDER BY
         "points" DESC;
         `;

@@ -300,7 +300,18 @@ const Leaderboard = ({}) => {
                   class="leaderboard__picture"
                 />
                 <div className="flex flex-col">
-                  <span class="leaderboard__name">{user.fullname}</span>
+                  <div className="flex flex-row">
+                    <span class="leaderboard__name">{user.fullname}</span>
+                    <span
+                      className={
+                        "text-sm md:text-base bu-text-primary text border-2 px-2 rounded-full font-semibold cursor-default flex flex-row gap-2 items-center " +
+                        (user.type == 0 ? "bg-[#aadfcf]" : "bg-gray-200")
+                      }
+                    >
+                      {user.type == 0 ? "live" : "virtual"}
+                    </span>
+                  </div>
+
                   <h1 className="bu-text-subtitle">@{user.username}</h1>
                 </div>
               </div>

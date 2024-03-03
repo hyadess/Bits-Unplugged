@@ -210,6 +210,7 @@ export default function UserHome() {
                         name={problem.title}
                         path={`/problems/${problem.id}`}
                         rating={problem.rating}
+                        userCount={problem.totalUsers}
                         series={problem.seriesName}
                         topic={problem.topicName}
                       />

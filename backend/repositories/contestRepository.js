@@ -338,13 +338,17 @@ class ContestRepository extends Repository {
         ) THEN false 
         ELSE null 
     END AS "isSolved",
-    COUNT("CS"."id") as "solveCount"
+    "AcceptedSubmissionsCount"."acceptedCount" AS "solveCount"
     FROM "Problems" "P"
     JOIN "ContestProblems" "CP" ON "P"."id" = "CP"."problemId"
-    JOIN "ContestSubmissions" "CS" ON "CP"."id" = "CS"."contestProblemId"
-    RIGHT JOIN "Canvases" "C" ON "P"."canvasId" = "C"."id"
-    WHERE "CP"."contestId" = $1 AND "CS"."verdict" = 'Accepted'
-    GROUP BY "P"."id", "CP"."status", "CP"."rating", "isSolved";
+    LEFT JOIN (
+      SELECT "CP"."id", COUNT(*) AS "acceptedCount"
+      FROM "ContestProblems" "CP"
+      JOIN "ContestSubmissions" "CS" ON "CP"."id" = "CS"."contestProblemId"
+      WHERE "CP"."contestId" = $1 AND "CS"."verdict" = 'Accepted'
+      GROUP BY "CP"."id"
+    ) AS "AcceptedSubmissionsCount" ON "CP"."id" = "AcceptedSubmissionsCount"."id"
+    WHERE "CP"."contestId" = $1;
     `;
     const params = [contestId, userId];
     const result = await this.query(query, params);

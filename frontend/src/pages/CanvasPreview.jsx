@@ -19,11 +19,12 @@ const deepCopy = (obj) => {
     : JSON.parse(JSON.stringify(obj));
 };
 
-const CanvasPreview = ({ onSubmit, takeSnapshot }, ref) => {
+const CanvasPreview = ({ preview, onSubmit, takeSnapshot }, ref) => {
   const { state: problem, dispatch } = useProblemContext();
   const stageRef = useRef(null);
 
   const solutionSubmit = async () => {
+    if(preview)return;
     console.log(problem.checkerCanvas, problem.test, problem.testActivity);
     let res = await SubmissionService.checkSolution(
       problem.checkerCode,

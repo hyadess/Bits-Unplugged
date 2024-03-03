@@ -14,7 +14,7 @@ import {
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import ContestProblemListCard from "components/Cards/ContestProblemListCard";
 
-const UserContestDetails = () => {
+const UserContestDetails = ({preview}) => {
   const { id } = useParams();
   const [endTime, setEndTime] = useState();
   const [contest, setContest] = useState(null);
@@ -61,8 +61,8 @@ const UserContestDetails = () => {
   };
 
   const handleProblemClick = (problemId) => {
-    problemId == "details"
-      ? navigate(`/contests/${id}`)
+    preview
+      ? navigate(`/contests/${id}/problems/${problemId}/preview`)
       : navigate(`/contests/${id}/problems/${problemId}`);
   };
 
@@ -123,7 +123,7 @@ const UserContestDetails = () => {
               problem={problem}
               onClick={handleProblemClick}
               isSolved={problem.isSolved}
-              path={`/contests/${id}/problems/${problem.id}`}
+              path={ preview? `/contests/${id}/problems/${problem.id}/preview` : `/contests/${id}/problems/${problem.id}`}
               count={problem.solveCount ?? 0}
             ></ContestProblemListCard>
           ))}

@@ -18,7 +18,7 @@ class RecommendationRepository extends Repository {
         WHERE "P"."seriesId"=$1
         GROUP BY "P"."id", "P"."seriesId", "P"."title", "P"."rating","S"."name", "T"."name"
         ORDER BY "totalAttempts" DESC
-        LIMIT 5
+        LIMIT 5 
         `;
     const params = [seriesId];
     const result = await this.query(query, params);

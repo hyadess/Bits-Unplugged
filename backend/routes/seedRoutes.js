@@ -8,7 +8,7 @@ router.post("/submissions", async (req, res) => {
   try {
     // Insert demo data into the database
     for (let userId = 10; userId <= 150; userId++)
-      for (let problemId = 1; problemId <= 20; problemId++)
+      for (let problemId = 1; problemId <= 60; problemId++)
         // pick a random number of submissions for each problem
         for (let t = 0; t < Math.floor(Math.random() * 10); t++)
           await submissionService.submitSolution(userId, problemId, {
@@ -37,7 +37,7 @@ router.post("/submissions/:id", async (req, res) => {
   try {
     // Insert demo data into the database
     for (let userId = req.params.id; userId <= req.params.id; userId++)
-      for (let problemId = 1; problemId <= 20; problemId++)
+      for (let problemId = 1; problemId <= 60; problemId++)
         // pick a random number of submissions for each problem
         for (let t = 0; t < Math.floor(Math.random() * 10); t++)
           await submissionService.submitSolution(userId, problemId, {

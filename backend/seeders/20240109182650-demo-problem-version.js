@@ -154,21 +154,7 @@ module.exports = {
         approvalStatus: 1,
         serialNo: 1,
       },
-      {
-        problemId: 1,
-        seriesId: 1,
-        isLive: true,
-        approvalStatus: 3,
-        feedback: "Problem statement is ambiguous.",
-        serialNo: 4,
-      },
-      {
-        problemId: 1,
-        seriesId: 1,
-        isLive: true,
-        approvalStatus: 2,
-        serialNo: 4,
-      },
+
       {
         problemId: 21,
         seriesId: 19,
@@ -462,6 +448,21 @@ module.exports = {
         isLive: true,
         approvalStatus: 1,
         serialNo: 1,
+      },
+      {
+        problemId: 1,
+        seriesId: 1,
+        isLive: true,
+        approvalStatus: 3,
+        feedback: "Problem statement is ambiguous.",
+        serialNo: 4,
+      },
+      {
+        problemId: 1,
+        seriesId: 1,
+        isLive: true,
+        approvalStatus: 2,
+        serialNo: 4,
       },
     ]);
   },

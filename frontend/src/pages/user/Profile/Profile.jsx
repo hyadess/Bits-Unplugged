@@ -1105,7 +1105,7 @@ export default function Profile() {
     <div className="flex flex-col pr-20">
       {/* <ProfileInfo /> */}
       {/*<Title title={"Profile statistics"} />*/}
-      <RatingGraph/>
+      <RatingGraph />
       <div className="grid grid-cols-2 items-end gap-8 py-8">
         <div className="">
           {/* <Title
@@ -1146,7 +1146,7 @@ export default function Profile() {
         <Heatmap submissions={submissions} />
       </div>
 
-      <ProfileRecentFails />
+      {/* <ProfileRecentFails /> */}
       <Tooltip id="data-tip" />
     </div>
   );

@@ -72,6 +72,13 @@ const ContestCard = ({
 
   const handleButtonClick = async () => {
     navigate(`/contests/${id}`);
+    if (new Date(endDate).getTime() < Date.now()){
+      const res = await contestApi.participateVirtualContest(id);
+      if (res.success) {
+        setRegistered(true);
+        showToast("Successfully registered to virtual" + name, "success");
+      }
+    }
   };
 
   const handleButtonClick2 = async () => {

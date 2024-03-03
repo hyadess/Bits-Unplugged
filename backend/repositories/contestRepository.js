@@ -861,8 +861,14 @@ class ContestRepository extends Repository {
 
   participateVirtualContest = async (userId, contestId) => {
     const query = `
-        INSERT INTO "Participants" ("contestId", "participantId", "type")
-        VALUES ($1 ,$2, $3);
+        INSERT INTO "Participants" ("contestId", "userId", "type")
+        SELECT $1, $2, $3
+        WHERE NOT EXISTS (
+          SELECT 1 FROM "Participants" 
+          WHERE "contestId" = $1
+          AND "userId" = $2
+          AND "type" = $3
+      );
         `;
     const params = [contestId, userId, 1];
     const result = await this.query(query, params);
@@ -873,7 +879,7 @@ class ContestRepository extends Repository {
         SELECT C.*
         FROM "Contests" C
         JOIN "Participants" CP ON C."contestId" = CP."contestId"
-        WHERE CP."participantId"= $1 AND CP.type = $2;
+        WHERE CP."participantId"= $1 AND CP."type" = $2;
 
         `;
     const params = [userId, 1];
@@ -887,7 +893,7 @@ class ContestRepository extends Repository {
         SELECT P.*
         FROM "Profile" P
         JOIN "Participants" CP ON P."userId" = CP."participantId"
-        WHERE CP."contestId" = $1 AND CP.type = $2;
+        WHERE CP."contestId" = $1 AND CP."type" = $2;
         `;
     const params = [contestId, 0];
     const result = await this.query(query, params);
@@ -899,9 +905,21 @@ class ContestRepository extends Repository {
         SELECT P.*
         FROM "Profile" P
         JOIN "Participants" CP ON P."userId" = CP."participantId"
-        WHERE CP."contestId" = $1 AND CP.type = $2;
+        WHERE CP."contestId" = $1 AND CP."type" = $2;
         `;
     const params = [contestId, 1];
+    const result = await this.query(query, params);
+
+    return result;
+  };
+
+  showVirtualParticipant = async (contestId , userId) => {
+    const query = `
+        SELECT P.*
+        FROM "Participants" P
+        WHERE P."contestId" = $1 AND P."type" = $2 AND P."userId" = $3;
+        `;
+    const params = [contestId, 1, userId];
     const result = await this.query(query, params);
 
     return result;

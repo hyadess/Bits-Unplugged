@@ -71,6 +71,10 @@ const ShowCounter = ({ days, hours, minutes, seconds }) => {
 const CountdownTimer = ({ targetDate, flag, EndAction }) => {
   const [days, hours, minutes, seconds] = useCountdown(targetDate);
 
+  useEffect(() => {
+    console.log("inside timer", targetDate);
+  }, []);
+
   if (days + hours + minutes + seconds <= 0) {
     return <ExpiredNotice flag={flag} />;
   } else {

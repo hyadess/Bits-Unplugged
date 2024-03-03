@@ -23,7 +23,7 @@ import HomeRecentFails from "./HomeRecentFails";
 import { Pie } from "react-chartjs-2";
 import { DonutLarge } from "@mui/icons-material";
 
-const PieChart = ({topicStats}) => {
+const PieChart = ({ topicStats }) => {
   const [chart, setChart] = useState(undefined);
 
   //for barChartData, calculate total success count and fail count
@@ -168,7 +168,7 @@ export default function UserHome() {
                       : "The best problems at your level"
                   }
                 />
-                <div className="flex flex-row mt-1 w-2/5 items-center gap-3">
+                <div className="flex flex-row mt-1 w-[50%] items-center gap-3">
                   {tags.map((tag, index) => (
                     <div className="mt-3">
                       <button

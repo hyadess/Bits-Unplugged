@@ -16,6 +16,11 @@ module.exports = {
     await queryInterface.bulkInsert(
       "Participants",
       [
+        // me
+        { contestId: 1, userId: 7, type: 1 },
+        { contestId: 2, userId: 7, type: 0 },
+
+        // with image
         { contestId: 1, userId: 10, type: 0 },
         { contestId: 1, userId: 11, type: 0 },
         { contestId: 1, userId: 12, type: 0 },
@@ -33,8 +38,34 @@ module.exports = {
         { contestId: 1, userId: 47, type: 0 },
         { contestId: 1, userId: 48, type: 0 },
         { contestId: 1, userId: 49, type: 0 },
-        { contestId: 1, userId: 7, type: 1 },
-        { contestId: 2, userId: 7, type: 0 },
+
+        // without image
+        { contestId: 1, userId: 15, type: 0 },
+        { contestId: 1, userId: 16, type: 0 },
+        { contestId: 1, userId: 17, type: 0 },
+        { contestId: 1, userId: 19, type: 0 },
+        { contestId: 1, userId: 20, type: 0 },
+        { contestId: 1, userId: 21, type: 0 },
+        { contestId: 1, userId: 22, type: 0 },
+        { contestId: 1, userId: 23, type: 0 },
+        { contestId: 1, userId: 24, type: 0 },
+        { contestId: 1, userId: 25, type: 0 },
+        { contestId: 1, userId: 26, type: 0 },
+        { contestId: 1, userId: 27, type: 0 },
+        { contestId: 1, userId: 28, type: 0 },
+        { contestId: 1, userId: 29, type: 0 },
+        { contestId: 1, userId: 30, type: 0 },
+        { contestId: 1, userId: 31, type: 0 },
+        { contestId: 1, userId: 32, type: 0 },
+        { contestId: 1, userId: 33, type: 0 },
+        { contestId: 1, userId: 34, type: 0 },
+        { contestId: 1, userId: 35, type: 0 },
+        { contestId: 1, userId: 36, type: 0 },
+        { contestId: 1, userId: 38, type: 0 },
+        { contestId: 1, userId: 39, type: 0 },
+        { contestId: 1, userId: 50, type: 0 },
+        { contestId: 1, userId: 51, type: 0 },
+        { contestId: 1, userId: 52, type: 0 },
       ],
       {}
     );

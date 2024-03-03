@@ -69,14 +69,27 @@ const ContestCard = ({
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const [isRegistered, setRegistered] = useState(false);
+  const [virtualParticipant, setVirtualParticipant] = useState(null);
 
   const handleButtonClick = async () => {
     navigate(`/contests/${id}`);
     if (new Date(endDate).getTime() < Date.now()){
-      const res = await contestApi.participateVirtualContest(id);
-      if (res.success) {
-        setRegistered(true);
-        showToast("You are in virtual " + name, "success");
+      
+      if(virtualParticipant?.data.length>0){
+        if(new Date().getTime() > (new Date(virtualParticipant.data[0].createdAt).getTime()+ duration*60*60*1000)){
+          const res2 = await contestApi.deleteVirtualParticipant(id);
+          const res = await contestApi.participateVirtualContest(id);
+          if (res.success && res2.success) {
+            setRegistered(true);
+            showToast("You are in virtual " + name, "success");
+          }
+        }
+      }else{
+        const res = await contestApi.participateVirtualContest(id);
+        if (res.success) {
+          setRegistered(true);
+          showToast("You are in virtual " + name, "success");
+        }
       }
     }
   };
@@ -100,8 +113,18 @@ const ContestCard = ({
     else setRegistered(false);
   };
 
+  const getVirtualInfo = async () => {
+    const res = await contestApi.showVirtualParticipant(id);
+    console.log(
+      "virtualParticipant ==>",
+      res, duration
+    );
+    setVirtualParticipant(res);
+  };
+
   useEffect(() => {
     getRegistrationInfo();
+    getVirtualInfo();
     setLoading(false);
   }, []);
 

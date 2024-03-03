@@ -162,6 +162,41 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+  getRunningContests = async () => {
+    const query = `
+      SELECT "C".*,
+      COUNT("P"."id") as "totalParticipants"
+      FROM "Contests" "C"
+      JOIN "Participants" "P" ON "P"."contestId" = "C"."id"
+      WHERE "C"."startDateTime" <= CURRENT_TIMESTAMP 
+      AND ("C"."startDateTime" + INTERVAL '1 hour' * "C"."duration") >= CURRENT_TIMESTAMP
+      AND "C"."status" = 'scheduled'
+      AND "P"."type" = 0
+      GROUP BY "C"."id";
+      `;
+    const params = [];
+    const result = await this.query(query, params);
+    return result;
+  };
+
+  getUpcomingContests = async () => {
+    const query = `
+      SELECT "C".*,
+      COUNT("P"."id") as "totalParticipants"
+      FROM "Contests" "C"
+      JOIN "Participants" "P" ON "P"."contestId" = "C"."id"
+      WHERE "C"."startDateTime" > CURRENT_TIMESTAMP
+      AND "C"."status" = 'scheduled'
+      AND "P"."type" = 0
+      GROUP BY "C"."id"
+      ORDER BY "C"."startDateTime" ASC
+      LIMIT 1;
+      `;
+    const params = [];
+    const result = await this.query(query, params);
+    return result;
+  };
+
   getContestInfo = async (contestId) => {
     const query = `
         SELECT
@@ -803,7 +838,7 @@ class ContestRepository extends Repository {
     return result;
   };
 
-  getLeaderboard = async (contestId) => {
+  getLeaderboard = async (contestId, type) => {
     const query = `
         SELECT
         "U"."id",
@@ -821,13 +856,13 @@ class ContestRepository extends Repository {
         JOIN
         "Users" "U" ON "U"."id" = "CP"."userId"
         WHERE
-        "C"."id" = $1
+        "C"."id" = $1 AND "CP"."type" = $2
         GROUP BY
         "U"."id","U"."username","CP"."type"
         ORDER BY
         "points" DESC;
         `;
-    const params = [contestId];
+    const params = [contestId, type];
     const result = await this.query(query, params);
 
     return result;

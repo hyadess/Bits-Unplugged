@@ -11,6 +11,7 @@ router.put("/:id", contestController.updateContest);
 router.get("/published", contestController.getAllPublishedContests);
 router.get("/all", contestController.getMyContests);
 router.get("/owned", contestController.getMyOwnContests);
+router.get("/running", contestController.getRunningContests);
 router.get("/participated", contestController.getAllParticipatedContests);
 
 router.get("/:contestId/editorial", contestController.getEditorial);
@@ -92,7 +93,7 @@ router.post(
   contestController.addSubmissionToContest
 );
 
-router.get("/:contestId/Leaderboard", contestController.getLeaderboard);
+router.get("/:contestId/Leaderboard/:type", contestController.getLeaderboard);
 router.get("/:contestId/Timeline", contestController.getTimeline);
 router.get("/:contestId/isRegistered", contestController.IsRegistered);
 

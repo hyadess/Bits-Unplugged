@@ -31,6 +31,9 @@ class ContestApi extends Api {
   getMyOwnContests = async () => {
     return await this.get("/contests/owned");
   };
+  getRunningContests = async () => {  
+    return await this.get("/contests/running");
+  };
 
   getAllSubmissionsByContest = async (contestId) => {
     return await this.get("/contests/" + contestId + "/submissions");
@@ -118,8 +121,8 @@ class ContestApi extends Api {
     return await this.post(`/contests/${contestId}/accept-invitation`);
   };
 
-  getLeaderboard = async (contestId) => {
-    return await this.get(`/contests/${contestId}/Leaderboard`);
+  getLeaderboard = async (contestId, type) => {
+    return await this.get(`/contests/${contestId}/Leaderboard/${type}`);
   };
   getTimeline = async (contestId) => {
     return await this.get(`/contests/${contestId}/Timeline`);

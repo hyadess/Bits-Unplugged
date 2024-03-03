@@ -150,8 +150,8 @@ const ContestWrapper = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [username, setUsername] = useState();
-  const [endTime, setendTime] = useState();
-  const [startTime, setstartTime] = useState();
+  const [endTime, setendTime] = useState(null);
+  const [startTime, setstartTime] = useState(null);
   const [activeComponent, setActiveComponent] = useState("Details");
   const fetchContestDetails = async () => {
     try {
@@ -164,14 +164,23 @@ const ContestWrapper = () => {
       if (contest.success) {
         const contestDuration = contest.data[0].duration * 60 * 60 * 1000;
         const startDateTime = new Date(contest.data[0].startDateTime);
-        if(new Date().getTime()<startDateTime.getTime() + contestDuration){
+        if (new Date().getTime() < startDateTime.getTime() + contestDuration) {
           setstartTime(startDateTime);
           setendTime(new Date(startDateTime.getTime() + contestDuration));
-        }
-        else{
+        } else {
           setstartTime(new Date(virtualParticipant.data[0].createdAt));
-          setendTime(new Date(virtualParticipant.data[0].createdAt + contestDuration));
-          console.log("virtualParticipant ==>", virtualParticipant, startTime, endTime);
+          setendTime(
+            new Date(
+              new Date(virtualParticipant.data[0].createdAt).getTime() +
+                contestDuration
+            )
+          );
+          console.log(
+            "virtualParticipant ==>",
+            virtualParticipant,
+            startTime,
+            endTime
+          );
         }
       }
     } catch (error) {
@@ -181,6 +190,7 @@ const ContestWrapper = () => {
   useEffect(() => {
     fetchContestDetails();
   }, [id]);
+
   return (
     <LayoutMain
       left={
@@ -208,7 +218,7 @@ const ContestWrapper = () => {
       right={
         <div className="flex flex-col gap-5 w-full">
           <div>
-            {endTime !== null ? (
+            {startTime !== null && endTime !== null ? (
               new Date().getTime() < startTime ? (
                 <>
                   <ExpiredNotice msg="Contest starts in" />

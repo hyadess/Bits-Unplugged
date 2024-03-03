@@ -10,6 +10,9 @@ class UserActivityApi extends Api {
   totalSolvedProblemsByUser = async () => {
     return await this.get("/userActivity/stat/series/successes/me");
   };
+  totalSolvedProblemCount = async () => {
+    return await this.get("/userActivity/stat/topics/successes/me");
+  };
   successesByUser = async (username) => {
     return await this.get("/userActivity/stat/" + username + "/successes/user");
   };

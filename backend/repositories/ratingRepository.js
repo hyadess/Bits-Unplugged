@@ -28,10 +28,12 @@ class RatingRepository extends Repository {
 
     getCurrentRating = async (userId) => {
         const query = `
-        SELECT COALESCE(
-            (SELECT "rating" FROM "UserRatings" WHERE "userId" = $1 AND "isLatest" = TRUE),
-            800
-        ) as "rating"
+            SELECT "rating", 
+            ROW_NUMBER() OVER (ORDER BY "rating" DESC) AS "position"
+            FROM "UserRatings" 
+            WHERE "userId" = $1 
+            AND "isLatest" = TRUE;
+ 
         `;
         const params = [userId];
         const result = await this.query(query, params);
@@ -40,7 +42,7 @@ class RatingRepository extends Repository {
 
     getRatingHistory = async (userId) => {
         const query = `
-            SELECT "rating"
+            SELECT "rating", "createdAt"
             FROM "UserRatings"
             WHERE "userId" = $1
             ORDER BY "createdAt" ASC

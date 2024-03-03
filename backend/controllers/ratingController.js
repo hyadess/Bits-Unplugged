@@ -10,7 +10,7 @@ class RatingController extends Controller{
     }
     //user rating table................
     getCurrentRating = async (req,res) => {
-        const result = await ratingRepository.getCurrentRating(req.user.userId);
+        const result = await ratingRepository.getCurrentRating(req.params.userId);
         if(result.success){
             res.status(200).json(result.data);
         }
@@ -20,7 +20,7 @@ class RatingController extends Controller{
     };
 
     getRatingHistory = async (req,res) => {
-        const result = await ratingRepository.getRatingHistory(req.user.userId);
+        const result = await ratingRepository.getRatingHistory(req.params.userId);
         if(result.success){
             res.status(200).json(result.data);
         }

@@ -4,6 +4,10 @@ class ProfileApi extends Api {
   getProfile = async () => {
     return await this.get("/profile");
   };
+
+  getIdByUsername = async (username) => {
+    return await this.get(`/profile/getId/${username}`);
+  }
   getProfileByUsername = async (username) => {
     return await this.get(`/profile/${username}`);
   };

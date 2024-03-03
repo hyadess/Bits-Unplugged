@@ -1,8 +1,11 @@
 import Api from "./base";
 
 class RatingApi extends Api {
-  getRating = async () => {
-    return await this.get("/ratings/currentRating");
+  getRating = async (userId) => {
+    return await this.get("/ratings/"+userId+"/current");
+  };
+  getRatingHistory = async (userId) => {
+    return await this.get("/ratings/"+userId+"/history");
   };
   updateAllUserRating = async (contestId) => {
     return await this.post("/ratings/updateAllUserRating", { contestId });

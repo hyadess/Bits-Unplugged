@@ -308,6 +308,7 @@ class UserActivityRepository extends Repository {
     const query = `
       SELECT
       T."id",
+      T."name",
       COUNT(P."problemId") AS total_solved_problems
       FROM
       "Topics" T
@@ -323,6 +324,29 @@ class UserActivityRepository extends Repository {
       T."id"
       `;
     const params = [topicId, userId];
+    const result = await this.query(query, params);
+    return result;
+  };
+  totalSolvedProblemCount = async (userId) => {
+    const query = `
+      SELECT
+      T."id",
+      T."name",
+      COUNT(P."problemId") AS total_solved_problems
+      FROM
+      "Topics" T
+      JOIN
+      "Series" S ON T."id" = S."topicId"
+      JOIN
+      "ProblemVersions" P ON S."id" = P."seriesId"
+      JOIN
+      "Activities" A ON P."id" = A."problemId"
+      WHERE
+      A."userId" = $1 AND A."isSolved" = TRUE
+      GROUP BY
+      T."id", T."name"
+      `;
+    const params = [userId];
     const result = await this.query(query, params);
     return result;
   };

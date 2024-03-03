@@ -101,9 +101,17 @@ class RecommendationController extends Controller{
         if(!userRating.success){
             res.status(404).json(userRating);
         }
-        console.log("user rating",userRating);
-        const userRatingValue=userRating.data[0].rating;
+        let userRatingValue=800;
+        if(userRating.data.length===0){
+            
+        }
+        else
+        {
+            console.log("user rating",userRating);
+            userRatingValue=userRating.data[0].rating;
         
+        }
+
         const result=await recommendationRepository.getUnsolvedProblemAroundRating(req.user.userId,userRatingValue);
         if(!result.success){
             res.status(404).json(result);

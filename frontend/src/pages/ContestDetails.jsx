@@ -123,7 +123,7 @@ const UserContestDetails = ({preview}) => {
               problem={problem}
               onClick={handleProblemClick}
               isSolved={problem.isSolved}
-              path={`/contests/${id}/problems/${problem.id}`}
+              path={ preview? `/contests/${id}/problems/${problem.id}/preview` : `/contests/${id}/problems/${problem.id}`}
               count={problem.solveCount ?? 0}
             ></ContestProblemListCard>
           ))}

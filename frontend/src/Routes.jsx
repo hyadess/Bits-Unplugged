@@ -194,13 +194,13 @@ const ContestWrapper = () => {
             activeTab={activeComponent}
             click={(tab) => {
               setActiveComponent(tab);
-              if (tab == "Details") navigate(`/contests/${id}`);
+              if (tab == "Details") isPreview? navigate(`/contests/${id}/preview`) : navigate(`/contests/${id}`);
               else if (tab == "Leaderboard")
-                navigate(`/contests/${id}/leaderboard`);
+              isPreview? navigate(`/contests/${id}/leaderboard/preview`) : navigate(`/contests/${id}/leaderboard`);
               else if (tab == "Submissions")
-                navigate(`/contests/${id}/${username}`);
+              isPreview? navigate(`/contests/${id}/${username}/preview`) : navigate(`/contests/${id}/${username}`);
               else if (tab == "Editorial")
-                navigate(`/contests/${id}/editorial`);
+              isPreview? navigate(`/contests/${id}/editorial/preview`) : navigate(`/contests/${id}/editorial`);
             }}
             tabs={
               endTime?.getTime() < Date.now()
@@ -512,6 +512,48 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
+
+          <Route element={<ContestWrapper />}>
+            <Route path="/contests/:id/preview" element={<UserContestDetails preview/>} />
+              <Route path="/contests/:id" element={<UserContestDetails />} />
+              <Route
+                path="/contests/:id/problems/:problemid/preview"
+                element={<UserContest preview/>}
+              />
+              <Route
+                path="/contests/:id/problems/:problemid"
+                element={<UserContest />}
+              />
+              <Route
+                path="/contests/:id/editorial/preview"
+                element={<EditorialPreview />}
+              />
+              <Route
+                path="/contests/:id/editorial"
+                element={<EditorialPreview />}
+              />
+              <Route
+                path="/contests/:id/problems/:problemId/submissions/preview"
+                element={<ContestSubmissions />}
+              />
+              <Route
+                path="/contests/:id/problems/:problemId/submissions"
+                element={<ContestSubmissions />}
+              />
+              <Route
+                path="/contests/:id/:username/preview"
+                element={<ContestParticipant />}
+              />
+              <Route
+                path="/contests/:id/:username"
+                element={<ContestParticipant />}
+              />
+              <Route path="/contests/:id/leaderboard/preview" element={<Leaderboard />} />
+            <Route path="/contests/:id/leaderboard" element={<Leaderboard />} />
+          </Route>
+
+
+
         </Route>
 
         <Route element={<ProblemSolver />}>
@@ -527,17 +569,30 @@ const AppRoutes = () => {
               element={<UserContest />}
             />
             <Route
+              path="/contests/:id/editorial/preview"
+              element={<EditorialPreview />}
+            />
+            <Route
               path="/contests/:id/editorial"
               element={<EditorialPreview />}
+            />
+            <Route
+              path="/contests/:id/problems/:problemId/submissions/preview"
+              element={<ContestSubmissions />}
             />
             <Route
               path="/contests/:id/problems/:problemId/submissions"
               element={<ContestSubmissions />}
             />
             <Route
+              path="/contests/:id/:username/preview"
+              element={<ContestParticipant />}
+            />
+            <Route
               path="/contests/:id/:username"
               element={<ContestParticipant />}
             />
+            <Route path="/contests/:id/leaderboard/preview" element={<Leaderboard />} />
             <Route path="/contests/:id/leaderboard" element={<Leaderboard />} />
           </Route>
           <Route

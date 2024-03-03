@@ -337,11 +337,14 @@ class ContestRepository extends Repository {
             WHERE "Pc"."contestId" = $1 AND "Pc"."userId" = $2 AND "CP"."problemId" = "P"."id" AND "CS"."verdict" = 'Wrong answer'
         ) THEN false 
         ELSE null 
-    END AS "isSolved"
+    END AS "isSolved",
+    COUNT("CS"."id") as "solveCount"
     FROM "Problems" "P"
     JOIN "ContestProblems" "CP" ON "P"."id" = "CP"."problemId"
+    JOIN "ContestSubmissions" "CS" ON "CP"."id" = "CS"."contestProblemId"
     RIGHT JOIN "Canvases" "C" ON "P"."canvasId" = "C"."id"
-    WHERE "CP"."contestId" = $1;
+    WHERE "CP"."contestId" = $1 AND "CS"."verdict" = 'Accepted'
+    GROUP BY "P"."id", "CP"."status", "CP"."rating", "isSolved";
     `;
     const params = [contestId, userId];
     const result = await this.query(query, params);

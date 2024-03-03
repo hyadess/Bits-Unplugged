@@ -209,6 +209,13 @@ class ContestApi extends Api {
     );
   };
 
+  deleteVirtualParticipant = async (contestId) => {
+    return await this.delete(
+      "/contests/" + contestId + "/participant/virtual",
+      {}
+    );
+  };
+
   leaveVirtualContest = async (contestId) => {
     return await this.delete("/contests/" + contestId + "/leave/virtual", {});
   };

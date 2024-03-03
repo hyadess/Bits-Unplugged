@@ -157,7 +157,6 @@ const ContestWrapper = () => {
     try {
       const contest = await contestApi.getContestById(id);
       const virtualParticipant = await contestApi.showVirtualParticipant(id);
-      console.log("virtualParticipant ==>", virtualParticipant);
       const decoded = jwtDecode(localStorage.getItem("token")).username;
       setUsername(decoded);
       console.log("username", decoded);
@@ -175,12 +174,7 @@ const ContestWrapper = () => {
                 contestDuration
             )
           );
-          console.log(
-            "virtualParticipant ==>",
-            virtualParticipant,
-            startTime,
-            endTime
-          );
+          
         }
       }
     } catch (error) {

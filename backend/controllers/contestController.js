@@ -81,10 +81,6 @@ class ContestController extends Controller {
       } else {
         res.status(200).json(result.data);
       }
-      else
-      {
-        res.status(200).json(result.data);
-      }
     } else {
       res.status(404).json(result);
     }

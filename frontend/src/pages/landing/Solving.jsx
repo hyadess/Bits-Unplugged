@@ -56,7 +56,7 @@ const Solving = ({ setNav }, ref) => {
               : type == 1
                 ? navigate("/problemSet")
                 : type == 0
-                  ? navigate("/topics")
+                  ? navigate("/home")
                   : navigate("/login?type=solver");
           }}
           className="bu-button-secondary bu-text-primary inline-flex cursor-pointer items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium"

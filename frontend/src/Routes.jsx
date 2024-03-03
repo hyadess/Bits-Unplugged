@@ -276,7 +276,7 @@ const Public = () => {
     <Navigate
       to={
         localStorage.getItem("type") == 0
-          ? "/topics"
+          ? "/home"
           : localStorage.getItem("type") == 1
             ? "/problemSet"
             : localStorage.getItem("type") == 2
@@ -555,9 +555,11 @@ const AppRoutes = () => {
           <Route
             path="/home"
             element={
-              <LayoutMain  right={<HomeRight/>}>
+
+              <div className="min-h-screen w-full p-5 pb-5 pt-0 md:w-4/5 md:p-5 md:pt-20 lg:mx-auto lg:w-5/6">
+
                 <UserHome />
-              </LayoutMain>
+              </div>
             }
           />
           <Route
@@ -673,7 +675,7 @@ const AppRoutes = () => {
                 replace
                 to={
                   type == 0
-                    ? "/topics"
+                    ? "/home"
                     : type == 1
                       ? "/problemSet"
                       : type == 2

@@ -79,7 +79,7 @@ const Login = () => {
       if (res.success) {
         setLoggingIn(true);
         globalCtx.setType(type == "solver" ? 0 : 1);
-        type == "solver" ? navigate("/topics") : navigate("/problemSet");
+        type == "solver" ? navigate("/home") : navigate("/problemSet");
       } else {
         setLoading(false);
       }

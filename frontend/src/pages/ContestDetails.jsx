@@ -49,7 +49,7 @@ const UserContestDetails = () => {
   };
 
   const fetchLeaderboard = async () => {
-    const leaderboardRes = await contestApi.getLeaderboard(id,0);
+    const leaderboardRes = await contestApi.getLeaderboard(id);
     if (leaderboardRes.success) setLeaderboard(leaderboardRes.data);
     return leaderboardRes;
   };

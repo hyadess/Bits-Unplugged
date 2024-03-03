@@ -182,7 +182,7 @@ class RatingController extends Controller{
         const participantsWithRating=await this.getAllContestParticipantWithRating(contestId);
         const defaultPlace=participantsWithRating.length/2+1;
         const defaultPlaceHolder=participants.length-participantsWithRating.length;
-        const LeaderBoard=await contestRepository.getLeaderboard(contestId,0);
+        const LeaderBoard=await contestRepository.getLeaderboard(contestId);
         let flag=true;
         if(participants.length>0){
             participants.forEach(async (participant)=>{

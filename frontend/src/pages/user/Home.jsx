@@ -10,10 +10,17 @@ import TableContainer from "../../containers/TableContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PersonIcon from "@mui/icons-material/Person";
 import {
-  faCheckDouble,
-  faCheckToSlot,
-  faFire,
-  faHeartPulse,
+  // faCircleCheck,
+  // faCircleXmark,
+  faR,
+  faTag,
+  fas,
+  fa,
+  faS,
+  faQuestion,
+  faCheck,
+  faXmark,
+  // far,
 } from "@fortawesome/free-solid-svg-icons";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import ApexCharts from "react-apexcharts";
@@ -22,7 +29,7 @@ import ProfileRecentFails from "./Profile/ProfileRecentFails";
 import HomeRecentFails from "./HomeRecentFails";
 import { Pie } from "react-chartjs-2";
 import { DonutLarge } from "@mui/icons-material";
-
+import { format } from "date-fns";
 const PieChart = ({ topicStats }) => {
   const [chart, setChart] = useState(undefined);
 
@@ -120,7 +127,6 @@ export default function UserHome() {
   const [runningContests, setRunningContests] = useState([]);
   const tags = ["rating-burner", "series-hunter"];
   const navigate = useNavigate();
-  
 
   const getRecommendedProblems = async () => {
     if (recomType === "series-hunter") {
@@ -236,23 +242,45 @@ export default function UserHome() {
 
         <HomeRecentFails />
       </div>
-      <div className="flex flex-col gap-3 w-1/4 mt-10 mb-8">
+      <div className="flex flex-col gap-8 w-1/4 mt-10 mb-8">
         {runningContests.length > 0 &&
           runningContests.map((contest, index) => (
-            <div className="flex flex-col text-white font-medium rounded-lg text-lg p-7 text-left bu-button-primary w-full mt-3 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] cursor-pointer"
-            onClick={()=>navigate(`/contests/${contest.id}`)}>
+            <div
+              className="flex flex-col text-white font-medium rounded-lg text-lg p-7 text-left bu-button-primary w-full shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] cursor-pointer"
+              onClick={() => navigate(`/contests/${contest.id}`)}
+            >
               <div class="font-poppins font-medium text-xl leading-36 text-red-500 opacity-80">
-                Currently Running
+                {new Date(contest.startDateTime) > new Date()
+                  ? "Upcomming contest"
+                  : "Currently Running"}
               </div>
               <div class="font-poppins font-medium text-3xl leading-54 text-black">
                 {contest.title}
               </div>
-              <div className="flex flex-row gap-2 items-center">
-                <div className="text-black">
-                  <PersonIcon />
+              <div className="flex flex-row gap-1 items-end justify-between">
+                <div className="flex flex-row gap-1 items-center">
+                  <div className="text-black">
+                    <PersonIcon />
+                  </div>
+                  <div class="justify-center flex flex-row items-center  gap-1 w-41 font-poppins font-extrabold text-md leading-24 text-black pt-[0.1rem]">
+                    <div className="text-sm pt-[0.1rem]">
+                      <FontAwesomeIcon icon={faXmark} />
+                    </div>
+                    {contest.totalParticipants}
+                  </div>
                 </div>
-                <div class="w-41 font-poppins font-medium text-base leading-24 text-black">
-                  {contest.totalParticipants}
+                <div className="flex flex-row text-sm items-center bu-text-primary">
+                  {new Date(contest.startDateTime) > new Date()
+                    ? "Start at: " +
+                      format(new Date(contest.startDateTime), "hh:mm a")
+                    : "Ends at: " +
+                      format(
+                        new Date(
+                          new Date(contest.startDateTime).getTime() +
+                            contest.duration
+                        ),
+                        "hh:mm a"
+                      )}
                 </div>
               </div>
             </div>

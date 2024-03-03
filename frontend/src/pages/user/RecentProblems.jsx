@@ -37,7 +37,7 @@ export default function RecentProblems() {
     problems.length > 0 && (
       <div className="flex flex-col w-full">
         <Title
-          title={"Recently Viewed Problems"}
+          title={"Recently Accessed Problems"}
           sub_title={"problems you have recently viewed"}
         />
         <div className="flex flex-col gap-5 w-full">

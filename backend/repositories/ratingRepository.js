@@ -28,11 +28,14 @@ class RatingRepository extends Repository {
 
     getCurrentRating = async (userId) => {
         const query = `
-            SELECT "rating", 
-            ROW_NUMBER() OVER (ORDER BY "rating" DESC) AS "position"
-            FROM "UserRatings" 
-            WHERE "userId" = $1 
-            AND "isLatest" = TRUE;
+        SELECT "rating","position"
+        FROM(
+        SELECT "rating", "userId",
+        RANK() OVER (ORDER BY "rating" DESC) AS "position"
+        FROM "UserRatings" 
+        WHERE "isLatest" = TRUE
+        ) AS "R" 
+        WHERE "userId" = $1;
  
         `;
         const params = [userId];
@@ -77,10 +80,10 @@ class RatingRepository extends Repository {
             console.log("Error updating rating");
         }
         const query2 = `
-            INSERT INTO "UserRatings" ("userId", "rating", "isLatest","contestId,"change","prevRating","rank")
-            VALUES ($1, $2, TRUE,$3,$4,$5,$6)
+            INSERT INTO "UserRatings" ("userId", "rating", "isLatest","contestId","change","prevRating","rank")
+            VALUES ($1, $2, $7,$3,$4,$5,$6)
         `;
-        const params2 = [userId, newRating,contestId,change,prevRating,rank];
+        const params2 = [userId, newRating,contestId,change,prevRating,rank,true];
         const result2 = await this.query(query2, params2);
         return result2;
     };

@@ -199,7 +199,7 @@ class RatingController extends Controller{
                 }
 
 
-                let contestPlace=LeaderBoard.findIndex((p)=>p.id===participant.userId)+1;
+                let contestPlace=LeaderBoard.data.findIndex((p)=>p.id===participant.userId)+1;
                 //get the user current rating....................
                 let res=await ratingRepository.getCurrentRating(participant.userId);
                 let rating;
@@ -212,7 +212,7 @@ class RatingController extends Controller{
                 let change=10*(place-contestPlace);
                 rating=rating+change;
                 
-                ratingRepository.updateRating(participant.userId,contestId,rating,change,prevRating,contestPlace);
+                ratingRepository.updateRating(participant.userId,contestId,rating,prevRating,change,contestPlace);
                 
                     
                 

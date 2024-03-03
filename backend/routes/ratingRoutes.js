@@ -17,8 +17,8 @@ router.use(
 //   ratingController.getUserRatingsAndAttemptsByProblem
 // );
 
-router.get("/:userId/current", ratingController.getCurrentRating);
-router.get("/:userId/history", ratingController.getRatingHistory);
+router.get("/current/:userId", ratingController.getCurrentRating);
+router.get("/history/:userId", ratingController.getRatingHistory);
 
 
 

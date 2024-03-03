@@ -123,6 +123,7 @@ export default function RatingGraph() {
     console.log("userId before rating fetch", userId);
     const res = await ratingApi.getRating(userId);
     if (res.success && res.data.length > 0) {
+      console.log("rating data", res.data);
       setRating(res.data[0].rating);
       setPosition(res.data[0].position);
     }
@@ -147,6 +148,7 @@ export default function RatingGraph() {
 
   useEffect(() => {
     //setLoading(true);
+    if (userId === null) return;
     getRating();
     getRatingHistory();
     //setLoading(false);

@@ -164,10 +164,43 @@ module.exports = {
           isLive: true,
         },
         {
+          // 20
           topicId: 2,
           name: "N Queen",
           description: "",
           logo: "https://meetwithbudhi.files.wordpress.com/2019/09/prog.gif",
+          isLive: true,
+        },
+        {
+          // 21
+          topicId: 2,
+          name: "Fibonacci",
+          description: "",
+          logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_5CPXWeyi_OKykCTsVABVNHOFqWspeqO2S8H2KtQ_HHOdHFhK6FI26iKX9ewb2ry21Ec&usqp=CAU",
+          isLive: true,
+        },
+        {
+          // 22
+          topicId: 2,
+          name: "Factorial",
+          description: "",
+          logo: "https://www.svgrepo.com/show/489606/sign-factorial.svg",
+          isLive: true,
+        },
+        {
+          // 23
+          topicId: 4,
+          name: "Binary Search Tree",
+          description: "",
+          logo: "https://st3.depositphotos.com/2927609/12972/v/450/depositphotos_129720146-stock-illustration-tree-made-of-electronic-paths.jpg",
+          isLive: true,
+        },
+        {
+          // 24
+          topicId: 4,
+          name: "Decision Tree",
+          description: "",
+          logo: "https://png.pngtree.com/png-vector/20220519/ourmid/pngtree-decision-tree-illustration-business-extensive-png-image_4702997.png",
           isLive: true,
         },
       ],

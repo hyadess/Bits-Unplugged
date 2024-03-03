@@ -3411,6 +3411,7 @@ module.exports = {
           }),
         },
         {
+          // id: 23
           setterId: 2,
           canvasId: 1,
           title: "Maximal Planar Graph",
@@ -3473,6 +3474,591 @@ module.exports = {
             selectedEdges: [],
             selectedNodes: [],
           }),
+        },
+        {
+          // id: 24
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 1",
+          statement: "Demo Statement 1",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 25
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 2",
+          statement: "Demo Statement 2",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 26
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 3",
+          statement: "Demo Statement 3",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 27
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 4",
+          statement: "Demo Statement 4",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 28
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 5",
+          statement: "Demo Statement 5",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 29
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 6",
+          statement: "Demo Statement 6",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 30
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 7",
+          statement: "Demo Statement 7",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 31
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 8",
+          statement: "Demo Statement 8",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 32
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 9",
+          statement: "Demo Statement 9",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 33
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 10",
+          statement: "Demo Statement 10",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 34
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 11",
+          statement: "Demo Statement 11",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 35
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 12",
+          statement: "Demo Statement 12",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 36
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 13",
+          statement: "Demo Statement 13",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 37
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 14",
+          statement: "Demo Statement 14",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 38
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 15",
+          statement: "Demo Statement 15",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 39
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 16",
+          statement: "Demo Statement 16",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 40
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 17",
+          statement: "Demo Statement 17",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 41
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 18",
+          statement: "Demo Statement 18",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 42
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 19",
+          statement: "Demo Statement 19",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 43
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 20",
+          statement: "Demo Statement 20",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 44
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 21",
+          statement: "Demo Statement 21",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 45
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 22",
+          statement: "Demo Statement 22",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 46
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 23",
+          statement: "Demo Statement 23",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 47
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 24",
+          statement: "Demo Statement 24",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 48
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 25",
+          statement: "Demo Statement 25",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 49
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 26",
+          statement: "Demo Statement 26",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 50
+          setterId: 2,
+          canvasId: 3,
+          title: "Demo Problem 27",
+          statement: "Demo Statement 27",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 51
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 28",
+          statement: "Demo Statement 28",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 52
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 29",
+          statement: "Demo Statement 29",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 53
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 30",
+          statement: "Demo Statement 30",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 54
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 31",
+          statement: "Demo Statement 31",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 55
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 32",
+          statement: "Demo Statement 32",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 56
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 33",
+          statement: "Demo Statement 33",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 57
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 34",
+          statement: "Demo Statement 34",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 58
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 35",
+          statement: "Demo Statement 35",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 59
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 36",
+          statement: "Demo Statement 36",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 60
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 37",
+          statement: "Demo Statement 37",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 61
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 38",
+          statement: "Demo Statement 38",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 62
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 39",
+          statement: "Demo Statement 39",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 63
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 40",
+          statement: "Demo Statement 40",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 64
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 41",
+          statement: "Demo Statement 41",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 65
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 42",
+          statement: "Demo Statement 42",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 66
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 43",
+          statement: "Demo Statement 43",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 67
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 44",
+          statement: "Demo Statement 44",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
+        },
+        {
+          // id: 68
+          setterId: 2,
+          canvasId: 1,
+          title: "Demo Problem 45",
+          statement: "Demo Statement 45",
+          canvasData: JSON.stringify({}),
+          editOptions: JSON.stringify({}),
+          previewOptions: JSON.stringify({}),
+          checkerCode:
+            "/*function solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
+          checkerCanvas: JSON.stringify({}),
         },
       ],
       {}

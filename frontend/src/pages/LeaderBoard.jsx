@@ -16,7 +16,7 @@ import "./LeaderBoard.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartArea, faChartLine } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "App";
-const Leaderboard = ({}) => {
+const Leaderboard = ({preview}) => {
   const { id } = useParams();
   const [endTime, setEndTime] = useState();
   const [contest, setContest] = useState(null);
@@ -322,7 +322,7 @@ const Leaderboard = ({}) => {
               class="leaderboard__profile"
               onClick={() => {
                 setLoading(true);
-                navigate(`/contests/${id}/${user.username}`);
+                preview? navigate(`/contests/${id}/${user.username}/preview`) : navigate(`/contests/${id}/${user.username}`);
               }}
             >
               <div className="flex flex-row w-[70%] items-center gap-10">

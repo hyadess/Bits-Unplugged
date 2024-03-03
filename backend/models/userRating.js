@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
       UserRating.belongsTo(models.User, {
         foreignKey: "userId",
       });
+      UserRating.belongsTo(models.Contest, {
+        foreignKey: "contestId",
+      });
     }
   }
   UserRating.init(
@@ -18,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       userId: DataTypes.INTEGER,
       rating: DataTypes.INTEGER,
       isLatest: DataTypes.BOOLEAN,
+      contestId: DataTypes.INTEGER,
+      change: DataTypes.INTEGER,
+      prevRating: DataTypes.INTEGER,
+      rank: DataTypes.INTEGER,
     },
     {
       sequelize,

@@ -48,9 +48,9 @@ const ContestProblemList = ({preview}) => {
   return (
     <div className="flex flex-col gap-4 w-full">
       <div className="flex flex-col gap-3 overflow-y-auto w-full px-3">
-        <div className="w-full p-5 py-4 rounded-lg shadow-md flex flex-row bu-text-primary bg-[#AADFCF] dark:bg-pink-600">
+        {/* <div className="w-full p-5 py-4 rounded-lg shadow-md flex flex-row bu-text-primary bg-[#AADFCF] dark:bg-pink-600">
           <h2 className="text-3xl font-extrabold">Problems</h2>
-        </div>
+        </div> */}
         {problems?.map((problem, index) => (
           <ProblemCard
             index={index}

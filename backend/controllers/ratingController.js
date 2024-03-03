@@ -38,6 +38,16 @@ class RatingController extends Controller{
             res.status(500).json({message: "Rating update failed"});
         }
     };
+    showAllUserRatings = async (req,res) => {
+        const result = await ratingRepository.showAllUserRatings();
+        if(result.success){
+            res.status(200).json(result.data);
+        }
+        else{
+            res.status(500).json(result);
+        }
+    };
+    
 
 
 
@@ -166,8 +176,9 @@ class RatingController extends Controller{
 
 
     changeUserRatings = async(req,res) => {
-        const contestId=req.body.contestId;
+        const contestId=req.params.contestId;
         const participants=await this.getAllContestParticipants(contestId);
+        console.log(participants);
         const participantsWithRating=await this.getAllContestParticipantWithRating(contestId);
         const defaultPlace=participantsWithRating.length/2+1;
         const defaultPlaceHolder=participants.length-participantsWithRating.length;
@@ -186,16 +197,25 @@ class RatingController extends Controller{
                 else{
                     place=defaultPlace;
                 }
-                let contestPlace=LeaderBoard.findIndex((p)=>p.id===participant.userId)+1;
-                let rating=await ratingRepository.getCurrentRating(participant.userId);
-                if(contestPlace<place)
-                {
-                    ratingRepository.updateRating(participant.userId,rating+10*(place-contestPlace));
-                }
-                else
-                {
-                    ratingRepository.updateRating(participant.userId,rating-10*(contestPlace-place));
-                }
+
+
+                let contestPlace=LeaderBoard.data.findIndex((p)=>p.id===participant.userId)+1;
+                //get the user current rating....................
+                let res=await ratingRepository.getCurrentRating(participant.userId);
+                let rating;
+                if(res.data.length==0) rating=800;
+                else rating=res.data[0].rating;
+
+                //contestPlace is the rank
+                //rating is the prevRating
+                let prevRating=rating;
+                let change=10*(place-contestPlace);
+                rating=rating+change;
+                
+                ratingRepository.updateRating(participant.userId,contestId,rating,prevRating,change,contestPlace);
+                
+                    
+                
 
             });
         }
@@ -204,6 +224,7 @@ class RatingController extends Controller{
           } else {
             res.status(500).json({ message: "Rating update failed" });
           }
+        
     }
 
 

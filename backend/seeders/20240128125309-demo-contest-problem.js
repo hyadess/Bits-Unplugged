@@ -76,6 +76,20 @@ module.exports = {
           status: "published",
           rating: 400,
         },
+        {
+          //id: 1,
+          contestId: 3,
+          problemId: 1,
+          status: "published",
+          rating: 200,
+        },
+        {
+          //id: 1,
+          contestId: 3,
+          problemId: 5,
+          status: "published",
+          rating: 100,
+        },
       ],
       {}
     );

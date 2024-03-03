@@ -406,10 +406,7 @@ class ContestController extends Controller {
   };
 
   getLeaderboard = async (req, res) => {
-    let result = await contestRepository.getLeaderboard(
-      req.params.contestId,
-      req.params.type
-    );
+    let result = await contestRepository.getLeaderboard(req.params.contestId);
     if (result.success) {
       res.status(200).json(result.data);
     } else {

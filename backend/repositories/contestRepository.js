@@ -845,7 +845,7 @@ class ContestRepository extends Repository {
     return result;
   };
 
-  getLeaderboard = async (contestId, type) => {
+  getLeaderboard = async (contestId) => {
     const query = `
         SELECT
         "U"."id",
@@ -863,13 +863,13 @@ class ContestRepository extends Repository {
         JOIN
         "Users" "U" ON "U"."id" = "CP"."userId"
         WHERE
-        "C"."id" = $1 AND "CP"."type" = $2
+        "C"."id" = $1
         GROUP BY
         "U"."id","U"."username","CP"."type"
         ORDER BY
         "points" DESC;
         `;
-    const params = [contestId, type];
+    const params = [contestId];
     const result = await this.query(query, params);
 
     return result;

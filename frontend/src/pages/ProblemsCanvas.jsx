@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { setLoading } from "../App";
 import ProblemsCanvasView from "../views/ProblemsCanvas";
 import { problemApi, submissionApi, userActivityApi } from "../api";
@@ -19,7 +19,7 @@ function ProblemsCanvasController() {
   const canvasRef = useRef();
 
   const { state: problem, dispatch } = useProblemContext();
-
+  const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {
     renderProblem();
   }, []);
@@ -31,18 +31,39 @@ function ProblemsCanvasController() {
 
   const renderProblem = async () => {
     const res = await problemApi.getProblemById(id);
+
     if (res.success) {
-      backup.current = res.data.test;
-      dispatch({
-        type: "SET_INITIAL_STATE",
-        payload: JSON.parse(
-          JSON.stringify({
-            ...res.data,
-            test: deepCopy(res.data.canvasData),
-            testActivity: {},
-          })
-        ),
-      });
+      backup.current = res.data.canvasData;
+      if (searchParams.get("submission")) {
+        const res2 = await submissionApi.getSubmissionById(
+          searchParams.get("submission")
+        );
+        if (res2.success) {
+          console.log("Submission:", res2.data, searchParams.get("submission"));
+          dispatch({
+            type: "SET_INITIAL_STATE",
+            payload: JSON.parse(
+              JSON.stringify({
+                ...res.data,
+                test: deepCopy(res2.data.canvasData),
+                testActivity: deepCopy(res2.data.userActivity),
+              })
+            ),
+          });
+        }
+      } else {
+        dispatch({
+          type: "SET_INITIAL_STATE",
+          payload: JSON.parse(
+            JSON.stringify({
+              ...res.data,
+              test: deepCopy(res.data.canvasData),
+              testActivity: {},
+            })
+          ),
+        });
+      }
+
       // setCanvasData(JSON.parse(JSON.stringify(result.data.canvasData)));
       if (res.data.canvasId === null) setLoading(false);
     }
@@ -73,7 +94,8 @@ function ProblemsCanvasController() {
             verdict,
             id,
             durationInSeconds,
-            image
+            image,
+            problem.testActivity
           );
         } else {
           await submissionApi.submitSolution(
@@ -81,12 +103,20 @@ function ProblemsCanvasController() {
             verdict,
             id,
             0,
-            image
+            image,
+            problem.testActivity
           );
         }
       }
     } else {
-      await submissionApi.submitSolution(problem.test, verdict, id, 0, image);
+      await submissionApi.submitSolution(
+        problem.test,
+        verdict,
+        id,
+        0,
+        image,
+        problem.testActivity
+      );
     }
   };
 

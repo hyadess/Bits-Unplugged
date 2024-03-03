@@ -163,6 +163,7 @@ const TowerOfHanoi = (props, ref) => {
     setData({ pegs: p });
   };
   const setNumberOfMoves = (n) => {
+    console.log("Setting number of moves to ", n);
     if (setActivityData !== undefined) {
       if (props.mode === "edit") {
         setActivityData({ numberOfMoves: 0 });
@@ -182,7 +183,7 @@ const TowerOfHanoi = (props, ref) => {
   const handleReset = (resetData) => {
     if (resetData != null && resetData.pegs != null) {
       // console.log("handleReset:", resetData);
-      importData(resetData);
+      importData(resetData, {});
     } else {
       setNumberOfDisks(3);
       initializePegs(3, 3);
@@ -198,10 +199,10 @@ const TowerOfHanoi = (props, ref) => {
   useEffect(() => {
     // console.log(history);
   }, [history]);
-  const importData = (newData) => {
+  const importData = (newData, activity) => {
     if (newData != null && newData.pegs != null) {
       const list = newData.pegs.map((peg) => peg[peg.length - 1]);
-      setNumberOfMoves(0);
+      setNumberOfMoves(activity?.numberOfMoves ?? 0);
       setDraggableDisks(list);
       setNumberOfDisks(newData.pegs.flat(1).length);
       // console.log("RESEEEEEEEEEEET");
@@ -270,7 +271,7 @@ const TowerOfHanoi = (props, ref) => {
   useEffect(() => {
     if (props.input != null && props.input.pegs != null) {
       // setNumberOfMoves(0);
-      importData(props.input);
+      importData(props.input, props.activityData);
       setLoading(false);
     } else {
       setNumberOfDisks(3);

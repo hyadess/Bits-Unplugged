@@ -11,6 +11,7 @@ router.put("/:id", contestController.updateContest);
 router.get("/published", contestController.getAllPublishedContests);
 router.get("/all", contestController.getMyContests);
 router.get("/owned", contestController.getMyOwnContests);
+router.get("/running", contestController.getRunningContests);
 router.get("/participated", contestController.getAllParticipatedContests);
 
 router.get("/:contestId/editorial", contestController.getEditorial);

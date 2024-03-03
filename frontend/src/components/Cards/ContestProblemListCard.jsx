@@ -59,7 +59,7 @@ export default function ContestProblemListCard({
               {String.fromCharCode(65 + index)}
             </span>
           </h2>
-          <h5 className="text-xl md:text-2xl tracking-tight bu-text-primary w-[40%] cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
+          <h5 className="text-xl md:text-2xl tracking-tight bu-text-primary w-[47%] cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">
             {problem.title}
           </h5>
           <h3
@@ -72,11 +72,11 @@ export default function ContestProblemListCard({
             {count}
           </h3>
 
-          <h3 className={`text-center w-[20%] text-lg bu-text-primary`}>
+          <h3 className={`text-center w-[15%] text-lg bu-text-primary`}>
             {problem.rating}
           </h3>
           <div
-            className={`w-[15%] text-center text-${
+            className={`w-[13%] text-center text-${
               isSolved === null ? "" : "2"
             }xl w-1/6`}
           >

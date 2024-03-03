@@ -101,17 +101,17 @@ const UserContestDetails = () => {
         <div className="flex flex-col gap-3 overflow-y-auto w-full px-3">
           <div className="w-full p-5 rounded-lg shadow-md flex flex-row bu-text-primary bg-[#AADFCF] dark:bg-pink-600">
             <div className="text-xl w-[5%] font-medium">#</div>
-            <div className="text-xl w-[40%] font-medium">Problem</div>
+            <div className="text-xl w-[47%] font-medium">Problem</div>
             <div className="text-xl w-[20%] font-medium flex gap-2 items-center justify-center">
               {/* <FontAwesomeIcon icon={faCheckDouble} /> */}
               <HowToRegIcon />
               Solve Count
             </div>
-            <div className="text-xl w-20% font-medium flex gap-2 items-center justify-center">
+            <div className="text-xl w-15% font-medium flex gap-2 items-center justify-center">
               <FontAwesomeIcon icon={faFire} />
               Points
             </div>
-            <div className="text-xl w-15% font-medium flex gap-2 items-center justify-center">
+            <div className="text-xl w-[13%] font-medium flex gap-2 items-center justify-center">
               <FontAwesomeIcon icon={faHeartPulse} />
               Status
             </div>

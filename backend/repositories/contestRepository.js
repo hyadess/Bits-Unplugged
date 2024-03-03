@@ -987,6 +987,19 @@ class ContestRepository extends Repository {
     const result = await this.query(query, params);
     return result;
   };
+
+  deleteVirtualParticipant = async (userId, contestId) => {
+    const query = `
+        DELETE FROM "Participants"
+        WHERE "contestId" = $1
+          AND "userId" = $2
+          AND "type" = $3;
+    `;
+
+    const params = [contestId, userId, 1];
+    const result = await this.query(query, params);
+    return result;
+};
   showAllVirtualContestByUser = async (userId) => {
     const query = `
         SELECT C.*

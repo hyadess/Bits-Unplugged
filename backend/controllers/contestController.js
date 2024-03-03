@@ -81,6 +81,10 @@ class ContestController extends Controller {
       } else {
         res.status(200).json(result.data);
       }
+      else
+      {
+        res.status(200).json(result.data);
+      }
     } else {
       res.status(404).json(result);
     }
@@ -497,6 +501,20 @@ class ContestController extends Controller {
       res.status(500).json(result);
     }
   };
+
+  deleteVirtualParticipant = async (req, res) => {
+    let result = await contestRepository.deleteVirtualParticipant(
+      req.user.userId,
+      req.params.contestId
+    );
+    if (result.success) {
+      res.status(201).json(result.data);
+    } else {
+      res.status(500).json(result);
+    }
+  };
+
+
   leaveVirtualContest = async (req, res) => {
     let result = await contestRepository.leaveVirtualContest(
       req.user.userId,

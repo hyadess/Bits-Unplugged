@@ -513,44 +513,26 @@ const AppRoutes = () => {
             }
           />
 
-          <Route element={<ContestWrapper />}>
-            <Route path="/contests/:id/preview" element={<UserContestDetails preview/>} />
-              <Route path="/contests/:id" element={<UserContestDetails />} />
+          {/* <Route element={<ContestWrapper />}>
+            <Route path="/contests/:id/preview" element={<UserContestDetails preview/>} />              
               <Route
                 path="/contests/:id/problems/:problemid/preview"
                 element={<UserContest preview/>}
-              />
-              <Route
-                path="/contests/:id/problems/:problemid"
-                element={<UserContest />}
-              />
+              />              
               <Route
                 path="/contests/:id/editorial/preview"
                 element={<EditorialPreview />}
-              />
-              <Route
-                path="/contests/:id/editorial"
-                element={<EditorialPreview />}
-              />
+              />              
               <Route
                 path="/contests/:id/problems/:problemId/submissions/preview"
                 element={<ContestSubmissions />}
-              />
-              <Route
-                path="/contests/:id/problems/:problemId/submissions"
-                element={<ContestSubmissions />}
-              />
+              />              
               <Route
                 path="/contests/:id/:username/preview"
                 element={<ContestParticipant />}
               />
-              <Route
-                path="/contests/:id/:username"
-                element={<ContestParticipant />}
-              />
-              <Route path="/contests/:id/leaderboard/preview" element={<Leaderboard />} />
-            <Route path="/contests/:id/leaderboard" element={<Leaderboard />} />
-          </Route>
+              <Route path="/contests/:id/leaderboard/preview" element={<Leaderboard  preview/>} />
+          </Route> */}
 
 
 
@@ -592,9 +574,10 @@ const AppRoutes = () => {
               path="/contests/:id/:username"
               element={<ContestParticipant />}
             />
-            <Route path="/contests/:id/leaderboard/preview" element={<Leaderboard />} />
+            <Route path="/contests/:id/leaderboard/preview" element={<Leaderboard preview/>} />
             <Route path="/contests/:id/leaderboard" element={<Leaderboard />} />
           </Route>
+
           <Route
             path="/problems/:id"
             element={

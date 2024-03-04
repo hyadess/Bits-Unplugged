@@ -17,4 +17,4 @@ router.post("/set/upload", (req, res) => res.status(200).send()); // dihan - Upl
 router.get("/users", profileController.getProfile);
 router.get("/setters", profileController.getProfile);
 router.get("/getId/:username", profileController.getIdByUsername);
-module.exports = router;
+module.exports = router; 

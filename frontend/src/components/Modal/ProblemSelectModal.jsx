@@ -29,7 +29,9 @@ const ProblemListModal = ({ problems, onClose, onAdd }) => {
           <CancelIcon />
         </button>
         <div className="p-4">
-          <h2 className="text-3xl font-bold text-primary mb-6">Select Problems</h2>
+          <h2 className="text-3xl font-bold text-primary mb-6">
+            Select Problems
+          </h2>
           <div className="max-h-[60vh] overflow-y-auto">
             {problems.map((problem) => (
               <div
@@ -45,7 +47,7 @@ const ProblemListModal = ({ problems, onClose, onAdd }) => {
                   {problem.title}
                 </span>
                 <span className="text-gray-500 text-md mt-2 ml-4">
-                   | Canvas: {problem.canvas.name}
+                  {/* | Canvas: {problem.canvas.name} */}
                 </span>
               </div>
             ))}

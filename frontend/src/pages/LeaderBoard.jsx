@@ -16,14 +16,13 @@ import "./LeaderBoard.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartArea, faChartLine } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "App";
-const Leaderboard = ({}) => {
+const Leaderboard = ({ preview }) => {
   const { id } = useParams();
   const [endTime, setEndTime] = useState();
   const [contest, setContest] = useState(null);
   const [leaderboard, setLeaderboard] = useState(null);
   const [timelineData, setTimelineData] = useState([]);
   const [leaderboardMode, setLeaderboardMode] = useState(0);
-
 
   const navigate = useNavigate();
 
@@ -33,7 +32,7 @@ const Leaderboard = ({}) => {
       setContest(res.data[0]);
       console.log("contest: ", res.data[0]);
     }
-    const leaderboardRes = await contestApi.getLeaderboard(id,type);
+    const leaderboardRes = await contestApi.getLeaderboard(id, type);
     if (leaderboardRes.success) {
       console.log(leaderboardRes);
       setLeaderboard(leaderboardRes.data);
@@ -166,8 +165,8 @@ const Leaderboard = ({}) => {
             fontWeight: 400,
           },
         },
-        tickAmount: 8,
-        min: 0,
+        // tickAmount: 8,
+        // min: 0,
         // max: parseInt(contest?.totalPoints),
       },
       grid: {
@@ -322,7 +321,9 @@ const Leaderboard = ({}) => {
               class="leaderboard__profile"
               onClick={() => {
                 setLoading(true);
-                navigate(`/contests/${id}/${user.username}`);
+                preview
+                  ? navigate(`/contests/${id}/${user.username}/preview`)
+                  : navigate(`/contests/${id}/${user.username}`);
               }}
             >
               <div className="flex flex-row w-[70%] items-center gap-10">
@@ -351,7 +352,24 @@ const Leaderboard = ({}) => {
                   <h1 className="bu-text-subtitle">@{user.username}</h1>
                 </div>
               </div>
+              {user.change != null && (
+                // <span
+                //   className={
+                //     "text-sm md:text-base bu-text-primary text border-2 px-2 rounded-full font-semibold cursor-default flex flex-row gap-2 items-center " +
+                //     (user.change > 0 ? "bg-[#aadfcf]" : "bg-[#ff9d96]")
+                //   }
+                // >
+                <div
+                  className={
+                    "  font-bold text-2xl " +
+                    (user.change > 0 ? "text-[#3f7a23]" : "text-[#c44f47]")
+                  }
+                >
+                  {user.change < 0 ? `${user.change}` : `+ ${user.change}`}
+                </div>
 
+                // </span>
+              )}
               <span class="leaderboard__value">
                 {user.points}
                 {/* <span>points</span> */}

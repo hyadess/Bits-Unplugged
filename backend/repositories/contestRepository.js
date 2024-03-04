@@ -13,7 +13,9 @@ class ContestRepository extends Repository {
     // write a sequelize query to get all contests with owner and collaboratos
     return await db.Contest.findAll({
       where: {
-        status: "scheduled",
+        status: {
+          [Op.or]: ["scheduled", "rated"],
+        },
       },
       order: [["updatedAt", "DESC"]],
       include: [
@@ -39,32 +41,44 @@ class ContestRepository extends Repository {
     });
   };
 
+  //dihan!!!!!!!...........JOIN userRating table on contestid and there you can find everything you want (rating change, rank)..
+  //for solveCount, contestSubmission JOIN,,,,,,,,,,,,,,,,
+  ///evabe query korte parina!!!!!!!!
+
   getAllParticipatedContests = async (userId) => {
     // write a sequelize query to get all contests that the user has submissions in
     return await db.Contest.findAll({
       include: [
+        // {
+        //   model: db.ContestProblem,
+        //   attributes: ["id"],
+        //   required: true,
+        //   as: "problems",
+        //   include: [
+        //     {
+        //       model: db.ContestSubmission,
+        //       attributes: ["id"], // We don't need to return any attributes from the ContestSubmission table
+        //       required: true,
+        //       as: "submissions",
+        //       include: {
+        //         model: db.Participant,
+        //         as: "participant",
+        //         attributes: ["userId"], // We don't need to return any attributes from the Participant table
+        //         required: true,
+        //         where: {
+        //           userId: userId,
+        //         },
+        //       },
+        //     },
+        //   ],
+        // },
         {
-          model: db.ContestProblem,
-          attributes: ["id"],
+          model: db.UserRating,
           required: true,
-          as: "problems",
-          include: [
-            {
-              model: db.ContestSubmission,
-              attributes: ["id"], // We don't need to return any attributes from the ContestSubmission table
-              required: true,
-              as: "submissions",
-              include: {
-                model: db.Participant,
-                as: "participant",
-                attributes: ["userId"], // We don't need to return any attributes from the Participant table
-                required: true,
-                where: {
-                  userId: userId,
-                },
-              },
-            },
-          ],
+          as: "ratings",
+          where: {
+            userId: userId,
+          },
         },
       ],
     });
@@ -782,6 +796,7 @@ class ContestRepository extends Repository {
     );
 
     console.log("->", problemId, contestId, userId, participantResult);
+    if (participantResult.data === 0) return { success: false, error: "mara" };
     const participantId = participantResult.data[0].id;
 
     //get contest problem id....this part will not be needed if the provided problem id is contest problem id
@@ -866,6 +881,39 @@ class ContestRepository extends Repository {
         "C"."id" = $1
         GROUP BY
         "U"."id","U"."username","CP"."type"
+        ORDER BY
+        "points" DESC;
+        `;
+    const params = [contestId];
+    const result = await this.query(query, params);
+
+    return result;
+  };
+
+  getRatedLeaderBoard = async (contestId) => {
+    const query = `
+        SELECT
+        "U"."id",
+        "U"."username",
+        "U"."image",
+        "U"."fullname",
+        "CP"."type",
+        "UR"."change",
+        SUM("CS"."points") AS "points"
+        FROM
+        "ContestSubmissions" "CS"
+        JOIN
+        "Participants" "CP" ON "CP"."id" = "CS"."participantId"
+        JOIN
+        "Contests" "C" ON "C"."id" = "CP"."contestId"
+        JOIN
+        "Users" "U" ON "U"."id" = "CP"."userId"
+        JOIN
+        "UserRatings" "UR" ON "UR"."userId" = "U"."id" AND "UR"."contestId" = "C"."id"
+        WHERE
+        "C"."id" = $1
+        GROUP BY
+        "U"."id","U"."username","CP"."type","UR"."change"
         ORDER BY
         "points" DESC;
         `;
@@ -1003,7 +1051,7 @@ class ContestRepository extends Repository {
     const params = [contestId, userId, 1];
     const result = await this.query(query, params);
     return result;
-};
+  };
   showAllVirtualContestByUser = async (userId) => {
     const query = `
         SELECT C.*

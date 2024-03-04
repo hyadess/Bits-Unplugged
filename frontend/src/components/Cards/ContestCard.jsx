@@ -71,25 +71,28 @@ const ContestCard = ({
   const [isRegistered, setRegistered] = useState(false);
   const [virtualParticipant, setVirtualParticipant] = useState(null);
 
-  const handleButtonClick = async () => {
+  const enterVirtualContest = async () => { 
+    const res2 = await contestApi.deleteVirtualParticipant(id);
+    const res = await contestApi.participateVirtualContest(id);
+    if (res.success && res2.success) {
+      setRegistered(true);
+      showToast("You are in virtual " + name, "success");
+    }
+  
     navigate(`/contests/${id}`);
-    if (new Date(endDate).getTime() < Date.now()){
-      
-      if(virtualParticipant?.data.length>0){
-        if(new Date().getTime() > (new Date(virtualParticipant.data[0].createdAt).getTime()+ duration*60*60*1000)){
-          const res2 = await contestApi.deleteVirtualParticipant(id);
-          const res = await contestApi.participateVirtualContest(id);
-          if (res.success && res2.success) {
-            setRegistered(true);
-            showToast("You are in virtual " + name, "success");
-          }
+  }
+
+  const handleButtonClick = async () => {
+    console.log("virtual participant", virtualParticipant);
+    if (new Date(endDate).getTime() < Date.now()){  
+      if(virtualParticipant?.data.length>0){   
+        if(new Date().getTime() > (new Date(virtualParticipant.data[0].createdAt).getTime()+ duration*60*60*1000)){ 
+          setOpen(true);
+        }else{
+          navigate(`/contests/${id}`);
         }
       }else{
-        const res = await contestApi.participateVirtualContest(id);
-        if (res.success) {
-          setRegistered(true);
-          showToast("You are in virtual " + name, "success");
-        }
+        setOpen(true);
       }
     }
   };
@@ -243,33 +246,32 @@ const ContestCard = ({
                 </div>
               )}
             </div>
+            {new Date(endDate).getTime() > Date.now() && 
+                (new Date(startDate).getTime() < Date.now() && isRegistered) ||
+                (new Date(endDate).getTime() < Date.now())
+                 ? (
+                <div
+                  onClick={() => handleButtonClick()}
+                  className="bu-button-primary flex flex-row gap-1 justify-center items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium w-full cursor-pointer"
+                >
+                  <div className="text-lg">
+                    <FontAwesomeIcon icon={faDoorOpen} />
+                  </div>
+                  <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
+                    { new Date(endDate).getTime() > Date.now() 
+                      ? 'Participate'
+                      : 'Virtual'}
+                  </h5>
+                </div>
+              ) : null}
 
-            <div
-              onClick={() => handleButtonClick()}
-              className="bu-button-primary flex flex-row gap-1 justify-center items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium w-full cursor-pointer"
-            >
-              <div className="text-lg">
-                <FontAwesomeIcon icon={faDoorOpen} />
-              </div>
-              {new Date(startDate).getTime() < Date.now() &&
-              new Date(endDate).getTime() > Date.now() &&
-              isRegistered ? (
-                <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
-                  Participate
-                </h5>
-              ) : (
-                <h5 className="bu-text-primary text-center text-lg font-bold tracking-tight">
-                  Enter
-                </h5>
-              )}
-            </div>
           </div>
         </div>
 
         <Confirmation
           open={open}
           setOpen={setOpen}
-          onConfirm={registerAction}
+          onConfirm={enterVirtualContest}
           param={id}
         />
       </div>

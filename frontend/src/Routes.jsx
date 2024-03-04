@@ -167,16 +167,19 @@ const ContestWrapper = () => {
         if (new Date().getTime() < startDateTime.getTime() + contestDuration) {
           setstartTime(startDateTime);
           setendTime(new Date(startDateTime.getTime() + contestDuration));
-        } else {
+        } else if(virtualParticipant.data.length>0){
           setstartTime(new Date(virtualParticipant.data[0].createdAt));
           setendTime(
             new Date(
               new Date(virtualParticipant.data[0].createdAt).getTime() +
                 contestDuration
             )
-          );
-          
+          );          
+        } else {
+          setstartTime(startDateTime);
+          setendTime(new Date(startDateTime.getTime() + contestDuration));
         }
+        console.log("route endtime", endTime);
       }
     } catch (error) {
       console.error("Error fetching contest details", error);
@@ -212,26 +215,36 @@ const ContestWrapper = () => {
       }
       right={
         <div className="flex flex-col gap-5 w-full">
-          <div>
-            {startTime !== null && endTime !== null ? (
-              new Date().getTime() < startTime ? (
-                <>
-                  <ExpiredNotice msg="Contest starts in" />
-                  <CountdownTimer targetDate={startTime} flag={"start"} />
-                </>
-              ) : (
-                <CountdownTimer targetDate={endTime} flag={"end"} />
-              )
-            ) : (
+          {isPreview ? (
+            <div>
               <div />
-            )}
-          </div>
-
+            </div>
+          ) : (
+            <div>
+              {startTime !== null && endTime !== null ? (
+                new Date().getTime() < startTime ? (
+                  <>
+                    <ExpiredNotice msg="Contest starts in" />
+                    <CountdownTimer targetDate={startTime} flag={"start"} />
+                  </>
+                ) : (
+                  <CountdownTimer targetDate={endTime} flag={"end"} />
+                )
+              ) : (
+                <div />
+              )}
+            </div>
+          )}
+      
           <div className="w-full">
-            {new Date().getTime() >= startTime && <ContestProblemList preview={isPreview}/>}
+            {new Date().getTime() >= startTime && (
+              <ContestProblemList preview={isPreview} />
+            )}
           </div>
         </div>
       }
+      
+      
     >
       <Outlet />
     </LayoutMain>
@@ -513,44 +526,7 @@ const AppRoutes = () => {
             }
           />
 
-          <Route element={<ContestWrapper />}>
-            <Route path="/contests/:id/preview" element={<UserContestDetails preview/>} />
-              <Route path="/contests/:id" element={<UserContestDetails />} />
-              <Route
-                path="/contests/:id/problems/:problemid/preview"
-                element={<UserContest preview/>}
-              />
-              <Route
-                path="/contests/:id/problems/:problemid"
-                element={<UserContest />}
-              />
-              <Route
-                path="/contests/:id/editorial/preview"
-                element={<EditorialPreview />}
-              />
-              <Route
-                path="/contests/:id/editorial"
-                element={<EditorialPreview />}
-              />
-              <Route
-                path="/contests/:id/problems/:problemId/submissions/preview"
-                element={<ContestSubmissions />}
-              />
-              <Route
-                path="/contests/:id/problems/:problemId/submissions"
-                element={<ContestSubmissions />}
-              />
-              <Route
-                path="/contests/:id/:username/preview"
-                element={<ContestParticipant />}
-              />
-              <Route
-                path="/contests/:id/:username"
-                element={<ContestParticipant />}
-              />
-              <Route path="/contests/:id/leaderboard/preview" element={<Leaderboard />} />
-            <Route path="/contests/:id/leaderboard" element={<Leaderboard />} />
-          </Route>
+          
 
 
 
@@ -558,43 +534,44 @@ const AppRoutes = () => {
 
         <Route element={<ProblemSolver />}>
           <Route element={<ContestWrapper />}>
-          <Route path="/contests/:id/preview" element={<UserContestDetails preview/>} />
+          {/* <Route path="/contests/:id/preview" element={<UserContestDetails preview/>} /> */}
             <Route path="/contests/:id" element={<UserContestDetails />} />
-            <Route
+            {/* <Route
               path="/contests/:id/problems/:problemid/preview"
               element={<UserContest preview/>}
-            />
+            /> */}
             <Route
               path="/contests/:id/problems/:problemid"
               element={<UserContest />}
             />
-            <Route
+            {/* <Route
               path="/contests/:id/editorial/preview"
               element={<EditorialPreview />}
-            />
+            /> */}
             <Route
               path="/contests/:id/editorial"
               element={<EditorialPreview />}
             />
-            <Route
+            {/* <Route
               path="/contests/:id/problems/:problemId/submissions/preview"
               element={<ContestSubmissions />}
-            />
+            /> */}
             <Route
               path="/contests/:id/problems/:problemId/submissions"
               element={<ContestSubmissions />}
             />
-            <Route
+            {/* <Route
               path="/contests/:id/:username/preview"
               element={<ContestParticipant />}
-            />
+            /> */}
             <Route
               path="/contests/:id/:username"
               element={<ContestParticipant />}
             />
-            <Route path="/contests/:id/leaderboard/preview" element={<Leaderboard />} />
+            {/* <Route path="/contests/:id/leaderboard/preview" element={<Leaderboard preview/>} /> */}
             <Route path="/contests/:id/leaderboard" element={<Leaderboard />} />
           </Route>
+
           <Route
             path="/problems/:id"
             element={
@@ -742,6 +719,26 @@ const AppRoutes = () => {
         <Route element={<User />}>
           <Route path="/user/:username" element={<SolverProfile />} />
           <Route path="/setter/:username" element={<ProfileForSetter />} />
+          <Route element={<ContestWrapper />}>
+            <Route path="/contests/:id/preview" element={<UserContestDetails preview/>} />              
+              <Route
+                path="/contests/:id/problems/:problemid/preview"
+                element={<UserContest preview/>}
+              />              
+              <Route
+                path="/contests/:id/editorial/preview"
+                element={<EditorialPreview />}
+              />              
+              <Route
+                path="/contests/:id/problems/:problemId/submissions/preview"
+                element={<ContestSubmissions />}
+              />              
+              <Route
+                path="/contests/:id/:username/preview"
+                element={<ContestParticipant />}
+              />
+              <Route path="/contests/:id/leaderboard/preview" element={<Leaderboard  preview/>} />
+          </Route>
         </Route>
         {type >= 0 && (
           <Route

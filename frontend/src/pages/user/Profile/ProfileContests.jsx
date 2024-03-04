@@ -78,12 +78,13 @@ const ProfileContestsView = ({
                 status={contest.status}
                 updatedAt={contest.updatedAt}
                 userID={userID}
+                path={`/contests/${contest.id}/preview`}
                 difficulty={contest.difficulty}
                 // change here
-                rank={contest.rank ?? 49}
-                solved={contest.solved ?? 3}
-                ratingChange={contest.ratingChange ?? 19}
-                newRating={contest.newRating ?? 819}
+                rank={contest.ratings[0]?.rank ?? 49}
+                solved={contest.solved ?? 2 + Math.floor(Math.random() * 5)}
+                ratingChange={contest.ratings[0]?.change ?? 19}
+                newRating={contest.ratings[0]?.rating ?? 819}
               />
             ))}
           </TableContainer>

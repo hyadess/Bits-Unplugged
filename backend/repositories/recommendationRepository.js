@@ -38,7 +38,7 @@ class RecommendationRepository extends Repository {
         JOIN "Series" "S" ON "P"."seriesId"="S"."id"
         JOIN "Topics" "T" ON "S"."topicId"="T"."id"
         JOIN "Activities" "A" ON "P"."id" = "A"."problemId"
-        WHERE "P"."rating" BETWEEN ($1 - 100) AND ($1 + 100) AND "P"."id" NOT IN (
+        WHERE "P"."rating" BETWEEN ($1 - 300) AND ($1 + 500) AND "P"."id" NOT IN (
         SELECT "A"."problemId" FROM "Activities" "A" WHERE "A"."userId"=$2 AND "A"."isSolved"=TRUE
         )
         GROUP BY "P"."id", "P"."seriesId","P"."title","P"."rating","S"."name","T"."name"

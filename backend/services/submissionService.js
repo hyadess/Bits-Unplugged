@@ -34,7 +34,8 @@ class SubmissionService extends Service {
         problemId,
         userId,
       });
-      await ratingController.ratingUpdateHandler(problemId);
+      console.log("rating update",submission.createdAt)
+      await ratingController.ratingUpdateHandler(problemId,submission.createdAt?? new Date());
 
       return { success: true , id: res};
     } catch (err) {

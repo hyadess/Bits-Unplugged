@@ -143,13 +143,13 @@ class RatingRepository extends Repository {
         return result;
     };
 
-    updateProblemRating = async (problemId, newRating) => {
+    updateProblemRating = async (problemId, newRating,timestamp) => {
         const query = `
             UPDATE "ProblemVersions"
-            SET "rating" = $1, "ratingUpdated" = CURRENT_TIMESTAMP
+            SET "rating" = $1, "ratingUpdated" = $3
             WHERE "id" = $2
         `;
-        const params = [newRating, problemId];
+        const params = [newRating, problemId,timestamp];
         const result = await this.query(query, params);
         return result;
     };

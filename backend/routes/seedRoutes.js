@@ -13,9 +13,12 @@ router.post("/submissions", async (req, res) => {
         for (let t = 0; t < Math.floor(Math.random() * 10); t++)
           await submissionService.submitSolution(userId, problemId, {
             // pick a random verdict for each submission
-            verdict: ["Accepted", "Wrong answer"][
-              Math.floor(Math.random() * 2)
-            ],
+            verdict: [
+              "Wrong answer",
+              "Accepted",
+              "Wrong answer",
+              "Wrong answer",
+            ][Math.floor(Math.random() * 4)],
             canvasData: {},
             duration: 3 + Math.floor(Math.random() * 100),
             userActivity: {},

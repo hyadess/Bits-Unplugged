@@ -54,6 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       approvalStatus: DataTypes.INTEGER,
       feedback: DataTypes.TEXT,
       rating: DataTypes.INTEGER,
+      ratingUpdated: DataTypes.DATE,
     },
     {
       sequelize,

@@ -23,6 +23,29 @@ class RatingRepository extends Repository {
     //     return result;
     // };
 
+    getProblemById = async (problemId) => {
+        const query = `
+            SELECT "P".*
+            FROM "ProblemVersions" "P"
+            WHERE "P"."id" = $1 AND "P"."approvalStatus" = 1
+        `;
+        const params = [problemId];
+        const result = await this.query(query, params);
+        return result;
+    }
+
+    updateRatingUpdated = async (problemId) => {
+        const query = `
+            UPDATE "ProblemVersions"
+            SET "ratingUpdated" = CURRENT_TIMESTAMP
+            WHERE "id" = $1
+        `;
+        const params = [problemId];
+        const result = await this.query(query, params);
+        return result;
+    }
+
+
 
     //for user rating table............................................
 
@@ -120,13 +143,13 @@ class RatingRepository extends Repository {
         return result;
     };
 
-    updateProblemRating = async (problemId, newRating) => {
+    updateProblemRating = async (problemId, newRating,timestamp) => {
         const query = `
             UPDATE "ProblemVersions"
-            SET "rating" = $1
+            SET "rating" = $1, "ratingUpdated" = $3
             WHERE "id" = $2
         `;
-        const params = [newRating, problemId];
+        const params = [newRating, problemId,timestamp];
         const result = await this.query(query, params);
         return result;
     };

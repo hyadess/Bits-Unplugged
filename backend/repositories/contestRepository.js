@@ -39,6 +39,10 @@ class ContestRepository extends Repository {
     });
   };
 
+  //dihan!!!!!!!...........JOIN userRating table on contestid and there you can find everything you want (rating change, rank)..
+  //for solveCount, contestSubmission JOIN,,,,,,,,,,,,,,,,
+  ///evabe query korte parina!!!!!!!!
+
   getAllParticipatedContests = async (userId) => {
     // write a sequelize query to get all contests that the user has submissions in
     return await db.Contest.findAll({

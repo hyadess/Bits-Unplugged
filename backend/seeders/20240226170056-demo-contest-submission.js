@@ -33,6 +33,22 @@ module.exports = {
         },
         {
           participantId: 1,
+          contestProblemId: 1,
+          verdict: "Wrong answer",
+          points: 0,
+          duration: 90,
+          submittedAt: 355000,
+        },
+        {
+          participantId: 1,
+          contestProblemId: 1,
+          verdict: "Wrong answer",
+          points: 0,
+          duration: 40,
+          submittedAt: 425000,
+        },
+        {
+          participantId: 1,
           contestProblemId: 2,
           verdict: "Accepted",
           points: 220,

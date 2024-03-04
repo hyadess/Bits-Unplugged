@@ -94,7 +94,7 @@ export default function ProfileContestCard({
               ratingChange >= 0 ? "text-green-500" : "text-red-500"
             }`}
           >
-            {`${ratingChange >= 0 ? "+" : "-"}${ratingChange}`}
+            {`${ratingChange >= 0 ? "+" : ""}${ratingChange}`}
           </h3>
           <div className="text-center w-[20%] text-lg  bu-text-primary">
             {newRating}

@@ -47,28 +47,36 @@ class ContestRepository extends Repository {
     // write a sequelize query to get all contests that the user has submissions in
     return await db.Contest.findAll({
       include: [
+        // {
+        //   model: db.ContestProblem,
+        //   attributes: ["id"],
+        //   required: true,
+        //   as: "problems",
+        //   include: [
+        //     {
+        //       model: db.ContestSubmission,
+        //       attributes: ["id"], // We don't need to return any attributes from the ContestSubmission table
+        //       required: true,
+        //       as: "submissions",
+        //       include: {
+        //         model: db.Participant,
+        //         as: "participant",
+        //         attributes: ["userId"], // We don't need to return any attributes from the Participant table
+        //         required: true,
+        //         where: {
+        //           userId: userId,
+        //         },
+        //       },
+        //     },
+        //   ],
+        // },
         {
-          model: db.ContestProblem,
-          attributes: ["id"],
+          model: db.UserRating,
           required: true,
-          as: "problems",
-          include: [
-            {
-              model: db.ContestSubmission,
-              attributes: ["id"], // We don't need to return any attributes from the ContestSubmission table
-              required: true,
-              as: "submissions",
-              include: {
-                model: db.Participant,
-                as: "participant",
-                attributes: ["userId"], // We don't need to return any attributes from the Participant table
-                required: true,
-                where: {
-                  userId: userId,
-                },
-              },
-            },
-          ],
+          as: "ratings",
+          where: {
+            userId: userId,
+          },
         },
       ],
     });
@@ -1007,7 +1015,7 @@ class ContestRepository extends Repository {
     const params = [contestId, userId, 1];
     const result = await this.query(query, params);
     return result;
-};
+  };
   showAllVirtualContestByUser = async (userId) => {
     const query = `
         SELECT C.*

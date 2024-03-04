@@ -35,6 +35,7 @@ export default function RatingGraph() {
         },
       },
     },
+
     yaxis: {
       title: {
         text: "rating",
@@ -155,19 +156,19 @@ export default function RatingGraph() {
   }, [userId]);
 
   return (
-    <div className="flex flex-row">
-      <div className="bu-card-primary pr-5 pl-3 mt-10 pt-3 mr-4 mb-3 rounded-lg shadow-md w-30% flex flex-col items-center">
-        <p className="mb-4 mt-20 text-center md:text-left  text-green-500 md:text-5xl font-bold">
+    <div className="flex flex-row relative">
+      <div className="left-[4rem] top-3 pr-5 pl-3 pt-3  w-30% flex flex-col items-center absolute">
+        <p className="text-center md:text-left  text-green-500 md:text-5xl font-bold">
           <FontAwesomeIcon icon={faStar} />
-          {rating===null?"Unranked":rating}
+          {rating === null ? "Unranked" : rating}
         </p>
-        <p className="mb-8 text-center md:text-left  font-light  md:text-3xl bu-text-subtitle">
+        <p className="text-center md:text-left  font-light  md:text-3xl bu-text-subtitle">
           <FontAwesomeIcon icon={faRankingStar} />
-          {position===null?"Unranked":position}
+          {position === null ? "Unranked" : position}
         </p>
       </div>
 
-      <div className="bu-card-primary pr-5 pl-3 mt-10 pt-3 ml-4 mb-3 rounded-lg shadow-md w-75%">
+      <div className="bu-card-primary pr-5 pl-3 pt-3 rounded-lg shadow-md w-full">
         {ratingHistoryData?.length > 0 && (
           <Chart
             options={options}

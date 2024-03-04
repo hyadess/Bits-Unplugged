@@ -137,6 +137,9 @@ export default function ScheduledContestCard({
               const res = await ratingApi.updateAllUserRating(id);
               if (res.success) {
                 console.log("Leaderboard published");
+                const res2 = await contestApi.updateContest(id, {
+                  status: "rated",
+                });
               }
             }}
           >

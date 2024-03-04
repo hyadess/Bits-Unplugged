@@ -887,6 +887,39 @@ class ContestRepository extends Repository {
     return result;
   };
 
+  getRatedLeaderBoard = async (contestId) => {
+    const query = `
+        SELECT
+        "U"."id",
+        "U"."username",
+        "U"."image",
+        "U"."fullname",
+        "CP"."type",
+        "UR"."change",
+        SUM("CS"."points") AS "points"
+        FROM
+        "ContestSubmissions" "CS"
+        JOIN
+        "Participants" "CP" ON "CP"."id" = "CS"."participantId"
+        JOIN
+        "Contests" "C" ON "C"."id" = "CP"."contestId"
+        JOIN
+        "Users" "U" ON "U"."id" = "CP"."userId"
+        JOIN
+        "UserRatings" "UR" ON "UR"."userId" = "U"."id" AND "UR"."contestId" = "C"."id"
+        WHERE
+        "C"."id" = $1
+        GROUP BY
+        "U"."id","U"."username","CP"."type"
+        ORDER BY
+        "points" DESC;
+        `;
+    const params = [contestId];
+    const result = await this.query(query, params);
+
+    return result;
+  };
+
   getTimeline = async (contestId) => {
     const query = `
         SELECT

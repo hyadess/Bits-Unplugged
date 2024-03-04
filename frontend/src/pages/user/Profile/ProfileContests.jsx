@@ -78,6 +78,7 @@ const ProfileContestsView = ({
                 status={contest.status}
                 updatedAt={contest.updatedAt}
                 userID={userID}
+                path={`/contests/${contest.id}/preview`}
                 difficulty={contest.difficulty}
                 // change here
                 rank={contest.ratings[0]?.rank ?? 49}

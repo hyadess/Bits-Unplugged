@@ -13,7 +13,9 @@ class ContestRepository extends Repository {
     // write a sequelize query to get all contests with owner and collaboratos
     return await db.Contest.findAll({
       where: {
-        status: "scheduled",
+        status: {
+          [Op.or]: ["scheduled", "rated"],
+        },
       },
       order: [["updatedAt", "DESC"]],
       include: [

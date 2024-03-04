@@ -1105,7 +1105,7 @@ export default function Profile() {
     <div className="flex flex-col pr-20">
       {/* <ProfileInfo /> */}
       {/*<Title title={"Profile statistics"} />*/}
-      <RatingGraph />
+      {/* <RatingGraph /> */}
       <div className="grid grid-cols-2 items-end gap-8 py-8">
         <div className="">
           {/* <Title
@@ -1114,7 +1114,8 @@ export default function Profile() {
               "chart shows your total successful and failed attempts accross all the topics"
             }
           /> */}
-          <PieChart barChartData={barChartData} />
+          <RatingGraph />
+          {/* <PieChart barChartData={barChartData} /> */}
         </div>
 
         <div>
@@ -1129,14 +1130,15 @@ export default function Profile() {
 
         <div>
           {/* <Title title={""} sub_title={"Time you spent solving problems"} /> */}
-          <ActivityGraph />
+          <SolveTimeGraph />
         </div>
         <div className="">
           {/* <Title
             title={""}
             sub_title={"Your Solve time for different problems"}
           /> */}
-          <SolveTimeGraph />
+
+          <ActivityGraph />
         </div>
       </div>
 

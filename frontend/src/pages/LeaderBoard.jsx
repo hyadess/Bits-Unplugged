@@ -16,14 +16,13 @@ import "./LeaderBoard.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartArea, faChartLine } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "App";
-const Leaderboard = ({}) => {
+const Leaderboard = ({ preview }) => {
   const { id } = useParams();
   const [endTime, setEndTime] = useState();
   const [contest, setContest] = useState(null);
   const [leaderboard, setLeaderboard] = useState(null);
   const [timelineData, setTimelineData] = useState([]);
   const [leaderboardMode, setLeaderboardMode] = useState(0);
-
 
   const navigate = useNavigate();
 
@@ -33,7 +32,7 @@ const Leaderboard = ({}) => {
       setContest(res.data[0]);
       console.log("contest: ", res.data[0]);
     }
-    const leaderboardRes = await contestApi.getLeaderboard(id,type);
+    const leaderboardRes = await contestApi.getLeaderboard(id, type);
     if (leaderboardRes.success) {
       console.log(leaderboardRes);
       setLeaderboard(leaderboardRes.data);
@@ -166,8 +165,8 @@ const Leaderboard = ({}) => {
             fontWeight: 400,
           },
         },
-        tickAmount: 8,
-        min: 0,
+        // tickAmount: 8,
+        // min: 0,
         // max: parseInt(contest?.totalPoints),
       },
       grid: {
@@ -322,7 +321,9 @@ const Leaderboard = ({}) => {
               class="leaderboard__profile"
               onClick={() => {
                 setLoading(true);
-                navigate(`/contests/${id}/${user.username}`);
+                preview
+                  ? navigate(`/contests/${id}/${user.username}/preview`)
+                  : navigate(`/contests/${id}/${user.username}`);
               }}
             >
               <div className="flex flex-row w-[70%] items-center gap-10">

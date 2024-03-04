@@ -12,7 +12,7 @@ module.exports = {
           setterId: 2,
           title: "The Tower of Hanoi",
           subtitle: "A Fascinating Puzzle of Mathematical Beauty",
-          approvalStatus: "pending",
+          approvalStatus: "approved",
           content: JSON.stringify([
             {
               boxId: 1,
@@ -41,26 +41,8 @@ module.exports = {
             },
             {
               boxId: 6,
-              type: "canvas",
-              canvasId: 2,
-              canvasData: JSON.stringify({
-                pegs: [[0, 1, 2], [], []],
-              }),
-              checkerCode:
-                "/**\n *\n * @param {Object} data - An object containing pegs and disks.\n * @param {Array} data.pegs - Array of list of disks.\n * @returns {boolean} True if the solution is valid, otherwise false.\n */\nfunction solutionChecker(userCanvas,solutionCanvas,userActivity) {\n  return JSON.stringify(userCanvas) === JSON.stringify(solutionCanvas);\n}\n",
-              editOptions: JSON.stringify({
-                customDisk: { value: true, type: "switch" },
-                ordered: { value: true, type: "switch" },
-              }),
-              previewOptions: JSON.stringify({
-                moves: { value: false, type: "switch" },
-                nDisks: { value: false, type: "switch" },
-                customDisk: { value: false, type: "switch" },
-                undo: { value: true, type: "switch" },
-              }),
-              checkerCanvas: JSON.stringify({
-                pegs: [[], [], [0, 1, 2]],
-              }),
+              type: "markdown",
+              data: "# Example \n Move the 3 disks from left peg to right peg. You can use the middle peg to temporarily keep the disks.",
             },
             {
               boxId: 7,
@@ -87,6 +69,11 @@ module.exports = {
             },
             {
               boxId: 8,
+              type: "markdown",
+              data: "# Solution \n Initial Configuration: Let's say you have three rods labeled A, B, and C. Initially, all three disks are stacked on rod A, with the largest disk at the bottom and the smallest at the top. \n Move Disk 1 to Rod C: Start by moving the smallest disk (disk 1) from rod A to rod C. This is the only move possible for the smallest disk. \n Move Disk 2 to Rod B: Next, move the second smallest disk (disk 2) from rod A to rod B. Since we cannot place a larger disk on top of a smaller one, disk 2 must be placed on rod B. \n Move Disk 1 to Rod B: Now, move the smallest disk (disk 1) from rod C to rod B. This completes the transfer of disks 1 and 2 to rod B, with disk 2 being the largest on rod B. \n Move Disk 3 to Rod C: Move the largest disk (disk 3) from rod A to rod C. Since disk 3 is larger than disks 1 and 2, it can be placed on rod C without violating the rules. \n Move Disk 1 to Rod A: Now, move disk 1 from rod B to rod A. This step ensures that disk 1 is positioned on rod A, allowing us to move disk 2 onto disk 3 in the next step. \n Move Disk 2 to Rod C: Finally, move disk 2 from rod B to rod C. Since disk 2 is smaller than disk 3, it can be placed on top of disk 3 without violating the rules.\n Move Disk 1 to Rod C: Optionally, move disk 1 from rod A to rod C. This step is not necessary to complete the Tower of Hanoi with 3 disks, but it can be performed if you want to return all disks to rod C..",
+            },
+            {
+              boxId: 9,
               type: "slideshow",
               images: JSON.stringify([
                 { url: "/images/toh_1.png", caption: "Caption 1" },
@@ -120,6 +107,7 @@ module.exports = {
           subtitle: "A Mathematical Marvel in Art and Nature",
           content: JSON.stringify([]),
           isLive: false,
+          approvalStatus: "pending",
           serialNo: 1,
         },
       ],

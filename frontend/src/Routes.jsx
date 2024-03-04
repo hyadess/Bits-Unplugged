@@ -174,9 +174,9 @@ const ContestWrapper = () => {
               new Date(virtualParticipant.data[0].createdAt).getTime() +
                 contestDuration
             )
-          );
-          
+          );          
         }
+        console.log("route endtime", endTime);
       }
     } catch (error) {
       console.error("Error fetching contest details", error);

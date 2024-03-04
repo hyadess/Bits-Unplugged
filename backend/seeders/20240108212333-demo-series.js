@@ -12,7 +12,7 @@ module.exports = {
           name: "Tower Of Hanoi",
           description:
             "Classic puzzle that challenges players to move a stack of disks from one peg to another, following strict rules, in the fewest possible moves.",
-          logo: "https://us.123rf.com/450wm/ylivdesign/ylivdesign1701/ylivdesign170109038/70429747-colorful-pyramid-toy-icon-cartoon-illustration-of-colorful-pyramid-toy-vector-icon-for-web.jpg?ver=6",
+          logo: "https://favtutor.com/resources/images/uploads/Tower_of_Hanoi_using_C++.png",
           isLive: true,
         },
         {

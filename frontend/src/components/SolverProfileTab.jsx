@@ -49,6 +49,7 @@ const SolverProfileTab = (props) => {
   }, [username]);
 
   useEffect(() => {
+    if (userId === null) return;
     //setLoading(true);
     getRating();
   }, [userId]);

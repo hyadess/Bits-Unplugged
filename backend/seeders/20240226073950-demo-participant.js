@@ -17,7 +17,7 @@ module.exports = {
       "Participants",
       [
         // me
-        { contestId: 1, userId: 7, type: 1 },
+        { contestId: 1, userId: 7, type: 0 },
         { contestId: 2, userId: 7, type: 0 },
 
         // with image
@@ -66,6 +66,12 @@ module.exports = {
         { contestId: 1, userId: 50, type: 0 },
         { contestId: 1, userId: 51, type: 0 },
         { contestId: 1, userId: 52, type: 0 },
+
+        // user rating
+        { contestId: 9, userId: 7, type: 0 },
+        { contestId: 10, userId: 7, type: 0 },
+        { contestId: 11, userId: 7, type: 0 },
+        { contestId: 12, userId: 7, type: 0 },
       ],
       {}
     );

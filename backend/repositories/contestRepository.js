@@ -913,7 +913,7 @@ class ContestRepository extends Repository {
         WHERE
         "C"."id" = $1
         GROUP BY
-        "U"."id","U"."username","CP"."type"
+        "U"."id","U"."username","CP"."type","UR"."change"
         ORDER BY
         "points" DESC;
         `;

@@ -22,6 +22,7 @@ export default function AdminArticles() {
     const res = await articleApi.getAllArticles();
 
     if (res.success) {
+      console.log("Articles:", res.data);
       // based on approval status put "pending" and "approved" articles in different lists
       const pending = res.data.filter(
         (article) => article.approvalStatus === "pending"

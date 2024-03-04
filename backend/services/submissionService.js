@@ -2,9 +2,11 @@ const Service = require("./base");
 const SubmissionRepository = require("../repositories/submissionRepository");
 const ProblemRepository = require("../repositories/problemRepository");
 const UserActivityRepository = require("../repositories/userActivityRepository");
+const RatingController = require("../controllers/ratingController");
 const userActivityRepository = new UserActivityRepository();
 const submissionRepository = new SubmissionRepository();
 const problemRepository = new ProblemRepository();
+const ratingController=new RatingController();
 class SubmissionService extends Service {
   constructor() {
     super();
@@ -32,6 +34,8 @@ class SubmissionService extends Service {
         problemId,
         userId,
       });
+      await ratingController.ratingUpdateHandler(problemId);
+
       return { success: true , id: res};
     } catch (err) {
       console.log(err);

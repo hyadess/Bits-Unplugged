@@ -167,7 +167,7 @@ const ContestWrapper = () => {
         if (new Date().getTime() < startDateTime.getTime() + contestDuration) {
           setstartTime(startDateTime);
           setendTime(new Date(startDateTime.getTime() + contestDuration));
-        } else {
+        } else if(virtualParticipant.data.length>0){
           setstartTime(new Date(virtualParticipant.data[0].createdAt));
           setendTime(
             new Date(
@@ -175,6 +175,9 @@ const ContestWrapper = () => {
                 contestDuration
             )
           );          
+        } else {
+          setstartTime(startDateTime);
+          setendTime(new Date(startDateTime.getTime() + contestDuration));
         }
         console.log("route endtime", endTime);
       }

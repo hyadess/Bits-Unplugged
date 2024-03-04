@@ -353,14 +353,22 @@ const Leaderboard = ({ preview }) => {
                 </div>
               </div>
               {user.change != null && (
-                <span
+                // <span
+                //   className={
+                //     "text-sm md:text-base bu-text-primary text border-2 px-2 rounded-full font-semibold cursor-default flex flex-row gap-2 items-center " +
+                //     (user.change > 0 ? "bg-[#aadfcf]" : "bg-[#ff9d96]")
+                //   }
+                // >
+                <div
                   className={
-                    "text-sm md:text-base bu-text-primary text border-2 px-2 rounded-full font-semibold cursor-default flex flex-row gap-2 items-center " +
-                    (user.change > 0 ? "bg-[#aadfcf]" : "bg-[#ff9d96]")
+                    "  font-bold text-2xl " +
+                    (user.change > 0 ? "text-[#3f7a23]" : "text-[#c44f47]")
                   }
                 >
-                  {user.change === null ? "" : `${user.change}`}
-                </span>
+                  {user.change < 0 ? `${user.change}` : `+ ${user.change}`}
+                </div>
+
+                // </span>
               )}
               <span class="leaderboard__value">
                 {user.points}

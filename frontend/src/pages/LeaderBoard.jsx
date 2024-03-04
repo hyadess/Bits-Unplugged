@@ -347,21 +347,21 @@ const Leaderboard = ({ preview }) => {
                     >
                       {user.type == 0 ? "live" : "virtual"}
                     </span>
-                    <span
-                      className={
-                        "text-sm md:text-base bu-text-primary text border-2 px-2 rounded-full font-semibold cursor-default flex flex-row gap-2 items-center " +
-                        (user.type == 0 ? "bg-[#aadfcf]" : "bg-gray-200")
-                      }
-                    >
-                      {user.change}
-                    </span>
-
                   </div>
 
                   <h1 className="bu-text-subtitle">@{user.username}</h1>
                 </div>
               </div>
-
+              {user.change != null && (
+                <span
+                  className={
+                    "text-sm md:text-base bu-text-primary text border-2 px-2 rounded-full font-semibold cursor-default flex flex-row gap-2 items-center " +
+                    (user.change > 0 ? "bg-[#aadfcf]" : "bg-[#ff9d96]")
+                  }
+                >
+                  {user.change === null ? "" : `${user.change}`}
+                </span>
+              )}
               <span class="leaderboard__value">
                 {user.points}
                 {/* <span>points</span> */}

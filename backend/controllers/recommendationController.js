@@ -80,8 +80,9 @@ class RecommendationController extends Controller{
             console.log("r",r);
             problems=problems.concat(r);
         }
+        
         //console.log("problems",problems);
-        res.status(200).json(problems);
+        res.status(200).json(problems.slice(0,5));
 
 
 

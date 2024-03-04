@@ -47,14 +47,39 @@ class RatingController extends Controller{
             res.status(500).json(result);
         }
     };
-    
-
-
 
 
     //userRating affecting problem rating.........................
 
     
+    ratingUpdateHandler = async (problemId) => {
+
+        const minDif=0;
+        const problem=await ratingRepository.getProblemById(problemId);
+        
+        if(problem.data.length>0){
+            
+            var date1 = new Date(problem.data[0].ratingUpdated).getTime();
+            var date2 = new Date().getTime();
+
+            
+            var difference = Math.abs(date2 - date1);
+            
+
+            
+            var differenceInDays = difference / (1000 * 3600 * 24);
+
+            //console.log("*********************************rating handler called",differenceInDays);
+            if (differenceInDays >= minDif) {
+                this.updateProblemRating(problemId);
+               
+            }
+    
+        }
+    }
+
+
+
 
 
     getUserRatingsAndAttemptsByProblem = async (problemId) => {
@@ -81,6 +106,63 @@ class RatingController extends Controller{
 
     };
 
+    updateProblemRating = async (problemId) => {
+        const res=await ratingRepository.getProblemById(problemId);
+        
+        //console.log("*********************************rating handler called",problem)
+        
+        if(res.data.length>0){
+            const userActivity=await this.getUserRatingsAndAttemptsByProblem(problemId);
+            console.log("*********************************rating handler called",userActivity)
+            const problem=res.data[0];
+            //console.log(userActivity);
+            if(userActivity.length>0){
+                
+                //console.log(problem.id,problem.rating,userActivity.length);
+                let newRating=0;
+                let sum=0;
+                userActivity.forEach((activity)=>{
+                    const userRating=activity.rating;
+                    console.log("userRating",userRating);
+                    let dif=Math.abs(problem.rating-userRating);
+                    const wa=activity.failed_submissions;
+                    const duration=activity.duration;
+                    console.log("wa and duration and dif",wa,duration,dif);
+                    let cur=0.3*(800+wa*50)+0.7*(800+Math.max(duration-10,0))
+                    console.log("cur",cur);
+                    //cur=(3500.0-800.0) / (1.0 + Math.exp(-0.1 *cur))+800.0;
+                    if(cur<800.0)
+                    {
+                        cur=800.0;
+                    }
+                    if(cur>3500.0)
+                    {
+                        cur=3500.0;
+                    }
+
+                    dif=4000-dif;
+                    console.log("rating difference and cur",dif,cur);
+                    sum+=dif;
+                    newRating+=dif*cur;
+
+
+                    
+                });
+                if(sum!=0)
+                {
+                    newRating/=sum;
+                    newRating=Math.round(newRating);
+                    console.log(problem.id,problem.rating,newRating)
+                    const res=await ratingRepository.updateProblemRating(problem.id,newRating);
+                    if(!res.success) flag=false;
+
+                }
+                    
+
+            }
+        
+        }
+    }
 
     updateAllproblemRating = async (req,res) => {
         const problems=await this.getLatestProblemsWithRatings();

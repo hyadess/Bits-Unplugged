@@ -38,10 +38,57 @@ module.exports = {
             {
               boxId: 3,
               type: "markdown",
-              data: "# C. Rearrange.",
+              data: "# C. Drag Sort.",
             },
             {
               boxId: 4,
+              type: "slideshow",
+              images: JSON.stringify([
+                {
+                  url: "/images/editorial/drag_sort_1.png",
+                  caption: "Caption 1",
+                },
+                {
+                  url: "/images/editorial/drag_sort_2.png",
+                  caption: "Caption 2",
+                },
+                {
+                  url: "/images/editorial/drag_sort_3.png",
+                  caption: "Caption 3",
+                },
+                {
+                  url: "/images/editorial/drag_sort_4.png",
+                  caption: "Caption 4",
+                },
+                {
+                  url: "/images/editorial/drag_sort_5.png",
+                  caption: "Caption 5",
+                },
+                {
+                  url: "/images/editorial/drag_sort_6.png",
+                  caption: "Caption 6",
+                },
+                {
+                  url: "/images/editorial/drag_sort_7.png",
+                  caption: "Caption 7",
+                },
+                {
+                  url: "/images/editorial/drag_sort_8.png",
+                  caption: "Caption 8",
+                },
+                {
+                  url: "/images/editorial/drag_sort_9.png",
+                  caption: "Caption 9",
+                },
+              ]),
+            },
+            {
+              boxId: 5,
+              type: "markdown",
+              data: "# D. Rearrange.",
+            },
+            {
+              boxId: 6,
               type: "slideshow",
               images: JSON.stringify([
                 {

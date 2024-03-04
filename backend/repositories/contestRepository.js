@@ -794,6 +794,7 @@ class ContestRepository extends Repository {
     );
 
     console.log("->", problemId, contestId, userId, participantResult);
+    if (participantResult.data === 0) return { success: false, error: "mara" };
     const participantId = participantResult.data[0].id;
 
     //get contest problem id....this part will not be needed if the provided problem id is contest problem id

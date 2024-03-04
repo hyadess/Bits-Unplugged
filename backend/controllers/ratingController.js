@@ -52,7 +52,7 @@ class RatingController extends Controller{
     //userRating affecting problem rating.........................
 
     
-    ratingUpdateHandler = async (problemId) => {
+    ratingUpdateHandler = async (problemId,timestamp) => {
 
         const minDif=0;
         const problem=await ratingRepository.getProblemById(problemId);
@@ -71,7 +71,7 @@ class RatingController extends Controller{
 
             //console.log("*********************************rating handler called",differenceInDays);
             if (differenceInDays >= minDif) {
-                this.updateProblemRating(problemId);
+                this.updateProblemRating(problemId,timestamp);
                
             }
     
@@ -106,14 +106,14 @@ class RatingController extends Controller{
 
     };
 
-    updateProblemRating = async (problemId) => {
+    updateProblemRating = async (problemId,timestamp) => {
         const res=await ratingRepository.getProblemById(problemId);
         
         //console.log("*********************************rating handler called",problem)
         
         if(res.data.length>0){
             const userActivity=await this.getUserRatingsAndAttemptsByProblem(problemId);
-            console.log("*********************************rating handler called",userActivity)
+            //console.log("*********************************rating handler called",timestamp)
             const problem=res.data[0];
             //console.log(userActivity);
             if(userActivity.length>0){
@@ -153,7 +153,7 @@ class RatingController extends Controller{
                     newRating/=sum;
                     newRating=Math.round(newRating);
                     console.log(problem.id,problem.rating,newRating)
-                    const res=await ratingRepository.updateProblemRating(problem.id,newRating);
+                    const res=await ratingRepository.updateProblemRating(problem.id,newRating,timestamp);
                     if(!res.success) flag=false;
 
                 }
@@ -208,7 +208,7 @@ class RatingController extends Controller{
                         newRating/=sum;
                         newRating=Math.round(newRating);
                         console.log(problem.id,problem.rating,newRating)
-                        const res=await ratingRepository.updateProblemRating(problem.id,newRating);
+                        const res=await ratingRepository.updateProblemRating(problem.id,newRating,new Date());
                         if(!res.success) flag=false;
 
                     }

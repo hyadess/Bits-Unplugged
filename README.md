@@ -18,8 +18,11 @@ Live and running on: https://bitsunplugged.onrender.com
 
 
 - **Problem Setting**: <br>
- <video width="320" height="240"  src="https://github.com/mahirlabibdihan/bitsunplugged/assets/62663759/42ae52c2-6765-4fbb-a38a-8965217e8449" autoplay loop muted>
+ <p align="center">
+ <video width="280" src="https://github.com/mahirlabibdihan/bitsunplugged/assets/62663759/42ae52c2-6765-4fbb-a38a-8965217e8449" autoplay loop muted>
   </video>
+ </p>
+
 <!--
   <video width="320" height="240" autoPlay loop muted>
   <source src="./frontend/public/videos/graph_dark.mp4" type="video/mp4" />

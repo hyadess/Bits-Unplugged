@@ -1,4 +1,4 @@
-    <h2 align="center">BITS UNPLUGGED</h3>
+<h2 align="center">BITS UNPLUGGED</h3>
 
 Live and running on: https://bitsunplugged.onrender.com
 
@@ -21,7 +21,7 @@ Live and running on: https://bitsunplugged.onrender.com
 ### Problem Setting 
 
 <p align="center">
-<video width="280" src="./frontend/public/videos/graph_dark.mp4" autoplay loop muted>
+<video width="280" src="https://github.com/mahirlabibdihan/bitsunplugged/assets/62663759/42ae52c2-6765-4fbb-a38a-8965217e8449" autoplay loop muted>
 </video>
 </p>
 

@@ -10,10 +10,10 @@ Live and running on: https://bitsunplugged.onrender.com
 
 ## Features
 
-- **Problem Solving**:
+- **Problem Solving**: <br>
   ![toh-dark](./frontend/public/gifs/toh_dark.gif)
 
-- **Problem Setting**:
+- **Problem Setting**: <br>
   <video width="320" height="240" autoplay loop muted>
     <source src="./frontend/public/videos/graph_dark.mp4" type="video/mp4">
   </video>

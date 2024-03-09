@@ -1,5 +1,9 @@
 <h2 align="center">BITS UNPLUGGED</h3>
 
+<p align="center">
+    <img src="./frontend/public/images/hero-drag.svg" alt="toh-dark">
+</p>
+
 Live and running on: https://bitsunplugged.onrender.com
 
 ## About The Project
@@ -12,13 +16,14 @@ Live and running on: https://bitsunplugged.onrender.com
 
 ### Problem Solving
 
+- Solve problems interactively, removing the overhead of coding.
 <p align="center">
     <img src="./frontend/public/gifs/toh_dark.gif" alt="toh-dark">
 </p>
 
+### Problem Setting
 
-
-### Problem Setting 
+- As a problem setter, you can create problems with our fully customizable canvas editors
 
 <p align="center">
 <video width="280" src="https://github.com/mahirlabibdihan/bitsunplugged/assets/62663759/42ae52c2-6765-4fbb-a38a-8965217e8449" autoplay loop muted>
@@ -30,15 +35,30 @@ Live and running on: https://bitsunplugged.onrender.com
   <source src="./frontend/public/videos/graph_dark.mp4" type="video/mp4" />
   </video>
 <video src='./frontend/public/videos/graph_dark.mp4' /> -->
+
 ### Read Articles
-Interactive Problem Solving
+
+- Topic wise Learning materials
+- Example problem and solution in each article
+- Recommend problems based on reading history
+
 ### Contest
-Realtime Contests
+
+- Participate in Realtime contests
+- Practice previous contests within a Virtual environment
+- Contest ratings
+
 ### Analytics
+
 Problem and User analytics
+
 ### Recommendation
-Guided Learning Paths
+
+- Get recommendations based on Contest rating, Article reading history and Practice problem performance
+
 ### Dashboard
+
+- Showcase problem solving skill
 
 ## Why Use Our Platform?
 

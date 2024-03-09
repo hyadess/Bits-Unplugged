@@ -1,36 +1,146 @@
-## Docker Setup
+<h2 align="center">BITS UNPLUGGED</h3>
 
-`Development: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d`
-`Production: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d`
+## About The Project
 
-## Local Setup:
+Live and running on: https://bitsunplugged.onrender.com
 
-- `Install PostgreSQL 15`
-- `Setup Deatabase`
-  - `Execute database/setup.bat (Windows)`
-  - `Execute database/setup.sh (Linux)`
-- `cd backend && npm i && npm run dev`
-- `cd frontend && npm i --force && npm run start`
+## Getting Started
 
-## Windows + Linux
+Follow the step by step installation procedure to install and run this on your machine.
 
-`git config --global core.eol lf`
-`git config --global core.autocrlf false`
+## Prerequisites
 
-## Push to Github
+Make sure you have node and postgresql installed in your device.
 
-`./dump.sh` <!-- If there are changes to database schema -->
-`git add dump.sql`
-`git commit -m "All changes"`
-`git checkout dev`
-`git pull origin dev`
-`git checkout <your_branch>`
-`git merge dev`
-`git push origin dev`
+**`NodeJs`**: Install Nodejs from [here](https://nodejs.org/en/download/)
+**`PostgreSQL`** Install PostgreSQL from [here](https://www.postgresql.org/download/)
 
-## Packages
+## Installation <a name="configuration"></a>
 
-Time picker: https://time.openstatus.dev/
-https://github.com/leandrocfe/filament-apex-charts
-https://github.com/uiwjs/react-markdown-preview
-https://manuarora.in/boxshadows
+1.  Clone the repo
+
+```sh
+git clone https://github.com/mahirlabibdihan/dEducation-frontend.git
+```
+
+2.  If you don't have git installed in your device then download zip
+3.  After installation or download go to the repository and open command line.
+
+### Configuring Backend
+
+1. Go to backend directory
+
+```sh
+cd backend
+```
+
+2. Install NPM packages
+
+```sh
+npm install
+```
+
+#### Configuring Database
+
+```sh
+npx sequelize db:create
+npx sequelize db:migrate
+npx sequelize db:seed:all
+```
+
+#### Setting up the environment variables
+
+create a new file `.env` in the root directory. And the file should have the followings
+
+```sh
+DB_USER=YOUR_DB_USER
+DB_PASS=YOUR_DB_PASS
+DB_PORT=POSTGRES_PORT
+DB_DB=YOUR_INITIAL_DATABASE
+PORT=YOUR_FAVOURITE_PORT
+JWT_SECRET=YOUR_DARKEST_SECRET
+EMAIL_USER=YOUR_EMAIL_ADDRESS
+EMAIL_PASS=YOUR_EMAIL_APP_PASSWORD
+```
+
+If you followed the above then the `.env` should look like this
+
+```sh
+DB_USER=postgres
+DB_PASSWORD=password
+DB_PORT=5432
+DB_DB=bitsunplugged
+PORT=5000
+JWT_SECRET=kuddusmia
+EMAIL_USER="1905072@ugrad.cse.buet.ac.bd"
+EMAIL_PASS="password_bolbo_na"
+```
+
+We are finally good to go
+
+#### Run the project
+
+Go to your favourite code editor and run
+
+```sh
+npm start
+```
+
+You should find that the project is working!
+
+### Configuring Frontend
+
+1. Go to frontend directory
+
+```sh
+cd frontend
+```
+
+2. Install NPM packages
+
+```sh
+npm install
+```
+
+3.  Ensure backend is configured and running correctly on "http://localhost:5000" (note the port number)
+
+#### Run the project
+
+Go to your favourite code editor and run
+
+```sh
+npm start
+```
+
+You should find that the project is working!
+
+## Languages, Tools and Frameworks:<a name="tools"></a>
+
+- <h4>Frontend</h4>
+
+  - React.js
+  - Tailwind
+  - Material Ui
+  - React-Konva
+
+- <h4>Backend</h4>
+
+  - Node.js
+  - Express.js
+  - PostgreSQL
+  - Sequelize ORM
+  - Passport.js
+
+## Supervisor
+
+- Hasebul Hasan
+
+  - **Adjunt Lecturer**
+
+    :arrow_forward: **Contact:**
+
+    Department of Computer Science and Engineering
+    Bangladesh University of Engineering and Technology
+    Dhaka-1000, Bangladesh
+
+<p align="right">(<a href="#top">back to top</a>)</p>

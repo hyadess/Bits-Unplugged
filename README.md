@@ -10,16 +10,16 @@ Live and running on: https://bitsunplugged.onrender.com
 
 ## Features
 
-- **Problem Solving**: <br>
+### Problem Solving
     <p align="center">
         <img src="./frontend/public/gifs/toh_dark.gif" alt="toh-dark">
     </p>
 
 
 
-- **Problem Setting**: <br>
+### Problem Setting 
  <p align="center">
- <video width="280" src="https://github.com/mahirlabibdihan/bitsunplugged/assets/62663759/42ae52c2-6765-4fbb-a38a-8965217e8449" autoplay loop muted>
+ <video width="280" src="./frontend/public/videos/graph_dark.mp4" autoplay loop muted>
   </video>
  </p>
 
@@ -28,11 +28,15 @@ Live and running on: https://bitsunplugged.onrender.com
   <source src="./frontend/public/videos/graph_dark.mp4" type="video/mp4" />
   </video>
 <video src='./frontend/public/videos/graph_dark.mp4' /> -->
-- **Read Articles**: Interactive Problem Solving
-- **Contest**: Realtime Contests
-- **Analytics**: Problem and User analytics
-- **Recommendation**: Guided Learning Paths
-- **Dashboard**:
+### Read Articles
+    Interactive Problem Solving
+### Contest
+    Realtime Contests
+### Analytics
+    Problem and User analytics
+### Recommendation
+    Guided Learning Paths
+### Dashboard
 
 ## Why Use Our Platform?
 

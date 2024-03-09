@@ -1,8 +1,30 @@
 <h2 align="center">BITS UNPLUGGED</h3>
 
+Live and running on: https://bitsunplugged.onrender.com
+
 ## About The Project
 
-Live and running on: https://bitsunplugged.onrender.com
+- An innovative platform where users can enhance problem-solving skills without coding.
+- A seamless and user-friendly interface for engaging with data structure and algorithmic challenges.
+- Facilitate conceptual understanding by focusing on problem-solving approaches rather than coding syntax.
+
+## Features
+
+- **Problem Solving**:
+  ![toh-dark](./frontend/public/gifs/toh_dark.gif)
+
+- **Problem Setting**:
+  <video width="320" height="240" autoplay loop muted>
+    <source src="./frontend/public/videos/graph_dark.mp4" type="video/mp4">
+  </video>
+
+- **Read Articles**: Interactive Problem Solving
+- **Contest**: Realtime Contests
+- **Analytics**: Problem and User analytics
+- **Recommendation**: Guided Learning Paths
+- **Dashboard**:
+
+## Why Use Our Platform?
 
 ## Getting Started
 

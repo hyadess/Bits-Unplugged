@@ -11,13 +11,16 @@ Live and running on: https://bitsunplugged.onrender.com
 ## Features
 
 - **Problem Solving**: <br>
-  ![toh-dark](./frontend/public/gifs/toh_dark.gif)
+    <div style="text-align: center;"><img src="./frontend/public/gifs/toh_dark.gif" alt="toh-dark"></div>
 
-- **Problem Setting**: <br>
-  <video width="320" height="240" autoplay loop muted>
-    <source src="./frontend/public/videos/graph_dark.mp4" type="video/mp4">
+- **Problem Setting**: <br>\*\*\*\*
+<!-- <video width="320" height="240" autoplay loop muted>
+  <source src="./frontend/public/videos/graph_dark.mp4" type="video/mp4">
   </video>
-
+  <video width="320" height="240" autoPlay loop muted>
+  <source src="./frontend/public/videos/graph_dark.mp4" type="video/mp4" />
+  </video>
+<video src='./frontend/public/videos/graph_dark.mp4' /> -->
 - **Read Articles**: Interactive Problem Solving
 - **Contest**: Realtime Contests
 - **Analytics**: Problem and User analytics

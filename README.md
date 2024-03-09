@@ -18,10 +18,11 @@ Live and running on: https://bitsunplugged.onrender.com
 
 
 ### Problem Setting 
- <p align="center">
- <video width="280" src="./frontend/public/videos/graph_dark.mp4" autoplay loop muted>
-  </video>
- </p>
+
+<p align="center">
+<video width="280" src="./frontend/public/videos/graph_dark.mp4" autoplay loop muted>
+</video>
+</p>
 
 <!--
   <video width="320" height="240" autoPlay loop muted>
@@ -29,13 +30,13 @@ Live and running on: https://bitsunplugged.onrender.com
   </video>
 <video src='./frontend/public/videos/graph_dark.mp4' /> -->
 ### Read Articles
-    Interactive Problem Solving
+Interactive Problem Solving
 ### Contest
-    Realtime Contests
+Realtime Contests
 ### Analytics
-    Problem and User analytics
+Problem and User analytics
 ### Recommendation
-    Guided Learning Paths
+Guided Learning Paths
 ### Dashboard
 
 ## Why Use Our Platform?

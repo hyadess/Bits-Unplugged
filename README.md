@@ -11,7 +11,9 @@ Live and running on: https://bitsunplugged.onrender.com
 ## Features
 
 - **Problem Solving**: <br>
-    <div style="text-align: center;"><img src="./frontend/public/gifs/toh_dark.gif" alt="toh-dark"></div>
+    <p align="center">
+        <img src="./frontend/public/gifs/toh_dark.gif" alt="toh-dark">
+    </p>
 
 - **Problem Setting**: <br>\*\*\*\*
 <!-- <video width="320" height="240" autoplay loop muted>

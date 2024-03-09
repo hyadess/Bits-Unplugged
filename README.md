@@ -1,4 +1,4 @@
-<h2 align="center">BITS UNPLUGGED</h3>
+    <h2 align="center">BITS UNPLUGGED</h3>
 
 Live and running on: https://bitsunplugged.onrender.com
 
@@ -11,9 +11,10 @@ Live and running on: https://bitsunplugged.onrender.com
 ## Features
 
 ### Problem Solving
-    <p align="center">
-        <img src="./frontend/public/gifs/toh_dark.gif" alt="toh-dark">
-    </p>
+
+<p align="center">
+    <img src="./frontend/public/gifs/toh_dark.gif" alt="toh-dark">
+</p>
 
 
 

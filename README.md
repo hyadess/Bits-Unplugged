@@ -15,7 +15,11 @@ Live and running on: https://bitsunplugged.onrender.com
         <img src="./frontend/public/gifs/toh_dark.gif" alt="toh-dark">
     </p>
 
-- **Problem Setting**: <br>\*\*\*\*
+https://github.com/mahirlabibdihan/bitsunplugged/assets/62663759/42ae52c2-6765-4fbb-a38a-8965217e8449
+
+
+
+- **Problem Setting**: <br>
 <!-- <video width="320" height="240" autoplay loop muted>
   <source src="./frontend/public/videos/graph_dark.mp4" type="video/mp4">
   </video>

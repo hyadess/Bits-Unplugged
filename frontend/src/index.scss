@@ -461,3 +461,7 @@ code {
     // color: #000000 !important;
   }
 }
+.scrollable-dropdown-menu {
+  max-height: 200px; /* Adjust the height as needed */
+  overflow-y: auto;
+}

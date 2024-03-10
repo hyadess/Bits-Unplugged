@@ -52,10 +52,9 @@ export default function ProblemList() {
       setProblemList(res.data);
       setCurProblemList(res.data);
       setSeriesNames(
-        res.data.map((problem) => {
-          return problem.series.name;
-        })
+        Array.from(new Set(res.data.map((problem) => problem.series.name)))
       );
+      setSeriesNames(["all", ...seriesNames]);
 
       setLoading(false);
     }

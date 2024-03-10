@@ -45,16 +45,27 @@ export default function ProblemList() {
   const [curSeries, setCurSeries] = useState("all");
   const [type, setType] = useState("all");
 
+  const [typeProblemList, setTypeProblemList] = useState([]);
+  const [seriesProblemList, setSeriesProblemList] = useState([]);
+
   const getProblemList = async () => {
     const res = await problemApi.getAllProblems();
     console.log(res);
     if (res.success) {
       setProblemList(res.data);
       setCurProblemList(res.data);
+      setTypeProblemList(res.data);
+      setSeriesProblemList(res.data);
       setSeriesNames(
-        Array.from(new Set(res.data.map((problem) => problem.series.name)))
+        Array.from(
+          new Set([
+            "all",
+            ...res.data.map((problem) => problem.series.name),
+          ])
+        )
       );
-      setSeriesNames(["all", ...seriesNames]);
+      // const totSeries = ["all", ...seriesNames];
+      // setSeriesNames(totSeries);
 
       setLoading(false);
     }
@@ -66,9 +77,9 @@ export default function ProblemList() {
 
   useEffect(() => {
     if (type === "all") {
-      setCurProblemList(problemList);
+      setTypeProblemList(problemList);
     } else if (type === "unsolved") {
-      setCurProblemList(
+      setTypeProblemList(
         problemList.filter((problem) => {
           return (
             problem.activities.length === 0 ||
@@ -77,7 +88,7 @@ export default function ProblemList() {
         })
       );
     } else if (type === "solved") {
-      setCurProblemList(
+      setTypeProblemList(
         problemList.filter((problem) => {
           return (
             problem.activities.length > 0 &&
@@ -90,15 +101,23 @@ export default function ProblemList() {
 
   useEffect(() => {
     if (curSeries === "all") {
-      setCurProblemList(problemList);
+      setSeriesProblemList(problemList);
     } else {
-      setCurProblemList(
+      setSeriesProblemList(
         problemList.filter((problem) => {
           return problem.series.name === curSeries;
         })
       );
     }
   }, [curSeries]);
+
+  useEffect(() => {
+    setCurProblemList(
+      typeProblemList.filter((problem) => {
+        return seriesProblemList.includes(problem);
+      })
+    );
+  }, [typeProblemList, seriesProblemList]);
 
   return (
     <>

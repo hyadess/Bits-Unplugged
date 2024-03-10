@@ -220,7 +220,7 @@ const SolverNavbar = (props) => {
                   ></path>
                 </svg>
               </div>
-            </div>
+            </div> 
             <div className="flex md:flex items-center justify-center w-3/5 md:w-1/3">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

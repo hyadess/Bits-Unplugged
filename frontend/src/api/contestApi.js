@@ -122,7 +122,7 @@ class ContestApi extends Api {
   };
 
   getLeaderboard = async (contestId, type) => {
-    return await this.get(`/contests/${contestId}/Leaderboard`);
+    return await this.get(`/contests/${contestId}/Leaderboard/${type}`);
   };
   getTimeline = async (contestId) => {
     return await this.get(`/contests/${contestId}/Timeline`);

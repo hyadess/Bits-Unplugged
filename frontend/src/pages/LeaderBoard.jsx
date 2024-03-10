@@ -194,7 +194,7 @@ const Leaderboard = ({ preview }) => {
   };
 
   useEffect(() => {
-    fetchLeaderboard(0);
+    fetchLeaderboard("virtual");
   }, [id]);
 
   useEffect(() => {

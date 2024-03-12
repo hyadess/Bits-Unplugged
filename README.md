@@ -50,7 +50,10 @@ Live and running on: https://bitsunplugged.onrender.com
 
 ### Analytics
 
-Problem and User analytics
+- Problem Rating based on User submissions
+- Contest Rating based on Contest ranking
+- Time taken to solve a problem compared to other users
+- List of recently accessed problems, Unsolved problems
 
 ### Recommendation
 
@@ -61,6 +64,8 @@ Problem and User analytics
 - Showcase problem solving skill
 
 ## Why Use Our Platform?
+
+-\_-
 
 ## Getting Started
 

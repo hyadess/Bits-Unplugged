@@ -12,6 +12,12 @@ Demonstration video: https://youtube.com/playlist?list=PLJrKTL3IoxQkCJpkynAzqOp3
 - A seamless and user-friendly interface for engaging with data structure and algorithmic challenges.
 - Facilitate conceptual understanding by focusing on problem-solving approaches rather than coding syntax.
 
+
+## Why Use Our Platform?
+
+Our motivation was to provide a unique learning experience that focuses on conceptual understanding rather than coding syntax. Currently all the problem solving and competitive platforms for CS are based on coding, which creates an overhead. So, we tried to make the problem solving process interactive, where users can solve problems in our canvases by simply drag and dropping. This platform is also useful for those who don't know coding but want to increase their problem solving skills. But this doesn't mean that this platform is not for CS students. This will be very useful in theory courses like Data Structure and Algorithms, where students can visualize the problems and solutions.
+There are visualizer websites where we can visualize these types of problems. But a proper problem solving platform like this is not available. So, we tried to fill that gap by providing learning materials, interactive problems, realtime contests, recommendations and analytics in one platform.
+
 ## Features
 
 ### Problem Solving
@@ -29,12 +35,6 @@ Demonstration video: https://youtube.com/playlist?list=PLJrKTL3IoxQkCJpkynAzqOp3
 <video width="280" src="https://github.com/mahirlabibdihan/bitsunplugged/assets/62663759/42ae52c2-6765-4fbb-a38a-8965217e8449" autoplay loop muted>
 </video>
 </p>
-
-<!--
-  <video width="320" height="240" autoPlay loop muted>
-  <source src="./frontend/public/videos/graph_dark.mp4" type="video/mp4" />
-  </video>
-<video src='./frontend/public/videos/graph_dark.mp4' /> -->
 
 ### Read Articles
 
@@ -63,11 +63,7 @@ Demonstration video: https://youtube.com/playlist?list=PLJrKTL3IoxQkCJpkynAzqOp3
 
 - Showcase problem solving skill
 
-## Why Use Our Platform?
-
--\_-
-
-## Getting Started
+## Project Setup
 
 Follow the step by step installation procedure to install and run this on your machine.
 

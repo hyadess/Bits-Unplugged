@@ -47,10 +47,10 @@ export default function ContestSubmissionCard({
         <div className="flex flex-row cursor-pointer">
           <h5
             className="text-xl md:text-2xl tracking-tight bu-text-primary w-[50%] cursor-pointer h-full whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full"
-            onClick={() => {
-              setLoading(true);
-              navigate(path);
-            }}
+            // onClick={() => {
+            //   setLoading(true);
+            //   navigate(path);
+            // }}
           >
             {name}
           </h5>

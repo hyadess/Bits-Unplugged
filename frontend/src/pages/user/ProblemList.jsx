@@ -58,10 +58,7 @@ export default function ProblemList() {
       setSeriesProblemList(res.data);
       setSeriesNames(
         Array.from(
-          new Set([
-            "all",
-            ...res.data.map((problem) => problem.series.name),
-          ])
+          new Set(["all", ...res.data.map((problem) => problem.series.name)])
         )
       );
       // const totSeries = ["all", ...seriesNames];
@@ -148,7 +145,7 @@ export default function ProblemList() {
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>Filter</DropdownMenuLabel>
               <DropdownMenuSeparator />
 
               <DropdownMenuItem onClick={() => setType("all")}>

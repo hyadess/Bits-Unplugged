@@ -75,6 +75,7 @@ There are visualizer websites where we can visualize these types of problems. Bu
 ![Alt Text](/snapshots/contest_result.png)
 ![Alt Text](/snapshots/learn.png)
 ![Alt Text](/snapshots/statement_edit.png)
+![Alt Text](/snapshots/admin_topic.png)
 ![Alt Text](/snapshots/graph_setting.png)
 ![Alt Text](/snapshots/user_series.png)
 ![Alt Text](/snapshots/contest_editorial.png)

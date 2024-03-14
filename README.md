@@ -64,6 +64,10 @@ There are visualizer websites where we can visualize these types of problems. Bu
 
 - Showcase problem solving skill
 
+## Snapshots
+
+![Alt Text](/snapshots/landing_dark.png)
+![Alt Text](/snapshots/landing.png)
 ## Project Setup
 
 Follow the step by step installation procedure to install and run this on your machine.

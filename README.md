@@ -73,10 +73,11 @@ There are visualizer websites where we can visualize these types of problems. Bu
 ![Alt Text](/snapshots/code_editor.png)
 ![Alt Text](/snapshots/practice_submission.png)
 ![Alt Text](/snapshots/contest_result.png)
+![Alt Text](/snapshots/statement_edit.png)
 ![Alt Text](/snapshots/graph_setting.png)
 ![Alt Text](/snapshots/user_series.png)
 ![Alt Text](/snapshots/contest_editorial.png)
-![Alt Text](/snapshots/)
+![Alt Text](/snapshots/toh_edit.png)
 ## Project Setup
 
 Follow the step by step installation procedure to install and run this on your machine.

@@ -89,6 +89,7 @@ There are visualizer websites where we can visualize these types of problems. Bu
 ![Alt Text](/snapshots/contest_schedule.png)
 ![Alt Text](/snapshots/contest_problem.png)
 ![Alt Text](/snapshots/user_contest.png)
+![Alt Text](/snapshots/team.png)
 
 ## Project Setup
 

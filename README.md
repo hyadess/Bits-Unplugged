@@ -86,6 +86,7 @@ There are visualizer websites where we can visualize these types of problems. Bu
 ![Alt Text](/snapshots/topic_editor.png)
 ![Alt Text](/snapshots/contest_schedule.png)
 ![Alt Text](/snapshots/setter_request.png)
+![Alt Text](/snapshots/contest_problem.png)
 ## Project Setup
 
 Follow the step by step installation procedure to install and run this on your machine.

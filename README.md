@@ -78,6 +78,8 @@ There are visualizer websites where we can visualize these types of problems. Bu
 ![Alt Text](/snapshots/user_series.png)
 ![Alt Text](/snapshots/contest_editorial.png)
 ![Alt Text](/snapshots/toh_edit.png)
+![Alt Text](/snapshots/my_submission.png)
+![Alt Text](/snapshots/admin_canvas.png)
 ## Project Setup
 
 Follow the step by step installation procedure to install and run this on your machine.

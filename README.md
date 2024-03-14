@@ -66,8 +66,16 @@ There are visualizer websites where we can visualize these types of problems. Bu
 
 ## Snapshots
 
-![Alt Text](/snapshots/landing_dark.png)
 ![Alt Text](/snapshots/landing.png)
+![Alt Text](/snapshots/landing_dark.png)
+![Alt Text](/snapshots/user_home.png)
+![Alt Text](/snapshots/user_dashboard.png)
+![Alt Text](/snapshots/code_editor.png)
+![Alt Text](/snapshots/practice_submission.png)
+![Alt Text](/snapshots/contest_result.png)
+![Alt Text](/snapshots/graph_setting.png)
+![Alt Text](/snapshots/user_series.png)
+![Alt Text](/snapshots/contest_editorial.png)
 ## Project Setup
 
 Follow the step by step installation procedure to install and run this on your machine.

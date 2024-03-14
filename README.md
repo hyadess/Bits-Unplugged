@@ -73,22 +73,23 @@ There are visualizer websites where we can visualize these types of problems. Bu
 ![Alt Text](/snapshots/code_editor.png)
 ![Alt Text](/snapshots/practice_submission.png)
 ![Alt Text](/snapshots/contest_result.png)
+![Alt Text](/snapshots/learn.png)
 ![Alt Text](/snapshots/statement_edit.png)
 ![Alt Text](/snapshots/graph_setting.png)
 ![Alt Text](/snapshots/user_series.png)
 ![Alt Text](/snapshots/contest_editorial.png)
 ![Alt Text](/snapshots/toh_edit.png)
+![Alt Text](/snapshots/setter_request.png)
 ![Alt Text](/snapshots/my_submission.png)
 ![Alt Text](/snapshots/admin_canvas.png)
 ![Alt Text](/snapshots/contest_details.png)
-![Alt Text](/snapshots/array_set.png)
 ![Alt Text](/snapshots/canvas_options.png)
+![Alt Text](/snapshots/array_set.png)
 ![Alt Text](/snapshots/topic_editor.png)
 ![Alt Text](/snapshots/contest_schedule.png)
-![Alt Text](/snapshots/setter_request.png)
 ![Alt Text](/snapshots/contest_problem.png)
 ![Alt Text](/snapshots/user_contest.png)
-![Alt Text](/snapshots/learn.png)
+
 ## Project Setup
 
 Follow the step by step installation procedure to install and run this on your machine.

@@ -18,6 +18,9 @@ jobs:
 
       - name: Build the Docker image
         run: docker-compose -f docker-compose.prod.yml build
+        
+      - name: Run tests
+        run: docker run -e CI=true mahirlabibdihan/bitsunplugged-app npm run test
         env:
           DB_USER: ${{ vars.DB_USER_PROD }}
           DB_HOST: ${{ vars.DB_HOST_PROD }}
@@ -26,6 +29,3 @@ jobs:
           DB_PORT: ${{ vars.DB_PORT }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           ADMIN_PASS: ${{ secrets.ADMIN_PASS }}
-
-      - name: Run tests
-        run: docker run -e CI=true mahirlabibdihan/bitsunplugged-app npm run test

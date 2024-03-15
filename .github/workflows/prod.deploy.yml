@@ -20,7 +20,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build the Docker image
-        run: docker build -t mahirlabibdihan/bitsunplugged-app .
+        run: docker build -t mahirlabibdihan/bitsunplugged-app . --build-arg arg=prod
 
       - name: Push to Docker Hub
         run: docker push mahirlabibdihan/bitsunplugged-app:latest

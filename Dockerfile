@@ -24,12 +24,22 @@ RUN npm install
 COPY backend/ . 
 
 # Setup Database
-RUN apt-get update && \
-    apt-get install -y postgresql && \
-    apt-get clean
 
-USER postgres
-RUN /etc/init.d/postgresql start && psql -c "ALTER USER postgres WITH PASSWORD 'root';" && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all
+ARG MODE
 
-USER root
-ENTRYPOINT ["/etc/init.d/postgresql start && npm run start"]
+RUN if [ "$MODE" = "dev" ] ; then \
+    apt-get update && apt-get install -y postgresql && apt-get clean && \
+    su postgres -c "/etc/init.d/postgresql start && psql -c \"ALTER USER postgres WITH PASSWORD 'root';\" && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all" ; \
+    fi
+
+ENTRYPOINT if [ "$MODE" = "dev" ] ; then /etc/init.d/postgresql start && npm run start ; else npm start ; fi
+
+# # if $mode == "dev"
+# RUN apt-get update && apt-get install -y postgresql && apt-get clean
+# USER postgres
+# RUN /etc/init.d/postgresql start && psql -c "ALTER USER postgres WITH PASSWORD 'root';" && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all
+# USER root
+# ENTRYPOINT ["/etc/init.d/postgresql", "start", "&&", "npm", "run", "start"]
+
+# # if $mode == "prod"
+# ENTRYPOINT ["npm", "start"]

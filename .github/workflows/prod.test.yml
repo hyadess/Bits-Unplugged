@@ -17,7 +17,7 @@ jobs:
         run: sudo apt install docker-compose
 
       - name: Build the Docker image
-        run: docker build -t mahirlabibdihan/bitsunplugged-app .
+        run: docker build -t mahirlabibdihan/bitsunplugged-app . --build-arg arg=prod
         
       - name: Run tests
         run: docker run -e CI=true mahirlabibdihan/bitsunplugged-app npm run test

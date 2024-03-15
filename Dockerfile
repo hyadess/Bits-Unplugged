@@ -3,17 +3,10 @@
 
 FROM node:20 as client
 
-
 WORKDIR /app/frontend/
 COPY frontend/package*.json .
-RUN npm install --force --only=production
+RUN npm install --force
 COPY frontend/ .
-
-ARG REACT_APP_API_BASE_URL
-ENV REACT_APP_API_BASE_URL $REACT_APP_API_BASE_URL
-
-ARG VITE_APP_API_BASE_URL
-ENV VITE_APP_API_BASE_URL $VITE_APP_API_BASE_URL
 
 RUN npm run build   
 
@@ -28,39 +21,25 @@ COPY --from=client /app/frontend/build/ ./frontend/build/
 WORKDIR /app/backend/
 COPY backend/package*.json .
 RUN npm install
-RUN npm audit fix 
 COPY backend/ . 
 
-ARG DB_USER
-ENV DB_USER $DB_USER
-
-ARG DB_HOST
-ENV DB_HOST $DB_HOST
-
-ARG DB_DB
-ENV DB_DB $DB_DB
-
-ARG DB_PASS
-ENV DB_PASS $DB_PASS
-
-ARG DB_PORT
-ENV DB_PORT $DB_PORT
-
-ARG PORT
-ENV PORT $PORT
-EXPOSE $PORT 
-
 # Setup Database
-RUN apt-get update && \
-    apt-get install -y postgresql && \
-    apt-get clean
 
-COPY backend/dump.sql /docker-entrypoint-initdb.d/init.sql
-COPY entrypoint.sh .
+ARG MODE
 
-USER postgres
- 
-RUN /etc/init.d/postgresql start && psql -c "ALTER USER postgres WITH PASSWORD 'root';" && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all
+RUN if [ "$MODE" = "dev" ] ; then \
+    apt-get update && apt-get install -y postgresql && apt-get clean && \
+    su postgres -c "/etc/init.d/postgresql start && psql -c \"ALTER USER postgres WITH PASSWORD 'root';\" && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all" ; \
+    fi
 
-USER root
-ENTRYPOINT ["bash entrypoint.sh"]
+ENTRYPOINT if [ "$MODE" = "dev" ] ; then /etc/init.d/postgresql start && npm run start ; else npm start ; fi
+
+# # if $mode == "dev"
+# RUN apt-get update && apt-get install -y postgresql && apt-get clean
+# USER postgres
+# RUN /etc/init.d/postgresql start && psql -c "ALTER USER postgres WITH PASSWORD 'root';" && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all
+# USER root
+# ENTRYPOINT ["/etc/init.d/postgresql", "start", "&&", "npm", "run", "start"]
+
+# # if $mode == "prod"
+# ENTRYPOINT ["npm", "start"]

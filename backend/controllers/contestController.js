@@ -407,8 +407,9 @@ class ContestController extends Controller {
 
   getLeaderboard = async (req, res) => {
     let start=await contestRepository.getContestInfo(req.params.contestId);
+    let type=req.params.type;
     let result;
-    if(start.data[0].status=="rated")
+    if(start.data[0].status=="rated" && type!="virtual")
     {
       result=await contestRepository.getRatedLeaderBoard(req.params.contestId);
     }

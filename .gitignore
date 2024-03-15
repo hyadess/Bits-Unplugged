@@ -6,3 +6,5 @@ dist/
 .env*
 *.local.*
 backend/public/uploads
+*.old
+*.ignore

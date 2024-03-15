@@ -38,7 +38,7 @@ const Team = ({ setNav }, ref) => {
           <TeamCard
             name="Mahir Labib Dihan"
             position="1905072"
-            detail="Devops"
+            detail="Fullstack Developer"
             image="/images/dihan.jpg"
           />
           <TeamCard

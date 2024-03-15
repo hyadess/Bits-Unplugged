@@ -54,11 +54,10 @@ RUN apt-get update && \
     apt-get install -y postgresql && \
     apt-get clean
 
-COPY backend/dump.sql /docker-entrypoint-initdb.d/init.sql
 COPY entrypoint.sh .
 
 USER postgres
- 
+
 RUN /etc/init.d/postgresql start && psql -c "ALTER USER postgres WITH PASSWORD 'root';" && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all
 
 USER root

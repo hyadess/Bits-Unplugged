@@ -17,7 +17,7 @@ jobs:
         run: sudo apt install docker-compose
 
       - name: Build the Docker image
-        run: docker-compose -f docker-compose.prod.yml build
+        run: docker build -t mahirlabibdihan/bitsunplugged-app .
         
       - name: Run tests
         run: docker run -e CI=true mahirlabibdihan/bitsunplugged-app npm run test

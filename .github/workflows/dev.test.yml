@@ -21,23 +21,13 @@ jobs:
       - name: Install dependencies
         run: cd backend && npm ci
 
-      - name: Debug Environment Variables
-        run: |
-          echo "DB_USER_DEV: ${{ vars.DB_USER_DEV }}"
-          echo "DB_HOST_DEV: ${{ env.DB_HOST_DEV }}"
-          echo "DB_DB: $DB_DB"
-          echo "DB_PORT: $DB_PORT"
-          echo "DB_PASS: $DB_PASS"
-          echo "JWT_SECRET: $JWT_SECRET"
-          echo "ADMIN_PASS: $ADMIN_PASS"
-
       - name: Run tests
         run: cd backend && npm run test
         env:
-          DB_USER: ${{ env.DB_USER_DEV }}
-          DB_HOST: ${{ env.DB_HOST_DEV }}
-          DB_DB: ${{ env.DB_DB }}
+          DB_USER: ${{ vars.DB_USER_DEV }}
+          DB_HOST: ${{ vars.DB_HOST_DEV }}
+          DB_DB: ${{ vars.DB_DB }}
           DB_PASS: ${{ secrets.DB_PASS }}
-          DB_PORT: ${{ env.DB_PORT }}
+          DB_PORT: ${{ vars.DB_PORT }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           ADMIN_PASS: ${{ secrets.ADMIN_PASS }}

@@ -7,3 +7,4 @@ dist/
 *.local.*
 backend/public/uploads
 *.old
+*.ignore

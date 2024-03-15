@@ -20,12 +20,14 @@ jobs:
         run: docker build -t mahirlabibdihan/bitsunplugged-app . --build-arg arg=prod
         
       - name: Run tests
-        run: docker run -e CI=true mahirlabibdihan/bitsunplugged-app npm run test
-        env:
-          DB_USER: ${{ vars.DB_USER_PROD }}
-          DB_HOST: ${{ vars.DB_HOST_PROD }}
-          DB_DB: ${{ vars.DB_DB }}
-          DB_PASS: ${{ secrets.DB_PASS }}
-          DB_PORT: ${{ vars.DB_PORT }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          ADMIN_PASS: ${{ secrets.ADMIN_PASS }}
+        run: |
+          docker run \
+          -e CI=true \
+          -e DB_USER=${{ vars.DB_USER_PROD }} \
+          -e DB_HOST=${{ vars.DB_HOST_PROD }} \
+          -e DB_DB=${{ vars.DB_DB }} \
+          -e DB_PASS=${{ secrets.DB_PASS }} \
+          -e DB_PORT=${{ vars.DB_PORT }} \
+          -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+          -e ADMIN_PASS=${{ secrets.ADMIN_PASS }} \
+          mahirlabibdihan/bitsunplugged-app npm run test

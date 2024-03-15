@@ -5,9 +5,6 @@ on:
     branches:
       - dev
 
-env:
-  DB_USER: DB_USER_DEV
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -26,8 +23,8 @@ jobs:
 
       - name: Debug Environment Variables
         run: |
-          echo "DB_USER_DEV: ${{ env.DB_USER }}"
-          echo "DB_HOST_DEV: $DB_HOST_DEV"
+          echo "DB_USER_DEV: ${{ vars.DB_USER_DEV }}"
+          echo "DB_HOST_DEV: ${{ env.DB_HOST_DEV }}"
           echo "DB_DB: $DB_DB"
           echo "DB_PORT: $DB_PORT"
           echo "DB_PASS: $DB_PASS"

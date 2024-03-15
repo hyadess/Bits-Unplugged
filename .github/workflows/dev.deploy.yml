@@ -19,9 +19,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Install dependencies
-        run: sudo apt install docker-compose
-
       - name: Build the Docker image
         run: docker build -t mahirlabibdihan/bitsunplugged-dev .
 

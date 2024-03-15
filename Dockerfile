@@ -5,7 +5,7 @@ FROM node:20 as client
 
 WORKDIR /app/frontend/
 COPY frontend/package*.json .
-RUN npm install --force --only=production
+RUN npm install --force
 COPY frontend/ .
 
 RUN npm run build   

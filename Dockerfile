@@ -28,10 +28,7 @@ RUN apt-get update && \
     apt-get install -y postgresql && \
     apt-get clean
 
-COPY entrypoint.sh .
-
 USER postgres
-
 RUN /etc/init.d/postgresql start && psql -c "ALTER USER postgres WITH PASSWORD 'root';" && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all
 
 USER root

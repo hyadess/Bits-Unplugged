@@ -32,4 +32,4 @@ RUN if [ "$MODE" = "dev" ] ; then \
     su postgres -c "/etc/init.d/postgresql start && psql -c \"ALTER USER postgres WITH PASSWORD 'root';\" && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all" ; \
     fi
 
-ENTRYPOINT if [ "$MODE" = "dev" ] ; then /etc/init.d/postgresql start && npm start ; else npm start ; fi
+CMD if [ "$MODE" = "dev" ] ; then /etc/init.d/postgresql start && npm start ; else npm start ; fi

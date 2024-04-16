@@ -21,11 +21,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <GlobalContextProvider>
-      {/* <DragDropContext> */}
-      {/* <DndProvider backend={HTML5Backend}> */}
       <App />
-      {/* </DragDropContext> */}
-      {/* </DndProvider> */}
     </GlobalContextProvider>
   </React.StrictMode>
 );

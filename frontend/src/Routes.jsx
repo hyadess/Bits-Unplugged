@@ -167,14 +167,14 @@ const ContestWrapper = () => {
         if (new Date().getTime() < startDateTime.getTime() + contestDuration) {
           setstartTime(startDateTime);
           setendTime(new Date(startDateTime.getTime() + contestDuration));
-        } else if(virtualParticipant.data.length>0){
+        } else if (virtualParticipant.data.length > 0) {
           setstartTime(new Date(virtualParticipant.data[0].createdAt));
           setendTime(
             new Date(
               new Date(virtualParticipant.data[0].createdAt).getTime() +
                 contestDuration
             )
-          );          
+          );
         } else {
           setstartTime(startDateTime);
           setendTime(new Date(startDateTime.getTime() + contestDuration));
@@ -197,13 +197,22 @@ const ContestWrapper = () => {
             activeTab={activeComponent}
             click={(tab) => {
               setActiveComponent(tab);
-              if (tab == "Details") isPreview? navigate(`/contests/${id}/preview`) : navigate(`/contests/${id}`);
+              if (tab == "Details")
+                isPreview
+                  ? navigate(`/contests/${id}/preview`)
+                  : navigate(`/contests/${id}`);
               else if (tab == "Leaderboard")
-              isPreview? navigate(`/contests/${id}/leaderboard/preview`) : navigate(`/contests/${id}/leaderboard`);
+                isPreview
+                  ? navigate(`/contests/${id}/leaderboard/preview`)
+                  : navigate(`/contests/${id}/leaderboard`);
               else if (tab == "Submissions")
-              isPreview? navigate(`/contests/${id}/${username}/preview`) : navigate(`/contests/${id}/${username}`);
+                isPreview
+                  ? navigate(`/contests/${id}/${username}/preview`)
+                  : navigate(`/contests/${id}/${username}`);
               else if (tab == "Editorial")
-              isPreview? navigate(`/contests/${id}/editorial/preview`) : navigate(`/contests/${id}/editorial`);
+                isPreview
+                  ? navigate(`/contests/${id}/editorial/preview`)
+                  : navigate(`/contests/${id}/editorial`);
             }}
             tabs={
               endTime?.getTime() < Date.now()
@@ -235,7 +244,7 @@ const ContestWrapper = () => {
               )}
             </div>
           )}
-      
+
           <div className="w-full">
             {new Date().getTime() >= startTime && (
               <ContestProblemList preview={isPreview} />
@@ -243,8 +252,6 @@ const ContestWrapper = () => {
           </div>
         </div>
       }
-      
-      
     >
       <Outlet />
     </LayoutMain>
@@ -525,16 +532,11 @@ const AppRoutes = () => {
               </LayoutMain>
             }
           />
-
-          
-
-
-
         </Route>
 
         <Route element={<ProblemSolver />}>
           <Route element={<ContestWrapper />}>
-          {/* <Route path="/contests/:id/preview" element={<UserContestDetails preview/>} /> */}
+            {/* <Route path="/contests/:id/preview" element={<UserContestDetails preview/>} /> */}
             <Route path="/contests/:id" element={<UserContestDetails />} />
             {/* <Route
               path="/contests/:id/problems/:problemid/preview"
@@ -720,44 +722,34 @@ const AppRoutes = () => {
           <Route path="/user/:username" element={<SolverProfile />} />
           <Route path="/setter/:username" element={<ProfileForSetter />} />
           <Route element={<ContestWrapper />}>
-            <Route path="/contests/:id/preview" element={<UserContestDetails preview/>} />              
-              <Route
-                path="/contests/:id/problems/:problemid/preview"
-                element={<UserContest preview/>}
-              />              
-              <Route
-                path="/contests/:id/editorial/preview"
-                element={<EditorialPreview />}
-              />              
-              <Route
-                path="/contests/:id/problems/:problemId/submissions/preview"
-                element={<ContestSubmissions />}
-              />              
-              <Route
-                path="/contests/:id/:username/preview"
-                element={<ContestParticipant />}
-              />
-              <Route path="/contests/:id/leaderboard/preview" element={<Leaderboard  preview/>} />
+            <Route
+              path="/contests/:id/preview"
+              element={<UserContestDetails preview />}
+            />
+            <Route
+              path="/contests/:id/problems/:problemid/preview"
+              element={<UserContest preview />}
+            />
+            <Route
+              path="/contests/:id/editorial/preview"
+              element={<EditorialPreview />}
+            />
+            <Route
+              path="/contests/:id/problems/:problemId/submissions/preview"
+              element={<ContestSubmissions />}
+            />
+            <Route
+              path="/contests/:id/:username/preview"
+              element={<ContestParticipant />}
+            />
+            <Route
+              path="/contests/:id/leaderboard/preview"
+              element={<Leaderboard preview />}
+            />
           </Route>
         </Route>
         {type >= 0 && (
-          <Route
-            path="/"
-            element={
-              <Navigate
-                replace
-                to={
-                  type == 0
-                    ? "/home"
-                    : type == 1
-                      ? "/problemSet"
-                      : type == 2
-                        ? "/admin/topics"
-                        : "/landing"
-                }
-              />
-            }
-          />
+          <Route path="/" element={<Navigate replace to={"/landing"} />} />
         )}
 
         <Route
